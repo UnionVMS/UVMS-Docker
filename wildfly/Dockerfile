@@ -37,7 +37,7 @@ RUN curl -o $DEPLOYMENTS/asset-dbaccess-module.ear "$NEXUS?g=eu.europa.ec.fisher
 RUN curl -o $DEPLOYMENTS/audit-dbaccess-module.ear "$NEXUS?g=eu.europa.ec.fisheries.uvms.audit&a=audit-dbaccess-module&v=LATEST&r=public&e=ear"
 RUN curl -o $DEPLOYMENTS/exchange-dbaccess-module.ear "$NEXUS?g=eu.europa.ec.fisheries.uvms.exchange&a=exchange-dbaccess-module&v=LATEST&r=public&e=ear"
 RUN curl -o $DEPLOYMENTS/mobileterminal-dbaccess-module.ear "$NEXUS?g=eu.europa.ec.fisheries.uvms.mobileterminal&a=mobileterminal-dbaccess-module&v=LATEST&r=public&e=ear"
-RUN curl -o $DEPLOYMENTS/movement-dbaccess-module.ear "$NEXUS?g=eu.europa.ec.fisheries.uvms.movement&a=movement-dbaccess-module&v=LATEST&r=public&e=ear"
+RUN curl -o $DEPLOYMENTS/movement-dbaccess-module.ear "$NEXUS?g=eu.europa.ec.fisheries.uvms.movement&a=movement-dbaccess-module&v=LATEST&r=public&e=ear&c=postgres"
 RUN curl -o $DEPLOYMENTS/rules-dbaccess-module.ear "$NEXUS?g=eu.europa.ec.fisheries.uvms.rules&a=rules-dbaccess-module&v=LATEST&r=public&e=ear"
 
 # APP Module
