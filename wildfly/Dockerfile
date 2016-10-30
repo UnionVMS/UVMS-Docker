@@ -12,12 +12,6 @@ ENV HIBERNATE_MODULE $JBOSS_HOME/modules/system/layers/base/org/hibernate/main
 ENV POSTGRES_MODULE $JBOSS_HOME/modules/org/postgresql/main
 ENV DEPLOYMENTS $JBOSS_HOME/standalone/deployments
 
-# Standalone config
-COPY standalone-uvms.xml $JBOSS_HOME/standalone/configuration/
-COPY app-roles.properties $JBOSS_HOME/standalone/configuration/
-COPY client.truststore $JBOSS_HOME/standalone/configuration/
-COPY server.keystore $JBOSS_HOME/standalone/configuration/
-
 # PostGis
 COPY hibernate/module.xml $HIBERNATE_MODULE
 RUN curl -o $HIBERNATE_MODULE/hibernate-spatial-$HIBERNATE_SPATIAL_VERSION.jar "http://www.hibernatespatial.org/repository/org/hibernate/hibernate-spatial/$HIBERNATE_SPATIAL_VERSION/hibernate-spatial-$HIBERNATE_SPATIAL_VERSION.jar"
@@ -56,6 +50,13 @@ RUN curl -o $DEPLOYMENTS/user-module.ear "$NEXUS?g=eu.europa.ec.fisheries.uvms.u
 # Frontend
 RUN curl -o $DEPLOYMENTS/unionvms-web.war "$NEXUS?g=eu.europa.ec.fisheries.uvms&a=unionvms-web&v=LATEST&r=public&e=war"
 
+# Standalone config
+COPY standalone.conf $JBOSS_HOME/bin/
+COPY standalone-uvms.xml $JBOSS_HOME/standalone/configuration/
+COPY app-roles.properties $JBOSS_HOME/standalone/configuration/
+COPY client.truststore $JBOSS_HOME/standalone/configuration/
+COPY server.keystore $JBOSS_HOME/standalone/configuration/
+
 #RUN ls -l $JBOSS_HOME/standalone/deployments
 #RUN ls -l $JBOSS_HOME/standalone/configuration
 #RUN ls -l $HIBERNATE_MODULE
@@ -69,8 +70,7 @@ USER jboss
 
 # Expose stuff to outside world
 EXPOSE 8787
-VOLUME ["/app/logs"]
-VOLUME ["/opt/jboss/wildfly/standalone/logs"]
+VOLUME ["/app/logs”, “/opt/jboss/wildfly/standalone”]
 
 # Create admin user
 RUN /opt/jboss/wildfly/bin/add-user.sh admin wildfly --silent
