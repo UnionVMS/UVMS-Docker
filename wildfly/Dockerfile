@@ -85,6 +85,6 @@ USER jboss
 
 # Expose stuff to outside world
 EXPOSE 8787
-VOLUME ["/app/logs", "/opt/jboss/wildfly/standalone"]
+VOLUME ["/app/logs", "/opt/jboss/wildfly/standalone/log"]
 
 CMD ["/opt/jboss/wildfly/bin/standalone.sh", "-c", "standalone-uvms.xml", "-b", "0.0.0.0", "-bmanagement", "0.0.0.0", "--debug"]
