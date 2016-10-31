@@ -1,6 +1,3 @@
-cd activemq
-docker build --tag uvms/activemq .
-cd ../postgres
-docker build --tag uvms/postgres .
-cd ..wildfly
-docker build --tag uvms/wildfly .
+docker build --tag uvms/activemq amq/Dockerfile
+docker build --tag uvms/postgres postgres/Dockerfile
+docker build --tag uvms/wildfly wildfly/Dockerfile
