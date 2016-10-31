@@ -174,7 +174,7 @@
                     </security>
                 </datasource>
                 <datasource jta="true" jndi-name="java:jboss/datasources/uvms_audit" pool-name="uvms_audit" enabled="true" use-ccm="true">
-                    <connection-url>jdbc:postgresql://localhost:5432/db71u</connection-url>
+                    <connection-url>jdbc:postgresql://postgres:5432/db71u</connection-url>
                     <driver-class>org.postgresql.Driver</driver-class>
                     <driver>postgresql</driver>
                     <security>
@@ -183,7 +183,7 @@
                     </security>
                 </datasource>
                 <datasource jta="true" jndi-name="java:jboss/datasources/uvms_mobterm" pool-name="uvms_mobterm" enabled="true" use-ccm="true">
-                    <connection-url>jdbc:postgresql://localhost:5432/db71u</connection-url>
+                    <connection-url>jdbc:postgresql://postgres:5432/db71u</connection-url>
                     <driver-class>org.postgresql.Driver</driver-class>
                     <driver>postgresql</driver>
                     <security>
@@ -192,7 +192,7 @@
                     </security>
                 </datasource>
                 <datasource jta="true" jndi-name="java:jboss/datasources/uvms_movement" pool-name="uvms_movement" enabled="true" use-ccm="true">
-                    <connection-url>jdbc:postgresql://localhost:5432/db71u</connection-url>
+                    <connection-url>jdbc:postgresql://postgres:5432/db71u</connection-url>
                     <driver-class>org.postgresql.Driver</driver-class>
                     <driver>postgresql</driver>
                     <transaction-isolation>TRANSACTION_REPEATABLE_READ</transaction-isolation>
@@ -202,7 +202,7 @@
                     </security>
                 </datasource>
                 <datasource jta="true" jndi-name="java:jboss/datasources/uvms_asset" pool-name="uvms_asset" enabled="true" use-ccm="true">
-                    <connection-url>jdbc:postgresql://localhost:5432/db71u</connection-url>
+                    <connection-url>jdbc:postgresql://postgres:5432/db71u</connection-url>
                     <driver-class>org.postgresql.Driver</driver-class>
                     <driver>postgresql</driver>
                     <security>
@@ -211,7 +211,7 @@
                     </security>
                 </datasource>
                 <datasource jta="true" jndi-name="java:jboss/datasources/uvms_vessel" pool-name="uvms" enabled="true" use-ccm="true">
-                    <connection-url>jdbc:postgresql://localhost:5432/db71u</connection-url>
+                    <connection-url>jdbc:postgresql://postgres:5432/db71u</connection-url>
                     <driver-class>org.postgresql.Driver</driver-class>
                     <driver>postgresql</driver>
                     <security>
@@ -220,7 +220,7 @@
                     </security>
                 </datasource>
                 <datasource jta="true" jndi-name="java:jboss/datasources/uvms_exchange" pool-name="uvms_exchange" enabled="true" use-ccm="true">
-                    <connection-url>jdbc:postgresql://localhost:5432/db71u</connection-url>
+                    <connection-url>jdbc:postgresql://postgres:5432/db71u</connection-url>
                     <driver-class>org.postgresql.Driver</driver-class>
                     <driver>postgresql</driver>
                     <security>
@@ -229,7 +229,7 @@
                     </security>
                 </datasource>
                 <datasource jta="true" jndi-name="java:jboss/datasources/uvms_rules" pool-name="uvms_rules" enabled="true" use-ccm="true">
-                    <connection-url>jdbc:postgresql://localhost:5432/db71u</connection-url>
+                    <connection-url>jdbc:postgresql://postgres:5432/db71u</connection-url>
                     <driver-class>org.postgresql.Driver</driver-class>
                     <driver>postgresql</driver>
                     <security>
@@ -238,7 +238,7 @@
                     </security>
                 </datasource>
                 <datasource jta="true" jndi-name="java:jboss/datasources/uvms_usm" pool-name="uvms_usm" enabled="true" use-ccm="true">
-                    <connection-url>jdbc:postgresql://localhost:5432/db71u</connection-url>
+                    <connection-url>jdbc:postgresql://postgres:5432/db71u</connection-url>
                     <driver-class>org.postgresql.Driver</driver-class>
                     <driver>postgresql</driver>
                     <security>
@@ -247,7 +247,7 @@
                     </security>
                 </datasource>
                 <datasource jta="true" jndi-name="java:/jdbc/USM2" pool-name="jdbc/USM2" enabled="true" use-ccm="true">
-                    <connection-url>jdbc:postgresql://localhost:5432/db71u</connection-url>
+                    <connection-url>jdbc:postgresql://postgres:5432/db71u</connection-url>
                     <driver-class>org.postgresql.Driver</driver-class>
                     <driver>postgresql</driver>
                     <security>
@@ -256,7 +256,7 @@
                     </security>
                 </datasource>
                 <datasource jta="true" jndi-name="java:jboss/datasources/uvms_spatial" pool-name="uvms_spatial" enabled="true" use-ccm="true">
-                    <connection-url>jdbc:postgresql://localhost:5432/db71u</connection-url>
+                    <connection-url>jdbc:postgresql://postgres:5432/db71u</connection-url>
                     <driver-class>org.postgresql.Driver</driver-class>
                     <driver>postgresql</driver>
                     <security>
@@ -265,7 +265,7 @@
                     </security>
                 </datasource>
                 <datasource jta="true" jndi-name="java:jboss/datasources/uvms_reporting" pool-name="uvms_reporting" enabled="true" use-ccm="true">
-                    <connection-url>jdbc:postgresql://localhost:5432/db71u</connection-url>
+                    <connection-url>jdbc:postgresql://postgres:5432/db71u</connection-url>
                     <driver-class>org.postgresql.Driver</driver-class>
                     <driver>postgresql</driver>
                     <security>
@@ -274,7 +274,7 @@
                     </security>
                 </datasource>
                 <datasource jta="true" jndi-name="java:jboss/datasources/uvms_config" pool-name="uvms_config" enabled="true" use-ccm="true">
-                    <connection-url>jdbc:postgresql://localhost:5432/db71u</connection-url>
+                    <connection-url>jdbc:postgresql://postgres:5432/db71u</connection-url>
                     <driver-class>org.postgresql.Driver</driver-class>
                     <driver>postgresql</driver>
                     <security>

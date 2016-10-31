@@ -20,4 +20,6 @@ RUN ls -l $ACTIVEMQ_HOME/bin
 
 EXPOSE 61616 8161
 
+VOLUME ["/opt/jboss/activemq"]
+
 CMD ["/opt/jboss/activemq/bin/activemq", "console"]

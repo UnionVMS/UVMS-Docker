@@ -25,6 +25,13 @@ RUN curl -o $POSTGRES_MODULE/postgresql-$POSTGRES_VERSION.jar "http://central.ma
 # Active MQ
 RUN curl -o $DEPLOYMENTS/activemq-rar.rar "$NEXUS?g=org.apache.activemq&a=activemq-rar&v=$ACTIVEMQ_VERSION&r=public&e=rar"
 
+# Standalone config
+COPY standalone.conf $JBOSS_HOME/bin/
+COPY standalone-uvms.xml $JBOSS_HOME/standalone/configuration/
+COPY app-roles.properties $JBOSS_HOME/standalone/configuration/
+COPY client.truststore $JBOSS_HOME/standalone/configuration/
+COPY server.keystore $JBOSS_HOME/standalone/configuration/
+
 # DB Module
 RUN curl -o $DEPLOYMENTS/config-dbaccess-module.ear "$NEXUS?g=eu.europa.ec.fisheries.uvms.config&a=config-dbaccess-module&v=LATEST&r=public&e=ear"
 RUN curl -o $DEPLOYMENTS/asset-dbaccess-module.ear "$NEXUS?g=eu.europa.ec.fisheries.uvms.asset&a=asset-dbaccess-module&v=LATEST&r=public&e=ear"
@@ -49,13 +56,6 @@ RUN curl -o $DEPLOYMENTS/user-module.ear "$NEXUS?g=eu.europa.ec.fisheries.uvms.u
 
 # Frontend
 RUN curl -o $DEPLOYMENTS/unionvms-web.war "$NEXUS?g=eu.europa.ec.fisheries.uvms&a=unionvms-web&v=LATEST&r=public&e=war"
-
-# Standalone config
-COPY standalone.conf $JBOSS_HOME/bin/
-COPY standalone-uvms.xml $JBOSS_HOME/standalone/configuration/
-COPY app-roles.properties $JBOSS_HOME/standalone/configuration/
-COPY client.truststore $JBOSS_HOME/standalone/configuration/
-COPY server.keystore $JBOSS_HOME/standalone/configuration/
 
 #RUN ls -l $JBOSS_HOME/standalone/deployments
 #RUN ls -l $JBOSS_HOME/standalone/configuration
