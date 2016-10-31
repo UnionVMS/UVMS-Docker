@@ -19,26 +19,21 @@ Second time
 * When done, run stop.bat
 
 ## Build
-
 To rebuild from scratch, add --no-cache between "build" and "--tag" in the commands below
 
 ### Wildfly
-cd wildfly
-
-docker build --tag uvms/wildfly .
+1. cd wildfly
+2. docker build --tag uvms/wildfly .
 
 ### Active MQ
-cd amq
-
-docker build --tag uvms/amq .
+1. cd amq
+2. docker build --tag uvms/amq .
 
 ### PostgreSQL
-cd postgres
-
-docker build --tag uvms/postgres .
+1. cd postgres
+2. docker build --tag uvms/postgres .
 
 ## Run
-
 -d detaches container on start, remove to run in terminal
 
 ### First run
