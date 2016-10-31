@@ -32,6 +32,7 @@ On Windows:
 * Select Open Kitematic and follow the instructions
 
 First time:
+
 1. docker build --tag uvms/amq amq/Dockerfile
 2. docker build --tag uvms/postgres postgres/Dockerfile
 3. docker build --tag uvms/wildfly wildfly/Dockerfile
@@ -41,11 +42,13 @@ First time:
 7. docker run -it -p 9990:9990 -p 8787:8787 -p 8080:8080 --name wildfly --net-alias wildfly --net=uvms -m 6G -d uvms/wildfly
 
 When done:
+
 1. docker stop wildfly
 2. docker stop activemq
 3. docker stop postgres
 
 Second time:
+
 1. docker start activemq
 2. docker start postgres
 3. docker start wildfly
