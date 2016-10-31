@@ -1,26 +1,4 @@
-FROM mdillon/postgis:9.3
-
-ENV GITHUB https://github.com/UnionVMS
-ENV TARGET target/liquibase/migrate.sql
-ENV LIQUIBASE liquibase:updateSQL -f pom.xml -Ppostgres -Ddb.url=offline:postgresql?version=9.3&outputLiquibaseSql=true
-
-RUN apt-get update
-RUN apt-get install -y unzip
-RUN apt-get install -y maven
-
-COPY settings.xml /root/.m2/settings.xml
-
-#Create temp directories
-RUN mkdir -p /liquibase/config \
-    && mkdir -p /liquibase/asset \
-    && mkdir -p /liquibase/audit \
-    && mkdir -p /liquibase/movement \
-    && mkdir -p /liquibase/exchange \
-    && mkdir -p /liquibase/mobterm \
-    && mkdir -p /liquibase/rules \
-    && mkdir -p /liquibase/spatial \
-    && mkdir -p /liquibase/reporting \
-    && mkdir -p /liquibase/usm
+FROM uvms/postgres:9.3
 
 # Asset
 ADD $GITHUB/UVMS-AssetModule-DB/archive/swe-dev.zip /liquibase/asset
@@ -66,11 +44,9 @@ COPY usm/pom.xml /liquibase/usm/USM-master/database/liquibase/
 COPY usm/user.sql /liquibase/usm/USM-master/database/liquibase/changelog/v0.1/boot/
 COPY usm/USER_T.CSV /liquibase/usm/USM-master/database/liquibase/test/csv/USER_T.csv
 
-COPY setup.sql /docker-entrypoint-initdb.d/
 COPY updateDb.sh /docker-entrypoint-initdb.d/
 
 #RUN ls -l /docker-entrypoint-initdb.d
-RUN ls -l /liquibase/usm/USM-master/database/liquibase/test/csv/
 
 VOLUME ["/docker-entrypoint-initdb.d"]
 
