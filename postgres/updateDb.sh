@@ -1,4 +1,7 @@
 #!bin/sh
+cd /liquibase/usm/USM-master/database/liquibase
+mvn liquibase:update -Ddb.url=jdbc:postgresql://localhost:5432/db71u -Ddb.user=usm -Ddb.passwd=usm
+
 cd /liquibase/asset/UVMS-AssetModule-DB-swe-dev/LIQUIBASE
 mvn liquibase:update -Ppostgres
 
@@ -25,6 +28,3 @@ mvn liquibase:update -Ppostgres -Ddb.url=jdbc:postgresql://localhost:5432/db71u
 
 cd /liquibase/reporting/UVMS-ReportingModule-DB-master/LIQUIBASE
 mvn liquibase:update -Ppostgres -Ddb.url=jdbc:postgresql://localhost:5432/db71u
-
-cd /liquibase/usm/USM-master/LIQUIBASE
-mvn liquibase:update -Ddb.url=jdbc:postgresql://localhost:5432/db71u -Ddb.user=usm -Ddb.passwd=usm

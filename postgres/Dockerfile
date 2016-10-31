@@ -21,9 +21,6 @@ RUN mkdir -p /liquibase/config \
     && mkdir -p /liquibase/reporting \
     && mkdir -p /liquibase/usm
 
-COPY setup.sql /docker-entrypoint-initdb.d/
-COPY updateDb.sh /docker-entrypoint-initdb.d/
-
 # Asset
 ADD https://github.com/UnionVMS/UVMS-AssetModule-DB/archive/swe-dev.zip /liquibase/asset
 RUN unzip -q /liquibase/asset/swe-dev.zip -d /liquibase/asset
@@ -66,9 +63,13 @@ RUN unzip -q /liquibase/usm/master.zip -d /liquibase/usm
 
 COPY usm/pom.xml /liquibase/usm/USM-master/database/liquibase/
 COPY usm/user.sql /liquibase/usm/USM-master/database/liquibase/changelog/v0.1/boot/
-COPY usm/USER_T.CSV /liquibase/usm/USM-master/database/liquibase/test/csv/
+COPY usm/USER_T.CSV /liquibase/usm/USM-master/database/liquibase/test/csv/USER_T.csv
+
+COPY setup.sql /docker-entrypoint-initdb.d/
+COPY updateDb.sh /docker-entrypoint-initdb.d/
 
 #RUN ls -l /docker-entrypoint-initdb.d
+RUN ls -l /liquibase/usm/USM-master/database/liquibase/test/csv/
 
 VOLUME ["/docker-entrypoint-initdb.d"]
 
