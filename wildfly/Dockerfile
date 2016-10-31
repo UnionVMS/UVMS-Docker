@@ -31,6 +31,10 @@ COPY standalone-uvms.xml $JBOSS_HOME/standalone/configuration/
 COPY app-roles.properties $JBOSS_HOME/standalone/configuration/
 COPY client.truststore $JBOSS_HOME/standalone/configuration/
 COPY server.keystore $JBOSS_HOME/standalone/configuration/
+COPY application-roles.properties $JBOSS_HOME/standalone/configuration/
+COPY application-users.properties $JBOSS_HOME/standalone/configuration/
+COPY mgmt-groups.properties $JBOSS_HOME/standalone/configuration/
+COPY mgmt-users.properties $JBOSS_HOME/standalone/configuration/
 
 # DB Module
 RUN curl -o $DEPLOYMENTS/config-dbaccess-module.ear "$NEXUS?g=eu.europa.ec.fisheries.uvms.config&a=config-dbaccess-module&v=LATEST&r=public&e=ear"
@@ -54,6 +58,17 @@ RUN curl -o $DEPLOYMENTS/spatial-module.ear "$NEXUS?g=eu.europa.ec.fisheries.uvm
 RUN curl -o $DEPLOYMENTS/reporting-module.ear "$NEXUS?g=eu.europa.ec.fisheries.uvms.reporting&a=deploy&v=LATEST&r=public&e=ear"
 RUN curl -o $DEPLOYMENTS/user-module.ear "$NEXUS?g=eu.europa.ec.fisheries.uvms.user&a=user-module&v=LATEST&r=public&e=ear"
 
+# Proxies
+RUN curl -o $DEPLOYMENTS/asset-hav-cache-proxy.ear "$NEXUS?g=se.havochvatten.vessel.proxy.cache&a=hav-vessel-proxy-cache-module&v=LATEST&r=public&e=ear"
+#RUN curl -o $DEPLOYMENTS/mobileterminal-national-proxy.ear "$NEXUS?g=eu.europa.ec.fisheries.uvms.proxy.mobileterminal&a=national-proxy&v=LATEST&r=public&e=ear"
+
+# Plugins
+RUN curl -o $DEPLOYMENTS/plugin-inmarsat.ear "$NEXUS?g=eu.europa.ec.fisheries.uvms.plugins.inmarsat&a=twostage-module&v=LATEST&r=public&e=ear"
+RUN curl -o $DEPLOYMENTS/plugin-naf.ear "$NEXUS?g=eu.europa.ec.fisheries.uvms.plugins&a=naf-module&v=LATEST&r=public&e=ear"
+RUN curl -o $DEPLOYMENTS/plugin-flux.ear "$NEXUS?g=eu.europa.ec.fisheries.uvms.plugins&a=flux-module&v=LATEST&r=public&e=ear"
+RUN curl -o $DEPLOYMENTS/plugin-sweagencyemail.ear "$NEXUS?g=eu.europa.ec.fisheries.uvms.plugins&a=sweagencyemail-module&v=LATEST&r=public&e=ear"
+RUN curl -o $DEPLOYMENTS/plugin-iridium.ear "$NEXUS?g=eu.europa.ec.fisheries.uvms.plugins.iridium&a=siriusone-module&v=LATEST&r=public&e=ear"
+
 # Frontend
 RUN curl -o $DEPLOYMENTS/unionvms-web.war "$NEXUS?g=eu.europa.ec.fisheries.uvms&a=unionvms-web&v=LATEST&r=public&e=war"
 
@@ -70,8 +85,6 @@ USER jboss
 
 # Expose stuff to outside world
 EXPOSE 8787
-VOLUME ["/app/logs”, “/opt/jboss/wildfly/standalone”]
+VOLUME ["/app/logs", "/opt/jboss/wildfly/standalone"]
 
-# Create admin user
-RUN /opt/jboss/wildfly/bin/add-user.sh admin wildfly --silent
 CMD ["/opt/jboss/wildfly/bin/standalone.sh", "-c", "standalone-uvms.xml", "-b", "0.0.0.0", "-bmanagement", "0.0.0.0", "--debug"]
