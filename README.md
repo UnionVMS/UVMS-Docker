@@ -22,6 +22,15 @@ Second time
 * Run start.bat
 * When done, run stop.bat
 
+### Accessing stuff
+
+| Thing      | Host      | Port | Username      | Password | Access with | Access how                        |
+| ---------- | --------- | ---- | ------------- | -------- | ----------- | --------------------------------- |
+| Wildfly    | localhost | 9990 | admin         | admin    | Browser     | http://localhost:9990             |
+| ActiveMQ   | localhost | 8161 | admin         | admin    | Browser     | http://localhost:8161             |
+| UVMS       | localhost | 8080 | vms_admin_com | password | Browser     | http://localhost:8080/unionvms    |
+| PostgreSQL | localhost | 5433 | postgres      | postgres | PgAdmin     | See https://www.pgadmin.org/docs/ |
+
 ## The involved way
 
 On Windows:
