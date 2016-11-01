@@ -1,3 +1,4 @@
+if not exist "C:\app\logs" mkdir C:\app\logs
 docker stop wildfly
 docker logs wildfly > c:\app\logs\wildfly.log
 docker cp wildfly:/app/logs c:\app\logs\modules
