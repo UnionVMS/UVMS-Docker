@@ -1,7 +1,7 @@
 docker stop wildfly
-docker logs wildfly > /app/logs/wildfly.log
-docker cp wildfly:/app/logs c:\app/logs/modules
+docker logs wildfly > c:\app\logs\wildfly.log
+docker cp wildfly:/app/logs c:\app\logs\modules
 docker stop activemq
-docker logs activemq > /app/logs/activemq.log
+docker logs activemq > c:\app\logs\activemq.log
 docker stop postgres
-docker logs postgres > /app/logs/postgres.log
+docker logs postgres > c:\app\logs\postgres.log

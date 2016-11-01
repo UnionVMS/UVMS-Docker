@@ -1,4 +1,5 @@
+#!/bin/sh
 docker start activemq
 docker start postgres
-TIMEOUT 30
+sleep 30
 docker start wildfly
