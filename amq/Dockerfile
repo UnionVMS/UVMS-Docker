@@ -1,5 +1,5 @@
 FROM jboss/base-jdk:8
-ENV ACTIVEMQ_VERSION 5.13.2
+ARG ACTIVEMQ_VERSION=5.13.2
 ENV ACTIVEMQ_HOME /opt/jboss/activemq
 
 RUN cd $HOME \

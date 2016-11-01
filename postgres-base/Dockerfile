@@ -2,7 +2,6 @@ FROM mdillon/postgis:9.3
 
 ENV GITHUB https://github.com/UnionVMS
 ENV TARGET target/liquibase/migrate.sql
-ENV LIQUIBASE liquibase:updateSQL -f pom.xml -Ppostgres -Ddb.url=offline:postgresql?version=9.3&outputLiquibaseSql=true
 
 RUN apt-get update
 RUN apt-get install -y unzip

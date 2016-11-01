@@ -1,6 +1,6 @@
 FROM uvms/postgres:9.3
 
-ENV VERSION 2.1.1
+ARG VERSION=2.1.1
 
 # Copy step is important, uvms/postgres runs a script that runs maven in /liquibase/MODULE for all but USM.
 # USM liquibase should be located in /liquibase/usm/database/liquibase/
