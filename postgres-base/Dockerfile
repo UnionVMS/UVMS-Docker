@@ -23,6 +23,9 @@ RUN mkdir -p /liquibase/config \
     && mkdir -p /liquibase/usm
 
 COPY setup.sql /docker-entrypoint-initdb.d/
+COPY updateDb.sh /docker-entrypoint-initdb.d/
+
+RUN echo "max_prepared_transactions = 100" >> $PGDATA/postgresql.conf
 
 VOLUME ["/docker-entrypoint-initdb.d"]
 
