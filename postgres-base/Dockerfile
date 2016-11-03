@@ -1,7 +1,6 @@
 FROM mdillon/postgis:9.3
 
 ENV GITHUB https://github.com/UnionVMS
-ENV TARGET target/liquibase/migrate.sql
 
 RUN apt-get update
 RUN apt-get install -y unzip
