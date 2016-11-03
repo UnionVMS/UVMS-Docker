@@ -33,7 +33,7 @@ Second time
 
 ## The involved way
 
-On Windows:
+On Windows 10:
 
 * Download Docker from https://download.docker.com/win/stable/InstallDocker.msi
 * Install Docker and allow access to Hyper-V
