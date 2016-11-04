@@ -1,8 +1,10 @@
 These containers downloads and setups a complete Union-VMS system, using the latest available binaries, including snapshots, from the nexus at nexus.focus.fish. The binaries are downloaded at build time, meaning that if newer binaries are made available, a rebuild will be required.
 
-# Build & Run
+# Build & Run 
 
 ## Nightlies
+
+[![Build Status](https://travis-ci.org/UnionVMS/UVMS-Docker.svg?branch=master)](https://travis-ci.org/UnionVMS/UVMS-Docker)
 
 Nightly builds are currently not available, however as soon as the guys at Travis-CI activates it, there will be new uvms/wildfly-full and uvms/postgres-full available every night. If you want to check out the build, have a look at https://travis-ci.org/UnionVMS/UVMS-Docker
 
