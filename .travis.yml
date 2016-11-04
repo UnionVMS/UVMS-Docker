@@ -4,7 +4,7 @@ services:
   - docker
 
 script:
-  - docker build -t uvms/wildfly-full wildfly
+  - docker build -t uvms/wildfly-full --no-cache wildfly
 
 after_success:
   - docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD";
