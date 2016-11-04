@@ -7,7 +7,7 @@ ENV POSTGIS_VERSION 1.5.3
 ENV POSTGRES_VERSION 9.3-1102-jdbc4
 ENV ACTIVEMQ_VERSION 5.13.2
 
-ENV NEXUS http://46.21.110.250:8081/nexus/service/local/artifact/maven/content
+ENV NEXUS http://nexus.focus.fish/nexus/service/local/artifact/maven/content
 ENV HIBERNATE_MODULE $JBOSS_HOME/modules/system/layers/base/org/hibernate/main
 ENV POSTGRES_MODULE $JBOSS_HOME/modules/org/postgresql/main
 ENV DEPLOYMENTS $JBOSS_HOME/standalone/deployments
