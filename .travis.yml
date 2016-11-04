@@ -3,11 +3,8 @@ sudo: required
 services:
   - docker
 
-env:
-  - TIME=time
-
 script:
-  - docker build -t uvms/wildfly-full:$TIME --no-cache wildfly
+  - travis-build.sh
 
 after_success:
   - docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD";
