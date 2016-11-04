@@ -2,6 +2,12 @@ These containers downloads and setups a complete Union-VMS system, using the lat
 
 # Build & Run
 
+## Nightlies
+
+Nightly builds are currently not available, however as soon as the guys at Travis-CI activates it, there will be new uvms/wildfly-full and uvms/postgres-full available every night. If you want to check out the build, have a look at https://travis-ci.org/UnionVMS/UVMS-Docker
+
+Builds are also triggered on commit to this repository.
+
 ## The simple way
 
 On Windows 10:

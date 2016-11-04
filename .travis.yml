@@ -4,14 +4,14 @@ services:
   - docker
 
 env:
-  - TAG=uvms/wildfly:8.2.0 TAG_LATEST=uvms/wildfly IMAGE=wildfly-base
-  - TAG=uvms/postgres:9.3 TAG_LATEST=uvms/postgres IMAGE=postgres-base
-  - TAG=uvms/activemq:5.13.2 TAG_LATEST=uvms/activemq IMAGE=amq
-  - TAG=uvms/wildfly-full:$TRAVIS_BUILD_NUMBER TAG_LATEST=uvms/wildfly-full IMAGE=wildfly
-  - TAG=uvms/postgres-full:$TRAVIS_BUILD_NUMBER TAG_LATEST=uvms/postgres-full IMAGE=postgres
+  - TAG=uvms/wildfly:8.2.0 TAG_LATEST=uvms/wildfly:latest IMAGE=wildfly-base
+  - TAG=uvms/postgres:9.3 TAG_LATEST=uvms/postgres:latest IMAGE=postgres-base
+  - TAG=uvms/activemq:5.13.2 TAG_LATEST=uvms/activemq:latest IMAGE=amq
+  - TAG=uvms/wildfly-full:$TRAVIS_BUILD_NUMBER TAG_LATEST=uvms/wildfly-full:latest IMAGE=wildfly
+  - TAG=uvms/postgres-full:$TRAVIS_BUILD_NUMBER TAG_LATEST=uvms/postgres-full:latest IMAGE=postgres
 
 script:
-  - docker build -t $TAG --no-cache $IMAGE
+  - docker build -t $TAG -t $TAG_LATEST --no-cache $IMAGE
 
 after_success:
   - docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD";
