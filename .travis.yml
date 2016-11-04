@@ -3,10 +3,17 @@ sudo: required
 services:
   - docker
 
+env:
+  - TAG=uvms/wildfly:8.2.0 TAG_LATEST=uvms/wildfly IMAGE=wildfly-base
+  - TAG=uvms/postgres:9.3 TAG_LATEST=uvms/postgres IMAGE=postgres-base
+  - TAG=uvms/activemq:5.13.2 TAG_LATEST=uvms/activemq IMAGE=amq
+  - TAG=uvms/wildfly-full:$TRAVIS_JOB_ID TAG_LATEST=uvms/wildfly-full IMAGE=wildfly
+  - TAG=uvms/postgres-full:$TRAVIS_JOB_ID TAG_LATEST=uvms/postgres-full IMAGE=postgres
+
 script:
-  - docker build -t uvms/wildfly-full:$TRAVIS_JOB_NUMBER --no-cache wildfly
+  - docker build -t $TAG --no-cache $IMAGE
 
 after_success:
   - docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD";
-    docker push uvms/wildfly-full:$TRAVIS_JOB_NUMBER;
-    docker push uvms/wildfly-full;
+    docker push $TAG;
+    docker push $TAG_LATEST;
