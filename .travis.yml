@@ -4,9 +4,9 @@ services:
   - docker
 
 script:
-  - travis-build.sh
+  - docker build -t uvms/wildfly-full:$TRAVIS_JOB_NUMBER --no-cache wildfly
 
 after_success:
   - docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD";
-    docker push uvms/wildfly-full:$TIME;
+    docker push uvms/wildfly-full:$TRAVIS_JOB_NUMBER;
     docker push uvms/wildfly-full;
