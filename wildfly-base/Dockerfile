@@ -39,8 +39,9 @@ COPY mgmt-users.properties $JBOSS_HOME/standalone/configuration/
 # Create log directory
 USER root
 RUN mkdir -p /app/logs
-run chown jboss /app/logs
+RUN chown jboss /app/logs
 USER jboss
+RUN mkdir -p /app/logs/twostage/poll
 
 # Expose stuff to outside world
 EXPOSE 8787
