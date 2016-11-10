@@ -16,6 +16,7 @@ On Windows 10:
 
 * Download Docker from https://download.docker.com/win/stable/InstallDocker.msi
 * Install Docker and allow access to Hyper-V
+* Share your C-drive with Docker: https://docs.docker.com/docker-for-windows/#shared-drives (For volume mounting, access to log files)
 * In the task bar, find the Docker icon and right click it
 * Select Open Kitematic and follow the instructions
 
