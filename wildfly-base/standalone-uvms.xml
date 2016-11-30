@@ -173,7 +173,7 @@
                         <password>sa</password>
                     </security>
                 </datasource>
-                <datasource jta="true" jndi-name="java:jboss/datasources/uvms_audit" pool-name="uvms_audit" enabled="true" use-ccm="true">
+                <datasource jta="true" jndi-name="java:/jdbc/uvms_audit" pool-name="jdbc/uvms_audit" enabled="true" use-ccm="true">
                     <connection-url>jdbc:postgresql://postgres:5432/db71u</connection-url>
                     <driver-class>org.postgresql.Driver</driver-class>
                     <driver>postgresql</driver>
@@ -476,6 +476,20 @@
                     </config-property>
                     <connection-definitions>
                         <connection-definition class-name="org.apache.activemq.ra.ActiveMQManagedConnectionFactory" jndi-name="java:/ConnectionFactory" enabled="true" pool-name="ConnectionFactory">
+                            <xa-pool>
+                                <min-pool-size>1</min-pool-size>
+                                <max-pool-size>20</max-pool-size>
+                                <prefill>false</prefill>
+                                <is-same-rm-override>false</is-same-rm-override>
+                            </xa-pool>
+                            <recovery>
+                                <recover-credential>
+                                    <user-name>defaultUser</user-name>
+                                    <password>defaultPassword</password>
+                                </recover-credential>
+                            </recovery>
+                        </connection-definition>
+                        <connection-definition class-name="org.apache.activemq.ra.ActiveMQManagedConnectionFactory" jndi-name="ConnectionFactory" enabled="true" pool-name="ConnectionFactory">
                             <xa-pool>
                                 <min-pool-size>1</min-pool-size>
                                 <max-pool-size>20</max-pool-size>
