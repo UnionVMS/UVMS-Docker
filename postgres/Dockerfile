@@ -14,9 +14,9 @@ RUN unzip -q /liquibase/config/swe-dev.zip -d /liquibase/config
 RUN cp -r /liquibase/config/UVMS-ConfigModule-DB-swe-dev/* /liquibase/config/
 
 # Audit
-ADD $GITHUB/UVMS-AuditModule-DB/archive/swe-dev.zip /liquibase/audit
-RUN unzip -q /liquibase/audit/swe-dev.zip -d /liquibase/audit
-RUN cp -r /liquibase/audit/UVMS-AuditModule-DB-swe-dev/* /liquibase/audit/
+ADD $GITHUB/UVMS-AuditModule-DB/archive/dev.zip /liquibase/audit
+RUN unzip -q /liquibase/audit/dev.zip -d /liquibase/audit
+RUN cp -r /liquibase/audit/UVMS-AuditModule-DB-dev/* /liquibase/audit/
 
 # Exchange
 ADD $GITHUB/UVMS-ExchangeModule-DB/archive/swe-dev.zip /liquibase/exchange
