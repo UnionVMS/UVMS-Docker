@@ -219,7 +219,7 @@
                         <password>uvms</password>
                     </security>
                 </datasource>
-                <datasource jta="true" jndi-name="java:jboss/datasources/uvms_exchange" pool-name="uvms_exchange" enabled="true" use-ccm="true">
+                <datasource jta="true" jndi-name="java:/jdbc/uvms_exchange" pool-name="uvms_exchange" enabled="true" use-ccm="true">
                     <connection-url>jdbc:postgresql://postgres:5432/db71u</connection-url>
                     <driver-class>org.postgresql.Driver</driver-class>
                     <driver>postgresql</driver>
@@ -228,7 +228,7 @@
                         <password>exchange</password>
                     </security>
                 </datasource>
-                <datasource jta="true" jndi-name="java:jboss/datasources/uvms_rules" pool-name="uvms_rules" enabled="true" use-ccm="true">
+                <datasource jta="true" jndi-name="java:/jdbc/uvms_rules" pool-name="jdbc/uvms_rules" enabled="true" use-ccm="true">
                     <connection-url>jdbc:postgresql://postgres:5432/db71u</connection-url>
                     <driver-class>org.postgresql.Driver</driver-class>
                     <driver>postgresql</driver>

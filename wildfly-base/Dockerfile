@@ -43,6 +43,9 @@ RUN chown jboss /app/logs
 USER jboss
 RUN mkdir -p /app/logs/twostage/poll
 
+# Hibernate Search Index dirs
+RUN mkdir -p /opt/jboss/wildfly/standalone/deployments/hibernatesearch/eu.europa.ec.fisheries.uvms.entity.model.AssetHistory
+
 # Expose stuff to outside world
 EXPOSE 8787
 VOLUME ["/app/logs", "/opt/jboss/wildfly/standalone/log"]
