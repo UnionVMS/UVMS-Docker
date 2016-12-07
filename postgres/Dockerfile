@@ -4,14 +4,14 @@ FROM uvms/postgres:9.3
 # USM liquibase should be located in /liquibase/usm/database/liquibase/
 
 # Asset
-ADD $GITHUB/UVMS-AssetModule-DB/archive/swe-dev.zip /liquibase/asset
-RUN unzip -q /liquibase/asset/swe-dev.zip -d /liquibase/asset
-RUN cp -r /liquibase/asset/UVMS-AssetModule-DB-swe-dev/* /liquibase/asset/
+ADD $GITHUB/UVMS-AssetModule-DB/archive/dev.zip /liquibase/asset
+RUN unzip -q /liquibase/asset/dev.zip -d /liquibase/asset
+RUN cp -r /liquibase/asset/UVMS-AssetModule-DB-dev/* /liquibase/asset/
 
 # Config
-ADD $GITHUB/UVMS-ConfigModule-DB/archive/swe-dev.zip /liquibase/config
-RUN unzip -q /liquibase/config/swe-dev.zip -d /liquibase/config
-RUN cp -r /liquibase/config/UVMS-ConfigModule-DB-swe-dev/* /liquibase/config/
+ADD $GITHUB/UVMS-ConfigModule-DB/archive/dev.zip /liquibase/config
+RUN unzip -q /liquibase/config/dev.zip -d /liquibase/config
+RUN cp -r /liquibase/config/UVMS-ConfigModule-DB-dev/* /liquibase/config/
 
 # Audit
 ADD $GITHUB/UVMS-AuditModule-DB/archive/dev.zip /liquibase/audit
@@ -19,9 +19,9 @@ RUN unzip -q /liquibase/audit/dev.zip -d /liquibase/audit
 RUN cp -r /liquibase/audit/UVMS-AuditModule-DB-dev/* /liquibase/audit/
 
 # Exchange
-ADD $GITHUB/UVMS-ExchangeModule-DB/archive/swe-dev.zip /liquibase/exchange
-RUN unzip -q /liquibase/exchange/swe-dev.zip -d /liquibase/exchange
-RUN cp -r /liquibase/exchange/UVMS-ExchangeModule-DB-swe-dev/* /liquibase/exchange/
+ADD $GITHUB/UVMS-ExchangeModule-DB/archive/dev.zip /liquibase/exchange
+RUN unzip -q /liquibase/exchange/dev.zip -d /liquibase/exchange
+RUN cp -r /liquibase/exchange/UVMS-ExchangeModule-DB-dev/* /liquibase/exchange/
 
 # Movement
 ADD $GITHUB/UVMS-MovementModule-DB/archive/swe-dev.zip /liquibase/movement
@@ -29,14 +29,14 @@ RUN unzip -q /liquibase/movement/swe-dev.zip -d /liquibase/movement
 RUN cp -r /liquibase/movement/UVMS-MovementModule-DB-swe-dev/* /liquibase/movement/
 
 # Mobile Terminal
-ADD $GITHUB/UVMS-MobileTerminalModule-DB/archive/swe-dev.zip /liquibase/mobterm
-RUN unzip -q /liquibase/mobterm/swe-dev.zip -d /liquibase/mobterm
-RUN cp -r /liquibase/mobterm/UVMS-MobileTerminalModule-DB-swe-dev/* /liquibase/mobterm/
+ADD $GITHUB/UVMS-MobileTerminalModule-DB/archive/dev.zip /liquibase/mobterm
+RUN unzip -q /liquibase/mobterm/dev.zip -d /liquibase/mobterm
+RUN cp -r /liquibase/mobterm/UVMS-MobileTerminalModule-DB-dev/* /liquibase/mobterm/
 
 # Rules
-ADD $GITHUB/UVMS-RulesModule-DB/archive/swe-dev.zip /liquibase/rules
-RUN unzip -q /liquibase/rules/swe-dev.zip -d /liquibase/rules
-RUN cp -r /liquibase/rules/UVMS-RulesModule-DB-swe-dev/* /liquibase/rules/
+ADD $GITHUB/UVMS-RulesModule-DB/archive/dev.zip /liquibase/rules
+RUN unzip -q /liquibase/rules/dev.zip -d /liquibase/rules
+RUN cp -r /liquibase/rules/UVMS-RulesModule-DB-dev/* /liquibase/rules/
 
 # Spatial
 ADD $GITHUB/UVMS-SpatialModule-DB/archive/master.zip /liquibase/spatial
