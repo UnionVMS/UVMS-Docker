@@ -24,9 +24,9 @@ RUN unzip -q /liquibase/exchange/dev.zip -d /liquibase/exchange
 RUN cp -r /liquibase/exchange/UVMS-ExchangeModule-DB-dev/* /liquibase/exchange/
 
 # Movement
-ADD $GITHUB/UVMS-MovementModule-DB/archive/swe-dev.zip /liquibase/movement
-RUN unzip -q /liquibase/movement/swe-dev.zip -d /liquibase/movement
-RUN cp -r /liquibase/movement/UVMS-MovementModule-DB-swe-dev/* /liquibase/movement/
+ADD $GITHUB/UVMS-MovementModule-DB/archive/dev.zip /liquibase/movement
+RUN unzip -q /liquibase/movement/dev.zip -d /liquibase/movement
+RUN cp -r /liquibase/movement/UVMS-MovementModule-DB-dev/* /liquibase/movement/
 
 # Mobile Terminal
 ADD $GITHUB/UVMS-MobileTerminalModule-DB/archive/dev.zip /liquibase/mobterm
