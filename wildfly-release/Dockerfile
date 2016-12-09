@@ -24,17 +24,6 @@ RUN curl -O -J "$NEXUS?g=eu.europa.ec.fisheries.uvms.spatial&a=deploy-spatial-po
 RUN curl -O -J "$NEXUS?g=eu.europa.ec.fisheries.uvms.reporting&a=deploy&v=RELEASE&r=public&e=ear"
 RUN curl -O -J "$NEXUS?g=eu.europa.ec.fisheries.uvms.user&a=user-module&v=RELEASE&r=public&e=ear"
 
-# Proxies
-RUN curl -O -J "$NEXUS?g=se.havochvatten.vessel.proxy.cache&a=hav-vessel-proxy-cache-module&v=RELEASE&r=public&e=ear"
-#RUN curl -O -J "$NEXUS?g=eu.europa.ec.fisheries.uvms.proxy.mobileterminal&a=national-proxy&v=RELEASE&r=public&e=ear"
-
-# Plugins
-RUN curl -O -J "$NEXUS?g=eu.europa.ec.fisheries.uvms.plugins.inmarsat&a=twostage-module&v=RELEASE&r=public&e=ear"
-RUN curl -O -J "$NEXUS?g=eu.europa.ec.fisheries.uvms.plugins&a=naf-module&v=RELEASE&r=public&e=ear"
-RUN curl -O -J "$NEXUS?g=eu.europa.ec.fisheries.uvms.plugins&a=flux-module&v=RELEASE&r=public&e=ear"
-RUN curl -O -J "$NEXUS?g=eu.europa.ec.fisheries.uvms.plugins&a=sweagencyemail-module&v=RELEASE&r=public&e=ear"
-RUN curl -O -J "$NEXUS?g=eu.europa.ec.fisheries.uvms.plugins.iridium&a=siriusone-module&v=RELEASE&r=public&e=ear"
-
 # Frontend
 RUN curl -O -J "$NEXUS?g=eu.europa.ec.fisheries.uvms&a=unionvms-web&v=RELEASE&r=public&e=war"
 
