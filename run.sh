@@ -1,4 +1,5 @@
 #!/bin/sh
+docker stop wildfly activemq postgres
 docker rm wildfly activemq postgres
 docker network rm uvms
 docker network create uvms
