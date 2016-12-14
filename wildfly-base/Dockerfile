@@ -11,6 +11,7 @@ ENV NEXUS http://nexus.focus.fish/nexus/service/local/artifact/maven/content
 ENV HIBERNATE_MODULE $JBOSS_HOME/modules/system/layers/base/org/hibernate/main
 ENV POSTGRES_MODULE $JBOSS_HOME/modules/org/postgresql/main
 ENV DEPLOYMENTS $JBOSS_HOME/standalone/deployments
+ENV AUTO_DEPLOYMENTS $JBOSS_HOME/standalone/auto
 
 # PostGis
 COPY hibernate/module.xml $HIBERNATE_MODULE
@@ -23,7 +24,8 @@ RUN curl -o $POSTGRES_MODULE/postgis-jdbc-$POSTGIS_VERSION.jar "$NEXUS?g=org.pos
 RUN curl -o $POSTGRES_MODULE/postgresql-$POSTGRES_VERSION.jar "http://central.maven.org/maven2/org/postgresql/postgresql/$POSTGRES_VERSION/postgresql-$POSTGRES_VERSION.jar"
 
 # Active MQ
-RUN curl -o $DEPLOYMENTS/activemq-rar.rar "$NEXUS?g=org.apache.activemq&a=activemq-rar&v=$ACTIVEMQ_VERSION&r=public&e=rar"
+RUN mkdir -p /opt/jboss/wildfly/standalone/auto
+RUN curl -o $AUTO_DEPLOYMENTS/activemq-rar.rar "$NEXUS?g=org.apache.activemq&a=activemq-rar&v=$ACTIVEMQ_VERSION&r=public&e=rar"
 
 # Standalone config
 COPY standalone.conf $JBOSS_HOME/bin/
@@ -45,6 +47,7 @@ RUN mkdir -p /app/logs/twostage/poll
 
 # Hibernate Search Index dirs
 RUN mkdir -p /opt/jboss/wildfly/standalone/deployments/hibernatesearch/eu.europa.ec.fisheries.uvms.entity.model.AssetHistory
+
 
 # Expose stuff to outside world
 EXPOSE 8787
