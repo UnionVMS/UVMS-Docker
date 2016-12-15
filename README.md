@@ -22,14 +22,13 @@ On Windows 10:
 
 First time
 
-* Run build.bat
-* Run run.bat
-* When done, run stop.bat
+* Run docker-compose.exe up -d
+* When done run docker-compose stop
 
 Second time
 
-* Run start.bat
-* When done, run stop.bat
+* Run docker-compose start
+* When done, run docker-compose stop
 
 ### Accessing stuff
 
