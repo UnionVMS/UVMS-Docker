@@ -56,4 +56,4 @@ RUN mkdir -p /opt/jboss/wildfly/standalone/deployments/hibernatesearch/eu.europa
 EXPOSE 8787
 VOLUME ["/app/logs", "/opt/jboss/wildfly/standalone/log"]
 
-CMD ["/opt/jboss/start.sh", "180", "/opt/jboss/wildfly/bin/standalone.sh", "-c", "standalone-uvms.xml", "-b", "0.0.0.0", "-bmanagement", "0.0.0.0", "--debug"]
+CMD ["/opt/jboss/start.sh", "5", "/opt/jboss/wildfly/bin/standalone.sh", "-c", "standalone-uvms.xml", "-b", "0.0.0.0", "-bmanagement", "0.0.0.0", "--debug"]
