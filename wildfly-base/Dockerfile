@@ -38,14 +38,14 @@ COPY application-users.properties $JBOSS_HOME/standalone/configuration/
 COPY mgmt-groups.properties $JBOSS_HOME/standalone/configuration/
 COPY mgmt-users.properties $JBOSS_HOME/standalone/configuration/
 COPY start.sh /opt/jboss/
-RUN chmod 755 /opt/jboss/start.sh
 
-RUN ls -l /opt/jboss/
 
 # Create log directory
 USER root
 RUN mkdir -p /app/logs
 RUN chown jboss /app/logs
+RUN chmod 755 /opt/jboss/start.sh
+RUN ls -l /opt/jboss/
 USER jboss
 RUN mkdir -p /app/logs/twostage/poll
 
