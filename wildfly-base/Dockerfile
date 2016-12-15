@@ -37,6 +37,9 @@ COPY application-roles.properties $JBOSS_HOME/standalone/configuration/
 COPY application-users.properties $JBOSS_HOME/standalone/configuration/
 COPY mgmt-groups.properties $JBOSS_HOME/standalone/configuration/
 COPY mgmt-users.properties $JBOSS_HOME/standalone/configuration/
+COPY start.sh /opt/jboss/
+
+RUN ls -l $JBOSS_HOME
 
 # Create log directory
 USER root
@@ -48,9 +51,8 @@ RUN mkdir -p /app/logs/twostage/poll
 # Hibernate Search Index dirs
 RUN mkdir -p /opt/jboss/wildfly/standalone/deployments/hibernatesearch/eu.europa.ec.fisheries.uvms.entity.model.AssetHistory
 
-
 # Expose stuff to outside world
 EXPOSE 8787
 VOLUME ["/app/logs", "/opt/jboss/wildfly/standalone/log"]
 
-CMD ["/opt/jboss/wildfly/bin/standalone.sh", "-c", "standalone-uvms.xml", "-b", "0.0.0.0", "-bmanagement", "0.0.0.0", "--debug"]
+CMD ["/opt/jboss/start.sh", "5", "/opt/jboss/wildfly/bin/standalone.sh", "-c", "standalone-uvms.xml", "-b", "0.0.0.0", "-bmanagement", "0.0.0.0", "--debug"]
