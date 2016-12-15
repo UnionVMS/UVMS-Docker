@@ -1,2 +1,0 @@
-build.bat
-run.bat
