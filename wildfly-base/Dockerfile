@@ -44,6 +44,7 @@ COPY start.sh /opt/jboss/
 USER root
 RUN mkdir -p /app/logs
 RUN chown jboss /app/logs
+RUN chown jboss /opt/wildfly/standalone/log
 RUN chmod 755 /opt/jboss/start.sh
 RUN ls -l /opt/jboss/
 USER jboss
