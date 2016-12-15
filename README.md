@@ -2,6 +2,8 @@ These containers downloads and setups a complete Union-VMS system, using the lat
 
 # Build & Run 
 
+Remember to always run git pull in this repository before rebuilding!
+
 ## Nightlies
 
 [![Build Status](https://travis-ci.org/UnionVMS/UVMS-Docker.svg?branch=master)](https://travis-ci.org/UnionVMS/UVMS-Docker)
@@ -29,6 +31,20 @@ Second time
 
 * Run docker-compose start
 * When done, run docker-compose stop
+
+If you need to rebuild the containers, run docker-compose.exe up -d --build
+
+Please note that some modules will not be deployed on start since they require other modules to start first. To deploy the remaining modules, either:
+
+Run docker exec wildfly /opt/jboss/wildfly/bin/jboss-cli.sh --connect --command="/subsystem=deployment-scanner/scanner=default:write-attribute(name="auto-deploy-zipped",value=true)"
+
+OR
+
+* Go to http://localhost:9990/console/App.html#deployment-scanner
+* Select the deployment scanner named "default"
+* Click "Edit"
+* Mark the "Enabled" checkbox
+* Click "Save"
 
 ### Accessing stuff
 
