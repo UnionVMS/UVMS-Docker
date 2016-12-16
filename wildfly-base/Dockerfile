@@ -39,7 +39,7 @@ COPY mgmt-groups.properties $JBOSS_HOME/standalone/configuration/
 COPY mgmt-users.properties $JBOSS_HOME/standalone/configuration/
 COPY start.sh /opt/jboss/
 
-RUN mkdir -p opt/wildfly/standalone/log
+RUN mkdir -p /opt/wildfly/standalone/log
 
 # Create log directory
 USER root
