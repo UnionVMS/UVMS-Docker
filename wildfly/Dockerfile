@@ -16,7 +16,6 @@ RUN curl -O -J "$NEXUS?g=eu.europa.ec.fisheries.uvms.reporting&a=deploy&v=LATEST
 
 # Proxies
 RUN curl -O -J "$NEXUS?g=se.havochvatten.vessel.proxy.cache&a=hav-vessel-proxy-cache-module&v=LATEST&r=public&e=ear"
-#RUN curl -O -J "$NEXUS?g=eu.europa.ec.fisheries.uvms.proxy.mobileterminal&a=national-proxy&v=LATEST&r=public&e=ear"
 
 # Plugins
 RUN curl -O -J "$NEXUS?g=eu.europa.ec.fisheries.uvms.plugins.inmarsat&a=twostage-module&v=LATEST&r=public&e=ear"
@@ -24,9 +23,6 @@ RUN curl -O -J "$NEXUS?g=eu.europa.ec.fisheries.uvms.plugins&a=naf-module&v=LATE
 RUN curl -O -J "$NEXUS?g=eu.europa.ec.fisheries.uvms.plugins&a=flux-module&v=LATEST&r=public&e=ear"
 RUN curl -O -J "$NEXUS?g=eu.europa.ec.fisheries.uvms.plugins&a=sweagencyemail-module&v=LATEST&r=public&e=ear"
 RUN curl -O -J "$NEXUS?g=eu.europa.ec.fisheries.uvms.plugins.iridium&a=siriusone-module&v=LATEST&r=public&e=ear"
-
-
-WORKDIR $AUTO_DEPLOYMENTS
 
 # DB Module
 RUN curl -O -J "$NEXUS?g=eu.europa.ec.fisheries.uvms.config&a=config-dbaccess-module&v=LATEST&r=public&e=ear"

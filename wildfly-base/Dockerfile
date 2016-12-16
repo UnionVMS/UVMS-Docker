@@ -11,7 +11,6 @@ ENV NEXUS http://nexus.focus.fish/nexus/service/local/artifact/maven/content
 ENV HIBERNATE_MODULE $JBOSS_HOME/modules/system/layers/base/org/hibernate/main
 ENV POSTGRES_MODULE $JBOSS_HOME/modules/org/postgresql/main
 ENV DEPLOYMENTS $JBOSS_HOME/standalone/deployments
-ENV AUTO_DEPLOYMENTS $JBOSS_HOME/standalone/auto
 
 # PostGis
 COPY hibernate/module.xml $HIBERNATE_MODULE
@@ -24,8 +23,7 @@ RUN curl -o $POSTGRES_MODULE/postgis-jdbc-$POSTGIS_VERSION.jar "$NEXUS?g=org.pos
 RUN curl -o $POSTGRES_MODULE/postgresql-$POSTGRES_VERSION.jar "http://central.maven.org/maven2/org/postgresql/postgresql/$POSTGRES_VERSION/postgresql-$POSTGRES_VERSION.jar"
 
 # Active MQ
-RUN mkdir -p /opt/jboss/wildfly/standalone/auto
-RUN curl -o $AUTO_DEPLOYMENTS/activemq-rar.rar "$NEXUS?g=org.apache.activemq&a=activemq-rar&v=$ACTIVEMQ_VERSION&r=public&e=rar"
+RUN curl -o $DEPLOYMENTS/activemq-rar.rar "$NEXUS?g=org.apache.activemq&a=activemq-rar&v=$ACTIVEMQ_VERSION&r=public&e=rar"
 
 # Standalone config
 COPY standalone.conf $JBOSS_HOME/bin/
@@ -38,16 +36,16 @@ COPY application-users.properties $JBOSS_HOME/standalone/configuration/
 COPY mgmt-groups.properties $JBOSS_HOME/standalone/configuration/
 COPY mgmt-users.properties $JBOSS_HOME/standalone/configuration/
 COPY start.sh /opt/jboss/
-RUN chmod 755 /opt/jboss/start.sh
-
-RUN ls -l /opt/jboss/
 
 # Create log directory
 USER root
 RUN mkdir -p /app/logs
 RUN chown jboss /app/logs
+RUN chmod 755 /opt/jboss/start.sh
 USER jboss
 RUN mkdir -p /app/logs/twostage/poll
+
+RUN ls -l /opt/jboss/
 
 # Hibernate Search Index dirs
 RUN mkdir -p /opt/jboss/wildfly/standalone/deployments/hibernatesearch/eu.europa.ec.fisheries.uvms.entity.model.AssetHistory
