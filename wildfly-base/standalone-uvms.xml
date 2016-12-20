@@ -670,7 +670,7 @@
                                 UVMSAuditEvent
                             </config-property>
                         </admin-object>
-                        <admin-object class-name="org.apache.activemq.command.ActiveMQQueue" jndi-name="java:/jms/queue/UVMSMdrEvent" use-java-context="true" pool-name="UVMSAuditEvent">
+                        <admin-object class-name="org.apache.activemq.command.ActiveMQQueue" jndi-name="java:/jms/queue/UVMSMdrEvent" use-java-context="true" pool-name="UVMSMdrEvent">
                             <config-property name="PhysicalName">
                                 UVMSMdrEvent
                             </config-property>
