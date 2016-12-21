@@ -7,9 +7,6 @@ services:
      - "9990:9990"
      - "8787:8787"
      - "8080:8080"
-    volumes:
-     - c:/uvms/app/logs:/app/logs
-     - c:/uvms/wildfly:/opt/jboss/wildfly/standalone/log
     depends_on:
      - postgres
      - activemq
@@ -27,5 +24,3 @@ services:
     container_name: activemq
     ports:
      - "8161:8161"
-    volumes:
-     - c:/uvms/activemq:/opt/jboss/activemq/data

@@ -1,14 +1,14 @@
 FROM uvms/postgres:9.3
 
-ARG VERSION=2.1.1
+ARG VERSION=2.1.3
 
 # Copy step is important, uvms/postgres runs a script that runs maven in /liquibase/MODULE for all but USM.
 # USM liquibase should be located in /liquibase/usm/database/liquibase/
 
 # Asset
-ADD $GITHUB/UVMS-AssetModule-DB/archive/asset-dbaccess-$VERSION.zip /liquibase/asset
-RUN unzip -q /liquibase/asset/asset-dbaccess-$VERSION.zip -d /liquibase/asset
-RUN cp -r /liquibase/asset/UVMS-AssetModule-DB-asset-dbaccess-$VERSION/* /liquibase/asset/
+ADD $GITHUB/UVMS-AssetModule-DB/archive/asset-dbaccess-2.1.4.zip /liquibase/asset
+RUN unzip -q /liquibase/asset/asset-dbaccess-2.1.4.zip -d /liquibase/asset
+RUN cp -r /liquibase/asset/UVMS-AssetModule-DB-asset-dbaccess-2.1.4/* /liquibase/asset/
 
 # Config
 ADD $GITHUB/UVMS-ConfigModule-DB/archive/config-dbaccess-$VERSION.zip /liquibase/config
