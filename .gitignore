@@ -1,0 +1,5 @@
+*.iml
+target
+logging.properties
+changelog/
+.idea/
