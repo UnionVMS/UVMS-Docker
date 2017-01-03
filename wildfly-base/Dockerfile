@@ -19,11 +19,11 @@ RUN curl -o $HIBERNATE_MODULE/jts-$JTS_VERSION.jar "http://central.maven.org/mav
 
 RUN mkdir -p $JBOSS_HOME/modules/org/postgresql/main
 COPY postgres/module.xml $POSTGRES_MODULE
-RUN curl -o $POSTGRES_MODULE/postgis-jdbc-$POSTGIS_VERSION.jar "$NEXUS?g=org.postgis&a=postgis-jdbc&v=$POSTGIS_VERSION&r=public&e=jar"
+RUN curl -o $POSTGRES_MODULE/postgis-jdbc-$POSTGIS_VERSION.jar "https://www.aht-group.com/nexus/content/repositories/public/org/postgis/postgis-jdbc/$POSTGIS_VERSION/postgis-jdbc-$POSTGIS_VERSION.jar"
 RUN curl -o $POSTGRES_MODULE/postgresql-$POSTGRES_VERSION.jar "http://central.maven.org/maven2/org/postgresql/postgresql/$POSTGRES_VERSION/postgresql-$POSTGRES_VERSION.jar"
 
 # Active MQ
-RUN curl -o $DEPLOYMENTS/activemq-rar.rar "$NEXUS?g=org.apache.activemq&a=activemq-rar&v=$ACTIVEMQ_VERSION&r=public&e=rar"
+RUN curl -o $DEPLOYMENTS/activemq-rar.rar "https://repo1.maven.org/maven2/org/apache/activemq/activemq-rar/$ACTIVEMQ_VERSION/activemq-rar-$ACTIVEMQ_VERSION.rar"
 
 # Standalone config
 COPY standalone.conf $JBOSS_HOME/bin/
@@ -51,6 +51,12 @@ RUN ls -l /opt/jboss/
 
 # Hibernate Search Index dirs
 RUN mkdir -p /opt/jboss/wildfly/standalone/deployments/hibernatesearch/eu.europa.ec.fisheries.uvms.entity.model.AssetHistory
+
+USER root
+RUN curl -o /etc/yum.repos.d/epel-apache-maven.repo https://repos.fedorapeople.org/repos/dchen/apache-maven/epel-apache-maven.repo
+RUN yum install -y apache-maven
+COPY settings.xml /root/.m2/settings.xml
+USER jboss
 
 # Expose stuff to outside world
 EXPOSE 8787
