@@ -1,0 +1,213 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ Developed with the contribution of the European Commission - Directorate General for Maritime Affairs and Fisheries
+  ~ © European Union, 2015-2016.
+  ~
+  ~ This file is part of the Integrated Fisheries Data Management (IFDM) Suite. The IFDM Suite is free software: you can
+  ~ redistribute it and/or modify it under the terms of the GNU General Public License as published by the
+  ~ Free Software Foundation, either version 3 of the License, or any later version. The IFDM Suite is distributed in
+  ~ the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+  ~ FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more details. You should have received a
+  ~ copy of the GNU General Public License along with the IFDM Suite. If not, see <http://www.gnu.org/licenses/>.
+  -->
+
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>eu.europa.ec.fisheries.uvms</groupId>
+    <artifactId>uvms-docker-download</artifactId>
+    <version>1.0.0-SNAPSHOT</version>
+    <packaging>pom</packaging>
+
+    <properties>
+        <artifact.version>LATEST</artifact.version>
+    </properties>
+
+    <profiles>
+        <profile>
+            <id>release</id>
+            <properties>
+                <artifact.version>RELEASE</artifact.version>
+            </properties>
+        </profile>
+    </profiles>
+
+    <repositories>
+        <repository>
+            <id>focus-repo</id>
+            <name>Focus nexus repository</name>
+            <url>http://nexus.focus.fish/</url>
+        </repository>
+    </repositories>
+
+    <distributionManagement>
+        <repository>
+            <id>focus-releases</id>
+            <name>UnionVms Repository</name>
+            <url>http://nexus.focus.fish/nexus/content/repositories/releases/</url>
+        </repository>
+        <snapshotRepository>
+            <id>focus-snapshots</id>
+            <name>UnionVms Snapshot Repository</name>
+            <url>http://nexus.focus.fish/nexus/content/repositories/snapshots/</url>
+        </snapshotRepository>
+    </distributionManagement>
+
+    <dependencies>
+        <!-- frontend modules -->
+        <dependency>
+            <groupId>eu.europa.ec.fisheries.uvms</groupId>
+            <artifactId>unionvms-web</artifactId>
+            <type>war</type>
+            <version>${artifact.version}</version>
+        </dependency>
+
+        <!-- app modules -->
+        <dependency>
+            <groupId>eu.europa.ec.fisheries.uvms.asset</groupId>
+            <artifactId>asset-module</artifactId>
+            <type>ear</type>
+            <version>${artifact.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>eu.europa.ec.fisheries.uvms.audit</groupId>
+            <artifactId>audit-module</artifactId>
+            <type>ear</type>
+            <version>${artifact.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>eu.europa.ec.fisheries.uvms.config</groupId>
+            <artifactId>config-module</artifactId>
+            <type>ear</type>
+            <version>${artifact.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>eu.europa.ec.fisheries.uvms.exchange</groupId>
+            <artifactId>exchange-module</artifactId>
+            <type>ear</type>
+            <version>${artifact.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>eu.europa.ec.fisheries.uvms.mobileterminal</groupId>
+            <artifactId>mobileterminal-module</artifactId>
+            <type>ear</type>
+            <version>${artifact.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>eu.europa.ec.fisheries.uvms.movement</groupId>
+            <artifactId>movement-module</artifactId>
+            <type>ear</type>
+            <version>${artifact.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>eu.europa.ec.fisheries.uvms.rules</groupId>
+            <artifactId>rules-module</artifactId>
+            <type>ear</type>
+            <version>${artifact.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>eu.europa.ec.fisheries.uvms.spatial</groupId>
+            <artifactId>spatial-module-postgres</artifactId>
+            <type>ear</type>
+            <version>[0.0.0,)</version>
+        </dependency>
+        <dependency>
+            <groupId>eu.europa.ec.fisheries.uvms.reporting</groupId>
+            <artifactId>reporting-module</artifactId>
+            <type>ear</type>
+            <version>[0.0.0,)</version>
+        </dependency>
+        <dependency>
+            <groupId>eu.europa.ec.fisheries.uvms.user</groupId>
+            <artifactId>user-module</artifactId>
+            <type>ear</type>
+            <version>${artifact.version}</version>
+        </dependency>
+
+
+        <!-- db modules -->
+        <dependency>
+            <groupId>eu.europa.ec.fisheries.uvms.asset</groupId>
+            <artifactId>asset-dbaccess-module</artifactId>
+            <type>ear</type>
+            <version>${artifact.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>eu.europa.ec.fisheries.uvms.audit</groupId>
+            <artifactId>audit-dbaccess-module</artifactId>
+            <type>ear</type>
+            <version>${artifact.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>eu.europa.ec.fisheries.uvms.config</groupId>
+            <artifactId>config-dbaccess-module</artifactId>
+            <type>ear</type>
+            <version>${artifact.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>eu.europa.ec.fisheries.uvms.exchange</groupId>
+            <artifactId>exchange-dbaccess-module</artifactId>
+            <type>ear</type>
+            <version>${artifact.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>eu.europa.ec.fisheries.uvms.mobileterminal</groupId>
+            <artifactId>mobileterminal-dbaccess-module</artifactId>
+            <type>ear</type>
+            <version>${artifact.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>eu.europa.ec.fisheries.uvms.movement</groupId>
+            <artifactId>movement-dbaccess-module-postgres</artifactId>
+            <type>ear</type>
+            <version>${artifact.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>eu.europa.ec.fisheries.uvms.rules</groupId>
+            <artifactId>rules-dbaccess-module</artifactId>
+            <type>ear</type>
+            <version>${artifact.version}</version>
+        </dependency>
+
+
+        <!-- plugin modules -->
+        <dependency>
+            <groupId>eu.europa.ec.fisheries.uvms.plugins</groupId>
+            <artifactId>naf-module</artifactId>
+            <type>ear</type>
+            <version>${artifact.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>eu.europa.ec.fisheries.uvms.plugins</groupId>
+            <artifactId>sweagencyemail-module</artifactId>
+            <type>ear</type>
+            <version>${artifact.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>eu.europa.ec.fisheries.uvms.plugins</groupId>
+            <artifactId>flux-module</artifactId>
+            <type>ear</type>
+            <version>${artifact.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>eu.europa.ec.fisheries.uvms.plugins.inmarsat</groupId>
+            <artifactId>twostage-module</artifactId>
+            <type>ear</type>
+            <version>${artifact.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>eu.europa.ec.fisheries.uvms.plugins.iridium</groupId>
+            <artifactId>siriusone-module</artifactId>
+            <type>ear</type>
+            <version>${artifact.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>se.havochvatten.vessel.proxy.cache</groupId>
+            <artifactId>hav-vessel-proxy-cache-module</artifactId>
+            <type>ear</type>
+            <version>${artifact.version}</version>
+        </dependency>
+
+    </dependencies>
+
+</project>
