@@ -58,13 +58,13 @@ COPY usm/user.sql /liquibase/usm/database/liquibase/changelog/v0.1/boot/
 COPY usm/USER_T.CSV /liquibase/usm/database/liquibase/test/csv/USER_T.csv
 
 WORKDIR /liquibase
-RUN mvn dependency:resolve -f asset/LIQUIBASE/pom.xml
-RUN mvn dependency:resolve -f config/LIQUIBASE/pom.xml
-RUN mvn dependency:resolve -f audit/LIQUIBASE/pom.xml
-RUN mvn dependency:resolve -f exchange/LIQUIBASE/pom.xml
-RUN mvn dependency:resolve -f movement/LIQUIBASE/pom.xml
-RUN mvn dependency:resolve -f mobterm/LIQUIBASE/pom.xml
-RUN mvn dependency:resolve -f rules/LIQUIBASE/pom.xml
+RUN mvn dependency:resolve -f asset/LIQUIBASE/pom.xml -Ppostgres
+RUN mvn dependency:resolve -f config/LIQUIBASE/pom.xml -Ppostgres
+RUN mvn dependency:resolve -f audit/LIQUIBASE/pom.xml -Ppostgres
+RUN mvn dependency:resolve -f exchange/LIQUIBASE/pom.xml -Ppostgres
+RUN mvn dependency:resolve -f movement/LIQUIBASE/pom.xml -Ppostgres
+RUN mvn dependency:resolve -f mobterm/LIQUIBASE/pom.xml -Ppostgres
+RUN mvn dependency:resolve -f rules/LIQUIBASE/pom.xml -Ppostgres
 RUN mvn dependency:resolve -f reporting/LIQUIBASE/pom.xml
 RUN mvn dependency:resolve -f spatial/LIQUIBASE/pom.xml
 RUN mvn dependency:resolve -f usm/database/liquibase/pom.xml
