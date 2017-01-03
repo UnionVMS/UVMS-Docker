@@ -2,7 +2,7 @@ FROM uvms/wildfly:8.2.0
 
 COPY module-download-pom.xml /opt/jboss/
 USER root
-RUN mvn dependency:copy-dependencies -DoutputDirectory=$DEPLOYMENTS -f module-download-pom.xml
+RUN mvn dependency:copy-dependencies -DoutputDirectory=$DEPLOYMENTS -f module-download-pom.xml -q
 USER jboss
 
 USER root
