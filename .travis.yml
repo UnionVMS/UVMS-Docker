@@ -15,7 +15,7 @@ script:
 
 after_success:
   - docker login -u="$FOCUS_USERNAME" -p="$FOCUS_PASSWORD"; 
-    docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD";
+    docker login nexus.focus.fish:9081 -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD";
     docker push $TAG;
     docker push $TAG_LATEST;
     docker push $TAG_FOCUS;
