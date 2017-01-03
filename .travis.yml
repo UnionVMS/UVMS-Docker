@@ -11,7 +11,7 @@ env:
   - TAG=uvms/postgres-full:$TRAVIS_BUILD_NUMBER TAG_LATEST=uvms/postgres-full:latest TAG_FOCUS=nexus.focus.fish:9081/uvms/postgres-full:$TRAVIS_BUILD_NUMBER IMAGE=postgres
 
 script:
-  - docker build -t $TAG -t $TAG_LATEST --no-cache $IMAGE
+  - docker build -t $TAG -t $TAG_LATEST -t $TAG_FOCUS --no-cache $IMAGE
 
 after_success:
   - docker login nexus.focus.fish:9081 -u="$FOCUS_USERNAME" -p="$FOCUS_PASSWORD"; 
