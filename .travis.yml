@@ -4,14 +4,14 @@ services:
   - docker
 
 env:
-  - TAG=uvms/wildfly:8.2.0 TAG_LATEST=uvms/wildfly:latest TAG_FOCUS=nexus.focus.fish:9081/uvms/wildfly:8.2.0 IMAGE=wildfly-base
-  - TAG=uvms/postgres:9.3 TAG_LATEST=uvms/postgres:latest TAG_FOCUS=nexus.focus.fish:9081/uvms/postgres:9.3 IMAGE=postgres-base
-  - TAG=uvms/activemq:5.13.2 TAG_LATEST=uvms/activemq:latest TAG_FOCUS=nexus.focus.fish:9081/uvms/activemq:5.13.2 IMAGE=amq
-  - TAG=uvms/wildfly-full:$TRAVIS_BUILD_NUMBER TAG_LATEST=uvms/wildfly-full:latest TAG_FOCUS=nexus.focus.fish:9081/uvms/wildfly-full:$TRAVIS_BUILD_NUMBER IMAGE=wildfly
-  - TAG=uvms/postgres-full:$TRAVIS_BUILD_NUMBER TAG_LATEST=uvms/postgres-full:latest TAG_FOCUS=nexus.focus.fish:9081/uvms/postgres-full:$TRAVIS_BUILD_NUMBER IMAGE=postgres
+  - TAG=uvms/wildfly:8.2.0 TAG_LATEST=uvms/wildfly:latest TAG_FOCUS=nexus.focus.fish:9081/uvms/wildfly:8.2.0 TAG_FOCUS_LATEST=nexus.focus.fish:9081/uvms/wildfly:latest IMAGE=wildfly-base
+  - TAG=uvms/postgres:9.3 TAG_LATEST=uvms/postgres:latest TAG_FOCUS=nexus.focus.fish:9081/uvms/postgres:9.3 TAG_FOCUS_LATEST=nexus.focus.fish:9081/uvms/postgres:latest IMAGE=postgres-base
+  - TAG=uvms/activemq:5.13.2 TAG_LATEST=uvms/activemq:latest TAG_FOCUS=nexus.focus.fish:9081/uvms/activemq:5.13.2 TAG_FOCUS_LATEST=nexus.focus.fish:9081/uvms/activemq:latest IMAGE=amq
+  - TAG=uvms/wildfly-full:$TRAVIS_BUILD_NUMBER TAG_LATEST=uvms/wildfly-full:latest TAG_FOCUS=nexus.focus.fish:9081/uvms/wildfly-full:$TRAVIS_BUILD_NUMBER TAG_FOCUS_LATEST=nexus.focus.fish:9081/uvms/wildfly-full:latest IMAGE=wildfly
+  - TAG=uvms/postgres-full:$TRAVIS_BUILD_NUMBER TAG_LATEST=uvms/postgres-full:latest TAG_FOCUS=nexus.focus.fish:9081/uvms/postgres-full:$TRAVIS_BUILD_NUMBER TAG_FOCUS_LATEST=nexus.focus.fish:9081/uvms/postgres-full:latest IMAGE=postgres
 
 script:
-  - docker build -t $TAG -t $TAG_LATEST -t $TAG_FOCUS --no-cache $IMAGE
+  - docker build -t $TAG -t $TAG_LATEST -t $TAG_FOCUS -t $TAG_FOCUS_LATEST --no-cache $IMAGE
 
 after_success:
   - docker login nexus.focus.fish:9081 -u="$FOCUS_USERNAME" -p="$FOCUS_PASSWORD"; 
@@ -19,3 +19,4 @@ after_success:
     docker push $TAG;
     docker push $TAG_LATEST;
     docker push $TAG_FOCUS;
+    docker push $TAG_FOCUS_LATEST;
