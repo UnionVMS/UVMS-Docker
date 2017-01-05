@@ -98,13 +98,13 @@
         </dependency>
         <dependency>
             <groupId>eu.europa.ec.fisheries.uvms.spatial</groupId>
-            <artifactId>spatial-module-postgres</artifactId>
+            <artifactId>deploy-spatial-postgres</artifactId>
             <type>ear</type>
             <version>${artifact.version}</version>
         </dependency>
         <dependency>
             <groupId>eu.europa.ec.fisheries.uvms.reporting</groupId>
-            <artifactId>reporting-module</artifactId>
+            <artifactId>deploy</artifactId>
             <type>ear</type>
             <version>${artifact.version}</version>
         </dependency>
