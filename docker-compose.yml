@@ -16,7 +16,7 @@ services:
     links:
      - postgres
      - activemq
-    command: ["/opt/jboss/start.sh", "180", "/opt/jboss/wildfly/bin/standalone.sh", "-c", "standalone-uvms.xml", "-b", "0.0.0.0", "-bmanagement", "0.0.0.0", "--debug"]
+    command: ["/opt/jboss/start.sh", "/opt/jboss/wildfly/bin/standalone.sh", "-c", "standalone-uvms.xml", "-b", "0.0.0.0", "-bmanagement", "0.0.0.0", "--debug"]
   postgres:
     build: postgres
     container_name: postgres

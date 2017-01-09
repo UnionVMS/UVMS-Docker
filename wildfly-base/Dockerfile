@@ -11,6 +11,7 @@ ENV NEXUS http://nexus.focus.fish/nexus/service/local/artifact/maven/content
 ENV HIBERNATE_MODULE $JBOSS_HOME/modules/system/layers/base/org/hibernate/main
 ENV POSTGRES_MODULE $JBOSS_HOME/modules/org/postgresql/main
 ENV DEPLOYMENTS $JBOSS_HOME/standalone/deployments
+ENV PGPASSWORD=postgres
 
 # PostGis
 COPY hibernate/module.xml $HIBERNATE_MODULE
@@ -56,10 +57,11 @@ USER root
 RUN curl -o /etc/yum.repos.d/epel-apache-maven.repo https://repos.fedorapeople.org/repos/dchen/apache-maven/epel-apache-maven.repo
 RUN yum install -y apache-maven
 COPY settings.xml /root/.m2/settings.xml
+RUN yum install -y postgresql
 USER jboss
 
 # Expose stuff to outside world
 EXPOSE 8787
 VOLUME ["/app/logs", "/opt/jboss/wildfly/standalone/log"]
 
-CMD ["/opt/jboss/start.sh", "180", "/opt/jboss/wildfly/bin/standalone.sh", "-c", "standalone-uvms.xml", "-b", "0.0.0.0", "-bmanagement", "0.0.0.0", "--debug"]
+CMD ["/opt/jboss/start.sh", "/opt/jboss/wildfly/bin/standalone.sh", "-c", "standalone-uvms.xml", "-b", "0.0.0.0", "-bmanagement", "0.0.0.0", "--debug"]
