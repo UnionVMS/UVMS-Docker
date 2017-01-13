@@ -5,6 +5,7 @@ ENV GITHUB https://github.com/UnionVMS
 RUN apt-get update
 RUN apt-get install -y unzip
 RUN apt-get install -y maven
+RUN apt-get install -y git
 
 COPY settings.xml /root/.m2/settings.xml
 
