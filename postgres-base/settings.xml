@@ -3,9 +3,9 @@
           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
           xsi:schemaLocation="http://maven.apache.org/SETTINGS/1.0.0 http://maven.apache.org/xsd/settings-1.0.0.xsd">
 
-    <localRepository>/root/.m2/</localRepository>
-
-    <profiles>
+  <localRepository>/root/.m2/</localRepository>
+ 
+  <profiles>
         <profile>
             <id>focus</id>
             <activation>
@@ -15,7 +15,7 @@
                 <repository>
                     <id>focus-releases</id>
                     <name>FOCUS Repository</name>
-                    <url>http://46.21.110.250//nexus/content/repositories/releases/</url>
+                    <url>http://nexus.focus.fish/nexus/content/repositories/releases/</url>
                     <releases>
                         <enabled>true</enabled>
                     </releases>
@@ -26,7 +26,7 @@
                 <repository>
                     <id>focus-3rd-party</id>
                     <name>FOCUS 3rd-party Repository</name>
-                    <url>http://46.21.110.250//nexus/content/repositories/thirdparty/</url>
+                    <url>http://nexus.focus.fish/nexus/content/repositories/thirdparty/</url>
                     <releases>
                         <enabled>true</enabled>
                     </releases>
@@ -37,7 +37,7 @@
                 <repository>
                     <id>focus-snapshots</id>
                     <name>FOCUS Snapshot Repository</name>
-                    <url>http://46.21.110.250//nexus/content/repositories/snapshots/</url>
+                    <url>http://nexus.focus.fish/nexus/content/repositories/snapshots/</url>
                     <releases>
                         <enabled>false</enabled>
                     </releases>
@@ -46,8 +46,7 @@
                     </snapshots>
                 </repository>
             </repositories>
-        </profile>
-         
+        </profile>       
     </profiles>
 
 	

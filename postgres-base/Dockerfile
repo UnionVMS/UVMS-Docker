@@ -6,7 +6,9 @@ RUN apt-get update
 RUN apt-get install -y unzip
 RUN apt-get install -y maven
 
+RUN mkdir -p /home/postgres/.m2
 COPY settings.xml /root/.m2/settings.xml
+RUN chown -R postgres:postgres /home/postgres/
 
 #Create temp directories
 RUN mkdir -p /liquibase/config \
@@ -19,6 +21,7 @@ RUN mkdir -p /liquibase/config \
     && mkdir -p /liquibase/spatial \
     && mkdir -p /liquibase/reporting \
     && mkdir -p /liquibase/usm
+RUN chown -R postgres:postgres /liquibase
 
 COPY setup.sql /docker-entrypoint-initdb.d/
 COPY updateDb.sh /docker-entrypoint-initdb.d/

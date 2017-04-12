@@ -20,7 +20,24 @@
     <packaging>pom</packaging>
 
     <properties>
-        <artifact.version>RELEASE</artifact.version>
+        <unionvms.project.unionvms.web.version>3.0.1</unionvms.project.unionvms.web.version>
+        <unionvms.project.user.module>1.6.1</unionvms.project.user.module>
+        <unionvms.project.rules.module>3.0.1</unionvms.project.rules.module>
+        <unionvms.project.rules.dbaccess.module>3.0.3</unionvms.project.rules.dbaccess.module>
+        <unionvms.project.movement.module>3.0.5</unionvms.project.movement.module>
+        <unionvms.project.movement.dbaccess.module>3.0.4</unionvms.project.movement.dbaccess.module>
+        <unionvms.project.mobileterminal.module>3.0.5</unionvms.project.mobileterminal.module>
+        <unionvms.project.mobileterminal.dbaccess.module>3.0.4</unionvms.project.mobileterminal.dbaccess.module>
+        <unionvms.project.exchange.module>3.0.5</unionvms.project.exchange.module>
+        <unionvms.project.exchange.dbaccess.module>3.0.4</unionvms.project.exchange.dbaccess.module>
+        <unionvms.project.reporting.module>0.5.2</unionvms.project.reporting.module>
+        <unionvms.project.spatial.module>0.5.6-20170116.141853-13</unionvms.project.spatial.module>
+        <unionvms.project.config.module>3.0.5</unionvms.project.config.module>
+        <unionvms.project.config.dbaccess.module>3.0.4</unionvms.project.config.dbaccess.module>
+        <unionvms.project.audit.module>3.0.5</unionvms.project.audit.module>
+        <unionvms.project.audit.dbaccess.module>3.0.4</unionvms.project.audit.dbaccess.module>
+        <unionvms.project.asset.module>3.0.5</unionvms.project.asset.module>
+        <unionvms.project.asset.dbaccess.module>3.0.4</unionvms.project.asset.dbaccess.module>
     </properties>
 
     <repositories>
@@ -50,7 +67,7 @@
             <groupId>eu.europa.ec.fisheries.uvms</groupId>
             <artifactId>unionvms-web</artifactId>
             <type>war</type>
-            <version>${artifact.version}</version>
+            <version>${unionvms.project.unionvms.web.version}</version>
         </dependency>
 
         <!-- app modules -->
@@ -58,106 +75,105 @@
             <groupId>eu.europa.ec.fisheries.uvms.asset</groupId>
             <artifactId>asset-module</artifactId>
             <type>ear</type>
-            <version>${artifact.version}</version>
+            <version>${unionvms.project.asset.module}</version>
         </dependency>
         <dependency>
             <groupId>eu.europa.ec.fisheries.uvms.audit</groupId>
             <artifactId>audit-module</artifactId>
             <type>ear</type>
-            <version>${artifact.version}</version>
+            <version>${unionvms.project.audit.module}</version>
         </dependency>
         <dependency>
             <groupId>eu.europa.ec.fisheries.uvms.config</groupId>
             <artifactId>config-module</artifactId>
             <type>ear</type>
-            <version>${artifact.version}</version>
+            <version>${unionvms.project.config.module}</version>
         </dependency>
         <dependency>
             <groupId>eu.europa.ec.fisheries.uvms.exchange</groupId>
             <artifactId>exchange-module</artifactId>
             <type>ear</type>
-            <version>${artifact.version}</version>
+            <version>${unionvms.project.exchange.module}</version>
         </dependency>
         <dependency>
             <groupId>eu.europa.ec.fisheries.uvms.mobileterminal</groupId>
             <artifactId>mobileterminal-module</artifactId>
             <type>ear</type>
-            <version>${artifact.version}</version>
+            <version>${unionvms.project.mobileterminal.module}</version>
         </dependency>
         <dependency>
             <groupId>eu.europa.ec.fisheries.uvms.movement</groupId>
             <artifactId>movement-module</artifactId>
             <type>ear</type>
-            <version>${artifact.version}</version>
+            <version>${unionvms.project.movement.module}</version>
         </dependency>
         <dependency>
             <groupId>eu.europa.ec.fisheries.uvms.rules</groupId>
             <artifactId>rules-module</artifactId>
             <type>ear</type>
-            <version>${artifact.version}</version>
+            <version>${unionvms.project.rules.module}</version>
         </dependency>
         <dependency>
             <groupId>eu.europa.ec.fisheries.uvms.spatial</groupId>
-            <artifactId>deploy-spatial-postgres</artifactId>
+            <artifactId>spatial-module-postgres</artifactId>
             <type>ear</type>
-            <version>${artifact.version}</version>
+            <version>${unionvms.project.spatial.module}</version>
         </dependency>
         <dependency>
             <groupId>eu.europa.ec.fisheries.uvms.reporting</groupId>
             <artifactId>deploy</artifactId>
             <type>ear</type>
-            <version>${artifact.version}</version>
+            <version>${unionvms.project.reporting.module}</version>
         </dependency>
         <dependency>
             <groupId>eu.europa.ec.fisheries.uvms.user</groupId>
             <artifactId>user-module</artifactId>
             <type>ear</type>
-            <version>${artifact.version}</version>
+            <version>${unionvms.project.user.module}</version>
         </dependency>
-
 
         <!-- db modules -->
         <dependency>
             <groupId>eu.europa.ec.fisheries.uvms.asset</groupId>
             <artifactId>asset-dbaccess-module</artifactId>
             <type>ear</type>
-            <version>${artifact.version}</version>
+            <version>${unionvms.project.asset.dbaccess.module}</version>
         </dependency>
         <dependency>
             <groupId>eu.europa.ec.fisheries.uvms.audit</groupId>
             <artifactId>audit-dbaccess-module</artifactId>
             <type>ear</type>
-            <version>${artifact.version}</version>
+            <version>${unionvms.project.audit.dbaccess.module}</version>
         </dependency>
         <dependency>
             <groupId>eu.europa.ec.fisheries.uvms.config</groupId>
             <artifactId>config-dbaccess-module</artifactId>
             <type>ear</type>
-            <version>${artifact.version}</version>
+            <version>${unionvms.project.config.dbaccess.module}</version>
         </dependency>
         <dependency>
             <groupId>eu.europa.ec.fisheries.uvms.exchange</groupId>
             <artifactId>exchange-dbaccess-module</artifactId>
             <type>ear</type>
-            <version>${artifact.version}</version>
+            <version>${unionvms.project.exchange.dbaccess.module}</version>
         </dependency>
         <dependency>
             <groupId>eu.europa.ec.fisheries.uvms.mobileterminal</groupId>
             <artifactId>mobileterminal-dbaccess-module</artifactId>
             <type>ear</type>
-            <version>${artifact.version}</version>
+            <version>${unionvms.project.mobileterminal.dbaccess.module}</version>
         </dependency>
         <dependency>
             <groupId>eu.europa.ec.fisheries.uvms.movement</groupId>
             <artifactId>movement-dbaccess-module-postgres</artifactId>
             <type>ear</type>
-            <version>${artifact.version}</version>
+            <version>${unionvms.project.movement.dbaccess.module}</version>
         </dependency>
         <dependency>
             <groupId>eu.europa.ec.fisheries.uvms.rules</groupId>
             <artifactId>rules-dbaccess-module</artifactId>
             <type>ear</type>
-            <version>${artifact.version}</version>
+            <version>${unionvms.project.rules.dbaccess.module}</version>
         </dependency>
     </dependencies>
 

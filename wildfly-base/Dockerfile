@@ -15,7 +15,11 @@ ENV PGPASSWORD=postgres
 
 # PostGis
 COPY hibernate/module.xml $HIBERNATE_MODULE
-RUN curl -o $HIBERNATE_MODULE/hibernate-spatial-$HIBERNATE_SPATIAL_VERSION.jar "http://www.hibernatespatial.org/repository/org/hibernate/hibernate-spatial/$HIBERNATE_SPATIAL_VERSION/hibernate-spatial-$HIBERNATE_SPATIAL_VERSION.jar"
+
+#RUN curl -o $HIBERNATE_MODULE/hibernate-spatial-$HIBERNATE_SPATIAL_VERSION.jar "http://www.hibernatespatial.org/repository/org/hibernate/hibernate-spatial/$HIBERNATE_SPATIAL_VERSION/hibernate-spatial-$HIBERNATE_SPATIAL_VERSION.jar"
+RUN curl -o $HIBERNATE_MODULE/hibernate-spatial-$HIBERNATE_SPATIAL_VERSION.jar "http://nexus.e-is.pro/nexus/content/groups/public/org/hibernate/hibernate-spatial/4.3/hibernate-spatial-4.3.jar"
+
+
 RUN curl -o $HIBERNATE_MODULE/jts-$JTS_VERSION.jar "http://central.maven.org/maven2/com/vividsolutions/jts/$JTS_VERSION/jts-$JTS_VERSION.jar"
 
 RUN mkdir -p $JBOSS_HOME/modules/org/postgresql/main
@@ -58,10 +62,13 @@ RUN curl -o /etc/yum.repos.d/epel-apache-maven.repo https://repos.fedorapeople.o
 RUN yum install -y apache-maven
 COPY settings.xml /root/.m2/settings.xml
 RUN yum install -y postgresql
+RUN chown -R jboss:jboss /opt/wildfly
+RUN chown -R jboss:jboss /opt/jboss
 USER jboss
 
 # Expose stuff to outside world
 EXPOSE 8787
 VOLUME ["/app/logs", "/opt/jboss/wildfly/standalone/log"]
+
 
 CMD ["/opt/jboss/start.sh", "/opt/jboss/wildfly/bin/standalone.sh", "-c", "standalone-uvms.xml", "-b", "0.0.0.0", "-bmanagement", "0.0.0.0", "--debug"]
