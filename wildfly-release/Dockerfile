@@ -1,4 +1,4 @@
-FROM uvms/wildfly-base
+FROM uvms/wildfly-base:3.1.0-SNAPSHOT
 
 COPY module-download-pom.xml /opt/jboss/
 USER root

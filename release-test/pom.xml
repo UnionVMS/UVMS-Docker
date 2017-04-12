@@ -8,9 +8,23 @@
 	<packaging>docker</packaging>
 	<name>uvms-release-test</name>
 	<dependencies>
-		
+		<dependency>
+			<groupId>eu.europa.ec.fisheries.uvms.docker</groupId>
+			<artifactId>uvms-docker-images</artifactId>
+			<version>3.1.0-SNAPSHOT</version>
+			<type>pom</type>
+		</dependency>
 	</dependencies>
 	<build>
+		<pluginManagement>
+			<plugins>
+				<plugin>
+					<groupId>io.fabric8</groupId>
+					<artifactId>docker-maven-plugin</artifactId>
+					<version>0.20.1</version>
+				</plugin>
+			</plugins>
+		</pluginManagement>
 		<plugins>
 			<plugin>
 				<groupId>io.fabric8</groupId>

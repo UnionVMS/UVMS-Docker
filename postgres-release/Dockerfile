@@ -1,4 +1,4 @@
-FROM uvms/postgres-base
+FROM uvms/postgres-base:3.1.0-SNAPSHOT
 
 ARG ASSET_VERSION=3.0.4
 ARG CONFIG_VERSION=3.0.4
