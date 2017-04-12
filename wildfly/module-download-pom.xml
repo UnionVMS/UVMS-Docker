@@ -21,6 +21,7 @@
 
     <properties>
         <artifact.version>[2.9.9,)</artifact.version>
+        <geoserver.version>2.8.5-SNAPSHOT</geoserver.version>
     </properties>
 
     <repositories>
@@ -198,6 +199,13 @@
             <type>ear</type>
             <version>${artifact.version}</version>
         </dependency>
+        <dependency>
+            <groupId>eu.europa.ec.fisheries.uvms.geoserver.web</groupId>
+            <artifactId>gs-web-app</artifactId>
+            <type>war</type>
+            <version>${geoserver.version}</version>
+        </dependency>
+
 
     </dependencies>
 
