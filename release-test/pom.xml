@@ -56,7 +56,7 @@
 								<net>bridge</net>
 								<namingStrategy>alias</namingStrategy>
 								<ports>
-									<port>8161:8161</port>
+									<port>18161:8161</port>
 								</ports>
 								<wait>
 									<log>database system is ready to accept connections</log>
@@ -82,7 +82,7 @@
 								<net>bridge</net>
 								<namingStrategy>alias</namingStrategy>
 								<ports>
-									<port>5432:5432</port>
+									<port>15432:5432</port>
 								</ports>
 								<wait>
 									<log>All uvms databases created</log>
@@ -112,9 +112,9 @@
 									<link>activemq:activemq</link>
 								</links>
 								<ports>
-									<port>9990:9990</port>
-									<port>8787:8787</port>
-									<port>8080:8080</port>
+									<port>29990:9990</port>
+									<port>28787:8787</port>
+									<port>28080:8080</port>
 								</ports>
 								<wait>
 									<time>180000</time>
