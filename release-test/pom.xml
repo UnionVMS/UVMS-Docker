@@ -86,7 +86,7 @@
 								</ports>
 								<wait>
 									<log>All uvms databases created</log>
-									<time>120000</time>
+									<time>180000</time>
 								</wait>
 								<dependsOn>
 									<container>activemq</container>
