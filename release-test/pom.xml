@@ -5,7 +5,7 @@
 	<groupId>eu.europa.ec.fisheries.uvms.docker</groupId>
 	<version>3.1.0-SNAPSHOT</version>
 	<artifactId>uvms-release-test</artifactId>
-	<packaging>docker</packaging>
+	<packaging>jar</packaging>
 	<name>uvms-release-test</name>
 	<dependencies>
 		<dependency>
@@ -13,6 +13,18 @@
 			<artifactId>uvms-docker-images</artifactId>
 			<version>3.1.0-SNAPSHOT</version>
 			<type>pom</type>
+		</dependency>
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>4.12</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.httpcomponents</groupId>
+			<artifactId>fluent-hc</artifactId>
+			<version>4.5.3</version>
+			<scope>test</scope>
 		</dependency>
 	</dependencies>
 	<build>
@@ -37,7 +49,7 @@
 						<goals>
 							<goal>stop</goal>
 						</goals>
-					</execution>					
+					</execution>
 					<execution>
 						<id>start</id>
 						<phase>pre-integration-test</phase>
@@ -72,6 +84,8 @@
 											<port>8161</port>
 										</ports>
 									</tcp>
+									<kill>5000</kill>
+									<shutdown>5000</shutdown>
 									<time>5000</time>
 								</wait>
 								<log>
@@ -93,6 +107,8 @@
 								<wait>
 									<log>All uvms databases created</log>
 									<time>120000</time>
+									<kill>5000</kill>
+									<shutdown>5000</shutdown>
 								</wait>
 								<dependsOn>
 									<container>activemq</container>
@@ -125,6 +141,8 @@
 								<wait>
 									<log>WildFly 8.2.0.Final "Tweek" started in</log>
 									<time>90000</time>
+									<kill>5000</kill>
+									<shutdown>5000</shutdown>
 								</wait>
 								<cmd>
 									<shell>/opt/jboss/wildfly/bin/standalone.sh -c
