@@ -124,7 +124,7 @@
 									<port>28080:8080</port>
 								</ports>
 								<wait>
-									<log>Started 17276 of 17660 services (2317 services are lazy, passive or on-demand)</log>
+									<log>Started 17166 of 17550 services (2317 services are lazy, passive or on-demand)</log>
 									<time>90000</time>
 								</wait>
 								<cmd>
