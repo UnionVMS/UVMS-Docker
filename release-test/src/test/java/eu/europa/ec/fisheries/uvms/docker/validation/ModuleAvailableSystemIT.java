@@ -4,7 +4,7 @@ import org.apache.http.client.fluent.Request;
 import org.junit.Assert;
 import org.junit.Test;
 
-public class ModuleAvailableSystemTest extends Assert {
+public class ModuleAvailableSystemIT extends Assert {
 
 	private final String BASE_URL = "http://localhost:28080/";
 
