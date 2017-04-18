@@ -124,7 +124,7 @@
 									<port>28080:8080</port>
 								</ports>
 								<wait>
-									<log>Started 17166 of 17550 services (2317 services are lazy, passive or on-demand)</log>
+									<log>WildFly 8.2.0.Final "Tweek" started in</log>
 									<time>90000</time>
 								</wait>
 								<cmd>
