@@ -1,4 +1,4 @@
-FROM mdillon/postgis:9.3
+FROM mdillon/postgis:9.5
 
 ENV GITHUB https://github.com/UnionVMS
 
