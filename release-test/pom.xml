@@ -125,7 +125,7 @@
 								</ports>
 								<wait>
 									<log>Started 17276 of 17660 services (2317 services are lazy, passive or on-demand)</log>
-									<time>60000</time>
+									<time>90000</time>
 								</wait>
 								<cmd>
 									<shell>/opt/jboss/wildfly/bin/standalone.sh -c
