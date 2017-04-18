@@ -32,6 +32,13 @@
 				<extensions>true</extensions>
 				<executions>
 					<execution>
+						<id>verifyallstopped</id>
+						<phase>compile</phase>
+						<goals>
+							<goal>stop</goal>
+						</goals>
+					</execution>					
+					<execution>
 						<id>start</id>
 						<phase>pre-integration-test</phase>
 						<goals>
@@ -86,7 +93,7 @@
 								</ports>
 								<wait>
 									<log>All uvms databases created</log>
-									<time>180000</time>
+									<time>120000</time>
 								</wait>
 								<dependsOn>
 									<container>activemq</container>
@@ -117,7 +124,8 @@
 									<port>28080:8080</port>
 								</ports>
 								<wait>
-									<time>180000</time>
+									<log>Started 17276 of 17660 services (2317 services are lazy, passive or on-demand)</log>
+									<time>60000</time>
 								</wait>
 								<cmd>
 									<shell>/opt/jboss/wildfly/bin/standalone.sh -c
