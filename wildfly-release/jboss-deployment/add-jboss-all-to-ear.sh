@@ -12,7 +12,7 @@ addJbossAll() {
 }
 
 chmod 755 /opt/jboss/wildfly/standalone/deployments/*.ear
-#addJbossAll user-module-1.6.1 /opt/jboss/jboss-deployment/user/jboss-all.xml 
+addJbossAll user-module-1.6.1 /opt/jboss/jboss-deployment/user/jboss-all.xml 
 addJbossAll config-dbaccess-module-3.0.4 /opt/jboss/jboss-deployment/config-db/jboss-all.xml 
 addJbossAll config-module-3.0.5 /opt/jboss/jboss-deployment/config/jboss-all.xml
 addJbossAll spatial-module-postgres-0.5.6-SNAPSHOT /opt/jboss/jboss-deployment/spatial/jboss-all.xml
