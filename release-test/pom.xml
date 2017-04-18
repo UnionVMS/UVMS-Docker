@@ -42,7 +42,6 @@
 						<id>start</id>
 						<phase>pre-integration-test</phase>
 						<goals>
-							<goal>build</goal>
 							<goal>start</goal>
 						</goals>
 					</execution>
@@ -61,7 +60,7 @@
 							<name>uvms/activemq:${project.version}</name>
 							<run>
 								<net>bridge</net>
-								<namingStrategy>alias</namingStrategy>
+								<namingStrategy>none</namingStrategy>
 								<ports>
 									<port>18161:8161</port>
 								</ports>
@@ -87,7 +86,7 @@
 							<name>uvms/postgres-release:${project.version}</name>
 							<run>
 								<net>bridge</net>
-								<namingStrategy>alias</namingStrategy>
+								<namingStrategy>none</namingStrategy>
 								<ports>
 									<port>15432:5432</port>
 								</ports>
@@ -113,7 +112,7 @@
 							<name>uvms/wildfly-release:${project.version}</name>
 							<run>
 								<net>bridge</net>
-								<namingStrategy>alias</namingStrategy>
+								<namingStrategy>none</namingStrategy>
 								<links>
 									<link>postgres:postgres</link>
 									<link>activemq:activemq</link>
