@@ -5,8 +5,8 @@ ENV HIBERNATE_VERSION 4.3.11.Final
 ENV HIBERNATE_SPATIAL_VERSION 4.3
 ENV JTS_VERSION 1.13
 ENV POSTGIS_VERSION 1.5.3
-ENV POSTGRES_VERSION 42.0.0.jre7
-ENV ACTIVEMQ_VERSION 5.13.5
+ENV POSTGRES_VERSION 9.3-1102-jdbc4
+ENV ACTIVEMQ_VERSION 5.13.2
 
 ENV NEXUS http://nexus.focus.fish/nexus/service/local/artifact/maven/content
 ENV HIBERNATE_MODULE $JBOSS_HOME/modules/system/layers/base/org/hibernate/main
@@ -18,10 +18,10 @@ ENV PGPASSWORD=postgres
 COPY hibernate/module.xml $HIBERNATE_MODULE
 
 
-RUN curl -o $HIBERNATE_MODULE/hibernate-core-$HIBERNATE_VERSION.jar "http://central.maven.org/maven2/org/hibernate/hibernate-core/$HIBERNATE_VERSION/hibernate-core-$HIBERNATE_VERSION.jar"
-RUN curl -o $HIBERNATE_MODULE/hibernate-envers-$HIBERNATE_VERSION.jar "http://central.maven.org/maven2/org/hibernate/hibernate-envers/$HIBERNATE_VERSION/hibernate-envers-$HIBERNATE_VERSION.jar"
-RUN curl -o $HIBERNATE_MODULE/hibernate-entitymanager-$HIBERNATE_VERSION.jar "http://central.maven.org/maven2/org/hibernate/hibernate-entitymanager/$HIBERNATE_VERSION/hibernate-entitymanager-$HIBERNATE_VERSION.jar"
-RUN curl -o $HIBERNATE_MODULE/hibernate-infinispan-$HIBERNATE_VERSION.Final.jar "http://central.maven.org/maven2/org/hibernate/hibernate-infinispan/$HIBERNATE_VERSION/hibernate-infinispan-$HIBERNATE_VERSION.jar"
+#RUN curl -o $HIBERNATE_MODULE/hibernate-core-$HIBERNATE_VERSION.jar "http://central.maven.org/maven2/org/hibernate/hibernate-core/$HIBERNATE_VERSION/hibernate-core-$HIBERNATE_VERSION.jar"
+#RUN curl -o $HIBERNATE_MODULE/hibernate-envers-$HIBERNATE_VERSION.jar "http://central.maven.org/maven2/org/hibernate/hibernate-envers/$HIBERNATE_VERSION/hibernate-envers-$HIBERNATE_VERSION.jar"
+#RUN curl -o $HIBERNATE_MODULE/hibernate-entitymanager-$HIBERNATE_VERSION.jar "http://central.maven.org/maven2/org/hibernate/hibernate-entitymanager/$HIBERNATE_VERSION/hibernate-entitymanager-$HIBERNATE_VERSION.jar"
+#RUN curl -o $HIBERNATE_MODULE/hibernate-infinispan-$HIBERNATE_VERSION.Final.jar "http://central.maven.org/maven2/org/hibernate/hibernate-infinispan/$HIBERNATE_VERSION/hibernate-infinispan-$HIBERNATE_VERSION.jar"
 
 
 #RUN curl -o $HIBERNATE_MODULE/hibernate-spatial-$HIBERNATE_SPATIAL_VERSION.jar "http://www.hibernatespatial.org/repository/org/hibernate/hibernate-spatial/$HIBERNATE_SPATIAL_VERSION/hibernate-spatial-$HIBERNATE_SPATIAL_VERSION.jar"
