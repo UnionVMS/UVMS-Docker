@@ -1,0 +1,481 @@
+{
+	"variables": [],
+	"info": {
+		"name": "TEST",
+		"_postman_id": "50906cdd-8acf-dd4b-2f34-5f6c6e062979",
+		"description": "",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Authenticate",
+			"request": {
+				"url": "http://localhost:28080/usm-administration/rest/authenticate",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"userName\":\"vms_admin_com\",\"password\":\"password\"}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "UVMS-1897 http://localhost:28080/movement/rest/search/group",
+			"request": {
+				"url": "http://localhost:28080/movement/rest/search/group",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiJ1c20vYXV0aGVudGljYXRpb24iLCJpc3MiOiJ1c20iLCJzdWIiOiJhdXRoZW50aWNhdGlvbiIsImlhdCI6MTQ2NjY2ODAyNywiZXhwIjoxNDY2NjY5ODI3LCJ1c2VyTmFtZSI6InZtc19hZG1pbl9jb20ifQ.T43w3bJg82ALALy8vVQT-MOJ-3F6I_k4pPoCBMvOd-Q",
+						"description": ""
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n      \"name\": \"${#TestCase#name}\",\r\n      \"searchFields\": [\r\n      \t{\r\n      \t\t\"type\" : \"ASSET\",\r\n      \t\t\"key\" : \"FLAG_STATE\",\r\n      \t\t\"value\" : \"SWE\"\r\n      \t}  \t\r\n      ],\r\n      \"dynamic\":true\r\n}\r\n"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "UMVS-1898 http://localhost:28080/movement/rest/search/group",
+			"request": {
+				"url": "http://localhost:28080/movement/rest/search/group",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiJ1c20vYXV0aGVudGljYXRpb24iLCJpc3MiOiJ1c20iLCJzdWIiOiJhdXRoZW50aWNhdGlvbiIsImlhdCI6MTQ2NjY3MDAzNSwiZXhwIjoxNDY2NjcxODM1LCJ1c2VyTmFtZSI6InZtc19hZG1pbl9jb20ifQ.yDksJi1CQ1bfHlO4nhdunFr4BSwcXdq3Fk-nf3nkQyo",
+						"description": ""
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{ \"name\": \"Swedish ships\", \"user\": \"SoapUI\", \"searchFields\": [ ], \"dynamic\":true }"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "UVMS-1899 http://localhost:28080/movement/rest/search/group",
+			"request": {
+				"url": "http://localhost:28080/movement/rest/search/group",
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiJ1c20vYXV0aGVudGljYXRpb24iLCJpc3MiOiJ1c20iLCJzdWIiOiJhdXRoZW50aWNhdGlvbiIsImlhdCI6MTQ2NjY3MDgxNSwiZXhwIjoxNDY2NjcyNjE1LCJ1c2VyTmFtZSI6InZtc19hZG1pbl9jb20ifQ.-zmc_opwG0gTQS_j7RNYDoV810ZtoUcgijVSpqOb1Iw",
+						"description": ""
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n\t \"id\" : 1671,\r\n      \"name\": \"Swedish ships\",\r\n      \"user\": \"vms_admin_com\",\r\n      \"searchFields\": [\r\n      \t{\r\n      \t\t\"type\" : \"ASSET\", \r\n      \t\t\"key\" : \"FLAG_STATE\",\r\n      \t\t\"value\" : \"SWE\"\r\n      \t},\r\n      \t{\r\n      \t\t\"type\" : \"ASSET\",\r\n      \t\t\"key\" : \"TIME_SPAN\",\r\n      \t\t\"value\" : \"24\"\r\n      \t}          \t\r\n      ],\r\n      \"dynamic\":true\r\n}\r\n"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "UVMS-1901 http://localhost:28080/movement/rest/search/group",
+			"request": {
+				"url": "http://localhost:28080/movement/rest/search/group",
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiJ1c20vYXV0aGVudGljYXRpb24iLCJpc3MiOiJ1c20iLCJzdWIiOiJhdXRoZW50aWNhdGlvbiIsImlhdCI6MTQ2NjY3MjIzNywiZXhwIjoxNDY2Njc0MDM3LCJ1c2VyTmFtZSI6InZtc19hZG1pbl9jb20ifQ.WjWYlBE_SO3Z9u14gcAXqxTCL3RimCNKFkn92FoMRlY",
+						"description": ""
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n\"name\": \"MISSING_ID\",\r\n\"user\": \"vms_admin_com\",\r\n\"searchFields\": [\r\n{ \"type\" : \"ASSET\", \"key\" : \"FLAG_STATE\", \"value\" : \"DEN\" }\r\n,\r\n{ \"type\" : \"ASSET\", \"key\" : \"TIME_SPAN\", \"value\" : \"48\" }\r\n],\r\n\"dynamic\":true\r\n}\r\n"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "UVMS-1902 http://localhost:28080/movement/rest/search/group",
+			"request": {
+				"url": "http://localhost:28080/movement/rest/search/group",
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiJ1c20vYXV0aGVudGljYXRpb24iLCJpc3MiOiJ1c20iLCJzdWIiOiJhdXRoZW50aWNhdGlvbiIsImlhdCI6MTQ2NjY3MjgyNCwiZXhwIjoxNDY2Njc0NjI0LCJ1c2VyTmFtZSI6InZtc19hZG1pbl9jb20ifQ.b_4X0UG937MB30KeWs3H8fKgYStElCIdP4V0C0xi0OU",
+						"description": ""
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n\"id\" : 1671,\r\n\"user\": \"vms_admin_com\",\r\n\"searchFields\": [\r\n{ \"type\" : \"ASSET\", \"key\" : \"FLAG_STATE\", \"value\" : \"NOR\" }\r\n],\r\n\"dynamic\":true\r\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "UVMS-1904 http://localhost:28080/movement/rest/search/group",
+			"request": {
+				"url": "http://localhost:28080/movement/rest/search/group",
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiJ1c20vYXV0aGVudGljYXRpb24iLCJpc3MiOiJ1c20iLCJzdWIiOiJhdXRoZW50aWNhdGlvbiIsImlhdCI6MTQ2NjY4MDc5MiwiZXhwIjoxNDY2NjgyNTkyLCJ1c2VyTmFtZSI6InZtc19hZG1pbl9jb20ifQ.Flh081JiWrRbD8HIZibSAVJy8TfSxYLd7QmWo01hmhU",
+						"description": ""
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n\"id\" : 1671,\r\n\"name\": \"Swedish ships\",\r\n\"user\": \"testUser\",\r\n\"searchFields\": [\r\n{ \"type\" : \"ASSET\", \"key\" : \"TIME_SPAN\", \"value\" : \"48\" }\r\n],\r\n\"dynamic\":true\r\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "UVMS-1906 http://localhost:28080/movement/rest/search/group/100",
+			"request": {
+				"url": "http://localhost:28080/movement/rest/search/group/1670",
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiJ1c20vYXV0aGVudGljYXRpb24iLCJpc3MiOiJ1c20iLCJzdWIiOiJhdXRoZW50aWNhdGlvbiIsImlhdCI6MTQ2NjY4MjU4OCwiZXhwIjoxNDY2Njg0Mzg4LCJ1c2VyTmFtZSI6InZtc19hZG1pbl9jb20ifQ.qmq-YyC7F7yVi57c764tRAtPdX734FEssz6AbUyqmz4",
+						"description": ""
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "UVMS-1909 http://localhost:28080/movement/rest/tempmovement",
+			"request": {
+				"url": "http://localhost:28080/movement/rest/tempmovement",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					},
+					{
+						"key": "Authorization",
+						"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiJ1c20vYXV0aGVudGljYXRpb24iLCJpc3MiOiJ1c20iLCJzdWIiOiJhdXRoZW50aWNhdGlvbiIsImlhdCI6MTQ2NjY4NTc4NCwiZXhwIjoxNDY2Njg3NTg0LCJ1c2VyTmFtZSI6InZtc19hZG1pbl9jb20ifQ.ebxXhpjl1kdf0EKDarQSdCAb0YaSfafVEYbLynLg_K8",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n\"position\":\r\n{ \"longitude\": 7755125.263, \"latitude\": 10.263 }\r\n,\r\n\"time\" : \"2015-06-02 17:12:00 +02:00\",\r\n\"course\": 45.234,\r\n\"speed\": 15.43,\r\n\"status\": \"010\",\r\n\"asset\":\r\n{ \"cfr\": \"456\", \"name\": \"SoapUI\", \"extMarking\": \"ext\", \"ircs\": \"TEST\", \"flagState\": \"SWE\" }\r\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "UVMS-1912 http://localhost:28080/movement/rest/tempmovement",
+			"request": {
+				"url": "http://localhost:28080/movement/rest/tempmovement",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					},
+					{
+						"key": "Authorization",
+						"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiJ1c20vYXV0aGVudGljYXRpb24iLCJpc3MiOiJ1c20iLCJzdWIiOiJhdXRoZW50aWNhdGlvbiIsImlhdCI6MTQ2NzAxMjYzMiwiZXhwIjoxNDY3MDE0NDMyLCJ1c2VyTmFtZSI6InZtc19hZG1pbl9jb20ifQ.q4Lkv0ruTLvvhV674Bmqq4x4bdv0CtL9JgElzQaZeJk",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n\"position\":\r\n{ \"longitude\": 12, \"latitude\": 55 }\r\n,\r\n\"time\" : \"2015-06-02 17:12:00\",\r\n\"course\": 45,\r\n\"speed\": 15,\r\n\"status\": \"010\",\r\n\"asset\":\r\n{ \"cfr\": \"456\", \"name\": \"TEST SHIP\", \"extMarking\": \"EX\", \"ircs\": \"AA\", \"flagState\": \"SWE\" }\r\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "UVMS-1913 http://localhost:28080/movement/rest/tempmovement",
+			"request": {
+				"url": "http://localhost:28080/movement/rest/tempmovement",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					},
+					{
+						"key": "Authorization",
+						"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiJ1c20vYXV0aGVudGljYXRpb24iLCJpc3MiOiJ1c20iLCJzdWIiOiJhdXRoZW50aWNhdGlvbiIsImlhdCI6MTQ2NzAxMzU5MSwiZXhwIjoxNDY3MDE1MzkxLCJ1c2VyTmFtZSI6InZtc19hZG1pbl9jb20ifQ.EeK_ELZOaeiQmesVPWmfCKII4h4w4_eM1BLSCa3V4J8",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{ \r\n\"position\":\r\n{ \"longitude\": 16.54 }\r\n,\r\n\"time\" : \"2015-06-02 17:12:00 +02:00\",\r\n\"status\": \"010\",\r\n\"asset\":\r\n{ \"cfr\": \"456\", \"name\": \"SoapUI\", \"extMarking\": \"ext\", \"ircs\": \"TEST\", \"flagState\": \"SWE\" }\r\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "UVMS-1916 http://localhost:28080/movement/rest/tempmovement",
+			"request": {
+				"url": "http://localhost:28080/movement/rest/tempmovement",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					},
+					{
+						"key": "Authorization",
+						"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiJ1c20vYXV0aGVudGljYXRpb24iLCJpc3MiOiJ1c20iLCJzdWIiOiJhdXRoZW50aWNhdGlvbiIsImlhdCI6MTQ2NzAzNjA0NiwiZXhwIjoxNDY3MDM3ODQ2LCJ1c2VyTmFtZSI6InZtc19hZG1pbl9jb20ifQ.AIHxtv4WdFWZSaaVPuEOzYkhvx3te0qcTzS_PNKHIvs",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"position\": {\r\n    \"altitude\": 0,\r\n    \"longitude\": 15.137,\r\n    \"latitude\": 55.058\r\n  },\r\n  \"course\": 0,\r\n  \"guid\": \"\",\r\n  \"time\": \"2016-06-27 12:35:00 +0200\",\r\n  \"asset\": {\r\n    \"cfr\": \"SWE000000030\",\r\n    \"name\": \"VIKEN AV BOTVALDEVIK\",\r\n    \"extMarking\": \"VY-43\",\r\n    \"ircs\": \"SBMW\",\r\n    \"flagState\": \"SWE\"\r\n  },\r\n  \"speed\": 5,\r\n  \"status\": \"010\",\r\n  \"state\": \"DRAFT\",\r\n  \"updatedTime\": \"2016-06-27 13:55:00 +0200\"\r\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "UVMS-1916 http://localhost:28080/movement/rest/tempmovement",
+			"request": {
+				"url": "http://localhost:28080/movement/rest/tempmovement",
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					},
+					{
+						"key": "Authorization",
+						"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiJ1c20vYXV0aGVudGljYXRpb24iLCJpc3MiOiJ1c20iLCJzdWIiOiJhdXRoZW50aWNhdGlvbiIsImlhdCI6MTQ2NzAzNjIxMiwiZXhwIjoxNDY3MDM4MDEyLCJ1c2VyTmFtZSI6InZtc19hZG1pbl9jb20ifQ.nolJfWIp1sO6eck77dEujOlgBMKbC6HhuRMUKdfMQdo",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n\"guid\" : \"d0064755-7e1c-466f-ad1c-6549864230c8\",\r\n\"position\":\r\n{ \"longitude\": -17.65 }\r\n,\r\n\"time\" : \"2015-05-02 17:12:00 +02:00\",\r\n\"course\": -23,\r\n\"asset\":\r\n{ \"cfr\": \"543\", \"name\": \"SoapUI Vessel\", \"extMarking\": \"ext ext\", \"ircs\": \"TESTIRC\" }\r\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "UVMS-1917 http://localhost:28080/mobileterminal/rest/mobileterminal/status/inactivate",
+			"request": {
+				"url": "http://localhost:28080/mobileterminal/rest/mobileterminal/status/inactivate",
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					},
+					{
+						"key": "Authorization",
+						"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiJ1c20vYXV0aGVudGljYXRpb24iLCJpc3MiOiJ1c20iLCJzdWIiOiJhdXRoZW50aWNhdGlvbiIsImlhdCI6MTQ2NzA5OTA1NSwiZXhwIjoxNDY3MTAwODU1LCJ1c2VyTmFtZSI6InZtc19hZG1pbl9jb20ifQ.sLvlvbpdu7yGseSoYQlZeL4Oxr85adTa5lATYXG_Fm0",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"guid\": \"c0064755-0000-466f-ad1c-6549864230c0\"\r\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "UVMS-1965 http://localhost:28080/rules/rest/customrules",
+			"request": {
+				"url": "http://localhost:28080/rules/rest/customrules",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					},
+					{
+						"key": "Authorization",
+						"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiJ1c20vYXV0aGVudGljYXRpb24iLCJpc3MiOiJ1c20iLCJzdWIiOiJhdXRoZW50aWNhdGlvbiIsImlhdCI6MTQ2NzExNjk5MywiZXhwIjoxNDY3MTE4NzkzLCJ1c2VyTmFtZSI6InZtc19hZG1pbl9jb20ifQ.-dLoK5JLvfp8txCXYRssDSN4WgGuswHBXzcjhop7m7U",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n\"availability\": \"PRIVATE\",\r\n\"active\": true,\r\n\"description\": \"Generated rule number 01\",\r\n\"updatedBy\" : \"UVMS\",\r\n\"timeIntervals\": [\r\n{ \"start\": \"2015-10-01 00:00:00 Z\", \"end\": \"2015-10-30 00:00:00 Z\" }\r\n,\r\n{ \"start\": \"2015-12-01 00:00:00 Z\", \"end\": \"2015-12-31 00:00:00 Z\" }\r\n],\r\n\"definitions\": [\r\n{ \"startOperator\": \"(\", \"criteria\": \"ASSET\", \"subCriteria\": \"ASSET_CFR\", \"condition\": \"EQ\", \"value\": \"SWE111222\", \"endOperator\": \"\", \"logicBoolOperator\": \"OR\", \"order\": 0 }\r\n,\r\n{ \"startOperator\": \"\", \"criteria\": \"ASSET\", \"subCriteria\": \"ASSET_CFR\", \"condition\": \"EQ\", \"value\": \"SWE111333\", \"endOperator\": \")\", \"logicBoolOperator\": \"AND\", \"order\": 1 }\r\n,\r\n{ \"startOperator\": \"\", \"criteria\": \"MOBILE_TERMINAL\", \"subCriteria\": \"MT_MEMBER_ID\", \"condition\": \"EQ\", \"value\": \"ABC99\", \"endOperator\": \"\", \"logicBoolOperator\": \"NONE\", \"order\": 2 }\r\n],\r\n\"actions\": [\r\n{ \"action\": \"EMAIL\", \"order\": 0 }\r\n,\r\n{ \"action\": \"SEND_TO_FLUX\", \"value\": \"ABCD123\", \"order\": 1 }\r\n]\r\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "UVMS-2127 http://localhost:28080/rules/rest/tickets/list/vms_admin_com",
+			"request": {
+				"url": "http://localhost:28080/rules/rest/tickets/list/vms_admin_com",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					},
+					{
+						"key": "Authorization",
+						"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiJ1c20vYXV0aGVudGljYXRpb24iLCJpc3MiOiJ1c20iLCJzdWIiOiJhdXRoZW50aWNhdGlvbiIsImlhdCI6MTQ2NzEyMjQ0MSwiZXhwIjoxNDY3MTI0MjQxLCJ1c2VyTmFtZSI6InZtc19hZG1pbl9jb20ifQ.4V3EVDIBVTTAM_fKXADZj7_YNkm5d1sDeu-Ka_NgIHU",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n\"ticketSearchCriteria\": [\r\n{\"key\":\"ASSET_GUID\",\"value\":\"01c8eefe-daee-4cc7-b662-85a040879c0f\"}\r\n],\r\n\"pagination\":\r\n{ \"page\": 1, \"listSize\": 100 }\r\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "UVMS-1963 http://localhost:28080/rules/rest/customrules",
+			"request": {
+				"url": "http://localhost:28080/rules/rest/customrules",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					},
+					{
+						"key": "Authorization",
+						"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiJ1c20vYXV0aGVudGljYXRpb24iLCJpc3MiOiJ1c20iLCJzdWIiOiJhdXRoZW50aWNhdGlvbiIsImlhdCI6MTQ2NzE4NjE4MiwiZXhwIjoxNDY3MTg3OTgyLCJ1c2VyTmFtZSI6InZtc19hZG1pbl9jb20ifQ.bsvpkvvcUiewHx86DBNDLz6mcVxDi8NYVYX10QruMTA",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n\"name\": \"Mock Rule 01\",\r\n\"availability\": \"PRIVATE\",\r\n\"active\": true,\r\n\"archived\": false,\r\n\"description\": \"Generated rule number 01\",\r\n\"updatedBy\": \"vms_admin_com\",\r\n\"timeIntervals\": [],\r\n\"definitions\": [\r\n{ \"startOperator\": \"(\", \"criteria\": \"ASSET\", \"subCriteria\": \"ASSET_CFR\", \"condition\": \"EQ\", \"value\": \"SWE111222\", \"endOperator\": \"\", \"logicBoolOperator\": \"OR\", \"order\": 0 }\r\n,\r\n{ \"startOperator\": \"\", \"criteria\": \"ASSET\", \"subCriteria\": \"ASSET_CFR\", \"condition\": \"EQ\", \"value\": \"SWE111333\", \"endOperator\": \"\", \"logicBoolOperator\": \"AND\", \"order\": 1 }\r\n,\r\n{ \"startOperator\": \"\", \"criteria\": \"MOBILE_TERMINAL\", \"subCriteria\": \"MT_MEMBER_ID\", \"condition\": \"EQ\", \"value\": \"ABC99\", \"endOperator\": \"\", \"logicBoolOperator\": \"NONE\", \"order\": 2 }\r\n],\r\n\"actions\": []\r\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "UVMS-1050 http://localhost:28080/movement/rest/search/group",
+			"request": {
+				"url": "http://localhost:28080/movement/rest/search/group",
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					},
+					{
+						"key": "Authorization",
+						"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiJ1c20vYXV0aGVudGljYXRpb24iLCJpc3MiOiJ1c20iLCJzdWIiOiJhdXRoZW50aWNhdGlvbiIsImlhdCI6MTQ3MDI5Nzk1NiwiZXhwIjoxNDcwMjk5NzU2LCJ1c2VyTmFtZSI6InZtc19hZG1pbl9jb20ifQ.f6q1YApN66nWDmNzaXH0uR1961NdIjVfD3kbw4rgJt4",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n\"name\": \"MISSING_ID\",\r\n\"user\": \"SoapUI\",\r\n\"searchFields\": [\r\n{ \"type\" : \"ASSET\", \"key\" : \"FLAG_STATE\", \"value\" : \"DEN\" }\r\n,\r\n{ \"type\" : \"ASSET\", \"key\" : \"TIME_SPAN\", \"value\" : \"48\" }\r\n],\r\n\"dynamic\":true\r\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "UVMS-1049 http://localhost:28080/movement/rest/search/group",
+			"request": {
+				"url": "http://localhost:28080/movement/rest/search/group",
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					},
+					{
+						"key": "Authorization",
+						"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiJ1c20vYXV0aGVudGljYXRpb24iLCJpc3MiOiJ1c20iLCJzdWIiOiJhdXRoZW50aWNhdGlvbiIsImlhdCI6MTQ3MDMwMTQ0MSwiZXhwIjoxNDcwMzAzMjQxLCJ1c2VyTmFtZSI6InZtc19hZG1pbl9jb20ifQ.DDzBLddIuWBJR3rmh-OH-iPOKSeAPzeD-skvWZhBLbE",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n\"id\" : 8662,\r\n\"name\": \"Swedish ships\",\r\n\"user\": \"SOME_OTHER_USER\",\r\n\"searchFields\": [\r\n{ \"type\" : \"ASSET\", \"key\" : \"TIME_SPAN\", \"value\" : \"48\" }\r\n],\r\n\"dynamic\":true\r\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		}
+	]
+}
