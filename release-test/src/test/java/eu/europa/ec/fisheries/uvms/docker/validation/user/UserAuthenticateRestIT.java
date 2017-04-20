@@ -1,7 +1,7 @@
 /*
 
 Developed with the contribution of the European Commission - Directorate General for Maritime Affairs and Fisheries
-© European Union, 2017.
+ï¿½ European Union, 2017.
 
 This file is part of the Integrated Fisheries Data Management (IFDM) Suite. The IFDM Suite is free software: you can
 redistribute it and/or modify it under the terms of the GNU General Public License as published by the
@@ -11,7 +11,7 @@ FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more d
 copy of the GNU General Public License along with the IFDM Suite. If not, see <http://www.gnu.org/licenses/>.
 
 */
-package eu.europa.ec.fisheries.uvms.docker.validation;
+package eu.europa.ec.fisheries.uvms.docker.validation.user;
 
 import java.util.Map;
 
@@ -20,10 +20,13 @@ import org.apache.http.HttpStatus;
 import org.apache.http.client.fluent.Request;
 import org.junit.Test;
 
+import eu.europa.ec.fisheries.uvms.docker.validation.common.AbstractRestServiceTest;
+
+
 /**
- * The Class SystemAuthenticationIT.
+ * The Class UserAuthenticateRestIT.
  */
-public class SystemAuthenticationIT extends AbstractRestServiceTest {
+public class UserAuthenticateRestIT extends AbstractRestServiceTest {
 
 	/** The base url. */
 	private final String BASE_URL = "http://localhost:28080/";
@@ -35,7 +38,7 @@ public class SystemAuthenticationIT extends AbstractRestServiceTest {
 	 */
 	@Test
 	public void authenticateGetJwtTokenSuccessTest() throws Exception {
-		HttpResponse response = Request.Post(BASE_URL + "usm-administration/rest/authenticate")
+		final HttpResponse response = Request.Post(BASE_URL + "usm-administration/rest/authenticate")
 				.setHeader("Content-Type", "application/json")
 				.bodyByteArray("{\"userName\":\"vms_admin_com\",\"password\":\"password\"}".getBytes()).execute().returnResponse();
 
@@ -52,7 +55,7 @@ public class SystemAuthenticationIT extends AbstractRestServiceTest {
 	 */
 	@Test
 	public void authenticateGetJwtTokenFailureTest() throws Exception {
-		HttpResponse response = Request.Post(BASE_URL + "usm-administration/rest/authenticate")
+		final HttpResponse response = Request.Post(BASE_URL + "usm-administration/rest/authenticate")
 				.setHeader("Content-Type", "application/json")
 				.bodyByteArray("{\"userName\":\"vms_admin_com\",\"password\":\"invalidpassword\"}".getBytes()).execute().returnResponse();
 

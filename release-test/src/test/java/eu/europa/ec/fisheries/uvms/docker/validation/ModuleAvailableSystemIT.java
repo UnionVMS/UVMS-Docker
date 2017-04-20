@@ -18,6 +18,7 @@ import org.apache.http.client.fluent.Request;
 import org.junit.Assert;
 import org.junit.Test;
 
+
 /**
  * The Class ModuleAvailableSystemIT.
  */
@@ -44,7 +45,7 @@ public class ModuleAvailableSystemIT extends Assert {
 	@Test
 	public void checkUserAccessTest() throws Exception {
 		assertEquals(HttpStatus.SC_OK,Request.Get(BASE_URL + "usm-administration/").execute().returnResponse().getStatusLine().getStatusCode());
-		assertEquals(HttpStatus.SC_FORBIDDEN,Request.Get(BASE_URL + "/usm-administration/rest").execute().returnResponse().getStatusLine().getStatusCode());		
+		assertEquals(HttpStatus.SC_FORBIDDEN,Request.Get(BASE_URL + "/usm-administration/rest").execute().returnResponse().getStatusLine().getStatusCode());
 	}
 
 	/**
@@ -55,8 +56,8 @@ public class ModuleAvailableSystemIT extends Assert {
 	@Test
 	public void checkConfigAccessTest() throws Exception {
 		assertEquals(HttpStatus.SC_OK,Request.Get(BASE_URL + "config/").execute().returnResponse().getStatusLine().getStatusCode());
-		assertEquals(HttpStatus.SC_FORBIDDEN,Request.Get(BASE_URL + "config/rest").execute().returnResponse().getStatusLine().getStatusCode());		
-	}	
+		assertEquals(HttpStatus.SC_FORBIDDEN,Request.Get(BASE_URL + "config/rest").execute().returnResponse().getStatusLine().getStatusCode());
+	}
 
 	/**
 	 * Check exchange access test.
@@ -66,7 +67,7 @@ public class ModuleAvailableSystemIT extends Assert {
 	@Test
 	public void checkExchangeAccessTest() throws Exception {
 		assertEquals(HttpStatus.SC_FORBIDDEN,Request.Get(BASE_URL + "exchange/").execute().returnResponse().getStatusLine().getStatusCode());
-		assertEquals(HttpStatus.SC_FORBIDDEN,Request.Get(BASE_URL + "exchange/rest").execute().returnResponse().getStatusLine().getStatusCode());		
+		assertEquals(HttpStatus.SC_FORBIDDEN,Request.Get(BASE_URL + "exchange/rest").execute().returnResponse().getStatusLine().getStatusCode());
 	}
 
 	/**
@@ -77,9 +78,9 @@ public class ModuleAvailableSystemIT extends Assert {
 	@Test
 	public void checkSpatialAccessTest() throws Exception {
 		assertEquals(HttpStatus.SC_FORBIDDEN,Request.Get(BASE_URL + "spatial/").execute().returnResponse().getStatusLine().getStatusCode());
-		assertEquals(HttpStatus.SC_FORBIDDEN,Request.Get(BASE_URL + "spatial/rest").execute().returnResponse().getStatusLine().getStatusCode());		
+		assertEquals(HttpStatus.SC_FORBIDDEN,Request.Get(BASE_URL + "spatial/rest").execute().returnResponse().getStatusLine().getStatusCode());
 	}
-	
+
 	/**
 	 * Check movement access test.
 	 *
@@ -88,7 +89,7 @@ public class ModuleAvailableSystemIT extends Assert {
 	@Test
 	public void checkMovementAccessTest() throws Exception {
 		assertEquals(HttpStatus.SC_FORBIDDEN,Request.Get(BASE_URL + "movement/").execute().returnResponse().getStatusLine().getStatusCode());
-		assertEquals(HttpStatus.SC_FORBIDDEN,Request.Get(BASE_URL + "movement/rest").execute().returnResponse().getStatusLine().getStatusCode());		
+		assertEquals(HttpStatus.SC_FORBIDDEN,Request.Get(BASE_URL + "movement/rest").execute().returnResponse().getStatusLine().getStatusCode());
 	}
 
 	/**
@@ -99,7 +100,7 @@ public class ModuleAvailableSystemIT extends Assert {
 	@Test
 	public void checkAuditAccessTest() throws Exception {
 		assertEquals(HttpStatus.SC_OK,Request.Get(BASE_URL + "audit/").execute().returnResponse().getStatusLine().getStatusCode());
-		assertEquals(HttpStatus.SC_FORBIDDEN,Request.Get(BASE_URL + "audit/rest").execute().returnResponse().getStatusLine().getStatusCode());		
+		assertEquals(HttpStatus.SC_FORBIDDEN,Request.Get(BASE_URL + "audit/rest").execute().returnResponse().getStatusLine().getStatusCode());
 	}
 
 	/**
@@ -110,7 +111,7 @@ public class ModuleAvailableSystemIT extends Assert {
 	@Test
 	public void checkAssetAccessTest() throws Exception {
 		assertEquals(HttpStatus.SC_OK,Request.Get(BASE_URL + "asset/").execute().returnResponse().getStatusLine().getStatusCode());
-		assertEquals(HttpStatus.SC_FORBIDDEN,Request.Get(BASE_URL + "asset/rest").execute().returnResponse().getStatusLine().getStatusCode());		
+		assertEquals(HttpStatus.SC_FORBIDDEN,Request.Get(BASE_URL + "asset/rest").execute().returnResponse().getStatusLine().getStatusCode());
 	}
 
 	/**
@@ -121,7 +122,7 @@ public class ModuleAvailableSystemIT extends Assert {
 	@Test
 	public void checkMobileterminalAccessTest() throws Exception {
 		assertEquals(HttpStatus.SC_FORBIDDEN,Request.Get(BASE_URL + "mobileterminal/").execute().returnResponse().getStatusLine().getStatusCode());
-		assertEquals(HttpStatus.SC_FORBIDDEN,Request.Get(BASE_URL + "mobileterminal/rest").execute().returnResponse().getStatusLine().getStatusCode());		
+		assertEquals(HttpStatus.SC_FORBIDDEN,Request.Get(BASE_URL + "mobileterminal/rest").execute().returnResponse().getStatusLine().getStatusCode());
 	}
 
 	/**
@@ -132,9 +133,9 @@ public class ModuleAvailableSystemIT extends Assert {
 	@Test
 	public void checkRulesAccessTest() throws Exception {
 		assertEquals(HttpStatus.SC_FORBIDDEN,Request.Get(BASE_URL + "rules/").execute().returnResponse().getStatusLine().getStatusCode());
-		assertEquals(HttpStatus.SC_FORBIDDEN,Request.Get(BASE_URL + "rules/rest").execute().returnResponse().getStatusLine().getStatusCode());		
+		assertEquals(HttpStatus.SC_FORBIDDEN,Request.Get(BASE_URL + "rules/rest").execute().returnResponse().getStatusLine().getStatusCode());
 	}
-	
+
 
 	/**
 	 * Check reporting access test.
@@ -146,6 +147,6 @@ public class ModuleAvailableSystemIT extends Assert {
 		assertEquals(HttpStatus.SC_FORBIDDEN,Request.Get(BASE_URL + "reporting/").execute().returnResponse().getStatusLine().getStatusCode());
 	}
 
-	
-	
+
+
 }
