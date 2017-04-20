@@ -4,7 +4,7 @@ ARG ASSET_VERSION=3.0.4
 ARG CONFIG_VERSION=3.0.4
 ARG AUDIT_VERSION=3.0.4
 ARG EXCHANGE_VERSION=3.0.4
-ARG MOVEMENT_VERSION=3.0.4
+ARG MOVEMENT_VERSION=3.0.6
 ARG MOBILE_TERMINAL_VERSION=3.0.4
 ARG RULES_VERSION=3.0.3
 ARG SPATIAL_VERSION=0.5.2
@@ -35,10 +35,10 @@ ADD $GITHUB/UVMS-ExchangeModule-DB/archive/exchange-dbaccess-$EXCHANGE_VERSION.z
 RUN unzip -q /liquibase/exchange/exchange-dbaccess-$EXCHANGE_VERSION.zip -d /liquibase/exchange
 RUN cp -r /liquibase/exchange/UVMS-ExchangeModule-DB-exchange-dbaccess-$EXCHANGE_VERSION/* /liquibase/exchange/
 
-# Movement
-ADD $GITHUB/UVMS-MovementModule-DB/archive/movement-dbaccess-$MOVEMENT_VERSION.zip /liquibase/movement
-RUN unzip -q /liquibase/movement/movement-dbaccess-$MOVEMENT_VERSION -d /liquibase/movement
-RUN cp -r /liquibase/movement/UVMS-MovementModule-DB-movement-dbaccess-$MOVEMENT_VERSION/* /liquibase/movement/
+# Movement  https://github.com/UnionVMS/
+ADD $GITHUB/UVMS-MovementModule-APP/archive/movement-$MOVEMENT_VERSION.zip /liquibase/movement
+RUN unzip -q /liquibase/movement/movement-$MOVEMENT_VERSION -d /liquibase/movement
+RUN cp -r /liquibase/movement/UVMS-MovementModule-APP-movement-$MOVEMENT_VERSION/* /liquibase/movement/
 
 # Mobile Terminal
 ADD $GITHUB/UVMS-MobileTerminalModule-DB/archive/mobileterminal-dbaccess-$MOBILE_TERMINAL_VERSION.zip /liquibase/mobterm

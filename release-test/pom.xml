@@ -17,7 +17,7 @@
 		<dependency>
 			<artifactId>movement-model</artifactId>
 			<groupId>eu.europa.ec.fisheries.uvms.movement</groupId>
-			<version>3.0.5-SNAPSHOT</version>
+			<version>3.0.5</version>
 			<classifier>date</classifier>
 			<scope>test</scope>
 		</dependency>

@@ -17,8 +17,7 @@ addJbossAll config-dbaccess-module-3.0.4 /opt/jboss/jboss-deployment/config-db/j
 addJbossAll config-module-3.0.5 /opt/jboss/jboss-deployment/config/jboss-all.xml
 addJbossAll spatial-module-postgres-0.5.6-SNAPSHOT /opt/jboss/jboss-deployment/spatial/jboss-all.xml
 addJbossAll deploy-0.5.2 /opt/jboss/jboss-deployment/reporting/jboss-all.xml
-addJbossAll movement-dbaccess-module-postgres-3.0.4 /opt/jboss/jboss-deployment/general/jboss-all.xml
-addJbossAll movement-module-3.0.5 /opt/jboss/jboss-deployment/movement/jboss-all.xml
+addJbossAll movement-module-3.0.6 /opt/jboss/jboss-deployment/movement/jboss-all.xml
 addJbossAll asset-module-3.0.5 /opt/jboss/jboss-deployment/asset/jboss-all.xml
 addJbossAll audit-dbaccess-module-3.0.4 /opt/jboss/jboss-deployment/general/jboss-all.xml
 addJbossAll audit-module-3.0.5 /opt/jboss/jboss-deployment/audit/jboss-all.xml
