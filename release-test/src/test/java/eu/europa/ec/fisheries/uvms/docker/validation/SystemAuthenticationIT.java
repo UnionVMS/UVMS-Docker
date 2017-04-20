@@ -41,7 +41,7 @@ public class SystemAuthenticationIT extends AbstractRestServiceTest {
 
 		assertEquals(HttpStatus.SC_OK, response.getStatusLine().getStatusCode());
 		final Map<String, Object> data = getJsonMap(response);
-		assertEquals("true", data.get("authenticated"));
+		assertEquals(true, data.get("authenticated"));
 		assertNotNull(data.get("jwtoken"));
 	}
 
@@ -58,7 +58,7 @@ public class SystemAuthenticationIT extends AbstractRestServiceTest {
 
 		assertEquals(HttpStatus.SC_OK, response.getStatusLine().getStatusCode());
 		final Map<String, Object> data = getJsonMap(response);
-		assertEquals("false", data.get("authenticated"));
+		assertEquals(false, data.get("authenticated"));
 		assertNull(data.get("jwtoken"));
 	}
 
