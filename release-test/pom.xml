@@ -233,7 +233,7 @@
 								</ports>
 								<wait>
 									<log>WildFly 8.2.0.Final "Tweek" started in</log>
-									<time>180000</time>
+									<time>240000</time>
 									<kill>5000</kill>
 									<shutdown>5000</shutdown>
 								</wait>
