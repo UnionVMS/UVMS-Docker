@@ -77,14 +77,14 @@
             <type>war</type>
             <version>${unionvms.project.mapfishprint.version}</version>
         </dependency>
-
+<!-- 
         <dependency>
             <groupId>eu.europa.ec.fisheries.uvms.geoserver</groupId>
             <artifactId>geoserver</artifactId>
             <type>war</type>
             <version>${unionvms.project.geoserver.version}</version>
         </dependency>
-        
+-->        
         
         <!-- app modules -->
         <dependency>
