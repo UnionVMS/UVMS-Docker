@@ -22,6 +22,7 @@ import org.apache.http.client.fluent.Request;
 import org.databene.contiperf.PerfTest;
 import org.databene.contiperf.Required;
 import org.databene.contiperf.junit.ContiPerfRule;
+import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 
@@ -126,6 +127,7 @@ public class MovementMovementRestIT extends AbstractRestServiceTest {
 	 * @throws Exception the exception
 	 */
 	@Test
+	@Ignore
 	public void getByIdTest() throws Exception {
 		final HttpResponse response = Request.Get(BASE_URL + "movement/rest/movement/id")
 				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken()).execute()

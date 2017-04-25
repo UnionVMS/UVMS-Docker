@@ -21,6 +21,7 @@ import org.apache.http.client.fluent.Request;
 import org.databene.contiperf.PerfTest;
 import org.databene.contiperf.Required;
 import org.databene.contiperf.junit.ContiPerfRule;
+import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 
@@ -45,6 +46,7 @@ public class MovementConfigRestIT extends AbstractRestServiceTest {
 	 * @throws Exception the exception
 	 */
 	@Test
+	@Ignore
 	public void getMovementTypesTest() throws Exception {
 		final HttpResponse response = Request.Post(BASE_URL + "movement/rest/config/movementTypes")
 				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken()).execute()
@@ -62,6 +64,7 @@ public class MovementConfigRestIT extends AbstractRestServiceTest {
 	 * @throws Exception the exception
 	 */
 	@Test
+	@Ignore
 	public void getSegmetTypesTest() throws Exception {
 		final HttpResponse response = Request.Post(BASE_URL + "movement/rest/config/segmentCategoryTypes")
 				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken()).execute()
@@ -79,6 +82,7 @@ public class MovementConfigRestIT extends AbstractRestServiceTest {
 	 * @throws Exception the exception
 	 */
 	@Test
+	@Ignore
 	public void getMovementSearchKeysTest() throws Exception {
 		final HttpResponse response = Request.Post(BASE_URL + "movement/rest/config/searchKeys")
 				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken()).execute()
@@ -96,6 +100,7 @@ public class MovementConfigRestIT extends AbstractRestServiceTest {
 	 * @throws Exception the exception
 	 */
 	@Test
+	@Ignore
 	public void getMovementSourceTypesTest() throws Exception {
 		final HttpResponse response = Request.Post(BASE_URL + "movement/rest/config/movementSourceTypes")
 				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken()).execute()
@@ -113,6 +118,7 @@ public class MovementConfigRestIT extends AbstractRestServiceTest {
 	 * @throws Exception the exception
 	 */
 	@Test
+	@Ignore
 	public void getActivityTypesTest() throws Exception {
 		final HttpResponse response = Request.Post(BASE_URL + "movement/rest/config/activityTypes")
 				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken()).execute()
@@ -130,6 +136,7 @@ public class MovementConfigRestIT extends AbstractRestServiceTest {
 	 * @throws Exception the exception
 	 */
 	@Test
+	@Ignore
 	public void getConfigurationTest() throws Exception {
 		final HttpResponse response = Request.Post(BASE_URL + "movement/rest/config/")
 				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken()).execute()

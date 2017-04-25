@@ -21,6 +21,7 @@ import org.apache.http.client.fluent.Request;
 import org.databene.contiperf.PerfTest;
 import org.databene.contiperf.Required;
 import org.databene.contiperf.junit.ContiPerfRule;
+import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 
@@ -72,6 +73,7 @@ public class MovementMovementSearchRestIT extends AbstractRestServiceTest {
 	 * @throws Exception the exception
 	 */
 	@Test
+	@Ignore
 	public void getMovementSearchGroupTest() throws Exception {
 		final HttpResponse response = Request.Get(BASE_URL + "movement/rest/search/group/{id}")
 				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken()).execute()
@@ -106,6 +108,7 @@ public class MovementMovementSearchRestIT extends AbstractRestServiceTest {
 	 * @throws Exception the exception
 	 */
 	@Test
+	@Ignore
 	public void getMovementSearchGroupsByUserTest() throws Exception {
 		final HttpResponse response = Request.Get(BASE_URL + "movement/rest/search/group/?user=usernmae")
 				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken()).execute()
@@ -122,6 +125,7 @@ public class MovementMovementSearchRestIT extends AbstractRestServiceTest {
 	 * @throws Exception the exception
 	 */
 	@Test
+	@Ignore
 	public void deleteMovementSearchGroupTest() throws Exception {
 		final HttpResponse response = Request.Delete(BASE_URL + "movement/rest/search/group/{id}")
 				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken()).execute()
