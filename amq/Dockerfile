@@ -3,7 +3,7 @@ ARG ACTIVEMQ_VERSION=5.13.5
 ENV ACTIVEMQ_HOME /opt/jboss/activemq
 
 RUN cd $HOME \
-    && curl -O https://repository.apache.org/content/repositories/releases/org/apache/activemq/apache-activemq/$ACTIVEMQ_VERSION/apache-activemq-$ACTIVEMQ_VERSION-bin.tar.gz \
+    && curl --insecure -O https://repository.apache.org/content/repositories/releases/org/apache/activemq/apache-activemq/$ACTIVEMQ_VERSION/apache-activemq-$ACTIVEMQ_VERSION-bin.tar.gz \
     && tar xf apache-activemq-$ACTIVEMQ_VERSION-bin.tar.gz \
     && ls -l
 
