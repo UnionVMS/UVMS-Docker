@@ -1,10 +1,12 @@
 FROM jboss/base-jdk:8
-ENV ACTIVEMQ_VERSION 5.13.5
+ARG ACTIVEMQ_VERSION=5.13.5
 ENV ACTIVEMQ_HOME /opt/jboss/activemq
 
 RUN cd $HOME \
     && curl -k -O https://archive.apache.org/dist/activemq/$ACTIVEMQ_VERSION/apache-activemq-$ACTIVEMQ_VERSION-bin.tar.gz \
-    && tar xfz apache-activemq-$ACTIVEMQ_VERSION-bin.tar.gz \
+    && md5sum apache-activemq-$ACTIVEMQ_VERSION-bin.tar.gz \
+    && ls -al \
+    && tar xf apache-activemq-$ACTIVEMQ_VERSION-bin.tar.gz \
     && ls -l
 
 
