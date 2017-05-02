@@ -4,7 +4,7 @@ ENV ACTIVEMQ_HOME /opt/jboss/activemq
 
 RUN cd $HOME \
     && curl -k -O https://archive.apache.org/dist/activemq/$ACTIVEMQ_VERSION/apache-activemq-$ACTIVEMQ_VERSION-bin.tar.gz \
-    && tar xf apache-activemq-$ACTIVEMQ_VERSION-bin.tar.gz \
+    && tar xfz apache-activemq-$ACTIVEMQ_VERSION-bin.tar.gz \
     && ls -l
 
 
