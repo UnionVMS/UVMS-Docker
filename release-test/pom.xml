@@ -142,6 +142,9 @@
 						<goals>
 							<goal>stop</goal>
 						</goals>
+						<configuration>
+							<allContainers>true</allContainers>
+						</configuration>																				
 					</execution>
 					<execution>
 						<id>start</id>
@@ -156,6 +159,9 @@
 						<goals>
 							<goal>stop</goal>
 						</goals>
+						<configuration>
+							<allContainers>true</allContainers>
+						</configuration>														
 					</execution>
 				</executions>
 				<configuration>
