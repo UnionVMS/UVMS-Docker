@@ -290,6 +290,25 @@
 								<goals>
 									<goal>push</goal>
 								</goals>
+								<configuration>									
+									<images>										
+										<image>
+											<name>uvms/activemq:${project.version}</name>
+										</image>
+										<image>
+											<name>uvms/postgres-base:${project.version}</name>
+										</image>
+										<image>
+											<name>uvms/postgres-release:${project.version}</name>
+										</image>
+										<image>
+											<name>uvms/wildfly-base:${project.version}</name>
+										</image>
+										<image>
+											<name>uvms/wildfly-release:${project.version}</name>
+										</image>
+									</images>
+								</configuration>
 							</execution>
 						</executions>
 					</plugin>
