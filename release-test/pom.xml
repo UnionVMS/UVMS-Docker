@@ -269,53 +269,6 @@
 			</plugin>
 		</plugins>
 	</build>
-	<profiles>
-		<profile>
-			<id>push-docker</id>
-			<activation>
-				<property>
-					<name>performRelease</name>
-					<value>true</value>
-				</property>
-			</activation>
-			<build>
-				<plugins>
-					<plugin>
-						<groupId>io.fabric8</groupId>
-						<artifactId>docker-maven-plugin</artifactId>
-						<executions>
-							<execution>
-								<id>docker:push</id>
-								<phase>install</phase>
-								<goals>
-									<goal>push</goal>
-								</goals>
-								<configuration>									
-									<images>										
-										<image>
-											<name>uvms/activemq:${project.version}</name>
-										</image>
-										<image>
-											<name>uvms/postgres-base:${project.version}</name>
-										</image>
-										<image>
-											<name>uvms/postgres-release:${project.version}</name>
-										</image>
-										<image>
-											<name>uvms/wildfly-base:${project.version}</name>
-										</image>
-										<image>
-											<name>uvms/wildfly-release:${project.version}</name>
-										</image>
-									</images>
-								</configuration>
-							</execution>
-						</executions>
-					</plugin>
-				</plugins>
-			</build>
-		</profile>
-	</profiles>	
 	<repositories>
         <repository>
             <id>focus-repo</id>
