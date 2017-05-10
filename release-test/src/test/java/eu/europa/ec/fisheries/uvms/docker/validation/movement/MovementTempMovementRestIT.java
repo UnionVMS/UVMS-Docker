@@ -51,7 +51,7 @@ public class MovementTempMovementRestIT extends AbstractRestServiceTest {
 	 */
 	@Test
 	@PerfTest(threads = 4, duration = 10000, warmUp = 1000)
-	@Required(max = 3000, average = 2000, percentile95 = 2500, throughput = 2)
+	@Required(max = 5000, average = 3000, percentile95 = 3500, throughput = 2)
 	public void createTempTest() throws Exception {
 		final HttpResponse response = Request.Post(BASE_URL + "movement/rest/tempmovement")
 				.setHeader("Content-Type", "application/json").setHeader("Authorization",getValidJwtToken())

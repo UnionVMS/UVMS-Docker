@@ -44,7 +44,7 @@ public class MovementAreasRestIT extends AbstractRestServiceTest {
 	 */
 	@Test
 	@PerfTest(threads = 4, duration = 10000, warmUp = 1000)
-	@Required(max = 3000, average = 2000, percentile95 = 2500, throughput = 2)
+	@Required(max = 5000, average = 3000, percentile95 = 3500, throughput = 2)
 	public void getAreasTest() throws Exception {
 		final HttpResponse response = Request.Get(BASE_URL + "movement/rest/areas")
 				.setHeader("Content-Type", "application/json").setHeader("Authorization",getValidJwtToken()).execute().returnResponse();
