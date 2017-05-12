@@ -41,9 +41,9 @@ RUN unzip -q /liquibase/movement/movement-$MOVEMENT_VERSION -d /liquibase/moveme
 RUN cp -r /liquibase/movement/UVMS-MovementModule-APP-movement-$MOVEMENT_VERSION/* /liquibase/movement/
 
 # Mobile Terminal
-ADD $GITHUB/UVMS-MobileTerminalModule-DB/archive/mobileterminal-dbaccess-$MOBILE_TERMINAL_VERSION.zip /liquibase/mobterm
+ADD $GITHUB/REMOVED_UVMS-MobileTerminalModule-DB/archive/mobileterminal-dbaccess-$MOBILE_TERMINAL_VERSION.zip /liquibase/mobterm
 RUN unzip -q /liquibase/mobterm/mobileterminal-dbaccess-$MOBILE_TERMINAL_VERSION -d /liquibase/mobterm
-RUN cp -r /liquibase/mobterm/UVMS-MobileTerminalModule-DB-mobileterminal-dbaccess-$MOBILE_TERMINAL_VERSION/* /liquibase/mobterm/
+RUN cp -r /liquibase/mobterm/REMOVED_UVMS-MobileTerminalModule-DB-mobileterminal-dbaccess-$MOBILE_TERMINAL_VERSION/* /liquibase/mobterm/
 
 # Rules
 ADD $GITHUB/UVMS-RulesModule-DB/archive/rules-dbaccess-$RULES_VERSION.zip /liquibase/rules
