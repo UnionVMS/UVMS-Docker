@@ -43,7 +43,7 @@ public class MovementAreasRestIT extends AbstractRestServiceTest {
 	 * @throws Exception the exception
 	 */
 	@Test
-	@PerfTest(threads = 4, duration = 10000, warmUp = 1000)
+	@PerfTest(threads = 4, duration = 6000, warmUp = 1000)
 	@Required(max = 5000, average = 3000, percentile95 = 3500, throughput = 2)
 	public void getAreasTest() throws Exception {
 		final HttpResponse response = Request.Get(BASE_URL + "movement/rest/areas")
