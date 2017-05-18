@@ -1,4 +1,30 @@
-FROM uvms/postgres-base:3.1.0-SNAPSHOT
+FROM uvms/postgres-base:3.1.1-SNAPSHOT
+
+ENV GITHUB https://github.com/UnionVMS
+
+COPY initDbEnv.sh /var/lib/postgresql/
+COPY updateDb.sh /docker-entrypoint-initdb.d/
+
+RUN apt-get update
+RUN apt-get install -y unzip
+RUN apt-get install -y maven
+
+RUN mkdir -p /home/postgres/.m2/repository
+COPY settings.xml /home/postgres/.m2/settings.xml
+RUN chmod -R 777 /home/postgres/
+
+#Create temp directories
+RUN mkdir -p /liquibase/config \
+    && mkdir -p /liquibase/asset \
+    && mkdir -p /liquibase/audit \
+    && mkdir -p /liquibase/movement \
+    && mkdir -p /liquibase/exchange \
+    && mkdir -p /liquibase/mobterm \
+    && mkdir -p /liquibase/rules \
+    && mkdir -p /liquibase/spatial \
+    && mkdir -p /liquibase/reporting \
+    && mkdir -p /liquibase/usm
+RUN chown -R postgres:postgres /liquibase
 
 ARG ASSET_VERSION=3.0.4
 ARG CONFIG_VERSION=3.0.4
@@ -79,7 +105,17 @@ COPY usm/pom.xml /liquibase/usm/database/liquibase/
 COPY usm/user.sql /liquibase/usm/database/liquibase/changelog/v0.1/boot/
 COPY usm/USER_T.CSV /liquibase/usm/database/liquibase/test/csv/USER_T.csv
 
-#RUN ls -l /docker-entrypoint-initdb.d
+RUN chmod a+x /var/lib/postgresql/initDbEnv.sh
+
+USER postgres
+
+RUN /var/lib/postgresql/initDbEnv.sh
+
+USER root
+
+RUN chmod -R 777 /home/postgres/
+RUN chown -R postgres:postgres /home/postgres/
+
 
 VOLUME ["/docker-entrypoint-initdb.d"]
 

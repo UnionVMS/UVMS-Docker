@@ -2,35 +2,37 @@
 JAVA_HOME=/usr/lib/jvm/default-java
 export JAVA_HOME
 
-cd /liquibase/usm/USM-master/database/liquibase
+whoami
+
+cd /liquibase/usm/database/liquibase
 mvn liquibase:update -Ddb.url=jdbc:postgresql://localhost:5432/db71u -Ddb.user=usm -Ddb.passwd=usm
 
-
-cd /liquibase/asset/UVMS-AssetModule-DB-swe-dev/LIQUIBASE
+cd /liquibase/asset/LIQUIBASE
 mvn liquibase:update -Ppostgres
 
-cd /liquibase/audit/UVMS-AuditModule-DB-swe-dev/LIQUIBASE
+cd /liquibase/audit/LIQUIBASE
 mvn liquibase:update -Ppostgres
 
-cd /liquibase/config/UVMS-ConfigModule-DB-swe-dev/LIQUIBASE
+cd /liquibase/config/LIQUIBASE
 mvn liquibase:update -Ppostgres
 
-cd /liquibase/exchange/UVMS-ExchangeModule-DB-swe-dev/LIQUIBASE
+cd /liquibase/exchange/LIQUIBASE
 mvn liquibase:update -Ppostgres
 
-cd /liquibase/movement/UVMS-MovementModule-DB-swe-dev/LIQUIBASE
+cd /liquibase/movement/LIQUIBASE
 mvn liquibase:update -Ppostgres
 
-cd /liquibase/mobterm/UVMS-MobileTerminalModule-DB-swe-dev/LIQUIBASE
+cd /liquibase/mobterm/LIQUIBASE
 mvn liquibase:update -Ppostgres
 
-cd /liquibase/rules/UVMS-RulesModule-DB-swe-dev/LIQUIBASE
+cd /liquibase/rules/LIQUIBASE
 mvn liquibase:update -Ppostgres
 
-cd /liquibase/spatial/UVMS-SpatialModule-DB-master/LIQUIBASE
-mvn liquibase:update -Ppostgres -Ddb.url=jdbc:postgresql://localhost:5432/db71u
+cd /liquibase/spatial/LIQUIBASE
 
-cd /liquibase/reporting/UVMS-ReportingModule-DB-master/LIQUIBASE
-mvn liquibase:update -Ppostgres -Ddb.url=jdbc:postgresql://localhost:5432/db71u
+mvn liquibase:update -Ppostgres,exec -Ddb.url=jdbc:postgresql://localhost:5432/db71u
+
+cd /liquibase/reporting/LIQUIBASE
+mvn liquibase:update -Ppostgres,exec -Ddb.url=jdbc:postgresql://localhost:5432/db71u
 
 echo "All uvms databases created"
