@@ -24,7 +24,7 @@
 # /etc/default/activemq <activemq user home>/.activemqrc <activemq installation dir>/bin/env
 
 # Set jvm memory configuration (minimal/maximum amount of memory)
-ACTIVEMQ_OPTS_MEMORY="-Xms2048M -Xmx2048M"
+ACTIVEMQ_OPTS_MEMORY="-Xms256M -Xmx1024M"
 
 if [ -z "$ACTIVEMQ_OPTS" ] ; then
     ACTIVEMQ_OPTS="$ACTIVEMQ_OPTS_MEMORY -XX:+UseG1GC -XX:ReservedCodeCacheSize=64M -Djava.util.logging.config.file=logging.properties -Djava.security.auth.login.config=$ACTIVEMQ_CONF/login.config -Dorg.apache.activemq.UseDedicatedTaskRunner=false"
