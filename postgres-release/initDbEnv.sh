@@ -6,34 +6,34 @@ touch /tmp/ojdbc6-11.2.0.4.jar
 mvn install:install-file -Dfile=/tmp/ojdbc6-11.2.0.4.jar -DgroupId=com.oracle  -DartifactId=ojdbc6 -Dversion=11.2.0.4 -Dpackaging=jar -DgeneratePom=true -DcreateChecksum=true
 
 cd /liquibase/usm/database/liquibase
-mvn clean verify -Ppostgres
+mvn liquibase:update -Ppostgres -Dliquibase.skip=false
 
 cd /liquibase/asset/LIQUIBASE
-mvn clean verify -Ppostgres
+mvn liquibase:update -Ppostgres -Dliquibase.skip=false
 
 cd /liquibase/audit/LIQUIBASE
-mvn clean verify -Ppostgres
+mvn liquibase:update -Ppostgres -Dliquibase.skip=false
 
 cd /liquibase/config/LIQUIBASE
-mvn clean verify -Ppostgres
+mvn liquibase:update -Ppostgres -Dliquibase.skip=false
 
 cd /liquibase/exchange/LIQUIBASE
-mvn clean verify -Ppostgres
+mvn liquibase:update -Ppostgres -Dliquibase.skip=false
 
 cd /liquibase/movement/LIQUIBASE
-mvn clean verify -Ppostgres
+mvn liquibase:update -Ppostgres -Dliquibase.skip=false
 
 cd /liquibase/mobterm/LIQUIBASE
-mvn clean verify -Ppostgres
+mvn liquibase:update -Ppostgres -Dliquibase.skip=false
 
 cd /liquibase/rules/LIQUIBASE
-mvn clean verify -Ppostgres
+mvn liquibase:update -Ppostgres -Dliquibase.skip=false
 
 cd /liquibase/spatial/LIQUIBASE
 
-mvn clean verify -Ppostgres
+mvn liquibase:update -Ppostgres -Ddb.url=jdbc:postgresql://localhost:5432/db71u -Dliquibase.skip=false
 
 cd /liquibase/reporting/LIQUIBASE
-mvn clean verify -Ppostgres
+mvn liquibase:update -Ppostgres -Ddb.url=jdbc:postgresql://localhost:5432/db71u -Dliquibase.skip=false
 
 echo "All uvms databases scripts prepared"

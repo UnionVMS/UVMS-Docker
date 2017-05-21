@@ -31,7 +31,7 @@
         <unionvms.project.exchange.module>3.0.5</unionvms.project.exchange.module>
         <unionvms.project.exchange.dbaccess.module>3.0.4</unionvms.project.exchange.dbaccess.module>
         <unionvms.project.reporting.module>0.5.2</unionvms.project.reporting.module>
-        <unionvms.project.spatial.module>0.5.6-20170510.083821-1</unionvms.project.spatial.module>
+        <unionvms.project.spatial.module>0.5.6-20170520.083757-4</unionvms.project.spatial.module>
         <unionvms.project.config.module>3.0.5</unionvms.project.config.module>
         <unionvms.project.config.dbaccess.module>3.0.4</unionvms.project.config.dbaccess.module>
         <unionvms.project.audit.module>3.0.5</unionvms.project.audit.module>

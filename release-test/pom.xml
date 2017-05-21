@@ -240,7 +240,7 @@
 								<net>bridge</net>
 								<namingStrategy>none</namingStrategy>
 								<ports>
-									<port>15432:5432</port>
+									<port>25432:5432</port>
 								</ports>
 								<wait>
 									<log>All uvms databases created</log>

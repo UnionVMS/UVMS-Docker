@@ -2,8 +2,6 @@
 JAVA_HOME=/usr/lib/jvm/default-java
 export JAVA_HOME
 
-whoami
-
 cd /liquibase/usm/database/liquibase
 mvn liquibase:update -Ddb.url=jdbc:postgresql://localhost:5432/db71u -Ddb.user=usm -Ddb.passwd=usm
 
