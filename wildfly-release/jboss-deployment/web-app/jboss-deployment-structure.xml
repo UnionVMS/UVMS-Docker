@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jboss-deployment-structure>
+	<deployment>
+		<dependencies>
+			<module name="user-module-1.6.1.ear" />
+			<module name="config-module-3.0.5.ear" />
+			<module name="spatial-module-postgres-0.5.6-SNAPSHOT.ear" />
+			<module name="movement-module-3.0.7.ear" />
+			<module name="asset-module-3.0.5.ear" />
+			<module name="audit-module-3.0.5.ear" />
+			<module name="exchange-module-3.0.5.ear" />
+			<module name="mobileterminal-module-3.0.7.ear" />
+			<module name="rules-module-3.0.1.ear" />
+			<module name="deploy-0.5.2.ear" />
+		</dependencies>
+	</deployment>
+</jboss-deployment-structure>
