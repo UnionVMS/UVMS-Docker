@@ -15,6 +15,7 @@ addJbossAlltoWar() {
     echo "Add jboss-all.xml to $1"
     unzip /opt/jboss/wildfly/standalone/deployments/${1}.war -d /opt/jboss/wildfly/standalone/deployments/${1}
 	cp $2 /opt/jboss/wildfly/standalone/deployments/${1}/WEB-INF/
+	cp /opt/jboss/jboss-deployment/web-app/jboss-deployment-structure.xml /opt/jboss/wildfly/standalone/deployments/${1}/WEB-INF/ 
 	rm -rf /opt/jboss/wildfly/standalone/deployments/${1}.war
 	jar cvf /opt/jboss/wildfly/standalone/deployments/${1} /opt/jboss/wildfly/standalone/deployments/${1}.war
 	jar -cvf /opt/jboss/wildfly/standalone/deployments/${1}.war  -C /opt/jboss/wildfly/standalone/deployments/${1} .

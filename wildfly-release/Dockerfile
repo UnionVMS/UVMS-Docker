@@ -14,6 +14,7 @@ RUN mkdir -p /opt/jboss/jboss-deployment/reporting
 RUN mkdir -p /opt/jboss/jboss-deployment/rules
 RUN mkdir -p /opt/jboss/jboss-deployment/spatial
 RUN mkdir -p /opt/jboss/jboss-deployment/user
+RUN mkdir -p /opt/jboss/jboss-deployment/web-app
 
 COPY jboss-deployment/add-jboss-all-to-ear.sh /opt/jboss/jboss-deployment/
 COPY jboss-deployment/asset/jboss-all.xml /opt/jboss/jboss-deployment/asset/
@@ -28,6 +29,9 @@ COPY jboss-deployment/reporting/jboss-all.xml /opt/jboss/jboss-deployment/report
 COPY jboss-deployment/rules/jboss-all.xml /opt/jboss/jboss-deployment/rules/
 COPY jboss-deployment/spatial/jboss-all.xml /opt/jboss/jboss-deployment/spatial/
 COPY jboss-deployment/user/jboss-all.xml /opt/jboss/jboss-deployment/user/
+COPY jboss-deployment/web-app/jboss-all.xml /opt/jboss/jboss-deployment/web-app/
+COPY jboss-deployment/web-app/jboss-deployment-structure.xml /opt/jboss/jboss-deployment/web-app/
+
  
 USER root
 RUN mvn dependency:copy-dependencies -DoutputDirectory=$DEPLOYMENTS -f module-download-pom.xml -q
