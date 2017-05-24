@@ -72,6 +72,8 @@ COPY settings.xml /root/.m2/settings.xml
 RUN yum install -y postgresql
 RUN chown -R jboss:jboss /opt/wildfly
 RUN chown -R jboss:jboss /opt/jboss
+RUN mkdir -p /opt/jboss/wildfly/standalone/log/
+RUN chmod -R 777 /opt/jboss/wildfly/standalone/log/
 USER jboss
 
 # Expose stuff to outside world

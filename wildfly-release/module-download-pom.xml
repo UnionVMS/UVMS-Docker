@@ -77,6 +77,7 @@
             <version>${unionvms.project.mapfishprint.version}</version>
         </dependency>
         
+        <!--
         <dependency>
             <groupId>eu.europa.ec.fisheries.uvms.geoserver.web</groupId>
             <artifactId>gs-web-app</artifactId>
@@ -84,6 +85,7 @@
             <type>war</type>
             <version>${unionvms.project.geoserver.version}</version>
         </dependency>
+        -->
         
         <!-- app modules -->
         <dependency>
