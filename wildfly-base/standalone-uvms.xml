@@ -169,114 +169,294 @@
                         <password>sa</password>
                     </security>
                 </datasource>
-                <datasource jta="true" jndi-name="java:/jdbc/uvms_audit" pool-name="jdbc/uvms_audit" enabled="true" use-ccm="true">
-                    <connection-url>jdbc:postgresql://postgres:5432/db71u</connection-url>
-                    <driver-class>org.postgresql.Driver</driver-class>
+                <xa-datasource jta="true" jndi-name="java:/jdbc/uvms_audit" pool-name="jdbc/uvms_audit" enabled="true" use-ccm="true">
+                    <xa-datasource-property name="URL">jdbc:postgresql://postgres:5432/db71u</xa-datasource-property>
+                    <xa-datasource-property name="ServerName">postgres</xa-datasource-property>
+    				<xa-datasource-property name="PortNumber">5432</xa-datasource-property>
+    				<xa-datasource-property name="DatabaseName">db71u</xa-datasource-property>
+    
                     <driver>postgresql</driver>
+                    <xa-pool>
+				        <min-pool-size>2</min-pool-size>
+				        <initial-pool-size>2</initial-pool-size>
+				        <max-pool-size>20</max-pool-size>
+				        <prefill>true</prefill>
+				    </xa-pool>
+				    <validation>
+				        <valid-connection-checker
+				                class-name="org.jboss.jca.adapters.jdbc.extensions.postgres.PostgreSQLValidConnectionChecker"></valid-connection-checker>
+				        <exception-sorter
+				                class-name="org.jboss.jca.adapters.jdbc.extensions.postgres.PostgreSQLExceptionSorter"></exception-sorter>
+				    </validation>
                     <security>
                         <user-name>audit</user-name>
                         <password>audit</password>
                     </security>
-                </datasource>
-                <datasource jta="true" jndi-name="java:/jdbc/uvms_mobterm" pool-name="jdbc/uvms_mobterm" enabled="true" use-ccm="true">
-                    <connection-url>jdbc:postgresql://postgres:5432/db71u</connection-url>
-                    <driver-class>org.postgresql.Driver</driver-class>
+                </xa-datasource>
+                <xa-datasource jta="true" jndi-name="java:/jdbc/uvms_mobterm" pool-name="jdbc/uvms_mobterm" enabled="true" use-ccm="true">
+                    <xa-datasource-property name="URL">jdbc:postgresql://postgres:5432/db71u</xa-datasource-property>
+                    <xa-datasource-property name="ServerName">postgres</xa-datasource-property>
+    				<xa-datasource-property name="PortNumber">5432</xa-datasource-property>
+    				<xa-datasource-property name="DatabaseName">db71u</xa-datasource-property>
+                    
                     <driver>postgresql</driver>
+                    <xa-pool>
+				        <min-pool-size>2</min-pool-size>
+				        <initial-pool-size>2</initial-pool-size>
+				        <max-pool-size>20</max-pool-size>
+				        <prefill>true</prefill>
+				    </xa-pool>
+				    <validation>
+				        <valid-connection-checker
+				                class-name="org.jboss.jca.adapters.jdbc.extensions.postgres.PostgreSQLValidConnectionChecker"></valid-connection-checker>
+				        <exception-sorter
+				                class-name="org.jboss.jca.adapters.jdbc.extensions.postgres.PostgreSQLExceptionSorter"></exception-sorter>
+				    </validation>
                     <security>
                         <user-name>mobterm</user-name>
                         <password>mobterm</password>
                     </security>
-                </datasource>
-                <datasource jta="true" jndi-name="java:/jdbc/uvms_movement" pool-name="jdbc/uvms_movement" enabled="true" use-ccm="true">
-                    <connection-url>jdbc:postgresql://postgres:5432/db71u</connection-url>
-                    <driver-class>org.postgresql.Driver</driver-class>
+                </xa-datasource>
+                <xa-datasource jta="true" jndi-name="java:/jdbc/uvms_movement" pool-name="jdbc/uvms_movement" enabled="true" use-ccm="true">
+                    <xa-datasource-property name="URL">jdbc:postgresql://postgres:5432/db71u</xa-datasource-property>
+                    <xa-datasource-property name="ServerName">postgres</xa-datasource-property>
+    				<xa-datasource-property name="PortNumber">5432</xa-datasource-property>
+    				<xa-datasource-property name="DatabaseName">db71u</xa-datasource-property>
+    				
                     <driver>postgresql</driver>
+                    <xa-pool>
+				        <min-pool-size>2</min-pool-size>
+				        <initial-pool-size>2</initial-pool-size>
+				        <max-pool-size>20</max-pool-size>
+				        <prefill>true</prefill>
+				    </xa-pool>
+				    <validation>
+				        <valid-connection-checker
+				                class-name="org.jboss.jca.adapters.jdbc.extensions.postgres.PostgreSQLValidConnectionChecker"></valid-connection-checker>
+				        <exception-sorter
+				                class-name="org.jboss.jca.adapters.jdbc.extensions.postgres.PostgreSQLExceptionSorter"></exception-sorter>
+				    </validation>
                     <security>
                         <user-name>movement</user-name>
                         <password>movement</password>
                     </security>
-                </datasource>
-                <datasource jta="true" jndi-name="java:/jdbc/uvms_asset" pool-name="jdbc/uvms_asset" enabled="true" use-ccm="true">
-                    <connection-url>jdbc:postgresql://postgres:5432/db71u</connection-url>
-                    <driver-class>org.postgresql.Driver</driver-class>
+                </xa-datasource>
+                <xa-datasource jta="true" jndi-name="java:/jdbc/uvms_asset" pool-name="jdbc/uvms_asset" enabled="true" use-ccm="true">
+                    <xa-datasource-property name="URL">jdbc:postgresql://postgres:5432/db71u</xa-datasource-property>
+                    <xa-datasource-property name="ServerName">postgres</xa-datasource-property>
+    				<xa-datasource-property name="PortNumber">5432</xa-datasource-property>
+    				<xa-datasource-property name="DatabaseName">db71u</xa-datasource-property>
+    				
                     <driver>postgresql</driver>
+                    <xa-pool>
+				        <min-pool-size>2</min-pool-size>
+				        <initial-pool-size>2</initial-pool-size>
+				        <max-pool-size>20</max-pool-size>
+				        <prefill>true</prefill>
+				    </xa-pool>
+				    <validation>
+				        <valid-connection-checker
+				                class-name="org.jboss.jca.adapters.jdbc.extensions.postgres.PostgreSQLValidConnectionChecker"></valid-connection-checker>
+				        <exception-sorter
+				                class-name="org.jboss.jca.adapters.jdbc.extensions.postgres.PostgreSQLExceptionSorter"></exception-sorter>
+				    </validation>
                     <security>
                         <user-name>asset</user-name>
                         <password>asset</password>
                     </security>
-                </datasource>
-                <datasource jta="true" jndi-name="java:jboss/datasources/uvms_vessel" pool-name="uvms" enabled="true" use-ccm="true">
-                    <connection-url>jdbc:postgresql://postgres:5432/db71u</connection-url>
-                    <driver-class>org.postgresql.Driver</driver-class>
+                </xa-datasource>
+                <xa-datasource jta="true" jndi-name="java:jboss/datasources/uvms_vessel" pool-name="uvms" enabled="true" use-ccm="true">
+                    <xa-datasource-property name="URL">jdbc:postgresql://postgres:5432/db71u</xa-datasource-property>
+                    <xa-datasource-property name="ServerName">postgres</xa-datasource-property>
+    				<xa-datasource-property name="PortNumber">5432</xa-datasource-property>
+    				<xa-datasource-property name="DatabaseName">db71u</xa-datasource-property>
+    				
                     <driver>postgresql</driver>
+                    <xa-pool>
+				        <min-pool-size>2</min-pool-size>
+				        <initial-pool-size>2</initial-pool-size>
+				        <max-pool-size>20</max-pool-size>
+				        <prefill>true</prefill>
+				    </xa-pool>
+				    <validation>
+				        <valid-connection-checker
+				                class-name="org.jboss.jca.adapters.jdbc.extensions.postgres.PostgreSQLValidConnectionChecker"></valid-connection-checker>
+				        <exception-sorter
+				                class-name="org.jboss.jca.adapters.jdbc.extensions.postgres.PostgreSQLExceptionSorter"></exception-sorter>
+				    </validation>
                     <security>
                         <user-name>uvms</user-name>
                         <password>uvms</password>
                     </security>
-                </datasource>
-                <datasource jta="true" jndi-name="java:/jdbc/uvms_exchange" pool-name="jdbc/uvms_exchange" enabled="true" use-ccm="true">
-                    <connection-url>jdbc:postgresql://postgres:5432/db71u</connection-url>
-                    <driver-class>org.postgresql.Driver</driver-class>
+                </xa-datasource>
+                <xa-datasource jta="true" jndi-name="java:/jdbc/uvms_exchange" pool-name="jdbc/uvms_exchange" enabled="true" use-ccm="true">
+                    <xa-datasource-property name="URL">jdbc:postgresql://postgres:5432/db71u</xa-datasource-property>
+                    <xa-datasource-property name="ServerName">postgres</xa-datasource-property>
+    				<xa-datasource-property name="PortNumber">5432</xa-datasource-property>
+    				<xa-datasource-property name="DatabaseName">db71u</xa-datasource-property>
+    				
                     <driver>postgresql</driver>
+                    <xa-pool>
+				        <min-pool-size>2</min-pool-size>
+				        <initial-pool-size>2</initial-pool-size>
+				        <max-pool-size>20</max-pool-size>
+				        <prefill>true</prefill>
+				    </xa-pool>
+				    <validation>
+				        <valid-connection-checker
+				                class-name="org.jboss.jca.adapters.jdbc.extensions.postgres.PostgreSQLValidConnectionChecker"></valid-connection-checker>
+				        <exception-sorter
+				                class-name="org.jboss.jca.adapters.jdbc.extensions.postgres.PostgreSQLExceptionSorter"></exception-sorter>
+				    </validation>
                     <security>
                         <user-name>exchange</user-name>
                         <password>exchange</password>
                     </security>
-                </datasource>
-                <datasource jta="true" jndi-name="java:/jdbc/uvms_rules" pool-name="jdbc/uvms_rules" enabled="true" use-ccm="true">
-                    <connection-url>jdbc:postgresql://postgres:5432/db71u</connection-url>
-                    <driver-class>org.postgresql.Driver</driver-class>
+                </xa-datasource>
+                <xa-datasource jta="true" jndi-name="java:/jdbc/uvms_rules" pool-name="jdbc/uvms_rules" enabled="true" use-ccm="true">
+                    <xa-datasource-property name="URL">jdbc:postgresql://postgres:5432/db71u</xa-datasource-property>
+                    <xa-datasource-property name="ServerName">postgres</xa-datasource-property>
+    				<xa-datasource-property name="PortNumber">5432</xa-datasource-property>
+    				<xa-datasource-property name="DatabaseName">db71u</xa-datasource-property>
+    				
                     <driver>postgresql</driver>
+                    <xa-pool>
+				        <min-pool-size>2</min-pool-size>
+				        <initial-pool-size>2</initial-pool-size>
+				        <max-pool-size>20</max-pool-size>
+				        <prefill>true</prefill>
+				    </xa-pool>
+				    <validation>
+				        <valid-connection-checker
+				                class-name="org.jboss.jca.adapters.jdbc.extensions.postgres.PostgreSQLValidConnectionChecker"></valid-connection-checker>
+				        <exception-sorter
+				                class-name="org.jboss.jca.adapters.jdbc.extensions.postgres.PostgreSQLExceptionSorter"></exception-sorter>
+				    </validation>
                     <security>
                         <user-name>rules</user-name>
                         <password>rules</password>
                     </security>
-                </datasource>
-                <datasource jta="true" jndi-name="java:jboss/datasources/uvms_usm" pool-name="uvms_usm" enabled="true" use-ccm="true">
-                    <connection-url>jdbc:postgresql://postgres:5432/db71u</connection-url>
-                    <driver-class>org.postgresql.Driver</driver-class>
+                </xa-datasource>
+                <xa-datasource jta="true" jndi-name="java:jboss/datasources/uvms_usm" pool-name="uvms_usm" enabled="true" use-ccm="true">
+                    <xa-datasource-property name="URL">jdbc:postgresql://postgres:5432/db71u</xa-datasource-property>
+                    <xa-datasource-property name="ServerName">postgres</xa-datasource-property>
+    				<xa-datasource-property name="PortNumber">5432</xa-datasource-property>
+    				<xa-datasource-property name="DatabaseName">db71u</xa-datasource-property>
+    				
                     <driver>postgresql</driver>
+                    <xa-pool>
+				        <min-pool-size>2</min-pool-size>
+				        <initial-pool-size>2</initial-pool-size>
+				        <max-pool-size>20</max-pool-size>
+				        <prefill>true</prefill>
+				    </xa-pool>
+				    <validation>
+				        <valid-connection-checker
+				                class-name="org.jboss.jca.adapters.jdbc.extensions.postgres.PostgreSQLValidConnectionChecker"></valid-connection-checker>
+				        <exception-sorter
+				                class-name="org.jboss.jca.adapters.jdbc.extensions.postgres.PostgreSQLExceptionSorter"></exception-sorter>
+				    </validation>
                     <security>
                         <user-name>usm</user-name>
                         <password>usm</password>
                     </security>
-                </datasource>
-                <datasource jta="true" jndi-name="java:/jdbc/USM2" pool-name="jdbc/USM2" enabled="true" use-ccm="true">
-                    <connection-url>jdbc:postgresql://postgres:5432/db71u</connection-url>
-                    <driver-class>org.postgresql.Driver</driver-class>
+                </xa-datasource>
+                <xa-datasource jta="true" jndi-name="java:/jdbc/USM2" pool-name="jdbc/USM2" enabled="true" use-ccm="true">
+                    <xa-datasource-property name="URL">jdbc:postgresql://postgres:5432/db71u</xa-datasource-property>
+                    <xa-datasource-property name="ServerName">postgres</xa-datasource-property>
+    				<xa-datasource-property name="PortNumber">5432</xa-datasource-property>
+    				<xa-datasource-property name="DatabaseName">db71u</xa-datasource-property>
+    				
                     <driver>postgresql</driver>
+                    <xa-pool>
+				        <min-pool-size>2</min-pool-size>
+				        <initial-pool-size>2</initial-pool-size>
+				        <max-pool-size>20</max-pool-size>
+				        <prefill>true</prefill>
+				    </xa-pool>
+				    <validation>
+				        <valid-connection-checker
+				                class-name="org.jboss.jca.adapters.jdbc.extensions.postgres.PostgreSQLValidConnectionChecker"></valid-connection-checker>
+				        <exception-sorter
+				                class-name="org.jboss.jca.adapters.jdbc.extensions.postgres.PostgreSQLExceptionSorter"></exception-sorter>
+				    </validation>
                     <security>
                         <user-name>usm</user-name>
                         <password>usm</password>
                     </security>
-                </datasource>
-                <datasource jta="true" jndi-name="java:jboss/datasources/uvms_spatial" pool-name="uvms_spatial" enabled="true" use-ccm="true">
-                    <connection-url>jdbc:postgresql://postgres:5432/db71u</connection-url>
-                    <driver-class>org.postgresql.Driver</driver-class>
+                </xa-datasource>
+                <xa-datasource jta="true" jndi-name="java:jboss/datasources/uvms_spatial" pool-name="uvms_spatial" enabled="true" use-ccm="true">
+                    <xa-datasource-property name="URL">jdbc:postgresql://postgres:5432/db71u</xa-datasource-property>
+                    <xa-datasource-property name="ServerName">postgres</xa-datasource-property>
+    				<xa-datasource-property name="PortNumber">5432</xa-datasource-property>
+    				<xa-datasource-property name="DatabaseName">db71u</xa-datasource-property>
+    				
                     <driver>postgresql</driver>
+                    <xa-pool>
+				        <min-pool-size>2</min-pool-size>
+				        <initial-pool-size>2</initial-pool-size>
+				        <max-pool-size>20</max-pool-size>
+				        <prefill>true</prefill>
+				    </xa-pool>
+				    <validation>
+				        <valid-connection-checker
+				                class-name="org.jboss.jca.adapters.jdbc.extensions.postgres.PostgreSQLValidConnectionChecker"></valid-connection-checker>
+				        <exception-sorter
+				                class-name="org.jboss.jca.adapters.jdbc.extensions.postgres.PostgreSQLExceptionSorter"></exception-sorter>
+				    </validation>
                     <security>
                         <user-name>spatial</user-name>
                         <password>postgres</password>
                     </security>
-                </datasource>
-                <datasource jta="true" jndi-name="java:jboss/datasources/uvms_reporting" pool-name="uvms_reporting" enabled="true" use-ccm="true">
-                    <connection-url>jdbc:postgresql://postgres:5432/db71u</connection-url>
-                    <driver-class>org.postgresql.Driver</driver-class>
+                </xa-datasource>
+                <xa-datasource jta="true" jndi-name="java:jboss/datasources/uvms_reporting" pool-name="uvms_reporting" enabled="true" use-ccm="true">
+                    <xa-datasource-property name="URL">jdbc:postgresql://postgres:5432/db71u</xa-datasource-property>
+                    <xa-datasource-property name="ServerName">postgres</xa-datasource-property>
+    				<xa-datasource-property name="PortNumber">5432</xa-datasource-property>
+    				<xa-datasource-property name="DatabaseName">db71u</xa-datasource-property>
+    				
                     <driver>postgresql</driver>
+                    <xa-pool>
+				        <min-pool-size>2</min-pool-size>
+				        <initial-pool-size>2</initial-pool-size>
+				        <max-pool-size>20</max-pool-size>
+				        <prefill>true</prefill>
+				    </xa-pool>
+				    <validation>
+				        <valid-connection-checker
+				                class-name="org.jboss.jca.adapters.jdbc.extensions.postgres.PostgreSQLValidConnectionChecker"></valid-connection-checker>
+				        <exception-sorter
+				                class-name="org.jboss.jca.adapters.jdbc.extensions.postgres.PostgreSQLExceptionSorter"></exception-sorter>
+				    </validation>
                     <security>
                         <user-name>reporting</user-name>
                         <password>reporting</password>
                     </security>
-                </datasource>
-                <datasource jta="true" jndi-name="java:/jdbc/uvms_config" pool-name="jdbc/uvms_config" enabled="true" use-ccm="true">
-                    <connection-url>jdbc:postgresql://postgres:5432/db71u</connection-url>
-                    <driver-class>org.postgresql.Driver</driver-class>
+                </xa-datasource>
+                <xa-datasource jta="true" jndi-name="java:/jdbc/uvms_config" pool-name="jdbc/uvms_config" enabled="true" use-ccm="true">
+                    <xa-datasource-property name="URL">jdbc:postgresql://postgres:5432/db71u</xa-datasource-property>
+                    <xa-datasource-property name="ServerName">postgres</xa-datasource-property>
+    				<xa-datasource-property name="PortNumber">5432</xa-datasource-property>
+    				<xa-datasource-property name="DatabaseName">db71u</xa-datasource-property>
+    				
                     <driver>postgresql</driver>
+                    <xa-pool>
+				        <min-pool-size>2</min-pool-size>
+				        <initial-pool-size>2</initial-pool-size>
+				        <max-pool-size>20</max-pool-size>
+				        <prefill>true</prefill>
+				    </xa-pool>
+				    <validation>
+				        <valid-connection-checker
+				                class-name="org.jboss.jca.adapters.jdbc.extensions.postgres.PostgreSQLValidConnectionChecker"></valid-connection-checker>
+				        <exception-sorter
+				                class-name="org.jboss.jca.adapters.jdbc.extensions.postgres.PostgreSQLExceptionSorter"></exception-sorter>
+				    </validation>
                     <security>
                         <user-name>config</user-name>
                         <password>config</password>
                     </security>
-                </datasource>
+                </xa-datasource>
                 <drivers>
                     <driver name="h2" module="com.h2database.h2">
                         <xa-datasource-class>org.h2.jdbcx.JdbcDataSource</xa-datasource-class>
@@ -447,6 +627,7 @@
         </subsystem>
         <subsystem xmlns="urn:jboss:domain:resource-adapters:2.0">
             <resource-adapters>
+            	<!--
                 <resource-adapter id="ais-rar-1.0.0-SNAPSHOT.rar">
                     <archive>
                         ais-rar-1.0.0-SNAPSHOT.rar
@@ -457,7 +638,7 @@
                     <config-property name="ip-address">
                         127.0.0.1
                     </config-property>
-                </resource-adapter>
+                </resource-adapter>-->
                 <resource-adapter id="activemq-rar.rar">
                     <archive>
                         activemq-rar.rar
