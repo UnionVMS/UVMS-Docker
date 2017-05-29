@@ -30,6 +30,7 @@ COPY jboss-deployment/rules/jboss-all.xml /opt/jboss/jboss-deployment/rules/
 COPY jboss-deployment/spatial/jboss-all.xml /opt/jboss/jboss-deployment/spatial/
 COPY jboss-deployment/user/jboss-all.xml /opt/jboss/jboss-deployment/user/
 COPY jboss-deployment/web-app/jboss-deployment-structure.xml /opt/jboss/jboss-deployment/web-app/
+COPY jboss-deployment/web-app/jboss-all.xml /opt/jboss/jboss-deployment/web-app/
 
  
 USER root

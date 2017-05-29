@@ -15,6 +15,7 @@ addJbossAlltoWar() {
     echo "Add jboss-all.xml to $1"
     unzip /opt/jboss/wildfly/standalone/deployments/${1}.war -d /opt/jboss/wildfly/standalone/deployments/${1}
 	cp $2 /opt/jboss/wildfly/standalone/deployments/${1}/WEB-INF/
+	cp /opt/jboss/jboss-deployment/web-app/jboss-all.xml /opt/jboss/wildfly/standalone/deployments/${1}/WEB-INF/
 	rm -rf /opt/jboss/wildfly/standalone/deployments/${1}.war
 	jar cvf /opt/jboss/wildfly/standalone/deployments/${1} /opt/jboss/wildfly/standalone/deployments/${1}.war
 	jar -cvf /opt/jboss/wildfly/standalone/deployments/${1}.war  -C /opt/jboss/wildfly/standalone/deployments/${1} .
@@ -42,3 +43,4 @@ addJbossAll rules-module-3.0.1 /opt/jboss/jboss-deployment/rules/jboss-all.xml
 #addJbossAlltoWar gs-web-app-2.8.5.presweden1-postgres /opt/jboss/jboss-deployment/web-app/jboss-deployment-structure.xml
 #addJbossAlltoWar unionvms-web-3.0.4 /opt/jboss/jboss-deployment/web-app/jboss-deployment-structure.xml
 #addJbossAlltoWar mapfish-print-3.4 /opt/jboss/jboss-deployment/web-app/jboss-deployment-structure.xml
+mv /opt/jboss/wildfly/standalone/deployments/gs-web-app-2.8.5.presweden1-postgres.war /opt/jboss/wildfly/standalone/deployments/geoserver.war
