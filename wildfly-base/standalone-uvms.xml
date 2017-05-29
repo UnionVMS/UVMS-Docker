@@ -170,7 +170,6 @@
                     </security>
                 </datasource>
                 <xa-datasource jta="true" jndi-name="java:/jdbc/uvms_audit" pool-name="jdbc/uvms_audit" enabled="true" use-ccm="true">
-                    <xa-datasource-property name="URL">jdbc:postgresql://postgres:5432/db71u</xa-datasource-property>
                     <xa-datasource-property name="ServerName">postgres</xa-datasource-property>
     				<xa-datasource-property name="PortNumber">5432</xa-datasource-property>
     				<xa-datasource-property name="DatabaseName">db71u</xa-datasource-property>
@@ -194,7 +193,6 @@
                     </security>
                 </xa-datasource>
                 <xa-datasource jta="true" jndi-name="java:/jdbc/uvms_mobterm" pool-name="jdbc/uvms_mobterm" enabled="true" use-ccm="true">
-                    <xa-datasource-property name="URL">jdbc:postgresql://postgres:5432/db71u</xa-datasource-property>
                     <xa-datasource-property name="ServerName">postgres</xa-datasource-property>
     				<xa-datasource-property name="PortNumber">5432</xa-datasource-property>
     				<xa-datasource-property name="DatabaseName">db71u</xa-datasource-property>
@@ -218,7 +216,6 @@
                     </security>
                 </xa-datasource>
                 <xa-datasource jta="true" jndi-name="java:/jdbc/uvms_movement" pool-name="jdbc/uvms_movement" enabled="true" use-ccm="true">
-                    <xa-datasource-property name="URL">jdbc:postgresql://postgres:5432/db71u</xa-datasource-property>
                     <xa-datasource-property name="ServerName">postgres</xa-datasource-property>
     				<xa-datasource-property name="PortNumber">5432</xa-datasource-property>
     				<xa-datasource-property name="DatabaseName">db71u</xa-datasource-property>
@@ -242,7 +239,6 @@
                     </security>
                 </xa-datasource>
                 <xa-datasource jta="true" jndi-name="java:/jdbc/uvms_asset" pool-name="jdbc/uvms_asset" enabled="true" use-ccm="true">
-                    <xa-datasource-property name="URL">jdbc:postgresql://postgres:5432/db71u</xa-datasource-property>
                     <xa-datasource-property name="ServerName">postgres</xa-datasource-property>
     				<xa-datasource-property name="PortNumber">5432</xa-datasource-property>
     				<xa-datasource-property name="DatabaseName">db71u</xa-datasource-property>
@@ -266,7 +262,6 @@
                     </security>
                 </xa-datasource>
                 <xa-datasource jta="true" jndi-name="java:jboss/datasources/uvms_vessel" pool-name="uvms" enabled="true" use-ccm="true">
-                    <xa-datasource-property name="URL">jdbc:postgresql://postgres:5432/db71u</xa-datasource-property>
                     <xa-datasource-property name="ServerName">postgres</xa-datasource-property>
     				<xa-datasource-property name="PortNumber">5432</xa-datasource-property>
     				<xa-datasource-property name="DatabaseName">db71u</xa-datasource-property>
@@ -290,7 +285,6 @@
                     </security>
                 </xa-datasource>
                 <xa-datasource jta="true" jndi-name="java:/jdbc/uvms_exchange" pool-name="jdbc/uvms_exchange" enabled="true" use-ccm="true">
-                    <xa-datasource-property name="URL">jdbc:postgresql://postgres:5432/db71u</xa-datasource-property>
                     <xa-datasource-property name="ServerName">postgres</xa-datasource-property>
     				<xa-datasource-property name="PortNumber">5432</xa-datasource-property>
     				<xa-datasource-property name="DatabaseName">db71u</xa-datasource-property>
@@ -314,7 +308,6 @@
                     </security>
                 </xa-datasource>
                 <xa-datasource jta="true" jndi-name="java:/jdbc/uvms_rules" pool-name="jdbc/uvms_rules" enabled="true" use-ccm="true">
-                    <xa-datasource-property name="URL">jdbc:postgresql://postgres:5432/db71u</xa-datasource-property>
                     <xa-datasource-property name="ServerName">postgres</xa-datasource-property>
     				<xa-datasource-property name="PortNumber">5432</xa-datasource-property>
     				<xa-datasource-property name="DatabaseName">db71u</xa-datasource-property>
@@ -338,7 +331,6 @@
                     </security>
                 </xa-datasource>
                 <xa-datasource jta="true" jndi-name="java:jboss/datasources/uvms_usm" pool-name="uvms_usm" enabled="true" use-ccm="true">
-                    <xa-datasource-property name="URL">jdbc:postgresql://postgres:5432/db71u</xa-datasource-property>
                     <xa-datasource-property name="ServerName">postgres</xa-datasource-property>
     				<xa-datasource-property name="PortNumber">5432</xa-datasource-property>
     				<xa-datasource-property name="DatabaseName">db71u</xa-datasource-property>
@@ -362,7 +354,6 @@
                     </security>
                 </xa-datasource>
                 <xa-datasource jta="true" jndi-name="java:/jdbc/USM2" pool-name="jdbc/USM2" enabled="true" use-ccm="true">
-                    <xa-datasource-property name="URL">jdbc:postgresql://postgres:5432/db71u</xa-datasource-property>
                     <xa-datasource-property name="ServerName">postgres</xa-datasource-property>
     				<xa-datasource-property name="PortNumber">5432</xa-datasource-property>
     				<xa-datasource-property name="DatabaseName">db71u</xa-datasource-property>
@@ -386,7 +377,6 @@
                     </security>
                 </xa-datasource>
                 <xa-datasource jta="true" jndi-name="java:jboss/datasources/uvms_spatial" pool-name="uvms_spatial" enabled="true" use-ccm="true">
-                    <xa-datasource-property name="URL">jdbc:postgresql://postgres:5432/db71u</xa-datasource-property>
                     <xa-datasource-property name="ServerName">postgres</xa-datasource-property>
     				<xa-datasource-property name="PortNumber">5432</xa-datasource-property>
     				<xa-datasource-property name="DatabaseName">db71u</xa-datasource-property>
@@ -410,7 +400,6 @@
                     </security>
                 </xa-datasource>
                 <xa-datasource jta="true" jndi-name="java:jboss/datasources/uvms_reporting" pool-name="uvms_reporting" enabled="true" use-ccm="true">
-                    <xa-datasource-property name="URL">jdbc:postgresql://postgres:5432/db71u</xa-datasource-property>
                     <xa-datasource-property name="ServerName">postgres</xa-datasource-property>
     				<xa-datasource-property name="PortNumber">5432</xa-datasource-property>
     				<xa-datasource-property name="DatabaseName">db71u</xa-datasource-property>
@@ -434,7 +423,6 @@
                     </security>
                 </xa-datasource>
                 <xa-datasource jta="true" jndi-name="java:/jdbc/uvms_config" pool-name="jdbc/uvms_config" enabled="true" use-ccm="true">
-                    <xa-datasource-property name="URL">jdbc:postgresql://postgres:5432/db71u</xa-datasource-property>
                     <xa-datasource-property name="ServerName">postgres</xa-datasource-property>
     				<xa-datasource-property name="PortNumber">5432</xa-datasource-property>
     				<xa-datasource-property name="DatabaseName">db71u</xa-datasource-property>

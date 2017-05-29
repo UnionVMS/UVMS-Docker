@@ -3,7 +3,7 @@ JAVA_HOME=/usr/lib/jvm/default-java
 export JAVA_HOME
 
 # Prepared transactions
-sed -i -e"s/^max_prepared_transactions = 0.*$/max_prepared_transactions = 100/" /var/lib/postgresql/data/postgresql.conf
+sed -i -e"s/^#max_prepared_transactions = 0.*$/max_prepared_transactions = 100/" /var/lib/postgresql/data/postgresql.conf
 
 # Performance Tuning
 #sed -i -e"s/^max_connections = 100.*$/max_connections = 1000/" /var/lib/postgresql/data/postgresql.conf
