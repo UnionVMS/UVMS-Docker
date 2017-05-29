@@ -279,6 +279,8 @@
 								<wait>
 									<http>
 										<url>http://localhost:28080/geoserver/web/</url>
+										<method>GET</method>
+                                        <status>200..399</status>
 									</http>
 									<tcp>
 										<host>127.0.0.1</host>
