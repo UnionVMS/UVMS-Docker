@@ -43,4 +43,4 @@ addJbossAll rules-module-3.0.1 /opt/jboss/jboss-deployment/rules/jboss-all.xml
 #addJbossAlltoWar gs-web-app-2.8.5.presweden1-postgres /opt/jboss/jboss-deployment/web-app/jboss-deployment-structure.xml
 #addJbossAlltoWar unionvms-web-3.0.4 /opt/jboss/jboss-deployment/web-app/jboss-deployment-structure.xml
 #addJbossAlltoWar mapfish-print-3.4 /opt/jboss/jboss-deployment/web-app/jboss-deployment-structure.xml
-mv /opt/jboss/wildfly/standalone/deployments/gs-web-app-2.8.5.presweden1-postgres.war /opt/jboss/wildfly/standalone/deployments/geoserver.war
+mv /opt/jboss/wildfly/standalone/deployments/gs-web-app-2.8.5.presweden1-postgres.war /opt/jboss/geoserver.war
