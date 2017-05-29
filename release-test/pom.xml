@@ -277,7 +277,15 @@
 									<port>28080:8080</port>
 								</ports>
 								<wait>
-									<log>WildFly 8.2.0.Final "Tweek" started in</log>
+									<http>
+										<url>http://localhost:28080/geoserver/web/</url>
+									</http>
+									<tcp>
+										<host>127.0.0.1</host>
+										<ports>
+											<port>8080</port>
+										</ports>
+									</tcp>									
 									<time>300000</time>
 									<kill>15000</kill>
 									<shutdown>15000</shutdown>
