@@ -261,29 +261,6 @@
                         <password>asset</password>
                     </security>
                 </xa-datasource>
-                <xa-datasource jta="true" jndi-name="java:jboss/datasources/uvms_vessel" pool-name="uvms" enabled="true" use-ccm="true">
-                    <xa-datasource-property name="ServerName">postgres</xa-datasource-property>
-    				<xa-datasource-property name="PortNumber">5432</xa-datasource-property>
-    				<xa-datasource-property name="DatabaseName">db71u</xa-datasource-property>
-    				
-                    <driver>postgresql</driver>
-                    <xa-pool>
-				        <min-pool-size>2</min-pool-size>
-				        <initial-pool-size>2</initial-pool-size>
-				        <max-pool-size>20</max-pool-size>
-				        <prefill>true</prefill>
-				    </xa-pool>
-				    <validation>
-				        <valid-connection-checker
-				                class-name="org.jboss.jca.adapters.jdbc.extensions.postgres.PostgreSQLValidConnectionChecker"></valid-connection-checker>
-				        <exception-sorter
-				                class-name="org.jboss.jca.adapters.jdbc.extensions.postgres.PostgreSQLExceptionSorter"></exception-sorter>
-				    </validation>
-                    <security>
-                        <user-name>uvms</user-name>
-                        <password>uvms</password>
-                    </security>
-                </xa-datasource>
                 <xa-datasource jta="true" jndi-name="java:/jdbc/uvms_exchange" pool-name="jdbc/uvms_exchange" enabled="true" use-ccm="true">
                     <xa-datasource-property name="ServerName">postgres</xa-datasource-property>
     				<xa-datasource-property name="PortNumber">5432</xa-datasource-property>
