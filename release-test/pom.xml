@@ -278,16 +278,10 @@
 								</ports>
 								<wait>
 									<http>
-										<url>http://localhost:28080/geoserver/web/</url>
+										<url>http://localhost:28080/geoserver/index.html</url>
 										<method>GET</method>
-                                        <status>200..399</status>
+                                        					<status>200</status>
 									</http>
-									<tcp>
-										<host>127.0.0.1</host>
-										<ports>
-											<port>8080</port>
-										</ports>
-									</tcp>									
 									<time>300000</time>
 									<kill>15000</kill>
 									<shutdown>15000</shutdown>
