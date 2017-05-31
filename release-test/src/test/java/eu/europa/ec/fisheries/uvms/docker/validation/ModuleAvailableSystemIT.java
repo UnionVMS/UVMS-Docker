@@ -149,7 +149,7 @@ public class ModuleAvailableSystemIT extends Assert {
 
 	@Test
 	public void checkMapfishPrintAccessTest() throws Exception {
-		assertEquals(HttpStatus.SC_FORBIDDEN,Request.Get(BASE_URL + "mapfish-print-3.4/").execute().returnResponse().getStatusLine().getStatusCode());
+		assertEquals(HttpStatus.SC_FORBIDDEN,Request.Get(BASE_URL + "mapfish-print/").execute().returnResponse().getStatusLine().getStatusCode());
 	}
 
 
