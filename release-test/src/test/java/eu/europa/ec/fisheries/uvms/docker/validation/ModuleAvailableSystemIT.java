@@ -147,6 +147,14 @@ public class ModuleAvailableSystemIT extends Assert {
 		assertEquals(HttpStatus.SC_FORBIDDEN,Request.Get(BASE_URL + "reporting/").execute().returnResponse().getStatusLine().getStatusCode());
 	}
 
+	@Test
+	public void checkMapfishPrintAccessTest() throws Exception {
+		assertEquals(HttpStatus.SC_FORBIDDEN,Request.Get(BASE_URL + "mapfish-print-3.4/").execute().returnResponse().getStatusLine().getStatusCode());
+	}
 
 
+	@Test
+	public void checkGeoserverAccessTest() throws Exception {
+		assertEquals(HttpStatus.SC_OK,Request.Get(BASE_URL + "geoserver/").execute().returnResponse().getStatusLine().getStatusCode());
+	}
 }
