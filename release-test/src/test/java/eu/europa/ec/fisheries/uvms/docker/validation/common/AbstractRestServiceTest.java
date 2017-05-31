@@ -63,6 +63,8 @@ public abstract class AbstractRestServiceTest extends Assert {
 		validJwtToken = (String) data.get("jwtoken");
 	}
 
+	
+	
 	/**
 	 * Gets the valid jwt token.
 	 *
@@ -72,6 +74,19 @@ public abstract class AbstractRestServiceTest extends Assert {
 		return validJwtToken;
 	}
 
+	public final String aquireJwtToken(final String username,final String password ) throws Exception {
+		final HttpResponse response = Request.Post(BASE_URL + "usm-administration/rest/authenticate")
+				.setHeader("Content-Type", "application/json")
+				.bodyByteArray(("{\"userName\":\"" + username + "\",\"password\":\"" + password + "\"}").getBytes()).execute()
+				.returnResponse();
+
+		assertEquals(HttpStatus.SC_OK, response.getStatusLine().getStatusCode());
+		final Map<String, Object> data = getJsonMap(response);
+		assertEquals(true, data.get("authenticated"));
+		return (String) data.get("jwtoken");
+	}
+
+	
 	/**
 	 * Write value as string.
 	 *
