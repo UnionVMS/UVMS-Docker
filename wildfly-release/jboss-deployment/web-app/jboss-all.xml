@@ -9,6 +9,6 @@
 		<dependency name="exchange-module-3.0.5.ear" />
 		<dependency name="mobileterminal-module-3.0.8.ear" />
 		<dependency name="rules-module-3.0.1.ear" />
-		<dependency name="reporting-module-0.5.7-SNAPSHOT.ear" />
+		<dependency name="reporting-module-0.5.7.presweden1.ear" />
 	</jboss-deployment-dependencies>
 </jboss>
