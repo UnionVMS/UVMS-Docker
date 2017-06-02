@@ -98,9 +98,9 @@ RUN cp -r /liquibase/reporting/UVMS-ReportingModule-DB-reporting-db-$REPORTING_V
 ##ADD $GITHUB/USM/archive/$USM_VERSION.zip /liquibase/usm
 ##RUN unzip -q /liquibase/usm/$USM_VERSION.zip -d /liquibase/usm
 ##RUN cp -r /liquibase/usm/USM-$USM_VERSION/* /liquibase/usm/
-ADD $GITHUB/USM/archive/e9600f79b31decfcbe88f957c1d9d603d8cc79b1.zip /liquibase/usm
-RUN unzip -q /liquibase/usm/e9600f79b31decfcbe88f957c1d9d603d8cc79b1.zip -d /liquibase/usm
-RUN cp -r /liquibase/usm/USM-e9600f79b31decfcbe88f957c1d9d603d8cc79b1/* /liquibase/usm/
+ADD $GITHUB/USM/archive/72b98bcc7110533e9136b1e1cc4170f51ad42dbb.zip /liquibase/usm
+RUN unzip -q /liquibase/usm/72b98bcc7110533e9136b1e1cc4170f51ad42dbb.zip -d /liquibase/usm
+RUN cp -r /liquibase/usm/USM-72b98bcc7110533e9136b1e1cc4170f51ad42dbb/* /liquibase/usm/
 
 
 
