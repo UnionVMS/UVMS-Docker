@@ -5,11 +5,11 @@
 			<module name="deployment.user-module-1.6.1.ear" />
 			<module name="deployment.config-module-3.0.5.ear" />
 			<module name="deployment.spatial-module-postgres-0.5.6.presweden2.ear" />
-			<module name="deployment.movement-module-3.0.7.ear" />
+			<module name="deployment.movement-module-3.0.8.ear" />
 			<module name="deployment.asset-module-3.0.5.ear" />
 			<module name="deployment.audit-module-3.0.5.ear" />
 			<module name="deployment.exchange-module-3.0.5.ear" />
-			<module name="deployment.mobileterminal-module-3.0.7.ear" />
+			<module name="deployment.mobileterminal-module-3.0.8.ear" />
 			<module name="deployment.rules-module-3.0.1.ear" />
 			<module name="deployment.reporting-module-0.5.7-SNAPSHOT.ear" />
 		</dependencies>
