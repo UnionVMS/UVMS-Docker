@@ -39,7 +39,14 @@
 			<version>3.0.4</version>
 			<classifier>date</classifier>
 			<scope>test</scope>
-		</dependency>		
+		</dependency>
+		<dependency>
+            <groupId>eu.europa.ec.fisheries.uvms.asset</groupId>
+            <artifactId>asset-model</artifactId>
+            <version>3.0.5-SNAPSHOT</version>
+            <classifier>date</classifier>
+            <scope>test</scope>
+        </dependency>				
 		<dependency>
 			<groupId>eu.europa.ec.fisheries.uvms.user</groupId>
 		 	<artifactId>user-model</artifactId>
