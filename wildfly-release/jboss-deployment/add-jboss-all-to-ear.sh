@@ -40,6 +40,11 @@ addJbossAll exchange-module-3.0.5 /opt/jboss/jboss-deployment/exchange/jboss-all
 addJbossAll mobileterminal-module-3.0.8 /opt/jboss/jboss-deployment/mobile/jboss-all.xml
 addJbossAll rules-dbaccess-module-3.0.3 /opt/jboss/jboss-deployment/general/jboss-all.xml
 addJbossAll rules-module-3.0.1 /opt/jboss/jboss-deployment/rules/jboss-all.xml
+addJbossAll naf-module-3.0.0 /opt/jboss/jboss-deployment/plugins/jboss-all.xml
+addJbossAll sweagencyemail-module-3.0.0 /opt/jboss/jboss-deployment/plugins/jboss-all.xml
+addJbossAll flux-module-2.1.2 /opt/jboss/jboss-deployment/plugins/jboss-all.xml
+addJbossAll twostage-module-3.0.0 /opt/jboss/jboss-deployment/plugins/jboss-all.xml
+addJbossAll siriusone-module-3.0.0 /opt/jboss/jboss-deployment/plugins/jboss-all.xml
 addJbossAlltoWar gs-web-app-2.8.5.presweden1-postgres /opt/jboss/jboss-deployment/web-app/jboss-deployment-structure.xml
 addJbossAlltoWar unionvms-web-3.0.4 /opt/jboss/jboss-deployment/web-app/jboss-deployment-structure.xml
 addJbossAlltoWar mapfish-print-3.4 /opt/jboss/jboss-deployment/web-app/jboss-deployment-structure.xml
