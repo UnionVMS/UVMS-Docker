@@ -36,7 +36,8 @@
         <unionvms.project.config.dbaccess.module>3.0.4</unionvms.project.config.dbaccess.module>
         <unionvms.project.audit.module>3.0.5</unionvms.project.audit.module>
         <unionvms.project.audit.dbaccess.module>3.0.4</unionvms.project.audit.dbaccess.module>
-        <unionvms.project.asset.module>3.0.6</unionvms.project.asset.module>
+        <unionvms.project.asset.module>3.0.5</unionvms.project.asset.module>
+        <unionvms.project.asset.dbaccess.module>3.0.4</unionvms.project.asset.dbaccess.module>
         <unionvms.project.plugins.naf>3.0.0</unionvms.project.plugins.naf>
         <unionvms.project.plugins.sweagencyemail>3.0.0</unionvms.project.plugins.sweagencyemail>
         <unionvms.project.plugins.flux>2.1.2</unionvms.project.plugins.flux>
@@ -153,6 +154,12 @@
         </dependency>
 
         <!-- db modules -->
+        <dependency>
+            <groupId>eu.europa.ec.fisheries.uvms.asset</groupId>
+            <artifactId>asset-dbaccess-module</artifactId>
+            <type>ear</type>
+            <version>${unionvms.project.asset.dbaccess.module}</version>
+        </dependency>        
         <dependency>
             <groupId>eu.europa.ec.fisheries.uvms.audit</groupId>
             <artifactId>audit-dbaccess-module</artifactId>

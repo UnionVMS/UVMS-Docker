@@ -45,6 +45,7 @@ public class AssetHistoryRestIT extends AbstractRestServiceTest {
 	 * @throws Exception the exception
 	 */
 	@Test
+	@Ignore
 	public void getAssetHistoryListByAssetIdTest() throws Exception {
 		final HttpResponse response = Request.Get(BASE_URL + "asset/rest/history/asset?assetId=&maxNbr=100")
 				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken()).execute()
