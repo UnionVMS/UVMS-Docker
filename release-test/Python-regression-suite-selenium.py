@@ -809,7 +809,7 @@ class UnionVMSTestCase(unittest.TestCase):
 
 if __name__ == '__main__':
     unittest.main(
-        testRunner=xmlrunner.XMLTestRunner(output='target/surefire-reports'),
+        testRunner=xmlrunner.XMLTestRunner(output='target/failsafe-reports'),
         # these make sure that some options that are not applicable
         # remain hidden from the help menu.
         failfast=False, buffer=False, catchbreak=False)
