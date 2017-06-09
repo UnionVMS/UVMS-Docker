@@ -1,14 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
-	
+
 	<parent>
 		<groupId>fish.focus.maven</groupId>
 		<artifactId>focus-pom</artifactId>
 		<version>1.4</version>
 		<relativePath />
 	</parent>
-	
+
 	<groupId>eu.europa.ec.fisheries.uvms.docker</groupId>
 	<version>3.2.1-SNAPSHOT</version>
 	<artifactId>uvms-release-test</artifactId>
@@ -16,10 +17,10 @@
 	<name>uvms-release-test</name>
 	<dependencies>
 		<dependency>
-		    <groupId>org.postgresql</groupId>
-		    <artifactId>postgresql</artifactId>
-		    <version>42.1.1.jre7</version>
-		</dependency>	
+			<groupId>org.postgresql</groupId>
+			<artifactId>postgresql</artifactId>
+			<version>42.1.1.jre7</version>
+		</dependency>
 		<dependency>
 			<groupId>eu.europa.ec.fisheries.uvms.docker</groupId>
 			<artifactId>uvms-docker-images</artifactId>
@@ -41,17 +42,17 @@
 			<scope>test</scope>
 		</dependency>
 		<dependency>
-            <groupId>eu.europa.ec.fisheries.uvms.asset</groupId>
-            <artifactId>asset-model</artifactId>
-            <version>3.0.5-SNAPSHOT</version>
-            <classifier>date</classifier>
-            <scope>test</scope>
-        </dependency>				
+			<groupId>eu.europa.ec.fisheries.uvms.asset</groupId>
+			<artifactId>asset-model</artifactId>
+			<version>3.0.5-SNAPSHOT</version>
+			<classifier>date</classifier>
+			<scope>test</scope>
+		</dependency>
 		<dependency>
 			<groupId>eu.europa.ec.fisheries.uvms.user</groupId>
-		 	<artifactId>user-model</artifactId>
+			<artifactId>user-model</artifactId>
 			<version>2.0.0</version>
-			<scope>test</scope>			
+			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>junit</groupId>
@@ -172,16 +173,21 @@
 						<phase>post-integration-test</phase>
 						<configuration>
 							<tasks>
-								<get src="http://localhost:28080/movement/monitoring?format=pdf" dest="target/movement_monitoring.pdf" verbose="true" usetimestamp="true" />
-								<get src="http://localhost:28080/mobileterminal/monitoring?format=pdf" dest="target/mobileterminal_monitoring.pdf" verbose="true" usetimestamp="true" />
+								<get src="http://localhost:28080/movement/monitoring?format=pdf"
+									dest="target/movement_monitoring.pdf" verbose="true"
+									usetimestamp="true" />
+								<get
+									src="http://localhost:28080/mobileterminal/monitoring?format=pdf"
+									dest="target/mobileterminal_monitoring.pdf" verbose="true"
+									usetimestamp="true" />
 							</tasks>
 						</configuration>
 						<goals>
 							<goal>run</goal>
 						</goals>
-					</execution>					
+					</execution>
 				</executions>
-			</plugin>						
+			</plugin>
 			<plugin>
 				<groupId>io.fabric8</groupId>
 				<artifactId>docker-maven-plugin</artifactId>
@@ -195,7 +201,7 @@
 						</goals>
 						<configuration>
 							<allContainers>true</allContainers>
-						</configuration>																				
+						</configuration>
 					</execution>
 					<execution>
 						<id>start</id>
@@ -212,7 +218,7 @@
 						</goals>
 						<configuration>
 							<allContainers>true</allContainers>
-						</configuration>														
+						</configuration>
 					</execution>
 				</executions>
 				<configuration>
@@ -292,7 +298,7 @@
 									<http>
 										<url>http://localhost:28080/geoserver/index.html</url>
 										<method>GET</method>
-                                        					<status>200</status>
+										<status>200</status>
 									</http>
 									<time>300000</time>
 									<kill>15000</kill>
@@ -319,14 +325,87 @@
 		</plugins>
 	</build>
 	<repositories>
-        <repository>
-            <id>focus-repo</id>
-            <name>Focus nexus repository</name>
-            <url>http://nexus.focus.fish/nexus/repository/public/</url>
-        </repository>
-    </repositories>
+		<repository>
+			<id>focus-repo</id>
+			<name>Focus nexus repository</name>
+			<url>http://nexus.focus.fish/nexus/repository/public/</url>
+		</repository>
+	</repositories>
 
-  <scm>
-    <tag>uvms-docker-3.1.0-SNAPSHOT</tag>
-  </scm>
+	<scm>
+		<tag>HEAD</tag>
+	</scm>
+	<profiles>
+		<profile>
+			<id>frontend-test</id>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.codehaus.mojo</groupId>
+						<artifactId>exec-maven-plugin</artifactId>
+						<version>1.6.0</version>
+						<executions>
+							<execution>
+								<id>python-build</id>
+								<phase>integration-test</phase>
+								<goals>
+									<goal>exec</goal>
+								</goals>
+							</execution>
+						</executions>
+						<configuration>
+							<executable>python3</executable>
+							<workingDirectory>${project.basedir}</workingDirectory>
+							<arguments>
+								<argument>Python-regression-suite-selenium.py</argument>
+							</arguments>
+							<successCodes>
+								<successCode>0</successCode>
+								<successCode>1</successCode>
+								<successCode>2</successCode>
+							</successCodes>
+						</configuration>
+					</plugin>
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-antrun-plugin</artifactId>
+						<version>1.8</version>
+						<executions>
+							<execution>
+								<id>createThriftDir</id>
+								<phase>process-resources</phase>
+								<configuration>
+									<tasks>
+										<mkdir dir="${project.basedir}/target" />
+										<mkdir dir="${project.basedir}/target/surefire-reports" />
+									</tasks>
+								</configuration>
+								<goals>
+									<goal>run</goal>
+								</goals>
+							</execution>
+							<execution>
+								<id>downloadMonitoringMetrics</id>
+								<phase>post-integration-test</phase>
+								<configuration>
+									<tasks>
+										<get src="http://localhost:28080/movement/monitoring?format=pdf"
+											dest="target/movement_monitoring.pdf" verbose="true"
+											usetimestamp="true" />
+										<get
+											src="http://localhost:28080/mobileterminal/monitoring?format=pdf"
+											dest="target/mobileterminal_monitoring.pdf" verbose="true"
+											usetimestamp="true" />
+									</tasks>
+								</configuration>
+								<goals>
+									<goal>run</goal>
+								</goals>
+							</execution>
+						</executions>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+	</profiles>
 </project>
