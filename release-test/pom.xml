@@ -331,10 +331,6 @@
 			<url>http://nexus.focus.fish/nexus/repository/public/</url>
 		</repository>
 	</repositories>
-
-	<scm>
-		<tag>HEAD</tag>
-	</scm>
 	<profiles>
 		<profile>
 			<id>frontend-test</id>
@@ -365,44 +361,6 @@
 								<successCode>2</successCode>
 							</successCodes>
 						</configuration>
-					</plugin>
-					<plugin>
-						<groupId>org.apache.maven.plugins</groupId>
-						<artifactId>maven-antrun-plugin</artifactId>
-						<version>1.8</version>
-						<executions>
-							<execution>
-								<id>createThriftDir</id>
-								<phase>process-resources</phase>
-								<configuration>
-									<tasks>
-										<mkdir dir="${project.basedir}/target" />
-										<mkdir dir="${project.basedir}/target/surefire-reports" />
-									</tasks>
-								</configuration>
-								<goals>
-									<goal>run</goal>
-								</goals>
-							</execution>
-							<execution>
-								<id>downloadMonitoringMetrics</id>
-								<phase>post-integration-test</phase>
-								<configuration>
-									<tasks>
-										<get src="http://localhost:28080/movement/monitoring?format=pdf"
-											dest="target/movement_monitoring.pdf" verbose="true"
-											usetimestamp="true" />
-										<get
-											src="http://localhost:28080/mobileterminal/monitoring?format=pdf"
-											dest="target/mobileterminal_monitoring.pdf" verbose="true"
-											usetimestamp="true" />
-									</tasks>
-								</configuration>
-								<goals>
-									<goal>run</goal>
-								</goals>
-							</execution>
-						</executions>
 					</plugin>
 				</plugins>
 			</build>
