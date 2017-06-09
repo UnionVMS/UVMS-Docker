@@ -502,10 +502,7 @@ def change_and_check_speed_format(self,unitNumber):
 
 
 
-def generate_and_verify_manual_position(self,speedValue,courseValue):
-    # Startup browser and login
-    startup_browser_and_login_to_unionVMS(self)
-    time.sleep(5)
+def generate_and_verify_manual_position(self,speedValue,courseValue,ircsValue,lolaPositionValues,countryValue,externalMarkingValue,vesselName,sourceValue):
     # Select Positions tab
     self.driver.find_element_by_id("uvms-header-menu-item-movement").click()
     time.sleep(2)
@@ -513,7 +510,7 @@ def generate_and_verify_manual_position(self,speedValue,courseValue):
     self. driver.find_element_by_xpath("//button[@type='submit']").click()
     time.sleep(2)
     # Enter IRCS value
-    self.driver.find_element_by_name("ircs").send_keys(ircsValue[0])
+    self.driver.find_element_by_name("ircs").send_keys(ircsValue)
     time.sleep(5)
     ##self.driver.find_element_by_css_selector("strong").click()
     ##//time.sleep(2)
@@ -541,7 +538,7 @@ def generate_and_verify_manual_position(self,speedValue,courseValue):
     time.sleep(2)
     self.driver.find_element_by_link_text("Custom").click()
     self.driver.find_element_by_xpath("//input[@type='text']").clear()
-    self.driver.find_element_by_xpath("//input[@type='text']").send_keys(ircsValue[0])
+    self.driver.find_element_by_xpath("//input[@type='text']").send_keys(ircsValue)
     time.sleep(5)
     # Click on search button
     self.driver.find_element_by_xpath("(//button[@type='submit'])[2]").click()
@@ -549,14 +546,14 @@ def generate_and_verify_manual_position(self,speedValue,courseValue):
     # Verifies position data
     self.assertEqual(countryValue, self.driver.find_element_by_css_selector("td[title=\"" + countryValue + "\"]").text)
     self.assertEqual(externalMarkingValue, self.driver.find_element_by_css_selector("td[title=\"" + externalMarkingValue + "\"]").text)
-    self.assertEqual(ircsValue[0], self.driver.find_element_by_css_selector("td[title=\"" + ircsValue[0] + "\"]").text)
-    self.assertEqual(vesselName[0], self.driver.find_element_by_link_text(vesselName[0]).text)
+    self.assertEqual(ircsValue, self.driver.find_element_by_css_selector("td[title=\"" + ircsValue + "\"]").text)
+    self.assertEqual(vesselName, self.driver.find_element_by_link_text(vesselName).text)
     # Bug UVMS-3249 self.assertEqual(earlierPositionDateTimeValueString, self.driver.find_element_by_xpath("//*[@id='content']/div[1]/div[3]/div[2]/div/div[2]/div/div[4]/div/div/div/div/span/table/tbody/tr[1]/td[6]").text)
     self.assertEqual(lolaPositionValues[0][0][0], self.driver.find_element_by_css_selector("td[title=\"" + lolaPositionValues[0][0][0] + "\"]").text)
     self.assertEqual(lolaPositionValues[0][0][1], self.driver.find_element_by_css_selector("td[title=\"" + lolaPositionValues[0][0][1] + "\"]").text)
     self.assertEqual("%.2f" % speedValue + " kts", self.driver.find_element_by_css_selector("td[title=\"" + "%.2f" % speedValue + " kts" + "\"]").text)
     self.assertEqual(str(courseValue) + "°", self.driver.find_element_by_css_selector("td[title=\"" + str(courseValue) + "°" + "\"]").text)
-    self.assertEqual(sourceValue[1], self.driver.find_element_by_css_selector("td[title=\"" + sourceValue[1] + "\"]").text)
+    self.assertEqual(sourceValue, self.driver.find_element_by_css_selector("td[title=\"" + sourceValue + "\"]").text)
     time.sleep(5)
     return earlierPositionDateTimeValueString
 
@@ -801,8 +798,145 @@ class UnionVMSTestCase(unittest.TestCase):
          
         link_asset_and_mobile_terminal(self,serialNoValue, ircsValue)
         shutdown_browser(self)
+        
+        
+    def test_05_link_asset_and_mobile_terminal_and_unlink(self):
+            #Asset
+        countryValue = 'SWE'
+        homeportValue = "GOT"
+        lengthValue = "14"
+        grossTonnageValue = "3"
+        powerValue = "1300"
+        gearTypeValue = "Dermersal"
+        mmsiValue = "" + str(random.randint(100000000, 999999999))
+        imoValue = "0" + str(random.randint(100000,999999))
+        commonRandomValue= str(random.randint(1000,9999))
+        cfrValue = "SWE0000F" + commonRandomValue
+        externalMarkingValue = "EXT3"
+        vesselName = "Ship" + commonRandomValue
+        ircsValue = "F" + commonRandomValue
+  
+        licenseTypeValue = "MOCK-license-DB"
+          
+        namePrefix = ["Glen", "Conny", "Sonny", "Kal", "Ada", "Osborn", "Rustan", "Reine", "Kent", "Frank"]
+          
+        producernameValue = random.choice(namePrefix)
+        lastName = random.choice(namePrefix)
+        producercodeValue = ""
+        contactNameValue = producernameValue +" " + lastName + "son"
+        contactEmailValue = producernameValue + "." +lastName + "son" + "@havochvatten.se"
+        contactPhoneNumberValue = "+46720" + str(random.randint(100000,999999))
+        
+        #MobileTerminal
+        serialNoValue = "M" + str(random.randint(1000,9999))               
+        transceiverType = "Type A"
+        softwareVersion = "A"
+        antennaVersion = "A"
+        dnidNumber = str(random.randint(1000,9999))
+        satelliteNumber = "S" + dnidNumber
+        memberIdnumber = "100"
+        installedByName = "Mike Great"
+        expectedFrequencyHours = "2"
+        expectedFrequencyMinutes = "0"
+        gracePeriodFrequencyHours = "15"
+        gracePeriodFrequencyMinutes = "0"
+        inPortFrequencyHours = "3"
+        inPortFrequencyMinutes = "0"
+    
+            
+        startup_browser_and_login_to_unionVMS(self,"vms_admin_com","password","AdminAll")
+        time.sleep(5)
+        create_one_new_asset_from_gui(self, ircsValue,vesselName,externalMarkingValue,cfrValue,imoValue,homeportValue,mmsiValue,lengthValue,grossTonnageValue,powerValue,producernameValue,producercodeValue,contactNameValue,contactEmailValue,contactPhoneNumberValue)
+        check_new_asset_exists(self,countryValue,gearTypeValue,licenseTypeValue, ircsValue,vesselName,externalMarkingValue,cfrValue,imoValue,homeportValue,mmsiValue,lengthValue,grossTonnageValue,powerValue,producernameValue,producercodeValue,contactNameValue,contactEmailValue,contactPhoneNumberValue)
 
+        populateIridiumImarsatCData()
 
+        create_one_new_mobile_terminal_from_gui(self, serialNoValue, transceiverType, softwareVersion, antennaVersion, satelliteNumber, dnidNumber, memberIdnumber, installedByName, expectedFrequencyHours, gracePeriodFrequencyHours, inPortFrequencyHours)
+        check_new_mobile_terminal_exists(self, serialNoValue, memberIdnumber, dnidNumber, transceiverType, softwareVersion, satelliteNumber, antennaVersion, installedByName)
+
+        populateIridiumImarsatCData()
+         
+        link_asset_and_mobile_terminal(self,serialNoValue, ircsValue)
+        
+        # Select Mobile Terminal tab
+        self.driver.find_element_by_id("uvms-header-menu-item-communication").click()
+        time.sleep(2)
+        # Enter Serial Number in field
+        self.driver.find_element_by_id("mt-input-search-serialNumber").send_keys(serialNoValue)
+        # Click in search button
+        self.driver.find_element_by_id("mt-btn-advanced-search").click()
+        time.sleep(5)
+        # Click on details button
+        self.driver.find_element_by_id("mt-toggle-form").click()
+        time.sleep(2)
+        # Click on unlinking button
+        self.driver.find_element_by_id("menu-bar-unlink").click()
+        time.sleep(1)
+        # Enter comment and click on unlinking button
+        self.driver.find_element_by_name("comment").send_keys("Unlink Asset and MT.")
+        self.driver.find_element_by_css_selector("div.modal-footer > div.row > div.col-md-12 > button.btn.btn-primary").click()
+        time.sleep(2)
+        # Shutdown browser
+        shutdown_browser(self)
+        
+        
+    def test_06_generate_and_verify_manual_position(self):
+        countryValue = 'SWE'
+        homeportValue = "GOT"
+        lengthValue = "14"
+        grossTonnageValue = "3"
+        powerValue = "1300"
+        gearTypeValue = "Dermersal"
+        mmsiValue = "" + str(random.randint(100000000, 999999999))
+        imoValue = "0" + str(random.randint(100000,999999))
+        commonRandomValue= str(random.randint(1000,9999))
+        cfrValue = "SWE0000F" + commonRandomValue
+        externalMarkingValue = "EXT3"
+        vesselName = "Ship" + commonRandomValue
+        ircsValue = "F" + commonRandomValue
+   
+        licenseTypeValue = "MOCK-license-DB"
+           
+        namePrefix = ["Glen", "Conny", "Sonny", "Kal", "Ada", "Osborn", "Rustan", "Reine", "Kent", "Frank"]
+           
+        producernameValue = random.choice(namePrefix)
+        lastName = random.choice(namePrefix)
+        producercodeValue = ""
+        contactNameValue = producernameValue +" " + lastName + "son"
+        contactEmailValue = producernameValue + "." +lastName + "son" + "@havochvatten.se"
+        contactPhoneNumberValue = "+46720" + str(random.randint(100000,999999))
+           
+        startup_browser_and_login_to_unionVMS(self,"vms_admin_com","password","AdminAll")
+        time.sleep(5)
+        create_one_new_asset_from_gui(self, ircsValue,vesselName,externalMarkingValue,cfrValue,imoValue,homeportValue,mmsiValue,lengthValue,grossTonnageValue,powerValue,producernameValue,producercodeValue,contactNameValue,contactEmailValue,contactPhoneNumberValue)
+        check_new_asset_exists(self,countryValue,gearTypeValue,licenseTypeValue, ircsValue,vesselName,externalMarkingValue,cfrValue,imoValue,homeportValue,mmsiValue,lengthValue,grossTonnageValue,powerValue,producernameValue,producercodeValue,contactNameValue,contactEmailValue,contactPhoneNumberValue)
+                
+        reportedSpeedValue = 5
+        reportedCourseValue = 180
+        # lolaPositionValues [Asset number x, lola position route y, lat=0/lon=1 z]
+        lolaPositionValues = [[["57.326", "16.996"], ["57.327", "16.997"]],
+                              [["57.934", "11.592"], ["57.935", "11.593"]],
+                              [["56.647", "12.840"], ["56.646", "12.834"]],
+                              [["56.659", "16.378"], ["56.659", "16.381"]],
+                              [["57.266", "16.480"], ["57.267", "16.487"]],
+                              [["58.662", "17.129"], ["58.661", "17.137"]],
+                              [["58.662", "17.129"], ["58.661", "17.137"]],
+                              [["57.554", "11.893"], ["57.554", "11.893"]],
+                              [["63.703", "20.621"], ["63.703", "20.621"]],
+                              [["63.659", "20.608"], ["63.659", "20.608"]],
+                              [["63.624", "20.598"], ["63.624", "20.598"]],
+                              [["63.597", "20.602"], ["63.597", "20.602"]],
+                              [["63.577", "20.603"], ["63.577", "20.603"]],
+                              [["63.553", "20.599"], ["63.553", "20.599"]],
+                              [["63.519", "20.553"], ["63.519", "20.553"]],
+                              [["63.500", "20.547"], ["63.500", "20.547"]],
+                              [["63.449", "20.510"], ["63.449", "20.510"]],
+                              [["63.403", "20.457"], ["63.403", "20.457"]]]
+        sourceValue = "MANUAL"
+
+        generate_and_verify_manual_position(self, reportedSpeedValue, reportedCourseValue,ircsValue,lolaPositionValues,countryValue,externalMarkingValue,vesselName,sourceValue);
+        # Shutdown browser
+        shutdown_browser(self)
         
 #if __name__ == '__main__':
 #    unittest.main()
