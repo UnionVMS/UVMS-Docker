@@ -10,6 +10,7 @@ from selenium import webdriver
 from selenium.webdriver.support.ui import Select
 from selenium.common.exceptions import NoSuchElementException
 from selenium.webdriver.common.by import By
+from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 import subprocess
@@ -126,20 +127,24 @@ def populateSanityRuleData():
 def startup_browser_and_login_to_unionVMS(cls,userId,password,userContext):
     # Start Chrome browser
     cls.driver = webdriver.Chrome()
+    
+    #cls.driver.implicitly_wait(10)
+    #cls.driver.set_script_timeout(10)
     #cls.driver = webdriver.Firefox()
     # Maximize browser window
     cls.driver.maximize_window()
     # Login to test user admin
     #cls.driver.get("https://unionvmstest.havochvatten.se/unionvms/")
     cls.driver.get(httpUnionVMSurlString)
-    time.sleep(2)
+    
+    #time.sleep(4)
 
     # if Hav och vatten proxy page is presented, then autologin
     try:
         if cls.driver.find_element_by_xpath("/html/head/title"):
             cls.driver.switch_to.frame("content")
             cls.driver.find_element_by_css_selector("img[alt=\"Automatisk inloggning\"]").click()
-            time.sleep(2)
+            time.sleep(4)
     except:
         pass
 
@@ -148,19 +153,19 @@ def startup_browser_and_login_to_unionVMS(cls,userId,password,userContext):
     try:
         if cls.driver.find_element_by_xpath("/html/body/div[5]/div/div/div/form"):
             cls.driver.find_element_by_xpath("/html/body/div[5]/div/div/div/form/div[3]/button[2]").click()
-            time.sleep(2)
+            time.sleep(4)
     except:
         pass
 
     cls.driver.find_element_by_id("userId").send_keys("vms_admin_com")
     cls.driver.find_element_by_id("password").send_keys("password")
-    time.sleep(2)
+    #time.sleep(4)
     cls.driver.find_element_by_xpath(
         "//*[@id='content']/div[1]/div[3]/div/div[2]/div[3]/div[2]/form/div[3]/div/button"). \
         click()
-    time.sleep(2)
+    time.sleep(4)
     cls.driver.find_element_by_partial_link_text("AdminAll").click()
-    time.sleep(2)
+    time.sleep(4)
 
 
 def shutdown_browser(cls):
@@ -170,13 +175,13 @@ def shutdown_browser(cls):
 def create_one_new_asset_from_gui(self,ircsValue,vesselName,externalMarkingValue,cfrValue,imoValue,homeportValue,mmsiValue,lengthValue,grossTonnageValue,powerValue,producernameValue,producercodeValue,contactNameValue,contactEmailValue,contactPhoneNumberValue):
     # Startup browser and login
     self.driver.implicitly_wait(10)
-    time.sleep(5)
+    time.sleep(8)
     # Click on asset tab
     self.driver.find_element_by_id("uvms-header-menu-item-assets").click()
-    time.sleep(1)
+    time.sleep(4)
     # Click on new Asset button
     self.driver.find_element_by_id("asset-btn-create").click()
-    time.sleep(2)
+    time.sleep(4)
     # Select F.S value
     self.driver.find_element_by_id("asset-input-countryCode").click()
     self.driver.find_element_by_id("asset-input-countryCode-item-2").click()
@@ -199,7 +204,7 @@ def create_one_new_asset_from_gui(self,ircsValue,vesselName,externalMarkingValue
     self.driver.find_element_by_id("asset-input-mmsi").send_keys(mmsiValue)
     # Select License Type value
     self.driver.find_element_by_id("asset-input-licenseType").click()
-    time.sleep(1)
+    time.sleep(4)
     self.driver.find_element_by_id("asset-input-licenseType-item-0").click()
     # Length Value
     self.driver.find_element_by_id("asset-input-lengthValue").send_keys(lengthValue)
@@ -213,7 +218,7 @@ def create_one_new_asset_from_gui(self,ircsValue,vesselName,externalMarkingValue
     self.driver.find_element_by_id("asset-input-producercode").send_keys(producercodeValue)
     # Click on the Contacts tab
     self.driver.find_element_by_xpath("//*[@id='CONTACTS']/span").click()
-    time.sleep(1)
+    time.sleep(4)
     # Main Contact Name Value
     self.driver.find_element_by_id("asset-input-contact-name-0").send_keys(contactNameValue)
     # Main E-mail Value
@@ -222,24 +227,24 @@ def create_one_new_asset_from_gui(self,ircsValue,vesselName,externalMarkingValue
     self.driver.find_element_by_id("asset-input-contact-number-0").send_keys(contactPhoneNumberValue)
     # Click on Save Asset button
     self.driver.find_element_by_id("menu-bar-save").click()
-    time.sleep(5)
+    time.sleep(8)
     # Leave new asset view
     self.driver.find_element_by_id("menu-bar-cancel").click()
-    time.sleep(3)
+    time.sleep(6)
 
 
 def create_one_new_mobile_terminal_from_gui(self, serialNoValue, transceiverType, softwareVersion, antennaVersion, satelliteNumber, dnidNumber, memberIdnumber, installedByName, expectedFrequencyHours, gracePeriodFrequencyHours, inPortFrequencyHours):
     # Startup browser and login
     self.driver.find_element_by_id("uvms-header-menu-item-communication").click()
-    time.sleep(2)
+    time.sleep(4)
     # Click on new terminal button
     self.driver.find_element_by_id("mt-btn-create").click()
-    time.sleep(3)
+    time.sleep(6)
     # Select Transponder system
     self.driver.find_element_by_id("mt-0-typeAndPlugin").click()
-    time.sleep(1)
+    time.sleep(4)
     self.driver.find_element_by_link_text("Inmarsat-C : twostage").click()
-    time.sleep(1)
+    time.sleep(4)
     # Enter serial number
     self.driver.find_element_by_id("mt-0-serialNumber").send_keys(serialNoValue)
     # Enter Transceiver type
@@ -262,42 +267,42 @@ def create_one_new_mobile_terminal_from_gui(self, serialNoValue, transceiverType
     self.driver.find_element_by_id("mt-0-channel-0-frequencyGrace").send_keys(gracePeriodFrequencyHours)
     # In port
     self.driver.find_element_by_id("mt-0-channel-0-frequencyPort").send_keys(inPortFrequencyHours)
-    time.sleep(2)
+    time.sleep(4)
     # Activate Mobile Terminal button
     self.driver.find_element_by_id("mt-0-activation").click()
-    time.sleep(5)
+    time.sleep(8)
     # Click on save button
     self.driver.find_element_by_id("menu-bar-save").click()
-    time.sleep(5)
+    time.sleep(8)
     # Leave new asset view
     self.driver.find_element_by_id("menu-bar-cancel").click()
-    time.sleep(2)
+    time.sleep(4)
     
 
 def create_one_new_mobile_terminal_via_asset_tab(self, mobileTerminalNumber, vesselNumber):
     # Startup browser and login
     startup_browser_and_login_to_unionVMS(self)
-    time.sleep(5)
+    time.sleep(8)
     # Click on asset tab
     self.driver.find_element_by_id("uvms-header-menu-item-assets").click()
-    time.sleep(1)
+    time.sleep(4)
     # Search for created asset
     self.driver.find_element_by_id("asset-input-simple-search").clear()
     self.driver.find_element_by_id("asset-input-simple-search").send_keys(vesselName[vesselNumber])
-    time.sleep(1)
+    time.sleep(4)
     self.driver.find_element_by_id("asset-btn-simple-search").click()
-    time.sleep(3)
+    time.sleep(6)
     # Click on details button
     self.driver.find_element_by_id("asset-toggle-form").click()
-    time.sleep(1)
+    time.sleep(4)
     # Click on add new terminal button
     self.driver.find_element_by_id("menu-bar-vessel-add-terminal").click()
-    time.sleep(1)
+    time.sleep(4)
     # Select Transponder system
     self.driver.find_element_by_id("mt-0-typeAndPlugin").click()
-    time.sleep(1)
+    time.sleep(4)
     self.driver.find_element_by_link_text("Inmarsat-C : twostage").click()
-    time.sleep(1)
+    time.sleep(4)
     # Enter serial number
     self.driver.find_element_by_id("mt-0-serialNumber").send_keys(serialNoValue[mobileTerminalNumber])
     # Enter Transceiver type
@@ -322,13 +327,13 @@ def create_one_new_mobile_terminal_via_asset_tab(self, mobileTerminalNumber, ves
     self.driver.find_element_by_id("mt-0-channel-0-frequencyPort").send_keys(inPortFrequencyHours)
     # Activate Mobile Terminal button
     self.driver.find_element_by_id("mt-0-activation").click()
-    time.sleep(3)
+    time.sleep(6)
     # Click on save button
     self.driver.find_element_by_xpath("//*[@id='menu-bar-update']").click()
-    time.sleep(5)
+    time.sleep(8)
     # Leave new asset view
     self.driver.find_element_by_id("menu-bar-cancel").click()
-    time.sleep(2)
+    time.sleep(4)
     # Shutdown browser
     shutdown_browser(self)
 
@@ -336,17 +341,17 @@ def create_one_new_mobile_terminal_via_asset_tab(self, mobileTerminalNumber, ves
 def check_new_asset_exists(self,countryValue,gearTypeValue,licenseTypeValue, ircsValue,vesselName,externalMarkingValue,cfrValue,imoValue,homeportValue,mmsiValue,lengthValue,grossTonnageValue,powerValue,producernameValue,producercodeValue,contactNameValue,contactEmailValue,contactPhoneNumberValue):
     # Startup browser and login
     self.driver.find_element_by_id("uvms-header-menu-item-assets").click()
-    time.sleep(5)
+    time.sleep(8)
     # Search for the new created asset in the asset list
     self.driver.find_element_by_id("asset-input-simple-search").send_keys(vesselName)
     self.driver.find_element_by_id("asset-btn-simple-search").click()
-    time.sleep(5)
+    time.sleep(8)
     # Check that the new asset exists in the list.
     self.assertEqual(vesselName, self.driver.find_element_by_css_selector("td[title=\"" + vesselName + "\"]").text)
-    time.sleep(1)
+    time.sleep(4)
     # Click on details button for new asset
     self.driver.find_element_by_id("asset-toggle-form").click()
-    time.sleep(5)
+    time.sleep(8)
     # Check that the F.S value is correct.
     self.assertEqual(countryValue, self.driver.find_element_by_id("asset-input-countryCode").text)
     # Check that the IRCS value is correct
@@ -383,25 +388,25 @@ def check_new_asset_exists(self,countryValue,gearTypeValue,licenseTypeValue, irc
     self.assertEqual(producercodeValue, self.driver.find_element_by_id("asset-input-producercode").get_attribute("value"))
     # Click on the Contacts tab
     self.driver.find_element_by_xpath("//*[@id='CONTACTS']/span").click()
-    time.sleep(1)
+    time.sleep(4)
     # Check that the Contact Name value is correct.
     self.assertEqual(contactNameValue, self.driver.find_element_by_id("asset-input-contact-name-0").get_attribute("value"))
     # Check that the E-mail value is correct.
     self.assertEqual(contactEmailValue, self.driver.find_element_by_id("asset-input-contact-email-0").get_attribute("value"))
     # Check that the E-mail value is correct.
     self.assertEqual(contactPhoneNumberValue, self.driver.find_element_by_id("asset-input-contact-number-0").get_attribute("value"))
-    time.sleep(5)
+    time.sleep(8)
     # Shutdown browser
 
 def check_new_mobile_terminal_exists(self, serialNoValue, memberIdnumber, dnidNumber, transceiverType, softwareVersion, satelliteNumber, antennaVersion, installedByName):
     # Select Mobile Terminal tab
     self.driver.find_element_by_id("uvms-header-menu-item-communication").click()
-    time.sleep(2)
+    time.sleep(4)
     # Enter Serial Number in
     self.driver.find_element_by_xpath("(//input[@type='text'])[7]").send_keys(serialNoValue)
     # Click in search button
     self.driver.find_element_by_xpath("//button[@type='submit']").click()
-    time.sleep(5)
+    time.sleep(8)
     # Check Serial Number in the list
     self.assertEqual(serialNoValue, self.driver.find_element_by_xpath("//div[@id='content']/div/div[3]/div[2]/div/div/div/div/div[3]/div/div/div/div/span/table/tbody/tr/td[3]").text)
     # Check Member Number in the list
@@ -410,7 +415,7 @@ def check_new_mobile_terminal_exists(self, serialNoValue, memberIdnumber, dnidNu
     self.assertEqual(dnidNumber, self.driver.find_element_by_xpath("//div[@id='content']/div/div[3]/div[2]/div/div/div/div/div[3]/div/div/div/div/span/table/tbody/tr/td[5]").text)
     # Click on details button
     self.driver.find_element_by_xpath("//div[@id='content']/div/div[3]/div[2]/div/div/div/div/div[3]/div/div/div/div/span/table/tbody/tr/td[10]/button").click()
-    time.sleep(2)
+    time.sleep(4)
     # Check Serial Number
     self.assertEqual(serialNoValue, self.driver.find_element_by_id("mt-0-serialNumber").get_attribute("value"))
     # Check Transceiver Type
@@ -429,66 +434,66 @@ def check_new_mobile_terminal_exists(self, serialNoValue, memberIdnumber, dnidNu
     self.assertEqual(installedByName, self.driver.find_element_by_id("mt-0-channel-0-installedBy").get_attribute("value"))
     # Leave new asset view
     self.driver.find_element_by_id("menu-bar-cancel").click()
-    time.sleep(2)
+    time.sleep(4)
     
 
 def link_asset_and_mobile_terminal(self, serialNoValue, ircsValue):
     # Select Mobile Terminal tab
     self.driver.find_element_by_id("uvms-header-menu-item-communication").click()
-    time.sleep(2)
+    time.sleep(4)
     # Enter Serial Number in field
     self.driver.find_element_by_id("mt-input-search-serialNumber").clear()
 
     self.driver.find_element_by_id("mt-input-search-serialNumber").send_keys(serialNoValue)
     # Click in search button
     self.driver.find_element_by_id("mt-btn-advanced-search").click()
-    time.sleep(5)
+    time.sleep(8)
     # Click on details button
     self.driver.find_element_by_id("mt-toggle-form").click()
-    time.sleep(3)
+    time.sleep(6)
     # Click on Link Asset
     self.driver.find_element_by_id("mt-btn-assign-asset").click()
-    time.sleep(2)
+    time.sleep(4)
     # Enter Asset Name and clicks on the search button
     self.driver.find_element_by_xpath("(//input[@type='text'])[23]").send_keys(ircsValue)
     self.driver.find_element_by_xpath("//button[@type='submit']").click()
-    time.sleep(2)
+    time.sleep(4)
     # Click on connect button
     self.driver.find_element_by_css_selector("td.textAlignRight > button.btn.btn-primary").click()
     # Click on Link button
-    time.sleep(2)
+    time.sleep(4)
     self.driver.find_element_by_css_selector("div.col-md-6.textAlignRight > button.btn.btn-primary").click()
     # Enter Reason comment
     self.driver.find_element_by_name("comment").send_keys("Need to connect this mobile terminal with this asset.")
-    time.sleep(2)
+    time.sleep(4)
     # Click on Link button 2
     self.driver.find_element_by_css_selector("div.modal-footer > div.row > div.col-md-12 > button.btn.btn-primary").click()
-    time.sleep(2)
+    time.sleep(4)
     # Close page
     self.driver.find_element_by_id("menu-bar-cancel").click()
-    time.sleep(2)
+    time.sleep(4)
 
 
 def change_and_check_speed_format(self,unitNumber):
     # Startup browser and login
     startup_browser_and_login_to_unionVMS(self)
-    time.sleep(5)
+    time.sleep(8)
     # Select Admin tab
     self.driver.find_element_by_id("uvms-header-menu-item-audit-log").click()
-    time.sleep(5)
+    time.sleep(8)
     self.driver.find_element_by_link_text("CONFIGURATION").click()
-    time.sleep(3)
+    time.sleep(6)
     # Click on Global setting subtab under Configuration Tab
     self.driver.find_element_by_css_selector("#globalSettings > span").click()
-    time.sleep(1)
+    time.sleep(4)
     # Set Speed format to knots
     self.driver.find_element_by_xpath("(//button[@type='button'])[4]").click()
-    time.sleep(1)
+    time.sleep(4)
     self.driver.find_element_by_link_text(speedUnitTypesInText[unitNumber]).click()
-    time.sleep(2)
+    time.sleep(4)
     # Click on Position Tab to check correct speed unit
     self.driver.find_element_by_id("uvms-header-menu-item-movement").click()
-    time.sleep(5)
+    time.sleep(8)
     currentSpeedValue = self.driver.find_element_by_xpath("//*[@id='content']/div[1]/div[3]/div[2]/div/div[2]/div/div[4]/div/div/div/div/span/table/tbody/tr[1]/td[11]").text
     print("Current: " +  currentSpeedValue + " Short Unit: " + speedUnitTypesShort[unitNumber])
     if currentSpeedValue.find(speedUnitTypesShort[unitNumber]) == -1:
@@ -496,65 +501,63 @@ def change_and_check_speed_format(self,unitNumber):
     else:
         foundCorrectUnit = True
     self.assertTrue(foundCorrectUnit)
-    time.sleep(5)
+    time.sleep(8)
     # Shutdown browser
     shutdown_browser(self)
 
 
 
-def generate_and_verify_manual_position(self,speedValue,courseValue,ircsValue,lolaPositionValues,countryValue,externalMarkingValue,vesselName,sourceValue):
+def generate_and_verify_manual_position(self,speedValue,courseValue,ircsValue,cfr,lolaPositionValues,countryValue,externalMarkingValue,vesselName,sourceValue,deltaTimeValue):
     # Select Positions tab
     self.driver.find_element_by_id("uvms-header-menu-item-movement").click()
-    time.sleep(2)
+    time.sleep(4)
     # Click on New manual report
     self. driver.find_element_by_xpath("//button[@type='submit']").click()
-    time.sleep(2)
+    time.sleep(4)
     # Enter IRCS value
     self.driver.find_element_by_name("ircs").send_keys(ircsValue)
-    time.sleep(5)
-    ##self.driver.find_element_by_css_selector("strong").click()
-    ##//time.sleep(2)
-    # Get Current Date and time in UTC
+    time.sleep(4)
+    self.driver.find_element_by_link_text(ircsValue).click()
+    time.sleep(8)
+    
     currentUTCValue = datetime.datetime.utcnow()
     earlierPositionTimeValue = currentUTCValue - datetime.timedelta(hours=deltaTimeValue)
     earlierPositionDateTimeValueString = datetime.datetime.strftime(earlierPositionTimeValue, '%Y-%m-%d %H:%M:%S')
     self.driver.find_element_by_id("manual-movement-date-picker").clear()
     self.driver.find_element_by_id("manual-movement-date-picker").send_keys(earlierPositionDateTimeValueString)
+    
+    self.driver.find_element_by_name("name").send_keys("testNameJames")
+        
     # Enter Position, Speed and Course
     self.driver.find_element_by_name("latitude").clear()
     self.driver.find_element_by_name("latitude").send_keys(lolaPositionValues[0][0][0])
     self.driver.find_element_by_name("longitude").clear()
     self.driver.find_element_by_name("longitude").send_keys(lolaPositionValues[0][0][1])
     self.driver.find_element_by_name("measuredSpeed").send_keys(str(speedValue))
+    
     self.driver.find_element_by_name("course").send_keys(str(courseValue))
     # Click on Save Button
     self.driver.find_element_by_xpath("(//button[@type='submit'])[4]").click()
-    time.sleep(5)
+    time.sleep(8)
     # Click on Confirm button
     self.driver.find_element_by_xpath("(//button[@type='submit'])[4]").click()
-    time.sleep(5)
-    # Enter IRCS for newly created position
-    self.driver.find_element_by_xpath("(//button[@type='button'])[2]").click()
-    time.sleep(2)
-    self.driver.find_element_by_link_text("Custom").click()
-    self.driver.find_element_by_xpath("//input[@type='text']").clear()
-    self.driver.find_element_by_xpath("//input[@type='text']").send_keys(ircsValue)
-    time.sleep(5)
-    # Click on search button
-    self.driver.find_element_by_xpath("(//button[@type='submit'])[2]").click()
-    time.sleep(5)
+    time.sleep(8)
+
+
+    self.driver.find_element_by_link_text("MANUAL POSITION REPORTS").click()
+    time.sleep(8)    
+
     # Verifies position data
-    self.assertEqual(countryValue, self.driver.find_element_by_css_selector("td[title=\"" + countryValue + "\"]").text)
     self.assertEqual(externalMarkingValue, self.driver.find_element_by_css_selector("td[title=\"" + externalMarkingValue + "\"]").text)
     self.assertEqual(ircsValue, self.driver.find_element_by_css_selector("td[title=\"" + ircsValue + "\"]").text)
-    self.assertEqual(vesselName, self.driver.find_element_by_link_text(vesselName).text)
+    #self.assertEqual(vesselName, self.driver.find_element_by_link_text(vesselName).text)
     # Bug UVMS-3249 self.assertEqual(earlierPositionDateTimeValueString, self.driver.find_element_by_xpath("//*[@id='content']/div[1]/div[3]/div[2]/div/div[2]/div/div[4]/div/div/div/div/span/table/tbody/tr[1]/td[6]").text)
     self.assertEqual(lolaPositionValues[0][0][0], self.driver.find_element_by_css_selector("td[title=\"" + lolaPositionValues[0][0][0] + "\"]").text)
     self.assertEqual(lolaPositionValues[0][0][1], self.driver.find_element_by_css_selector("td[title=\"" + lolaPositionValues[0][0][1] + "\"]").text)
-    self.assertEqual("%.2f" % speedValue + " kts", self.driver.find_element_by_css_selector("td[title=\"" + "%.2f" % speedValue + " kts" + "\"]").text)
-    self.assertEqual(str(courseValue) + "°", self.driver.find_element_by_css_selector("td[title=\"" + str(courseValue) + "°" + "\"]").text)
-    self.assertEqual(sourceValue, self.driver.find_element_by_css_selector("td[title=\"" + sourceValue + "\"]").text)
-    time.sleep(5)
+#     self.assertEqual("%.2f" % speedValue + " kts", self.driver.find_element_by_css_selector("td[title=\"" + "%.2f" % speedValue + " kts" + "\"]").text)
+#     self.assertEqual(str(courseValue) + "°", self.driver.find_element_by_css_selector("td[title=\"" + str(courseValue) + "°" + "\"]").text)
+#     self.assertEqual(sourceValue, self.driver.find_element_by_css_selector("td[title=\"" + sourceValue + "\"]").text)
+    time.sleep(8)
     return earlierPositionDateTimeValueString
 
 
@@ -602,19 +605,19 @@ def generate_NAF_and_verify_position(self,speedValue,courseValue):
         print("Request NOT OK!")
     # Startup browser and login
     startup_browser_and_login_to_unionVMS(self)
-    time.sleep(5)
+    time.sleep(8)
     # Select Positions tab
     self.driver.find_element_by_id("uvms-header-menu-item-movement").click()
-    time.sleep(7)
+    time.sleep(8)
     # Enter IRCS for newly created position
     self.driver.find_element_by_xpath("(//button[@type='button'])[2]").click()
     self.driver.find_element_by_link_text("Custom").click()
     self.driver.find_element_by_xpath("//input[@type='text']").clear()
     self.driver.find_element_by_xpath("//input[@type='text']").send_keys(ircsValue[0])
-    time.sleep(5)
+    time.sleep(8)
     # Click on search button
     self.driver.find_element_by_xpath("(//button[@type='submit'])[2]").click()
-    time.sleep(5)
+    time.sleep(8)
     # Enter Vessel to verify position data
     self.assertEqual(countryValue, self.driver.find_element_by_css_selector("td[title=\"" + countryValue + "\"]").text)
     self.assertEqual(externalMarkingValue,
@@ -627,7 +630,7 @@ def generate_NAF_and_verify_position(self,speedValue,courseValue):
     self.assertEqual("%.2f" % speedValue + " kts", self.driver.find_element_by_css_selector("td[title=\"" + "%.2f" % speedValue + " kts" + "\"]").text)
     self.assertEqual(str(courseValue) + "°", self.driver.find_element_by_css_selector("td[title=\"" + str(courseValue) + "°" + "\"]").text)
     self.assertEqual(sourceValue[0], self.driver.find_element_by_css_selector("td[title=\"" + sourceValue[0] + "\"]").text)
-    time.sleep(5)
+    time.sleep(8)
     return earlierPositionDateTimeValueString
 
 def generate_NAF_string(self,countryValue,ircsValue,cfrValue,externalMarkingValue,latValue,longValue,speedValue,courseValue,dateValue,timeValue,vesselNameValue):
@@ -709,7 +712,6 @@ class UnionVMSTestCase(unittest.TestCase):
         contactPhoneNumberValue = "+46720" + str(random.randint(100000,999999))
            
         startup_browser_and_login_to_unionVMS(self,"vms_admin_com","password","AdminAll")
-        time.sleep(5)
         create_one_new_asset_from_gui(self, ircsValue,vesselName,externalMarkingValue,cfrValue,imoValue,homeportValue,mmsiValue,lengthValue,grossTonnageValue,powerValue,producernameValue,producercodeValue,contactNameValue,contactEmailValue,contactPhoneNumberValue)
         check_new_asset_exists(self,countryValue,gearTypeValue,licenseTypeValue, ircsValue,vesselName,externalMarkingValue,cfrValue,imoValue,homeportValue,mmsiValue,lengthValue,grossTonnageValue,powerValue,producernameValue,producercodeValue,contactNameValue,contactEmailValue,contactPhoneNumberValue)
         shutdown_browser(self)
@@ -733,7 +735,6 @@ class UnionVMSTestCase(unittest.TestCase):
         populateIridiumImarsatCData()
                 
         startup_browser_and_login_to_unionVMS(self,"vms_admin_com","password","AdminAll")
-        time.sleep(5)
         create_one_new_mobile_terminal_from_gui(self, serialNoValue, transceiverType, softwareVersion, antennaVersion, satelliteNumber, dnidNumber, memberIdnumber, installedByName, expectedFrequencyHours, gracePeriodFrequencyHours, inPortFrequencyHours)
         check_new_mobile_terminal_exists(self, serialNoValue, memberIdnumber, dnidNumber, transceiverType, softwareVersion, satelliteNumber, antennaVersion, installedByName)
         shutdown_browser(self)
@@ -785,7 +786,6 @@ class UnionVMSTestCase(unittest.TestCase):
         
                 
         startup_browser_and_login_to_unionVMS(self,"vms_admin_com","password","AdminAll")
-        time.sleep(5)
         create_one_new_asset_from_gui(self, ircsValue,vesselName,externalMarkingValue,cfrValue,imoValue,homeportValue,mmsiValue,lengthValue,grossTonnageValue,powerValue,producernameValue,producercodeValue,contactNameValue,contactEmailValue,contactPhoneNumberValue)
         check_new_asset_exists(self,countryValue,gearTypeValue,licenseTypeValue, ircsValue,vesselName,externalMarkingValue,cfrValue,imoValue,homeportValue,mmsiValue,lengthValue,grossTonnageValue,powerValue,producernameValue,producercodeValue,contactNameValue,contactEmailValue,contactPhoneNumberValue)
 
@@ -842,10 +842,8 @@ class UnionVMSTestCase(unittest.TestCase):
         gracePeriodFrequencyMinutes = "0"
         inPortFrequencyHours = "3"
         inPortFrequencyMinutes = "0"
-    
-            
+                
         startup_browser_and_login_to_unionVMS(self,"vms_admin_com","password","AdminAll")
-        time.sleep(5)
         create_one_new_asset_from_gui(self, ircsValue,vesselName,externalMarkingValue,cfrValue,imoValue,homeportValue,mmsiValue,lengthValue,grossTonnageValue,powerValue,producernameValue,producercodeValue,contactNameValue,contactEmailValue,contactPhoneNumberValue)
         check_new_asset_exists(self,countryValue,gearTypeValue,licenseTypeValue, ircsValue,vesselName,externalMarkingValue,cfrValue,imoValue,homeportValue,mmsiValue,lengthValue,grossTonnageValue,powerValue,producernameValue,producercodeValue,contactNameValue,contactEmailValue,contactPhoneNumberValue)
 
@@ -860,22 +858,23 @@ class UnionVMSTestCase(unittest.TestCase):
         
         # Select Mobile Terminal tab
         self.driver.find_element_by_id("uvms-header-menu-item-communication").click()
-        time.sleep(2)
+        time.sleep(4)
         # Enter Serial Number in field
+        self.driver.find_element_by_id("mt-input-search-serialNumber").clear()
         self.driver.find_element_by_id("mt-input-search-serialNumber").send_keys(serialNoValue)
         # Click in search button
         self.driver.find_element_by_id("mt-btn-advanced-search").click()
-        time.sleep(5)
+        time.sleep(8)
         # Click on details button
         self.driver.find_element_by_id("mt-toggle-form").click()
-        time.sleep(2)
+        time.sleep(4)
         # Click on unlinking button
         self.driver.find_element_by_id("menu-bar-unlink").click()
-        time.sleep(1)
+        time.sleep(4)
         # Enter comment and click on unlinking button
         self.driver.find_element_by_name("comment").send_keys("Unlink Asset and MT.")
         self.driver.find_element_by_css_selector("div.modal-footer > div.row > div.col-md-12 > button.btn.btn-primary").click()
-        time.sleep(2)
+        time.sleep(4)
         # Shutdown browser
         shutdown_browser(self)
         
@@ -907,14 +906,14 @@ class UnionVMSTestCase(unittest.TestCase):
         contactPhoneNumberValue = "+46720" + str(random.randint(100000,999999))
            
         startup_browser_and_login_to_unionVMS(self,"vms_admin_com","password","AdminAll")
-        time.sleep(5)
         create_one_new_asset_from_gui(self, ircsValue,vesselName,externalMarkingValue,cfrValue,imoValue,homeportValue,mmsiValue,lengthValue,grossTonnageValue,powerValue,producernameValue,producercodeValue,contactNameValue,contactEmailValue,contactPhoneNumberValue)
         check_new_asset_exists(self,countryValue,gearTypeValue,licenseTypeValue, ircsValue,vesselName,externalMarkingValue,cfrValue,imoValue,homeportValue,mmsiValue,lengthValue,grossTonnageValue,powerValue,producernameValue,producercodeValue,contactNameValue,contactEmailValue,contactPhoneNumberValue)
                 
         reportedSpeedValue = 5
         reportedCourseValue = 180
+        deltaTimeValue=2
         # lolaPositionValues [Asset number x, lola position route y, lat=0/lon=1 z]
-        lolaPositionValues = [[["57.326", "16.996"], ["57.327", "16.997"]],
+        lolaPositionValues = [[["56° 30,661′", "11° 30,820′"], ["56° 42,270′", "11° 20,273′"]],
                               [["57.934", "11.592"], ["57.935", "11.593"]],
                               [["56.647", "12.840"], ["56.646", "12.834"]],
                               [["56.659", "16.378"], ["56.659", "16.381"]],
@@ -934,7 +933,119 @@ class UnionVMSTestCase(unittest.TestCase):
                               [["63.403", "20.457"], ["63.403", "20.457"]]]
         sourceValue = "MANUAL"
 
-        generate_and_verify_manual_position(self, reportedSpeedValue, reportedCourseValue,ircsValue,lolaPositionValues,countryValue,externalMarkingValue,vesselName,sourceValue);
+        generate_and_verify_manual_position(self, reportedSpeedValue, reportedCourseValue,ircsValue,cfrValue,lolaPositionValues,countryValue,externalMarkingValue,vesselName,sourceValue,deltaTimeValue);
+        # Shutdown browser
+        shutdown_browser(self)
+        
+        
+    def test_27_view_audit_log(self):
+        # Startup browser and login
+        startup_browser_and_login_to_unionVMS(self,"vms_admin_com","password","AdminAll")
+        # Select Audit Log tab
+        self.driver.find_element_by_id("uvms-header-menu-item-audit-log").click()
+        time.sleep(8)
+        # Click on all sub tabs under Audit Log Tab
+        self.driver.find_element_by_css_selector("#EXCHANGE > span").click()
+        time.sleep(4)
+        self.driver.find_element_by_css_selector("#POSITION_REPORTS > span").click()
+        time.sleep(4)
+        self.driver.find_element_by_css_selector("#ASSETS_AND_TERMINALS > span").click()
+        time.sleep(4)
+        self.driver.find_element_by_css_selector("#GIS > span").click()
+        time.sleep(4)
+        self.driver.find_element_by_css_selector("#ALARMS > span").click()
+        time.sleep(4)
+        self.driver.find_element_by_css_selector("#ACCESS_CONTROL > span").click()
+        time.sleep(4)
+        self.driver.find_element_by_css_selector("#ALL > span").click()
+        time.sleep(4)
+        # Check sub tab names
+        self.assertEqual("ALL", self.driver.find_element_by_css_selector("#ALL > span").text)
+        self.assertEqual("EXCHANGE", self.driver.find_element_by_css_selector("#EXCHANGE > span").text)
+        self.assertEqual("POSITION REPORTS", self.driver.find_element_by_css_selector("#POSITION_REPORTS > span").text)
+        self.assertEqual("ASSETS AND TERMINALS", self.driver.find_element_by_css_selector("#ASSETS_AND_TERMINALS > span").text)
+        self.assertEqual("GIS", self.driver.find_element_by_css_selector("#GIS > span").text)
+        self.assertEqual("ALERTS", self.driver.find_element_by_css_selector("#ALARMS > span").text)
+        self.assertEqual("ACCESS CONTROL", self.driver.find_element_by_css_selector("#ACCESS_CONTROL > span").text)
+        # Shutdown browser
+        shutdown_browser(self)
+
+
+
+
+    def test_29_view_configuration_pages(self):
+        # Startup browser and login
+        startup_browser_and_login_to_unionVMS(self,"vms_admin_com","password","AdminAll")
+        # Select Admin tab
+        self.driver.find_element_by_id("uvms-header-menu-item-audit-log").click()
+        time.sleep(8)
+        self.driver.find_element_by_link_text("CONFIGURATION").click()
+        time.sleep(4)
+        # Click on all sub tabs under Configuration Tab
+        self.driver.find_element_by_css_selector("#globalSettings > span").click()
+        time.sleep(4)
+        self.driver.find_element_by_css_selector("#reporting > span").click()
+        time.sleep(4)
+        self.driver.find_element_by_css_selector("#asset > span").click()
+        time.sleep(4)
+        self.driver.find_element_by_css_selector("#mobileTerminal > span").click()
+        time.sleep(4)
+        self.driver.find_element_by_css_selector("#exchange > span").click()
+        time.sleep(4)
+        self.driver.find_element_by_css_selector("#systemMonitor > span").click()
+        time.sleep(6)
+        # Check sub tab names
+        self.assertEqual("SYSTEM MONITOR", self.driver.find_element_by_css_selector("#systemMonitor > span").text)
+        self.assertEqual("GLOBAL SETTINGS", self.driver.find_element_by_css_selector("#globalSettings > span").text)
+        self.assertEqual("REPORTING", self.driver.find_element_by_css_selector("#reporting > span").text)
+        self.assertEqual("ASSETS", self.driver.find_element_by_css_selector("#asset > span").text)
+        self.assertEqual("EXCHANGE", self.driver.find_element_by_css_selector("#exchange > span").text)
+        self.assertEqual("MOBILE TERMINALS", self.driver.find_element_by_css_selector("#mobileTerminal > span").text)
+        # Shutdown browser
+        shutdown_browser(self)
+
+        
+    def test_32_check_view_help_text(self):
+        # Startup browser and login
+        startup_browser_and_login_to_unionVMS(self,"vms_admin_com","password","AdminAll")
+        # Click on User Guide icon (Question mark icon)
+        # Note: User Guide page is opened in a new tab
+        self.driver.find_element_by_xpath("//a/i").click()
+        time.sleep(10)
+        # Switch tab focus for Selenium to the new tab
+        self.driver.switch_to.window(self.driver.window_handles[-1])
+        time.sleep(6)
+        # Check User guide page
+        self.assertEqual("Union VMS - User Manual", self.driver.find_element_by_xpath("//*[@id='title-text']/a").text)
+        time.sleep(4)
+        self.assertEqual("Welcome to Union VMS!", self.driver.find_element_by_xpath("//*[@id='main-content']/div[3]/ul/li[1]/span/a").text)
+        # Shutdown browser
+        shutdown_browser(self)
+        
+    def test_33_check_alerts_view(self):
+        # Startup browser and login
+        startup_browser_and_login_to_unionVMS(self,"vms_admin_com","password","AdminAll")
+        # Select Alerts tab (Holding Table)
+        self.driver.find_element_by_id("uvms-header-menu-item-holding-table").click()
+        time.sleep(6)
+        # Check List Headlines for Holding Table
+        self.assertEqual("Date triggered (UTC)", self.driver.find_element_by_css_selector("span > span").text)
+        self.assertEqual("Object affected", self.driver.find_element_by_xpath("//div[@id='content']/div/div[3]/div[2]/div/div[2]/div/div[3]/div/div/div/div/span/table/thead/tr/th[3]/a/span/span").text)
+        self.assertEqual("Rule", self.driver.find_element_by_xpath("//div[@id='content']/div/div[3]/div[2]/div/div[2]/div/div[3]/div/div/div/div/span/table/thead/tr/th[4]").text)
+        # Select Alerts tab (Notifications)
+        self.driver.find_element_by_xpath("//*[@id='content']/div[1]/div[3]/div[2]/div/div[1]/div/div/ul/li[2]/a").click()
+        time.sleep(4)
+        # Check List Headlines for Notifications
+        self.assertEqual("Date triggered (UTC)", self.driver.find_element_by_css_selector("span > span").text)
+        self.assertEqual("Object affected", self.driver.find_element_by_xpath("//div[@id='content']/div/div[3]/div[2]/div/div[2]/div/div[3]/div/div/div/div/span/table/thead/tr/th[3]/a/span/span").text)
+        self.assertEqual("Rule", self.driver.find_element_by_xpath("//div[@id='content']/div/div[3]/div[2]/div/div[2]/div/div[3]/div/div/div/div/span/table/thead/tr/th[4]").text)
+        # Select Alerts tab (Rules)
+        self.driver.find_element_by_xpath("//*[@id='content']/div[1]/div[3]/div[2]/div/div[1]/div/div/ul/li[3]/a").click()
+        time.sleep(4)
+        # Check List Headlines for Rules List
+        self.assertEqual("Rule name", self.driver.find_element_by_css_selector("span > span").text)
+        self.assertEqual("Last triggered", self.driver.find_element_by_xpath("//div[@id='content']/div/div[3]/div[2]/div/div[2]/div/div[3]/div/div/div/div/span/table/thead/tr/th[3]/a/span/span").text)
+        self.assertEqual("Date updated", self.driver.find_element_by_xpath("//div[@id='content']/div/div[3]/div[2]/div/div[2]/div/div[3]/div/div/div/div/span/table/thead/tr/th[4]/a/span/span").text)
         # Shutdown browser
         shutdown_browser(self)
         
