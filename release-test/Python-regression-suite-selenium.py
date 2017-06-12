@@ -133,7 +133,7 @@ def startup_browser_and_login_to_unionVMS(cls,userId,password,userContext):
     try:
         if cls.driver.find_element_by_xpath("/html/head/title"):
             cls.driver.switch_to.frame("content")
-            WebDriverWait(cls.driver, browserTimeout).until(EC.presence_of_element_located(By.CSS_SELECTOR,"img[alt=\"Automatisk inloggning\"]")).click()
+            WebDriverWait(cls.driver, browserTimeout).until(EC.presence_of_element_located((By.CSS_SELECTOR,"img[alt=\"Automatisk inloggning\"]"))).click()
     except:
         pass
 
@@ -141,15 +141,15 @@ def startup_browser_and_login_to_unionVMS(cls,userId,password,userContext):
     # if Pop-up windows exists then click cancel
     try:
         if cls.driver.find_element_by_xpath("/html/body/div[5]/div/div/div/form"):
-            WebDriverWait(cls.driver, browserTimeout).until(EC.presence_of_element_located(By.XPATH,"/html/body/div[5]/div/div/div/form/div[3]/button[2]")).click()
+            WebDriverWait(cls.driver, browserTimeout).until(EC.presence_of_element_located((By.XPATH,"/html/body/div[5]/div/div/div/form/div[3]/button[2]"))).click()
     except:
         pass
         
-    WebDriverWait(cls.driver, browserTimeout).until(EC.presence_of_element_located(By.ID, 'userId')).send_keys(userId)
-    WebDriverWait(cls.driver, browserTimeout).until(EC.presence_of_element_located(By.ID, 'password')).send_keys(password)  
-    WebDriverWait(cls.driver, browserTimeout).until(EC.presence_of_element_located(By.XPATH, "//*[@id='content']/div[1]/div[3]/div/div[2]/div[3]/div[2]/form/div[3]/div/button")).click()
+    WebDriverWait(cls.driver, browserTimeout).until(EC.presence_of_element_located((By.ID, 'userId'))).send_keys(userId)
+    WebDriverWait(cls.driver, browserTimeout).until(EC.presence_of_element_located((By.ID, 'password'))).send_keys(password)  
+    WebDriverWait(cls.driver, browserTimeout).until(EC.presence_of_element_located((By.XPATH, "//*[@id='content']/div[1]/div[3]/div/div[2]/div[3]/div[2]/form/div[3]/div/button"))).click()
   
-    WebDriverWait(cls.driver, browserTimeout).until(EC.presence_of_element_located(By.PARTIAL_LINK_TEXT, "AdminAll")).click()
+    WebDriverWait(cls.driver, browserTimeout).until(EC.presence_of_element_located((By.PARTIAL_LINK_TEXT, "AdminAll"))).click()
   
 
 def shutdown_browser(cls):
@@ -159,105 +159,105 @@ def shutdown_browser(cls):
 def create_one_new_asset_from_gui(self,ircsValue,vesselName,externalMarkingValue,cfrValue,imoValue,homeportValue,mmsiValue,lengthValue,grossTonnageValue,powerValue,producernameValue,producercodeValue,contactNameValue,contactEmailValue,contactPhoneNumberValue):
     
     # Click on asset tab
-    WebDriverWait(cls.driver, browserTimeout).until(EC.presence_of_element_located(By.ID,"uvms-header-menu-item-assets")).click()
+    WebDriverWait(self.driver, browserTimeout).until(EC.presence_of_element_located((By.ID,"uvms-header-menu-item-assets"))).click()
     
     # Click on new Asset button
-    WebDriverWait(cls.driver, browserTimeout).until(EC.presence_of_element_located(By.ID,"asset-btn-create")).click()
+    WebDriverWait(self.driver, browserTimeout).until(EC.presence_of_element_located((By.ID,"asset-btn-create"))).click()
     
     # Select F.S value
-    WebDriverWait(cls.driver, browserTimeout).until(EC.presence_of_element_located(By.ID,"asset-input-countryCode")).click()
-    WebDriverWait(cls.driver, browserTimeout).until(EC.presence_of_element_located(By.ID,"asset-input-countryCode-item-2")).click()
+    WebDriverWait(self.driver, browserTimeout).until(EC.presence_of_element_located((By.ID,"asset-input-countryCode"))).click()
+    WebDriverWait(self.driver, browserTimeout).until(EC.presence_of_element_located((By.ID,"asset-input-countryCode-item-2"))).click()
     # Enter IRCS value
-    WebDriverWait(cls.driver, browserTimeout).until(EC.presence_of_element_located(By.ID,"asset-input-ircs")).send_keys(ircsValue)
+    WebDriverWait(self.driver, browserTimeout).until(EC.presence_of_element_located((By.ID,"asset-input-ircs"))).send_keys(ircsValue)
     # Enter Name value
-    WebDriverWait(cls.driver, browserTimeout).until(EC.presence_of_element_located(By.ID,"asset-input-name")).send_keys(vesselName)
+    WebDriverWait(self.driver, browserTimeout).until(EC.presence_of_element_located((By.ID,"asset-input-name"))).send_keys(vesselName)
     # Enter External Marking Value
-    WebDriverWait(cls.driver, browserTimeout).until(EC.presence_of_element_located(By.ID,"asset-input-externalMarking")).send_keys(externalMarkingValue)
+    WebDriverWait(self.driver, browserTimeout).until(EC.presence_of_element_located((By.ID,"asset-input-externalMarking"))).send_keys(externalMarkingValue)
     # Enter CFR Value
-    WebDriverWait(cls.driver, browserTimeout).until(EC.presence_of_element_located(By.ID,"asset-input-cfr")).send_keys(cfrValue)
+    WebDriverWait(self.driver, browserTimeout).until(EC.presence_of_element_located((By.ID,"asset-input-cfr"))).send_keys(cfrValue)
     # Enter IMO Value
-    WebDriverWait(cls.driver, browserTimeout).until(EC.presence_of_element_located(By.ID,"asset-input-imo")).send_keys(imoValue)
+    WebDriverWait(self.driver, browserTimeout).until(EC.presence_of_element_located((By.ID,"asset-input-imo"))).send_keys(imoValue)
     # Enter HomePort Value
-    WebDriverWait(cls.driver, browserTimeout).until(EC.presence_of_element_located(By.ID,"asset-input-homeport")).send_keys(homeportValue)
+    WebDriverWait(self.driver, browserTimeout).until(EC.presence_of_element_located((By.ID,"asset-input-homeport"))).send_keys(homeportValue)
     # Select Gear Type value
-    WebDriverWait(cls.driver, browserTimeout).until(EC.presence_of_element_located(By.ID,"asset-input-gearType")).click()
-    WebDriverWait(cls.driver, browserTimeout).until(EC.presence_of_element_located(By.ID,"asset-input-gearType-item-0")).click()
+    WebDriverWait(self.driver, browserTimeout).until(EC.presence_of_element_located((By.ID,"asset-input-gearType"))).click()
+    WebDriverWait(self.driver, browserTimeout).until(EC.presence_of_element_located((By.ID,"asset-input-gearType-item-0"))).click()
     # Enter MMSI Value
-    WebDriverWait(cls.driver, browserTimeout).until(EC.presence_of_element_located(By.ID,"asset-input-mmsi")).send_keys(mmsiValue)
+    WebDriverWait(self.driver, browserTimeout).until(EC.presence_of_element_located((By.ID,"asset-input-mmsi"))).send_keys(mmsiValue)
     # Select License Type value
-    WebDriverWait(cls.driver, browserTimeout).until(EC.presence_of_element_located(By.ID,"asset-input-licenseType")).click()
+    WebDriverWait(self.driver, browserTimeout).until(EC.presence_of_element_located((By.ID,"asset-input-licenseType"))).click()
     
-    WebDriverWait(cls.driver, browserTimeout).until(EC.presence_of_element_located(By.ID,"asset-input-licenseType-item-0")).click()
+    WebDriverWait(self.driver, browserTimeout).until(EC.presence_of_element_located((By.ID,"asset-input-licenseType-item-0"))).click()
     # Length Value
-    WebDriverWait(cls.driver, browserTimeout).until(EC.presence_of_element_located(By.ID,"asset-input-lengthValue")).send_keys(lengthValue)
+    WebDriverWait(self.driver, browserTimeout).until(EC.presence_of_element_located((By.ID,"asset-input-lengthValue"))).send_keys(lengthValue)
     # Gross Tonnage Value
-    WebDriverWait(cls.driver, browserTimeout).until(EC.presence_of_element_located(By.ID,"asset-input-grossTonnage")).send_keys(grossTonnageValue)
+    WebDriverWait(self.driver, browserTimeout).until(EC.presence_of_element_located((By.ID,"asset-input-grossTonnage"))).send_keys(grossTonnageValue)
     # Main Power Value
-    WebDriverWait(cls.driver, browserTimeout).until(EC.presence_of_element_located(By.ID,"asset-input-power")).send_keys(powerValue)
+    WebDriverWait(self.driver, browserTimeout).until(EC.presence_of_element_located((By.ID,"asset-input-power"))).send_keys(powerValue)
     # Main Producer Name Value
-    WebDriverWait(cls.driver, browserTimeout).until(EC.presence_of_element_located(By.ID,"asset-input-producername")).send_keys(producernameValue)
+    WebDriverWait(self.driver, browserTimeout).until(EC.presence_of_element_located((By.ID,"asset-input-producername"))).send_keys(producernameValue)
     # Main Producer Code Value
-    WebDriverWait(cls.driver, browserTimeout).until(EC.presence_of_element_located(By.ID,"asset-input-producercode")).send_keys(producercodeValue)
+    WebDriverWait(self.driver, browserTimeout).until(EC.presence_of_element_located((By.ID,"asset-input-producercode"))).send_keys(producercodeValue)
     # Click on the Contacts tab
-    WebDriverWait(cls.driver, browserTimeout).until(EC.presence_of_element_located(By.XPATH,"//*[@id='CONTACTS']/span")).click()
+    WebDriverWait(self.driver, browserTimeout).until(EC.presence_of_element_located((By.XPATH,"//*[@id='CONTACTS']/span"))).click()
     
     # Main Contact Name Value
-    WebDriverWait(cls.driver, browserTimeout).until(EC.presence_of_element_located(By.ID,"asset-input-contact-name-0")).send_keys(contactNameValue)
+    WebDriverWait(self.driver, browserTimeout).until(EC.presence_of_element_located((By.ID,"asset-input-contact-name-0"))).send_keys(contactNameValue)
     # Main E-mail Value
-    WebDriverWait(cls.driver, browserTimeout).until(EC.presence_of_element_located(By.ID,"asset-input-contact-email-0")).send_keys(contactEmailValue)
+    WebDriverWait(self.driver, browserTimeout).until(EC.presence_of_element_located((By.ID,"asset-input-contact-email-0"))).send_keys(contactEmailValue)
     # Main Contact Number Value
-    WebDriverWait(cls.driver, browserTimeout).until(EC.presence_of_element_located(By.ID,"asset-input-contact-number-0")).send_keys(contactPhoneNumberValue)
+    WebDriverWait(self.driver, browserTimeout).until(EC.presence_of_element_located((By.ID,"asset-input-contact-number-0"))).send_keys(contactPhoneNumberValue)
     # Click on Save Asset button
-    WebDriverWait(cls.driver, browserTimeout).until(EC.presence_of_element_located(By.ID,"menu-bar-save")).click()
+    WebDriverWait(self.driver, browserTimeout).until(EC.presence_of_element_located((By.ID,"menu-bar-save"))).click()
     
     # Leave new asset view
-    WebDriverWait(cls.driver, browserTimeout).until(EC.presence_of_element_located(By.ID,"menu-bar-cancel")).click()
+    WebDriverWait(self.driver, browserTimeout).until(EC.presence_of_element_located((By.ID,"menu-bar-cancel"))).click()
     
 
 
 def create_one_new_mobile_terminal_from_gui(self, serialNoValue, transceiverType, softwareVersion, antennaVersion, satelliteNumber, dnidNumber, memberIdnumber, installedByName, expectedFrequencyHours, gracePeriodFrequencyHours, inPortFrequencyHours):
     # Startup browser and login
-    WebDriverWait(cls.driver, browserTimeout).until(EC.presence_of_element_located(By.ID,"uvms-header-menu-item-communication")).click()
+    WebDriverWait(self.driver, browserTimeout).until(EC.presence_of_element_located((By.ID,"uvms-header-menu-item-communication"))).click()
     
     # Click on new terminal button
-    WebDriverWait(cls.driver, browserTimeout).until(EC.presence_of_element_located(By.ID,"mt-btn-create")).click()
+    WebDriverWait(self.driver, browserTimeout).until(EC.presence_of_element_located((By.ID,"mt-btn-create"))).click()
     
     # Select Transponder system
-    WebDriverWait(cls.driver, browserTimeout).until(EC.presence_of_element_located(By.ID,"mt-0-typeAndPlugin")).click()
+    WebDriverWait(self.driver, browserTimeout).until(EC.presence_of_element_located((By.ID,"mt-0-typeAndPlugin"))).click()
     
-    WebDriverWait(cls.driver, browserTimeout).until(EC.presence_of_element_located(By.LINK_TEXT,"Inmarsat-C : twostage")).click()
+    WebDriverWait(self.driver, browserTimeout).until(EC.presence_of_element_located((By.LINK_TEXT,"Inmarsat-C : twostage"))).click()
     
     # Enter serial number
-    WebDriverWait(cls.driver, browserTimeout).until(EC.presence_of_element_located(By.ID,"mt-0-serialNumber")).send_keys(serialNoValue)
+    WebDriverWait(self.driver, browserTimeout).until(EC.presence_of_element_located((By.ID,"mt-0-serialNumber"))).send_keys(serialNoValue)
     # Enter Transceiver type
-    WebDriverWait(cls.driver, browserTimeout).until(EC.presence_of_element_located(By.ID,"mt-0-tranciverType")).send_keys(transceiverType)
+    WebDriverWait(self.driver, browserTimeout).until(EC.presence_of_element_located((By.ID,"mt-0-tranciverType"))).send_keys(transceiverType)
     # Enter Software Version
-    WebDriverWait(cls.driver, browserTimeout).until(EC.presence_of_element_located(By.ID,"mt-0-softwareVersion")).send_keys(softwareVersion)
+    WebDriverWait(self.driver, browserTimeout).until(EC.presence_of_element_located((By.ID,"mt-0-softwareVersion"))).send_keys(softwareVersion)
     # Enter Antenna
-    WebDriverWait(cls.driver, browserTimeout).until(EC.presence_of_element_located(By.ID,"mt-0-antenna")).send_keys(antennaVersion)
+    WebDriverWait(self.driver, browserTimeout).until(EC.presence_of_element_located((By.ID,"mt-0-antenna"))).send_keys(antennaVersion)
     # Enter Satellite Number
-    WebDriverWait(cls.driver, browserTimeout).until(EC.presence_of_element_located(By.ID,"mt-0-satelliteNumber")).send_keys(satelliteNumber)
+    WebDriverWait(self.driver, browserTimeout).until(EC.presence_of_element_located((By.ID,"mt-0-satelliteNumber"))).send_keys(satelliteNumber)
     # Enter DNID Number
-    WebDriverWait(cls.driver, browserTimeout).until(EC.presence_of_element_located(By.NAME,"dnid")).send_keys(dnidNumber)
+    WebDriverWait(self.driver, browserTimeout).until(EC.presence_of_element_located((By.NAME,"dnid"))).send_keys(dnidNumber)
     # Enter Member Number
-    WebDriverWait(cls.driver, browserTimeout).until(EC.presence_of_element_located(By.NAME,"memberId")).send_keys(memberIdnumber)
+    WebDriverWait(self.driver, browserTimeout).until(EC.presence_of_element_located((By.NAME,"memberId"))).send_keys(memberIdnumber)
     # Enter Installed by
-    WebDriverWait(cls.driver, browserTimeout).until(EC.presence_of_element_located(By.ID,"mt-0-channel-0-installedBy")).send_keys(installedByName)
+    WebDriverWait(self.driver, browserTimeout).until(EC.presence_of_element_located((By.ID,"mt-0-channel-0-installedBy"))).send_keys(installedByName)
     # Expected frequency
-    WebDriverWait(cls.driver, browserTimeout).until(EC.presence_of_element_located(By.ID,"mt-0-channel-0-frequencyExpected")).send_keys(expectedFrequencyHours)
+    WebDriverWait(self.driver, browserTimeout).until(EC.presence_of_element_located((By.ID,"mt-0-channel-0-frequencyExpected"))).send_keys(expectedFrequencyHours)
     # Grace period
-    WebDriverWait(cls.driver, browserTimeout).until(EC.presence_of_element_located(By.ID,"mt-0-channel-0-frequencyGrace")).send_keys(gracePeriodFrequencyHours)
+    WebDriverWait(self.driver, browserTimeout).until(EC.presence_of_element_located((By.ID,"mt-0-channel-0-frequencyGrace"))).send_keys(gracePeriodFrequencyHours)
     # In port
-    WebDriverWait(cls.driver, browserTimeout).until(EC.presence_of_element_located(By.ID,"mt-0-channel-0-frequencyPort")).send_keys(inPortFrequencyHours)
+    WebDriverWait(self.driver, browserTimeout).until(EC.presence_of_element_located((By.ID,"mt-0-channel-0-frequencyPort"))).send_keys(inPortFrequencyHours)
     
     # Activate Mobile Terminal button
-    WebDriverWait(cls.driver, browserTimeout).until(EC.presence_of_element_located(By.ID,"mt-0-activation")).click()
+    WebDriverWait(self.driver, browserTimeout).until(EC.presence_of_element_located((By.ID,"mt-0-activation"))).click()
     
     # Click on save button
-    WebDriverWait(cls.driver, browserTimeout).until(EC.presence_of_element_located(By.ID,"menu-bar-save")).click()
+    WebDriverWait(self.driver, browserTimeout).until(EC.presence_of_element_located((By.ID,"menu-bar-save"))).click()
     
     # Leave new asset view
-    WebDriverWait(cls.driver, browserTimeout).until(EC.presence_of_element_located(By.ID,"menu-bar-cancel")).click()
+    WebDriverWait(self.driver, browserTimeout).until(EC.presence_of_element_located((By.ID,"menu-bar-cancel"))).click()
     
     
 
@@ -266,55 +266,55 @@ def create_one_new_mobile_terminal_via_asset_tab(self, mobileTerminalNumber, ves
     startup_browser_and_login_to_unionVMS(self)
     
     # Click on asset tab
-    WebDriverWait(cls.driver, browserTimeout).until(EC.presence_of_element_located(By.ID,"uvms-header-menu-item-assets")).click()
+    WebDriverWait(self.driver, browserTimeout).until(EC.presence_of_element_located((By.ID,"uvms-header-menu-item-assets"))).click()
     
     # Search for created asset
-    WebDriverWait(cls.driver, browserTimeout).until(EC.presence_of_element_located(By.ID,"asset-input-simple-search")).clear()
-    WebDriverWait(cls.driver, browserTimeout).until(EC.presence_of_element_located(By.ID,"asset-input-simple-search")).send_keys(vesselName[vesselNumber])
+    WebDriverWait(self.driver, browserTimeout).until(EC.presence_of_element_located((By.ID,"asset-input-simple-search"))).clear()
+    WebDriverWait(self.driver, browserTimeout).until(EC.presence_of_element_located((By.ID,"asset-input-simple-search"))).send_keys(vesselName[vesselNumber])
     
-    WebDriverWait(cls.driver, browserTimeout).until(EC.presence_of_element_located(By.ID,"asset-btn-simple-search")).click()
+    WebDriverWait(self.driver, browserTimeout).until(EC.presence_of_element_located((By.ID,"asset-btn-simple-search"))).click()
     
     # Click on details button
-    WebDriverWait(cls.driver, browserTimeout).until(EC.presence_of_element_located(By.ID,"asset-toggle-form")).click()
+    WebDriverWait(self.driver, browserTimeout).until(EC.presence_of_element_located((By.ID,"asset-toggle-form"))).click()
     
     # Click on add new terminal button
-    WebDriverWait(cls.driver, browserTimeout).until(EC.presence_of_element_located(By.ID,"menu-bar-vessel-add-terminal")).click()
+    WebDriverWait(self.driver, browserTimeout).until(EC.presence_of_element_located((By.ID,"menu-bar-vessel-add-terminal"))).click()
     
     # Select Transponder system
-    WebDriverWait(cls.driver, browserTimeout).until(EC.presence_of_element_located(By.ID,"mt-0-typeAndPlugin")).click()
+    WebDriverWait(self.driver, browserTimeout).until(EC.presence_of_element_located((By.ID,"mt-0-typeAndPlugin"))).click()
     
-    WebDriverWait(cls.driver, browserTimeout).until(EC.presence_of_element_located(By.LINK_TEXT,"Inmarsat-C : twostage")).click()
+    WebDriverWait(self.driver, browserTimeout).until(EC.presence_of_element_located((By.LINK_TEXT,"Inmarsat-C : twostage"))).click()
     
     # Enter serial number
-    WebDriverWait(cls.driver, browserTimeout).until(EC.presence_of_element_located(By.ID,"mt-0-serialNumber")).send_keys(serialNoValue[mobileTerminalNumber])
+    WebDriverWait(self.driver, browserTimeout).until(EC.presence_of_element_located((By.ID,"mt-0-serialNumber"))).send_keys(serialNoValue[mobileTerminalNumber])
     # Enter Transceiver type
-    WebDriverWait(cls.driver, browserTimeout).until(EC.presence_of_element_located(By.ID,"mt-0-tranciverType")).send_keys(transceiverType[mobileTerminalNumber])
+    WebDriverWait(self.driver, browserTimeout).until(EC.presence_of_element_located((By.ID,"mt-0-tranciverType"))).send_keys(transceiverType[mobileTerminalNumber])
     # Enter Software Version
-    WebDriverWait(cls.driver, browserTimeout).until(EC.presence_of_element_located(By.ID,"mt-0-softwareVersion")).send_keys(softwareVersion)
+    WebDriverWait(self.driver, browserTimeout).until(EC.presence_of_element_located((By.ID,"mt-0-softwareVersion"))).send_keys(softwareVersion)
     # Enter Antenna
-    WebDriverWait(cls.driver, browserTimeout).until(EC.presence_of_element_located(By.ID,"mt-0-antenna")).send_keys(antennaVersion)
+    WebDriverWait(self.driver, browserTimeout).until(EC.presence_of_element_located((By.ID,"mt-0-antenna"))).send_keys(antennaVersion)
     # Enter Satellite Number
-    WebDriverWait(cls.driver, browserTimeout).until(EC.presence_of_element_located(By.ID,"mt-0-satelliteNumber")).send_keys(satelliteNumber[mobileTerminalNumber])
+    WebDriverWait(self.driver, browserTimeout).until(EC.presence_of_element_located((By.ID,"mt-0-satelliteNumber"))).send_keys(satelliteNumber[mobileTerminalNumber])
     # Enter DNID Number
-    WebDriverWait(cls.driver, browserTimeout).until(EC.presence_of_element_located(By.NAME,"dnid")).send_keys(dnidNumber[mobileTerminalNumber])
+    WebDriverWait(self.driver, browserTimeout).until(EC.presence_of_element_located((By.NAME,"dnid"))).send_keys(dnidNumber[mobileTerminalNumber])
     # Enter Member Number
-    WebDriverWait(cls.driver, browserTimeout).until(EC.presence_of_element_located(By.NAME,"memberId")).send_keys(memberIdnumber[mobileTerminalNumber])
+    WebDriverWait(self.driver, browserTimeout).until(EC.presence_of_element_located((By.NAME,"memberId"))).send_keys(memberIdnumber[mobileTerminalNumber])
     # Enter Installed by
-    WebDriverWait(cls.driver, browserTimeout).until(EC.presence_of_element_located(By.ID,"mt-0-channel-0-installedBy")).send_keys(installedByName)
+    WebDriverWait(self.driver, browserTimeout).until(EC.presence_of_element_located((By.ID,"mt-0-channel-0-installedBy"))).send_keys(installedByName)
     # Expected frequency
-    WebDriverWait(cls.driver, browserTimeout).until(EC.presence_of_element_located(By.ID,"mt-0-channel-0-frequencyExpected")).send_keys(expectedFrequencyHours)
+    WebDriverWait(self.driver, browserTimeout).until(EC.presence_of_element_located((By.ID,"mt-0-channel-0-frequencyExpected"))).send_keys(expectedFrequencyHours)
     # Grace period
-    WebDriverWait(cls.driver, browserTimeout).until(EC.presence_of_element_located(By.ID,"mt-0-channel-0-frequencyGrace")).send_keys(gracePeriodFrequencyHours)
+    WebDriverWait(self.driver, browserTimeout).until(EC.presence_of_element_located((By.ID,"mt-0-channel-0-frequencyGrace"))).send_keys(gracePeriodFrequencyHours)
     # In port
-    WebDriverWait(cls.driver, browserTimeout).until(EC.presence_of_element_located(By.ID,"mt-0-channel-0-frequencyPort")).send_keys(inPortFrequencyHours)
+    WebDriverWait(self.driver, browserTimeout).until(EC.presence_of_element_located((By.ID,"mt-0-channel-0-frequencyPort"))).send_keys(inPortFrequencyHours)
     # Activate Mobile Terminal button
-    WebDriverWait(cls.driver, browserTimeout).until(EC.presence_of_element_located(By.ID,"mt-0-activation")).click()
+    WebDriverWait(self.driver, browserTimeout).until(EC.presence_of_element_located((By.ID,"mt-0-activation"))).click()
     
     # Click on save button
-    WebDriverWait(cls.driver, browserTimeout).until(EC.presence_of_element_located(By.XPATH,"//*[@id='menu-bar-update']")).click()
+    WebDriverWait(self.driver, browserTimeout).until(EC.presence_of_element_located((By.XPATH,"//*[@id='menu-bar-update']"))).click()
     
     # Leave new asset view
-    WebDriverWait(cls.driver, browserTimeout).until(EC.presence_of_element_located(By.ID,"menu-bar-cancel")).click()
+    WebDriverWait(self.driver, browserTimeout).until(EC.presence_of_element_located((By.ID,"menu-bar-cancel"))).click()
     
     # Shutdown browser
     shutdown_browser(self)
@@ -322,137 +322,137 @@ def create_one_new_mobile_terminal_via_asset_tab(self, mobileTerminalNumber, ves
 
 def check_new_asset_exists(self,countryValue,gearTypeValue,licenseTypeValue, ircsValue,vesselName,externalMarkingValue,cfrValue,imoValue,homeportValue,mmsiValue,lengthValue,grossTonnageValue,powerValue,producernameValue,producercodeValue,contactNameValue,contactEmailValue,contactPhoneNumberValue):
     # Startup browser and login
-    WebDriverWait(cls.driver, browserTimeout).until(EC.presence_of_element_located(By.ID,"uvms-header-menu-item-assets")).click()
+    WebDriverWait(self.driver, browserTimeout).until(EC.presence_of_element_located((By.ID,"uvms-header-menu-item-assets"))).click()
     
     # Search for the new created asset in the asset list
-    WebDriverWait(cls.driver, browserTimeout).until(EC.presence_of_element_located(By.ID,"asset-input-simple-search")).send_keys(vesselName)
-    WebDriverWait(cls.driver, browserTimeout).until(EC.presence_of_element_located(By.ID,"asset-btn-simple-search")).click()
+    WebDriverWait(self.driver, browserTimeout).until(EC.presence_of_element_located((By.ID,"asset-input-simple-search"))).send_keys(vesselName)
+    WebDriverWait(self.driver, browserTimeout).until(EC.presence_of_element_located((By.ID,"asset-btn-simple-search"))).click()
     
     # Check that the new asset exists in the list.
-    self.assertEqual(vesselName, WebDriverWait(cls.driver, browserTimeout).until(EC.presence_of_element_located(By.CSS_SELECTOR ,"td[title=\"" + vesselName + "\"]")).text)
+    self.assertEqual(vesselName, WebDriverWait(self.driver, browserTimeout).until(EC.presence_of_element_located((By.CSS_SELECTOR ,"td[title=\"" + vesselName + "\"]"))).text)
     
     # Click on details button for new asset
-    WebDriverWait(cls.driver, browserTimeout).until(EC.presence_of_element_located(By.ID,"asset-toggle-form")).click()
+    WebDriverWait(self.driver, browserTimeout).until(EC.presence_of_element_located((By.ID,"asset-toggle-form"))).click()
     
     # Check that the F.S value is correct.
-    self.assertEqual(countryValue, WebDriverWait(cls.driver, browserTimeout).until(EC.presence_of_element_located(By.ID,"asset-input-countryCode")).text)
+    self.assertEqual(countryValue, WebDriverWait(self.driver, browserTimeout).until(EC.presence_of_element_located((By.ID,"asset-input-countryCode"))).text)
     # Check that the IRCS value is correct
-    self.assertEqual(ircsValue, WebDriverWait(cls.driver, browserTimeout).until(EC.presence_of_element_located(By.ID,"asset-input-ircs")).get_attribute("value"))
+    self.assertEqual(ircsValue, WebDriverWait(self.driver, browserTimeout).until(EC.presence_of_element_located((By.ID,"asset-input-ircs"))).get_attribute("value"))
     # Check that the Name value is correct
-    self.assertEqual(vesselName, WebDriverWait(cls.driver, browserTimeout).until(EC.presence_of_element_located(By.ID,"asset-input-name")).get_attribute("value"))
+    self.assertEqual(vesselName, WebDriverWait(self.driver, browserTimeout).until(EC.presence_of_element_located((By.ID,"asset-input-name"))).get_attribute("value"))
     # Check that External Marking Value is correct
-    self.assertEqual(externalMarkingValue, WebDriverWait(cls.driver, browserTimeout).until(EC.presence_of_element_located(By.ID,"asset-input-externalMarking")).get_attribute("value"))
+    self.assertEqual(externalMarkingValue, WebDriverWait(self.driver, browserTimeout).until(EC.presence_of_element_located((By.ID,"asset-input-externalMarking"))).get_attribute("value"))
     # Check that the CFR value is correct
-    self.assertEqual(cfrValue, WebDriverWait(cls.driver, browserTimeout).until(EC.presence_of_element_located(By.ID,"asset-input-cfr")).get_attribute("value"))
+    self.assertEqual(cfrValue, WebDriverWait(self.driver, browserTimeout).until(EC.presence_of_element_located((By.ID,"asset-input-cfr"))).get_attribute("value"))
     # Check that the IMO value is correct
-    self.assertEqual(imoValue, WebDriverWait(cls.driver, browserTimeout).until(EC.presence_of_element_located(By.ID,"asset-input-imo")).get_attribute("value"))
+    self.assertEqual(imoValue, WebDriverWait(self.driver, browserTimeout).until(EC.presence_of_element_located((By.ID,"asset-input-imo"))).get_attribute("value"))
     # Check that the HomePort value is correct
-    self.assertEqual(homeportValue, WebDriverWait(cls.driver, browserTimeout).until(EC.presence_of_element_located(By.ID,"asset-input-homeport")).get_attribute("value"))
+    self.assertEqual(homeportValue, WebDriverWait(self.driver, browserTimeout).until(EC.presence_of_element_located((By.ID,"asset-input-homeport"))).get_attribute("value"))
     # Check that the Gear Type value is correct.
-    self.assertEqual(gearTypeValue, WebDriverWait(cls.driver, browserTimeout).until(EC.presence_of_element_located(By.ID,"asset-input-gearType")).text)
+    self.assertEqual(gearTypeValue, WebDriverWait(self.driver, browserTimeout).until(EC.presence_of_element_located((By.ID,"asset-input-gearType"))).text)
     # Check that the MMSI value is correct
-    self.assertEqual(mmsiValue, WebDriverWait(cls.driver, browserTimeout).until(EC.presence_of_element_located(By.ID,"asset-input-mmsi")).get_attribute("value"))
+    self.assertEqual(mmsiValue, WebDriverWait(self.driver, browserTimeout).until(EC.presence_of_element_located((By.ID,"asset-input-mmsi"))).get_attribute("value"))
     # Check that the License Type value is correct.
-    self.assertEqual(licenseTypeValue, WebDriverWait(cls.driver, browserTimeout).until(EC.presence_of_element_located(By.ID,"asset-input-licenseType")).text)
+    self.assertEqual(licenseTypeValue, WebDriverWait(self.driver, browserTimeout).until(EC.presence_of_element_located((By.ID,"asset-input-licenseType"))).text)
     # Check that the Length Type value is correct.
-    self.assertEqual(lengthValue, WebDriverWait(cls.driver, browserTimeout).until(EC.presence_of_element_located(By.ID,"asset-input-lengthValue")).get_attribute("value"))
+    self.assertEqual(lengthValue, WebDriverWait(self.driver, browserTimeout).until(EC.presence_of_element_located((By.ID,"asset-input-lengthValue"))).get_attribute("value"))
     # Check that the Gross Tonnage value is correct.
-    self.assertEqual(grossTonnageValue, WebDriverWait(cls.driver, browserTimeout).until(EC.presence_of_element_located(By.ID,"asset-input-grossTonnage")).get_attribute("value"))
+    self.assertEqual(grossTonnageValue, WebDriverWait(self.driver, browserTimeout).until(EC.presence_of_element_located((By.ID,"asset-input-grossTonnage"))).get_attribute("value"))
     # Check that the Power value is correct.
-    self.assertEqual(powerValue, WebDriverWait(cls.driver, browserTimeout).until(EC.presence_of_element_located(By.ID,"asset-input-power")).get_attribute("value"))
+    self.assertEqual(powerValue, WebDriverWait(self.driver, browserTimeout).until(EC.presence_of_element_located((By.ID,"asset-input-power"))).get_attribute("value"))
     # Check that the Producer Name value is correct.
     #
     # Needs to be updated according to asset database
     #
     #
-    # self.assertEqual("Mikael", WebDriverWait(cls.driver, browserTimeout).until(EC.presence_of_element_located(By.ID,"asset-input-producername")).get_attribute("value"))
+    # self.assertEqual("Mikael", WebDriverWait(self.driver, browserTimeout).until(EC.presence_of_element_located((By.ID,"asset-input-producername"))).get_attribute("value"))
     # Check that the Producer Code value is correct.
-    self.assertEqual(producercodeValue, WebDriverWait(cls.driver, browserTimeout).until(EC.presence_of_element_located(By.ID,"asset-input-producercode")).get_attribute("value"))
+    self.assertEqual(producercodeValue, WebDriverWait(self.driver, browserTimeout).until(EC.presence_of_element_located((By.ID,"asset-input-producercode"))).get_attribute("value"))
     # Click on the Contacts tab
-    WebDriverWait(cls.driver, browserTimeout).until(EC.presence_of_element_located(By.XPATH,"//*[@id='CONTACTS']/span")).click()
+    WebDriverWait(self.driver, browserTimeout).until(EC.presence_of_element_located((By.XPATH,"//*[@id='CONTACTS']/span"))).click()
     
     # Check that the Contact Name value is correct.
-    self.assertEqual(contactNameValue, WebDriverWait(cls.driver, browserTimeout).until(EC.presence_of_element_located(By.ID,"asset-input-contact-name-0")).get_attribute("value"))
+    self.assertEqual(contactNameValue, WebDriverWait(self.driver, browserTimeout).until(EC.presence_of_element_located((By.ID,"asset-input-contact-name-0"))).get_attribute("value"))
     # Check that the E-mail value is correct.
-    self.assertEqual(contactEmailValue, WebDriverWait(cls.driver, browserTimeout).until(EC.presence_of_element_located(By.ID,"asset-input-contact-email-0")).get_attribute("value"))
+    self.assertEqual(contactEmailValue, WebDriverWait(self.driver, browserTimeout).until(EC.presence_of_element_located((By.ID,"asset-input-contact-email-0"))).get_attribute("value"))
     # Check that the E-mail value is correct.
-    self.assertEqual(contactPhoneNumberValue, WebDriverWait(cls.driver, browserTimeout).until(EC.presence_of_element_located(By.ID,"asset-input-contact-number-0")).get_attribute("value"))
+    self.assertEqual(contactPhoneNumberValue, WebDriverWait(self.driver, browserTimeout).until(EC.presence_of_element_located((By.ID,"asset-input-contact-number-0"))).get_attribute("value"))
     
     # Shutdown browser
 
 def check_new_mobile_terminal_exists(self, serialNoValue, memberIdnumber, dnidNumber, transceiverType, softwareVersion, satelliteNumber, antennaVersion, installedByName):
     # Select Mobile Terminal tab
-    WebDriverWait(cls.driver, browserTimeout).until(EC.presence_of_element_located(By.ID,"uvms-header-menu-item-communication")).click()
+    WebDriverWait(self.driver, browserTimeout).until(EC.presence_of_element_located((By.ID,"uvms-header-menu-item-communication"))).click()
     
     # Enter Serial Number in
-    WebDriverWait(cls.driver, browserTimeout).until(EC.presence_of_element_located(By.XPATH,"(//input[@type='text'])[7]")).send_keys(serialNoValue)
+    WebDriverWait(self.driver, browserTimeout).until(EC.presence_of_element_located((By.XPATH,"(//input[@type='text'])[7]"))).send_keys(serialNoValue)
     # Click in search button
-    WebDriverWait(cls.driver, browserTimeout).until(EC.presence_of_element_located(By.XPATH,"//button[@type='submit']")).click()
+    WebDriverWait(self.driver, browserTimeout).until(EC.presence_of_element_located((By.XPATH,"//button[@type='submit']"))).click()
     
     # Check Serial Number in the list
-    self.assertEqual(serialNoValue, WebDriverWait(cls.driver, browserTimeout).until(EC.presence_of_element_located(By.XPATH,"//div[@id='content']/div/div[3]/div[2]/div/div/div/div/div[3]/div/div/div/div/span/table/tbody/tr/td[3]")).text)
+    self.assertEqual(serialNoValue, WebDriverWait(self.driver, browserTimeout).until(EC.presence_of_element_located((By.XPATH,"//div[@id='content']/div/div[3]/div[2]/div/div/div/div/div[3]/div/div/div/div/span/table/tbody/tr/td[3]"))).text)
     # Check Member Number in the list
-    self.assertEqual(memberIdnumber, WebDriverWait(cls.driver, browserTimeout).until(EC.presence_of_element_located(By.XPATH,"//div[@id='content']/div/div[3]/div[2]/div/div/div/div/div[3]/div/div/div/div/span/table/tbody/tr/td[4]")).text)
+    self.assertEqual(memberIdnumber, WebDriverWait(self.driver, browserTimeout).until(EC.presence_of_element_located((By.XPATH,"//div[@id='content']/div/div[3]/div[2]/div/div/div/div/div[3]/div/div/div/div/span/table/tbody/tr/td[4]"))).text)
     # Check DNID Number in the list
-    self.assertEqual(dnidNumber, WebDriverWait(cls.driver, browserTimeout).until(EC.presence_of_element_located(By.XPATH,"//div[@id='content']/div/div[3]/div[2]/div/div/div/div/div[3]/div/div/div/div/span/table/tbody/tr/td[5]")).text)
+    self.assertEqual(dnidNumber, WebDriverWait(self.driver, browserTimeout).until(EC.presence_of_element_located((By.XPATH,"//div[@id='content']/div/div[3]/div[2]/div/div/div/div/div[3]/div/div/div/div/span/table/tbody/tr/td[5]"))).text)
     # Click on details button
-    WebDriverWait(cls.driver, browserTimeout).until(EC.presence_of_element_located(By.XPATH,"//div[@id='content']/div/div[3]/div[2]/div/div/div/div/div[3]/div/div/div/div/span/table/tbody/tr/td[10]/button")).click()
+    WebDriverWait(self.driver, browserTimeout).until(EC.presence_of_element_located((By.XPATH,"//div[@id='content']/div/div[3]/div[2]/div/div/div/div/div[3]/div/div/div/div/span/table/tbody/tr/td[10]/button"))).click()
     
     # Check Serial Number
-    self.assertEqual(serialNoValue, WebDriverWait(cls.driver, browserTimeout).until(EC.presence_of_element_located(By.ID,"mt-0-serialNumber")).get_attribute("value"))
+    self.assertEqual(serialNoValue, WebDriverWait(self.driver, browserTimeout).until(EC.presence_of_element_located((By.ID,"mt-0-serialNumber"))).get_attribute("value"))
     # Check Transceiver Type
-    self.assertEqual(transceiverType, WebDriverWait(cls.driver, browserTimeout).until(EC.presence_of_element_located(By.ID,"mt-0-tranciverType")).get_attribute("value"))
+    self.assertEqual(transceiverType, WebDriverWait(self.driver, browserTimeout).until(EC.presence_of_element_located((By.ID,"mt-0-tranciverType"))).get_attribute("value"))
     # Check Software Version
-    self.assertEqual(softwareVersion, WebDriverWait(cls.driver, browserTimeout).until(EC.presence_of_element_located(By.ID,"mt-0-softwareVersion")).get_attribute("value"))
+    self.assertEqual(softwareVersion, WebDriverWait(self.driver, browserTimeout).until(EC.presence_of_element_located((By.ID,"mt-0-softwareVersion"))).get_attribute("value"))
     # Check Satellite Number
-    self.assertEqual(satelliteNumber, WebDriverWait(cls.driver, browserTimeout).until(EC.presence_of_element_located(By.ID,"mt-0-satelliteNumber")).get_attribute("value"))
+    self.assertEqual(satelliteNumber, WebDriverWait(self.driver, browserTimeout).until(EC.presence_of_element_located((By.ID,"mt-0-satelliteNumber"))).get_attribute("value"))
     # Check Antenna Version
-    self.assertEqual(antennaVersion, WebDriverWait(cls.driver, browserTimeout).until(EC.presence_of_element_located(By.ID,"mt-0-antenna")).get_attribute("value"))
+    self.assertEqual(antennaVersion, WebDriverWait(self.driver, browserTimeout).until(EC.presence_of_element_located((By.ID,"mt-0-antenna"))).get_attribute("value"))
     # Check DNID Number
-    self.assertEqual(dnidNumber, WebDriverWait(cls.driver, browserTimeout).until(EC.presence_of_element_located(By.NAME,"dnid")).get_attribute("value"))
+    self.assertEqual(dnidNumber, WebDriverWait(self.driver, browserTimeout).until(EC.presence_of_element_located((By.NAME,"dnid"))).get_attribute("value"))
     # Check Member Number
-    self.assertEqual(memberIdnumber, WebDriverWait(cls.driver, browserTimeout).until(EC.presence_of_element_located(By.NAME,"memberId")).get_attribute("value"))
+    self.assertEqual(memberIdnumber, WebDriverWait(self.driver, browserTimeout).until(EC.presence_of_element_located((By.NAME,"memberId"))).get_attribute("value"))
     # Check Installed by Name
-    self.assertEqual(installedByName, WebDriverWait(cls.driver, browserTimeout).until(EC.presence_of_element_located(By.ID,"mt-0-channel-0-installedBy")).get_attribute("value"))
+    self.assertEqual(installedByName, WebDriverWait(self.driver, browserTimeout).until(EC.presence_of_element_located((By.ID,"mt-0-channel-0-installedBy"))).get_attribute("value"))
     # Leave new asset view
-    WebDriverWait(cls.driver, browserTimeout).until(EC.presence_of_element_located(By.ID,"menu-bar-cancel")).click()
+    WebDriverWait(self.driver, browserTimeout).until(EC.presence_of_element_located((By.ID,"menu-bar-cancel"))).click()
     
     
 
 def link_asset_and_mobile_terminal(self, serialNoValue, ircsValue):
     # Select Mobile Terminal tab
-    WebDriverWait(cls.driver, browserTimeout).until(EC.presence_of_element_located(By.ID,"uvms-header-menu-item-communication")).click()
+    WebDriverWait(self.driver, browserTimeout).until(EC.presence_of_element_located((By.ID,"uvms-header-menu-item-communication"))).click()
     
     # Enter Serial Number in field
-    WebDriverWait(cls.driver, browserTimeout).until(EC.presence_of_element_located(By.ID,"mt-input-search-serialNumber")).clear()
+    WebDriverWait(self.driver, browserTimeout).until(EC.presence_of_element_located((By.ID,"mt-input-search-serialNumber"))).clear()
 
-    WebDriverWait(cls.driver, browserTimeout).until(EC.presence_of_element_located(By.ID,"mt-input-search-serialNumber")).send_keys(serialNoValue)
+    WebDriverWait(self.driver, browserTimeout).until(EC.presence_of_element_located((By.ID,"mt-input-search-serialNumber"))).send_keys(serialNoValue)
     # Click in search button
-    WebDriverWait(cls.driver, browserTimeout).until(EC.presence_of_element_located(By.ID,"mt-btn-advanced-search")).click()
+    WebDriverWait(self.driver, browserTimeout).until(EC.presence_of_element_located((By.ID,"mt-btn-advanced-search"))).click()
     
     # Click on details button
-    WebDriverWait(cls.driver, browserTimeout).until(EC.presence_of_element_located(By.ID,"mt-toggle-form")).click()
+    WebDriverWait(self.driver, browserTimeout).until(EC.presence_of_element_located((By.ID,"mt-toggle-form"))).click()
     
     # Click on Link Asset
-    WebDriverWait(cls.driver, browserTimeout).until(EC.presence_of_element_located(By.ID,"mt-btn-assign-asset")).click()
+    WebDriverWait(self.driver, browserTimeout).until(EC.presence_of_element_located((By.ID,"mt-btn-assign-asset"))).click()
     
     # Enter Asset Name and clicks on the search button
-    WebDriverWait(cls.driver, browserTimeout).until(EC.presence_of_element_located(By.XPATH,"(//input[@type='text'])[23]")).send_keys(ircsValue)
-    WebDriverWait(cls.driver, browserTimeout).until(EC.presence_of_element_located(By.XPATH,"//button[@type='submit']")).click()
+    WebDriverWait(self.driver, browserTimeout).until(EC.presence_of_element_located((By.XPATH,"(//input[@type='text'])[23]"))).send_keys(ircsValue)
+    WebDriverWait(self.driver, browserTimeout).until(EC.presence_of_element_located((By.XPATH,"//button[@type='submit']"))).click()
     
     # Click on connect button
-    WebDriverWait(cls.driver, browserTimeout).until(EC.presence_of_element_located(By.CSS_SELECTOR ,"td.textAlignRight > button.btn.btn-primary")).click()
+    WebDriverWait(self.driver, browserTimeout).until(EC.presence_of_element_located((By.CSS_SELECTOR ,"td.textAlignRight > button.btn.btn-primary"))).click()
     # Click on Link button
     
-    WebDriverWait(cls.driver, browserTimeout).until(EC.presence_of_element_located(By.CSS_SELECTOR ,"div.col-md-6.textAlignRight > button.btn.btn-primary")).click()
+    WebDriverWait(self.driver, browserTimeout).until(EC.presence_of_element_located((By.CSS_SELECTOR ,"div.col-md-6.textAlignRight > button.btn.btn-primary"))).click()
     # Enter Reason comment
-    WebDriverWait(cls.driver, browserTimeout).until(EC.presence_of_element_located(By.NAME,"comment")).send_keys("Need to connect this mobile terminal with this asset.")
+    WebDriverWait(self.driver, browserTimeout).until(EC.presence_of_element_located((By.NAME,"comment"))).send_keys("Need to connect this mobile terminal with this asset.")
     
     # Click on Link button 2
-    WebDriverWait(cls.driver, browserTimeout).until(EC.presence_of_element_located(By.CSS_SELECTOR ,"div.modal-footer > div.row > div.col-md-12 > button.btn.btn-primary")).click()
+    WebDriverWait(self.driver, browserTimeout).until(EC.presence_of_element_located((By.CSS_SELECTOR ,"div.modal-footer > div.row > div.col-md-12 > button.btn.btn-primary"))).click()
     
     # Close page
-    WebDriverWait(cls.driver, browserTimeout).until(EC.presence_of_element_located(By.ID,"menu-bar-cancel")).click()
+    WebDriverWait(self.driver, browserTimeout).until(EC.presence_of_element_located((By.ID,"menu-bar-cancel"))).click()
     
 
 
@@ -461,22 +461,22 @@ def change_and_check_speed_format(self,unitNumber):
     startup_browser_and_login_to_unionVMS(self)
     
     # Select Admin tab
-    WebDriverWait(cls.driver, browserTimeout).until(EC.presence_of_element_located(By.ID,"uvms-header-menu-item-audit-log")).click()
+    WebDriverWait(self.driver, browserTimeout).until(EC.presence_of_element_located((By.ID,"uvms-header-menu-item-audit-log"))).click()
     
-    WebDriverWait(cls.driver, browserTimeout).until(EC.presence_of_element_located(By.LINK_TEXT,"CONFIGURATION")).click()
+    WebDriverWait(self.driver, browserTimeout).until(EC.presence_of_element_located((By.LINK_TEXT,"CONFIGURATION"))).click()
     
     # Click on Global setting subtab under Configuration Tab
-    WebDriverWait(cls.driver, browserTimeout).until(EC.presence_of_element_located(By.CSS_SELECTOR ,"#globalSettings > span")).click()
+    WebDriverWait(self.driver, browserTimeout).until(EC.presence_of_element_located((By.CSS_SELECTOR ,"#globalSettings > span"))).click()
     
     # Set Speed format to knots
-    WebDriverWait(cls.driver, browserTimeout).until(EC.presence_of_element_located(By.XPATH,"(//button[@type='button'])[4]")).click()
+    WebDriverWait(self.driver, browserTimeout).until(EC.presence_of_element_located((By.XPATH,"(//button[@type='button'])[4]"))).click()
     
-    WebDriverWait(cls.driver, browserTimeout).until(EC.presence_of_element_located(By.LINK_TEXT,speedUnitTypesInText[unitNumber])).click()
+    WebDriverWait(self.driver, browserTimeout).until(EC.presence_of_element_located((By.LINK_TEXT,speedUnitTypesInText[unitNumber]))).click()
     
     # Click on Position Tab to check correct speed unit
-    WebDriverWait(cls.driver, browserTimeout).until(EC.presence_of_element_located(By.ID,"uvms-header-menu-item-movement")).click()
+    WebDriverWait(self.driver, browserTimeout).until(EC.presence_of_element_located((By.ID,"uvms-header-menu-item-movement"))).click()
     
-    currentSpeedValue = WebDriverWait(cls.driver, browserTimeout).until(EC.presence_of_element_located(By.XPATH,"//*[@id='content']/div[1]/div[3]/div[2]/div/div[2]/div/div[4]/div/div/div/div/span/table/tbody/tr[1]/td[11]")).text
+    currentSpeedValue = WebDriverWait(self.driver, browserTimeout).until(EC.presence_of_element_located((By.XPATH,"//*[@id='content']/div[1]/div[3]/div[2]/div/div[2]/div/div[4]/div/div/div/div/span/table/tbody/tr[1]/td[11]"))).text
     print("Current: " +  currentSpeedValue + " Short Unit: " + speedUnitTypesShort[unitNumber])
     if currentSpeedValue.find(speedUnitTypesShort[unitNumber]) == -1:
         foundCorrectUnit = False
@@ -491,54 +491,54 @@ def change_and_check_speed_format(self,unitNumber):
 
 def generate_and_verify_manual_position(self,speedValue,courseValue,ircsValue,cfr,lolaPositionValues,countryValue,externalMarkingValue,vesselName,sourceValue,deltaTimeValue):
     # Select Positions tab
-    WebDriverWait(cls.driver, browserTimeout).until(EC.presence_of_element_located(By.ID,"uvms-header-menu-item-movement")).click()
+    WebDriverWait(self.driver, browserTimeout).until(EC.presence_of_element_located((By.ID,"uvms-header-menu-item-movement"))).click()
     
     # Click on New manual report
-    WebDriverWait(cls.driver, browserTimeout).until(EC.presence_of_element_located(By.XPATH,"//button[@type='submit']")).click()
+    WebDriverWait(self.driver, browserTimeout).until(EC.presence_of_element_located((By.XPATH,"//button[@type='submit']"))).click()
     
     # Enter IRCS value
-    WebDriverWait(cls.driver, browserTimeout).until(EC.presence_of_element_located(By.NAME,"ircs")).send_keys(ircsValue)
+    WebDriverWait(self.driver, browserTimeout).until(EC.presence_of_element_located((By.NAME,"ircs"))).send_keys(ircsValue)
     
-    WebDriverWait(cls.driver, browserTimeout).until(EC.presence_of_element_located(By.LINK_TEXT,ircsValue)).click()
+    WebDriverWait(self.driver, browserTimeout).until(EC.presence_of_element_located((By.LINK_TEXT,ircsValue))).click()
     
     
     currentUTCValue = datetime.datetime.utcnow()
     earlierPositionTimeValue = currentUTCValue - datetime.timedelta(hours=deltaTimeValue)
     earlierPositionDateTimeValueString = datetime.datetime.strftime(earlierPositionTimeValue, '%Y-%m-%d %H:%M:%S')
-    WebDriverWait(cls.driver, browserTimeout).until(EC.presence_of_element_located(By.ID,"manual-movement-date-picker")).clear()
-    WebDriverWait(cls.driver, browserTimeout).until(EC.presence_of_element_located(By.ID,"manual-movement-date-picker")).send_keys(earlierPositionDateTimeValueString)
+    WebDriverWait(self.driver, browserTimeout).until(EC.presence_of_element_located((By.ID,"manual-movement-date-picker"))).clear()
+    WebDriverWait(self.driver, browserTimeout).until(EC.presence_of_element_located((By.ID,"manual-movement-date-picker"))).send_keys(earlierPositionDateTimeValueString)
     
-    WebDriverWait(cls.driver, browserTimeout).until(EC.presence_of_element_located(By.NAME,"name")).send_keys("testNameJames")
+    WebDriverWait(self.driver, browserTimeout).until(EC.presence_of_element_located((By.NAME,"name"))).send_keys("testNameJames")
         
     # Enter Position, Speed and Course
-    WebDriverWait(cls.driver, browserTimeout).until(EC.presence_of_element_located(By.NAME,"latitude")).clear()
-    WebDriverWait(cls.driver, browserTimeout).until(EC.presence_of_element_located(By.NAME,"latitude")).send_keys(lolaPositionValues[0][0][0])
-    WebDriverWait(cls.driver, browserTimeout).until(EC.presence_of_element_located(By.NAME,"longitude")).clear()
-    WebDriverWait(cls.driver, browserTimeout).until(EC.presence_of_element_located(By.NAME,"longitude")).send_keys(lolaPositionValues[0][0][1])
-    WebDriverWait(cls.driver, browserTimeout).until(EC.presence_of_element_located(By.NAME,"measuredSpeed")).send_keys(str(speedValue))
+    WebDriverWait(self.driver, browserTimeout).until(EC.presence_of_element_located((By.NAME,"latitude"))).clear()
+    WebDriverWait(self.driver, browserTimeout).until(EC.presence_of_element_located((By.NAME,"latitude"))).send_keys(lolaPositionValues[0][0][0])
+    WebDriverWait(self.driver, browserTimeout).until(EC.presence_of_element_located((By.NAME,"longitude"))).clear()
+    WebDriverWait(self.driver, browserTimeout).until(EC.presence_of_element_located((By.NAME,"longitude"))).send_keys(lolaPositionValues[0][0][1])
+    WebDriverWait(self.driver, browserTimeout).until(EC.presence_of_element_located((By.NAME,"measuredSpeed"))).send_keys(str(speedValue))
     
-    WebDriverWait(cls.driver, browserTimeout).until(EC.presence_of_element_located(By.NAME,"course")).send_keys(str(courseValue))
+    WebDriverWait(self.driver, browserTimeout).until(EC.presence_of_element_located((By.NAME,"course"))).send_keys(str(courseValue))
     # Click on Save Button
-    WebDriverWait(cls.driver, browserTimeout).until(EC.presence_of_element_located(By.XPATH,"(//button[@type='submit'])[4]")).click()
+    WebDriverWait(self.driver, browserTimeout).until(EC.presence_of_element_located((By.XPATH,"(//button[@type='submit'])[4]"))).click()
     
     # Click on Confirm button
-    WebDriverWait(cls.driver, browserTimeout).until(EC.presence_of_element_located(By.XPATH,"(//button[@type='submit'])[4]")).click()
+    WebDriverWait(self.driver, browserTimeout).until(EC.presence_of_element_located((By.XPATH,"(//button[@type='submit'])[4]"))).click()
     
 
 
-    WebDriverWait(cls.driver, browserTimeout).until(EC.presence_of_element_located(By.LINK_TEXT,"MANUAL POSITION REPORTS")).click()
+    WebDriverWait(self.driver, browserTimeout).until(EC.presence_of_element_located((By.LINK_TEXT,"MANUAL POSITION REPORTS"))).click()
         
 
     # Verifies position data
-    self.assertEqual(externalMarkingValue, WebDriverWait(cls.driver, browserTimeout).until(EC.presence_of_element_located(By.CSS_SELECTOR ,"td[title=\"" + externalMarkingValue + "\"]")).text)
-    self.assertEqual(ircsValue, WebDriverWait(cls.driver, browserTimeout).until(EC.presence_of_element_located(By.CSS_SELECTOR ,"td[title=\"" + ircsValue + "\"]")).text)
-    #self.assertEqual(vesselName, WebDriverWait(cls.driver, browserTimeout).until(EC.presence_of_element_located(By.LINK_TEXT,vesselName).text)
-    # Bug UVMS-3249 self.assertEqual(earlierPositionDateTimeValueString, WebDriverWait(cls.driver, browserTimeout).until(EC.presence_of_element_located(By.XPATH,"//*[@id='content']/div[1]/div[3]/div[2]/div/div[2]/div/div[4]/div/div/div/div/span/table/tbody/tr[1]/td[6]")).text)
-    self.assertEqual(lolaPositionValues[0][0][0], WebDriverWait(cls.driver, browserTimeout).until(EC.presence_of_element_located(By.CSS_SELECTOR ,"td[title=\"" + lolaPositionValues[0][0][0] + "\"]")).text)
-    self.assertEqual(lolaPositionValues[0][0][1], WebDriverWait(cls.driver, browserTimeout).until(EC.presence_of_element_located(By.CSS_SELECTOR ,"td[title=\"" + lolaPositionValues[0][0][1] + "\"]")).text)
-#     self.assertEqual("%.2f" % speedValue + " kts", WebDriverWait(cls.driver, browserTimeout).until(EC.presence_of_element_located(By.CSS_SELECTOR ,"td[title=\"" + "%.2f" % speedValue + " kts" + "\"]")).text)
-#     self.assertEqual(str(courseValue) + "°", WebDriverWait(cls.driver, browserTimeout).until(EC.presence_of_element_located(By.CSS_SELECTOR ,"td[title=\"" + str(courseValue) + "°" + "\"]")).text)
-#     self.assertEqual(sourceValue, WebDriverWait(cls.driver, browserTimeout).until(EC.presence_of_element_located(By.CSS_SELECTOR ,"td[title=\"" + sourceValue + "\"]")).text)
+    self.assertEqual(externalMarkingValue, WebDriverWait(self.driver, browserTimeout).until(EC.presence_of_element_located((By.CSS_SELECTOR ,"td[title=\"" + externalMarkingValue + "\"]"))).text)
+    self.assertEqual(ircsValue, WebDriverWait(self.driver, browserTimeout).until(EC.presence_of_element_located((By.CSS_SELECTOR ,"td[title=\"" + ircsValue + "\"]"))).text)
+    #self.assertEqual(vesselName, WebDriverWait(self.driver, browserTimeout).until(EC.presence_of_element_located((By.LINK_TEXT,vesselName).text)
+    # Bug UVMS-3249 self.assertEqual(earlierPositionDateTimeValueString, WebDriverWait(self.driver, browserTimeout).until(EC.presence_of_element_located((By.XPATH,"//*[@id='content']/div[1]/div[3]/div[2]/div/div[2]/div/div[4]/div/div/div/div/span/table/tbody/tr[1]/td[6]"))).text)
+    self.assertEqual(lolaPositionValues[0][0][0], WebDriverWait(self.driver, browserTimeout).until(EC.presence_of_element_located((By.CSS_SELECTOR ,"td[title=\"" + lolaPositionValues[0][0][0] + "\"]"))).text)
+    self.assertEqual(lolaPositionValues[0][0][1], WebDriverWait(self.driver, browserTimeout).until(EC.presence_of_element_located((By.CSS_SELECTOR ,"td[title=\"" + lolaPositionValues[0][0][1] + "\"]"))).text)
+#     self.assertEqual("%.2f" % speedValue + " kts", WebDriverWait(self.driver, browserTimeout).until(EC.presence_of_element_located((By.CSS_SELECTOR ,"td[title=\"" + "%.2f" % speedValue + " kts" + "\"]"))).text)
+#     self.assertEqual(str(courseValue) + "°", WebDriverWait(self.driver, browserTimeout).until(EC.presence_of_element_located((By.CSS_SELECTOR ,"td[title=\"" + str(courseValue) + "°" + "\"]"))).text)
+#     self.assertEqual(sourceValue, WebDriverWait(self.driver, browserTimeout).until(EC.presence_of_element_located((By.CSS_SELECTOR ,"td[title=\"" + sourceValue + "\"]"))).text)
     
     return earlierPositionDateTimeValueString
 
@@ -589,29 +589,29 @@ def generate_NAF_and_verify_position(self,speedValue,courseValue):
     startup_browser_and_login_to_unionVMS(self)
     
     # Select Positions tab
-    WebDriverWait(cls.driver, browserTimeout).until(EC.presence_of_element_located(By.ID,"uvms-header-menu-item-movement")).click()
+    WebDriverWait(self.driver, browserTimeout).until(EC.presence_of_element_located((By.ID,"uvms-header-menu-item-movement"))).click()
     
     # Enter IRCS for newly created position
-    WebDriverWait(cls.driver, browserTimeout).until(EC.presence_of_element_located(By.XPATH,"(//button[@type='button'])[2]")).click()
-    WebDriverWait(cls.driver, browserTimeout).until(EC.presence_of_element_located(By.LINK_TEXT,"Custom")).click()
-    WebDriverWait(cls.driver, browserTimeout).until(EC.presence_of_element_located(By.XPATH,"//input[@type='text']")).clear()
-    WebDriverWait(cls.driver, browserTimeout).until(EC.presence_of_element_located(By.XPATH,"//input[@type='text']")).send_keys(ircsValue[0])
+    WebDriverWait(self.driver, browserTimeout).until(EC.presence_of_element_located((By.XPATH,"(//button[@type='button'])[2]"))).click()
+    WebDriverWait(self.driver, browserTimeout).until(EC.presence_of_element_located((By.LINK_TEXT,"Custom"))).click()
+    WebDriverWait(self.driver, browserTimeout).until(EC.presence_of_element_located((By.XPATH,"//input[@type='text']"))).clear()
+    WebDriverWait(self.driver, browserTimeout).until(EC.presence_of_element_located((By.XPATH,"//input[@type='text']"))).send_keys(ircsValue[0])
     
     # Click on search button
-    WebDriverWait(cls.driver, browserTimeout).until(EC.presence_of_element_located(By.XPATH,"(//button[@type='submit'])[2]")).click()
+    WebDriverWait(self.driver, browserTimeout).until(EC.presence_of_element_located((By.XPATH,"(//button[@type='submit'])[2]"))).click()
     
     # Enter Vessel to verify position data
-    self.assertEqual(countryValue, WebDriverWait(cls.driver, browserTimeout).until(EC.presence_of_element_located(By.CSS_SELECTOR ,"td[title=\"" + countryValue + "\"]")).text)
+    self.assertEqual(countryValue, WebDriverWait(self.driver, browserTimeout).until(EC.presence_of_element_located((By.CSS_SELECTOR ,"td[title=\"" + countryValue + "\"]"))).text)
     self.assertEqual(externalMarkingValue,
-                     WebDriverWait(cls.driver, browserTimeout).until(EC.presence_of_element_located(By.CSS_SELECTOR ,"td[title=\"" + externalMarkingValue + "\"]")).text)
-    self.assertEqual(ircsValue[0], WebDriverWait(cls.driver, browserTimeout).until(EC.presence_of_element_located(By.CSS_SELECTOR ,"td[title=\"" + ircsValue[0] + "\"]")).text)
-    self.assertEqual(vesselName[0], WebDriverWait(cls.driver, browserTimeout).until(EC.presence_of_element_located(By.LINK_TEXT,vesselName[0])).text)
-    # Bug UVMS-3249 self.assertEqual(earlierPositionDateTimeValueString, WebDriverWait(cls.driver, browserTimeout).until(EC.presence_of_element_located(By.XPATH,"//*[@id='content']/div[1]/div[3]/div[2]/div/div[2]/div/div[4]/div/div/div/div/span/table/tbody/tr[1]/td[6]")).text)
-    self.assertEqual(lolaPositionValues[0][0][0], WebDriverWait(cls.driver, browserTimeout).until(EC.presence_of_element_located(By.CSS_SELECTOR ,"td[title=\"" + lolaPositionValues[0][0][0] + "\"]")).text)
-    self.assertEqual(lolaPositionValues[0][0][1], WebDriverWait(cls.driver, browserTimeout).until(EC.presence_of_element_located(By.CSS_SELECTOR ,"td[title=\"" + lolaPositionValues[0][0][1] + "\"]")).text)
-    self.assertEqual("%.2f" % speedValue + " kts", WebDriverWait(cls.driver, browserTimeout).until(EC.presence_of_element_located(By.CSS_SELECTOR ,"td[title=\"" + "%.2f" % speedValue + " kts" + "\"]")).text)
-    self.assertEqual(str(courseValue) + "°", WebDriverWait(cls.driver, browserTimeout).until(EC.presence_of_element_located(By.CSS_SELECTOR ,"td[title=\"" + str(courseValue) + "°" + "\"]")).text)
-    self.assertEqual(sourceValue[0], WebDriverWait(cls.driver, browserTimeout).until(EC.presence_of_element_located(By.CSS_SELECTOR ,"td[title=\"" + sourceValue[0] + "\"]")).text)
+                     WebDriverWait(self.driver, browserTimeout).until(EC.presence_of_element_located((By.CSS_SELECTOR ,"td[title=\"" + externalMarkingValue + "\"]"))).text)
+    self.assertEqual(ircsValue[0], WebDriverWait(self.driver, browserTimeout).until(EC.presence_of_element_located((By.CSS_SELECTOR ,"td[title=\"" + ircsValue[0] + "\"]"))).text)
+    self.assertEqual(vesselName[0], WebDriverWait(self.driver, browserTimeout).until(EC.presence_of_element_located((By.LINK_TEXT,vesselName[0]))).text)
+    # Bug UVMS-3249 self.assertEqual(earlierPositionDateTimeValueString, WebDriverWait(self.driver, browserTimeout).until(EC.presence_of_element_located((By.XPATH,"//*[@id='content']/div[1]/div[3]/div[2]/div/div[2]/div/div[4]/div/div/div/div/span/table/tbody/tr[1]/td[6]"))).text)
+    self.assertEqual(lolaPositionValues[0][0][0], WebDriverWait(self.driver, browserTimeout).until(EC.presence_of_element_located((By.CSS_SELECTOR ,"td[title=\"" + lolaPositionValues[0][0][0] + "\"]"))).text)
+    self.assertEqual(lolaPositionValues[0][0][1], WebDriverWait(self.driver, browserTimeout).until(EC.presence_of_element_located((By.CSS_SELECTOR ,"td[title=\"" + lolaPositionValues[0][0][1] + "\"]"))).text)
+    self.assertEqual("%.2f" % speedValue + " kts", WebDriverWait(self.driver, browserTimeout).until(EC.presence_of_element_located((By.CSS_SELECTOR ,"td[title=\"" + "%.2f" % speedValue + " kts" + "\"]"))).text)
+    self.assertEqual(str(courseValue) + "°", WebDriverWait(self.driver, browserTimeout).until(EC.presence_of_element_located((By.CSS_SELECTOR ,"td[title=\"" + str(courseValue) + "°" + "\"]"))).text)
+    self.assertEqual(sourceValue[0], WebDriverWait(self.driver, browserTimeout).until(EC.presence_of_element_located((By.CSS_SELECTOR ,"td[title=\"" + sourceValue[0] + "\"]"))).text)
     
     return earlierPositionDateTimeValueString
 
@@ -839,23 +839,23 @@ class UnionVMSTestCase(unittest.TestCase):
         link_asset_and_mobile_terminal(self,serialNoValue, ircsValue)
         
         # Select Mobile Terminal tab
-        WebDriverWait(cls.driver, browserTimeout).until(EC.presence_of_element_located(By.ID,"uvms-header-menu-item-communication")).click()
+        WebDriverWait(self.driver, browserTimeout).until(EC.presence_of_element_located((By.ID,"uvms-header-menu-item-communication"))).click()
         
         # Enter Serial Number in field
-        WebDriverWait(cls.driver, browserTimeout).until(EC.presence_of_element_located(By.ID,"mt-input-search-serialNumber")).clear()
-        WebDriverWait(cls.driver, browserTimeout).until(EC.presence_of_element_located(By.ID,"mt-input-search-serialNumber")).send_keys(serialNoValue)
+        WebDriverWait(self.driver, browserTimeout).until(EC.presence_of_element_located((By.ID,"mt-input-search-serialNumber"))).clear()
+        WebDriverWait(self.driver, browserTimeout).until(EC.presence_of_element_located((By.ID,"mt-input-search-serialNumber"))).send_keys(serialNoValue)
         # Click in search button
-        WebDriverWait(cls.driver, browserTimeout).until(EC.presence_of_element_located(By.ID,"mt-btn-advanced-search")).click()
+        WebDriverWait(self.driver, browserTimeout).until(EC.presence_of_element_located((By.ID,"mt-btn-advanced-search"))).click()
         
         # Click on details button
-        WebDriverWait(cls.driver, browserTimeout).until(EC.presence_of_element_located(By.ID,"mt-toggle-form")).click()
+        WebDriverWait(self.driver, browserTimeout).until(EC.presence_of_element_located((By.ID,"mt-toggle-form"))).click()
         
         # Click on unlinking button
-        WebDriverWait(cls.driver, browserTimeout).until(EC.presence_of_element_located(By.ID,"menu-bar-unlink")).click()
+        WebDriverWait(self.driver, browserTimeout).until(EC.presence_of_element_located((By.ID,"menu-bar-unlink"))).click()
         
         # Enter comment and click on unlinking button
-        WebDriverWait(cls.driver, browserTimeout).until(EC.presence_of_element_located(By.NAME,"comment")).send_keys("Unlink Asset and MT.")
-        WebDriverWait(cls.driver, browserTimeout).until(EC.presence_of_element_located(By.CSS_SELECTOR ,"div.modal-footer > div.row > div.col-md-12 > button.btn.btn-primary")).click()
+        WebDriverWait(self.driver, browserTimeout).until(EC.presence_of_element_located((By.NAME,"comment"))).send_keys("Unlink Asset and MT.")
+        WebDriverWait(self.driver, browserTimeout).until(EC.presence_of_element_located((By.CSS_SELECTOR ,"div.modal-footer > div.row > div.col-md-12 > button.btn.btn-primary"))).click()
         
         # Shutdown browser
         shutdown_browser(self)
@@ -924,31 +924,31 @@ class UnionVMSTestCase(unittest.TestCase):
         # Startup browser and login
         startup_browser_and_login_to_unionVMS(self,"vms_admin_com","password","AdminAll")
         # Select Audit Log tab
-        WebDriverWait(cls.driver, browserTimeout).until(EC.presence_of_element_located(By.ID,"uvms-header-menu-item-audit-log")).click()
+        WebDriverWait(self.driver, browserTimeout).until(EC.presence_of_element_located((By.ID,"uvms-header-menu-item-audit-log"))).click()
         
         # Click on all sub tabs under Audit Log Tab
-        WebDriverWait(cls.driver, browserTimeout).until(EC.presence_of_element_located(By.CSS_SELECTOR ,"#EXCHANGE > span")).click()
+        WebDriverWait(self.driver, browserTimeout).until(EC.presence_of_element_located((By.CSS_SELECTOR ,"#EXCHANGE > span"))).click()
         
-        WebDriverWait(cls.driver, browserTimeout).until(EC.presence_of_element_located(By.CSS_SELECTOR ,"#POSITION_REPORTS > span")).click()
+        WebDriverWait(self.driver, browserTimeout).until(EC.presence_of_element_located((By.CSS_SELECTOR ,"#POSITION_REPORTS > span"))).click()
         
-        WebDriverWait(cls.driver, browserTimeout).until(EC.presence_of_element_located(By.CSS_SELECTOR ,"#ASSETS_AND_TERMINALS > span")).click()
+        WebDriverWait(self.driver, browserTimeout).until(EC.presence_of_element_located((By.CSS_SELECTOR ,"#ASSETS_AND_TERMINALS > span"))).click()
         
-        WebDriverWait(cls.driver, browserTimeout).until(EC.presence_of_element_located(By.CSS_SELECTOR ,"#GIS > span")).click()
+        WebDriverWait(self.driver, browserTimeout).until(EC.presence_of_element_located((By.CSS_SELECTOR ,"#GIS > span"))).click()
         
-        WebDriverWait(cls.driver, browserTimeout).until(EC.presence_of_element_located(By.CSS_SELECTOR ,"#ALARMS > span")).click()
+        WebDriverWait(self.driver, browserTimeout).until(EC.presence_of_element_located((By.CSS_SELECTOR ,"#ALARMS > span"))).click()
         
-        WebDriverWait(cls.driver, browserTimeout).until(EC.presence_of_element_located(By.CSS_SELECTOR ,"#ACCESS_CONTROL > span")).click()
+        WebDriverWait(self.driver, browserTimeout).until(EC.presence_of_element_located((By.CSS_SELECTOR ,"#ACCESS_CONTROL > span"))).click()
         
-        WebDriverWait(cls.driver, browserTimeout).until(EC.presence_of_element_located(By.CSS_SELECTOR ,"#ALL > span")).click()
+        WebDriverWait(self.driver, browserTimeout).until(EC.presence_of_element_located((By.CSS_SELECTOR ,"#ALL > span"))).click()
         
         # Check sub tab names
-        self.assertEqual("ALL", WebDriverWait(cls.driver, browserTimeout).until(EC.presence_of_element_located(By.CSS_SELECTOR ,"#ALL > span")).text)
-        self.assertEqual("EXCHANGE", WebDriverWait(cls.driver, browserTimeout).until(EC.presence_of_element_located(By.CSS_SELECTOR ,"#EXCHANGE > span")).text)
-        self.assertEqual("POSITION REPORTS", WebDriverWait(cls.driver, browserTimeout).until(EC.presence_of_element_located(By.CSS_SELECTOR ,"#POSITION_REPORTS > span")).text)
-        self.assertEqual("ASSETS AND TERMINALS", WebDriverWait(cls.driver, browserTimeout).until(EC.presence_of_element_located(By.CSS_SELECTOR ,"#ASSETS_AND_TERMINALS > span")).text)
-        self.assertEqual("GIS", WebDriverWait(cls.driver, browserTimeout).until(EC.presence_of_element_located(By.CSS_SELECTOR ,"#GIS > span")).text)
-        self.assertEqual("ALERTS", WebDriverWait(cls.driver, browserTimeout).until(EC.presence_of_element_located(By.CSS_SELECTOR ,"#ALARMS > span")).text)
-        self.assertEqual("ACCESS CONTROL", WebDriverWait(cls.driver, browserTimeout).until(EC.presence_of_element_located(By.CSS_SELECTOR ,"#ACCESS_CONTROL > span")).text)
+        self.assertEqual("ALL", WebDriverWait(self.driver, browserTimeout).until(EC.presence_of_element_located((By.CSS_SELECTOR ,"#ALL > span"))).text)
+        self.assertEqual("EXCHANGE", WebDriverWait(self.driver, browserTimeout).until(EC.presence_of_element_located((By.CSS_SELECTOR ,"#EXCHANGE > span"))).text)
+        self.assertEqual("POSITION REPORTS", WebDriverWait(self.driver, browserTimeout).until(EC.presence_of_element_located((By.CSS_SELECTOR ,"#POSITION_REPORTS > span"))).text)
+        self.assertEqual("ASSETS AND TERMINALS", WebDriverWait(self.driver, browserTimeout).until(EC.presence_of_element_located((By.CSS_SELECTOR ,"#ASSETS_AND_TERMINALS > span"))).text)
+        self.assertEqual("GIS", WebDriverWait(self.driver, browserTimeout).until(EC.presence_of_element_located((By.CSS_SELECTOR ,"#GIS > span"))).text)
+        self.assertEqual("ALERTS", WebDriverWait(self.driver, browserTimeout).until(EC.presence_of_element_located((By.CSS_SELECTOR ,"#ALARMS > span"))).text)
+        self.assertEqual("ACCESS CONTROL", WebDriverWait(self.driver, browserTimeout).until(EC.presence_of_element_located((By.CSS_SELECTOR ,"#ACCESS_CONTROL > span"))).text)
         # Shutdown browser
         shutdown_browser(self)
 
@@ -959,30 +959,30 @@ class UnionVMSTestCase(unittest.TestCase):
         # Startup browser and login
         startup_browser_and_login_to_unionVMS(self,"vms_admin_com","password","AdminAll")
         # Select Admin tab
-        WebDriverWait(cls.driver, browserTimeout).until(EC.presence_of_element_located(By.ID,"uvms-header-menu-item-audit-log")).click()
+        WebDriverWait(self.driver, browserTimeout).until(EC.presence_of_element_located((By.ID,"uvms-header-menu-item-audit-log"))).click()
         
-        WebDriverWait(cls.driver, browserTimeout).until(EC.presence_of_element_located(By.LINK_TEXT,"CONFIGURATION")).click()
+        WebDriverWait(self.driver, browserTimeout).until(EC.presence_of_element_located((By.LINK_TEXT,"CONFIGURATION"))).click()
         
         # Click on all sub tabs under Configuration Tab
-        WebDriverWait(cls.driver, browserTimeout).until(EC.presence_of_element_located(By.CSS_SELECTOR ,"#globalSettings > span")).click()
+        WebDriverWait(self.driver, browserTimeout).until(EC.presence_of_element_located((By.CSS_SELECTOR ,"#globalSettings > span"))).click()
         
-        WebDriverWait(cls.driver, browserTimeout).until(EC.presence_of_element_located(By.CSS_SELECTOR ,"#reporting > span")).click()
+        WebDriverWait(self.driver, browserTimeout).until(EC.presence_of_element_located((By.CSS_SELECTOR ,"#reporting > span"))).click()
         
-        WebDriverWait(cls.driver, browserTimeout).until(EC.presence_of_element_located(By.CSS_SELECTOR ,"#asset > span")).click()
+        WebDriverWait(self.driver, browserTimeout).until(EC.presence_of_element_located((By.CSS_SELECTOR ,"#asset > span"))).click()
         
-        WebDriverWait(cls.driver, browserTimeout).until(EC.presence_of_element_located(By.CSS_SELECTOR ,"#mobileTerminal > span")).click()
+        WebDriverWait(self.driver, browserTimeout).until(EC.presence_of_element_located((By.CSS_SELECTOR ,"#mobileTerminal > span"))).click()
         
-        WebDriverWait(cls.driver, browserTimeout).until(EC.presence_of_element_located(By.CSS_SELECTOR ,"#exchange > span")).click()
+        WebDriverWait(self.driver, browserTimeout).until(EC.presence_of_element_located((By.CSS_SELECTOR ,"#exchange > span"))).click()
         
-        WebDriverWait(cls.driver, browserTimeout).until(EC.presence_of_element_located(By.CSS_SELECTOR ,"#systemMonitor > span")).click()
+        WebDriverWait(self.driver, browserTimeout).until(EC.presence_of_element_located((By.CSS_SELECTOR ,"#systemMonitor > span"))).click()
         
         # Check sub tab names
-        self.assertEqual("SYSTEM MONITOR", WebDriverWait(cls.driver, browserTimeout).until(EC.presence_of_element_located(By.CSS_SELECTOR ,"#systemMonitor > span")).text)
-        self.assertEqual("GLOBAL SETTINGS", WebDriverWait(cls.driver, browserTimeout).until(EC.presence_of_element_located(By.CSS_SELECTOR ,"#globalSettings > span")).text)
-        self.assertEqual("REPORTING", WebDriverWait(cls.driver, browserTimeout).until(EC.presence_of_element_located(By.CSS_SELECTOR ,"#reporting > span")).text)
-        self.assertEqual("ASSETS", WebDriverWait(cls.driver, browserTimeout).until(EC.presence_of_element_located(By.CSS_SELECTOR ,"#asset > span")).text)
-        self.assertEqual("EXCHANGE", WebDriverWait(cls.driver, browserTimeout).until(EC.presence_of_element_located(By.CSS_SELECTOR ,"#exchange > span")).text)
-        self.assertEqual("MOBILE TERMINALS", WebDriverWait(cls.driver, browserTimeout).until(EC.presence_of_element_located(By.CSS_SELECTOR ,"#mobileTerminal > span")).text)
+        self.assertEqual("SYSTEM MONITOR", WebDriverWait(self.driver, browserTimeout).until(EC.presence_of_element_located((By.CSS_SELECTOR ,"#systemMonitor > span"))).text)
+        self.assertEqual("GLOBAL SETTINGS", WebDriverWait(self.driver, browserTimeout).until(EC.presence_of_element_located((By.CSS_SELECTOR ,"#globalSettings > span"))).text)
+        self.assertEqual("REPORTING", WebDriverWait(self.driver, browserTimeout).until(EC.presence_of_element_located((By.CSS_SELECTOR ,"#reporting > span"))).text)
+        self.assertEqual("ASSETS", WebDriverWait(self.driver, browserTimeout).until(EC.presence_of_element_located((By.CSS_SELECTOR ,"#asset > span"))).text)
+        self.assertEqual("EXCHANGE", WebDriverWait(self.driver, browserTimeout).until(EC.presence_of_element_located((By.CSS_SELECTOR ,"#exchange > span"))).text)
+        self.assertEqual("MOBILE TERMINALS", WebDriverWait(self.driver, browserTimeout).until(EC.presence_of_element_located((By.CSS_SELECTOR ,"#mobileTerminal > span"))).text)
         # Shutdown browser
         shutdown_browser(self)
 
@@ -992,15 +992,15 @@ class UnionVMSTestCase(unittest.TestCase):
         startup_browser_and_login_to_unionVMS(self,"vms_admin_com","password","AdminAll")
         # Click on User Guide icon (Question mark icon)
         # Note: User Guide page is opened in a new tab
-        WebDriverWait(cls.driver, browserTimeout).until(EC.presence_of_element_located(By.XPATH,"//a/i")).click()
+        WebDriverWait(self.driver, browserTimeout).until(EC.presence_of_element_located((By.XPATH,"//a/i"))).click()
         time.sleep(10)
         # Switch tab focus for Selenium to the new tab
         self.driver.switch_to.window(self.driver.window_handles[-1])
         
         # Check User guide page
-        self.assertEqual("Union VMS - User Manual", WebDriverWait(cls.driver, browserTimeout).until(EC.presence_of_element_located(By.XPATH,"//*[@id='title-text']/a")).text)
+        self.assertEqual("Union VMS - User Manual", WebDriverWait(self.driver, browserTimeout).until(EC.presence_of_element_located((By.XPATH,"//*[@id='title-text']/a"))).text)
         
-        self.assertEqual("Welcome to Union VMS!", WebDriverWait(cls.driver, browserTimeout).until(EC.presence_of_element_located(By.XPATH,"//*[@id='main-content']/div[3]/ul/li[1]/span/a")).text)
+        self.assertEqual("Welcome to Union VMS!", WebDriverWait(self.driver, browserTimeout).until(EC.presence_of_element_located((By.XPATH,"//*[@id='main-content']/div[3]/ul/li[1]/span/a"))).text)
         # Shutdown browser
         shutdown_browser(self)
         
@@ -1008,26 +1008,26 @@ class UnionVMSTestCase(unittest.TestCase):
         # Startup browser and login
         startup_browser_and_login_to_unionVMS(self,"vms_admin_com","password","AdminAll")
         # Select Alerts tab (Holding Table)
-        WebDriverWait(cls.driver, browserTimeout).until(EC.presence_of_element_located(By.ID,"uvms-header-menu-item-holding-table")).click()
+        WebDriverWait(self.driver, browserTimeout).until(EC.presence_of_element_located((By.ID,"uvms-header-menu-item-holding-table"))).click()
         
         # Check List Headlines for Holding Table
-        self.assertEqual("Date triggered (UTC)", WebDriverWait(cls.driver, browserTimeout).until(EC.presence_of_element_located(By.CSS_SELECTOR ,"span > span")).text)
-        self.assertEqual("Object affected", WebDriverWait(cls.driver, browserTimeout).until(EC.presence_of_element_located(By.XPATH,"//div[@id='content']/div/div[3]/div[2]/div/div[2]/div/div[3]/div/div/div/div/span/table/thead/tr/th[3]/a/span/span")).text)
-        self.assertEqual("Rule", WebDriverWait(cls.driver, browserTimeout).until(EC.presence_of_element_located(By.XPATH,"//div[@id='content']/div/div[3]/div[2]/div/div[2]/div/div[3]/div/div/div/div/span/table/thead/tr/th[4]")).text)
+        self.assertEqual("Date triggered (UTC)", WebDriverWait(self.driver, browserTimeout).until(EC.presence_of_element_located((By.CSS_SELECTOR ,"span > span"))).text)
+        self.assertEqual("Object affected", WebDriverWait(self.driver, browserTimeout).until(EC.presence_of_element_located((By.XPATH,"//div[@id='content']/div/div[3]/div[2]/div/div[2]/div/div[3]/div/div/div/div/span/table/thead/tr/th[3]/a/span/span"))).text)
+        self.assertEqual("Rule", WebDriverWait(self.driver, browserTimeout).until(EC.presence_of_element_located((By.XPATH,"//div[@id='content']/div/div[3]/div[2]/div/div[2]/div/div[3]/div/div/div/div/span/table/thead/tr/th[4]"))).text)
         # Select Alerts tab (Notifications)
-        WebDriverWait(cls.driver, browserTimeout).until(EC.presence_of_element_located(By.XPATH,"//*[@id='content']/div[1]/div[3]/div[2]/div/div[1]/div/div/ul/li[2]/a")).click()
+        WebDriverWait(self.driver, browserTimeout).until(EC.presence_of_element_located((By.XPATH,"//*[@id='content']/div[1]/div[3]/div[2]/div/div[1]/div/div/ul/li[2]/a"))).click()
         
         # Check List Headlines for Notifications
-        self.assertEqual("Date triggered (UTC)", WebDriverWait(cls.driver, browserTimeout).until(EC.presence_of_element_located(By.CSS_SELECTOR ,"span > span")).text)
-        self.assertEqual("Object affected", WebDriverWait(cls.driver, browserTimeout).until(EC.presence_of_element_located(By.XPATH,"//div[@id='content']/div/div[3]/div[2]/div/div[2]/div/div[3]/div/div/div/div/span/table/thead/tr/th[3]/a/span/span")).text)
-        self.assertEqual("Rule", WebDriverWait(cls.driver, browserTimeout).until(EC.presence_of_element_located(By.XPATH,"//div[@id='content']/div/div[3]/div[2]/div/div[2]/div/div[3]/div/div/div/div/span/table/thead/tr/th[4]")).text)
+        self.assertEqual("Date triggered (UTC)", WebDriverWait(self.driver, browserTimeout).until(EC.presence_of_element_located((By.CSS_SELECTOR ,"span > span"))).text)
+        self.assertEqual("Object affected", WebDriverWait(self.driver, browserTimeout).until(EC.presence_of_element_located((By.XPATH,"//div[@id='content']/div/div[3]/div[2]/div/div[2]/div/div[3]/div/div/div/div/span/table/thead/tr/th[3]/a/span/span"))).text)
+        self.assertEqual("Rule", WebDriverWait(self.driver, browserTimeout).until(EC.presence_of_element_located((By.XPATH,"//div[@id='content']/div/div[3]/div[2]/div/div[2]/div/div[3]/div/div/div/div/span/table/thead/tr/th[4]"))).text)
         # Select Alerts tab (Rules)
-        WebDriverWait(cls.driver, browserTimeout).until(EC.presence_of_element_located(By.XPATH,"//*[@id='content']/div[1]/div[3]/div[2]/div/div[1]/div/div/ul/li[3]/a")).click()
+        WebDriverWait(self.driver, browserTimeout).until(EC.presence_of_element_located((By.XPATH,"//*[@id='content']/div[1]/div[3]/div[2]/div/div[1]/div/div/ul/li[3]/a"))).click()
         
         # Check List Headlines for Rules List
-        self.assertEqual("Rule name", WebDriverWait(cls.driver, browserTimeout).until(EC.presence_of_element_located(By.CSS_SELECTOR ,"span > span")).text)
-        self.assertEqual("Last triggered", WebDriverWait(cls.driver, browserTimeout).until(EC.presence_of_element_located(By.XPATH,"//div[@id='content']/div/div[3]/div[2]/div/div[2]/div/div[3]/div/div/div/div/span/table/thead/tr/th[3]/a/span/span")).text)
-        self.assertEqual("Date updated", WebDriverWait(cls.driver, browserTimeout).until(EC.presence_of_element_located(By.XPATH,"//div[@id='content']/div/div[3]/div[2]/div/div[2]/div/div[3]/div/div/div/div/span/table/thead/tr/th[4]/a/span/span")).text)
+        self.assertEqual("Rule name", WebDriverWait(self.driver, browserTimeout).until(EC.presence_of_element_located((By.CSS_SELECTOR ,"span > span"))).text)
+        self.assertEqual("Last triggered", WebDriverWait(self.driver, browserTimeout).until(EC.presence_of_element_located((By.XPATH,"//div[@id='content']/div/div[3]/div[2]/div/div[2]/div/div[3]/div/div/div/div/span/table/thead/tr/th[3]/a/span/span"))).text)
+        self.assertEqual("Date updated", WebDriverWait(self.driver, browserTimeout).until(EC.presence_of_element_located((By.XPATH,"//div[@id='content']/div/div[3]/div[2]/div/div[2]/div/div[3]/div/div/div/div/span/table/thead/tr/th[4]/a/span/span"))).text)
         # Shutdown browser
         shutdown_browser(self)
         
