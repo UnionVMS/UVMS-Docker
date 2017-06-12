@@ -133,7 +133,7 @@ def startup_browser_and_login_to_unionVMS(cls,userId,password,userContext):
     try:
         if cls.driver.find_element_by_xpath("/html/head/title"):
             cls.driver.switch_to.frame("content")
-            WebDriverWait(cls.driver, browserTimeout).until(EC.presence_of_element_located((By.CSS_SELECTOR,"img[alt=\"Automatisk inloggning\"]"))).click()
+            WebDriverWait(cls.driver, browserTimeout).until(EC.element_to_be_clickable((By.CSS_SELECTOR,"img[alt=\"Automatisk inloggning\"]"))).click()
     except:
         pass
 
@@ -141,15 +141,15 @@ def startup_browser_and_login_to_unionVMS(cls,userId,password,userContext):
     # if Pop-up windows exists then click cancel
     try:
         if cls.driver.find_element_by_xpath("/html/body/div[5]/div/div/div/form"):
-            WebDriverWait(cls.driver, browserTimeout).until(EC.presence_of_element_located((By.XPATH,"/html/body/div[5]/div/div/div/form/div[3]/button[2]"))).click()
+            WebDriverWait(cls.driver, browserTimeout).until(EC.element_to_be_clickable((By.XPATH,"/html/body/div[5]/div/div/div/form/div[3]/button[2]"))).click()
     except:
         pass
         
     WebDriverWait(cls.driver, browserTimeout).until(EC.presence_of_element_located((By.ID, 'userId'))).send_keys(userId)
     WebDriverWait(cls.driver, browserTimeout).until(EC.presence_of_element_located((By.ID, 'password'))).send_keys(password)  
-    WebDriverWait(cls.driver, browserTimeout).until(EC.presence_of_element_located((By.XPATH, "//*[@id='content']/div[1]/div[3]/div/div[2]/div[3]/div[2]/form/div[3]/div/button"))).click()
+    WebDriverWait(cls.driver, browserTimeout).until(EC.element_to_be_clickable((By.XPATH, "//*[@id='content']/div[1]/div[3]/div/div[2]/div[3]/div[2]/form/div[3]/div/button"))).click()
   
-    WebDriverWait(cls.driver, browserTimeout).until(EC.presence_of_element_located((By.PARTIAL_LINK_TEXT, "AdminAll"))).click()
+    WebDriverWait(cls.driver, browserTimeout).until(EC.element_to_be_clickable((By.PARTIAL_LINK_TEXT, "AdminAll"))).click()
   
 
 def shutdown_browser(cls):
@@ -159,14 +159,14 @@ def shutdown_browser(cls):
 def create_one_new_asset_from_gui(self,ircsValue,vesselName,externalMarkingValue,cfrValue,imoValue,homeportValue,mmsiValue,lengthValue,grossTonnageValue,powerValue,producernameValue,producercodeValue,contactNameValue,contactEmailValue,contactPhoneNumberValue):
     
     # Click on asset tab
-    WebDriverWait(self.driver, browserTimeout).until(EC.presence_of_element_located((By.ID,"uvms-header-menu-item-assets"))).click()
+    WebDriverWait(self.driver, browserTimeout).until(EC.element_to_be_clickable((By.ID,"uvms-header-menu-item-assets"))).click()
     
     # Click on new Asset button
-    WebDriverWait(self.driver, browserTimeout).until(EC.presence_of_element_located((By.ID,"asset-btn-create"))).click()
+    WebDriverWait(self.driver, browserTimeout).until(EC.element_to_be_clickable((By.ID,"asset-btn-create"))).click()
     
     # Select F.S value
-    WebDriverWait(self.driver, browserTimeout).until(EC.presence_of_element_located((By.ID,"asset-input-countryCode"))).click()
-    WebDriverWait(self.driver, browserTimeout).until(EC.presence_of_element_located((By.ID,"asset-input-countryCode-item-2"))).click()
+    WebDriverWait(self.driver, browserTimeout).until(EC.element_to_be_clickable((By.ID,"asset-input-countryCode"))).click()
+    WebDriverWait(self.driver, browserTimeout).until(EC.element_to_be_clickable((By.ID,"asset-input-countryCode-item-2"))).click()
     # Enter IRCS value
     WebDriverWait(self.driver, browserTimeout).until(EC.presence_of_element_located((By.ID,"asset-input-ircs"))).send_keys(ircsValue)
     # Enter Name value
@@ -180,14 +180,14 @@ def create_one_new_asset_from_gui(self,ircsValue,vesselName,externalMarkingValue
     # Enter HomePort Value
     WebDriverWait(self.driver, browserTimeout).until(EC.presence_of_element_located((By.ID,"asset-input-homeport"))).send_keys(homeportValue)
     # Select Gear Type value
-    WebDriverWait(self.driver, browserTimeout).until(EC.presence_of_element_located((By.ID,"asset-input-gearType"))).click()
-    WebDriverWait(self.driver, browserTimeout).until(EC.presence_of_element_located((By.ID,"asset-input-gearType-item-0"))).click()
+    WebDriverWait(self.driver, browserTimeout).until(EC.element_to_be_clickable((By.ID,"asset-input-gearType"))).click()
+    WebDriverWait(self.driver, browserTimeout).until(EC.element_to_be_clickable((By.ID,"asset-input-gearType-item-0"))).click()
     # Enter MMSI Value
     WebDriverWait(self.driver, browserTimeout).until(EC.presence_of_element_located((By.ID,"asset-input-mmsi"))).send_keys(mmsiValue)
     # Select License Type value
-    WebDriverWait(self.driver, browserTimeout).until(EC.presence_of_element_located((By.ID,"asset-input-licenseType"))).click()
+    WebDriverWait(self.driver, browserTimeout).until(EC.element_to_be_clickable((By.ID,"asset-input-licenseType"))).click()
     
-    WebDriverWait(self.driver, browserTimeout).until(EC.presence_of_element_located((By.ID,"asset-input-licenseType-item-0"))).click()
+    WebDriverWait(self.driver, browserTimeout).until(EC.element_to_be_clickable((By.ID,"asset-input-licenseType-item-0"))).click()
     # Length Value
     WebDriverWait(self.driver, browserTimeout).until(EC.presence_of_element_located((By.ID,"asset-input-lengthValue"))).send_keys(lengthValue)
     # Gross Tonnage Value
@@ -199,7 +199,7 @@ def create_one_new_asset_from_gui(self,ircsValue,vesselName,externalMarkingValue
     # Main Producer Code Value
     WebDriverWait(self.driver, browserTimeout).until(EC.presence_of_element_located((By.ID,"asset-input-producercode"))).send_keys(producercodeValue)
     # Click on the Contacts tab
-    WebDriverWait(self.driver, browserTimeout).until(EC.presence_of_element_located((By.XPATH,"//*[@id='CONTACTS']/span"))).click()
+    WebDriverWait(self.driver, browserTimeout).until(EC.element_to_be_clickable((By.XPATH,"//*[@id='CONTACTS']/span"))).click()
     
     # Main Contact Name Value
     WebDriverWait(self.driver, browserTimeout).until(EC.presence_of_element_located((By.ID,"asset-input-contact-name-0"))).send_keys(contactNameValue)
@@ -208,24 +208,24 @@ def create_one_new_asset_from_gui(self,ircsValue,vesselName,externalMarkingValue
     # Main Contact Number Value
     WebDriverWait(self.driver, browserTimeout).until(EC.presence_of_element_located((By.ID,"asset-input-contact-number-0"))).send_keys(contactPhoneNumberValue)
     # Click on Save Asset button
-    WebDriverWait(self.driver, browserTimeout).until(EC.presence_of_element_located((By.ID,"menu-bar-save"))).click()
+    WebDriverWait(self.driver, browserTimeout).until(EC.element_to_be_clickable((By.ID,"menu-bar-save"))).click()
     
     # Leave new asset view
-    WebDriverWait(self.driver, browserTimeout).until(EC.presence_of_element_located((By.ID,"menu-bar-cancel"))).click()
+    WebDriverWait(self.driver, browserTimeout).until(EC.element_to_be_clickable((By.ID,"menu-bar-cancel"))).click()
     
 
 
 def create_one_new_mobile_terminal_from_gui(self, serialNoValue, transceiverType, softwareVersion, antennaVersion, satelliteNumber, dnidNumber, memberIdnumber, installedByName, expectedFrequencyHours, gracePeriodFrequencyHours, inPortFrequencyHours):
     # Startup browser and login
-    WebDriverWait(self.driver, browserTimeout).until(EC.presence_of_element_located((By.ID,"uvms-header-menu-item-communication"))).click()
+    WebDriverWait(self.driver, browserTimeout).until(EC.element_to_be_clickable((By.ID,"uvms-header-menu-item-communication"))).click()
     
     # Click on new terminal button
-    WebDriverWait(self.driver, browserTimeout).until(EC.presence_of_element_located((By.ID,"mt-btn-create"))).click()
+    WebDriverWait(self.driver, browserTimeout).until(EC.element_to_be_clickable((By.ID,"mt-btn-create"))).click()
     
     # Select Transponder system
-    WebDriverWait(self.driver, browserTimeout).until(EC.presence_of_element_located((By.ID,"mt-0-typeAndPlugin"))).click()
+    WebDriverWait(self.driver, browserTimeout).until(EC.element_to_be_clickable((By.ID,"mt-0-typeAndPlugin"))).click()
     
-    WebDriverWait(self.driver, browserTimeout).until(EC.presence_of_element_located((By.LINK_TEXT,"Inmarsat-C : twostage"))).click()
+    WebDriverWait(self.driver, browserTimeout).until(EC.element_to_be_clickable((By.LINK_TEXT,"Inmarsat-C : twostage"))).click()
     
     # Enter serial number
     WebDriverWait(self.driver, browserTimeout).until(EC.presence_of_element_located((By.ID,"mt-0-serialNumber"))).send_keys(serialNoValue)
@@ -251,13 +251,13 @@ def create_one_new_mobile_terminal_from_gui(self, serialNoValue, transceiverType
     WebDriverWait(self.driver, browserTimeout).until(EC.presence_of_element_located((By.ID,"mt-0-channel-0-frequencyPort"))).send_keys(inPortFrequencyHours)
     
     # Activate Mobile Terminal button
-    WebDriverWait(self.driver, browserTimeout).until(EC.presence_of_element_located((By.ID,"mt-0-activation"))).click()
+    WebDriverWait(self.driver, browserTimeout).until(EC.element_to_be_clickable((By.ID,"mt-0-activation"))).click()
     
     # Click on save button
-    WebDriverWait(self.driver, browserTimeout).until(EC.presence_of_element_located((By.ID,"menu-bar-save"))).click()
+    WebDriverWait(self.driver, browserTimeout).until(EC.element_to_be_clickable((By.ID,"menu-bar-save"))).click()
     
     # Leave new asset view
-    WebDriverWait(self.driver, browserTimeout).until(EC.presence_of_element_located((By.ID,"menu-bar-cancel"))).click()
+    WebDriverWait(self.driver, browserTimeout).until(EC.element_to_be_clickable((By.ID,"menu-bar-cancel"))).click()
     
     
 
@@ -266,24 +266,24 @@ def create_one_new_mobile_terminal_via_asset_tab(self, mobileTerminalNumber, ves
     startup_browser_and_login_to_unionVMS(self)
     
     # Click on asset tab
-    WebDriverWait(self.driver, browserTimeout).until(EC.presence_of_element_located((By.ID,"uvms-header-menu-item-assets"))).click()
+    WebDriverWait(self.driver, browserTimeout).until(EC.element_to_be_clickable((By.ID,"uvms-header-menu-item-assets"))).click()
     
     # Search for created asset
     WebDriverWait(self.driver, browserTimeout).until(EC.presence_of_element_located((By.ID,"asset-input-simple-search"))).clear()
     WebDriverWait(self.driver, browserTimeout).until(EC.presence_of_element_located((By.ID,"asset-input-simple-search"))).send_keys(vesselName[vesselNumber])
     
-    WebDriverWait(self.driver, browserTimeout).until(EC.presence_of_element_located((By.ID,"asset-btn-simple-search"))).click()
+    WebDriverWait(self.driver, browserTimeout).until(EC.element_to_be_clickable((By.ID,"asset-btn-simple-search"))).click()
     
     # Click on details button
-    WebDriverWait(self.driver, browserTimeout).until(EC.presence_of_element_located((By.ID,"asset-toggle-form"))).click()
+    WebDriverWait(self.driver, browserTimeout).until(EC.element_to_be_clickable((By.ID,"asset-toggle-form"))).click()
     
     # Click on add new terminal button
-    WebDriverWait(self.driver, browserTimeout).until(EC.presence_of_element_located((By.ID,"menu-bar-vessel-add-terminal"))).click()
+    WebDriverWait(self.driver, browserTimeout).until(EC.element_to_be_clickable((By.ID,"menu-bar-vessel-add-terminal"))).click()
     
     # Select Transponder system
-    WebDriverWait(self.driver, browserTimeout).until(EC.presence_of_element_located((By.ID,"mt-0-typeAndPlugin"))).click()
+    WebDriverWait(self.driver, browserTimeout).until(EC.element_to_be_clickable((By.ID,"mt-0-typeAndPlugin"))).click()
     
-    WebDriverWait(self.driver, browserTimeout).until(EC.presence_of_element_located((By.LINK_TEXT,"Inmarsat-C : twostage"))).click()
+    WebDriverWait(self.driver, browserTimeout).until(EC.element_to_be_clickable((By.LINK_TEXT,"Inmarsat-C : twostage"))).click()
     
     # Enter serial number
     WebDriverWait(self.driver, browserTimeout).until(EC.presence_of_element_located((By.ID,"mt-0-serialNumber"))).send_keys(serialNoValue[mobileTerminalNumber])
@@ -308,13 +308,13 @@ def create_one_new_mobile_terminal_via_asset_tab(self, mobileTerminalNumber, ves
     # In port
     WebDriverWait(self.driver, browserTimeout).until(EC.presence_of_element_located((By.ID,"mt-0-channel-0-frequencyPort"))).send_keys(inPortFrequencyHours)
     # Activate Mobile Terminal button
-    WebDriverWait(self.driver, browserTimeout).until(EC.presence_of_element_located((By.ID,"mt-0-activation"))).click()
+    WebDriverWait(self.driver, browserTimeout).until(EC.element_to_be_clickable((By.ID,"mt-0-activation"))).click()
     
     # Click on save button
-    WebDriverWait(self.driver, browserTimeout).until(EC.presence_of_element_located((By.XPATH,"//*[@id='menu-bar-update']"))).click()
+    WebDriverWait(self.driver, browserTimeout).until(EC.element_to_be_clickable((By.XPATH,"//*[@id='menu-bar-update']"))).click()
     
     # Leave new asset view
-    WebDriverWait(self.driver, browserTimeout).until(EC.presence_of_element_located((By.ID,"menu-bar-cancel"))).click()
+    WebDriverWait(self.driver, browserTimeout).until(EC.element_to_be_clickable((By.ID,"menu-bar-cancel"))).click()
     
     # Shutdown browser
     shutdown_browser(self)
@@ -322,17 +322,17 @@ def create_one_new_mobile_terminal_via_asset_tab(self, mobileTerminalNumber, ves
 
 def check_new_asset_exists(self,countryValue,gearTypeValue,licenseTypeValue, ircsValue,vesselName,externalMarkingValue,cfrValue,imoValue,homeportValue,mmsiValue,lengthValue,grossTonnageValue,powerValue,producernameValue,producercodeValue,contactNameValue,contactEmailValue,contactPhoneNumberValue):
     # Startup browser and login
-    WebDriverWait(self.driver, browserTimeout).until(EC.presence_of_element_located((By.ID,"uvms-header-menu-item-assets"))).click()
+    WebDriverWait(self.driver, browserTimeout).until(EC.element_to_be_clickable((By.ID,"uvms-header-menu-item-assets"))).click()
     
     # Search for the new created asset in the asset list
     WebDriverWait(self.driver, browserTimeout).until(EC.presence_of_element_located((By.ID,"asset-input-simple-search"))).send_keys(vesselName)
-    WebDriverWait(self.driver, browserTimeout).until(EC.presence_of_element_located((By.ID,"asset-btn-simple-search"))).click()
+    WebDriverWait(self.driver, browserTimeout).until(EC.element_to_be_clickable((By.ID,"asset-btn-simple-search"))).click()
     
     # Check that the new asset exists in the list.
     self.assertEqual(vesselName, WebDriverWait(self.driver, browserTimeout).until(EC.presence_of_element_located((By.CSS_SELECTOR ,"td[title=\"" + vesselName + "\"]"))).text)
     
     # Click on details button for new asset
-    WebDriverWait(self.driver, browserTimeout).until(EC.presence_of_element_located((By.ID,"asset-toggle-form"))).click()
+    WebDriverWait(self.driver, browserTimeout).until(EC.element_to_be_clickable((By.ID,"asset-toggle-form"))).click()
     
     # Check that the F.S value is correct.
     self.assertEqual(countryValue, WebDriverWait(self.driver, browserTimeout).until(EC.presence_of_element_located((By.ID,"asset-input-countryCode"))).text)
@@ -369,7 +369,7 @@ def check_new_asset_exists(self,countryValue,gearTypeValue,licenseTypeValue, irc
     # Check that the Producer Code value is correct.
     self.assertEqual(producercodeValue, WebDriverWait(self.driver, browserTimeout).until(EC.presence_of_element_located((By.ID,"asset-input-producercode"))).get_attribute("value"))
     # Click on the Contacts tab
-    WebDriverWait(self.driver, browserTimeout).until(EC.presence_of_element_located((By.XPATH,"//*[@id='CONTACTS']/span"))).click()
+    WebDriverWait(self.driver, browserTimeout).until(EC.element_to_be_clickable((By.XPATH,"//*[@id='CONTACTS']/span"))).click()
     
     # Check that the Contact Name value is correct.
     self.assertEqual(contactNameValue, WebDriverWait(self.driver, browserTimeout).until(EC.presence_of_element_located((By.ID,"asset-input-contact-name-0"))).get_attribute("value"))
@@ -382,12 +382,12 @@ def check_new_asset_exists(self,countryValue,gearTypeValue,licenseTypeValue, irc
 
 def check_new_mobile_terminal_exists(self, serialNoValue, memberIdnumber, dnidNumber, transceiverType, softwareVersion, satelliteNumber, antennaVersion, installedByName):
     # Select Mobile Terminal tab
-    WebDriverWait(self.driver, browserTimeout).until(EC.presence_of_element_located((By.ID,"uvms-header-menu-item-communication"))).click()
+    WebDriverWait(self.driver, browserTimeout).until(EC.element_to_be_clickable((By.ID,"uvms-header-menu-item-communication"))).click()
     
     # Enter Serial Number in
     WebDriverWait(self.driver, browserTimeout).until(EC.presence_of_element_located((By.XPATH,"(//input[@type='text'])[7]"))).send_keys(serialNoValue)
     # Click in search button
-    WebDriverWait(self.driver, browserTimeout).until(EC.presence_of_element_located((By.XPATH,"//button[@type='submit']"))).click()
+    WebDriverWait(self.driver, browserTimeout).until(EC.element_to_be_clickable((By.XPATH,"//button[@type='submit']"))).click()
     
     # Check Serial Number in the list
     self.assertEqual(serialNoValue, WebDriverWait(self.driver, browserTimeout).until(EC.presence_of_element_located((By.XPATH,"//div[@id='content']/div/div[3]/div[2]/div/div/div/div/div[3]/div/div/div/div/span/table/tbody/tr/td[3]"))).text)
@@ -396,7 +396,7 @@ def check_new_mobile_terminal_exists(self, serialNoValue, memberIdnumber, dnidNu
     # Check DNID Number in the list
     self.assertEqual(dnidNumber, WebDriverWait(self.driver, browserTimeout).until(EC.presence_of_element_located((By.XPATH,"//div[@id='content']/div/div[3]/div[2]/div/div/div/div/div[3]/div/div/div/div/span/table/tbody/tr/td[5]"))).text)
     # Click on details button
-    WebDriverWait(self.driver, browserTimeout).until(EC.presence_of_element_located((By.XPATH,"//div[@id='content']/div/div[3]/div[2]/div/div/div/div/div[3]/div/div/div/div/span/table/tbody/tr/td[10]/button"))).click()
+    WebDriverWait(self.driver, browserTimeout).until(EC.element_to_be_clickable((By.XPATH,"//div[@id='content']/div/div[3]/div[2]/div/div/div/div/div[3]/div/div/div/div/span/table/tbody/tr/td[10]/button"))).click()
     
     # Check Serial Number
     self.assertEqual(serialNoValue, WebDriverWait(self.driver, browserTimeout).until(EC.presence_of_element_located((By.ID,"mt-0-serialNumber"))).get_attribute("value"))
@@ -415,44 +415,44 @@ def check_new_mobile_terminal_exists(self, serialNoValue, memberIdnumber, dnidNu
     # Check Installed by Name
     self.assertEqual(installedByName, WebDriverWait(self.driver, browserTimeout).until(EC.presence_of_element_located((By.ID,"mt-0-channel-0-installedBy"))).get_attribute("value"))
     # Leave new asset view
-    WebDriverWait(self.driver, browserTimeout).until(EC.presence_of_element_located((By.ID,"menu-bar-cancel"))).click()
+    WebDriverWait(self.driver, browserTimeout).until(EC.element_to_be_clickable((By.ID,"menu-bar-cancel"))).click()
     
     
 
 def link_asset_and_mobile_terminal(self, serialNoValue, ircsValue):
     # Select Mobile Terminal tab
-    WebDriverWait(self.driver, browserTimeout).until(EC.presence_of_element_located((By.ID,"uvms-header-menu-item-communication"))).click()
+    WebDriverWait(self.driver, browserTimeout).until(EC.element_to_be_clickable((By.ID,"uvms-header-menu-item-communication"))).click()
     
     # Enter Serial Number in field
     WebDriverWait(self.driver, browserTimeout).until(EC.presence_of_element_located((By.ID,"mt-input-search-serialNumber"))).clear()
 
     WebDriverWait(self.driver, browserTimeout).until(EC.presence_of_element_located((By.ID,"mt-input-search-serialNumber"))).send_keys(serialNoValue)
     # Click in search button
-    WebDriverWait(self.driver, browserTimeout).until(EC.presence_of_element_located((By.ID,"mt-btn-advanced-search"))).click()
+    WebDriverWait(self.driver, browserTimeout).until(EC.element_to_be_clickable((By.ID,"mt-btn-advanced-search"))).click()
     
     # Click on details button
-    WebDriverWait(self.driver, browserTimeout).until(EC.presence_of_element_located((By.ID,"mt-toggle-form"))).click()
+    WebDriverWait(self.driver, browserTimeout).until(EC.element_to_be_clickable((By.ID,"mt-toggle-form"))).click()
     
     # Click on Link Asset
-    WebDriverWait(self.driver, browserTimeout).until(EC.presence_of_element_located((By.ID,"mt-btn-assign-asset"))).click()
+    WebDriverWait(self.driver, browserTimeout).until(EC.element_to_be_clickable((By.ID,"mt-btn-assign-asset"))).click()
     
     # Enter Asset Name and clicks on the search button
     WebDriverWait(self.driver, browserTimeout).until(EC.presence_of_element_located((By.XPATH,"(//input[@type='text'])[23]"))).send_keys(ircsValue)
-    WebDriverWait(self.driver, browserTimeout).until(EC.presence_of_element_located((By.XPATH,"//button[@type='submit']"))).click()
+    WebDriverWait(self.driver, browserTimeout).until(EC.element_to_be_clickable((By.XPATH,"//button[@type='submit']"))).click()
     
     # Click on connect button
-    WebDriverWait(self.driver, browserTimeout).until(EC.presence_of_element_located((By.CSS_SELECTOR ,"td.textAlignRight > button.btn.btn-primary"))).click()
+    WebDriverWait(self.driver, browserTimeout).until(EC.element_to_be_clickable((By.CSS_SELECTOR ,"td.textAlignRight > button.btn.btn-primary"))).click()
     # Click on Link button
     
-    WebDriverWait(self.driver, browserTimeout).until(EC.presence_of_element_located((By.CSS_SELECTOR ,"div.col-md-6.textAlignRight > button.btn.btn-primary"))).click()
+    WebDriverWait(self.driver, browserTimeout).until(EC.element_to_be_clickable((By.CSS_SELECTOR ,"div.col-md-6.textAlignRight > button.btn.btn-primary"))).click()
     # Enter Reason comment
     WebDriverWait(self.driver, browserTimeout).until(EC.presence_of_element_located((By.NAME,"comment"))).send_keys("Need to connect this mobile terminal with this asset.")
     
     # Click on Link button 2
-    WebDriverWait(self.driver, browserTimeout).until(EC.presence_of_element_located((By.CSS_SELECTOR ,"div.modal-footer > div.row > div.col-md-12 > button.btn.btn-primary"))).click()
+    WebDriverWait(self.driver, browserTimeout).until(EC.element_to_be_clickable((By.CSS_SELECTOR ,"div.modal-footer > div.row > div.col-md-12 > button.btn.btn-primary"))).click()
     
     # Close page
-    WebDriverWait(self.driver, browserTimeout).until(EC.presence_of_element_located((By.ID,"menu-bar-cancel"))).click()
+    WebDriverWait(self.driver, browserTimeout).until(EC.element_to_be_clickable((By.ID,"menu-bar-cancel"))).click()
     
 
 
@@ -491,15 +491,15 @@ def change_and_check_speed_format(self,unitNumber):
 
 def generate_and_verify_manual_position(self,speedValue,courseValue,ircsValue,cfr,lolaPositionValues,countryValue,externalMarkingValue,vesselName,sourceValue,deltaTimeValue):
     # Select Positions tab
-    WebDriverWait(self.driver, browserTimeout).until(EC.presence_of_element_located((By.ID,"uvms-header-menu-item-movement"))).click()
+    WebDriverWait(self.driver, browserTimeout).until(EC.element_to_be_clickable((By.ID,"uvms-header-menu-item-movement"))).click()
     
     # Click on New manual report
-    WebDriverWait(self.driver, browserTimeout).until(EC.presence_of_element_located((By.XPATH,"//button[@type='submit']"))).click()
+    WebDriverWait(self.driver, browserTimeout).until(EC.element_to_be_clickable((By.XPATH,"//button[@type='submit']"))).click()
     
     # Enter IRCS value
     WebDriverWait(self.driver, browserTimeout).until(EC.presence_of_element_located((By.NAME,"ircs"))).send_keys(ircsValue)
     
-    WebDriverWait(self.driver, browserTimeout).until(EC.presence_of_element_located((By.LINK_TEXT,ircsValue))).click()
+    WebDriverWait(self.driver, browserTimeout).until(EC.element_to_be_clickable((By.LINK_TEXT,ircsValue))).click()
     
     
     currentUTCValue = datetime.datetime.utcnow()
@@ -519,14 +519,14 @@ def generate_and_verify_manual_position(self,speedValue,courseValue,ircsValue,cf
     
     WebDriverWait(self.driver, browserTimeout).until(EC.presence_of_element_located((By.NAME,"course"))).send_keys(str(courseValue))
     # Click on Save Button
-    WebDriverWait(self.driver, browserTimeout).until(EC.presence_of_element_located((By.XPATH,"(//button[@type='submit'])[4]"))).click()
+    WebDriverWait(self.driver, browserTimeout).until(EC.element_to_be_clickable((By.XPATH,"(//button[@type='submit'])[4]"))).click()
     
     # Click on Confirm button
-    WebDriverWait(self.driver, browserTimeout).until(EC.presence_of_element_located((By.XPATH,"(//button[@type='submit'])[4]"))).click()
+    WebDriverWait(self.driver, browserTimeout).until(EC.element_to_be_clickable((By.XPATH,"(//button[@type='submit'])[4]"))).click()
     
 
 
-    WebDriverWait(self.driver, browserTimeout).until(EC.presence_of_element_located((By.LINK_TEXT,"MANUAL POSITION REPORTS"))).click()
+    WebDriverWait(self.driver, browserTimeout).until(EC.element_to_be_clickable((By.LINK_TEXT,"MANUAL POSITION REPORTS"))).click()
         
 
     # Verifies position data
