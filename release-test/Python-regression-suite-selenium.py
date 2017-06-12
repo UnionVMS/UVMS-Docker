@@ -150,6 +150,7 @@ def startup_browser_and_login_to_unionVMS(cls,userId,password,userContext):
     WebDriverWait(cls.driver, browserTimeout).until(EC.element_to_be_clickable((By.XPATH, "//*[@id='content']/div[1]/div[3]/div/div[2]/div[3]/div[2]/form/div[3]/div/button"))).click()
   
     WebDriverWait(cls.driver, browserTimeout).until(EC.element_to_be_clickable((By.PARTIAL_LINK_TEXT, "AdminAll"))).click()
+    time.sleep(2)
   
 
 def shutdown_browser(cls):
@@ -209,7 +210,7 @@ def create_one_new_asset_from_gui(self,ircsValue,vesselName,externalMarkingValue
     WebDriverWait(self.driver, browserTimeout).until(EC.presence_of_element_located((By.ID,"asset-input-contact-number-0"))).send_keys(contactPhoneNumberValue)
     # Click on Save Asset button
     WebDriverWait(self.driver, browserTimeout).until(EC.element_to_be_clickable((By.ID,"menu-bar-save"))).click()
-    
+    time.sleep(2)
     # Leave new asset view
     WebDriverWait(self.driver, browserTimeout).until(EC.element_to_be_clickable((By.ID,"menu-bar-cancel"))).click()
     
@@ -388,6 +389,7 @@ def check_new_mobile_terminal_exists(self, serialNoValue, memberIdnumber, dnidNu
     WebDriverWait(self.driver, browserTimeout).until(EC.presence_of_element_located((By.XPATH,"(//input[@type='text'])[7]"))).send_keys(serialNoValue)
     # Click in search button
     WebDriverWait(self.driver, browserTimeout).until(EC.element_to_be_clickable((By.XPATH,"//button[@type='submit']"))).click()
+    time.sleep(2)
     
     # Check Serial Number in the list
     self.assertEqual(serialNoValue, WebDriverWait(self.driver, browserTimeout).until(EC.presence_of_element_located((By.XPATH,"//div[@id='content']/div/div[3]/div[2]/div/div/div/div/div[3]/div/div/div/div/span/table/tbody/tr/td[3]"))).text)
@@ -397,6 +399,7 @@ def check_new_mobile_terminal_exists(self, serialNoValue, memberIdnumber, dnidNu
     self.assertEqual(dnidNumber, WebDriverWait(self.driver, browserTimeout).until(EC.presence_of_element_located((By.XPATH,"//div[@id='content']/div/div[3]/div[2]/div/div/div/div/div[3]/div/div/div/div/span/table/tbody/tr/td[5]"))).text)
     # Click on details button
     WebDriverWait(self.driver, browserTimeout).until(EC.element_to_be_clickable((By.XPATH,"//div[@id='content']/div/div[3]/div[2]/div/div/div/div/div[3]/div/div/div/div/span/table/tbody/tr/td[10]/button"))).click()
+    time.sleep(2)
     
     # Check Serial Number
     self.assertEqual(serialNoValue, WebDriverWait(self.driver, browserTimeout).until(EC.presence_of_element_located((By.ID,"mt-0-serialNumber"))).get_attribute("value"))
@@ -429,6 +432,7 @@ def link_asset_and_mobile_terminal(self, serialNoValue, ircsValue):
     WebDriverWait(self.driver, browserTimeout).until(EC.presence_of_element_located((By.ID,"mt-input-search-serialNumber"))).send_keys(serialNoValue)
     # Click in search button
     WebDriverWait(self.driver, browserTimeout).until(EC.element_to_be_clickable((By.ID,"mt-btn-advanced-search"))).click()
+    time.sleep(2)
     
     # Click on details button
     WebDriverWait(self.driver, browserTimeout).until(EC.element_to_be_clickable((By.ID,"mt-toggle-form"))).click()
@@ -450,7 +454,7 @@ def link_asset_and_mobile_terminal(self, serialNoValue, ircsValue):
     
     # Click on Link button 2
     WebDriverWait(self.driver, browserTimeout).until(EC.element_to_be_clickable((By.CSS_SELECTOR ,"div.modal-footer > div.row > div.col-md-12 > button.btn.btn-primary"))).click()
-    
+    time.sleep(2)
     # Close page
     WebDriverWait(self.driver, browserTimeout).until(EC.element_to_be_clickable((By.ID,"menu-bar-cancel"))).click()
     
@@ -495,10 +499,11 @@ def generate_and_verify_manual_position(self,speedValue,courseValue,ircsValue,cf
     
     # Click on New manual report
     WebDriverWait(self.driver, browserTimeout).until(EC.element_to_be_clickable((By.XPATH,"//button[@type='submit']"))).click()
-    
+    time.sleep(4)
+
     # Enter IRCS value
     WebDriverWait(self.driver, browserTimeout).until(EC.presence_of_element_located((By.NAME,"ircs"))).send_keys(ircsValue)
-    
+    time.sleep(4)
     WebDriverWait(self.driver, browserTimeout).until(EC.element_to_be_clickable((By.LINK_TEXT,ircsValue))).click()
     
     
@@ -523,9 +528,7 @@ def generate_and_verify_manual_position(self,speedValue,courseValue,ircsValue,cf
     
     # Click on Confirm button
     WebDriverWait(self.driver, browserTimeout).until(EC.element_to_be_clickable((By.XPATH,"(//button[@type='submit'])[4]"))).click()
-    
-
-
+    time.sleep(4)
     WebDriverWait(self.driver, browserTimeout).until(EC.element_to_be_clickable((By.LINK_TEXT,"MANUAL POSITION REPORTS"))).click()
         
 
@@ -846,7 +849,7 @@ class UnionVMSTestCase(unittest.TestCase):
         WebDriverWait(self.driver, browserTimeout).until(EC.presence_of_element_located((By.ID,"mt-input-search-serialNumber"))).send_keys(serialNoValue)
         # Click in search button
         WebDriverWait(self.driver, browserTimeout).until(EC.presence_of_element_located((By.ID,"mt-btn-advanced-search"))).click()
-        
+        time.sleep(2)
         # Click on details button
         WebDriverWait(self.driver, browserTimeout).until(EC.presence_of_element_located((By.ID,"mt-toggle-form"))).click()
         
@@ -924,22 +927,22 @@ class UnionVMSTestCase(unittest.TestCase):
         # Startup browser and login
         startup_browser_and_login_to_unionVMS(self,"vms_admin_com","password","AdminAll")
         # Select Audit Log tab
-        WebDriverWait(self.driver, browserTimeout).until(EC.presence_of_element_located((By.ID,"uvms-header-menu-item-audit-log"))).click()
+        WebDriverWait(self.driver, browserTimeout).until(EC.element_to_be_clickable((By.ID,"uvms-header-menu-item-audit-log"))).click()
         
         # Click on all sub tabs under Audit Log Tab
-        WebDriverWait(self.driver, browserTimeout).until(EC.presence_of_element_located((By.CSS_SELECTOR ,"#EXCHANGE > span"))).click()
+        WebDriverWait(self.driver, browserTimeout).until(EC.element_to_be_clickable((By.CSS_SELECTOR ,"#EXCHANGE > span"))).click()
         
-        WebDriverWait(self.driver, browserTimeout).until(EC.presence_of_element_located((By.CSS_SELECTOR ,"#POSITION_REPORTS > span"))).click()
+        WebDriverWait(self.driver, browserTimeout).until(EC.element_to_be_clickable((By.CSS_SELECTOR ,"#POSITION_REPORTS > span"))).click()
         
-        WebDriverWait(self.driver, browserTimeout).until(EC.presence_of_element_located((By.CSS_SELECTOR ,"#ASSETS_AND_TERMINALS > span"))).click()
+        WebDriverWait(self.driver, browserTimeout).until(EC.element_to_be_clickable((By.CSS_SELECTOR ,"#ASSETS_AND_TERMINALS > span"))).click()
         
-        WebDriverWait(self.driver, browserTimeout).until(EC.presence_of_element_located((By.CSS_SELECTOR ,"#GIS > span"))).click()
+        WebDriverWait(self.driver, browserTimeout).until(EC.element_to_be_clickable((By.CSS_SELECTOR ,"#GIS > span"))).click()
         
-        WebDriverWait(self.driver, browserTimeout).until(EC.presence_of_element_located((By.CSS_SELECTOR ,"#ALARMS > span"))).click()
+        WebDriverWait(self.driver, browserTimeout).until(EC.element_to_be_clickable((By.CSS_SELECTOR ,"#ALARMS > span"))).click()
         
-        WebDriverWait(self.driver, browserTimeout).until(EC.presence_of_element_located((By.CSS_SELECTOR ,"#ACCESS_CONTROL > span"))).click()
+        WebDriverWait(self.driver, browserTimeout).until(EC.element_to_be_clickable((By.CSS_SELECTOR ,"#ACCESS_CONTROL > span"))).click()
         
-        WebDriverWait(self.driver, browserTimeout).until(EC.presence_of_element_located((By.CSS_SELECTOR ,"#ALL > span"))).click()
+        WebDriverWait(self.driver, browserTimeout).until(EC.element_to_be_clickable((By.CSS_SELECTOR ,"#ALL > span"))).click()
         
         # Check sub tab names
         self.assertEqual("ALL", WebDriverWait(self.driver, browserTimeout).until(EC.presence_of_element_located((By.CSS_SELECTOR ,"#ALL > span"))).text)
@@ -959,22 +962,22 @@ class UnionVMSTestCase(unittest.TestCase):
         # Startup browser and login
         startup_browser_and_login_to_unionVMS(self,"vms_admin_com","password","AdminAll")
         # Select Admin tab
-        WebDriverWait(self.driver, browserTimeout).until(EC.presence_of_element_located((By.ID,"uvms-header-menu-item-audit-log"))).click()
+        WebDriverWait(self.driver, browserTimeout).until(EC.element_to_be_clickable((By.ID,"uvms-header-menu-item-audit-log"))).click()
         
-        WebDriverWait(self.driver, browserTimeout).until(EC.presence_of_element_located((By.LINK_TEXT,"CONFIGURATION"))).click()
+        WebDriverWait(self.driver, browserTimeout).until(EC.element_to_be_clickable((By.LINK_TEXT,"CONFIGURATION"))).click()
         
         # Click on all sub tabs under Configuration Tab
-        WebDriverWait(self.driver, browserTimeout).until(EC.presence_of_element_located((By.CSS_SELECTOR ,"#globalSettings > span"))).click()
+        WebDriverWait(self.driver, browserTimeout).until(EC.element_to_be_clickable((By.CSS_SELECTOR ,"#globalSettings > span"))).click()
         
-        WebDriverWait(self.driver, browserTimeout).until(EC.presence_of_element_located((By.CSS_SELECTOR ,"#reporting > span"))).click()
+        WebDriverWait(self.driver, browserTimeout).until(EC.element_to_be_clickable((By.CSS_SELECTOR ,"#reporting > span"))).click()
         
-        WebDriverWait(self.driver, browserTimeout).until(EC.presence_of_element_located((By.CSS_SELECTOR ,"#asset > span"))).click()
+        WebDriverWait(self.driver, browserTimeout).until(EC.element_to_be_clickable((By.CSS_SELECTOR ,"#asset > span"))).click()
         
-        WebDriverWait(self.driver, browserTimeout).until(EC.presence_of_element_located((By.CSS_SELECTOR ,"#mobileTerminal > span"))).click()
+        WebDriverWait(self.driver, browserTimeout).until(EC.element_to_be_clickable((By.CSS_SELECTOR ,"#mobileTerminal > span"))).click()
         
-        WebDriverWait(self.driver, browserTimeout).until(EC.presence_of_element_located((By.CSS_SELECTOR ,"#exchange > span"))).click()
+        WebDriverWait(self.driver, browserTimeout).until(EC.element_to_be_clickable((By.CSS_SELECTOR ,"#exchange > span"))).click()
         
-        WebDriverWait(self.driver, browserTimeout).until(EC.presence_of_element_located((By.CSS_SELECTOR ,"#systemMonitor > span"))).click()
+        WebDriverWait(self.driver, browserTimeout).until(EC.element_to_be_clickable((By.CSS_SELECTOR ,"#systemMonitor > span"))).click()
         
         # Check sub tab names
         self.assertEqual("SYSTEM MONITOR", WebDriverWait(self.driver, browserTimeout).until(EC.presence_of_element_located((By.CSS_SELECTOR ,"#systemMonitor > span"))).text)
