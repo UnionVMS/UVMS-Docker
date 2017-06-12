@@ -929,7 +929,8 @@ class UnionVMSTestCase(unittest.TestCase):
         startup_browser_and_login_to_unionVMS(self,"vms_admin_com","password","AdminAll")
         # Select Audit Log tab
         WebDriverWait(self.driver, browserTimeout).until(EC.element_to_be_clickable((By.ID,"uvms-header-menu-item-audit-log"))).click()
-        
+        time.sleep(browserWaitAfterClick)
+
         # Click on all sub tabs under Audit Log Tab
         WebDriverWait(self.driver, browserTimeout).until(EC.element_to_be_clickable((By.CSS_SELECTOR ,"#EXCHANGE > span"))).click()
         
@@ -964,7 +965,8 @@ class UnionVMSTestCase(unittest.TestCase):
         startup_browser_and_login_to_unionVMS(self,"vms_admin_com","password","AdminAll")
         # Select Admin tab
         WebDriverWait(self.driver, browserTimeout).until(EC.element_to_be_clickable((By.ID,"uvms-header-menu-item-audit-log"))).click()
-        
+        time.sleep(browserWaitAfterClick)
+
         WebDriverWait(self.driver, browserTimeout).until(EC.element_to_be_clickable((By.LINK_TEXT,"CONFIGURATION"))).click()
         
         # Click on all sub tabs under Configuration Tab
