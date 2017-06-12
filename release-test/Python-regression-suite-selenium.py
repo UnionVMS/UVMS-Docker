@@ -384,6 +384,7 @@ def check_new_asset_exists(self,countryValue,gearTypeValue,licenseTypeValue, irc
 def check_new_mobile_terminal_exists(self, serialNoValue, memberIdnumber, dnidNumber, transceiverType, softwareVersion, satelliteNumber, antennaVersion, installedByName):
     # Select Mobile Terminal tab
     WebDriverWait(self.driver, browserTimeout).until(EC.element_to_be_clickable((By.ID,"uvms-header-menu-item-communication"))).click()
+    time.sleep(browserWaitAfterClick)
     
     # Enter Serial Number in
     WebDriverWait(self.driver, browserTimeout).until(EC.presence_of_element_located((By.XPATH,"(//input[@type='text'])[7]"))).send_keys(serialNoValue)
