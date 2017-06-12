@@ -150,7 +150,7 @@ def startup_browser_and_login_to_unionVMS(cls,userId,password,userContext):
     WebDriverWait(cls.driver, browserTimeout).until(EC.element_to_be_clickable((By.XPATH, "//*[@id='content']/div[1]/div[3]/div/div[2]/div[3]/div[2]/form/div[3]/div/button"))).click()
   
     WebDriverWait(cls.driver, browserTimeout).until(EC.element_to_be_clickable((By.PARTIAL_LINK_TEXT, "AdminAll"))).click()
-    time.sleep(2)
+    time.sleep(browserWaitAfterClick)
   
 
 def shutdown_browser(cls):
@@ -210,7 +210,7 @@ def create_one_new_asset_from_gui(self,ircsValue,vesselName,externalMarkingValue
     WebDriverWait(self.driver, browserTimeout).until(EC.presence_of_element_located((By.ID,"asset-input-contact-number-0"))).send_keys(contactPhoneNumberValue)
     # Click on Save Asset button
     WebDriverWait(self.driver, browserTimeout).until(EC.element_to_be_clickable((By.ID,"menu-bar-save"))).click()
-    time.sleep(2)
+    time.sleep(browserWaitAfterClick)
     # Leave new asset view
     WebDriverWait(self.driver, browserTimeout).until(EC.element_to_be_clickable((By.ID,"menu-bar-cancel"))).click()
     
@@ -389,7 +389,7 @@ def check_new_mobile_terminal_exists(self, serialNoValue, memberIdnumber, dnidNu
     WebDriverWait(self.driver, browserTimeout).until(EC.presence_of_element_located((By.XPATH,"(//input[@type='text'])[7]"))).send_keys(serialNoValue)
     # Click in search button
     WebDriverWait(self.driver, browserTimeout).until(EC.element_to_be_clickable((By.XPATH,"//button[@type='submit']"))).click()
-    time.sleep(2)
+    time.sleep(browserWaitAfterClick)
     
     # Check Serial Number in the list
     self.assertEqual(serialNoValue, WebDriverWait(self.driver, browserTimeout).until(EC.presence_of_element_located((By.XPATH,"//div[@id='content']/div/div[3]/div[2]/div/div/div/div/div[3]/div/div/div/div/span/table/tbody/tr/td[3]"))).text)
@@ -399,7 +399,7 @@ def check_new_mobile_terminal_exists(self, serialNoValue, memberIdnumber, dnidNu
     self.assertEqual(dnidNumber, WebDriverWait(self.driver, browserTimeout).until(EC.presence_of_element_located((By.XPATH,"//div[@id='content']/div/div[3]/div[2]/div/div/div/div/div[3]/div/div/div/div/span/table/tbody/tr/td[5]"))).text)
     # Click on details button
     WebDriverWait(self.driver, browserTimeout).until(EC.element_to_be_clickable((By.XPATH,"//div[@id='content']/div/div[3]/div[2]/div/div/div/div/div[3]/div/div/div/div/span/table/tbody/tr/td[10]/button"))).click()
-    time.sleep(2)
+    time.sleep(browserWaitAfterClick)
     
     # Check Serial Number
     self.assertEqual(serialNoValue, WebDriverWait(self.driver, browserTimeout).until(EC.presence_of_element_located((By.ID,"mt-0-serialNumber"))).get_attribute("value"))
@@ -432,7 +432,7 @@ def link_asset_and_mobile_terminal(self, serialNoValue, ircsValue):
     WebDriverWait(self.driver, browserTimeout).until(EC.presence_of_element_located((By.ID,"mt-input-search-serialNumber"))).send_keys(serialNoValue)
     # Click in search button
     WebDriverWait(self.driver, browserTimeout).until(EC.element_to_be_clickable((By.ID,"mt-btn-advanced-search"))).click()
-    time.sleep(2)
+    time.sleep(browserWaitAfterClick)
     
     # Click on details button
     WebDriverWait(self.driver, browserTimeout).until(EC.element_to_be_clickable((By.ID,"mt-toggle-form"))).click()
@@ -454,7 +454,7 @@ def link_asset_and_mobile_terminal(self, serialNoValue, ircsValue):
     
     # Click on Link button 2
     WebDriverWait(self.driver, browserTimeout).until(EC.element_to_be_clickable((By.CSS_SELECTOR ,"div.modal-footer > div.row > div.col-md-12 > button.btn.btn-primary"))).click()
-    time.sleep(2)
+    time.sleep(browserWaitAfterClick)
     # Close page
     WebDriverWait(self.driver, browserTimeout).until(EC.element_to_be_clickable((By.ID,"menu-bar-cancel"))).click()
     
@@ -499,11 +499,11 @@ def generate_and_verify_manual_position(self,speedValue,courseValue,ircsValue,cf
     
     # Click on New manual report
     WebDriverWait(self.driver, browserTimeout).until(EC.element_to_be_clickable((By.XPATH,"//button[@type='submit']"))).click()
-    time.sleep(4)
+    time.sleep(browserWaitAfterClick)
 
     # Enter IRCS value
     WebDriverWait(self.driver, browserTimeout).until(EC.presence_of_element_located((By.NAME,"ircs"))).send_keys(ircsValue)
-    time.sleep(4)
+    time.sleep(browserWaitAfterClick)
     WebDriverWait(self.driver, browserTimeout).until(EC.element_to_be_clickable((By.LINK_TEXT,ircsValue))).click()
     
     
@@ -528,7 +528,7 @@ def generate_and_verify_manual_position(self,speedValue,courseValue,ircsValue,cf
     
     # Click on Confirm button
     WebDriverWait(self.driver, browserTimeout).until(EC.element_to_be_clickable((By.XPATH,"(//button[@type='submit'])[4]"))).click()
-    time.sleep(4)
+    time.sleep(browserWaitAfterClick)
     WebDriverWait(self.driver, browserTimeout).until(EC.element_to_be_clickable((By.LINK_TEXT,"MANUAL POSITION REPORTS"))).click()
         
 
@@ -849,7 +849,7 @@ class UnionVMSTestCase(unittest.TestCase):
         WebDriverWait(self.driver, browserTimeout).until(EC.presence_of_element_located((By.ID,"mt-input-search-serialNumber"))).send_keys(serialNoValue)
         # Click in search button
         WebDriverWait(self.driver, browserTimeout).until(EC.presence_of_element_located((By.ID,"mt-btn-advanced-search"))).click()
-        time.sleep(2)
+        time.sleep(browserWaitAfterClick)
         # Click on details button
         WebDriverWait(self.driver, browserTimeout).until(EC.presence_of_element_located((By.ID,"mt-toggle-form"))).click()
         
@@ -995,7 +995,7 @@ class UnionVMSTestCase(unittest.TestCase):
         startup_browser_and_login_to_unionVMS(self,"vms_admin_com","password","AdminAll")
         # Click on User Guide icon (Question mark icon)
         # Note: User Guide page is opened in a new tab
-        WebDriverWait(self.driver, browserTimeout).until(EC.presence_of_element_located((By.XPATH,"//a/i"))).click()
+        WebDriverWait(self.driver, browserTimeout).until(EC.element_to_be_clickable((By.XPATH,"//a/i"))).click()
         time.sleep(10)
         # Switch tab focus for Selenium to the new tab
         self.driver.switch_to.window(self.driver.window_handles[-1])
@@ -1011,21 +1011,24 @@ class UnionVMSTestCase(unittest.TestCase):
         # Startup browser and login
         startup_browser_and_login_to_unionVMS(self,"vms_admin_com","password","AdminAll")
         # Select Alerts tab (Holding Table)
-        WebDriverWait(self.driver, browserTimeout).until(EC.presence_of_element_located((By.ID,"uvms-header-menu-item-holding-table"))).click()
-        
+        WebDriverWait(self.driver, browserTimeout).until(EC.element_to_be_clickable((By.ID,"uvms-header-menu-item-holding-table"))).click()
+        time.sleep(browserWaitAfterClick)
+
         # Check List Headlines for Holding Table
         self.assertEqual("Date triggered (UTC)", WebDriverWait(self.driver, browserTimeout).until(EC.presence_of_element_located((By.CSS_SELECTOR ,"span > span"))).text)
         self.assertEqual("Object affected", WebDriverWait(self.driver, browserTimeout).until(EC.presence_of_element_located((By.XPATH,"//div[@id='content']/div/div[3]/div[2]/div/div[2]/div/div[3]/div/div/div/div/span/table/thead/tr/th[3]/a/span/span"))).text)
         self.assertEqual("Rule", WebDriverWait(self.driver, browserTimeout).until(EC.presence_of_element_located((By.XPATH,"//div[@id='content']/div/div[3]/div[2]/div/div[2]/div/div[3]/div/div/div/div/span/table/thead/tr/th[4]"))).text)
         # Select Alerts tab (Notifications)
-        WebDriverWait(self.driver, browserTimeout).until(EC.presence_of_element_located((By.XPATH,"//*[@id='content']/div[1]/div[3]/div[2]/div/div[1]/div/div/ul/li[2]/a"))).click()
+        WebDriverWait(self.driver, browserTimeout).until(EC.element_to_be_clickable((By.XPATH,"//*[@id='content']/div[1]/div[3]/div[2]/div/div[1]/div/div/ul/li[2]/a"))).click()
+        time.sleep(browserWaitAfterClick)
         
         # Check List Headlines for Notifications
         self.assertEqual("Date triggered (UTC)", WebDriverWait(self.driver, browserTimeout).until(EC.presence_of_element_located((By.CSS_SELECTOR ,"span > span"))).text)
         self.assertEqual("Object affected", WebDriverWait(self.driver, browserTimeout).until(EC.presence_of_element_located((By.XPATH,"//div[@id='content']/div/div[3]/div[2]/div/div[2]/div/div[3]/div/div/div/div/span/table/thead/tr/th[3]/a/span/span"))).text)
         self.assertEqual("Rule", WebDriverWait(self.driver, browserTimeout).until(EC.presence_of_element_located((By.XPATH,"//div[@id='content']/div/div[3]/div[2]/div/div[2]/div/div[3]/div/div/div/div/span/table/thead/tr/th[4]"))).text)
         # Select Alerts tab (Rules)
-        WebDriverWait(self.driver, browserTimeout).until(EC.presence_of_element_located((By.XPATH,"//*[@id='content']/div[1]/div[3]/div[2]/div/div[1]/div/div/ul/li[3]/a"))).click()
+        WebDriverWait(self.driver, browserTimeout).until(EC.element_to_be_clickable((By.XPATH,"//*[@id='content']/div[1]/div[3]/div[2]/div/div[1]/div/div/ul/li[3]/a"))).click()
+        time.sleep(browserWaitAfterClick)
         
         # Check List Headlines for Rules List
         self.assertEqual("Rule name", WebDriverWait(self.driver, browserTimeout).until(EC.presence_of_element_located((By.CSS_SELECTOR ,"span > span"))).text)
