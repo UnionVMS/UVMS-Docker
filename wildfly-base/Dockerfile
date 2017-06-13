@@ -53,14 +53,13 @@ COPY start.sh /opt/jboss/
 # Create log directory
 USER root
 RUN mkdir -p /app/logs
-RUN chown jboss /app/logs
-RUN mkdir -p /opt/wildfly/standalone/log
-RUN chown jboss /opt/wildfly/standalone/log
+RUN chown -R jboss:jboss /app/logs
+RUN chmod 777 /app/logs
+RUN mkdir -p /opt/jboss/wildfly/standalone/log/
+RUN chown -R jboss:jboss /opt/jboss/wildfly/standalone/log
+RUN chmod 777 /opt/jboss/wildfly/standalone/log/
 RUN chmod 755 /opt/jboss/start.sh
 USER jboss
-RUN mkdir -p /app/logs/twostage/poll
-
-RUN ls -l /opt/jboss/
 
 # Hibernate Search Index dirs
 RUN mkdir -p /opt/jboss/wildfly/standalone/deployments/hibernatesearch/eu.europa.ec.fisheries.uvms.entity.model.AssetHistory
@@ -70,15 +69,11 @@ RUN curl -o /etc/yum.repos.d/epel-apache-maven.repo https://repos.fedorapeople.o
 RUN yum install -y apache-maven
 COPY settings.xml /root/.m2/settings.xml
 RUN yum install -y postgresql
-RUN chown -R jboss:jboss /opt/wildfly
 RUN chown -R jboss:jboss /opt/jboss
-RUN mkdir -p /opt/jboss/wildfly/standalone/log/
-RUN chmod -R 777 /opt/jboss/wildfly/standalone/log/
 USER jboss
 
 # Expose stuff to outside world
 EXPOSE 8787
 VOLUME ["/app/logs", "/opt/jboss/wildfly/standalone/log"]
-
 
 CMD ["/opt/jboss/start.sh", "/opt/jboss/wildfly/bin/standalone.sh", "-c", "standalone-uvms.xml", "-b", "0.0.0.0", "-bmanagement", "0.0.0.0", "--debug"]
