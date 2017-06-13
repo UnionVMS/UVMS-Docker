@@ -312,6 +312,12 @@
 									<container>postgres</container>
 									<container>activemq</container>
 								</dependsOn>
+								<volumes>
+								  <bind>
+								    <volume>${project.build.directory}/app-logs:/app/logs</volume>
+								    <volume>${project.build.directory}/server-logs:/opt/jboss/wildfly/standalone/log</volume>
+								  </bind>
+								</volumes>						        						        
 								<log>
 									<enabled>true</enabled>
 									<color>blue</color>
