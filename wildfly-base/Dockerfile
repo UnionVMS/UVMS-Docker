@@ -53,15 +53,13 @@ COPY start.sh /opt/jboss/
 # Create log directory
 USER root
 RUN mkdir -p /app/logs
-RUN chown jboss /app/logs
+RUN chown -R jboss:jboss /app/logs
 RUN chmod 777 /app/logs
 RUN mkdir -p /opt/jboss/wildfly/standalone/log/
-RUN chown jboss /opt/jboss/wildfly/standalone/log/
+RUN chown -R jboss:jboss /opt/jboss/wildfly/standalone/log
 RUN chmod 777 /opt/jboss/wildfly/standalone/log/
 RUN chmod 755 /opt/jboss/start.sh
 USER jboss
-
-RUN ls -l /opt/jboss/
 
 # Hibernate Search Index dirs
 RUN mkdir -p /opt/jboss/wildfly/standalone/deployments/hibernatesearch/eu.europa.ec.fisheries.uvms.entity.model.AssetHistory
@@ -77,9 +75,5 @@ USER jboss
 # Expose stuff to outside world
 EXPOSE 8787
 VOLUME ["/app/logs", "/opt/jboss/wildfly/standalone/log"]
-USER root
-RUN chown -R jboss:jboss /opt/jboss/wildfly/standalone/log
-RUN chown -R jboss:jboss /app/logs
-USER jboss
 
 CMD ["/opt/jboss/start.sh", "/opt/jboss/wildfly/bin/standalone.sh", "-c", "standalone-uvms.xml", "-b", "0.0.0.0", "-bmanagement", "0.0.0.0", "--debug"]
