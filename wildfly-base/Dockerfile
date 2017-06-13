@@ -54,11 +54,12 @@ COPY start.sh /opt/jboss/
 USER root
 RUN mkdir -p /app/logs
 RUN chown jboss /app/logs
-RUN mkdir -p /opt/wildfly/standalone/log
-RUN chown jboss /opt/wildfly/standalone/log
+RUN chmod 777 /app/logs
+RUN mkdir -p /opt/jboss/wildfly/standalone/log/
+RUN chown jboss /opt/jboss/wildfly/standalone/log/
+RUN chmod 777 /opt/jboss/wildfly/standalone/log/
 RUN chmod 755 /opt/jboss/start.sh
 USER jboss
-RUN mkdir -p /app/logs/twostage/poll
 
 RUN ls -l /opt/jboss/
 
@@ -70,10 +71,7 @@ RUN curl -o /etc/yum.repos.d/epel-apache-maven.repo https://repos.fedorapeople.o
 RUN yum install -y apache-maven
 COPY settings.xml /root/.m2/settings.xml
 RUN yum install -y postgresql
-RUN chown -R jboss:jboss /opt/wildfly
 RUN chown -R jboss:jboss /opt/jboss
-RUN mkdir -p /opt/jboss/wildfly/standalone/log/
-RUN chmod -R 777 /opt/jboss/wildfly/standalone/log/
 USER jboss
 
 # Expose stuff to outside world
