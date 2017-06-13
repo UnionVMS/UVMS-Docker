@@ -186,19 +186,6 @@
 							<goal>run</goal>
 						</goals>
 					</execution>
-					<execution>
-						<id>logdirectories</id>
-						<phase>compile</phase>
-						<configuration>
-							<tasks>
-								<mkdir dir="${project.build.directory}/app-logs"/>
-								<mkdir dir="${project.build.directory}/server-logs"/>
-							</tasks>
-						</configuration>
-						<goals>
-							<goal>run</goal>
-						</goals>
-					</execution>					
 				</executions>
 			</plugin>
 			<plugin>
