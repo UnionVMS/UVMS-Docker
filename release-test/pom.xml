@@ -44,7 +44,7 @@
 		<dependency>
 			<groupId>eu.europa.ec.fisheries.uvms.asset</groupId>
 			<artifactId>asset-model</artifactId>
-			<version>3.0.5-SNAPSHOT</version>
+			<version>3.0.5</version>
 			<classifier>date</classifier>
 			<scope>test</scope>
 		</dependency>
