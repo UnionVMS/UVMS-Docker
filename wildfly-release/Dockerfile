@@ -39,14 +39,12 @@ COPY jboss-deployment/web-app/jboss-all.xml /opt/jboss/jboss-deployment/web-app/
 USER root
 RUN mvn dependency:copy-dependencies -DoutputDirectory=$DEPLOYMENTS -f module-download-pom.xml -q
 #RUN chown -R jboss:jboss /opt/jboss/jboss-deployment/add-jboss-all-to-ear.sh
-RUN chown -R jboss:jboss /opt/jboss/
 RUN chmod 777 /opt/jboss/wildfly/standalone/deployments/*.ear
+RUN chmod 777 /opt/jboss/wildfly/standalone/deployments/
 RUN chmod a+x /opt/jboss/jboss-deployment/add-jboss-all-to-ear.sh
 RUN /opt/jboss/jboss-deployment/add-jboss-all-to-ear.sh
 RUN chmod 755 /opt/jboss/wildfly/standalone/deployments/*.ear
 RUN chown -R jboss:jboss /opt/jboss/wildfly/standalone/deployments/
-RUN chmod 755 /opt/jboss/wildfly/standalone/log/
-RUN chown -R jboss:jboss /opt/jboss/wildfly/standalone/log/
 USER jboss
 
 USER root
