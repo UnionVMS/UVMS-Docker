@@ -68,7 +68,6 @@ USER root
 RUN curl -o /etc/yum.repos.d/epel-apache-maven.repo https://repos.fedorapeople.org/repos/dchen/apache-maven/epel-apache-maven.repo
 RUN yum install -y apache-maven
 COPY settings.xml /root/.m2/settings.xml
-RUN yum install -y postgresql
 RUN chown -R jboss:jboss /opt/jboss
 USER jboss
 

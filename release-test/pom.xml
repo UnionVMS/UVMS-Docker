@@ -186,21 +186,6 @@
 							<goal>run</goal>
 						</goals>
 					</execution>
-					<execution>
-						<id>logdirectories</id>
-						<phase>compile</phase>
-						<configuration>
-							<tasks>
-								<mkdir dir="${project.build.directory}/app-logs"/>
-								<chmod file="${project.build.directory}/app-logs" perm="777"/>								
-								<mkdir dir="${project.build.directory}/server-logs"/>
-								<chmod file="${project.build.directory}/server-logs" perm="777"/>															
-							</tasks>
-						</configuration>
-						<goals>
-							<goal>run</goal>
-						</goals>
-					</execution>					
 				</executions>
 			</plugin>
 			<plugin>
@@ -320,8 +305,7 @@
 									<shutdown>15000</shutdown>
 								</wait>
 								<cmd>
-									<shell>/opt/jboss/wildfly/bin/standalone.sh -c
-										standalone-uvms.xml -b 0.0.0.0 -bmanagement 0.0.0.0</shell>
+									<shell>/opt/jboss/wildfly/bin/standalone.sh -c standalone-uvms.xml -b 0.0.0.0 -bmanagement 0.0.0.0</shell>
 								</cmd>
 								<dependsOn>
 									<container>postgres</container>
@@ -329,8 +313,8 @@
 								</dependsOn>
 								<volumes>
 								  <bind>
-								    <volume>${project.build.directory}/app-logs:/app/logs</volume>
-								    <volume>${project.build.directory}/server-logs:/opt/jboss/wildfly/standalone/log</volume>
+								    <volume>/app/logs:/app/logs</volume>
+								    <volume>/opt/jboss/wildfly/standalone/log:/opt/jboss/wildfly/standalone/log</volume>
 								  </bind>
 								</volumes>						        						        
 								<log>
