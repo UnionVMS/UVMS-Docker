@@ -11,7 +11,7 @@ FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more d
 copy of the GNU General Public License along with the IFDM Suite. If not, see <http://www.gnu.org/licenses/>.
 
 */
-package eu.europa.ec.fisheries.uvms.docker.validation.movement;
+package eu.europa.ec.fisheries.uvms.docker.validation.config;
 
 import java.util.Map;
 
@@ -21,127 +21,131 @@ import org.apache.http.client.fluent.Request;
 import org.databene.contiperf.PerfTest;
 import org.databene.contiperf.Required;
 import org.databene.contiperf.junit.ContiPerfRule;
+import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 
+import eu.europa.ec.fisheries.schema.config.types.v1.SettingType;
+import eu.europa.ec.fisheries.schema.config.types.v1.SettingsCreateQuery;
 import eu.europa.ec.fisheries.uvms.docker.validation.common.AbstractRestServiceTest;
 
-
 /**
- * The Class MovementConfigRestIT.
+ * The Class SettingsRestIT.
  */
 @PerfTest(threads = 4, duration = 6000, warmUp = 1000)
 @Required(max = 5000, average = 3000, percentile95 = 3500, throughput = 2)
-public class MovementConfigRestIT extends AbstractRestServiceTest {
+public class SettingsRestIT extends AbstractRestServiceTest {
 
 	/** The i. */
 	@Rule
 	public ContiPerfRule contiPerfRule = new ContiPerfRule();
 
-	/**
-	 * Gets the movement types test.
-	 *
-	 * @return the movement types test
-	 * @throws Exception the exception
-	 */
+	
+	
 	@Test
-	public void getMovementTypesTest() throws Exception {
-		final HttpResponse response = Request.Get(BASE_URL + "movement/rest/config/movementTypes")
+	public void getByModuleNameTest() throws Exception {
+		final HttpResponse response = Request.Get(BASE_URL + "config/rest/settings?moduleName=audit")
 				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken()).execute()
 				.returnResponse();
-
 		assertEquals(HttpStatus.SC_OK, response.getStatusLine().getStatusCode());
-		final Map<String, Object> data = getJsonMap(response);
-		assertFalse(data.isEmpty());
-	}
-
-	/**
-	 * Gets the segmet types test.
-	 *
-	 * @return the segmet types test
-	 * @throws Exception the exception
-	 */
-	@Test
-	public void getSegmetTypesTest() throws Exception {
-		final HttpResponse response = Request.Get(BASE_URL + "movement/rest/config/segmentCategoryTypes")
-				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken()).execute()
-				.returnResponse();
-
-		assertEquals(HttpStatus.SC_OK, response.getStatusLine().getStatusCode());
-		final Map<String, Object> data = getJsonMap(response);
-		assertFalse(data.isEmpty());
-	}
-
-	/**
-	 * Gets the movement search keys test.
-	 *
-	 * @return the movement search keys test
-	 * @throws Exception the exception
-	 */
-	@Test
-	public void getMovementSearchKeysTest() throws Exception {
-		final HttpResponse response = Request.Get(BASE_URL + "movement/rest/config/searchKeys")
-				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken()).execute()
-				.returnResponse();
-
-		assertEquals(HttpStatus.SC_OK, response.getStatusLine().getStatusCode());
-		final Map<String, Object> data = getJsonMap(response);
+		final Map<String, Object> data = getJsonMap(response);		
 		assertFalse(data.isEmpty());
 		assertNotNull(data.get("data"));
+		
 	}
 
-	/**
-	 * Gets the movement source types test.
-	 *
-	 * @return the movement source types test
-	 * @throws Exception the exception
-	 */
 	@Test
-	public void getMovementSourceTypesTest() throws Exception {
-		final HttpResponse response = Request.Get(BASE_URL + "movement/rest/config/movementSourceTypes")
+	public void getByIdTest() throws Exception {
+		final HttpResponse response = Request.Get(BASE_URL + "config/rest/settings/1")
 				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken()).execute()
 				.returnResponse();
-
 		assertEquals(HttpStatus.SC_OK, response.getStatusLine().getStatusCode());
-		final Map<String, Object> data = getJsonMap(response);
+		final Map<String, Object> data = getJsonMap(response);		
 		assertFalse(data.isEmpty());
 		assertNotNull(data.get("data"));
+		
 	}
 
-	/**
-	 * Gets the activity types test.
-	 *
-	 * @return the activity types test
-	 * @throws Exception the exception
-	 */
+	
 	@Test
-	public void getActivityTypesTest() throws Exception {
-		final HttpResponse response = Request.Get(BASE_URL + "movement/rest/config/activityTypes")
+	@Ignore
+	public void deleteTest() throws Exception {
+		final HttpResponse response = Request.Delete(BASE_URL + "config/rest/settings/{id}")
 				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken()).execute()
 				.returnResponse();
-
 		assertEquals(HttpStatus.SC_OK, response.getStatusLine().getStatusCode());
-		final Map<String, Object> data = getJsonMap(response);
+		final Map<String, Object> data = getJsonMap(response);		
 		assertFalse(data.isEmpty());
 		assertNotNull(data.get("data"));
+		
 	}
 
-	/**
-	 * Gets the configuration test.
-	 *
-	 * @return the configuration test
-	 * @throws Exception the exception
-	 */
 	@Test
-	public void getConfigurationTest() throws Exception {
-		final HttpResponse response = Request.Get(BASE_URL + "movement/rest/config/")
-				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken()).execute()
+	@Ignore
+	public void updateTest() throws Exception {
+		SettingType settingType = new SettingType();
+		final HttpResponse response = Request.Put(BASE_URL + "config/rest/settings/{id}")
+				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken()).bodyByteArray(writeValueAsString(settingType).getBytes()).execute()
 				.returnResponse();
-
 		assertEquals(HttpStatus.SC_OK, response.getStatusLine().getStatusCode());
-		final Map<String, Object> data = getJsonMap(response);
+		final Map<String, Object> data = getJsonMap(response);		
 		assertFalse(data.isEmpty());
 		assertNotNull(data.get("data"));
+		
+	}
+
+	@Test
+	@Ignore
+	public void createTest() throws Exception {
+		SettingsCreateQuery settingsCreateQuery = new SettingsCreateQuery();
+		
+		final HttpResponse response = Request.Post(BASE_URL + "config/rest/settings")
+				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken()).bodyByteArray(writeValueAsString(settingsCreateQuery).getBytes()).execute()
+				.returnResponse();
+		assertEquals(HttpStatus.SC_OK, response.getStatusLine().getStatusCode());
+		final Map<String, Object> data = getJsonMap(response);		
+		assertFalse(data.isEmpty());
+		assertNotNull(data.get("data"));
+		
+	}
+
+	
+	@Test
+	public void catalogTest() throws Exception {
+		final HttpResponse response = Request.Get(BASE_URL + "config/rest/catalog")
+				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken()).execute()
+				.returnResponse();
+		assertEquals(HttpStatus.SC_OK, response.getStatusLine().getStatusCode());
+		final Map<String, Object> data = getJsonMap(response);		
+		assertFalse(data.isEmpty());
+		assertNotNull(data.get("data"));
+		
+	}
+
+
+	@Test
+	public void getPingsTest() throws Exception {
+		final HttpResponse response = Request.Get(BASE_URL + "config/rest/pings")
+				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken()).execute()
+				.returnResponse();
+		assertEquals(HttpStatus.SC_OK, response.getStatusLine().getStatusCode());
+		final Map<String, Object> data = getJsonMap(response);		
+		assertFalse(data.isEmpty());
+		assertNotNull(data.get("data"));
+		
+	}
+
+
+	@Test
+	public void getGlobalSettingsTest() throws Exception {
+		final HttpResponse response = Request.Get(BASE_URL + "config/rest/globals")
+				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken()).execute()
+				.returnResponse();
+		assertEquals(HttpStatus.SC_OK, response.getStatusLine().getStatusCode());
+		final Map<String, Object> data = getJsonMap(response);		
+		assertFalse(data.isEmpty());
+		assertNotNull(data.get("data"));
+		
 	}
 
 }
