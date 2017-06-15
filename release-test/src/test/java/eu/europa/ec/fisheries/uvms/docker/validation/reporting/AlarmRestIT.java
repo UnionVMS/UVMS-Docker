@@ -11,8 +11,9 @@ FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more d
 copy of the GNU General Public License along with the IFDM Suite. If not, see <http://www.gnu.org/licenses/>.
 
 */
-package eu.europa.ec.fisheries.uvms.docker.validation.asset;
+package eu.europa.ec.fisheries.uvms.docker.validation.reporting;
 
+import java.util.ArrayList;
 import java.util.Map;
 
 import org.apache.http.HttpResponse;
@@ -26,51 +27,35 @@ import org.junit.Rule;
 import org.junit.Test;
 
 import eu.europa.ec.fisheries.uvms.docker.validation.common.AbstractRestServiceTest;
+import eu.europa.ec.fisheries.uvms.reporting.service.dto.rules.AlarmMovement;
+import eu.europa.ec.fisheries.uvms.reporting.service.dto.rules.AlarmMovementList;
 
 /**
- * The Class AssetGroupRestIT.
+ * The Class AlarmRestIT.
  */
 @PerfTest(threads = 4, duration = 6000, warmUp = 1000)
 @Required(max = 5000, average = 3000, percentile95 = 3500, throughput = 2)
-public class AssetGroupRestIT extends AbstractRestServiceTest {
+public class AlarmRestIT extends AbstractRestServiceTest {
 
 	/** The i. */
 	@Rule
 	public ContiPerfRule contiPerfRule = new ContiPerfRule();
 
-	/**
-	 * Gets the asset group list by user test.
-	 *
-	 * @return the asset group list by user test
-	 * @throws Exception the exception
-	 */
-	@Test
-	public void getAssetGroupListByUserTest() throws Exception {
-		final HttpResponse response = Request.Get(BASE_URL + "asset/rest/group/list?user=vms_admin_com")
-				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken()).execute()
-				.returnResponse();
-		assertEquals(HttpStatus.SC_OK, response.getStatusLine().getStatusCode());
-		final Map<String, Object> data = getJsonMap(response);
-		assertFalse(data.isEmpty());
-		assertNotNull(data.get("data"));		
-	}
-
-	/**
-	 * Gets the asset by id test.
-	 *
-	 * @return the asset by id test
-	 * @throws Exception the exception
-	 */
 	@Test
 	@Ignore
-	public void getAssetByIdTest() throws Exception {
-		final HttpResponse response = Request.Get(BASE_URL + "asset/rest/group/{id}")
-				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken()).execute()
+	public void getAlarmsTest() throws Exception {
+		AlarmMovementList alarmMovementList = new AlarmMovementList();
+		ArrayList<AlarmMovement> alarmMovementListContent = new ArrayList<AlarmMovement>();		
+		alarmMovementList.setAlarmMovementList(alarmMovementListContent);
+		
+		final HttpResponse response = Request.Post(BASE_URL + "reporting/rest/alarms")
+				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken()).bodyByteArray(writeValueAsString(alarmMovementList).getBytes()).execute()
 				.returnResponse();
 		assertEquals(HttpStatus.SC_OK, response.getStatusLine().getStatusCode());
-		final Map<String, Object> data = getJsonMap(response);
+		final Map<String, Object> data = getJsonMap(response);		
 		assertFalse(data.isEmpty());
 		assertNotNull(data.get("data"));		
 	}
 
+	
 }

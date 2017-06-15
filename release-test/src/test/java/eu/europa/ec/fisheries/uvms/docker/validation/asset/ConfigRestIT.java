@@ -49,8 +49,10 @@ public class ConfigRestIT extends AbstractRestServiceTest {
 				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken()).execute()
 				.returnResponse();
 		assertEquals(HttpStatus.SC_OK, response.getStatusLine().getStatusCode());
-		final Map<String, Object> data = getJsonMap(response);
+		final Map<String, Object> data = getJsonMap(response);		
 		assertFalse(data.isEmpty());
+		assertNotNull(data.get("data"));
+		
 	}
 
 
@@ -68,6 +70,7 @@ public class ConfigRestIT extends AbstractRestServiceTest {
 		assertEquals(HttpStatus.SC_OK, response.getStatusLine().getStatusCode());
 		final Map<String, Object> data = getJsonMap(response);
 		assertFalse(data.isEmpty());
+		assertNotNull(data.get("data"));
 	}
 
 	/**
@@ -84,6 +87,8 @@ public class ConfigRestIT extends AbstractRestServiceTest {
 		assertEquals(HttpStatus.SC_OK, response.getStatusLine().getStatusCode());
 		final Map<String, Object> data = getJsonMap(response);
 		assertFalse(data.isEmpty());
+		assertNotNull(data.get("data"));
+
 	}
 	
 }

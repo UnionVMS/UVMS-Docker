@@ -56,6 +56,7 @@ public class MobileTerminalRestIT extends AbstractRestServiceTest {
 		assertEquals(HttpStatus.SC_OK, response.getStatusLine().getStatusCode());
 		final Map<String, Object> data = getJsonMap(response);
 		assertFalse(data.isEmpty());
+		assertNotNull(data.get("data"));		
 	}
 
 	/**
@@ -73,6 +74,7 @@ public class MobileTerminalRestIT extends AbstractRestServiceTest {
 		assertEquals(HttpStatus.SC_OK, response.getStatusLine().getStatusCode());
 		final Map<String, Object> data = getJsonMap(response);
 		assertFalse(data.isEmpty());
+		assertNotNull(data.get("data"));		
 	}
 
 	/**
@@ -89,6 +91,7 @@ public class MobileTerminalRestIT extends AbstractRestServiceTest {
 		assertEquals(HttpStatus.SC_OK, response.getStatusLine().getStatusCode());
 		final Map<String, Object> data = getJsonMap(response);
 		assertFalse(data.isEmpty());
+		assertNotNull(data.get("data"));		
 	}
 
 	/**
@@ -106,6 +109,7 @@ public class MobileTerminalRestIT extends AbstractRestServiceTest {
 		assertEquals(HttpStatus.SC_OK, response.getStatusLine().getStatusCode());
 		final Map<String, Object> data = getJsonMap(response);
 		assertFalse(data.isEmpty());
+		assertNotNull(data.get("data"));		
 	}
 
 	/**
@@ -124,6 +128,7 @@ public class MobileTerminalRestIT extends AbstractRestServiceTest {
 		assertEquals(HttpStatus.SC_OK, response.getStatusLine().getStatusCode());
 		final Map<String, Object> data = getJsonMap(response);
 		assertFalse(data.isEmpty());
+		assertNotNull(data.get("data"));		
 	}
 
 	/**
@@ -142,6 +147,7 @@ public class MobileTerminalRestIT extends AbstractRestServiceTest {
 		assertEquals(HttpStatus.SC_OK, response.getStatusLine().getStatusCode());
 		final Map<String, Object> data = getJsonMap(response);
 		assertFalse(data.isEmpty());
+		assertNotNull(data.get("data"));		
 	}
 
 	/**
@@ -159,6 +165,7 @@ public class MobileTerminalRestIT extends AbstractRestServiceTest {
 		assertEquals(HttpStatus.SC_OK, response.getStatusLine().getStatusCode());
 		final Map<String, Object> data = getJsonMap(response);
 		assertFalse(data.isEmpty());
+		assertNotNull(data.get("data"));		
 	}
 
 	/**
@@ -176,6 +183,7 @@ public class MobileTerminalRestIT extends AbstractRestServiceTest {
 		assertEquals(HttpStatus.SC_OK, response.getStatusLine().getStatusCode());
 		final Map<String, Object> data = getJsonMap(response);
 		assertFalse(data.isEmpty());
+		assertNotNull(data.get("data"));		
 	}
 
 	/**
@@ -193,6 +201,7 @@ public class MobileTerminalRestIT extends AbstractRestServiceTest {
 		assertEquals(HttpStatus.SC_OK, response.getStatusLine().getStatusCode());
 		final Map<String, Object> data = getJsonMap(response);
 		assertFalse(data.isEmpty());
+		assertNotNull(data.get("data"));		
 	}
 
 	/**
@@ -210,6 +219,7 @@ public class MobileTerminalRestIT extends AbstractRestServiceTest {
 		assertEquals(HttpStatus.SC_OK, response.getStatusLine().getStatusCode());
 		final Map<String, Object> data = getJsonMap(response);
 		assertFalse(data.isEmpty());
+		assertNotNull(data.get("data"));		
 	}
 
 }

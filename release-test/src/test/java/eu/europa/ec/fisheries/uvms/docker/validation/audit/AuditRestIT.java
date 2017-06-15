@@ -11,8 +11,9 @@ FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more d
 copy of the GNU General Public License along with the IFDM Suite. If not, see <http://www.gnu.org/licenses/>.
 
 */
-package eu.europa.ec.fisheries.uvms.docker.validation.asset;
+package eu.europa.ec.fisheries.uvms.docker.validation.audit;
 
+import java.math.BigInteger;
 import java.util.Map;
 
 import org.apache.http.HttpResponse;
@@ -21,56 +22,46 @@ import org.apache.http.client.fluent.Request;
 import org.databene.contiperf.PerfTest;
 import org.databene.contiperf.Required;
 import org.databene.contiperf.junit.ContiPerfRule;
-import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 
+import eu.europa.ec.fisheries.schema.audit.search.v1.AuditLogListQuery;
+import eu.europa.ec.fisheries.schema.audit.search.v1.ListPagination;
 import eu.europa.ec.fisheries.uvms.docker.validation.common.AbstractRestServiceTest;
 
 /**
- * The Class AssetGroupRestIT.
+ * The Class AuditRestIT.
  */
 @PerfTest(threads = 4, duration = 6000, warmUp = 1000)
 @Required(max = 5000, average = 3000, percentile95 = 3500, throughput = 2)
-public class AssetGroupRestIT extends AbstractRestServiceTest {
+public class AuditRestIT extends AbstractRestServiceTest {
 
 	/** The i. */
 	@Rule
 	public ContiPerfRule contiPerfRule = new ContiPerfRule();
 
 	/**
-	 * Gets the asset group list by user test.
+	 * Gets the config search fields test.
 	 *
-	 * @return the asset group list by user test
+	 * @return the config search fields test
 	 * @throws Exception the exception
 	 */
 	@Test
-	public void getAssetGroupListByUserTest() throws Exception {
-		final HttpResponse response = Request.Get(BASE_URL + "asset/rest/group/list?user=vms_admin_com")
-				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken()).execute()
-				.returnResponse();
+	public void getListByQueryTest() throws Exception {
+		AuditLogListQuery auditLogListQuery = new AuditLogListQuery();
+		ListPagination listPagination = new ListPagination();
+		listPagination.setPage(BigInteger.valueOf(1));
+		listPagination.setListSize(BigInteger.valueOf(25));
+		auditLogListQuery.setPagination(listPagination);
+		
+		final HttpResponse response = Request.Post(BASE_URL + "audit/rest/audit/list")
+				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken())
+				.bodyByteArray(writeValueAsString(auditLogListQuery).getBytes()).execute().returnResponse();
+
 		assertEquals(HttpStatus.SC_OK, response.getStatusLine().getStatusCode());
-		final Map<String, Object> data = getJsonMap(response);
+		final Map<String, Object> data = getJsonMap(response);		
 		assertFalse(data.isEmpty());
 		assertNotNull(data.get("data"));		
 	}
-
-	/**
-	 * Gets the asset by id test.
-	 *
-	 * @return the asset by id test
-	 * @throws Exception the exception
-	 */
-	@Test
-	@Ignore
-	public void getAssetByIdTest() throws Exception {
-		final HttpResponse response = Request.Get(BASE_URL + "asset/rest/group/{id}")
-				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken()).execute()
-				.returnResponse();
-		assertEquals(HttpStatus.SC_OK, response.getStatusLine().getStatusCode());
-		final Map<String, Object> data = getJsonMap(response);
-		assertFalse(data.isEmpty());
-		assertNotNull(data.get("data"));		
-	}
-
+	
 }
