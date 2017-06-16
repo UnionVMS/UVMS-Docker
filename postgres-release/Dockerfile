@@ -1,4 +1,4 @@
-FROM uvms/postgres-base:3.2.1-SNAPSHOT
+FROM uvms/postgres-base:3.4.0-SNAPSHOT
 
 ENV GITHUB https://github.com/UnionVMS
 

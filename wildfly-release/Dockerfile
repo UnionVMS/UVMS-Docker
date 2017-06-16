@@ -1,4 +1,4 @@
-FROM uvms/wildfly-base:3.2.1-SNAPSHOT
+FROM uvms/wildfly-base:3.4.0-SNAPSHOT
 
 COPY module-download-pom.xml /opt/jboss/
 RUN mkdir -p /opt/jboss/jboss-deployment

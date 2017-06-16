@@ -1,12 +1,12 @@
 version: '2'
 services:
   wildfly:
-    image: uvms/wildfly-release:3.1.0
+    image: uvms/wildfly-release:3.3.0
     container_name: wildfly
     ports:
-     - "9990:9990"
-     - "8787:8787"
-     - "8080:8080"
+     - "29990:9990"
+     - "28787:8787"
+     - "28080:8080"
     volumes:
      - /uvms/app/logs:/app/logs
      - /uvms/wildfly:/opt/jboss/wildfly/standalone/log
@@ -18,14 +18,14 @@ services:
      - activemq
     command: ["/opt/jboss/start.sh", "/opt/jboss/wildfly/bin/standalone.sh", "-c", "standalone-uvms.xml", "-b", "0.0.0.0", "-bmanagement", "0.0.0.0", "--debug"]
   postgres:
-    image: uvms/postgres-release:3.1.0
+    image: uvms/postgres-release:3.3.0
     container_name: postgres
     ports: 
-     - "5433:5432"
+     - "25432:5432"
   activemq:
-    image: uvms/activemq:3.1.0
+    image: uvms/activemq:3.3.0
     container_name: activemq
     ports:
-     - "8161:8161"
+     - "18161:8161"
     volumes:
      - /uvms/activemq:/opt/jboss/activemq/data
