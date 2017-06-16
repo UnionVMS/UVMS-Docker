@@ -10,7 +10,7 @@
 	</parent>
 
 	<groupId>eu.europa.ec.fisheries.uvms.docker</groupId>
-	<version>3.3.0</version>
+	<version>3.4.0-SNAPSHOT</version>
 	<artifactId>uvms-release-test</artifactId>
 	<packaging>jar</packaging>
 	<name>uvms-release-test</name>
@@ -23,7 +23,7 @@
 		<dependency>
 			<groupId>eu.europa.ec.fisheries.uvms.docker</groupId>
 			<artifactId>uvms-docker-images</artifactId>
-			<version>3.3.0</version>
+			<version>3.4.0-SNAPSHOT</version>
 			<type>pom</type>
 		</dependency>
 		<dependency>
@@ -390,8 +390,4 @@
 			</build>
 		</profile>
 	</profiles>
-
-  <scm>
-    <tag>uvms-docker-3.3.0</tag>
-  </scm>
 </project>
