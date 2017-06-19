@@ -17,12 +17,10 @@ ENV PGPASSWORD=postgres
 # PostGis
 COPY hibernate/module.xml $HIBERNATE_MODULE
 
-
 #RUN curl -o $HIBERNATE_MODULE/hibernate-core-$HIBERNATE_VERSION.jar "http://central.maven.org/maven2/org/hibernate/hibernate-core/$HIBERNATE_VERSION/hibernate-core-$HIBERNATE_VERSION.jar"
 #RUN curl -o $HIBERNATE_MODULE/hibernate-envers-$HIBERNATE_VERSION.jar "http://central.maven.org/maven2/org/hibernate/hibernate-envers/$HIBERNATE_VERSION/hibernate-envers-$HIBERNATE_VERSION.jar"
 #RUN curl -o $HIBERNATE_MODULE/hibernate-entitymanager-$HIBERNATE_VERSION.jar "http://central.maven.org/maven2/org/hibernate/hibernate-entitymanager/$HIBERNATE_VERSION/hibernate-entitymanager-$HIBERNATE_VERSION.jar"
 #RUN curl -o $HIBERNATE_MODULE/hibernate-infinispan-$HIBERNATE_VERSION.Final.jar "http://central.maven.org/maven2/org/hibernate/hibernate-infinispan/$HIBERNATE_VERSION/hibernate-infinispan-$HIBERNATE_VERSION.jar"
-
 
 #RUN curl -o $HIBERNATE_MODULE/hibernate-spatial-$HIBERNATE_SPATIAL_VERSION.jar "http://www.hibernatespatial.org/repository/org/hibernate/hibernate-spatial/$HIBERNATE_SPATIAL_VERSION/hibernate-spatial-$HIBERNATE_SPATIAL_VERSION.jar"
 RUN curl -o $HIBERNATE_MODULE/hibernate-spatial-$HIBERNATE_SPATIAL_VERSION.jar "http://nexus.e-is.pro/nexus/content/groups/public/org/hibernate/hibernate-spatial/4.3/hibernate-spatial-4.3.jar"
@@ -53,14 +51,13 @@ COPY start.sh /opt/jboss/
 # Create log directory
 USER root
 RUN mkdir -p /app/logs
-RUN chown jboss /app/logs
-RUN mkdir -p /opt/wildfly/standalone/log
-RUN chown jboss /opt/wildfly/standalone/log
+RUN chown -R jboss:jboss /app/logs
+RUN chmod 777 /app/logs
+RUN mkdir -p /opt/jboss/wildfly/standalone/log/
+RUN chown -R jboss:jboss /opt/jboss/wildfly/standalone/log
+RUN chmod 777 /opt/jboss/wildfly/standalone/log/
 RUN chmod 755 /opt/jboss/start.sh
 USER jboss
-RUN mkdir -p /app/logs/twostage/poll
-
-RUN ls -l /opt/jboss/
 
 # Hibernate Search Index dirs
 RUN mkdir -p /opt/jboss/wildfly/standalone/deployments/hibernatesearch/eu.europa.ec.fisheries.uvms.entity.model.AssetHistory
@@ -69,16 +66,11 @@ USER root
 RUN curl -o /etc/yum.repos.d/epel-apache-maven.repo https://repos.fedorapeople.org/repos/dchen/apache-maven/epel-apache-maven.repo
 RUN yum install -y apache-maven
 COPY settings.xml /root/.m2/settings.xml
-RUN yum install -y postgresql
-RUN chown -R jboss:jboss /opt/wildfly
 RUN chown -R jboss:jboss /opt/jboss
-RUN mkdir -p /opt/jboss/wildfly/standalone/log/
-RUN chmod -R 777 /opt/jboss/wildfly/standalone/log/
 USER jboss
 
 # Expose stuff to outside world
 EXPOSE 8787
 VOLUME ["/app/logs", "/opt/jboss/wildfly/standalone/log"]
-
 
 CMD ["/opt/jboss/start.sh", "/opt/jboss/wildfly/bin/standalone.sh", "-c", "standalone-uvms.xml", "-b", "0.0.0.0", "-bmanagement", "0.0.0.0", "--debug"]
