@@ -34,6 +34,12 @@
 			<scope>test</scope>
 		</dependency>
 		<dependency>
+		    <groupId>org.apache.activemq</groupId>
+		    <artifactId>activemq-client</artifactId>
+		    <version>5.13.5</version>
+		    <scope>test</scope>		    
+		</dependency>
+		<dependency>
 			<artifactId>mobileterminal-model</artifactId>
 			<groupId>eu.europa.ec.fisheries.uvms.mobileterminal</groupId>
 			<version>3.0.4</version>
@@ -255,6 +261,7 @@
 								<namingStrategy>none</namingStrategy>
 								<ports>
 									<port>18161:8161</port>
+									<port>61616:61616</port>
 								</ports>
 								<wait>
 									<log>database system is ready to accept connections</log>
