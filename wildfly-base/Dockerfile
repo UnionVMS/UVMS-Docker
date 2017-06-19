@@ -65,6 +65,7 @@ RUN mkdir -p /opt/jboss/wildfly/standalone/deployments/hibernatesearch/eu.europa
 USER root
 RUN curl -o /etc/yum.repos.d/epel-apache-maven.repo https://repos.fedorapeople.org/repos/dchen/apache-maven/epel-apache-maven.repo
 RUN yum install -y apache-maven
+RUN yum install -y postgresql
 COPY settings.xml /root/.m2/settings.xml
 RUN chown -R jboss:jboss /opt/jboss
 USER jboss

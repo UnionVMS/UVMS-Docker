@@ -329,8 +329,7 @@
 									<shutdown>15000</shutdown>
 								</wait>
 								<cmd>
-									<shell>/opt/jboss/wildfly/bin/standalone.sh -c
-										standalone-uvms.xml -b 0.0.0.0 -bmanagement 0.0.0.0</shell>
+									<shell>/opt/jboss/start.sh /opt/jboss/wildfly/bin/standalone.sh -c standalone-uvms.xml -b 0.0.0.0 -bmanagement 0.0.0.0</shell>
 								</cmd>
 								<dependsOn>
 									<container>postgres</container>
