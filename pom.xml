@@ -5,13 +5,13 @@
 	<parent>
 		<groupId>fish.focus.maven</groupId>
 		<artifactId>focus-pom</artifactId>
-		<version>1.4</version>
+		<version>1.5</version>
 		<relativePath />
 	</parent>
 	
 	<groupId>eu.europa.ec.fisheries.uvms.docker</groupId>
 	<artifactId>uvms-docker</artifactId>
-	<version>3.2.1-SNAPSHOT</version>
+	<version>3.4.0-SNAPSHOT</version>
 	<packaging>pom</packaging>
 	<name>uvms-docker</name>
 	

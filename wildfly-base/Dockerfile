@@ -17,12 +17,10 @@ ENV PGPASSWORD=postgres
 # PostGis
 COPY hibernate/module.xml $HIBERNATE_MODULE
 
-
 #RUN curl -o $HIBERNATE_MODULE/hibernate-core-$HIBERNATE_VERSION.jar "http://central.maven.org/maven2/org/hibernate/hibernate-core/$HIBERNATE_VERSION/hibernate-core-$HIBERNATE_VERSION.jar"
 #RUN curl -o $HIBERNATE_MODULE/hibernate-envers-$HIBERNATE_VERSION.jar "http://central.maven.org/maven2/org/hibernate/hibernate-envers/$HIBERNATE_VERSION/hibernate-envers-$HIBERNATE_VERSION.jar"
 #RUN curl -o $HIBERNATE_MODULE/hibernate-entitymanager-$HIBERNATE_VERSION.jar "http://central.maven.org/maven2/org/hibernate/hibernate-entitymanager/$HIBERNATE_VERSION/hibernate-entitymanager-$HIBERNATE_VERSION.jar"
 #RUN curl -o $HIBERNATE_MODULE/hibernate-infinispan-$HIBERNATE_VERSION.Final.jar "http://central.maven.org/maven2/org/hibernate/hibernate-infinispan/$HIBERNATE_VERSION/hibernate-infinispan-$HIBERNATE_VERSION.jar"
-
 
 #RUN curl -o $HIBERNATE_MODULE/hibernate-spatial-$HIBERNATE_SPATIAL_VERSION.jar "http://www.hibernatespatial.org/repository/org/hibernate/hibernate-spatial/$HIBERNATE_SPATIAL_VERSION/hibernate-spatial-$HIBERNATE_SPATIAL_VERSION.jar"
 RUN curl -o $HIBERNATE_MODULE/hibernate-spatial-$HIBERNATE_SPATIAL_VERSION.jar "http://nexus.e-is.pro/nexus/content/groups/public/org/hibernate/hibernate-spatial/4.3/hibernate-spatial-4.3.jar"

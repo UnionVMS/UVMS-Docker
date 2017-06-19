@@ -1,4 +1,4 @@
-FROM uvms/wildfly-base:3.2.1-SNAPSHOT
+FROM uvms/wildfly-base:3.4.0-SNAPSHOT
 
 COPY module-download-pom.xml /opt/jboss/
 RUN mkdir -p /opt/jboss/jboss-deployment
@@ -38,7 +38,6 @@ COPY jboss-deployment/web-app/jboss-all.xml /opt/jboss/jboss-deployment/web-app/
  
 USER root
 RUN mvn dependency:copy-dependencies -DoutputDirectory=$DEPLOYMENTS -f module-download-pom.xml -q
-#RUN chown -R jboss:jboss /opt/jboss/jboss-deployment/add-jboss-all-to-ear.sh
 RUN chmod 777 /opt/jboss/wildfly/standalone/deployments/*.ear
 RUN chmod 777 /opt/jboss/wildfly/standalone/deployments/
 RUN chmod a+x /opt/jboss/jboss-deployment/add-jboss-all-to-ear.sh
@@ -51,7 +50,4 @@ USER root
 RUN mv /root/.m2/settings.xml /root/settings.xml
 RUN rm -r /root/.m2
 RUN mkdir /root/.m2 && mv /root/settings.xml /root/.m2/settings.xml
-RUN ls -l /root/.m2/
 USER jboss
-
-RUN ls -l $DEPLOYMENTS

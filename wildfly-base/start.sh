@@ -1,4 +1,8 @@
 #!/bin/bash
+
+rm -rf /app/logs/*
+rm -rf /opt/jboss/wildfly/standalone/log/*
+
 locked="y"
 printf "Waiting for database.\n"
 while :

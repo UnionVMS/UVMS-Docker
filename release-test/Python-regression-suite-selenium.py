@@ -148,10 +148,11 @@ def startup_browser_and_login_to_unionVMS(cls,userId,password,userContext):
     WebDriverWait(cls.driver, browserTimeout).until(EC.presence_of_element_located((By.ID, 'userId'))).send_keys(userId)
     WebDriverWait(cls.driver, browserTimeout).until(EC.presence_of_element_located((By.ID, 'password'))).send_keys(password)  
     WebDriverWait(cls.driver, browserTimeout).until(EC.element_to_be_clickable((By.XPATH, "//*[@id='content']/div[1]/div[3]/div/div[2]/div[3]/div[2]/form/div[3]/div/button"))).click()
+    time.sleep(browserWaitAfterClick)
   
     WebDriverWait(cls.driver, browserTimeout).until(EC.element_to_be_clickable((By.PARTIAL_LINK_TEXT, "AdminAll"))).click()
     time.sleep(browserWaitAfterClick)
-  
+    time.sleep(browserWaitAfterClick)
 
 def shutdown_browser(cls):
     cls.driver.quit()
@@ -444,6 +445,7 @@ def link_asset_and_mobile_terminal(self, serialNoValue, ircsValue):
     # Enter Asset Name and clicks on the search button
     WebDriverWait(self.driver, browserTimeout).until(EC.presence_of_element_located((By.XPATH,"(//input[@type='text'])[23]"))).send_keys(ircsValue)
     WebDriverWait(self.driver, browserTimeout).until(EC.element_to_be_clickable((By.XPATH,"//button[@type='submit']"))).click()
+    time.sleep(browserWaitAfterClick)
     
     # Click on connect button
     WebDriverWait(self.driver, browserTimeout).until(EC.element_to_be_clickable((By.CSS_SELECTOR ,"td.textAlignRight > button.btn.btn-primary"))).click()
@@ -526,6 +528,7 @@ def generate_and_verify_manual_position(self,speedValue,courseValue,ircsValue,cf
     WebDriverWait(self.driver, browserTimeout).until(EC.presence_of_element_located((By.NAME,"course"))).send_keys(str(courseValue))
     # Click on Save Button
     WebDriverWait(self.driver, browserTimeout).until(EC.element_to_be_clickable((By.XPATH,"(//button[@type='submit'])[4]"))).click()
+    time.sleep(browserWaitAfterClick)
     
     # Click on Confirm button
     WebDriverWait(self.driver, browserTimeout).until(EC.element_to_be_clickable((By.XPATH,"(//button[@type='submit'])[4]"))).click()
@@ -603,6 +606,7 @@ def generate_NAF_and_verify_position(self,speedValue,courseValue):
     
     # Click on search button
     WebDriverWait(self.driver, browserTimeout).until(EC.presence_of_element_located((By.XPATH,"(//button[@type='submit'])[2]"))).click()
+    time.sleep(browserWaitAfterClick)
     
     # Enter Vessel to verify position data
     self.assertEqual(countryValue, WebDriverWait(self.driver, browserTimeout).until(EC.presence_of_element_located((By.CSS_SELECTOR ,"td[title=\"" + countryValue + "\"]"))).text)
