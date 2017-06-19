@@ -336,6 +336,12 @@
 									<container>postgres</container>
 									<container>activemq</container>
 								</dependsOn>
+								<volumes>
+								  <bind>
+								    <volume>/app/logs:/app/logs</volume>
+								    <volume>/opt/jboss/wildfly/standalone/log:/opt/jboss/wildfly/standalone/log</volume>
+								  </bind>
+								</volumes> 
 								<log>
 									<enabled>true</enabled>
 									<color>blue</color>
