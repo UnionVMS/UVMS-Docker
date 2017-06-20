@@ -4,6 +4,6 @@
 		<dependency name="config-module-3.0.5.ear" />
 		<dependency name="exchange-module-3.0.5.ear" />
 		<dependency name="audit-module-3.0.5.ear" />
-		<dependency name="asset-module-3.0.7-SNAPSHOT.ear" />		
+		<dependency name="asset-module-3.0.7.ear" />		
 	</jboss-deployment-dependencies>
 </jboss>
