@@ -32,7 +32,7 @@ addJbossAll config-module-3.0.5 /opt/jboss/jboss-deployment/config/jboss-all.xml
 addJbossAll spatial-module-postgres-0.5.6.presweden2 /opt/jboss/jboss-deployment/spatial/jboss-all.xml
 addJbossAll reporting-module-0.5.7.presweden1 /opt/jboss/jboss-deployment/reporting/jboss-all.xml
 addJbossAll movement-module-3.0.9-SNAPSHOT /opt/jboss/jboss-deployment/movement/jboss-all.xml
-addJbossAll asset-module-3.0.7 /opt/jboss/jboss-deployment/asset/jboss-all.xml
+addJbossAll asset-module-3.0.8-SNAPSHOT /opt/jboss/jboss-deployment/asset/jboss-all.xml
 addJbossAll audit-dbaccess-module-3.0.4 /opt/jboss/jboss-deployment/general/jboss-all.xml
 addJbossAll audit-module-3.0.5 /opt/jboss/jboss-deployment/audit/jboss-all.xml
 addJbossAll exchange-dbaccess-module-3.0.4 /opt/jboss/jboss-deployment/general/jboss-all.xml
