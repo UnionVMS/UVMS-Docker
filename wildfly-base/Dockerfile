@@ -30,7 +30,7 @@ RUN curl -o $HIBERNATE_MODULE/jts-$JTS_VERSION.jar "http://central.maven.org/mav
 
 RUN mkdir -p $JBOSS_HOME/modules/org/postgresql/main
 COPY postgres/module.xml $POSTGRES_MODULE
-RUN curl -o $POSTGRES_MODULE/postgis-jdbc-$POSTGIS_VERSION.jar "https://www.aht-group.com/nexus/content/repositories/public/org/postgis/postgis-jdbc/$POSTGIS_VERSION/postgis-jdbc-$POSTGIS_VERSION.jar"
+RUN curl -o $POSTGRES_MODULE/postgis-jdbc-$POSTGIS_VERSION.jar "https://adams.cms.waikato.ac.nz/nexus/content/repositories/adams-thirdparty/org/postgis/postgis-jdbc/$POSTGIS_VERSION/postgis-jdbc-$POSTGIS_VERSION.jar"
 RUN curl -o $POSTGRES_MODULE/postgresql-$POSTGRES_VERSION.jar "http://central.maven.org/maven2/org/postgresql/postgresql/$POSTGRES_VERSION/postgresql-$POSTGRES_VERSION.jar"
 															   																
 # Active MQ

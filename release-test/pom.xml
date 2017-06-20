@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
 	<parent>
@@ -34,6 +35,12 @@
 			<scope>test</scope>
 		</dependency>
 		<dependency>
+			<groupId>org.apache.activemq</groupId>
+			<artifactId>activemq-client</artifactId>
+			<version>5.13.5</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
 			<artifactId>mobileterminal-model</artifactId>
 			<groupId>eu.europa.ec.fisheries.uvms.mobileterminal</groupId>
 			<version>3.0.4</version>
@@ -53,30 +60,30 @@
 			<version>2.0.0</version>
 			<scope>test</scope>
 		</dependency>
-		 <dependency>
-            <groupId>eu.europa.ec.fisheries.uvms.config</groupId>
-            <artifactId>config-model</artifactId>
-            <version>3.0.4</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>eu.europa.ec.fisheries.uvms.audit</groupId>
-            <artifactId>audit-model</artifactId>
-            <version>3.0.4</version>
-            <scope>test</scope>            
-        </dependency>
-        <dependency>
-            <groupId>eu.europa.ec.fisheries.uvms.reporting</groupId>
-            <artifactId>reporting-model</artifactId>
-            <version>0.5.6.presweden</version>
-            <scope>test</scope>                        
-        </dependency>     
-        <dependency>
-            <groupId>eu.europa.ec.fisheries.uvms.reporting</groupId>
-            <artifactId>service</artifactId>
-            <version>0.5.7.presweden1</version>
-            <scope>test</scope>                        
-        </dependency>                
+		<dependency>
+			<groupId>eu.europa.ec.fisheries.uvms.config</groupId>
+			<artifactId>config-model</artifactId>
+			<version>3.0.4</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>eu.europa.ec.fisheries.uvms.audit</groupId>
+			<artifactId>audit-model</artifactId>
+			<version>3.0.4</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>eu.europa.ec.fisheries.uvms.reporting</groupId>
+			<artifactId>reporting-model</artifactId>
+			<version>0.5.6.presweden</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>eu.europa.ec.fisheries.uvms.reporting</groupId>
+			<artifactId>service</artifactId>
+			<version>0.5.7.presweden1</version>
+			<scope>test</scope>
+		</dependency>
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
@@ -100,7 +107,7 @@
 			<artifactId>jackson-annotations</artifactId>
 			<version>2.8.8</version>
 			<scope>test</scope>
-		</dependency>		
+		</dependency>
 		<dependency>
 			<groupId>org.databene</groupId>
 			<artifactId>contiperf</artifactId>
@@ -202,8 +209,13 @@
 						<phase>post-integration-test</phase>
 						<configuration>
 							<tasks>
-								<get src="http://localhost:28080/movement/monitoring?format=pdf" dest="target/movement_monitoring.pdf" verbose="true" usetimestamp="true" />
-								<get src="http://localhost:28080/mobileterminal/monitoring?format=pdf" dest="target/mobileterminal_monitoring.pdf" verbose="true" usetimestamp="true" />
+								<get src="http://localhost:28080/movement/monitoring?format=pdf"
+									dest="target/movement_monitoring.pdf" verbose="true"
+									usetimestamp="true" />
+								<get
+									src="http://localhost:28080/mobileterminal/monitoring?format=pdf"
+									dest="target/mobileterminal_monitoring.pdf" verbose="true"
+									usetimestamp="true" />
 							</tasks>
 						</configuration>
 						<goals>
@@ -255,6 +267,7 @@
 								<namingStrategy>none</namingStrategy>
 								<ports>
 									<port>18161:8161</port>
+									<port>61616:61616</port>
 								</ports>
 								<wait>
 									<log>database system is ready to accept connections</log>
@@ -329,18 +342,19 @@
 									<shutdown>15000</shutdown>
 								</wait>
 								<cmd>
-									<shell>/opt/jboss/start.sh /opt/jboss/wildfly/bin/standalone.sh -c standalone-uvms.xml -b 0.0.0.0 -bmanagement 0.0.0.0</shell>
+									<shell>/opt/jboss/start.sh /opt/jboss/wildfly/bin/standalone.sh
+										-c standalone-uvms.xml -b 0.0.0.0 -bmanagement 0.0.0.0</shell>
 								</cmd>
 								<dependsOn>
 									<container>postgres</container>
 									<container>activemq</container>
 								</dependsOn>
 								<volumes>
-								  <bind>
-								    <volume>/app/logs:/app/logs</volume>
-								    <volume>/opt/jboss/wildfly/standalone/log:/opt/jboss/wildfly/standalone/log</volume>
-								  </bind>
-								</volumes>						        						        
+									<bind>
+										<volume>${dockler.volume.app.logs}:/app/logs</volume>
+										<volume>${dockler.volume.server.logs}:/opt/jboss/wildfly/standalone/log</volume>
+									</bind>
+								</volumes>
 								<log>
 									<enabled>true</enabled>
 									<color>blue</color>
@@ -393,6 +407,42 @@
 					</plugin>
 				</plugins>
 			</build>
+		</profile>
+		<profile>
+			<id>dev-windows</id>
+			<activation>
+				<os>
+					<family>windows</family>
+				</os>
+			</activation>
+			<properties>
+				<dockler.volume.app.logs>c:\app\logs</dockler.volume.app.logs>
+				<dockler.volume.server.logs>c:\opt\jboss\wildfly\standalone\log</dockler.volume.server.logs>				
+			</properties>
+		</profile>
+		<profile>
+			<id>dev-mac</id>
+			<activation>
+				<os>
+					<family>mac</family>
+				</os>
+			</activation>
+			<properties>
+				<dockler.volume.app.logs>/app/logs/</dockler.volume.app.logs>
+				<dockler.volume.server.logs>/opt/jboss/wildfly/standalone/log</dockler.volume.server.logs>				
+			</properties>
+		</profile>
+		<profile>
+			<id>dev-linux</id>
+			<activation>
+				<os>
+					<name>linux</name>
+				</os>
+			</activation>
+			<properties>
+				<dockler.volume.app.logs>/app/logs/</dockler.volume.app.logs>
+				<dockler.volume.server.logs>/opt/jboss/wildfly/standalone/log</dockler.volume.server.logs>				
+			</properties>
 		</profile>
 	</profiles>
 </project>
