@@ -87,6 +87,7 @@ public class ConfigRestIT extends AbstractRestServiceTest {
 		assertEquals(HttpStatus.SC_OK, response.getStatusLine().getStatusCode());
 		final Map<String, Object> data = getJsonMap(response);
 		assertFalse(data.isEmpty());
+		System.out.println(data.toString());
 		assertNotNull(data.get("data"));
 
 	}
