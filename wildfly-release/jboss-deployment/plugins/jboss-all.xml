@@ -3,8 +3,8 @@
 		<dependency name="user-module-1.6.1.ear" />
 		<dependency name="config-module-3.0.5.ear" />				
 		<dependency name="exchange-module-3.0.5.ear" />
-		<dependency name="mobileterminal-module-3.0.9-SNAPSHOT.ear" />
-		<dependency name="movement-module-3.0.9-SNAPSHOT.ear" />
+		<dependency name="mobileterminal-module-3.0.8.ear" />
+		<dependency name="movement-module-3.0.8.ear" />
 		<dependency name="asset-module-3.0.8-SNAPSHOT.ear" />
 		<dependency name="spatial-module-postgres-0.5.6.presweden2.ear" />
 		<dependency name="rules-module-3.0.1.ear" />		
