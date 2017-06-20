@@ -1,5 +1,6 @@
 package eu.europa.ec.fisheries.uvms.docker.validation.movement;
 import java.io.StringWriter;
+import java.util.Enumeration;
 import java.util.UUID;
 
 import javax.jms.Connection;
@@ -7,6 +8,7 @@ import javax.jms.ConnectionFactory;
 import javax.jms.JMSException;
 import javax.jms.MessageProducer;
 import javax.jms.Queue;
+import javax.jms.QueueBrowser;
 import javax.jms.Session;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
@@ -64,12 +66,31 @@ public class MovementJmsIT {
 	        createMovementRequest.setMovement(movementBaseType);
 	        createMovementRequest.setMethod(MovementModuleMethod.CREATE);
 	        	        
-	        final Session session = connection.createSession(false, Session.AUTO_ACKNOWLEDGE);
+	        final Session session = connection.createSession(false, Session.SESSION_TRANSACTED);
 	        final Queue queue = session.createQueue(UVMS_MOVEMENT);
 	        final MessageProducer messageProducer = session.createProducer(queue);
 	    	messageProducer.send(session.createTextMessage(marshall(createMovementRequest)));
+	    	session.close();
 	    }
 
+		public void createMovementBrowseQueueTest() throws Exception {
+	        final CreateMovementRequest createMovementRequest = new CreateMovementRequest();
+	        final MovementBaseType movementBaseType = new MovementBaseType();
+	        createMovementRequest.setMovement(movementBaseType);
+	        createMovementRequest.setMethod(MovementModuleMethod.CREATE);
+	        	        
+	        final Session session = connection.createSession(false, Session.AUTO_ACKNOWLEDGE);
+	        final Queue queue = session.createQueue(UVMS_MOVEMENT);
+	        final QueueBrowser browser = session.createBrowser(queue);
+	        Enumeration enumeration = browser.getEnumeration();
+
+	        while (enumeration.hasMoreElements()) {
+				Object object = (Object) enumeration.nextElement();
+			}	        
+	    	session.close();
+	    }
+
+	    
 
 		private String marshall(final CreateMovementRequest createMovementRequest) throws JAXBException {
 	    	final StringWriter sw = new StringWriter();
