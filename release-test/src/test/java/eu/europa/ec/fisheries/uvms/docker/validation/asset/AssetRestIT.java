@@ -37,7 +37,7 @@ import eu.europa.ec.fisheries.wsdl.asset.types.ConfigSearchField;
 /**
  * The Class AssetRestIT.
  */
-@PerfTest(threads = 4, duration = 6000, warmUp = 1000)
+@PerfTest(threads = 4, duration = 3000, warmUp = 1000)
 @Required(max = 5000, average = 3000, percentile95 = 3500, throughput = 2)
 public class AssetRestIT extends AbstractRestServiceTest {
 

@@ -61,8 +61,8 @@ public class MovementJmsIT extends Assert {
 	}
 
 	@Test
-	@PerfTest(threads = 8, duration = 6000, warmUp = 1000)
-	@Required(max = 3000, average = 300, percentile95 = 400, throughput = 20)
+	@PerfTest(threads = 1, duration = 3000, warmUp = 1000)
+	@Required(max = 3000, average = 300, percentile95 = 400, throughput = 2)
 	public void createMovementRequestTest() throws Exception {
 		final CreateMovementRequest createMovementRequest = new CreateMovementRequest();
 		final MovementBaseType movementBaseType = new MovementBaseType();
