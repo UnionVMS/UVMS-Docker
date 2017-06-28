@@ -98,13 +98,25 @@
         </dependency>
         <dependency>
             <groupId>eu.europa.ec.fisheries.uvms.spatial</groupId>
-            <artifactId>spatial-module-postgres</artifactId>
+            <artifactId>spatial-module</artifactId>
             <type>ear</type>
             <version>[0.0.0,)</version>
         </dependency>
         <dependency>
             <groupId>eu.europa.ec.fisheries.uvms.reporting</groupId>
             <artifactId>reporting-module</artifactId>
+            <type>ear</type>
+            <version>[0.0.0,)</version>
+        </dependency>
+        <dependency>
+            <groupId>eu.europa.ec.fisheries.uvms.activity</groupId>
+            <artifactId>activity-module</artifactId>
+            <type>ear</type>
+            <version>[0.0.0,)</version>
+        </dependency>
+        <dependency>
+            <groupId>eu.europa.ec.fisheries.uvms.mdr</groupId>
+            <artifactId>mdr-module</artifactId>
             <type>ear</type>
             <version>[0.0.0,)</version>
         </dependency>
@@ -195,6 +207,24 @@
         <dependency>
             <groupId>se.havochvatten.vessel.proxy.cache</groupId>
             <artifactId>hav-vessel-proxy-cache-module</artifactId>
+            <type>ear</type>
+            <version>${artifact.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>eu.europa.ec.fisheries.uvms.plugins</groupId>
+            <artifactId>uploader-module</artifactId>
+            <type>ear</type>
+            <version>${artifact.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>eu.europa.ec.fisheries.uvms.plugins</groupId>
+            <artifactId>fluxActivity-module</artifactId>
+            <type>ear</type>
+            <version>${artifact.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>eu.europa.ec.fisheries.uvms.plugins</groupId>
+            <artifactId>mdr-plugin-module</artifactId>
             <type>ear</type>
             <version>${artifact.version}</version>
         </dependency>
