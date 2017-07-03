@@ -35,8 +35,8 @@ ARG EXCHANGE_VERSION=3.0.5
 ARG MOVEMENT_VERSION=3.0.7
 ARG MOBILE_TERMINAL_VERSION=3.0.4
 ARG RULES_VERSION=3.0.4
-ARG SPATIAL_VERSION=0.5.2
-ARG REPORTING_VERSION=0.5.2
+ARG SPATIAL_VERSION=1.0.4
+ARG REPORTING_VERSION=1.0.3
 ARG ACTIVITY_VERSION=0.5.2
 ARG MDR_VERSION=0.5.1
 ARG USM_VERSION=2.0.0
@@ -81,22 +81,24 @@ RUN unzip -q /liquibase/rules/rules-dbaccess-$RULES_VERSION -d /liquibase/rules
 RUN cp -r /liquibase/rules/UVMS-RulesModule-DB-rules-dbaccess-$RULES_VERSION/* /liquibase/rules/
 
 # Spatial - Remeber to update this when spatial starts releasing on Github
-##ADD $GITHUB/UVMS-SpatialModule-DB/archive/UVMS-SpatialModule-DB-$SPATIAL_VERSION.zip /liquibase/spatial
-##RUN unzip -q /liquibase/spatial/spatial-dbaccess-$SPATIAL_VERSION -d /liquibase/spatial
-##RUN cp -r /liquibase/spatial/UVMS-SpatialModule-DB-spatial-dbaccess-$SPATIAL_VERSION/* /liquibase/spatial/
-#No release tags for spatial, commit using 0.5.2 commit
-#ADD $GITHUB/UVMS-SpatialModule-DB/archive/418c616e9daf5c1274097fb32216b18b7f3a019e.zip /liquibase/spatial
-#RUN unzip -q /liquibase/spatial/418c616e9daf5c1274097fb32216b18b7f3a019e.zip -d /liquibase/spatial
-#RUN cp -r /liquibase/spatial/UVMS-SpatialModule-DB-418c616e9daf5c1274097fb32216b18b7f3a019e/* /liquibase/spatial/
-# Latest commit Dec 9 2016 
-ADD $GITHUB/UVMS-SpatialModule-DB/archive/f296d9afced50e6c3090bb727264572704942946.zip /liquibase/spatial
-RUN unzip -q /liquibase/spatial/f296d9afced50e6c3090bb727264572704942946.zip -d /liquibase/spatial
-RUN cp -r /liquibase/spatial/UVMS-SpatialModule-DB-f296d9afced50e6c3090bb727264572704942946/* /liquibase/spatial/
+ADD $GITHUB/UVMS-SpatialModule-DB/archive/UVMS-SpatialModule-DB-$SPATIAL_VERSION.zip /liquibase/spatial
+RUN unzip -q /liquibase/spatial/spatial-dbaccess-$SPATIAL_VERSION -d /liquibase/spatial
+RUN cp -r /liquibase/spatial/UVMS-SpatialModule-DB-spatial-dbaccess-$SPATIAL_VERSION/* /liquibase/spatial/
 
-# Reporting - Remeber to update this when reporting starts releasing on Github
+# Reporting
 ADD $GITHUB/UVMS-ReportingModule-DB/archive/reporting-db-$REPORTING_VERSION.zip /liquibase/reporting
 RUN unzip -q /liquibase/reporting/reporting-db-$REPORTING_VERSION -d /liquibase/reporting
 RUN cp -r /liquibase/reporting/UVMS-ReportingModule-DB-reporting-db-$REPORTING_VERSION/* /liquibase/reporting/
+
+# Activity
+ADD $GITHUB/UVMS-ActivityModule-DB/archive/activity-db-$ACTIVITY_VERSION.zip /liquibase/activity
+RUN unzip -q /liquibase/activity/activity-db-$ACTIVITY_VERSION -d /liquibase/activity
+RUN cp -r /liquibase/activity/UVMS-ActivityModule-DB-activity-db-$ACTIVITY_VERSION/* /liquibase/activity/
+
+# MDR
+ADD $GITHUB/UVMS-MDRCacheModule-DB/archive/mdr-db-$MDR_VERSION.zip /liquibase/mdr
+RUN unzip -q /liquibase/mdr/mdr-db-$MDR_VERSION -d /liquibase/mdr
+RUN cp -r /liquibase/mdr/UVMS-MDRCacheModule-DB-mdr-db-$MDR_VERSION/* /liquibase/mdr/
 
 # USM - Remeber to update this when usm starts releasing on Github
 ##ADD $GITHUB/USM/archive/$USM_VERSION.zip /liquibase/usm
