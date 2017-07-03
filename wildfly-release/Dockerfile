@@ -13,6 +13,8 @@ RUN mkdir -p /opt/jboss/jboss-deployment/movement
 RUN mkdir -p /opt/jboss/jboss-deployment/reporting
 RUN mkdir -p /opt/jboss/jboss-deployment/rules
 RUN mkdir -p /opt/jboss/jboss-deployment/spatial
+RUN mkdir -p /opt/jboss/jboss-deployment/activity
+RUN mkdir -p /opt/jboss/jboss-deployment/mdr
 RUN mkdir -p /opt/jboss/jboss-deployment/user
 RUN mkdir -p /opt/jboss/jboss-deployment/web-app
 RUN mkdir -p /opt/jboss/jboss-deployment/plugins
@@ -30,6 +32,8 @@ COPY jboss-deployment/movement/jboss-all.xml /opt/jboss/jboss-deployment/movemen
 COPY jboss-deployment/reporting/jboss-all.xml /opt/jboss/jboss-deployment/reporting/
 COPY jboss-deployment/rules/jboss-all.xml /opt/jboss/jboss-deployment/rules/
 COPY jboss-deployment/spatial/jboss-all.xml /opt/jboss/jboss-deployment/spatial/
+COPY jboss-deployment/activity/jboss-all.xml /opt/jboss/jboss-deployment/activity/
+COPY jboss-deployment/mdr/jboss-all.xml /opt/jboss/jboss-deployment/mdr/
 COPY jboss-deployment/user/jboss-all.xml /opt/jboss/jboss-deployment/user/
 COPY jboss-deployment/plugins/jboss-all.xml /opt/jboss/jboss-deployment/plugins/
 COPY jboss-deployment/web-app/jboss-deployment-structure.xml /opt/jboss/jboss-deployment/web-app/

@@ -2,12 +2,12 @@
 	<jboss-deployment-dependencies xmlns="urn:jboss:deployment-dependencies:1.0">
 		<dependency name="user-module-1.6.1.ear" />
 		<dependency name="config-module-3.0.5.ear" />
-		<dependency name="spatial-module-postgres-0.5.6.presweden2.ear" />
+		<dependency name="spatial-module-0.5.7.ear" />
 		<dependency name="movement-module-3.0.8.ear" />
 		<dependency name="asset-module-3.0.5.ear" />
 		<dependency name="audit-module-3.0.5.ear" />
-		<dependency name="exchange-module-3.0.5.ear" />
+		<dependency name="exchange-module-3.0.6.ear" />
 		<dependency name="mobileterminal-module-3.0.8.ear" />
-		<dependency name="rules-dbaccess-module-3.0.3.ear" />
+		<dependency name="rules-dbaccess-module-3.0.4.ear" />
 	</jboss-deployment-dependencies>
 </jboss>

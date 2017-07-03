@@ -23,18 +23,22 @@ RUN mkdir -p /liquibase/config \
     && mkdir -p /liquibase/rules \
     && mkdir -p /liquibase/spatial \
     && mkdir -p /liquibase/reporting \
+    && mkdir -p /liquibase/activity \
+    && mkdir -p /liquibase/mdr \
     && mkdir -p /liquibase/usm
 RUN chown -R postgres:postgres /liquibase
 
 ARG ASSET_VERSION=3.0.4
 ARG CONFIG_VERSION=3.0.4
 ARG AUDIT_VERSION=3.0.4
-ARG EXCHANGE_VERSION=3.0.4
+ARG EXCHANGE_VERSION=3.0.5
 ARG MOVEMENT_VERSION=3.0.7
 ARG MOBILE_TERMINAL_VERSION=3.0.4
-ARG RULES_VERSION=3.0.3
+ARG RULES_VERSION=3.0.4
 ARG SPATIAL_VERSION=0.5.2
 ARG REPORTING_VERSION=0.5.2
+ARG ACTIVITY_VERSION=0.5.2
+ARG MDR_VERSION=0.5.1
 ARG USM_VERSION=2.0.0
 
 
