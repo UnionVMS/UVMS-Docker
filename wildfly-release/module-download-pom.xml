@@ -146,23 +146,23 @@
             <version>${unionvms.project.spatial.module}</version>
         </dependency>
         <dependency>
-            <groupId>eu.europa.ec.fisheries.uvms.reporting</groupId>
-            <artifactId>reporting-module</artifactId>
-            <type>ear</type>
-            <version>${unionvms.project.reporting.module}</version>
-        </dependency>
-        <dependency>
-            <groupId>eu.europa.ec.fisheries.uvms.activity</groupId>
-            <artifactId>activity-module</artifactId>
-            <type>ear</type>
-            <version>${unionvms.project.activity.module}</version>
-        </dependency>
-        <dependency>
-            <groupId>eu.europa.ec.fisheries.uvms.mdr</groupId>
-            <artifactId>mdr-module</artifactId>
-            <type>ear</type>
-            <version>${unionvms.project.mdr.module}</version>
-        </dependency>
+             <groupId>eu.europa.ec.fisheries.uvms.reporting</groupId>
+             <artifactId>reporting-module</artifactId>
+             <type>ear</type>
+             <version>${unionvms.project.reporting.module}</version>
+         </dependency>
+         <dependency>
+             <groupId>eu.europa.ec.fisheries.uvms.activity</groupId>
+             <artifactId>activity-module-postgres</artifactId>
+             <type>ear</type>
+             <version>${unionvms.project.activity.module}</version>
+         </dependency>
+         <dependency>
+             <groupId>eu.europa.ec.fisheries.uvms.mdr</groupId>
+             <artifactId>mdr-module</artifactId>
+             <type>ear</type>
+             <version>${unionvms.project.mdr.module}</version>
+         </dependency>
         <dependency>
             <groupId>eu.europa.ec.fisheries.uvms.user</groupId>
             <artifactId>user-module</artifactId>
@@ -200,7 +200,7 @@
             <artifactId>rules-dbaccess-module</artifactId>
             <type>ear</type>
             <version>${unionvms.project.rules.dbaccess.module}</version>
-        </dependency>        
+        </dependency>
         
         <!-- plugin modules -->
         <dependency>
@@ -238,18 +238,6 @@
             <artifactId>uploader-module</artifactId>
             <type>ear</type>
             <version>${unionvms.project.plugins.uploader}</version>
-        </dependency>
-        <dependency>
-            <groupId>eu.europa.ec.fisheries.uvms.plugins</groupId>
-            <artifactId>fluxActivity-module</artifactId>
-            <type>ear</type>
-            <version>${unionvms.project.plugins.fluxactivity}</version>
-        </dependency>
-        <dependency>
-            <groupId>eu.europa.ec.fisheries.uvms.plugins</groupId>
-            <artifactId>mdr-plugin-module</artifactId>
-            <type>ear</type>
-            <version>${unionvms.project.plugins.mdr}</version>
         </dependency>
         
     </dependencies>

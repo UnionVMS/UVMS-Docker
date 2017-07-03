@@ -80,10 +80,10 @@ ADD $GITHUB/UVMS-RulesModule-DB/archive/rules-dbaccess-$RULES_VERSION.zip /liqui
 RUN unzip -q /liquibase/rules/rules-dbaccess-$RULES_VERSION -d /liquibase/rules
 RUN cp -r /liquibase/rules/UVMS-RulesModule-DB-rules-dbaccess-$RULES_VERSION/* /liquibase/rules/
 
-# Spatial - Remeber to update this when spatial starts releasing on Github
-ADD $GITHUB/UVMS-SpatialModule-DB/archive/UVMS-SpatialModule-DB-$SPATIAL_VERSION.zip /liquibase/spatial
-RUN unzip -q /liquibase/spatial/spatial-dbaccess-$SPATIAL_VERSION -d /liquibase/spatial
-RUN cp -r /liquibase/spatial/UVMS-SpatialModule-DB-spatial-dbaccess-$SPATIAL_VERSION/* /liquibase/spatial/
+# Spatial
+ADD $GITHUB/UVMS-SpatialModule-DB/archive/spatial-db-$SPATIAL_VERSION.zip /liquibase/spatial
+RUN unzip -q /liquibase/spatial/spatial-db-$SPATIAL_VERSION -d /liquibase/spatial
+RUN cp -r /liquibase/spatial/UVMS-SpatialModule-DB-spatial-db-$SPATIAL_VERSION/* /liquibase/spatial/
 
 # Reporting
 ADD $GITHUB/UVMS-ReportingModule-DB/archive/reporting-db-$REPORTING_VERSION.zip /liquibase/reporting

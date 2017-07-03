@@ -274,7 +274,7 @@
 									<port>18161:8161</port>
 									<port>61616:61616</port>
 								</ports>
-								<wait>
+								<!--<wait>
 									<log>database system is ready to accept connections</log>
 									<tcp>
 										<host>127.0.0.1</host>
@@ -285,7 +285,7 @@
 									<kill>15000</kill>
 									<shutdown>15000</shutdown>
 									<time>15000</time>
-								</wait>
+								</wait>-->
 								<log>
 									<enabled>true</enabled>
 									<color>red</color>
@@ -336,7 +336,7 @@
 									<port>28787:8787</port>
 									<port>28080:8080</port>
 								</ports>
-								<wait>
+								<!--<wait>
 									<http>
 										<url>http://localhost:28080/geoserver/index.html</url>
 										<method>GET</method>
@@ -345,7 +345,7 @@
 									<time>300000</time>
 									<kill>15000</kill>
 									<shutdown>15000</shutdown>
-								</wait>
+								</wait>-->
 								<cmd>
 									<shell>/opt/jboss/start.sh /opt/jboss/wildfly/bin/standalone.sh
 										-c standalone-uvms.xml -b 0.0.0.0 -bmanagement 0.0.0.0</shell>
