@@ -6,8 +6,6 @@
 		<dependency name="movement-module-3.0.8.ear" />
 		<dependency name="asset-module-3.0.5.ear" />
 		<dependency name="audit-module-3.0.5.ear" />
-		<dependency name="exchange-module-3.0.6.ear" />
-		<dependency name="mobileterminal-module-3.0.8.ear" />
-		<dependency name="rules-module-3.0.2.ear" />
+
 	</jboss-deployment-dependencies>
 </jboss>

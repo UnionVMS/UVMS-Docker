@@ -277,7 +277,7 @@
 								<!--<wait>
 									<log>database system is ready to accept connections</log>
 									<tcp>
-										<host>127.0.0.1</host>
+										<host>${hostname}</host>
 										<ports>
 											<port>8161</port>
 										</ports>
@@ -338,7 +338,7 @@
 								</ports>
 								<!--<wait>
 									<http>
-										<url>http://localhost:28080/geoserver/index.html</url>
+										<url>http://${hostname}:28080/geoserver/index.html</url>
 										<method>GET</method>
 										<status>200</status>
 									</http>
@@ -447,6 +447,13 @@
 			<properties>
 				<dockler.volume.app.logs>/app/logs/</dockler.volume.app.logs>
 				<dockler.volume.server.logs>/opt/jboss/wildfly/standalone/log</dockler.volume.server.logs>				
+			</properties>
+		</profile>
+		<profile>
+			<id>w7</id>
+			<properties>
+				<dockler.volume.app.logs>/uvms/logs/app</dockler.volume.app.logs>
+				<dockler.volume.server.logs>/uvms/log/wildfly</dockler.volume.server.logs>
 			</properties>
 		</profile>
 	</profiles>
