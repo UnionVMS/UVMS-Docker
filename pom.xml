@@ -19,7 +19,6 @@
 		<project.scm.id>github</project.scm.id>
 	    <scm.connection>scm:git:https://github.com/UnionVMS/UVMS-Docker.git</scm.connection>
 	    <scm.url>scm:git:https://github.com/UnionVMS/UVMS-Docker.git</scm.url>
-		<hostname>127.0.0.1</hostname>
 	</properties>
 
     <scm>

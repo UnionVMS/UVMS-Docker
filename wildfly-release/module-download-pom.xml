@@ -233,12 +233,6 @@
             <type>ear</type>
             <version>${unionvms.project.plugins.siriusone}</version>
         </dependency>
-        <dependency>
-            <groupId>eu.europa.ec.fisheries.uvms.plugins</groupId>
-            <artifactId>uploader-module</artifactId>
-            <type>ear</type>
-            <version>${unionvms.project.plugins.uploader}</version>
-        </dependency>
         
     </dependencies>
 

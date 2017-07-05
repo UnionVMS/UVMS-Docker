@@ -15,6 +15,11 @@
 	<artifactId>uvms-release-test</artifactId>
 	<packaging>jar</packaging>
 	<name>uvms-release-test</name>
+
+	<properties>
+		<hostname>127.0.0.1</hostname>
+	</properties>
+
 	<dependencies>
 		<dependency>
 			<groupId>org.postgresql</groupId>
@@ -274,7 +279,7 @@
 									<port>18161:8161</port>
 									<port>61616:61616</port>
 								</ports>
-								<!--<wait>
+								<wait>
 									<log>database system is ready to accept connections</log>
 									<tcp>
 										<host>${hostname}</host>
@@ -285,7 +290,7 @@
 									<kill>15000</kill>
 									<shutdown>15000</shutdown>
 									<time>15000</time>
-								</wait>-->
+								</wait>
 								<log>
 									<enabled>true</enabled>
 									<color>red</color>
@@ -336,7 +341,7 @@
 									<port>28787:8787</port>
 									<port>28080:8080</port>
 								</ports>
-								<!--<wait>
+								<wait>
 									<http>
 										<url>http://${hostname}:28080/geoserver/index.html</url>
 										<method>GET</method>
@@ -345,7 +350,7 @@
 									<time>300000</time>
 									<kill>15000</kill>
 									<shutdown>15000</shutdown>
-								</wait>-->
+								</wait>
 								<cmd>
 									<shell>/opt/jboss/start.sh /opt/jboss/wildfly/bin/standalone.sh
 										-c standalone-uvms.xml -b 0.0.0.0 -bmanagement 0.0.0.0</shell>
@@ -447,13 +452,6 @@
 			<properties>
 				<dockler.volume.app.logs>/app/logs/</dockler.volume.app.logs>
 				<dockler.volume.server.logs>/opt/jboss/wildfly/standalone/log</dockler.volume.server.logs>				
-			</properties>
-		</profile>
-		<profile>
-			<id>w7</id>
-			<properties>
-				<dockler.volume.app.logs>/uvms/logs/app</dockler.volume.app.logs>
-				<dockler.volume.server.logs>/uvms/log/wildfly</dockler.volume.server.logs>
 			</properties>
 		</profile>
 	</profiles>
