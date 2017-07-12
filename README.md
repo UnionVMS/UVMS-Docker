@@ -80,7 +80,7 @@ OR
         This will download the released version of the images and create containers out of it.
 
        * Option 2 (Building locally):
-         1. Go to docker-images dorectory.
+         1. Go to docker-images directory.
          2. Execute : mvn clean install 
             `Add -Dfocus-pom.enforce.jdk.version.disabled=true property if using JDK > 7`
             `Add -Pw7 -Dvmhost={dockermachine IP} -Dvmport={dockermachine tcp port} -Dcertpath={docker machine certificate path} 
@@ -90,7 +90,7 @@ OR
             
          3. Once the build is over, go to relese-test and execute:
             mvn docker:start -Dhostname={dockermachine IP}
-            `Skip -Dhostname={dockermachine IP} for lunux VM`
+            `Skip -Dhostname={dockermachine IP} for linux VM`
             `Add -Dfocus-pom.enforce.jdk.version.disabled=true property if using JDK > 7`
             
          4. Go to kitematic to see the containers and wait until wildfly boot is finished.   
