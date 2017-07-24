@@ -81,12 +81,16 @@ OR
 
        * Option 2 (Building locally):
          1. Go to docker-images directory.
-         2. Execute : mvn clean install 
+         2. Execute : mvn clean install
+            `Add -PskipDependency to avoid JBOSS deployment dependency`
             `Add -Dfocus-pom.enforce.jdk.version.disabled=true property if using JDK > 7`
             `Add -Pw7 -Dvmhost={dockermachine IP} -Dvmport={dockermachine tcp port} -Dcertpath={docker machine certificate path} 
-            if maven build fails to find the host and certificate automatically. Not required for Linux VM`
+            if maven build fails to find the host and certificate automatically.
+            Not required for Linux VM`
             
-            Note : To fine certificate path, host and port use :docker-machine env default
+            Note : To fine certificate path, host and port use :docker-machine env default.
+            By default vmhostname is 192.168.99.100 and vmport is 2376.
+            If it is same for your docker than skip -Dvmhost={dockermachine IP} -Dvmport={dockermachine tcp port}
             
          3. Once the build is over, go to relese-test and execute:
             mvn docker:start -Dhostname={dockermachine IP}

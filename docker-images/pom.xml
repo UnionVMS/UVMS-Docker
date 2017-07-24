@@ -16,6 +16,10 @@
     <packaging>pom</packaging>
     <name>uvms-docker-images</name>
 
+    <properties>
+        <docker.buildArg.checkDependency>true</docker.buildArg.checkDependency>
+    </properties>
+
     <build>
         <pluginManagement>
             <plugins>
@@ -93,8 +97,20 @@
     </build>
 
     <profiles>
+
+        <profile>
+            <id>skipDependency</id>
+            <properties>
+                <docker.buildArg.checkDependency>false</docker.buildArg.checkDependency>
+            </properties>
+        </profile>
+
         <profile>
             <id>w7</id>
+            <properties>
+                <vmhost>192.168.99.100</vmhost>
+                <vmport>2376</vmport>
+            </properties>
             <build>
                 <plugins>
                     <plugin>

@@ -1,5 +1,10 @@
 FROM uvms/wildfly-base:3.4.0-SNAPSHOT
 
+ARG checkDependency=true
+ENV DEPENDENCY_CHECK $checkDependency
+
+RUN echo "Dependency check value is : $DEPENDENCY_CHECK"
+
 COPY module-download-pom.xml /opt/jboss/
 RUN mkdir -p /opt/jboss/jboss-deployment
 RUN mkdir -p /opt/jboss/jboss-deployment/asset
@@ -48,7 +53,7 @@ RUN ls -l $DEPLOYMENTS
 RUN chmod 777 /opt/jboss/wildfly/standalone/deployments/*.ear
 RUN chmod 777 /opt/jboss/wildfly/standalone/deployments/
 RUN chmod a+x /opt/jboss/jboss-deployment/add-jboss-all-to-ear.sh
-RUN /opt/jboss/jboss-deployment/add-jboss-all-to-ear.sh
+RUN if $DEPENDENCY_CHECK -eq "true"; then /opt/jboss/jboss-deployment/add-jboss-all-to-ear.sh; fi
 RUN chmod 755 /opt/jboss/wildfly/standalone/deployments/*.ear
 RUN chown -R jboss:jboss /opt/jboss/wildfly/standalone/deployments/
 USER jboss
