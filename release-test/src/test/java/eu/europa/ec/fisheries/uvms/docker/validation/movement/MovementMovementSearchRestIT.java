@@ -32,7 +32,7 @@ import eu.europa.ec.fisheries.uvms.docker.validation.common.AbstractRestServiceT
 /**
  * The Class MovementPerformanceIT.
  */
-@PerfTest(threads = 4, duration = 6000, warmUp = 1000)
+@PerfTest(threads = 4, duration = 3000, warmUp = 1000)
 @Required(max = 5000, average = 3000, percentile95 = 3500, throughput = 2)
 public class MovementMovementSearchRestIT extends AbstractRestServiceTest {
 

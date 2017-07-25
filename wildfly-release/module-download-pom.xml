@@ -154,6 +154,12 @@
 
         <!-- db modules -->
         <dependency>
+            <groupId>eu.europa.ec.fisheries.uvms.asset</groupId>
+            <artifactId>asset-dbaccess-module</artifactId>
+            <type>ear</type>
+            <version>${unionvms.project.asset.dbaccess.module}</version>
+        </dependency>
+        <dependency>
             <groupId>eu.europa.ec.fisheries.uvms.audit</groupId>
             <artifactId>audit-dbaccess-module</artifactId>
             <type>ear</type>
