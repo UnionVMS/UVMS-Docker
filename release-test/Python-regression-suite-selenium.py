@@ -126,7 +126,7 @@ def populateSanityRuleData():
 
 def startup_browser_and_login_to_unionVMS(cls,userId,password,userContext):
     cls.driver = webdriver.Chrome()    
-    cls.driver.maximize_window()
+    # cls.driver.maximize_window()
     cls.driver.get(httpUnionVMSurlString)
     
     # if Hav och vatten proxy page is presented, then autologin
