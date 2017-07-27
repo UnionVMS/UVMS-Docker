@@ -132,6 +132,7 @@ public class PollRestIT extends AbstractRestServiceTest {
 	 * @throws Exception the exception
 	 */
 	@Test
+	@Ignore
 	public void getPollBySearchCriteriaTest() throws Exception {
 		final HttpResponse response = Request.Post(BASE_URL + "mobileterminal/rest/poll/list")
 				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken())

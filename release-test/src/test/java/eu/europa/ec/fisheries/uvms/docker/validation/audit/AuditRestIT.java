@@ -23,6 +23,7 @@ import org.databene.contiperf.PerfTest;
 import org.databene.contiperf.Required;
 import org.databene.contiperf.junit.ContiPerfRule;
 import org.junit.Rule;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import eu.europa.ec.fisheries.schema.audit.search.v1.AuditLogListQuery;
@@ -47,6 +48,7 @@ public class AuditRestIT extends AbstractRestServiceTest {
 	 * @throws Exception the exception
 	 */
 	@Test
+	@Ignore
 	public void getListByQueryTest() throws Exception {
 		AuditLogListQuery auditLogListQuery = new AuditLogListQuery();
 		ListPagination listPagination = new ListPagination();
