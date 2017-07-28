@@ -3,6 +3,6 @@
 		<dependency name="user-module-1.6.1.ear" />
 		<dependency name="config-module-3.0.5.ear" />
 		<dependency name="audit-module-3.0.5.ear" />								
-		<dependency name="exchange-dbaccess-module-3.0.5.ear" />
+		<dependency name="exchange-dbaccess-module-3.0.4.ear" />
 	</jboss-deployment-dependencies>
 </jboss>
