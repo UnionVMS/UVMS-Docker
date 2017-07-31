@@ -8,7 +8,7 @@
 			<module name="deployment.movement-module-3.0.9-SNAPSHOT.ear" />
 			<module name="deployment.asset-module-3.0.9-SNAPSHOT.ear" />
 			<module name="deployment.audit-module-3.0.5.ear" />
-			<module name="deployment.exchange-module-3.0.6.ear" />
+			<module name="deployment.exchange-module-3.0.7-SNAPSHOT.ear" />
 			<module name="deployment.mobileterminal-module-3.0.9-SNAPSHOT.ear" />
 			<module name="deployment.rules-module-3.0.1.ear" />
 			<module name="deployment.reporting-module-0.5.7.presweden1.ear" />
