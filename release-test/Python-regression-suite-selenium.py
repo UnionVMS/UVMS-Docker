@@ -935,6 +935,15 @@ class UnionVMSTestCase(unittest.TestCase):
         WebDriverWait(self.driver, browserTimeout).until(EC.element_to_be_clickable((By.ID,"uvms-header-menu-item-audit-log"))).click()
         time.sleep(browserWaitAfterClick)
 
+        # Check sub tab names
+        self.assertEqual("ALL", WebDriverWait(self.driver, browserTimeout).until(EC.presence_of_element_located((By.CSS_SELECTOR ,"#ALL > span"))).text)
+        self.assertEqual("EXCHANGE", WebDriverWait(self.driver, browserTimeout).until(EC.presence_of_element_located((By.CSS_SELECTOR ,"#EXCHANGE > span"))).text)
+        self.assertEqual("POSITION REPORTS", WebDriverWait(self.driver, browserTimeout).until(EC.presence_of_element_located((By.CSS_SELECTOR ,"#POSITION_REPORTS > span"))).text)
+        self.assertEqual("ASSETS AND TERMINALS", WebDriverWait(self.driver, browserTimeout).until(EC.presence_of_element_located((By.CSS_SELECTOR ,"#ASSETS_AND_TERMINALS > span"))).text)
+        self.assertEqual("GIS", WebDriverWait(self.driver, browserTimeout).until(EC.presence_of_element_located((By.CSS_SELECTOR ,"#GIS > span"))).text)
+        self.assertEqual("ALERTS", WebDriverWait(self.driver, browserTimeout).until(EC.presence_of_element_located((By.CSS_SELECTOR ,"#ALARMS > span"))).text)
+        self.assertEqual("ACCESS CONTROL", WebDriverWait(self.driver, browserTimeout).until(EC.presence_of_element_located((By.CSS_SELECTOR ,"#ACCESS_CONTROL > span"))).text)
+
         # Click on all sub tabs under Audit Log Tab
         WebDriverWait(self.driver, browserTimeout).until(EC.element_to_be_clickable((By.CSS_SELECTOR ,"#EXCHANGE > span"))).click()
 
@@ -950,14 +959,6 @@ class UnionVMSTestCase(unittest.TestCase):
 
         WebDriverWait(self.driver, browserTimeout).until(EC.element_to_be_clickable((By.CSS_SELECTOR ,"#ALL > span"))).click()
 
-        # Check sub tab names
-        self.assertEqual("ALL", WebDriverWait(self.driver, browserTimeout).until(EC.presence_of_element_located((By.CSS_SELECTOR ,"#ALL > span"))).text)
-        self.assertEqual("EXCHANGE", WebDriverWait(self.driver, browserTimeout).until(EC.presence_of_element_located((By.CSS_SELECTOR ,"#EXCHANGE > span"))).text)
-        self.assertEqual("POSITION REPORTS", WebDriverWait(self.driver, browserTimeout).until(EC.presence_of_element_located((By.CSS_SELECTOR ,"#POSITION_REPORTS > span"))).text)
-        self.assertEqual("ASSETS AND TERMINALS", WebDriverWait(self.driver, browserTimeout).until(EC.presence_of_element_located((By.CSS_SELECTOR ,"#ASSETS_AND_TERMINALS > span"))).text)
-        self.assertEqual("GIS", WebDriverWait(self.driver, browserTimeout).until(EC.presence_of_element_located((By.CSS_SELECTOR ,"#GIS > span"))).text)
-        self.assertEqual("ALERTS", WebDriverWait(self.driver, browserTimeout).until(EC.presence_of_element_located((By.CSS_SELECTOR ,"#ALARMS > span"))).text)
-        self.assertEqual("ACCESS CONTROL", WebDriverWait(self.driver, browserTimeout).until(EC.presence_of_element_located((By.CSS_SELECTOR ,"#ACCESS_CONTROL > span"))).text)
         # Shutdown browser
         shutdown_browser(self)
 
@@ -973,7 +974,17 @@ class UnionVMSTestCase(unittest.TestCase):
 
         WebDriverWait(self.driver, browserTimeout).until(EC.element_to_be_clickable((By.LINK_TEXT,"CONFIGURATION"))).click()
 
+        # Check sub tab names
+        self.assertEqual("SYSTEM MONITOR", WebDriverWait(self.driver, browserTimeout).until(EC.presence_of_element_located((By.CSS_SELECTOR ,"#systemMonitor > span"))).text)
+        self.assertEqual("GLOBAL SETTINGS", WebDriverWait(self.driver, browserTimeout).until(EC.presence_of_element_located((By.CSS_SELECTOR ,"#globalSettings > span"))).text)
+        self.assertEqual("REPORTING", WebDriverWait(self.driver, browserTimeout).until(EC.presence_of_element_located((By.CSS_SELECTOR ,"#reporting > span"))).text)
+        self.assertEqual("ASSETS", WebDriverWait(self.driver, browserTimeout).until(EC.presence_of_element_located((By.CSS_SELECTOR ,"#asset > span"))).text)
+        self.assertEqual("MOBILE TERMINALS", WebDriverWait(self.driver, browserTimeout).until(EC.presence_of_element_located((By.CSS_SELECTOR ,"#mobileTerminal > span"))).text)
+        self.assertEqual("EXCHANGE", WebDriverWait(self.driver, browserTimeout).until(EC.presence_of_element_located((By.CSS_SELECTOR ,"#exchange > span"))).text)
+
         # Click on all sub tabs under Configuration Tab
+        WebDriverWait(self.driver, browserTimeout).until(EC.element_to_be_clickable((By.CSS_SELECTOR ,"#systemMonitor > span"))).click()
+
         WebDriverWait(self.driver, browserTimeout).until(EC.element_to_be_clickable((By.CSS_SELECTOR ,"#globalSettings > span"))).click()
 
         WebDriverWait(self.driver, browserTimeout).until(EC.element_to_be_clickable((By.CSS_SELECTOR ,"#reporting > span"))).click()
@@ -984,15 +995,6 @@ class UnionVMSTestCase(unittest.TestCase):
 
         WebDriverWait(self.driver, browserTimeout).until(EC.element_to_be_clickable((By.CSS_SELECTOR ,"#exchange > span"))).click()
 
-        WebDriverWait(self.driver, browserTimeout).until(EC.element_to_be_clickable((By.CSS_SELECTOR ,"#systemMonitor > span"))).click()
-
-        # Check sub tab names
-        self.assertEqual("SYSTEM MONITOR", WebDriverWait(self.driver, browserTimeout).until(EC.presence_of_element_located((By.CSS_SELECTOR ,"#systemMonitor > span"))).text)
-        self.assertEqual("GLOBAL SETTINGS", WebDriverWait(self.driver, browserTimeout).until(EC.presence_of_element_located((By.CSS_SELECTOR ,"#globalSettings > span"))).text)
-        self.assertEqual("REPORTING", WebDriverWait(self.driver, browserTimeout).until(EC.presence_of_element_located((By.CSS_SELECTOR ,"#reporting > span"))).text)
-        self.assertEqual("ASSETS", WebDriverWait(self.driver, browserTimeout).until(EC.presence_of_element_located((By.CSS_SELECTOR ,"#asset > span"))).text)
-        self.assertEqual("EXCHANGE", WebDriverWait(self.driver, browserTimeout).until(EC.presence_of_element_located((By.CSS_SELECTOR ,"#exchange > span"))).text)
-        self.assertEqual("MOBILE TERMINALS", WebDriverWait(self.driver, browserTimeout).until(EC.presence_of_element_located((By.CSS_SELECTOR ,"#mobileTerminal > span"))).text)
         # Shutdown browser
         shutdown_browser(self)
 
