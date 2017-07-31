@@ -26,18 +26,17 @@
         <unionvms.project.user.module>1.6.1</unionvms.project.user.module>
         <unionvms.project.rules.module>3.0.1</unionvms.project.rules.module>
         <unionvms.project.rules.dbaccess.module>3.0.3</unionvms.project.rules.dbaccess.module>
-        <unionvms.project.movement.module>3.0.8</unionvms.project.movement.module>
-        <unionvms.project.mobileterminal.module>3.0.8</unionvms.project.mobileterminal.module>
-        <unionvms.project.exchange.module>3.0.5</unionvms.project.exchange.module>
-        <unionvms.project.exchange.dbaccess.module>3.0.4</unionvms.project.exchange.dbaccess.module>
+        <unionvms.project.movement.module>3.0.9-SNAPSHOT</unionvms.project.movement.module>
+        <unionvms.project.mobileterminal.module>3.0.9-SNAPSHOT</unionvms.project.mobileterminal.module>
+        <unionvms.project.exchange.module>3.0.6</unionvms.project.exchange.module>
+        <unionvms.project.exchange.dbaccess.module>3.0.5</unionvms.project.exchange.dbaccess.module>
         <unionvms.project.reporting.module>0.5.7.presweden1</unionvms.project.reporting.module>
         <unionvms.project.spatial.module>0.5.6.presweden2</unionvms.project.spatial.module>
         <unionvms.project.config.module>3.0.5</unionvms.project.config.module>
         <unionvms.project.config.dbaccess.module>3.0.4</unionvms.project.config.dbaccess.module>
         <unionvms.project.audit.module>3.0.5</unionvms.project.audit.module>
         <unionvms.project.audit.dbaccess.module>3.0.4</unionvms.project.audit.dbaccess.module>
-        <unionvms.project.asset.module>3.0.5</unionvms.project.asset.module>
-        <unionvms.project.asset.dbaccess.module>3.0.4</unionvms.project.asset.dbaccess.module>
+        <unionvms.project.asset.module>3.0.9-SNAPSHOT</unionvms.project.asset.module>
         <unionvms.project.plugins.naf>3.0.0</unionvms.project.plugins.naf>
         <unionvms.project.plugins.sweagencyemail>3.0.0</unionvms.project.plugins.sweagencyemail>
         <unionvms.project.plugins.flux>2.1.2</unionvms.project.plugins.flux>
@@ -154,12 +153,6 @@
         </dependency>
 
         <!-- db modules -->
-        <dependency>
-            <groupId>eu.europa.ec.fisheries.uvms.asset</groupId>
-            <artifactId>asset-dbaccess-module</artifactId>
-            <type>ear</type>
-            <version>${unionvms.project.asset.dbaccess.module}</version>
-        </dependency>
         <dependency>
             <groupId>eu.europa.ec.fisheries.uvms.audit</groupId>
             <artifactId>audit-dbaccess-module</artifactId>
