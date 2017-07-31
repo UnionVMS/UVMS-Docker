@@ -5,6 +5,6 @@ hostdbServerName = "localhost"
 httpNAFRequestString = "http://" + appServerName + ":28080/naf/rest/message/"
 httpUnionVMSurlString = "http://" + appServerName + ":28080/unionvms/"
 connectToDatabaseString = "dbname='"+ dbServerName + "' user='postgres' host='" + hostdbServerName + "' password='postgres'" + " port='25432'"
-browserTimeout = 30
-browserWaitAfterClick = 8
-browserLongWaitAfterClick = 60
+browserTimeout = 20
+browserWaitAfterClick = 6
+browserLongWaitAfterClick = 18
