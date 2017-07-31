@@ -166,7 +166,6 @@
 			</plugin>
 			<plugin>
 				<artifactId>maven-resources-plugin</artifactId>
-				<version>3.0.2</version>
 				<executions>
 					<execution>
 						<id>copy-resources</id>
@@ -220,7 +219,7 @@
 									src="http://localhost:28080/asset/monitoring?format=pdf"
 									dest="target/asset_monitoring.pdf" verbose="true"
 									usetimestamp="true" />-->
-									
+
 							</tasks>
 						</configuration>
 						<goals>
@@ -422,7 +421,7 @@
 			</activation>
 			<properties>
 				<dockler.volume.app.logs>c:\app\logs</dockler.volume.app.logs>
-				<dockler.volume.server.logs>c:\opt\jboss\wildfly\standalone\log</dockler.volume.server.logs>				
+				<dockler.volume.server.logs>c:\opt\jboss\wildfly\standalone\log</dockler.volume.server.logs>
 			</properties>
 		</profile>
 		<profile>
@@ -434,7 +433,7 @@
 			</activation>
 			<properties>
 				<dockler.volume.app.logs>/app/logs/</dockler.volume.app.logs>
-				<dockler.volume.server.logs>/opt/jboss/wildfly/standalone/log</dockler.volume.server.logs>				
+				<dockler.volume.server.logs>/opt/jboss/wildfly/standalone/log</dockler.volume.server.logs>
 			</properties>
 		</profile>
 		<profile>
@@ -446,7 +445,7 @@
 			</activation>
 			<properties>
 				<dockler.volume.app.logs>/app/logs/</dockler.volume.app.logs>
-				<dockler.volume.server.logs>/opt/jboss/wildfly/standalone/log</dockler.volume.server.logs>				
+				<dockler.volume.server.logs>/opt/jboss/wildfly/standalone/log</dockler.volume.server.logs>
 			</properties>
 		</profile>
 	</profiles>

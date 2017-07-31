@@ -48,6 +48,7 @@ public class MobileTerminalRestIT extends AbstractRestServiceTest {
 	 * @throws Exception the exception
 	 */
 	@Test
+	@Ignore
 	public void createMobileTerminalTest() throws Exception {
 		final HttpResponse response = Request.Post(BASE_URL + "mobileterminal/rest/mobileterminal")
 				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken())
@@ -56,7 +57,7 @@ public class MobileTerminalRestIT extends AbstractRestServiceTest {
 		assertEquals(HttpStatus.SC_OK, response.getStatusLine().getStatusCode());
 		final Map<String, Object> data = getJsonMap(response);
 		assertFalse(data.isEmpty());
-		assertNotNull(data.get("data"));		
+		assertNotNull(data.get("data"));
 	}
 
 	/**
@@ -74,7 +75,7 @@ public class MobileTerminalRestIT extends AbstractRestServiceTest {
 		assertEquals(HttpStatus.SC_OK, response.getStatusLine().getStatusCode());
 		final Map<String, Object> data = getJsonMap(response);
 		assertFalse(data.isEmpty());
-		assertNotNull(data.get("data"));		
+		assertNotNull(data.get("data"));
 	}
 
 	/**
@@ -83,6 +84,7 @@ public class MobileTerminalRestIT extends AbstractRestServiceTest {
 	 * @throws Exception the exception
 	 */
 	@Test
+	@Ignore
 	public void updateMobileTerminalTest() throws Exception {
 		final HttpResponse response = Request.Put(BASE_URL + "mobileterminal/rest/mobileterminal?comment=comment")
 				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken())
@@ -91,7 +93,7 @@ public class MobileTerminalRestIT extends AbstractRestServiceTest {
 		assertEquals(HttpStatus.SC_OK, response.getStatusLine().getStatusCode());
 		final Map<String, Object> data = getJsonMap(response);
 		assertFalse(data.isEmpty());
-		assertNotNull(data.get("data"));		
+		assertNotNull(data.get("data"));
 	}
 
 	/**
@@ -109,7 +111,7 @@ public class MobileTerminalRestIT extends AbstractRestServiceTest {
 		assertEquals(HttpStatus.SC_OK, response.getStatusLine().getStatusCode());
 		final Map<String, Object> data = getJsonMap(response);
 		assertFalse(data.isEmpty());
-		assertNotNull(data.get("data"));		
+		assertNotNull(data.get("data"));
 	}
 
 	/**
@@ -118,6 +120,7 @@ public class MobileTerminalRestIT extends AbstractRestServiceTest {
 	 * @throws Exception the exception
 	 */
 	@Test
+	@Ignore
 	public void assignMobileTerminalTest() throws Exception {
 		final HttpResponse response = Request
 				.Post(BASE_URL + "mobileterminal/rest/mobileterminal/assign?comment=comment")
@@ -128,7 +131,7 @@ public class MobileTerminalRestIT extends AbstractRestServiceTest {
 		assertEquals(HttpStatus.SC_OK, response.getStatusLine().getStatusCode());
 		final Map<String, Object> data = getJsonMap(response);
 		assertFalse(data.isEmpty());
-		assertNotNull(data.get("data"));		
+		assertNotNull(data.get("data"));
 	}
 
 	/**
@@ -137,6 +140,7 @@ public class MobileTerminalRestIT extends AbstractRestServiceTest {
 	 * @throws Exception the exception
 	 */
 	@Test
+	@Ignore
 	public void unAssignMobileTerminalTest() throws Exception {
 		final HttpResponse response = Request
 				.Post(BASE_URL + "mobileterminal/rest/mobileterminal/unassign?comment=comment")
@@ -147,7 +151,7 @@ public class MobileTerminalRestIT extends AbstractRestServiceTest {
 		assertEquals(HttpStatus.SC_OK, response.getStatusLine().getStatusCode());
 		final Map<String, Object> data = getJsonMap(response);
 		assertFalse(data.isEmpty());
-		assertNotNull(data.get("data"));		
+		assertNotNull(data.get("data"));
 	}
 
 	/**
@@ -156,6 +160,7 @@ public class MobileTerminalRestIT extends AbstractRestServiceTest {
 	 * @throws Exception the exception
 	 */
 	@Test
+	@Ignore
 	public void setStatusActiveTest() throws Exception {
 		final HttpResponse response = Request
 				.Put(BASE_URL + "mobileterminal/rest/mobileterminal/status/activate?comment=comment")
@@ -165,7 +170,7 @@ public class MobileTerminalRestIT extends AbstractRestServiceTest {
 		assertEquals(HttpStatus.SC_OK, response.getStatusLine().getStatusCode());
 		final Map<String, Object> data = getJsonMap(response);
 		assertFalse(data.isEmpty());
-		assertNotNull(data.get("data"));		
+		assertNotNull(data.get("data"));
 	}
 
 	/**
@@ -174,6 +179,7 @@ public class MobileTerminalRestIT extends AbstractRestServiceTest {
 	 * @throws Exception the exception
 	 */
 	@Test
+	@Ignore
 	public void setStatusInactiveTest() throws Exception {
 		final HttpResponse response = Request
 				.Put(BASE_URL + "mobileterminal/rest/mobileterminal/status/inactivate?comment=comment")
@@ -183,7 +189,7 @@ public class MobileTerminalRestIT extends AbstractRestServiceTest {
 		assertEquals(HttpStatus.SC_OK, response.getStatusLine().getStatusCode());
 		final Map<String, Object> data = getJsonMap(response);
 		assertFalse(data.isEmpty());
-		assertNotNull(data.get("data"));		
+		assertNotNull(data.get("data"));
 	}
 
 	/**
@@ -192,6 +198,7 @@ public class MobileTerminalRestIT extends AbstractRestServiceTest {
 	 * @throws Exception the exception
 	 */
 	@Test
+	@Ignore
 	public void setStatusRemovedTest() throws Exception {
 		final HttpResponse response = Request
 				.Put(BASE_URL + "mobileterminal/rest/mobileterminal/status/remove?comment=comment")
@@ -201,7 +208,7 @@ public class MobileTerminalRestIT extends AbstractRestServiceTest {
 		assertEquals(HttpStatus.SC_OK, response.getStatusLine().getStatusCode());
 		final Map<String, Object> data = getJsonMap(response);
 		assertFalse(data.isEmpty());
-		assertNotNull(data.get("data"));		
+		assertNotNull(data.get("data"));
 	}
 
 	/**
@@ -219,7 +226,7 @@ public class MobileTerminalRestIT extends AbstractRestServiceTest {
 		assertEquals(HttpStatus.SC_OK, response.getStatusLine().getStatusCode());
 		final Map<String, Object> data = getJsonMap(response);
 		assertFalse(data.isEmpty());
-		assertNotNull(data.get("data"));		
+		assertNotNull(data.get("data"));
 	}
 
 }
