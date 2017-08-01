@@ -933,6 +933,9 @@ class UnionVMSTestCase(unittest.TestCase):
         startup_browser_and_login_to_unionVMS(self,"vms_admin_com","password","AdminAll")
         # Select Audit Log tab
         time.sleep(browserWaitAfterClick)
+                
+        WebDriverWait(self.driver, browserTimeout).until(EC.presence_of_element_located((By.ID,"uvms-header-menu-item-audit-log"))).click()
+        
         WebDriverWait(self.driver, browserTimeout).until(EC.element_to_be_clickable((By.ID,"uvms-header-menu-item-audit-log"))).click()
         time.sleep(browserWaitAfterClick)
 
@@ -971,6 +974,9 @@ class UnionVMSTestCase(unittest.TestCase):
         startup_browser_and_login_to_unionVMS(self,"vms_admin_com","password","AdminAll")
         # Select Admin tab
         time.sleep(browserWaitAfterClick)
+        
+        WebDriverWait(self.driver, browserTimeout).until(EC.presence_of_element_located((By.ID,"uvms-header-menu-item-audit-log"))).click()
+        
         WebDriverWait(self.driver, browserTimeout).until(EC.element_to_be_clickable((By.ID,"uvms-header-menu-item-audit-log"))).click()
         time.sleep(browserWaitAfterClick)
 
