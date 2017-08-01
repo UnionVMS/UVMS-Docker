@@ -13,6 +13,8 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.common.action_chains import ActionChains
+
 import subprocess
 import os
 import psycopg2
@@ -935,6 +937,9 @@ class UnionVMSTestCase(unittest.TestCase):
         time.sleep(browserWaitAfterClick)
                 
         WebDriverWait(self.driver, browserTimeout).until(EC.presence_of_element_located((By.ID,"uvms-header-menu-item-audit-log")))
+                
+        action=ActionChains(self.driver)
+        action.move_to_element(self.driver.find_element_by_id("uvms-header-menu-item-audit-log")).perform() 
         
         WebDriverWait(self.driver, browserTimeout).until(EC.element_to_be_clickable((By.ID,"uvms-header-menu-item-audit-log"))).click()
         time.sleep(browserWaitAfterClick)
@@ -976,6 +981,10 @@ class UnionVMSTestCase(unittest.TestCase):
         time.sleep(browserWaitAfterClick)
         
         WebDriverWait(self.driver, browserTimeout).until(EC.presence_of_element_located((By.ID,"uvms-header-menu-item-audit-log")))
+        
+        action=ActionChains(self.driver)
+        action.move_to_element(self.driver.find_element_by_id("uvms-header-menu-item-audit-log")).perform() 
+
         
         WebDriverWait(self.driver, browserTimeout).until(EC.element_to_be_clickable((By.ID,"uvms-header-menu-item-audit-log"))).click()
         time.sleep(browserWaitAfterClick)
