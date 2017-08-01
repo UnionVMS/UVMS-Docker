@@ -82,9 +82,9 @@ OR
        * Option 2 (Building locally):
          1. Go to docker-images directory.
          2. Execute : mvn clean install
-            `Add -PskipDependency to avoid JBOSS deployment dependency`
-            `Add -Dfocus-pom.enforce.jdk.version.disabled=true property if using JDK > 7`
-            `Add -Pw7 -Dvmhost={dockermachine IP} -Dvmport={dockermachine tcp port} -Dcertpath={docker machine certificate path} 
+            * `Add -PskipDependency to avoid JBOSS deployment dependency`
+            * `Add -Dfocus-pom.enforce.jdk.version.disabled=true property if using JDK > 7`
+            * `Add -Pw7 -Dvmhost={dockermachine IP} -Dvmport={dockermachine tcp port} -Dcertpath={docker machine certificate path} 
             if maven build fails to find the host and certificate automatically.
             Not required for Linux VM`
             

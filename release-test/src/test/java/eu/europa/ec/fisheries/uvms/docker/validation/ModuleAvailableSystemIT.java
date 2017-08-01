@@ -151,6 +151,31 @@ public class ModuleAvailableSystemIT extends Assert {
 		assertEquals(HttpStatus.SC_FORBIDDEN,Request.Get(BASE_URL + "reporting/").execute().returnResponse().getStatusLine().getStatusCode());
 	}
 
+	/**
+	 * Check Activity access test.
+	 *
+	 * @throws Exception the exception
+	 */
+	@Test
+	public void checkActivityAccessTest() throws Exception {
+		assertEquals(HttpStatus.SC_FORBIDDEN,Request.Get(BASE_URL + "activity/").execute().returnResponse().getStatusLine().getStatusCode());
+		assertEquals(HttpStatus.SC_FORBIDDEN,Request.Get(BASE_URL + "activity/rest").execute().returnResponse().getStatusLine().getStatusCode());
+	}
+
+
+	/**
+	 * Check Mdr access test.
+	 *
+	 * @throws Exception the exception
+	 */
+	@Test
+	public void checkMdrAccessTest() throws Exception {
+		assertEquals(HttpStatus.SC_FORBIDDEN,Request.Get(BASE_URL + "mdr/").execute().returnResponse().getStatusLine().getStatusCode());
+		assertEquals(HttpStatus.SC_FORBIDDEN,Request.Get(BASE_URL + "mdr/rest").execute().returnResponse().getStatusLine().getStatusCode());
+	}
+
+
+
 	@Test
 	public void checkMapfishPrintAccessTest() throws Exception {
 		assertEquals(HttpStatus.SC_FORBIDDEN,Request.Get(BASE_URL + "mapfish-print/").execute().returnResponse().getStatusLine().getStatusCode());

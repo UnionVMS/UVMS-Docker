@@ -48,8 +48,8 @@ addJbossAll sweagencyemail-module-3.0.0 /opt/jboss/jboss-deployment/plugins/jbos
 addJbossAll flux-module-2.1.2 /opt/jboss/jboss-deployment/plugins/jboss-all.xml
 addJbossAll twostage-module-3.0.0 /opt/jboss/jboss-deployment/plugins/jboss-all.xml
 addJbossAll siriusone-module-3.0.0 /opt/jboss/jboss-deployment/plugins/jboss-all.xml
-#addJbossAlltoWar gs-web-app-2.8.5.presweden1-postgres /opt/jboss/jboss-deployment/web-app/jboss-deployment-structure.xml
+addJbossAlltoWar gs-web-app-2.8.5.presweden1-postgres /opt/jboss/jboss-deployment/web-app/jboss-deployment-structure.xml
 addJbossAlltoWar unionvms-web-3.0.4 /opt/jboss/jboss-deployment/web-app/jboss-deployment-structure.xml
-#addJbossAlltoWar mapfish-print-3.4 /opt/jboss/jboss-deployment/web-app/jboss-deployment-structure.xml
+addJbossAlltoWar mapfish-print-3.4 /opt/jboss/jboss-deployment/web-app/jboss-deployment-structure.xml
 mv /opt/jboss/wildfly/standalone/deployments/gs-web-app-2.8.5.presweden1-postgres.war /opt/jboss/wildfly/standalone/deployments/geoserver.war
 mv /opt/jboss/wildfly/standalone/deployments/mapfish-print-3.4.war /opt/jboss/wildfly/standalone/deployments/mapfish-print.war
