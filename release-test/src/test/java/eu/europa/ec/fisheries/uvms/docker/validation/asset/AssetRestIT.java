@@ -69,7 +69,7 @@ public class AssetRestIT extends AbstractRestServiceTest {
 		assertEquals(HttpStatus.SC_OK, response.getStatusLine().getStatusCode());
 		final Map<String, Object> data = getJsonMap(response);
 		assertFalse(data.isEmpty());
-		assertNotNull(data.get("data"));		
+		assertNotNull(data.get("data"));
 	}
 
 	/**
@@ -86,7 +86,7 @@ public class AssetRestIT extends AbstractRestServiceTest {
 		assertEquals(HttpStatus.SC_OK, response.getStatusLine().getStatusCode());
 		final Map<String, Object> data = getJsonMap(response);
 		assertFalse(data.isEmpty());
-		assertNotNull(data.get("data"));		
+		assertNotNull(data.get("data"));
 	}
 
 	/**
@@ -104,7 +104,7 @@ public class AssetRestIT extends AbstractRestServiceTest {
 		assertEquals(HttpStatus.SC_OK, response.getStatusLine().getStatusCode());
 		final Map<String, Object> data = getJsonMap(response);
 		assertFalse(data.isEmpty());
-		assertNotNull(data.get("data"));		
+		assertNotNull(data.get("data"));
 	}
 
 	/**
@@ -113,6 +113,7 @@ public class AssetRestIT extends AbstractRestServiceTest {
 	 * @throws Exception the exception
 	 */
 	@Test
+	@Ignore
 	public void createAssetTest() throws Exception {
 		final HttpResponse response = Request.Post(BASE_URL + "asset/rest/asset")
 				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken())
@@ -120,7 +121,7 @@ public class AssetRestIT extends AbstractRestServiceTest {
 		assertEquals(HttpStatus.SC_OK, response.getStatusLine().getStatusCode());
 		final Map<String, Object> data = getJsonMap(response);
 		assertFalse(data.isEmpty());
-		assertNotNull(data.get("data"));		
+		assertNotNull(data.get("data"));
 	}
 
 	/**
@@ -129,6 +130,7 @@ public class AssetRestIT extends AbstractRestServiceTest {
 	 * @throws Exception the exception
 	 */
 	@Test
+	@Ignore
 	public void updateAssetTest() throws Exception {
 		final HttpResponse response = Request.Put(BASE_URL + "asset/rest/asset?comment=comment")
 				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken())
@@ -144,6 +146,7 @@ public class AssetRestIT extends AbstractRestServiceTest {
 	 * @throws Exception the exception
 	 */
 	@Test
+	@Ignore
 	public void archiveAssetTest() throws Exception {
 		final HttpResponse response = Request.Put(BASE_URL + "asset/rest/asset/archive?comment=comment")
 				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken())
@@ -166,7 +169,7 @@ public class AssetRestIT extends AbstractRestServiceTest {
 		assertEquals(HttpStatus.SC_OK, response.getStatusLine().getStatusCode());
 		final Map<String, Object> data = getJsonMap(response);
 		assertFalse(data.isEmpty());
-		assertNotNull(data.get("data"));		
+		assertNotNull(data.get("data"));
 	}
 
 }

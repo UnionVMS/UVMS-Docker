@@ -7,3 +7,4 @@ httpUnionVMSurlString = "http://" + appServerName + ":28080/unionvms/"
 connectToDatabaseString = "dbname='"+ dbServerName + "' user='postgres' host='" + hostdbServerName + "' password='postgres'" + " port='25432'"
 browserTimeout = 20
 browserWaitAfterClick = 6
+browserLongWaitAfterClick = 18
