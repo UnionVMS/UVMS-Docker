@@ -934,7 +934,7 @@ class UnionVMSTestCase(unittest.TestCase):
         # Select Audit Log tab
         time.sleep(browserWaitAfterClick)
                 
-        WebDriverWait(self.driver, browserTimeout).until(EC.presence_of_element_located((By.ID,"uvms-header-menu-item-audit-log"))).click()
+        WebDriverWait(self.driver, browserTimeout).until(EC.presence_of_element_located((By.ID,"uvms-header-menu-item-audit-log")))
         
         WebDriverWait(self.driver, browserTimeout).until(EC.element_to_be_clickable((By.ID,"uvms-header-menu-item-audit-log"))).click()
         time.sleep(browserWaitAfterClick)
@@ -975,7 +975,7 @@ class UnionVMSTestCase(unittest.TestCase):
         # Select Admin tab
         time.sleep(browserWaitAfterClick)
         
-        WebDriverWait(self.driver, browserTimeout).until(EC.presence_of_element_located((By.ID,"uvms-header-menu-item-audit-log"))).click()
+        WebDriverWait(self.driver, browserTimeout).until(EC.presence_of_element_located((By.ID,"uvms-header-menu-item-audit-log")))
         
         WebDriverWait(self.driver, browserTimeout).until(EC.element_to_be_clickable((By.ID,"uvms-header-menu-item-audit-log"))).click()
         time.sleep(browserWaitAfterClick)
