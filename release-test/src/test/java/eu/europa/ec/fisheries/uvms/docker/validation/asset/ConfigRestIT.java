@@ -52,7 +52,7 @@ public class ConfigRestIT extends AbstractRestServiceTest {
 		final Map<String, Object> data = getJsonMap(response);		
 		assertFalse(data.isEmpty());
 		assertNotNull(data.get("data"));
-		
+		assertEquals(200, data.get("code"));
 	}
 
 
@@ -71,6 +71,7 @@ public class ConfigRestIT extends AbstractRestServiceTest {
 		final Map<String, Object> data = getJsonMap(response);
 		assertFalse(data.isEmpty());
 		assertNotNull(data.get("data"));
+		assertEquals(200, data.get("code"));
 	}
 
 	/**
@@ -87,9 +88,8 @@ public class ConfigRestIT extends AbstractRestServiceTest {
 		assertEquals(HttpStatus.SC_OK, response.getStatusLine().getStatusCode());
 		final Map<String, Object> data = getJsonMap(response);
 		assertFalse(data.isEmpty());
-		System.out.println(data.toString());
 		assertNotNull(data.get("data"));
-
+		assertEquals(200, data.get("code"));
 	}
 	
 }
