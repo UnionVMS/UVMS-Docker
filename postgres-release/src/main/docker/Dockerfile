@@ -1,4 +1,4 @@
-FROM uvms/postgres-base:3.4.0
+FROM uvms/postgres-base:${project.version}
 
 ENV GITHUB https://github.com/UnionVMS
 

@@ -26,7 +26,11 @@
     </scm>
 	
 	<modules>
-		<module>docker-images</module>
+		<module>amq</module>
+		<module>postgres-base</module>
+		<module>postgres-release</module>
+		<module>wildfly-base</module>
+		<module>wildfly-release</module>
 		<module>release-test</module>		
 	</modules>
 </project>

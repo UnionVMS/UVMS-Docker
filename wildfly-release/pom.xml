@@ -1,19 +1,26 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
-	
 	<parent>
 		<groupId>fish.focus.maven</groupId>
 		<artifactId>focus-pom</artifactId>
 		<version>1.5</version>
 		<relativePath />
 	</parent>
-	
 	<groupId>eu.europa.ec.fisheries.uvms.docker</groupId>
-	<artifactId>uvms-docker-images</artifactId>
+	<artifactId>uvms-docker-wildfly-release</artifactId>
 	<version>3.4.0-SNAPSHOT</version>
 	<packaging>pom</packaging>
-	<name>uvms-docker-images</name>
+	<name>uvms-docker-wildfly-release</name>
+	<dependencies>
+		<dependency>
+			<groupId>eu.europa.ec.fisheries.uvms.docker</groupId>
+			<artifactId>uvms-docker-wildfly-base</artifactId>
+			<version>3.4.0-SNAPSHOT</version>
+			<type>pom</type>
+		</dependency>
+	</dependencies>
 	<build>
 		<pluginManagement>
 			<plugins>
@@ -25,6 +32,37 @@
 			</plugins>
 		</pluginManagement>
 		<plugins>
+			<plugin>
+				<artifactId>maven-resources-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>filter-resources</id>
+						<phase>validate</phase>
+						<goals>
+							<goal>resources</goal>
+						</goals>
+						<configuration>
+							<outputDirectory>${project.basedir}/target/dockerfile</outputDirectory>
+							<resources>
+								<resource>
+									<directory>${project.basedir}/src/main/docker</directory>
+									<filtering>false</filtering>
+									<excludes>
+										<exclude>Dockerfile</exclude>
+									</excludes>
+								</resource>
+								<resource>
+									<directory>${project.basedir}/src/main/docker/</directory>
+									<filtering>true</filtering>
+									<includes>
+										<include>Dockerfile</include>
+									</includes>
+								</resource>
+							</resources>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
 			<plugin>
 				<groupId>io.fabric8</groupId>
 				<artifactId>docker-maven-plugin</artifactId>
@@ -42,45 +80,21 @@
 						<goals>
 							<goal>stop</goal>
 						</goals>
-					</execution>					
+					</execution>
 					<execution>
 						<id>stoppall</id>
 						<phase>install</phase>
 						<goals>
 							<goal>stop</goal>
 						</goals>
-					</execution>										
+					</execution>
 				</executions>
 				<configuration>
 					<images>
 						<image>
-							<name>uvms/activemq:${project.version}</name>
-							<build>
-								<dockerFileDir>${project.basedir}/../amq</dockerFileDir>
-							</build>
-						</image>
-						<image>
-							<name>uvms/postgres-base:${project.version}</name>
-							<build>
-								<dockerFileDir>${project.basedir}/../postgres-base</dockerFileDir>
-							</build>
-						</image>
-						<image>
-							<name>uvms/postgres-release:${project.version}</name>
-							<build>
-								<dockerFileDir>${project.basedir}/../postgres-release</dockerFileDir>
-							</build>
-						</image>
-						<image>
-							<name>uvms/wildfly-base:${project.version}</name>
-							<build>
-								<dockerFileDir>${project.basedir}/../wildfly-base</dockerFileDir>
-							</build>
-						</image>
-						<image>
 							<name>uvms/wildfly-release:${project.version}</name>
 							<build>
-								<dockerFileDir>${project.basedir}/../wildfly-release</dockerFileDir>
+								<dockerFileDir>${project.basedir}/target/dockerfile</dockerFileDir>
 							</build>
 						</image>
 					</images>
@@ -115,8 +129,8 @@
 				</plugins>
 			</build>
 		</profile>
-  </profiles>
-  <scm>
-    <tag>HEAD</tag>
-  </scm>
+	</profiles>
+	<scm>
+		<tag>HEAD</tag>
+	</scm>
 </project>
