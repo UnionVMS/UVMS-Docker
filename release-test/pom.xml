@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
 	<parent>
@@ -11,7 +10,7 @@
 	</parent>
 
 	<groupId>eu.europa.ec.fisheries.uvms.docker</groupId>
-	<version>3.4.0-SNAPSHOT</version>
+	<version>3.4.0</version>
 	<artifactId>uvms-release-test</artifactId>
 	<packaging>jar</packaging>
 	<name>uvms-release-test</name>
@@ -24,19 +23,19 @@
 		<dependency>
 			<groupId>eu.europa.ec.fisheries.uvms.docker</groupId>
 			<artifactId>uvms-docker-amq</artifactId>
-			<version>3.4.0-SNAPSHOT</version>
+			<version>3.4.0</version>
 			<type>pom</type>
 		</dependency>
 		<dependency>
 			<groupId>eu.europa.ec.fisheries.uvms.docker</groupId>
 			<artifactId>uvms-docker-wildfly-release</artifactId>
-			<version>3.4.0-SNAPSHOT</version>
+			<version>3.4.0</version>
 			<type>pom</type>
 		</dependency>
 		<dependency>
 			<groupId>eu.europa.ec.fisheries.uvms.docker</groupId>
 			<artifactId>uvms-docker-postgres-release</artifactId>
-			<version>3.4.0-SNAPSHOT</version>
+			<version>3.4.0</version>
 			<type>pom</type>
 		</dependency>
 		<dependency>
@@ -220,17 +219,9 @@
 						<phase>post-integration-test</phase>
 						<configuration>
 							<tasks>
-								<get src="http://localhost:28080/movement/monitoring?format=pdf"
-									dest="target/movement_monitoring.pdf" verbose="true"
-									usetimestamp="true" />
-								<get
-									src="http://localhost:28080/mobileterminal/monitoring?format=pdf"
-									dest="target/mobileterminal_monitoring.pdf" verbose="true"
-									usetimestamp="true" />
-								<get
-									src="http://localhost:28080/asset/monitoring?format=pdf"
-									dest="target/asset_monitoring.pdf" verbose="true"
-									usetimestamp="true" />
+								<get src="http://localhost:28080/movement/monitoring?format=pdf" dest="target/movement_monitoring.pdf" verbose="true" usetimestamp="true" />
+								<get src="http://localhost:28080/mobileterminal/monitoring?format=pdf" dest="target/mobileterminal_monitoring.pdf" verbose="true" usetimestamp="true" />
+								<get src="http://localhost:28080/asset/monitoring?format=pdf" dest="target/asset_monitoring.pdf" verbose="true" usetimestamp="true" />
 							</tasks>
 						</configuration>
 						<goals>
@@ -460,4 +451,8 @@
 			</properties>
 		</profile>
 	</profiles>
+
+  <scm>
+    <tag>uvms-docker-3.4.0</tag>
+  </scm>
 </project>

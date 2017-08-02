@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
 		<groupId>fish.focus.maven</groupId>
@@ -10,7 +9,7 @@
 	</parent>
 	<groupId>eu.europa.ec.fisheries.uvms.docker</groupId>
 	<artifactId>uvms-docker-wildfly-base</artifactId>
-	<version>3.4.0-SNAPSHOT</version>
+	<version>3.4.0</version>
 	<packaging>pom</packaging>
 	<name>uvms-docker-wildfly-base</name>
 	<build>
@@ -92,6 +91,6 @@
 		</profile>
 	</profiles>
 	<scm>
-		<tag>HEAD</tag>
+		<tag>uvms-docker-3.4.0</tag>
 	</scm>
 </project>
