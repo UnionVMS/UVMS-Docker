@@ -1021,7 +1021,7 @@ class UnionVMSTestCase(unittest.TestCase):
         startup_browser_and_login_to_unionVMS(self,"vms_admin_com","password","AdminAll")
         # Click on User Guide icon (Question mark icon)
         # Note: User Guide page is opened in a new tab
-        WebDriverWait(self.driver, browserTimeout).until(EC.element_to_be_clickable((By.XPATH,"//a/i"))).click()
+        WebDriverWait(self.driver, browserTimeout).until(EC.element_to_be_clickable((By.CLASS_NAME,"help"))).click()
         time.sleep(10)
         # Switch tab focus for Selenium to the new tab
         self.driver.switch_to.window(self.driver.window_handles[-1])
@@ -1040,8 +1040,9 @@ class UnionVMSTestCase(unittest.TestCase):
         WebDriverWait(self.driver, browserTimeout).until(EC.element_to_be_clickable((By.ID,"uvms-header-menu-item-holding-table"))).click()
         time.sleep(browserWaitAfterClick)
 
+
         # Check List Headlines for Holding Table
-        self.assertEqual("Date triggered (UTC)", WebDriverWait(self.driver, browserTimeout).until(EC.presence_of_element_located((By.CSS_SELECTOR ,"span > span"))).text)
+        self.assertEqual("Date triggered (UTC)", WebDriverWait(self.driver, browserTimeout).until(EC.presence_of_element_located((By.XPATH ,"//*[@id='content']/div[1]/div[3]/div[2]/div/div[2]/div/div[3]/div/div/div/div/span/table/thead/tr/th[2]/a/span/span"))).text)
         self.assertEqual("Object affected", WebDriverWait(self.driver, browserTimeout).until(EC.presence_of_element_located((By.XPATH,"//div[@id='content']/div/div[3]/div[2]/div/div[2]/div/div[3]/div/div/div/div/span/table/thead/tr/th[3]/a/span/span"))).text)
         self.assertEqual("Rule", WebDriverWait(self.driver, browserTimeout).until(EC.presence_of_element_located((By.XPATH,"//div[@id='content']/div/div[3]/div[2]/div/div[2]/div/div[3]/div/div/div/div/span/table/thead/tr/th[4]"))).text)
         # Select Alerts tab (Notifications)
@@ -1049,7 +1050,7 @@ class UnionVMSTestCase(unittest.TestCase):
         time.sleep(browserWaitAfterClick)
 
         # Check List Headlines for Notifications
-        self.assertEqual("Date triggered (UTC)", WebDriverWait(self.driver, browserTimeout).until(EC.presence_of_element_located((By.CSS_SELECTOR ,"span > span"))).text)
+        self.assertEqual("Date triggered (UTC)", WebDriverWait(self.driver, browserTimeout).until(EC.presence_of_element_located((By.XPATH ,"//*[@id='content']/div[1]/div[3]/div[2]/div/div[2]/div/div[3]/div/div/div/div/span/table/thead/tr/th[2]/a/span/span"))).text)
         self.assertEqual("Object affected", WebDriverWait(self.driver, browserTimeout).until(EC.presence_of_element_located((By.XPATH,"//div[@id='content']/div/div[3]/div[2]/div/div[2]/div/div[3]/div/div/div/div/span/table/thead/tr/th[3]/a/span/span"))).text)
         self.assertEqual("Rule", WebDriverWait(self.driver, browserTimeout).until(EC.presence_of_element_located((By.XPATH,"//div[@id='content']/div/div[3]/div[2]/div/div[2]/div/div[3]/div/div/div/div/span/table/thead/tr/th[4]"))).text)
         # Select Alerts tab (Rules)
@@ -1057,7 +1058,7 @@ class UnionVMSTestCase(unittest.TestCase):
         time.sleep(browserWaitAfterClick)
 
         # Check List Headlines for Rules List
-        self.assertEqual("Rule name", WebDriverWait(self.driver, browserTimeout).until(EC.presence_of_element_located((By.CSS_SELECTOR ,"span > span"))).text)
+        self.assertEqual("Rule name", WebDriverWait(self.driver, browserTimeout).until(EC.presence_of_element_located((By.XPATH ,"//*[@id='content']/div[1]/div[3]/div[2]/div/div[2]/div/div[3]/div/div/div/div/span/table/thead/tr/th[2]/a/span/span"))).text)
         self.assertEqual("Last triggered", WebDriverWait(self.driver, browserTimeout).until(EC.presence_of_element_located((By.XPATH,"//div[@id='content']/div/div[3]/div[2]/div/div[2]/div/div[3]/div/div/div/div/span/table/thead/tr/th[3]/a/span/span"))).text)
         self.assertEqual("Date updated", WebDriverWait(self.driver, browserTimeout).until(EC.presence_of_element_located((By.XPATH,"//div[@id='content']/div/div[3]/div[2]/div/div[2]/div/div[3]/div/div/div/div/span/table/thead/tr/th[4]/a/span/span"))).text)
         # Shutdown browser

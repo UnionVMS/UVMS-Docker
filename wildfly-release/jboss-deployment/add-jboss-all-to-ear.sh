@@ -29,7 +29,7 @@ chmod 755 /opt/jboss/wildfly/standalone/deployments/*.war
 addJbossAll user-module-1.6.1 /opt/jboss/jboss-deployment/user/jboss-all.xml 
 addJbossAll config-dbaccess-module-3.0.4 /opt/jboss/jboss-deployment/config-db/jboss-all.xml 
 addJbossAll config-module-3.0.5 /opt/jboss/jboss-deployment/config/jboss-all.xml
-addJbossAll spatial-module-postgres-0.5.6.presweden2 /opt/jboss/jboss-deployment/spatial/jboss-all.xml
+addJbossAll spatial-module-0.5.7 /opt/jboss/jboss-deployment/spatial/jboss-all.xml
 addJbossAll reporting-module-0.5.7.presweden1 /opt/jboss/jboss-deployment/reporting/jboss-all.xml
 addJbossAll movement-module-3.0.9 /opt/jboss/jboss-deployment/movement/jboss-all.xml
 addJbossAll asset-module-3.0.9 /opt/jboss/jboss-deployment/asset/jboss-all.xml
@@ -46,7 +46,7 @@ addJbossAll flux-module-2.1.2 /opt/jboss/jboss-deployment/plugins/jboss-all.xml
 addJbossAll twostage-module-3.0.0 /opt/jboss/jboss-deployment/plugins/jboss-all.xml
 addJbossAll siriusone-module-3.0.0 /opt/jboss/jboss-deployment/plugins/jboss-all.xml
 addJbossAlltoWar gs-web-app-2.8.5.presweden1-postgres /opt/jboss/jboss-deployment/web-app/jboss-deployment-structure.xml
-addJbossAlltoWar unionvms-web-3.0.4 /opt/jboss/jboss-deployment/web-app/jboss-deployment-structure.xml
+addJbossAlltoWar unionvms-web-3.0.5 /opt/jboss/jboss-deployment/web-app/jboss-deployment-structure.xml
 addJbossAlltoWar mapfish-print-3.4 /opt/jboss/jboss-deployment/web-app/jboss-deployment-structure.xml
 mv /opt/jboss/wildfly/standalone/deployments/gs-web-app-2.8.5.presweden1-postgres.war /opt/jboss/wildfly/standalone/deployments/geoserver.war
 mv /opt/jboss/wildfly/standalone/deployments/mapfish-print-3.4.war /opt/jboss/wildfly/standalone/deployments/mapfish-print.war

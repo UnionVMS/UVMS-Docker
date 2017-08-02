@@ -20,7 +20,7 @@
     <packaging>pom</packaging>
 
     <properties>
-        <unionvms.project.unionvms.web.version>3.0.4</unionvms.project.unionvms.web.version>
+        <unionvms.project.unionvms.web.version>3.0.5</unionvms.project.unionvms.web.version>
         <unionvms.project.mapfishprint.version>3.4</unionvms.project.mapfishprint.version>
         <unionvms.project.geoserver.version>2.8.5.presweden1</unionvms.project.geoserver.version>
         <unionvms.project.user.module>1.6.1</unionvms.project.user.module>
@@ -31,7 +31,7 @@
         <unionvms.project.exchange.module>3.0.7</unionvms.project.exchange.module>
         <unionvms.project.exchange.dbaccess.module>3.0.5</unionvms.project.exchange.dbaccess.module>
         <unionvms.project.reporting.module>0.5.7.presweden1</unionvms.project.reporting.module>
-        <unionvms.project.spatial.module>0.5.6.presweden2</unionvms.project.spatial.module>
+        <unionvms.project.spatial.module>0.5.7</unionvms.project.spatial.module>
         <unionvms.project.config.module>3.0.5</unionvms.project.config.module>
         <unionvms.project.config.dbaccess.module>3.0.4</unionvms.project.config.dbaccess.module>
         <unionvms.project.audit.module>3.0.5</unionvms.project.audit.module>
@@ -135,7 +135,7 @@
         </dependency>
         <dependency>
             <groupId>eu.europa.ec.fisheries.uvms.spatial</groupId>
-            <artifactId>spatial-module-postgres</artifactId>
+            <artifactId>spatial-module</artifactId>
             <type>ear</type>
             <version>${unionvms.project.spatial.module}</version>
         </dependency>
