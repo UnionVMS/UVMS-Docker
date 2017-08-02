@@ -4,14 +4,16 @@
 		<dependencies>
 			<module name="deployment.user-module-1.6.1.ear" />
 			<module name="deployment.config-module-3.0.5.ear" />
-			<module name="deployment.spatial-module-postgres-0.5.6.presweden2.ear" />
-			<module name="deployment.movement-module-3.0.9.ear" />
-			<module name="deployment.asset-module-3.0.9.ear" />
-			<module name="deployment.audit-module-3.0.5.ear" />
-			<module name="deployment.exchange-module-3.0.7.ear" />
-			<module name="deployment.mobileterminal-module-3.0.9.ear" />
-			<module name="deployment.rules-module-3.0.1.ear" />
-			<module name="deployment.reporting-module-0.5.7.presweden1.ear" />
+            <module name="deployment.spatial-module-0.5.7.ear" />
+            <module name="deployment.movement-module-3.0.9.ear" />
+            <module name="deployment.asset-module-3.0.9.ear" />
+            <module name="deployment.audit-module-3.0.5.ear" />
+            <module name="deployment.exchange-module-3.0.7.ear" />
+            <module name="deployment.mobileterminal-module-3.0.9.ear" />
+            <!--<module name="deployment.rules-module-3.0.1.ear" />-->
+			<module name="deployment.reporting-module-1.0.3.ear" />
+            <module name="deployment.mdr-module-0.5.0.ear" />
+            <module name="deployment.activity-module-postgres-0.5.10.ear" />
 		</dependencies>
 	</deployment>
 </jboss-deployment-structure>

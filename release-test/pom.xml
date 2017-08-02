@@ -15,6 +15,11 @@
 	<artifactId>uvms-release-test</artifactId>
 	<packaging>jar</packaging>
 	<name>uvms-release-test</name>
+
+	<properties>
+		<hostname>127.0.0.1</hostname>
+	</properties>
+
 	<dependencies>
 		<dependency>
 			<groupId>org.postgresql</groupId>
@@ -275,7 +280,7 @@
 								<wait>
 									<log>database system is ready to accept connections</log>
 									<tcp>
-										<host>127.0.0.1</host>
+										<host>${hostname}</host>
 										<ports>
 											<port>8161</port>
 										</ports>
@@ -336,7 +341,7 @@
 								</ports>
 								<wait>
 									<http>
-										<url>http://localhost:28080/geoserver/index.html</url>
+										<url>http://${hostname}:28080/geoserver/index.html</url>
 										<method>GET</method>
 										<status>200</status>
 									</http>
@@ -346,7 +351,7 @@
 								</wait>
 								<cmd>
 									<shell>/opt/jboss/start.sh /opt/jboss/wildfly/bin/standalone.sh
-										-c standalone-uvms.xml -b 0.0.0.0 -bmanagement 0.0.0.0</shell>
+										-c standalone-uvms.xml -b 0.0.0.0 -bmanagement 0.0.0.0 --debug</shell>
 								</cmd>
 								<dependsOn>
 									<container>postgres</container>

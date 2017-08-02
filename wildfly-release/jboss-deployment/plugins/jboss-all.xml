@@ -6,7 +6,7 @@
 		<dependency name="mobileterminal-module-3.0.9.ear" />
 		<dependency name="movement-module-3.0.9.ear" />
 		<dependency name="asset-module-3.0.9.ear" />
-		<dependency name="spatial-module-postgres-0.5.6.presweden2.ear" />
+		<dependency name="spatial-module-0.5.7.ear" />
 		<dependency name="rules-module-3.0.1.ear" />		
 	</jboss-deployment-dependencies>
 </jboss>

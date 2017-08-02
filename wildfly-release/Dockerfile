@@ -1,5 +1,10 @@
 FROM uvms/wildfly-base:3.4.0-SNAPSHOT
 
+ARG checkDependency=true
+ENV DEPENDENCY_CHECK $checkDependency
+
+RUN echo "Dependency check value is : $DEPENDENCY_CHECK"
+
 COPY module-download-pom.xml /opt/jboss/
 RUN mkdir -p /opt/jboss/jboss-deployment
 RUN mkdir -p /opt/jboss/jboss-deployment/asset
@@ -13,6 +18,8 @@ RUN mkdir -p /opt/jboss/jboss-deployment/movement
 RUN mkdir -p /opt/jboss/jboss-deployment/reporting
 RUN mkdir -p /opt/jboss/jboss-deployment/rules
 RUN mkdir -p /opt/jboss/jboss-deployment/spatial
+RUN mkdir -p /opt/jboss/jboss-deployment/activity
+RUN mkdir -p /opt/jboss/jboss-deployment/mdr
 RUN mkdir -p /opt/jboss/jboss-deployment/user
 RUN mkdir -p /opt/jboss/jboss-deployment/web-app
 RUN mkdir -p /opt/jboss/jboss-deployment/plugins
@@ -30,6 +37,8 @@ COPY jboss-deployment/movement/jboss-all.xml /opt/jboss/jboss-deployment/movemen
 COPY jboss-deployment/reporting/jboss-all.xml /opt/jboss/jboss-deployment/reporting/
 COPY jboss-deployment/rules/jboss-all.xml /opt/jboss/jboss-deployment/rules/
 COPY jboss-deployment/spatial/jboss-all.xml /opt/jboss/jboss-deployment/spatial/
+COPY jboss-deployment/activity/jboss-all.xml /opt/jboss/jboss-deployment/activity/
+COPY jboss-deployment/mdr/jboss-all.xml /opt/jboss/jboss-deployment/mdr/
 COPY jboss-deployment/user/jboss-all.xml /opt/jboss/jboss-deployment/user/
 COPY jboss-deployment/plugins/jboss-all.xml /opt/jboss/jboss-deployment/plugins/
 COPY jboss-deployment/web-app/jboss-deployment-structure.xml /opt/jboss/jboss-deployment/web-app/
@@ -38,16 +47,20 @@ COPY jboss-deployment/web-app/jboss-all.xml /opt/jboss/jboss-deployment/web-app/
  
 USER root
 RUN mvn dependency:copy-dependencies -DoutputDirectory=$DEPLOYMENTS -f module-download-pom.xml -q
+
+RUN ls -l $DEPLOYMENTS
+
 RUN chmod 777 /opt/jboss/wildfly/standalone/deployments/*.ear
 RUN chmod 777 /opt/jboss/wildfly/standalone/deployments/
 RUN chmod a+x /opt/jboss/jboss-deployment/add-jboss-all-to-ear.sh
-RUN /opt/jboss/jboss-deployment/add-jboss-all-to-ear.sh
+RUN if $DEPENDENCY_CHECK -eq "true"; then /opt/jboss/jboss-deployment/add-jboss-all-to-ear.sh; fi
 RUN chmod 755 /opt/jboss/wildfly/standalone/deployments/*.ear
 RUN chown -R jboss:jboss /opt/jboss/wildfly/standalone/deployments/
 USER jboss
 
 USER root
+RUN mkdir -p /app/indexes/mdr
+RUN chmod 777 /opt/jboss/wildfly/standalone/log/
 RUN mv /root/.m2/settings.xml /root/settings.xml
 RUN rm -r /root/.m2
 RUN mkdir /root/.m2 && mv /root/settings.xml /root/.m2/settings.xml
-USER jboss

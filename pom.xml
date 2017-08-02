@@ -20,6 +20,7 @@
 	    <scm.connection>scm:git:https://github.com/UnionVMS/UVMS-Docker.git</scm.connection>
 	    <scm.url>scm:git:https://github.com/UnionVMS/UVMS-Docker.git</scm.url>
 	</properties>
+
     <scm>
         <connection>${scm.connection}</connection>
         <tag>uvms-docker-3.1.0-SNAPSHOT</tag>
@@ -29,4 +30,5 @@
 		<module>docker-images</module>
 		<module>release-test</module>		
 	</modules>
+
 </project>
