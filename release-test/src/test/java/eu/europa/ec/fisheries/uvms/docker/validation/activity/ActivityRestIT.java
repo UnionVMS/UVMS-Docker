@@ -10,7 +10,7 @@
  *
  *
  */
-package eu.europa.ec.fisheries.uvms.docker.validation.asset;
+package eu.europa.ec.fisheries.uvms.docker.validation.activity;
 
 import java.util.Map;
 
@@ -30,7 +30,7 @@ import eu.europa.ec.fisheries.uvms.docker.validation.common.AbstractRestServiceT
  */
 @PerfTest(threads = 4, duration = 3000, warmUp = 1000)
 @Required(max = 5000, average = 3000, percentile95 = 3500, throughput = 2)
-public class ConfigRestIT extends AbstractRestServiceTest {
+public class ActivityRestIT extends AbstractRestServiceTest {
 
 	/** The i. */
 	@Rule
