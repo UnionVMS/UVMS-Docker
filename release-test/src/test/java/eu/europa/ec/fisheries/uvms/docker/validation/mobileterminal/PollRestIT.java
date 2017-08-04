@@ -21,9 +21,14 @@ import org.apache.http.client.fluent.Request;
 import org.junit.Ignore;
 import org.junit.Test;
 
+import eu.europa.ec.fisheries.schema.mobileterminal.polltypes.v1.PollAttribute;
 import eu.europa.ec.fisheries.schema.mobileterminal.polltypes.v1.PollListQuery;
+import eu.europa.ec.fisheries.schema.mobileterminal.polltypes.v1.PollMobileTerminal;
 import eu.europa.ec.fisheries.schema.mobileterminal.polltypes.v1.PollRequestType;
+import eu.europa.ec.fisheries.schema.mobileterminal.polltypes.v1.PollSearchCriteria;
+import eu.europa.ec.fisheries.schema.mobileterminal.polltypes.v1.PollType;
 import eu.europa.ec.fisheries.schema.mobileterminal.polltypes.v1.PollableQuery;
+import eu.europa.ec.fisheries.schema.mobileterminal.types.v1.ListPagination;
 import eu.europa.ec.fisheries.uvms.docker.validation.common.AbstractRestServiceTest;
 
 /**
@@ -56,9 +61,16 @@ public class PollRestIT extends AbstractRestServiceTest {
 	@Test
 	@Ignore
 	public void createPollTest() throws Exception {
+		PollRequestType pollRequestType = new PollRequestType();
+		pollRequestType.setPollType(PollType.MANUAL_POLL);
+		pollRequestType.setUserName("vms_admin_com");
+		pollRequestType.setComment("Manual poll created by test");
+		pollRequestType.getMobileTerminals().add(new PollMobileTerminal());
+		pollRequestType.getAttributes().add(new PollAttribute());
+		
 		final HttpResponse response = Request.Post(BASE_URL + "mobileterminal/rest/poll")
 				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken())
-				.bodyByteArray(writeValueAsString(new PollRequestType()).getBytes()).execute().returnResponse();
+				.bodyByteArray(writeValueAsString(pollRequestType).getBytes()).execute().returnResponse();
 
 		Map<String, Object> dataMap = checkSuccessResponseReturnMap(response);
 	}
@@ -116,11 +128,20 @@ public class PollRestIT extends AbstractRestServiceTest {
 	 *             the exception
 	 */
 	@Test
-	@Ignore
 	public void getPollBySearchCriteriaTest() throws Exception {
+		PollListQuery pollListQuery = new PollListQuery();
+		ListPagination pagination = new ListPagination();
+		pollListQuery.setPagination(pagination);
+		pagination.setListSize(100);
+		pagination.setPage(1);
+
+		PollSearchCriteria pollSearchCriteria = new PollSearchCriteria();
+		pollListQuery.setPollSearchCriteria(pollSearchCriteria);
+		pollSearchCriteria.setIsDynamic(true);
+		
 		final HttpResponse response = Request.Post(BASE_URL + "mobileterminal/rest/poll/list")
 				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken())
-				.bodyByteArray(writeValueAsString(new PollListQuery()).getBytes()).execute().returnResponse();
+				.bodyByteArray(writeValueAsString(pollListQuery).getBytes()).execute().returnResponse();
 
 		Map<String, Object> dataMap = checkSuccessResponseReturnMap(response);
 	}
@@ -133,11 +154,17 @@ public class PollRestIT extends AbstractRestServiceTest {
 	 *             the exception
 	 */
 	@Test
-	@Ignore
 	public void getPollableChannelsTest() throws Exception {
+		PollableQuery pollableQuery = new PollableQuery();
+		ListPagination listPagination = new ListPagination();
+		listPagination.setListSize(100);
+		listPagination.setPage(1);
+		pollableQuery.setPagination(listPagination);
+		pollableQuery.getConnectIdList().add("connectId");
+		
 		final HttpResponse response = Request.Post(BASE_URL + "mobileterminal/rest/poll/pollable")
 				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken())
-				.bodyByteArray(writeValueAsString(new PollableQuery()).getBytes()).execute().returnResponse();
+				.bodyByteArray(writeValueAsString(pollableQuery).getBytes()).execute().returnResponse();
 
 		Map<String, Object> dataMap = checkSuccessResponseReturnMap(response);
 	}
