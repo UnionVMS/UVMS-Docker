@@ -13,16 +13,12 @@ copy of the GNU General Public License along with the IFDM Suite. If not, see <h
 */
 package eu.europa.ec.fisheries.uvms.docker.validation.config;
 
+import java.util.List;
 import java.util.Map;
 
 import org.apache.http.HttpResponse;
-import org.apache.http.HttpStatus;
 import org.apache.http.client.fluent.Request;
-import org.databene.contiperf.PerfTest;
-import org.databene.contiperf.Required;
-import org.databene.contiperf.junit.ContiPerfRule;
 import org.junit.Ignore;
-import org.junit.Rule;
 import org.junit.Test;
 
 import eu.europa.ec.fisheries.schema.config.types.v1.SettingType;
@@ -32,26 +28,15 @@ import eu.europa.ec.fisheries.uvms.docker.validation.common.AbstractRestServiceT
 /**
  * The Class SettingsRestIT.
  */
-@PerfTest(threads = 4, duration = 3000, warmUp = 1000)
-@Required(max = 5000, average = 3000, percentile95 = 3500, throughput = 2)
+
 public class SettingsRestIT extends AbstractRestServiceTest {
 
-	/** The i. */
-	@Rule
-	public ContiPerfRule contiPerfRule = new ContiPerfRule();
-
-	
-	
 	@Test
 	public void getByModuleNameTest() throws Exception {
 		final HttpResponse response = Request.Get(BASE_URL + "config/rest/settings?moduleName=audit")
 				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken()).execute()
 				.returnResponse();
-		assertEquals(HttpStatus.SC_OK, response.getStatusLine().getStatusCode());
-		final Map<String, Object> data = getJsonMap(response);		
-		assertFalse(data.isEmpty());
-		assertNotNull(data.get("data"));
-		
+		List dataList = checkSuccessResponseReturnType(response,List.class);
 	}
 
 	@Test
@@ -59,25 +44,16 @@ public class SettingsRestIT extends AbstractRestServiceTest {
 		final HttpResponse response = Request.Get(BASE_URL + "config/rest/settings/1")
 				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken()).execute()
 				.returnResponse();
-		assertEquals(HttpStatus.SC_OK, response.getStatusLine().getStatusCode());
-		final Map<String, Object> data = getJsonMap(response);		
-		assertFalse(data.isEmpty());
-		assertNotNull(data.get("data"));
-		
+		Map<String, Object> dataMap = checkSuccessResponseReturnMap(response);
 	}
 
-	
 	@Test
 	@Ignore
 	public void deleteTest() throws Exception {
 		final HttpResponse response = Request.Delete(BASE_URL + "config/rest/settings/{id}")
 				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken()).execute()
 				.returnResponse();
-		assertEquals(HttpStatus.SC_OK, response.getStatusLine().getStatusCode());
-		final Map<String, Object> data = getJsonMap(response);		
-		assertFalse(data.isEmpty());
-		assertNotNull(data.get("data"));
-		
+		Map<String, Object> dataMap = checkSuccessResponseReturnMap(response);
 	}
 
 	@Test
@@ -85,67 +61,44 @@ public class SettingsRestIT extends AbstractRestServiceTest {
 	public void updateTest() throws Exception {
 		SettingType settingType = new SettingType();
 		final HttpResponse response = Request.Put(BASE_URL + "config/rest/settings/{id}")
-				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken()).bodyByteArray(writeValueAsString(settingType).getBytes()).execute()
-				.returnResponse();
-		assertEquals(HttpStatus.SC_OK, response.getStatusLine().getStatusCode());
-		final Map<String, Object> data = getJsonMap(response);		
-		assertFalse(data.isEmpty());
-		assertNotNull(data.get("data"));
-		
+				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken())
+				.bodyByteArray(writeValueAsString(settingType).getBytes()).execute().returnResponse();
+		Map<String, Object> dataMap = checkSuccessResponseReturnMap(response);
 	}
 
 	@Test
 	@Ignore
 	public void createTest() throws Exception {
 		SettingsCreateQuery settingsCreateQuery = new SettingsCreateQuery();
-		
+
 		final HttpResponse response = Request.Post(BASE_URL + "config/rest/settings")
-				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken()).bodyByteArray(writeValueAsString(settingsCreateQuery).getBytes()).execute()
-				.returnResponse();
-		assertEquals(HttpStatus.SC_OK, response.getStatusLine().getStatusCode());
-		final Map<String, Object> data = getJsonMap(response);		
-		assertFalse(data.isEmpty());
-		assertNotNull(data.get("data"));
-		
+				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken())
+				.bodyByteArray(writeValueAsString(settingsCreateQuery).getBytes()).execute().returnResponse();
+		Map<String, Object> dataMap = checkSuccessResponseReturnMap(response);
 	}
 
-	
 	@Test
 	public void catalogTest() throws Exception {
 		final HttpResponse response = Request.Get(BASE_URL + "config/rest/catalog")
 				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken()).execute()
 				.returnResponse();
-		assertEquals(HttpStatus.SC_OK, response.getStatusLine().getStatusCode());
-		final Map<String, Object> data = getJsonMap(response);		
-		assertFalse(data.isEmpty());
-		assertNotNull(data.get("data"));
-		
+		Map<String, Object> dataMap = checkSuccessResponseReturnMap(response);
 	}
-
 
 	@Test
 	public void getPingsTest() throws Exception {
 		final HttpResponse response = Request.Get(BASE_URL + "config/rest/pings")
 				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken()).execute()
 				.returnResponse();
-		assertEquals(HttpStatus.SC_OK, response.getStatusLine().getStatusCode());
-		final Map<String, Object> data = getJsonMap(response);		
-		assertFalse(data.isEmpty());
-		assertNotNull(data.get("data"));
-		
+		Map<String, Object> dataMap = checkSuccessResponseReturnMap(response);
 	}
-
 
 	@Test
 	public void getGlobalSettingsTest() throws Exception {
 		final HttpResponse response = Request.Get(BASE_URL + "config/rest/globals")
 				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken()).execute()
 				.returnResponse();
-		assertEquals(HttpStatus.SC_OK, response.getStatusLine().getStatusCode());
-		final Map<String, Object> data = getJsonMap(response);		
-		assertFalse(data.isEmpty());
-		assertNotNull(data.get("data"));
-		
+		List dataList = checkSuccessResponseReturnType(response,List.class);
 	}
 
 }

@@ -13,16 +13,12 @@ copy of the GNU General Public License along with the IFDM Suite. If not, see <h
 */
 package eu.europa.ec.fisheries.uvms.docker.validation.mobileterminal;
 
+import java.util.List;
 import java.util.Map;
 
 import org.apache.http.HttpResponse;
-import org.apache.http.HttpStatus;
 import org.apache.http.client.fluent.Request;
-import org.databene.contiperf.PerfTest;
-import org.databene.contiperf.Required;
-import org.databene.contiperf.junit.ContiPerfRule;
 import org.junit.Ignore;
-import org.junit.Rule;
 import org.junit.Test;
 
 import eu.europa.ec.fisheries.schema.mobileterminal.polltypes.v1.PollListQuery;
@@ -30,139 +26,120 @@ import eu.europa.ec.fisheries.schema.mobileterminal.polltypes.v1.PollRequestType
 import eu.europa.ec.fisheries.schema.mobileterminal.polltypes.v1.PollableQuery;
 import eu.europa.ec.fisheries.uvms.docker.validation.common.AbstractRestServiceTest;
 
-
 /**
  * The Class PollRestIT.
  */
-@PerfTest(threads = 4, duration = 3000, warmUp = 1000)
-@Required(max = 5000, average = 3000, percentile95 = 3500, throughput = 2)
-public class PollRestIT extends AbstractRestServiceTest {
 
-	/** The i. */
-	@Rule
-	public ContiPerfRule contiPerfRule = new ContiPerfRule();
+public class PollRestIT extends AbstractRestServiceTest {
 
 	/**
 	 * Gets the areas test.
 	 *
 	 * @return the areas test
-	 * @throws Exception the exception
+	 * @throws Exception
+	 *             the exception
 	 */
 	@Test
 	public void getRunningProgramPollsTest() throws Exception {
 		final HttpResponse response = Request.Get(BASE_URL + "mobileterminal/rest/poll/running")
-				.setHeader("Content-Type", "application/json").setHeader("Authorization",getValidJwtToken()).execute().returnResponse();
-		assertEquals(HttpStatus.SC_OK, response.getStatusLine().getStatusCode());
-		final Map<String, Object> data = getJsonMap(response);
-		assertFalse(data.isEmpty());
-		assertNotNull(data.get("data"));		
+				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken()).execute()
+				.returnResponse();
+		List dataList = checkSuccessResponseReturnType(response,List.class);
 	}
 
 	/**
 	 * Creates the poll test.
 	 *
-	 * @throws Exception the exception
+	 * @throws Exception
+	 *             the exception
 	 */
 	@Test
+	@Ignore
 	public void createPollTest() throws Exception {
 		final HttpResponse response = Request.Post(BASE_URL + "mobileterminal/rest/poll")
 				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken())
-				.bodyByteArray(writeValueAsString(new PollRequestType()).getBytes())
-				.execute().returnResponse();
+				.bodyByteArray(writeValueAsString(new PollRequestType()).getBytes()).execute().returnResponse();
 
-		assertEquals(HttpStatus.SC_OK, response.getStatusLine().getStatusCode());
-		final Map<String, Object> data = getJsonMap(response);
-		assertFalse(data.isEmpty());
-		assertNotNull(data.get("data"));		
+		Map<String, Object> dataMap = checkSuccessResponseReturnMap(response);
 	}
-	
+
 	/**
 	 * Start program poll test.
 	 *
-	 * @throws Exception the exception
+	 * @throws Exception
+	 *             the exception
 	 */
 	@Test
 	@Ignore
 	public void startProgramPollTest() throws Exception {
 		final HttpResponse response = Request.Put(BASE_URL + "mobileterminal/rest/poll/start/{id}")
-				.setHeader("Content-Type", "application/json").setHeader("Authorization",getValidJwtToken()).execute().returnResponse();
-		assertEquals(HttpStatus.SC_OK, response.getStatusLine().getStatusCode());
-		final Map<String, Object> data = getJsonMap(response);
-		assertFalse(data.isEmpty());
-		assertNotNull(data.get("data"));		
+				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken()).execute()
+				.returnResponse();
+		Map<String, Object> dataMap = checkSuccessResponseReturnMap(response);
 	}
 
 	/**
 	 * Stop program poll test.
 	 *
-	 * @throws Exception the exception
+	 * @throws Exception
+	 *             the exception
 	 */
 	@Test
 	@Ignore
 	public void stopProgramPollTest() throws Exception {
 		final HttpResponse response = Request.Put(BASE_URL + "mobileterminal/rest/poll/stop/{id}")
-				.setHeader("Content-Type", "application/json").setHeader("Authorization",getValidJwtToken()).execute().returnResponse();
-		assertEquals(HttpStatus.SC_OK, response.getStatusLine().getStatusCode());
-		final Map<String, Object> data = getJsonMap(response);
-		assertFalse(data.isEmpty());
-		assertNotNull(data.get("data"));		
+				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken()).execute()
+				.returnResponse();
+		Map<String, Object> dataMap = checkSuccessResponseReturnMap(response);
 	}
 
 	/**
 	 * Inactivate program poll test.
 	 *
-	 * @throws Exception the exception
+	 * @throws Exception
+	 *             the exception
 	 */
 	@Test
 	@Ignore
 	public void inactivateProgramPollTest() throws Exception {
 		final HttpResponse response = Request.Put(BASE_URL + "mobileterminal/rest/poll/inactivate/{id}")
-				.setHeader("Content-Type", "application/json").setHeader("Authorization",getValidJwtToken()).execute().returnResponse();
-		assertEquals(HttpStatus.SC_OK, response.getStatusLine().getStatusCode());
-		final Map<String, Object> data = getJsonMap(response);
-		assertFalse(data.isEmpty());
-		assertNotNull(data.get("data"));		
+				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken()).execute()
+				.returnResponse();
+		Map<String, Object> dataMap = checkSuccessResponseReturnMap(response);
 	}
 
-	
 	/**
 	 * Gets the poll by search criteria test.
 	 *
 	 * @return the poll by search criteria test
-	 * @throws Exception the exception
+	 * @throws Exception
+	 *             the exception
 	 */
 	@Test
 	@Ignore
 	public void getPollBySearchCriteriaTest() throws Exception {
 		final HttpResponse response = Request.Post(BASE_URL + "mobileterminal/rest/poll/list")
 				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken())
-				.bodyByteArray(writeValueAsString(new PollListQuery()).getBytes())
-				.execute().returnResponse();
+				.bodyByteArray(writeValueAsString(new PollListQuery()).getBytes()).execute().returnResponse();
 
-		assertEquals(HttpStatus.SC_OK, response.getStatusLine().getStatusCode());
-		final Map<String, Object> data = getJsonMap(response);
-		assertFalse(data.isEmpty());
-		assertNotNull(data.get("data"));		
+		Map<String, Object> dataMap = checkSuccessResponseReturnMap(response);
 	}
 
-	
 	/**
 	 * Gets the pollable channels test.
 	 *
 	 * @return the pollable channels test
-	 * @throws Exception the exception
+	 * @throws Exception
+	 *             the exception
 	 */
 	@Test
+	@Ignore
 	public void getPollableChannelsTest() throws Exception {
 		final HttpResponse response = Request.Post(BASE_URL + "mobileterminal/rest/poll/pollable")
 				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken())
-				.bodyByteArray(writeValueAsString(new PollableQuery()).getBytes())
-				.execute().returnResponse();
+				.bodyByteArray(writeValueAsString(new PollableQuery()).getBytes()).execute().returnResponse();
 
-		assertEquals(HttpStatus.SC_OK, response.getStatusLine().getStatusCode());
-		final Map<String, Object> data = getJsonMap(response);
-		assertFalse(data.isEmpty());
-		assertNotNull(data.get("data"));		
+		Map<String, Object> dataMap = checkSuccessResponseReturnMap(response);
 	}
 
 }

@@ -13,45 +13,32 @@ copy of the GNU General Public License along with the IFDM Suite. If not, see <h
 */
 package eu.europa.ec.fisheries.uvms.docker.validation.movement;
 
-import java.util.Map;
+import java.util.List;
 
 import org.apache.http.HttpResponse;
-import org.apache.http.HttpStatus;
 import org.apache.http.client.fluent.Request;
-import org.databene.contiperf.PerfTest;
-import org.databene.contiperf.Required;
-import org.databene.contiperf.junit.ContiPerfRule;
-import org.junit.Rule;
 import org.junit.Test;
 
 import eu.europa.ec.fisheries.uvms.docker.validation.common.AbstractRestServiceTest;
-
 
 /**
  * The Class MovementAreasRestIT.
  */
 public class MovementAreasRestIT extends AbstractRestServiceTest {
 
-	/** The i. */
-	@Rule
-	public ContiPerfRule contiPerfRule = new ContiPerfRule();
-
 	/**
 	 * Gets the areas test.
 	 *
 	 * @return the areas test
-	 * @throws Exception the exception
+	 * @throws Exception
+	 *             the exception
 	 */
 	@Test
-	@PerfTest(threads = 4, duration = 3000, warmUp = 1000)
-	@Required(max = 5000, average = 3000, percentile95 = 3500, throughput = 2)
 	public void getAreasTest() throws Exception {
 		final HttpResponse response = Request.Get(BASE_URL + "movement/rest/areas")
-				.setHeader("Content-Type", "application/json").setHeader("Authorization",getValidJwtToken()).execute().returnResponse();
-		assertEquals(HttpStatus.SC_OK, response.getStatusLine().getStatusCode());
-		final Map<String, Object> data = getJsonMap(response);
-		assertFalse(data.isEmpty());
-		assertNotNull(data.get("data"));		
+				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken()).execute()
+				.returnResponse();
+		List dataList = checkSuccessResponseReturnType(response,List.class);
 	}
 
 }

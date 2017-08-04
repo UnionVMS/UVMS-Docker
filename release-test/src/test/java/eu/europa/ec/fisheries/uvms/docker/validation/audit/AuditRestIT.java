@@ -17,13 +17,8 @@ import java.math.BigInteger;
 import java.util.Map;
 
 import org.apache.http.HttpResponse;
-import org.apache.http.HttpStatus;
 import org.apache.http.client.fluent.Request;
-import org.databene.contiperf.PerfTest;
-import org.databene.contiperf.Required;
-import org.databene.contiperf.junit.ContiPerfRule;
 import org.junit.Ignore;
-import org.junit.Rule;
 import org.junit.Test;
 
 import eu.europa.ec.fisheries.schema.audit.search.v1.AuditLogListQuery;
@@ -33,19 +28,15 @@ import eu.europa.ec.fisheries.uvms.docker.validation.common.AbstractRestServiceT
 /**
  * The Class AuditRestIT.
  */
-@PerfTest(threads = 4, duration = 3000, warmUp = 1000)
-@Required(max = 5000, average = 3000, percentile95 = 3500, throughput = 2)
-public class AuditRestIT extends AbstractRestServiceTest {
 
-	/** The i. */
-	@Rule
-	public ContiPerfRule contiPerfRule = new ContiPerfRule();
+public class AuditRestIT extends AbstractRestServiceTest {
 
 	/**
 	 * Gets the config search fields test.
 	 *
 	 * @return the config search fields test
-	 * @throws Exception the exception
+	 * @throws Exception
+	 *             the exception
 	 */
 	@Test
 	@Ignore
@@ -55,15 +46,12 @@ public class AuditRestIT extends AbstractRestServiceTest {
 		listPagination.setPage(BigInteger.valueOf(1));
 		listPagination.setListSize(BigInteger.valueOf(25));
 		auditLogListQuery.setPagination(listPagination);
-		
+
 		final HttpResponse response = Request.Post(BASE_URL + "audit/rest/audit/list")
 				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken())
 				.bodyByteArray(writeValueAsString(auditLogListQuery).getBytes()).execute().returnResponse();
 
-		assertEquals(HttpStatus.SC_OK, response.getStatusLine().getStatusCode());
-		final Map<String, Object> data = getJsonMap(response);		
-		assertFalse(data.isEmpty());
-		assertNotNull(data.get("data"));		
+		Map<String, Object> dataMap = checkSuccessResponseReturnMap(response);
 	}
-	
+
 }

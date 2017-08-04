@@ -15,14 +15,10 @@ import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 
 import org.apache.activemq.ActiveMQConnectionFactory;
-import org.databene.contiperf.PerfTest;
-import org.databene.contiperf.Required;
-import org.databene.contiperf.junit.ContiPerfRule;
 import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Ignore;
-import org.junit.Rule;
 import org.junit.Test;
 
 import eu.europa.ec.fisheries.schema.movement.module.v1.CreateMovementRequest;
@@ -36,9 +32,6 @@ public class MovementJmsIT extends Assert {
 	private static final ConnectionFactory connectionFactory = new ActiveMQConnectionFactory("tcp://localhost:61616");
 	private static Connection connection;
 	private static JAXBContext jaxbContext;
-
-	@Rule
-	public ContiPerfRule contiPerfRule = new ContiPerfRule();
 
 	@BeforeClass
 	public static void beforeClass() {
@@ -61,8 +54,6 @@ public class MovementJmsIT extends Assert {
 	}
 
 	@Test
-	@PerfTest(threads = 1, duration = 3000, warmUp = 1000)
-	@Required(max = 3000, average = 300, percentile95 = 400, throughput = 2)
 	public void createMovementRequestTest() throws Exception {
 		final CreateMovementRequest createMovementRequest = new CreateMovementRequest();
 		final MovementBaseType movementBaseType = new MovementBaseType();
@@ -78,13 +69,12 @@ public class MovementJmsIT extends Assert {
 		session.close();
 	}
 
-	
-	@Test 
+	@Test
 	@Ignore
 	public void checkDeadLetterQueue() throws Exception {
 		assertTrue(checkMovementQueueHasElements());
 	}
-	
+
 	private boolean checkMovementQueueHasElements() throws Exception {
 		final Session session = connection.createSession(false, Session.AUTO_ACKNOWLEDGE);
 		final Queue queue = session.createQueue("DLQ");

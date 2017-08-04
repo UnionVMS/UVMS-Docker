@@ -13,16 +13,12 @@ copy of the GNU General Public License along with the IFDM Suite. If not, see <h
 */
 package eu.europa.ec.fisheries.uvms.docker.validation.asset;
 
+import java.util.List;
 import java.util.Map;
 
 import org.apache.http.HttpResponse;
-import org.apache.http.HttpStatus;
 import org.apache.http.client.fluent.Request;
-import org.databene.contiperf.PerfTest;
-import org.databene.contiperf.Required;
-import org.databene.contiperf.junit.ContiPerfRule;
 import org.junit.Ignore;
-import org.junit.Rule;
 import org.junit.Test;
 
 import eu.europa.ec.fisheries.uvms.docker.validation.common.AbstractRestServiceTest;
@@ -30,36 +26,30 @@ import eu.europa.ec.fisheries.uvms.docker.validation.common.AbstractRestServiceT
 /**
  * The Class AssetGroupRestIT.
  */
-@PerfTest(threads = 4, duration = 3000, warmUp = 1000)
-@Required(max = 5000, average = 3000, percentile95 = 3500, throughput = 2)
-public class AssetGroupRestIT extends AbstractRestServiceTest {
 
-	/** The i. */
-	@Rule
-	public ContiPerfRule contiPerfRule = new ContiPerfRule();
+public class AssetGroupRestIT extends AbstractRestServiceTest {
 
 	/**
 	 * Gets the asset group list by user test.
 	 *
 	 * @return the asset group list by user test
-	 * @throws Exception the exception
+	 * @throws Exception
+	 *             the exception
 	 */
 	@Test
 	public void getAssetGroupListByUserTest() throws Exception {
 		final HttpResponse response = Request.Get(BASE_URL + "asset/rest/group/list?user=vms_admin_com")
 				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken()).execute()
 				.returnResponse();
-		assertEquals(HttpStatus.SC_OK, response.getStatusLine().getStatusCode());
-		final Map<String, Object> data = getJsonMap(response);
-		assertFalse(data.isEmpty());
-		assertNotNull(data.get("data"));		
+		List dataList = checkSuccessResponseReturnType(response,List.class);
 	}
 
 	/**
 	 * Gets the asset by id test.
 	 *
 	 * @return the asset by id test
-	 * @throws Exception the exception
+	 * @throws Exception
+	 *             the exception
 	 */
 	@Test
 	@Ignore
@@ -67,10 +57,7 @@ public class AssetGroupRestIT extends AbstractRestServiceTest {
 		final HttpResponse response = Request.Get(BASE_URL + "asset/rest/group/{id}")
 				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken()).execute()
 				.returnResponse();
-		assertEquals(HttpStatus.SC_OK, response.getStatusLine().getStatusCode());
-		final Map<String, Object> data = getJsonMap(response);
-		assertFalse(data.isEmpty());
-		assertNotNull(data.get("data"));		
+		Map<String, Object> dataMap = checkSuccessResponseReturnMap(response);
 	}
 
 }

@@ -17,13 +17,8 @@ import java.util.ArrayList;
 import java.util.Map;
 
 import org.apache.http.HttpResponse;
-import org.apache.http.HttpStatus;
 import org.apache.http.client.fluent.Request;
-import org.databene.contiperf.PerfTest;
-import org.databene.contiperf.Required;
-import org.databene.contiperf.junit.ContiPerfRule;
 import org.junit.Ignore;
-import org.junit.Rule;
 import org.junit.Test;
 
 import eu.europa.ec.fisheries.uvms.docker.validation.common.AbstractRestServiceTest;
@@ -33,29 +28,20 @@ import eu.europa.ec.fisheries.uvms.reporting.service.dto.rules.AlarmMovementList
 /**
  * The Class AlarmRestIT.
  */
-@PerfTest(threads = 4, duration = 3000, warmUp = 1000)
-@Required(max = 5000, average = 3000, percentile95 = 3500, throughput = 2)
-public class AlarmRestIT extends AbstractRestServiceTest {
 
-	/** The i. */
-	@Rule
-	public ContiPerfRule contiPerfRule = new ContiPerfRule();
+public class AlarmRestIT extends AbstractRestServiceTest {
 
 	@Test
 	@Ignore
 	public void getAlarmsTest() throws Exception {
 		AlarmMovementList alarmMovementList = new AlarmMovementList();
-		ArrayList<AlarmMovement> alarmMovementListContent = new ArrayList<AlarmMovement>();		
+		ArrayList<AlarmMovement> alarmMovementListContent = new ArrayList<AlarmMovement>();
 		alarmMovementList.setAlarmMovementList(alarmMovementListContent);
-		
+
 		final HttpResponse response = Request.Post(BASE_URL + "reporting/rest/alarms")
-				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken()).bodyByteArray(writeValueAsString(alarmMovementList).getBytes()).execute()
-				.returnResponse();
-		assertEquals(HttpStatus.SC_OK, response.getStatusLine().getStatusCode());
-		final Map<String, Object> data = getJsonMap(response);		
-		assertFalse(data.isEmpty());
-		assertNotNull(data.get("data"));		
+				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken())
+				.bodyByteArray(writeValueAsString(alarmMovementList).getBytes()).execute().returnResponse();
+		Map<String, Object> dataMap = checkSuccessResponseReturnMap(response);
 	}
 
-	
 }

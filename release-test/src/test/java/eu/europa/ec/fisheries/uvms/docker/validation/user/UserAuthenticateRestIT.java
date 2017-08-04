@@ -22,7 +22,6 @@ import org.junit.Test;
 
 import eu.europa.ec.fisheries.uvms.docker.validation.common.AbstractRestServiceTest;
 
-
 /**
  * The Class UserAuthenticateRestIT.
  */
@@ -34,13 +33,15 @@ public class UserAuthenticateRestIT extends AbstractRestServiceTest {
 	/**
 	 * Authenticate get jwt token success test.
 	 *
-	 * @throws Exception the exception
+	 * @throws Exception
+	 *             the exception
 	 */
 	@Test
 	public void authenticateGetJwtTokenSuccessTest() throws Exception {
 		final HttpResponse response = Request.Post(BASE_URL + "usm-administration/rest/authenticate")
 				.setHeader("Content-Type", "application/json")
-				.bodyByteArray("{\"userName\":\"vms_admin_com\",\"password\":\"password\"}".getBytes()).execute().returnResponse();
+				.bodyByteArray("{\"userName\":\"vms_admin_com\",\"password\":\"password\"}".getBytes()).execute()
+				.returnResponse();
 
 		assertEquals(HttpStatus.SC_OK, response.getStatusLine().getStatusCode());
 		final Map<String, Object> data = getJsonMap(response);
@@ -51,13 +52,15 @@ public class UserAuthenticateRestIT extends AbstractRestServiceTest {
 	/**
 	 * Authenticate get jwt token failure test.
 	 *
-	 * @throws Exception the exception
+	 * @throws Exception
+	 *             the exception
 	 */
 	@Test
 	public void authenticateGetJwtTokenFailureTest() throws Exception {
 		final HttpResponse response = Request.Post(BASE_URL + "usm-administration/rest/authenticate")
 				.setHeader("Content-Type", "application/json")
-				.bodyByteArray("{\"userName\":\"vms_admin_com\",\"password\":\"invalidpassword\"}".getBytes()).execute().returnResponse();
+				.bodyByteArray("{\"userName\":\"vms_admin_com\",\"password\":\"invalidpassword\"}".getBytes()).execute()
+				.returnResponse();
 
 		assertEquals(HttpStatus.SC_OK, response.getStatusLine().getStatusCode());
 		final Map<String, Object> data = getJsonMap(response);

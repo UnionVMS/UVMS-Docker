@@ -16,46 +16,33 @@ package eu.europa.ec.fisheries.uvms.docker.validation.movement;
 import java.util.Map;
 
 import org.apache.http.HttpResponse;
-import org.apache.http.HttpStatus;
 import org.apache.http.client.fluent.Request;
-import org.databene.contiperf.PerfTest;
-import org.databene.contiperf.Required;
-import org.databene.contiperf.junit.ContiPerfRule;
 import org.junit.Ignore;
-import org.junit.Rule;
 import org.junit.Test;
 
 import eu.europa.ec.fisheries.schema.movement.search.v1.MovementSearchGroup;
 import eu.europa.ec.fisheries.uvms.docker.validation.common.AbstractRestServiceTest;
 
-
 /**
  * The Class MovementPerformanceIT.
  */
-@PerfTest(threads = 4, duration = 3000, warmUp = 1000)
-@Required(max = 5000, average = 3000, percentile95 = 3500, throughput = 2)
-public class MovementMovementSearchRestIT extends AbstractRestServiceTest {
 
-	/** The i. */
-	@Rule
-	public ContiPerfRule contiPerfRule = new ContiPerfRule();
+public class MovementMovementSearchRestIT extends AbstractRestServiceTest {
 
 	/**
 	 * Creates the movement search group test.
 	 *
-	 * @throws Exception the exception
+	 * @throws Exception
+	 *             the exception
 	 */
 	@Test
+	@Ignore
 	public void createMovementSearchGroupTest() throws Exception {
 		final HttpResponse response = Request.Post(BASE_URL + "movement/rest/search/group")
 				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken())
-				.bodyByteArray(writeValueAsString(createMovementSearchGroup()).getBytes()).execute()
-				.returnResponse();
+				.bodyByteArray(writeValueAsString(createMovementSearchGroup()).getBytes()).execute().returnResponse();
 
-		assertEquals(HttpStatus.SC_OK, response.getStatusLine().getStatusCode());
-		final Map<String, Object> data = getJsonMap(response);
-		assertFalse(data.isEmpty());
-		assertNotNull(data.get("data"));		
+		Map<String, Object> dataMap = checkSuccessResponseReturnMap(response);
 	}
 
 	/**
@@ -71,7 +58,8 @@ public class MovementMovementSearchRestIT extends AbstractRestServiceTest {
 	 * Gets the movement search group test.
 	 *
 	 * @return the movement search group test
-	 * @throws Exception the exception
+	 * @throws Exception
+	 *             the exception
 	 */
 	@Test
 	@Ignore
@@ -80,35 +68,31 @@ public class MovementMovementSearchRestIT extends AbstractRestServiceTest {
 				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken()).execute()
 				.returnResponse();
 
-		assertEquals(HttpStatus.SC_OK, response.getStatusLine().getStatusCode());
-		final Map<String, Object> data = getJsonMap(response);
-		assertFalse(data.isEmpty());
-		assertNotNull(data.get("data"));		
+		Map<String, Object> dataMap = checkSuccessResponseReturnMap(response);
 	}
 
 	/**
 	 * Update movement seach group test.
 	 *
-	 * @throws Exception the exception
+	 * @throws Exception
+	 *             the exception
 	 */
 	@Test
+	@Ignore
 	public void updateMovementSeachGroupTest() throws Exception {
 		final HttpResponse response = Request.Put(BASE_URL + "movement/rest/search/group")
 				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken())
-				.bodyByteArray(writeValueAsString(createMovementSearchGroup()).getBytes()).execute()
-				.returnResponse();
+				.bodyByteArray(writeValueAsString(createMovementSearchGroup()).getBytes()).execute().returnResponse();
 
-		assertEquals(HttpStatus.SC_OK, response.getStatusLine().getStatusCode());
-		final Map<String, Object> data = getJsonMap(response);
-		assertFalse(data.isEmpty());
-		assertNotNull(data.get("data"));		
+		Map<String, Object> dataMap = checkSuccessResponseReturnMap(response);
 	}
 
 	/**
 	 * Gets the movement search groups by user test.
 	 *
 	 * @return the movement search groups by user test
-	 * @throws Exception the exception
+	 * @throws Exception
+	 *             the exception
 	 */
 	@Test
 	@Ignore
@@ -117,16 +101,14 @@ public class MovementMovementSearchRestIT extends AbstractRestServiceTest {
 				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken()).execute()
 				.returnResponse();
 
-		assertEquals(HttpStatus.SC_OK, response.getStatusLine().getStatusCode());
-		final Map<String, Object> data = getJsonMap(response);
-		assertFalse(data.isEmpty());
-		assertNotNull(data.get("data"));		
+		Map<String, Object> dataMap = checkSuccessResponseReturnMap(response);
 	}
 
 	/**
 	 * Delete movement search group test.
 	 *
-	 * @throws Exception the exception
+	 * @throws Exception
+	 *             the exception
 	 */
 	@Test
 	@Ignore
@@ -135,10 +117,7 @@ public class MovementMovementSearchRestIT extends AbstractRestServiceTest {
 				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken()).execute()
 				.returnResponse();
 
-		assertEquals(HttpStatus.SC_OK, response.getStatusLine().getStatusCode());
-		final Map<String, Object> data = getJsonMap(response);
-		assertFalse(data.isEmpty());
-		assertNotNull(data.get("data"));		
+		Map<String, Object> dataMap = checkSuccessResponseReturnMap(response);
 	}
 
 }

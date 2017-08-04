@@ -16,13 +16,8 @@ package eu.europa.ec.fisheries.uvms.docker.validation.asset;
 import java.util.Map;
 
 import org.apache.http.HttpResponse;
-import org.apache.http.HttpStatus;
 import org.apache.http.client.fluent.Request;
-import org.databene.contiperf.PerfTest;
-import org.databene.contiperf.Required;
-import org.databene.contiperf.junit.ContiPerfRule;
 import org.junit.Ignore;
-import org.junit.Rule;
 import org.junit.Test;
 
 import eu.europa.ec.fisheries.uvms.docker.validation.common.AbstractRestServiceTest;
@@ -30,19 +25,15 @@ import eu.europa.ec.fisheries.uvms.docker.validation.common.AbstractRestServiceT
 /**
  * The Class AssetHistoryRestIT.
  */
-@PerfTest(threads = 4, duration = 3000, warmUp = 1000)
-@Required(max = 5000, average = 3000, percentile95 = 3500, throughput = 2)
-public class AssetHistoryRestIT extends AbstractRestServiceTest {
 
-	/** The i. */
-	@Rule
-	public ContiPerfRule contiPerfRule = new ContiPerfRule();
+public class AssetHistoryRestIT extends AbstractRestServiceTest {
 
 	/**
 	 * Gets the asset history list by asset id test.
 	 *
 	 * @return the asset history list by asset id test
-	 * @throws Exception the exception
+	 * @throws Exception
+	 *             the exception
 	 */
 	@Test
 	@Ignore
@@ -50,17 +41,15 @@ public class AssetHistoryRestIT extends AbstractRestServiceTest {
 		final HttpResponse response = Request.Get(BASE_URL + "asset/rest/history/asset?assetId=&maxNbr=100")
 				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken()).execute()
 				.returnResponse();
-		assertEquals(HttpStatus.SC_OK, response.getStatusLine().getStatusCode());
-		final Map<String, Object> data = getJsonMap(response);
-		assertFalse(data.isEmpty());
-		assertNotNull(data.get("data"));		
+		Map<String, Object> dataMap = checkSuccessResponseReturnMap(response);
 	}
 
 	/**
 	 * Gets the asset history by asset hist guid test.
 	 *
 	 * @return the asset history by asset hist guid test
-	 * @throws Exception the exception
+	 * @throws Exception
+	 *             the exception
 	 */
 	@Test
 	@Ignore
@@ -68,10 +57,7 @@ public class AssetHistoryRestIT extends AbstractRestServiceTest {
 		final HttpResponse response = Request.Get(BASE_URL + "asset/rest/history/{guid}")
 				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken()).execute()
 				.returnResponse();
-		assertEquals(HttpStatus.SC_OK, response.getStatusLine().getStatusCode());
-		final Map<String, Object> data = getJsonMap(response);
-		assertFalse(data.isEmpty());
-		assertNotNull(data.get("data"));		
+		Map<String, Object> dataMap = checkSuccessResponseReturnMap(response);
 	}
-	
+
 }

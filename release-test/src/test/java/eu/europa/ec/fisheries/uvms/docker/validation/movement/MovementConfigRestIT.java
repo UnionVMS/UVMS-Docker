@@ -13,36 +13,27 @@ copy of the GNU General Public License along with the IFDM Suite. If not, see <h
 */
 package eu.europa.ec.fisheries.uvms.docker.validation.movement;
 
+import java.util.List;
 import java.util.Map;
 
 import org.apache.http.HttpResponse;
-import org.apache.http.HttpStatus;
 import org.apache.http.client.fluent.Request;
-import org.databene.contiperf.PerfTest;
-import org.databene.contiperf.Required;
-import org.databene.contiperf.junit.ContiPerfRule;
-import org.junit.Rule;
 import org.junit.Test;
 
 import eu.europa.ec.fisheries.uvms.docker.validation.common.AbstractRestServiceTest;
 
-
 /**
  * The Class MovementConfigRestIT.
  */
-@PerfTest(threads = 4, duration = 3000, warmUp = 1000)
-@Required(max = 5000, average = 3000, percentile95 = 3500, throughput = 2)
-public class MovementConfigRestIT extends AbstractRestServiceTest {
 
-	/** The i. */
-	@Rule
-	public ContiPerfRule contiPerfRule = new ContiPerfRule();
+public class MovementConfigRestIT extends AbstractRestServiceTest {
 
 	/**
 	 * Gets the movement types test.
 	 *
 	 * @return the movement types test
-	 * @throws Exception the exception
+	 * @throws Exception
+	 *             the exception
 	 */
 	@Test
 	public void getMovementTypesTest() throws Exception {
@@ -50,33 +41,32 @@ public class MovementConfigRestIT extends AbstractRestServiceTest {
 				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken()).execute()
 				.returnResponse();
 
-		assertEquals(HttpStatus.SC_OK, response.getStatusLine().getStatusCode());
-		final Map<String, Object> data = getJsonMap(response);
-		assertFalse(data.isEmpty());
+		List dataList = checkSuccessResponseReturnType(response,List.class);
 	}
 
 	/**
 	 * Gets the segmet types test.
 	 *
 	 * @return the segmet types test
-	 * @throws Exception the exception
+	 * @throws Exception
+	 *             the exception
 	 */
 	@Test
-	public void getSegmetTypesTest() throws Exception {
+	public void getSegmentTypesTest() throws Exception {
 		final HttpResponse response = Request.Get(BASE_URL + "movement/rest/config/segmentCategoryTypes")
 				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken()).execute()
 				.returnResponse();
 
-		assertEquals(HttpStatus.SC_OK, response.getStatusLine().getStatusCode());
-		final Map<String, Object> data = getJsonMap(response);
-		assertFalse(data.isEmpty());
+		List dataList = checkSuccessResponseReturnType(response,List.class);
+
 	}
 
 	/**
 	 * Gets the movement search keys test.
 	 *
 	 * @return the movement search keys test
-	 * @throws Exception the exception
+	 * @throws Exception
+	 *             the exception
 	 */
 	@Test
 	public void getMovementSearchKeysTest() throws Exception {
@@ -84,17 +74,15 @@ public class MovementConfigRestIT extends AbstractRestServiceTest {
 				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken()).execute()
 				.returnResponse();
 
-		assertEquals(HttpStatus.SC_OK, response.getStatusLine().getStatusCode());
-		final Map<String, Object> data = getJsonMap(response);
-		assertFalse(data.isEmpty());
-		assertNotNull(data.get("data"));
+		List dataList = checkSuccessResponseReturnType(response,List.class);
 	}
 
 	/**
 	 * Gets the movement source types test.
 	 *
 	 * @return the movement source types test
-	 * @throws Exception the exception
+	 * @throws Exception
+	 *             the exception
 	 */
 	@Test
 	public void getMovementSourceTypesTest() throws Exception {
@@ -102,17 +90,15 @@ public class MovementConfigRestIT extends AbstractRestServiceTest {
 				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken()).execute()
 				.returnResponse();
 
-		assertEquals(HttpStatus.SC_OK, response.getStatusLine().getStatusCode());
-		final Map<String, Object> data = getJsonMap(response);
-		assertFalse(data.isEmpty());
-		assertNotNull(data.get("data"));
+		List dataList = checkSuccessResponseReturnType(response,List.class);
 	}
 
 	/**
 	 * Gets the activity types test.
 	 *
 	 * @return the activity types test
-	 * @throws Exception the exception
+	 * @throws Exception
+	 *             the exception
 	 */
 	@Test
 	public void getActivityTypesTest() throws Exception {
@@ -120,17 +106,15 @@ public class MovementConfigRestIT extends AbstractRestServiceTest {
 				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken()).execute()
 				.returnResponse();
 
-		assertEquals(HttpStatus.SC_OK, response.getStatusLine().getStatusCode());
-		final Map<String, Object> data = getJsonMap(response);
-		assertFalse(data.isEmpty());
-		assertNotNull(data.get("data"));
+		List dataList = checkSuccessResponseReturnType(response,List.class);
 	}
 
 	/**
 	 * Gets the configuration test.
 	 *
 	 * @return the configuration test
-	 * @throws Exception the exception
+	 * @throws Exception
+	 *             the exception
 	 */
 	@Test
 	public void getConfigurationTest() throws Exception {
@@ -138,10 +122,7 @@ public class MovementConfigRestIT extends AbstractRestServiceTest {
 				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken()).execute()
 				.returnResponse();
 
-		assertEquals(HttpStatus.SC_OK, response.getStatusLine().getStatusCode());
-		final Map<String, Object> data = getJsonMap(response);
-		assertFalse(data.isEmpty());
-		assertNotNull(data.get("data"));
+		Map<String, Object> dataMap = checkSuccessResponseReturnMap(response);
 	}
 
 }
