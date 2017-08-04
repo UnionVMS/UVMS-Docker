@@ -10,5 +10,10 @@
 		<dependency name="mobileterminal-module-3.0.10.ear" />
 		<dependency name="rules-module-3.0.1.ear" />
 		<dependency name="reporting-module-0.5.7.presweden1.ear" />
+		<dependency name="naf-module-3.0.0.ear" />
+		<dependency name="sweagencyemail-module-3.0.0.ear" />
+		<dependency name="flux-module-2.1.2.ear" />
+		<dependency name="twostage-module-3.0.0.ear" />
+		<dependency name="siriusone-module-3.0.0.ear" />
 	</jboss-deployment-dependencies>
 </jboss>

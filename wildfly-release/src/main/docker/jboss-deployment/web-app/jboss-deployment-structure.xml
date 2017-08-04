@@ -12,6 +12,11 @@
 			<module name="deployment.mobileterminal-module-3.0.10.ear" />
 			<module name="deployment.rules-module-3.0.1.ear" />
 			<module name="deployment.reporting-module-0.5.7.presweden1.ear" />
+			<module name="deployment.naf-module-3.0.0.ear" />
+			<module name="deployment.sweagencyemail-module-3.0.0.ear" />
+			<module name="deployment.flux-module-2.1.2.ear" />
+			<module name="deployment.twostage-module-3.0.0.ear" />
+			<module name="deployment.siriusone-module-3.0.0.ear" />
 		</dependencies>
 	</deployment>
 </jboss-deployment-structure>
