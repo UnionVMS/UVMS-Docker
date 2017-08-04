@@ -3,6 +3,7 @@ package eu.europa.ec.fisheries.uvms.docker.validation.mobileterminal;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.UUID;
 
 import org.apache.http.HttpResponse;
@@ -13,6 +14,7 @@ import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 
+import eu.europa.ec.fisheries.schema.mobileterminal.polltypes.v1.PollMobileTerminal;
 import eu.europa.ec.fisheries.schema.mobileterminal.types.v1.ComChannelAttribute;
 import eu.europa.ec.fisheries.schema.mobileterminal.types.v1.ComChannelCapability;
 import eu.europa.ec.fisheries.schema.mobileterminal.types.v1.ComChannelType;
@@ -82,7 +84,8 @@ public class AbstractMobileTerminalTest extends AbstractRestServiceTest {
 		mobileTerminalRequest.setMobileTerminalId(mobileTerminalId);
 		return mobileTerminalRequest;
 	}
-
+	
+	
 	private void addChannelCapability(ComChannelType comChannelType, String type, boolean value) {
 		ComChannelCapability channelCapability = new ComChannelCapability();
 

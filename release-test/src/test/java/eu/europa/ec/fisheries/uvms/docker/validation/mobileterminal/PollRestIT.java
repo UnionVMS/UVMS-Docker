@@ -22,13 +22,19 @@ import org.junit.Ignore;
 import org.junit.Test;
 
 import eu.europa.ec.fisheries.schema.mobileterminal.polltypes.v1.PollAttribute;
+import eu.europa.ec.fisheries.schema.mobileterminal.polltypes.v1.PollAttributeType;
 import eu.europa.ec.fisheries.schema.mobileterminal.polltypes.v1.PollListQuery;
 import eu.europa.ec.fisheries.schema.mobileterminal.polltypes.v1.PollMobileTerminal;
 import eu.europa.ec.fisheries.schema.mobileterminal.polltypes.v1.PollRequestType;
 import eu.europa.ec.fisheries.schema.mobileterminal.polltypes.v1.PollSearchCriteria;
 import eu.europa.ec.fisheries.schema.mobileterminal.polltypes.v1.PollType;
 import eu.europa.ec.fisheries.schema.mobileterminal.polltypes.v1.PollableQuery;
+import eu.europa.ec.fisheries.schema.mobileterminal.types.v1.ComChannelType;
 import eu.europa.ec.fisheries.schema.mobileterminal.types.v1.ListPagination;
+import eu.europa.ec.fisheries.schema.mobileterminal.types.v1.MobileTerminalAssignQuery;
+import eu.europa.ec.fisheries.schema.mobileterminal.types.v1.MobileTerminalAttribute;
+import eu.europa.ec.fisheries.schema.mobileterminal.types.v1.MobileTerminalType;
+import eu.europa.ec.fisheries.wsdl.asset.types.Asset;
 
 /**
  * The Class PollRestIT.
@@ -48,7 +54,7 @@ public class PollRestIT extends AbstractMobileTerminalTest {
 		final HttpResponse response = Request.Get(BASE_URL + "mobileterminal/rest/poll/running")
 				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken()).execute()
 				.returnResponse();
-		List dataList = checkSuccessResponseReturnType(response,List.class);
+		List dataList = checkSuccessResponseReturnType(response, List.class);
 	}
 
 	/**
@@ -60,13 +66,55 @@ public class PollRestIT extends AbstractMobileTerminalTest {
 	@Test
 	@Ignore
 	public void createPollTest() throws Exception {
+		Asset testAsset = createTestAsset();
+		MobileTerminalType createdMobileTerminalType = createMobileTerminalType();
+		
+		{
+			MobileTerminalAssignQuery mobileTerminalAssignQuery = new MobileTerminalAssignQuery();
+			mobileTerminalAssignQuery.setMobileTerminalId(createdMobileTerminalType.getMobileTerminalId());
+			mobileTerminalAssignQuery.setConnectId(testAsset.getAssetId().getGuid());
+		 	// Assign first
+			final HttpResponse response = Request
+					.Post(BASE_URL + "mobileterminal/rest/mobileterminal/assign?comment=comment")
+					.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken())
+					.bodyByteArray(writeValueAsString(mobileTerminalAssignQuery).getBytes()).execute()
+					.returnResponse();
+	
+			Map<String, Object> dataMap = checkSuccessResponseReturnMap(response);
+		}
+		
+		String comChannelId = createdMobileTerminalType.getChannels().get(0).getGuid();
+
 		PollRequestType pollRequestType = new PollRequestType();
 		pollRequestType.setPollType(PollType.MANUAL_POLL);
 		pollRequestType.setUserName("vms_admin_com");
 		pollRequestType.setComment("Manual poll created by test");
-		pollRequestType.getMobileTerminals().add(new PollMobileTerminal());
-		pollRequestType.getAttributes().add(new PollAttribute());
-		
+
+
+		PollMobileTerminal pollMobileTerminal = new PollMobileTerminal();
+		pollMobileTerminal.setComChannelId(comChannelId);
+		pollMobileTerminal.setConnectId(testAsset.getAssetId().getGuid());
+		pollMobileTerminal.setMobileTerminalId(createdMobileTerminalType.getMobileTerminalId().getGuid());
+
+		List<MobileTerminalAttribute> mobileTerminalAttributes = createdMobileTerminalType.getAttributes();
+		for (MobileTerminalAttribute mobileTerminalAttribute : mobileTerminalAttributes) {
+			
+			String type = mobileTerminalAttribute.getType();
+			String value = mobileTerminalAttribute.getValue();
+			PollAttribute pollAttribute = new PollAttribute();
+
+			try {
+				PollAttributeType pollAttributeType = PollAttributeType.valueOf(type);
+				pollAttribute.setKey(pollAttributeType);
+				pollAttribute.setValue(value);
+				pollRequestType.getAttributes().add(pollAttribute);
+			} catch (RuntimeException rte) {
+				// ignore 
+			}
+		}
+
+		pollRequestType.getMobileTerminals().add(pollMobileTerminal);
+
 		final HttpResponse response = Request.Post(BASE_URL + "mobileterminal/rest/poll")
 				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken())
 				.bodyByteArray(writeValueAsString(pollRequestType).getBytes()).execute().returnResponse();
@@ -137,7 +185,7 @@ public class PollRestIT extends AbstractMobileTerminalTest {
 		PollSearchCriteria pollSearchCriteria = new PollSearchCriteria();
 		pollListQuery.setPollSearchCriteria(pollSearchCriteria);
 		pollSearchCriteria.setIsDynamic(true);
-		
+
 		final HttpResponse response = Request.Post(BASE_URL + "mobileterminal/rest/poll/list")
 				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken())
 				.bodyByteArray(writeValueAsString(pollListQuery).getBytes()).execute().returnResponse();
@@ -160,7 +208,7 @@ public class PollRestIT extends AbstractMobileTerminalTest {
 		listPagination.setPage(1);
 		pollableQuery.setPagination(listPagination);
 		pollableQuery.getConnectIdList().add("connectId");
-		
+
 		final HttpResponse response = Request.Post(BASE_URL + "mobileterminal/rest/poll/pollable")
 				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken())
 				.bodyByteArray(writeValueAsString(pollableQuery).getBytes()).execute().returnResponse();
