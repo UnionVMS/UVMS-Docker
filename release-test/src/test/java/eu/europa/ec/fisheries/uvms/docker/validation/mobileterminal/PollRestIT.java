@@ -29,13 +29,12 @@ import eu.europa.ec.fisheries.schema.mobileterminal.polltypes.v1.PollSearchCrite
 import eu.europa.ec.fisheries.schema.mobileterminal.polltypes.v1.PollType;
 import eu.europa.ec.fisheries.schema.mobileterminal.polltypes.v1.PollableQuery;
 import eu.europa.ec.fisheries.schema.mobileterminal.types.v1.ListPagination;
-import eu.europa.ec.fisheries.uvms.docker.validation.common.AbstractRestServiceTest;
 
 /**
  * The Class PollRestIT.
  */
 
-public class PollRestIT extends AbstractRestServiceTest {
+public class PollRestIT extends AbstractMobileTerminalTest {
 
 	/**
 	 * Gets the areas test.
