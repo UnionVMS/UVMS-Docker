@@ -17,7 +17,6 @@ import java.util.Map;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.fluent.Request;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import eu.europa.ec.fisheries.schema.mobileterminal.types.v1.ListPagination;
@@ -25,6 +24,7 @@ import eu.europa.ec.fisheries.schema.mobileterminal.types.v1.MobileTerminalAssig
 import eu.europa.ec.fisheries.schema.mobileterminal.types.v1.MobileTerminalListQuery;
 import eu.europa.ec.fisheries.schema.mobileterminal.types.v1.MobileTerminalSearchCriteria;
 import eu.europa.ec.fisheries.schema.mobileterminal.types.v1.MobileTerminalType;
+import eu.europa.ec.fisheries.wsdl.asset.types.Asset;
 
 /**
  * The Class MobileTerminalRestIT.
@@ -111,12 +111,18 @@ public class MobileTerminalRestIT extends AbstractMobileTerminalTest {
 	 *             the exception
 	 */
 	@Test
-	@Ignore
 	public void assignMobileTerminalTest() throws Exception {
+		Asset testAsset = createTestAsset();
+		MobileTerminalType createdMobileTerminalType = createMobileTerminalType();
+
+		MobileTerminalAssignQuery mobileTerminalAssignQuery = new MobileTerminalAssignQuery();
+		mobileTerminalAssignQuery.setMobileTerminalId(createdMobileTerminalType.getMobileTerminalId());
+		mobileTerminalAssignQuery.setConnectId(testAsset.getAssetId().getGuid());
+
 		final HttpResponse response = Request
 				.Post(BASE_URL + "mobileterminal/rest/mobileterminal/assign?comment=comment")
 				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken())
-				.bodyByteArray(writeValueAsString(new MobileTerminalAssignQuery()).getBytes()).execute()
+				.bodyByteArray(writeValueAsString(mobileTerminalAssignQuery).getBytes()).execute()
 				.returnResponse();
 
 		Map<String, Object> dataMap = checkSuccessResponseReturnMap(response);
@@ -129,12 +135,27 @@ public class MobileTerminalRestIT extends AbstractMobileTerminalTest {
 	 *             the exception
 	 */
 	@Test
-	@Ignore
 	public void unAssignMobileTerminalTest() throws Exception {
+		Asset testAsset = createTestAsset();
+		MobileTerminalType createdMobileTerminalType = createMobileTerminalType();
+
+		MobileTerminalAssignQuery mobileTerminalAssignQuery = new MobileTerminalAssignQuery();
+		mobileTerminalAssignQuery.setMobileTerminalId(createdMobileTerminalType.getMobileTerminalId());
+		mobileTerminalAssignQuery.setConnectId(testAsset.getAssetId().getGuid());
+		{
+			// Assign first
+			final HttpResponse response = Request
+					.Post(BASE_URL + "mobileterminal/rest/mobileterminal/assign?comment=comment")
+					.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken())
+					.bodyByteArray(writeValueAsString(mobileTerminalAssignQuery).getBytes()).execute()
+					.returnResponse();
+	
+			Map<String, Object> dataMap = checkSuccessResponseReturnMap(response);
+		}
 		final HttpResponse response = Request
 				.Post(BASE_URL + "mobileterminal/rest/mobileterminal/unassign?comment=comment")
 				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken())
-				.bodyByteArray(writeValueAsString(new MobileTerminalAssignQuery()).getBytes()).execute()
+				.bodyByteArray(writeValueAsString(mobileTerminalAssignQuery).getBytes()).execute()
 				.returnResponse();
 
 		Map<String, Object> dataMap = checkSuccessResponseReturnMap(response);

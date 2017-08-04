@@ -29,6 +29,11 @@ import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.type.MapType;
 
+import eu.europa.ec.fisheries.uvms.docker.validation.asset.AssetTestHelper;
+import eu.europa.ec.fisheries.wsdl.asset.types.Asset;
+import eu.europa.ec.fisheries.wsdl.asset.types.AssetId;
+import eu.europa.ec.fisheries.wsdl.asset.types.AssetIdType;
+
 /**
  * The Class AbstractRestServiceTest.
  */
@@ -133,6 +138,29 @@ public abstract class AbstractRestServiceTest extends Assert {
 	protected final String writeValueAsString(final Object value) throws JsonProcessingException {
 		return OBJECT_MAPPER.writeValueAsString(value);
 	}
+
+	protected Asset createTestAsset() throws IOException, ClientProtocolException, JsonProcessingException,
+			JsonParseException, JsonMappingException {
+			
+				Asset asset = AssetTestHelper.helper_createAsset(AssetIdType.GUID);
+				final HttpResponse response = Request.Post(BASE_URL + "asset/rest/asset")
+						.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken())
+						.bodyByteArray(writeValueAsString(asset).getBytes()).execute().returnResponse();
+				Map<String, Object> dataMap = checkSuccessResponseReturnMap(response);
+			
+				Map<String, Object> assetMap = (Map<String, Object>) dataMap.get("assetId");
+				assertNotNull(assetMap);
+				String assetGuid = (String) assetMap.get("value");
+				assertNotNull(assetGuid);
+			
+				asset.setName(asset.getName() + "Changed");
+				AssetId assetId = new AssetId();
+				assetId.setGuid(assetGuid);
+				assetId.setValue(assetGuid);
+				assetId.setType(AssetIdType.GUID);
+				asset.setAssetId(assetId);
+				return asset;
+			}
 
 	/**
 	 * Gets the json map.

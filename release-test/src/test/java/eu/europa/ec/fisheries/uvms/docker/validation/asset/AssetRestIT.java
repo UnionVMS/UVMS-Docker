@@ -13,23 +13,15 @@ copy of the GNU General Public License along with the IFDM Suite. If not, see <h
 */
 package eu.europa.ec.fisheries.uvms.docker.validation.asset;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Map;
 
 import org.apache.http.HttpResponse;
-import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.fluent.Request;
 import org.junit.Test;
 
-import com.fasterxml.jackson.core.JsonParseException;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonMappingException;
-
 import eu.europa.ec.fisheries.uvms.docker.validation.common.AbstractRestServiceTest;
 import eu.europa.ec.fisheries.wsdl.asset.types.Asset;
-import eu.europa.ec.fisheries.wsdl.asset.types.AssetId;
-import eu.europa.ec.fisheries.wsdl.asset.types.AssetIdType;
 import eu.europa.ec.fisheries.wsdl.asset.types.AssetListCriteria;
 import eu.europa.ec.fisheries.wsdl.asset.types.AssetListCriteriaPair;
 import eu.europa.ec.fisheries.wsdl.asset.types.AssetListPagination;
@@ -131,29 +123,6 @@ public class AssetRestIT extends AbstractRestServiceTest {
 	@Test
 	public void createAssetTest() throws Exception {
 		createTestAsset();
-	}
-
-	private Asset createTestAsset() throws IOException, ClientProtocolException, JsonProcessingException,
-			JsonParseException, JsonMappingException {
-
-		Asset asset = AssetTestHelper.helper_createAsset(AssetIdType.GUID);
-		final HttpResponse response = Request.Post(BASE_URL + "asset/rest/asset")
-				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken())
-				.bodyByteArray(writeValueAsString(asset).getBytes()).execute().returnResponse();
-		Map<String, Object> dataMap = checkSuccessResponseReturnMap(response);
-
-		Map<String, Object> assetMap = (Map<String, Object>) dataMap.get("assetId");
-		assertNotNull(assetMap);
-		String assetGuid = (String) assetMap.get("value");
-		assertNotNull(assetGuid);
-
-		asset.setName(asset.getName() + "Changed");
-		AssetId assetId = new AssetId();
-		assetId.setGuid(assetGuid);
-		assetId.setValue(assetGuid);
-		assetId.setType(AssetIdType.GUID);
-		asset.setAssetId(assetId);
-		return asset;
 	}
 
 	/**
