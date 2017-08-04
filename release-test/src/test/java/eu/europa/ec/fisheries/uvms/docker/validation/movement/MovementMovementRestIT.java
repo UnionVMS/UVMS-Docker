@@ -13,6 +13,7 @@ copy of the GNU General Public License along with the IFDM Suite. If not, see <h
 */
 package eu.europa.ec.fisheries.uvms.docker.validation.movement;
 
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -22,8 +23,11 @@ import org.apache.http.client.fluent.Request;
 import org.junit.Ignore;
 import org.junit.Test;
 
+import eu.europa.ec.fisheries.schema.movement.search.v1.ListCriteria;
+import eu.europa.ec.fisheries.schema.movement.search.v1.ListPagination;
 import eu.europa.ec.fisheries.schema.movement.search.v1.MovementAreaAndTimeIntervalCriteria;
 import eu.europa.ec.fisheries.schema.movement.search.v1.MovementQuery;
+import eu.europa.ec.fisheries.schema.movement.search.v1.SearchKey;
 import eu.europa.ec.fisheries.uvms.docker.validation.common.AbstractRestServiceTest;
 
 /**
@@ -40,7 +44,6 @@ public class MovementMovementRestIT extends AbstractRestServiceTest {
 	 *             the exception
 	 */
 	@Test
-	@Ignore
 	public void getListByQueryTest() throws Exception {
 		final HttpResponse response = Request.Post(BASE_URL + "movement/rest/movement/list")
 				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken())
@@ -55,7 +58,19 @@ public class MovementMovementRestIT extends AbstractRestServiceTest {
 	 * @return the movement query
 	 */
 	private MovementQuery createMovementQuery() {
-		return new MovementQuery();
+		
+		MovementQuery movementQuery = new MovementQuery();
+		movementQuery.setExcludeFirstAndLastSegment(false);
+		ListPagination listPagination = new ListPagination();
+		listPagination.setListSize(BigInteger.valueOf(100));
+		listPagination.setPage(BigInteger.valueOf(1));
+		movementQuery.setPagination(listPagination);
+		ListCriteria listCriteria = new ListCriteria();
+		listCriteria.setKey(SearchKey.CONNECT_ID);
+		listCriteria.setValue("Some connectId");
+		movementQuery.getMovementSearchCriteria().add(listCriteria);
+		
+		return movementQuery;
 	}
 
 	/**
@@ -66,7 +81,6 @@ public class MovementMovementRestIT extends AbstractRestServiceTest {
 	 *             the exception
 	 */
 	@Test
-	@Ignore
 	public void getMinimalListByQueryTest() throws Exception {
 		final HttpResponse response = Request.Post(BASE_URL + "movement/rest/movement/list/minimal")
 				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken())

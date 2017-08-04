@@ -16,16 +16,22 @@ import javax.xml.bind.JAXBException;
 
 import org.apache.activemq.ActiveMQConnectionFactory;
 import org.junit.AfterClass;
-import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Ignore;
 import org.junit.Test;
 
+import eu.europa.ec.fisheries.schema.movement.asset.v1.AssetId;
+import eu.europa.ec.fisheries.schema.movement.asset.v1.AssetIdType;
+import eu.europa.ec.fisheries.schema.movement.asset.v1.AssetType;
 import eu.europa.ec.fisheries.schema.movement.module.v1.CreateMovementRequest;
 import eu.europa.ec.fisheries.schema.movement.module.v1.MovementModuleMethod;
+import eu.europa.ec.fisheries.schema.movement.v1.MovementActivityType;
+import eu.europa.ec.fisheries.schema.movement.v1.MovementActivityTypeType;
 import eu.europa.ec.fisheries.schema.movement.v1.MovementBaseType;
+import eu.europa.ec.fisheries.uvms.docker.validation.common.AbstractRestServiceTest;
+import eu.europa.ec.fisheries.wsdl.asset.types.Asset;
 
-public class MovementJmsIT extends Assert {
+public class MovementJmsIT extends AbstractRestServiceTest {
 
 	private static final String UVMS_MOVEMENT_REQUEST_QUEUE = "UVMSMovementEvent";
 
@@ -54,11 +60,26 @@ public class MovementJmsIT extends Assert {
 	}
 
 	@Test
+	@Ignore
 	public void createMovementRequestTest() throws Exception {
+		Asset testAsset = createTestAsset();
+
 		final CreateMovementRequest createMovementRequest = new CreateMovementRequest();
 		final MovementBaseType movementBaseType = new MovementBaseType();
+		AssetId assetId = new AssetId();
+		assetId.setAssetType(AssetType.VESSEL);
+		assetId.setIdType(AssetIdType.GUID);
+		assetId.setValue(testAsset.getAssetId().getGuid());
+		movementBaseType.setAssetId(assetId);
+		movementBaseType.setConnectId(testAsset.getAssetId().getGuid());
+		
+		MovementActivityType movementActivityType = new MovementActivityType();
+		movementBaseType.setActivity(movementActivityType);
+		movementActivityType.setMessageType(MovementActivityTypeType.ANC);		
+		
 		createMovementRequest.setMovement(movementBaseType);
 		createMovementRequest.setMethod(MovementModuleMethod.CREATE);
+		createMovementRequest.setUsername("vms_admin_com");
 
 		final Session session = connection.createSession(false, Session.AUTO_ACKNOWLEDGE);
 		final Queue queue = session.createQueue(UVMS_MOVEMENT_REQUEST_QUEUE);
