@@ -3,3 +3,5 @@ target
 logging.properties
 changelog/
 .idea/
+.settings/
+*.project

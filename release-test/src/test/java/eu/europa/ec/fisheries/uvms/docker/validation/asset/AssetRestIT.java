@@ -70,6 +70,7 @@ public class AssetRestIT extends AbstractRestServiceTest {
 
 	@Test
 	public void getAssetListItemCountTest() throws Exception {
+		Asset asset = createTestAsset();
 		AssetListQuery assetListQuery = new AssetListQuery();
 		AssetListPagination assetListPagination = new AssetListPagination();
 		assetListPagination.setListSize(100);
