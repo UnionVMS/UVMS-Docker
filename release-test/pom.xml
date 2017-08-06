@@ -195,6 +195,18 @@
 				<version>1.8</version>
 				<executions>
 					<execution>
+						<id>delayDockerStartup</id>
+						<phase>pre-integration-test</phase>
+						<configuration>
+							<tasks>
+								<sleep seconds="180"/>
+							</tasks>
+						</configuration>
+						<goals>
+							<goal>run</goal>
+						</goals>
+					</execution>
+					<execution>
 						<id>downloadMonitoringMetrics</id>
 						<phase>post-integration-test</phase>
 						<configuration>
