@@ -13,28 +13,21 @@ copy of the GNU General Public License along with the IFDM Suite. If not, see <h
 */
 package eu.europa.ec.fisheries.uvms.docker.validation.asset;
 
-import java.util.Date;
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
-import javax.ws.rs.Consumes;
-import javax.ws.rs.DELETE;
-import javax.ws.rs.POST;
-import javax.ws.rs.PUT;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
-import javax.ws.rs.Produces;
-import javax.ws.rs.core.MediaType;
-
 import org.apache.http.HttpResponse;
+import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.fluent.Request;
-import org.junit.Ignore;
 import org.junit.Test;
 
+import com.fasterxml.jackson.core.JsonParseException;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonMappingException;
+
 import eu.europa.ec.fisheries.uvms.docker.validation.common.AbstractRestServiceTest;
-import eu.europa.ec.fisheries.uvms.rest.security.RequiresFeature;
-import eu.europa.ec.fisheries.uvms.rest.security.UnionVMSFeature;
 import eu.europa.ec.fisheries.wsdl.asset.group.AssetGroup;
 import eu.europa.ec.fisheries.wsdl.asset.group.AssetGroupSearchField;
 import eu.europa.ec.fisheries.wsdl.asset.types.Asset;
@@ -58,7 +51,7 @@ public class AssetGroupRestIT extends AbstractRestServiceTest {
 		final HttpResponse response = Request.Get(BASE_URL + "asset/rest/group/list?user=vms_admin_com")
 				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken()).execute()
 				.returnResponse();
-		List dataList = checkSuccessResponseReturnType(response,List.class);
+		List dataList = checkSuccessResponseReturnType(response, List.class);
 	}
 
 	/**
@@ -69,58 +62,88 @@ public class AssetGroupRestIT extends AbstractRestServiceTest {
 	 *             the exception
 	 */
 	@Test
-	@Ignore
 	public void getAssetByIdTest() throws Exception {
-		final HttpResponse response = Request.Get(BASE_URL + "asset/rest/group/{id}")
+		AssetGroup testAssetGroup = createTestAssetGroup();
+		assertNotNull(testAssetGroup);
+
+		final HttpResponse response = Request.Get(BASE_URL + "asset/rest/group/" + testAssetGroup.getGuid())
 				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken()).execute()
 				.returnResponse();
 		Map<String, Object> dataMap = checkSuccessResponseReturnMap(response);
 	}
 
-
+	/**
+	 * Creates the asset group test.
+	 *
+	 * @throws Exception the exception
+	 */
 	@Test
-	@Ignore
 	public void createAssetGroupTest() throws Exception {
+		AssetGroup testAssetGroup = createTestAssetGroup();
+		assertNotNull(testAssetGroup);
+	}
+
+	/**
+	 * Creates the test asset group.
+	 *
+	 * @return the asset group
+	 * @throws Exception the exception
+	 */
+	private AssetGroup createTestAssetGroup() throws Exception {
 		Asset testAsset = createTestAsset();
-		
 		AssetGroup assetGroup = new AssetGroup();
-		assetGroup.setDynamic(true);
+		assetGroup.setDynamic(false);
 		assetGroup.setGlobal(false);
-		assetGroup.setName("Name" + new Date().getTime());
+		assetGroup.setUser("vms_admin_com");
+		assetGroup.setName("Name" + UUID.randomUUID().toString());
 		assetGroup.setGuid(UUID.randomUUID().toString());
-		
-		{
-			AssetGroupSearchField assetGroupSearchField = new AssetGroupSearchField();
-			assetGroupSearchField.setKey(ConfigSearchField.GUID);
-			assetGroupSearchField.setValue(testAsset.getAssetId().getGuid());
-			assetGroup.getSearchFields().add(assetGroupSearchField);
-		}
-		
+
+		AssetGroupSearchField assetGroupSearchField = new AssetGroupSearchField();
+		assetGroupSearchField.setKey(ConfigSearchField.GUID);
+		assetGroupSearchField.setValue(testAsset.getAssetId().getGuid());
+		assetGroup.getSearchFields().add(assetGroupSearchField);
+
 		final HttpResponse response = Request.Post(BASE_URL + "asset/rest/group")
 				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken())
 				.bodyByteArray(writeValueAsString(assetGroup).getBytes()).execute().returnResponse();
 		Map<String, Object> dataMap = checkSuccessResponseReturnMap(response);
+		String guid = (String) dataMap.get("guid");
+		assetGroup.setGuid(guid);
+		return assetGroup;
 	}
 
+	/**
+	 * Update asset group test.
+	 *
+	 * @throws Exception the exception
+	 */
 	@Test
-	@Ignore
 	public void updateAssetGroupTest() throws Exception {
-		AssetGroup assetGroup = new AssetGroup();
+		AssetGroup testAssetGroup = createTestAssetGroup();
+		assertNotNull(testAssetGroup);
+		testAssetGroup.setName("ChangedName" + UUID.randomUUID().toString());
+
+		
 		final HttpResponse response = Request.Put(BASE_URL + "asset/rest/group")
 				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken())
-				.bodyByteArray(writeValueAsString(assetGroup).getBytes()).execute().returnResponse();
+				.bodyByteArray(writeValueAsString(testAssetGroup).getBytes()).execute().returnResponse();
 		Map<String, Object> dataMap = checkSuccessResponseReturnMap(response);
 	}
 
+	/**
+	 * Delete asset group test.
+	 *
+	 * @throws Exception the exception
+	 */
 	@Test
-	@Ignore
 	public void deleteAssetGroupTest() throws Exception {
-		AssetGroup assetGroup = new AssetGroup();
-		final HttpResponse response = Request.Delete(BASE_URL + "asset/rest/group/{id}")
-				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken()).execute().returnResponse();
+		AssetGroup testAssetGroup = createTestAssetGroup();
+		assertNotNull(testAssetGroup);
+
+		final HttpResponse response = Request.Delete(BASE_URL + "asset/rest/group/" + testAssetGroup.getGuid())
+				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken()).execute()
+				.returnResponse();
 		Map<String, Object> dataMap = checkSuccessResponseReturnMap(response);
 	}
 
-
-	
 }
