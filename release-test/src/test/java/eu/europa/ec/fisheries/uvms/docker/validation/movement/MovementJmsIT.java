@@ -65,6 +65,7 @@ public class MovementJmsIT extends AbstractRestServiceTest {
 	}
 
 	@Test
+	@Ignore
 	public void createMovementRequestTest() throws Exception {
 		Asset testAsset = createTestAsset();
 
@@ -76,32 +77,32 @@ public class MovementJmsIT extends AbstractRestServiceTest {
 		assetId.setValue(testAsset.getAssetId().getGuid());
 		movementBaseType.setAssetId(assetId);
 		movementBaseType.setConnectId(testAsset.getAssetId().getGuid());
-		
+
 		MovementActivityType movementActivityType = new MovementActivityType();
 		movementBaseType.setActivity(movementActivityType);
-		movementActivityType.setMessageId(UUID.randomUUID().toString());		
-		movementActivityType.setMessageType(MovementActivityTypeType.ANC);		
-		
+		movementActivityType.setMessageId(UUID.randomUUID().toString());
+		movementActivityType.setMessageType(MovementActivityTypeType.ANC);
+
 		createMovementRequest.setMovement(movementBaseType);
 		createMovementRequest.setMethod(MovementModuleMethod.CREATE);
 		createMovementRequest.setUsername("vms_admin_com");
-		
-		
+
+
 		MovementPoint movementPoint = new MovementPoint();
 		// Funchal
 		movementPoint.setLongitude(-16.9);
 		movementPoint.setLatitude(32.6333333);
-		
+
 		movementPoint.setAltitude(5d);
 		movementBaseType.setPosition(movementPoint);
-		
-		
-		Date positionTime = getDate(2017, Calendar.DECEMBER, 24, 11, 45, 7, 980)	;	
+
+
+		Date positionTime = getDate(2017, Calendar.DECEMBER, 24, 11, 45, 7, 980)	;
 		movementBaseType.setPositionTime(positionTime);
-		
+
 		movementBaseType.setMovementType(MovementTypeType.POS);
-		
-		
+
+
 
 		final Session session = connection.createSession(false, Session.AUTO_ACKNOWLEDGE);
 		final Queue queue = session.createQueue(UVMS_MOVEMENT_REQUEST_QUEUE);
@@ -110,8 +111,8 @@ public class MovementJmsIT extends AbstractRestServiceTest {
 		messageProducer.setTimeToLive(1000000000);
 		String marshalled = marshall(createMovementRequest);
 		messageProducer.send(session.createTextMessage(marshalled));
-		
-		
+
+
 		final QueueBrowser browser = session.createBrowser(queue);
 		Enumeration enumeration = browser.getEnumeration();
 		while (enumeration.hasMoreElements()) {
@@ -119,9 +120,9 @@ public class MovementJmsIT extends AbstractRestServiceTest {
 			System.out.println(String.valueOf(obj));
 		}
 
-		
-		
-		
+
+
+
 		session.close();
 	}
 
