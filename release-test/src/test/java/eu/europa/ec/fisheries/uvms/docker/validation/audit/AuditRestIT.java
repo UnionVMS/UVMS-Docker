@@ -18,7 +18,6 @@ import java.util.Map;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.fluent.Request;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import eu.europa.ec.fisheries.schema.audit.search.v1.AuditLogListQuery;
@@ -39,7 +38,6 @@ public class AuditRestIT extends AbstractRestServiceTest {
 	 *             the exception
 	 */
 	@Test
-	@Ignore
 	public void getListByQueryTest() throws Exception {
 		AuditLogListQuery auditLogListQuery = new AuditLogListQuery();
 		ListPagination listPagination = new ListPagination();

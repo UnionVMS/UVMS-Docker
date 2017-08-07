@@ -14,6 +14,9 @@ copy of the GNU General Public License along with the IFDM Suite. If not, see <h
 package eu.europa.ec.fisheries.uvms.docker.validation.common;
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.Map;
 
 import org.apache.http.HttpResponse;
@@ -97,14 +100,13 @@ public abstract class AbstractRestServiceTest extends Assert {
 		return dataValue;
 	}
 
-	protected final <T> T checkSuccessResponseReturnType(final HttpResponse response,Class<T> classCast)
+	protected final <T> T checkSuccessResponseReturnType(final HttpResponse response, Class<T> classCast)
 			throws IOException, JsonParseException, JsonMappingException, ClientProtocolException {
 		final Map<String, Object> data = checkSuccessResponseReturnDataMap(response);
 		T dataValue = (T) data.get("data");
 		assertNotNull(dataValue);
 		return dataValue;
 	}
-
 
 	/**
 	 * Gets the valid jwt token.
@@ -142,38 +144,38 @@ public abstract class AbstractRestServiceTest extends Assert {
 
 	protected Asset createTestAsset() throws IOException, ClientProtocolException, JsonProcessingException,
 			JsonParseException, JsonMappingException {
-			
-				Asset asset = AssetTestHelper.helper_createAsset(AssetIdType.GUID);
-				final HttpResponse response = Request.Post(BASE_URL + "asset/rest/asset")
-						.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken())
-						.bodyByteArray(writeValueAsString(asset).getBytes()).execute().returnResponse();
-				Map<String, Object> dataMap = checkSuccessResponseReturnMap(response);
-			
-				Map<String, Object> assetMap = (Map<String, Object>) dataMap.get("assetId");
-				assertNotNull(assetMap);
-				String assetGuid = (String) assetMap.get("value");
-				assertNotNull(assetGuid);
-			
-				Map<String, Object> eventHistoryMap = (Map<String, Object>) dataMap.get("eventHistory");
-				assertNotNull(eventHistoryMap);
-				String eventId = (String) eventHistoryMap.get("eventId");
-				assertNotNull(eventId);
-				String eventCode = (String) eventHistoryMap.get("eventCode");
-				assertNotNull(eventCode);
-				
-				AssetHistoryId assetHistoryId = new AssetHistoryId();
-				assetHistoryId.setEventId(eventId);
-				assetHistoryId.setEventCode(EventCode.fromValue(eventCode));
-				asset.setEventHistory(assetHistoryId);				
-				
-				asset.setName(asset.getName() + "Changed");
-				AssetId assetId = new AssetId();
-				assetId.setGuid(assetGuid);
-				assetId.setValue(assetGuid);
-				assetId.setType(AssetIdType.GUID);
-				asset.setAssetId(assetId);
-				return asset;
-			}
+
+		Asset asset = AssetTestHelper.helper_createAsset(AssetIdType.GUID);
+		final HttpResponse response = Request.Post(BASE_URL + "asset/rest/asset")
+				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken())
+				.bodyByteArray(writeValueAsString(asset).getBytes()).execute().returnResponse();
+		Map<String, Object> dataMap = checkSuccessResponseReturnMap(response);
+
+		Map<String, Object> assetMap = (Map<String, Object>) dataMap.get("assetId");
+		assertNotNull(assetMap);
+		String assetGuid = (String) assetMap.get("value");
+		assertNotNull(assetGuid);
+
+		Map<String, Object> eventHistoryMap = (Map<String, Object>) dataMap.get("eventHistory");
+		assertNotNull(eventHistoryMap);
+		String eventId = (String) eventHistoryMap.get("eventId");
+		assertNotNull(eventId);
+		String eventCode = (String) eventHistoryMap.get("eventCode");
+		assertNotNull(eventCode);
+
+		AssetHistoryId assetHistoryId = new AssetHistoryId();
+		assetHistoryId.setEventId(eventId);
+		assetHistoryId.setEventCode(EventCode.fromValue(eventCode));
+		asset.setEventHistory(assetHistoryId);
+
+		asset.setName(asset.getName() + "Changed");
+		AssetId assetId = new AssetId();
+		assetId.setGuid(assetGuid);
+		assetId.setValue(assetGuid);
+		assetId.setType(AssetIdType.GUID);
+		asset.setAssetId(assetId);
+		return asset;
+	}
 
 	/**
 	 * Gets the json map.
@@ -196,6 +198,29 @@ public abstract class AbstractRestServiceTest extends Assert {
 		final MapType type = mapper.getTypeFactory().constructMapType(Map.class, String.class, Object.class);
 		final Map<String, Object> data = mapper.readValue(response.getEntity().getContent(), type);
 		return data;
+	}
+
+	protected String getDateAsString(int year4, int month, int day, int hour, int minute, int sec, int millis) {
+
+		Date date = getDate(year4, month, day, hour, minute, sec, millis);
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss Z");
+		return sdf.format(date);
+	}
+
+	protected Date getDate(int year4, int month, int day, int hour, int minute, int sec, int millis) {
+
+		Calendar myCalendar = Calendar.getInstance();
+		myCalendar.set(Calendar.YEAR, year4);
+		myCalendar.set(Calendar.MONTH, month);
+		myCalendar.set(Calendar.DAY_OF_MONTH, day);
+
+		myCalendar.set(Calendar.HOUR, hour);
+		myCalendar.set(Calendar.MINUTE, minute);
+		myCalendar.set(Calendar.SECOND, sec);
+		myCalendar.set(Calendar.MILLISECOND, millis);
+		Date date = myCalendar.getTime();
+		return date;
+
 	}
 
 }

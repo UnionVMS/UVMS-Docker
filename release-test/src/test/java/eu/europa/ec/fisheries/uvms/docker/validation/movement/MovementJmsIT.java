@@ -1,6 +1,9 @@
 package eu.europa.ec.fisheries.uvms.docker.validation.movement;
 
 import java.io.StringWriter;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.Enumeration;
 import java.util.UUID;
 
 import javax.jms.Connection;
@@ -28,6 +31,8 @@ import eu.europa.ec.fisheries.schema.movement.module.v1.MovementModuleMethod;
 import eu.europa.ec.fisheries.schema.movement.v1.MovementActivityType;
 import eu.europa.ec.fisheries.schema.movement.v1.MovementActivityTypeType;
 import eu.europa.ec.fisheries.schema.movement.v1.MovementBaseType;
+import eu.europa.ec.fisheries.schema.movement.v1.MovementPoint;
+import eu.europa.ec.fisheries.schema.movement.v1.MovementTypeType;
 import eu.europa.ec.fisheries.uvms.docker.validation.common.AbstractRestServiceTest;
 import eu.europa.ec.fisheries.wsdl.asset.types.Asset;
 
@@ -60,7 +65,6 @@ public class MovementJmsIT extends AbstractRestServiceTest {
 	}
 
 	@Test
-	@Ignore
 	public void createMovementRequestTest() throws Exception {
 		Asset testAsset = createTestAsset();
 
@@ -75,18 +79,49 @@ public class MovementJmsIT extends AbstractRestServiceTest {
 		
 		MovementActivityType movementActivityType = new MovementActivityType();
 		movementBaseType.setActivity(movementActivityType);
+		movementActivityType.setMessageId(UUID.randomUUID().toString());		
 		movementActivityType.setMessageType(MovementActivityTypeType.ANC);		
 		
 		createMovementRequest.setMovement(movementBaseType);
 		createMovementRequest.setMethod(MovementModuleMethod.CREATE);
 		createMovementRequest.setUsername("vms_admin_com");
+		
+		
+		MovementPoint movementPoint = new MovementPoint();
+		// Funchal
+		movementPoint.setLongitude(-16.9);
+		movementPoint.setLatitude(32.6333333);
+		
+		movementPoint.setAltitude(5d);
+		movementBaseType.setPosition(movementPoint);
+		
+		
+		Date positionTime = getDate(2017, Calendar.DECEMBER, 24, 11, 45, 7, 980)	;	
+		movementBaseType.setPositionTime(positionTime);
+		
+		movementBaseType.setMovementType(MovementTypeType.POS);
+		
+		
 
 		final Session session = connection.createSession(false, Session.AUTO_ACKNOWLEDGE);
 		final Queue queue = session.createQueue(UVMS_MOVEMENT_REQUEST_QUEUE);
 		final MessageProducer messageProducer = session.createProducer(queue);
 		messageProducer.setDeliveryMode(DeliveryMode.PERSISTENT);
 		messageProducer.setTimeToLive(1000000000);
-		messageProducer.send(session.createTextMessage(marshall(createMovementRequest)));
+		String marshalled = marshall(createMovementRequest);
+		messageProducer.send(session.createTextMessage(marshalled));
+		
+		
+		final QueueBrowser browser = session.createBrowser(queue);
+		Enumeration enumeration = browser.getEnumeration();
+		while (enumeration.hasMoreElements()) {
+			Object obj = enumeration.nextElement();
+			System.out.println(String.valueOf(obj));
+		}
+
+		
+		
+		
 		session.close();
 	}
 

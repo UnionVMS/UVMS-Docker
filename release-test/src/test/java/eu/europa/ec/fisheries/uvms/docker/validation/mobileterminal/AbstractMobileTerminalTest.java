@@ -120,22 +120,6 @@ public class AbstractMobileTerminalTest extends AbstractRestServiceTest {
 		attributes.add(serialNumberMobileTerminalAttribute);
 	}
 	
-	protected String getDate(int year4,int month ,int day, int hour,int minute ,int sec, int millis){
-		
-		Calendar myCalendar = Calendar.getInstance();
-		myCalendar.set(Calendar.YEAR, year4);
-		myCalendar.set(Calendar.MONTH, month);
-		myCalendar.set(Calendar.DAY_OF_MONTH, day);
-		
-		myCalendar.set(Calendar.HOUR, hour);
-		myCalendar.set(Calendar.MINUTE, minute);
-		myCalendar.set(Calendar.SECOND, sec);
-		myCalendar.set(Calendar.MILLISECOND, millis);
-		Date date = myCalendar.getTime();
-		
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss Z");
-		return sdf.format(date);
-	}
 
 
 }

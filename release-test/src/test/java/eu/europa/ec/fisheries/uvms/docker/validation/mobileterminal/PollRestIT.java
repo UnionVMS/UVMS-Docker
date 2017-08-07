@@ -264,11 +264,11 @@ public class PollRestIT extends AbstractMobileTerminalTest {
 
 		pollAttributes.add(startDate);
 		startDate.setKey(PollAttributeType.START_DATE);
-		startDate.setValue(getDate(2001, Calendar.JANUARY, 7, 1, 7, 23, 45));
+		startDate.setValue(getDateAsString(2001, Calendar.JANUARY, 7, 1, 7, 23, 45));
 
 		pollAttributes.add(endDate);
 		endDate.setKey(PollAttributeType.END_DATE);
-		endDate.setValue(getDate(2017, Calendar.DECEMBER, 24, 11, 45, 7, 980));
+		endDate.setValue(getDateAsString(2017, Calendar.DECEMBER, 24, 11, 45, 7, 980));
 
 		pollRequestType.getMobileTerminals().add(pollMobileTerminal);
 
