@@ -73,7 +73,7 @@ public class AssetTestHelper {
 	}
 
 	public static Asset helper_createAsset(AssetIdType assetIdType) {
-		String ircs = "F" + generateARandomStringWithMaxLength(6);
+		String ircs = "F" + generateARandomStringWithMaxLength(4);
 		return helper_createAsset(assetIdType, ircs);
 
 	}
