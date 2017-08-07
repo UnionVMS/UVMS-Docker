@@ -40,6 +40,13 @@
 			<classifier>date</classifier>
 			<scope>test</scope>
 		</dependency>
+		<dependency>		
+			<groupId>eu.europa.ec.fisheries.uvms.exchange</groupId>
+    		<artifactId>exchange-model</artifactId>
+    		<version>3.0.5</version>
+    		<classifier>date</classifier>
+			<scope>test</scope>    		
+		</dependency>
 		<dependency>
 			<groupId>eu.europa.ec.fisheries.uvms.asset</groupId>
 			<artifactId>asset-model</artifactId>
@@ -144,12 +151,18 @@
 									<version>3.0.10</version>
 									<overWrite>false</overWrite>
 									<outputDirectory>${project.build.directory}/warclasses/</outputDirectory>
-									<includes>WEB-INF/classes/**</includes>
+									<includes>WEB-INF/classes/**/*.*</includes>
 								</artifactItem>
+								<artifactItem>
+									<artifactId>exchange-rest</artifactId>
+									<groupId>eu.europa.ec.fisheries.uvms.exchange</groupId>
+									<type>war</type>
+									<version>3.0.6</version>
+									<overWrite>false</overWrite>
+									<outputDirectory>${project.build.directory}/warclasses/</outputDirectory>
+									<includes>WEB-INF/classes/**/*.*</includes>
+								</artifactItem>								
 							</artifactItems>
-							<includes>**/*.java</includes>
-							<excludes>**/*.properties</excludes>
-							<outputDirectory>${project.build.directory}/wars</outputDirectory>
 							<overWriteReleases>false</overWriteReleases>
 							<overWriteSnapshots>true</overWriteSnapshots>
 						</configuration>
@@ -170,7 +183,10 @@
 							<resources>
 								<resource>
 									<directory>${project.build.directory}/warclasses/WEB-INF/classes/</directory>
-									<filtering>false</filtering>
+									<filtering>false</filtering>									
+									<includes>
+										<include>**/*.class</include>
+									</includes>
 								</resource>
 							</resources>
 						</configuration>
