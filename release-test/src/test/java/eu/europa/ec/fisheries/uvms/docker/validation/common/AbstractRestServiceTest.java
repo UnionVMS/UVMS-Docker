@@ -31,8 +31,10 @@ import com.fasterxml.jackson.databind.type.MapType;
 
 import eu.europa.ec.fisheries.uvms.docker.validation.asset.AssetTestHelper;
 import eu.europa.ec.fisheries.wsdl.asset.types.Asset;
+import eu.europa.ec.fisheries.wsdl.asset.types.AssetHistoryId;
 import eu.europa.ec.fisheries.wsdl.asset.types.AssetId;
 import eu.europa.ec.fisheries.wsdl.asset.types.AssetIdType;
+import eu.europa.ec.fisheries.wsdl.asset.types.EventCode;
 
 /**
  * The Class AbstractRestServiceTest.
@@ -98,7 +100,6 @@ public abstract class AbstractRestServiceTest extends Assert {
 	protected final <T> T checkSuccessResponseReturnType(final HttpResponse response,Class<T> classCast)
 			throws IOException, JsonParseException, JsonMappingException, ClientProtocolException {
 		final Map<String, Object> data = checkSuccessResponseReturnDataMap(response);
-
 		T dataValue = (T) data.get("data");
 		assertNotNull(dataValue);
 		return dataValue;
@@ -153,6 +154,18 @@ public abstract class AbstractRestServiceTest extends Assert {
 				String assetGuid = (String) assetMap.get("value");
 				assertNotNull(assetGuid);
 			
+				Map<String, Object> eventHistoryMap = (Map<String, Object>) dataMap.get("eventHistory");
+				assertNotNull(eventHistoryMap);
+				String eventId = (String) eventHistoryMap.get("eventId");
+				assertNotNull(eventId);
+				String eventCode = (String) eventHistoryMap.get("eventCode");
+				assertNotNull(eventCode);
+				
+				AssetHistoryId assetHistoryId = new AssetHistoryId();
+				assetHistoryId.setEventId(eventId);
+				assetHistoryId.setEventCode(EventCode.fromValue(eventCode));
+				asset.setEventHistory(assetHistoryId);				
+				
 				asset.setName(asset.getName() + "Changed");
 				AssetId assetId = new AssetId();
 				assetId.setGuid(assetGuid);

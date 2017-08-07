@@ -13,14 +13,15 @@ copy of the GNU General Public License along with the IFDM Suite. If not, see <h
 */
 package eu.europa.ec.fisheries.uvms.docker.validation.asset;
 
+import java.util.List;
 import java.util.Map;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.fluent.Request;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import eu.europa.ec.fisheries.uvms.docker.validation.common.AbstractRestServiceTest;
+import eu.europa.ec.fisheries.wsdl.asset.types.Asset;
 
 /**
  * The Class AssetHistoryRestIT.
@@ -36,12 +37,12 @@ public class AssetHistoryRestIT extends AbstractRestServiceTest {
 	 *             the exception
 	 */
 	@Test
-	@Ignore
 	public void getAssetHistoryListByAssetIdTest() throws Exception {
-		final HttpResponse response = Request.Get(BASE_URL + "asset/rest/history/asset?assetId=&maxNbr=100")
+		Asset asset = createTestAsset();
+		final HttpResponse response = Request.Get(BASE_URL + "asset/rest/history/asset?assetId=" + asset.getAssetId().getGuid() + "&maxNbr=100")
 				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken()).execute()
 				.returnResponse();
-		Map<String, Object> dataMap = checkSuccessResponseReturnMap(response);
+		List dataList = checkSuccessResponseReturnType(response,List.class);
 	}
 
 	/**
@@ -52,9 +53,9 @@ public class AssetHistoryRestIT extends AbstractRestServiceTest {
 	 *             the exception
 	 */
 	@Test
-	@Ignore
 	public void getAssetHistoryByAssetHistGuidTest() throws Exception {
-		final HttpResponse response = Request.Get(BASE_URL + "asset/rest/history/{guid}")
+		Asset asset = createTestAsset();		
+		final HttpResponse response = Request.Get(BASE_URL + "asset/rest/history/" + asset.getEventHistory().getEventId())
 				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken()).execute()
 				.returnResponse();
 		Map<String, Object> dataMap = checkSuccessResponseReturnMap(response);
