@@ -15,10 +15,10 @@ package eu.europa.ec.fisheries.uvms.docker.validation.config;
 
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.fluent.Request;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import eu.europa.ec.fisheries.schema.config.types.v1.SettingType;
@@ -31,6 +31,12 @@ import eu.europa.ec.fisheries.uvms.docker.validation.common.AbstractRestServiceT
 
 public class SettingsRestIT extends AbstractRestServiceTest {
 
+	/**
+	 * Gets the by module name test.
+	 *
+	 * @return the by module name test
+	 * @throws Exception the exception
+	 */
 	@Test
 	public void getByModuleNameTest() throws Exception {
 		final HttpResponse response = Request.Get(BASE_URL + "config/rest/settings?moduleName=audit")
@@ -39,44 +45,97 @@ public class SettingsRestIT extends AbstractRestServiceTest {
 		List dataList = checkSuccessResponseReturnType(response,List.class);
 	}
 
+	/**
+	 * Gets the by id test.
+	 *
+	 * @return the by id test
+	 * @throws Exception the exception
+	 */
 	@Test
 	public void getByIdTest() throws Exception {
-		final HttpResponse response = Request.Get(BASE_URL + "config/rest/settings/1")
+		SettingType settingType = createTestSettingType();
+		assertNotNull(settingType);
+
+		final HttpResponse response = Request.Get(BASE_URL + "config/rest/settings/"+ settingType.getId())
 				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken()).execute()
 				.returnResponse();
 		Map<String, Object> dataMap = checkSuccessResponseReturnMap(response);
 	}
 
+	/**
+	 * Delete test.
+	 *
+	 * @throws Exception the exception
+	 */
 	@Test
-	@Ignore
 	public void deleteTest() throws Exception {
-		final HttpResponse response = Request.Delete(BASE_URL + "config/rest/settings/{id}")
+		SettingType settingType = createTestSettingType();
+		assertNotNull(settingType);
+		
+		final HttpResponse response = Request.Delete(BASE_URL + "config/rest/settings/" + settingType.getId())
 				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken()).execute()
 				.returnResponse();
 		Map<String, Object> dataMap = checkSuccessResponseReturnMap(response);
 	}
 
+	/**
+	 * Update test.
+	 *
+	 * @throws Exception the exception
+	 */
 	@Test
-	@Ignore
 	public void updateTest() throws Exception {
-		SettingType settingType = new SettingType();
-		final HttpResponse response = Request.Put(BASE_URL + "config/rest/settings/{id}")
+		SettingType settingType = createTestSettingType();
+		assertNotNull(settingType);
+
+		settingType.setDescription("Updated Desc" + UUID.randomUUID().toString());
+		
+		final HttpResponse response = Request.Put(BASE_URL + "config/rest/settings/" + settingType.getId())
 				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken())
 				.bodyByteArray(writeValueAsString(settingType).getBytes()).execute().returnResponse();
 		Map<String, Object> dataMap = checkSuccessResponseReturnMap(response);
 	}
 
+	/**
+	 * Creates the test.
+	 *
+	 * @throws Exception the exception
+	 */
 	@Test
-	@Ignore
 	public void createTest() throws Exception {
-		SettingsCreateQuery settingsCreateQuery = new SettingsCreateQuery();
+		SettingType settingType = createTestSettingType();
+		assertNotNull(settingType);
+	}
 
+	/**
+	 * Creates the test setting type.
+	 *
+	 * @return the setting type
+	 * @throws Exception the exception
+	 */
+	private SettingType createTestSettingType() throws Exception {
+		SettingsCreateQuery settingsCreateQuery = new SettingsCreateQuery();
+		settingsCreateQuery.setModuleName("audit");
+		SettingType settingType = new SettingType();
+		settingType.setDescription("SettingsRestIt" + UUID.randomUUID().toString());
+		settingType.setGlobal(false);
+		settingType.setKey("audit.key.SettingsRestIt." + UUID.randomUUID().toString());
+		settingType.setValue(UUID.randomUUID().toString());
+		
+		settingsCreateQuery.setSetting(settingType);
 		final HttpResponse response = Request.Post(BASE_URL + "config/rest/settings")
 				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken())
 				.bodyByteArray(writeValueAsString(settingsCreateQuery).getBytes()).execute().returnResponse();
 		Map<String, Object> dataMap = checkSuccessResponseReturnMap(response);
+		settingType.setId(Long.valueOf("" +dataMap.get("id")));
+		return settingType;
 	}
 
+	/**
+	 * Catalog test.
+	 *
+	 * @throws Exception the exception
+	 */
 	@Test
 	public void catalogTest() throws Exception {
 		final HttpResponse response = Request.Get(BASE_URL + "config/rest/catalog")
@@ -85,6 +144,12 @@ public class SettingsRestIT extends AbstractRestServiceTest {
 		Map<String, Object> dataMap = checkSuccessResponseReturnMap(response);
 	}
 
+	/**
+	 * Gets the pings test.
+	 *
+	 * @return the pings test
+	 * @throws Exception the exception
+	 */
 	@Test
 	public void getPingsTest() throws Exception {
 		final HttpResponse response = Request.Get(BASE_URL + "config/rest/pings")
@@ -93,6 +158,12 @@ public class SettingsRestIT extends AbstractRestServiceTest {
 		Map<String, Object> dataMap = checkSuccessResponseReturnMap(response);
 	}
 
+	/**
+	 * Gets the global settings test.
+	 *
+	 * @return the global settings test
+	 * @throws Exception the exception
+	 */
 	@Test
 	public void getGlobalSettingsTest() throws Exception {
 		final HttpResponse response = Request.Get(BASE_URL + "config/rest/globals")
