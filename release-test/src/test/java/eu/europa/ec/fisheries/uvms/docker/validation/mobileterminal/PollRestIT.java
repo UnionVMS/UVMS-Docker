@@ -13,12 +13,13 @@ copy of the GNU General Public License along with the IFDM Suite. If not, see <h
 */
 package eu.europa.ec.fisheries.uvms.docker.validation.mobileterminal;
 
+import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 import java.util.Map;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.fluent.Request;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import eu.europa.ec.fisheries.schema.mobileterminal.polltypes.v1.PollAttribute;
@@ -29,7 +30,6 @@ import eu.europa.ec.fisheries.schema.mobileterminal.polltypes.v1.PollRequestType
 import eu.europa.ec.fisheries.schema.mobileterminal.polltypes.v1.PollSearchCriteria;
 import eu.europa.ec.fisheries.schema.mobileterminal.polltypes.v1.PollType;
 import eu.europa.ec.fisheries.schema.mobileterminal.polltypes.v1.PollableQuery;
-import eu.europa.ec.fisheries.schema.mobileterminal.types.v1.ComChannelType;
 import eu.europa.ec.fisheries.schema.mobileterminal.types.v1.ListPagination;
 import eu.europa.ec.fisheries.schema.mobileterminal.types.v1.MobileTerminalAssignQuery;
 import eu.europa.ec.fisheries.schema.mobileterminal.types.v1.MobileTerminalAttribute;
@@ -65,58 +65,8 @@ public class PollRestIT extends AbstractMobileTerminalTest {
 	 */
 	@Test
 	public void createPollTest() throws Exception {
-		Asset testAsset = createTestAsset();
-		MobileTerminalType createdMobileTerminalType = createMobileTerminalType();
 
-		{
-			MobileTerminalAssignQuery mobileTerminalAssignQuery = new MobileTerminalAssignQuery();
-			mobileTerminalAssignQuery.setMobileTerminalId(createdMobileTerminalType.getMobileTerminalId());
-			mobileTerminalAssignQuery.setConnectId(testAsset.getAssetId().getGuid());
-			// Assign first
-			final HttpResponse response = Request
-					.Post(BASE_URL + "mobileterminal/rest/mobileterminal/assign?comment=comment")
-					.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken())
-					.bodyByteArray(writeValueAsString(mobileTerminalAssignQuery).getBytes()).execute().returnResponse();
-
-			Map<String, Object> dataMap = checkSuccessResponseReturnMap(response);
-		}
-
-		String comChannelId = createdMobileTerminalType.getChannels().get(0).getGuid();
-
-		PollRequestType pollRequestType = new PollRequestType();
-		pollRequestType.setPollType(PollType.MANUAL_POLL);
-		pollRequestType.setUserName("vms_admin_com");
-		pollRequestType.setComment("Manual poll created by test");
-
-		PollMobileTerminal pollMobileTerminal = new PollMobileTerminal();
-		pollMobileTerminal.setComChannelId(comChannelId);
-		pollMobileTerminal.setConnectId(testAsset.getAssetId().getGuid());
-		pollMobileTerminal.setMobileTerminalId(createdMobileTerminalType.getMobileTerminalId().getGuid());
-
-		List<MobileTerminalAttribute> mobileTerminalAttributes = createdMobileTerminalType.getAttributes();
-		for (MobileTerminalAttribute mobileTerminalAttribute : mobileTerminalAttributes) {
-
-			String type = mobileTerminalAttribute.getType();
-			String value = mobileTerminalAttribute.getValue();
-			PollAttribute pollAttribute = new PollAttribute();
-
-			try {
-				PollAttributeType pollAttributeType = PollAttributeType.valueOf(type);
-				pollAttribute.setKey(pollAttributeType);
-				pollAttribute.setValue(value);
-				pollRequestType.getAttributes().add(pollAttribute);
-			} catch (RuntimeException rte) {
-				// ignore
-			}
-		}
-
-		pollRequestType.getMobileTerminals().add(pollMobileTerminal);
-
-		final HttpResponse response = Request.Post(BASE_URL + "mobileterminal/rest/poll")
-				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken())
-				.bodyByteArray(writeValueAsString(pollRequestType).getBytes()).execute().returnResponse();
-
-		Map<String, Object> dataMap = checkSuccessResponseReturnMap(response);
+		Map<String, Object> dataMap = createPoll_Helper();
 	}
 
 	/**
@@ -126,12 +76,21 @@ public class PollRestIT extends AbstractMobileTerminalTest {
 	 *             the exception
 	 */
 	@Test
-	@Ignore
 	public void startProgramPollTest() throws Exception {
-		final HttpResponse response = Request.Put(BASE_URL + "mobileterminal/rest/poll/start/{id}")
+
+		Map<String, Object> programPollDataMap = createPoll_Helper();
+		ArrayList sendPolls = (ArrayList) programPollDataMap.get("sentPolls");
+		String uid = (String) sendPolls.get(0);
+
+		final HttpResponse response = Request.Put(BASE_URL + "mobileterminal/rest/poll/start/" + uid)
 				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken()).execute()
 				.returnResponse();
 		Map<String, Object> dataMap = checkSuccessResponseReturnMap(response);
+		
+		ArrayList values = (ArrayList)dataMap.get("value");
+		assertNotNull(values);
+		assertTrue(values.size() == 10);
+		
 	}
 
 	/**
@@ -141,12 +100,30 @@ public class PollRestIT extends AbstractMobileTerminalTest {
 	 *             the exception
 	 */
 	@Test
-	@Ignore
 	public void stopProgramPollTest() throws Exception {
-		final HttpResponse response = Request.Put(BASE_URL + "mobileterminal/rest/poll/stop/{id}")
+
+		// create a program poll
+		Map<String, Object> programPollDataMap = createPoll_Helper();
+		ArrayList sendPolls = (ArrayList) programPollDataMap.get("sentPolls");
+		String uid = (String) sendPolls.get(0);
+
+		// start it
+		{
+			final HttpResponse response = Request.Put(BASE_URL + "mobileterminal/rest/poll/start/" + uid)
+					.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken())
+					.execute().returnResponse();
+			Map<String, Object> dataMap = checkSuccessResponseReturnMap(response);
+		}
+
+		// stop it
+		final HttpResponse response = Request.Put(BASE_URL + "mobileterminal/rest/poll/stop/" + uid)
 				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken()).execute()
 				.returnResponse();
 		Map<String, Object> dataMap = checkSuccessResponseReturnMap(response);
+
+		ArrayList values = (ArrayList)dataMap.get("value");
+		assertNotNull(values);
+		assertTrue(values.size() == 10);
 	}
 
 	/**
@@ -156,12 +133,30 @@ public class PollRestIT extends AbstractMobileTerminalTest {
 	 *             the exception
 	 */
 	@Test
-	@Ignore
 	public void inactivateProgramPollTest() throws Exception {
-		final HttpResponse response = Request.Put(BASE_URL + "mobileterminal/rest/poll/inactivate/{id}")
+		
+		// create a program poll
+		Map<String, Object> programPollDataMap = createPoll_Helper();
+		ArrayList sendPolls = (ArrayList) programPollDataMap.get("sentPolls");
+		String uid = (String) sendPolls.get(0);
+
+		// start it
+		{
+			final HttpResponse response = Request.Put(BASE_URL + "mobileterminal/rest/poll/start/" + uid)
+					.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken())
+					.execute().returnResponse();
+			Map<String, Object> dataMap = checkSuccessResponseReturnMap(response);
+		}
+
+
+		// inactivate it
+		final HttpResponse response = Request.Put(BASE_URL + "mobileterminal/rest/poll/inactivate/" + uid)
 				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken()).execute()
 				.returnResponse();
 		Map<String, Object> dataMap = checkSuccessResponseReturnMap(response);
+		ArrayList values = (ArrayList)dataMap.get("value");
+		assertNotNull(values);
+		assertTrue(values.size() == 10);
 	}
 
 	/**
@@ -211,6 +206,79 @@ public class PollRestIT extends AbstractMobileTerminalTest {
 				.bodyByteArray(writeValueAsString(pollableQuery).getBytes()).execute().returnResponse();
 
 		Map<String, Object> dataMap = checkSuccessResponseReturnMap(response);
+	}
+
+	private Map<String, Object> createPoll_Helper() throws Exception {
+		Asset testAsset = createTestAsset();
+		MobileTerminalType createdMobileTerminalType = createMobileTerminalType();
+
+		{
+			MobileTerminalAssignQuery mobileTerminalAssignQuery = new MobileTerminalAssignQuery();
+			mobileTerminalAssignQuery.setMobileTerminalId(createdMobileTerminalType.getMobileTerminalId());
+			mobileTerminalAssignQuery.setConnectId(testAsset.getAssetId().getGuid());
+			// Assign first
+			final HttpResponse response = Request
+					.Post(BASE_URL + "mobileterminal/rest/mobileterminal/assign?comment=comment")
+					.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken())
+					.bodyByteArray(writeValueAsString(mobileTerminalAssignQuery).getBytes()).execute().returnResponse();
+
+			Map<String, Object> dataMap = checkSuccessResponseReturnMap(response);
+		}
+
+		String comChannelId = createdMobileTerminalType.getChannels().get(0).getGuid();
+
+		PollRequestType pollRequestType = new PollRequestType();
+		pollRequestType.setPollType(PollType.PROGRAM_POLL);
+		pollRequestType.setUserName("vms_admin_com");
+		pollRequestType.setComment("Manual poll created by test");
+
+		PollMobileTerminal pollMobileTerminal = new PollMobileTerminal();
+		pollMobileTerminal.setComChannelId(comChannelId);
+		pollMobileTerminal.setConnectId(testAsset.getAssetId().getGuid());
+		pollMobileTerminal.setMobileTerminalId(createdMobileTerminalType.getMobileTerminalId().getGuid());
+
+		List<MobileTerminalAttribute> mobileTerminalAttributes = createdMobileTerminalType.getAttributes();
+		List<PollAttribute> pollAttributes = pollRequestType.getAttributes();
+
+		for (MobileTerminalAttribute mobileTerminalAttribute : mobileTerminalAttributes) {
+			String type = mobileTerminalAttribute.getType();
+			String value = mobileTerminalAttribute.getValue();
+			PollAttribute pollAttribute = new PollAttribute();
+			try {
+				PollAttributeType pollAttributeType = PollAttributeType.valueOf(type);
+				pollAttribute.setKey(pollAttributeType);
+				pollAttribute.setValue(value);
+				pollAttributes.add(pollAttribute);
+			} catch (RuntimeException rte) {
+				// ignore
+			}
+		}
+
+		PollAttribute frequency = new PollAttribute();
+		PollAttribute startDate = new PollAttribute();
+		PollAttribute endDate = new PollAttribute();
+
+		pollAttributes.add(frequency);
+		frequency.setKey(PollAttributeType.FREQUENCY);
+		frequency.setValue("1000");
+
+		pollAttributes.add(startDate);
+		startDate.setKey(PollAttributeType.START_DATE);
+		startDate.setValue(getDate(2001, Calendar.JANUARY, 7, 1, 7, 23, 45));
+
+		pollAttributes.add(endDate);
+		endDate.setKey(PollAttributeType.END_DATE);
+		endDate.setValue(getDate(2017, Calendar.DECEMBER, 24, 11, 45, 7, 980));
+
+		pollRequestType.getMobileTerminals().add(pollMobileTerminal);
+
+		final HttpResponse response = Request.Post(BASE_URL + "mobileterminal/rest/poll")
+				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken())
+				.bodyByteArray(writeValueAsString(pollRequestType).getBytes()).execute().returnResponse();
+
+		Map<String, Object> dataMap = checkSuccessResponseReturnMap(response);
+
+		return dataMap;
 	}
 
 }
