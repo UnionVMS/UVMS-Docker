@@ -13,15 +13,21 @@ copy of the GNU General Public License along with the IFDM Suite. If not, see <h
 */
 package eu.europa.ec.fisheries.uvms.docker.validation.movement;
 
+import java.math.BigInteger;
+import java.net.URLEncoder;
+import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.fluent.Request;
-import org.junit.Ignore;
 import org.junit.Test;
 
+import eu.europa.ec.fisheries.schema.movement.search.v1.GroupListCriteria;
 import eu.europa.ec.fisheries.schema.movement.search.v1.MovementSearchGroup;
+import eu.europa.ec.fisheries.schema.movement.search.v1.SearchKeyType;
 import eu.europa.ec.fisheries.uvms.docker.validation.common.AbstractRestServiceTest;
+import eu.europa.ec.fisheries.wsdl.asset.types.Asset;
 
 /**
  * The Class MovementPerformanceIT.
@@ -36,22 +42,37 @@ public class MovementMovementSearchRestIT extends AbstractRestServiceTest {
 	 *             the exception
 	 */
 	@Test
-	@Ignore
 	public void createMovementSearchGroupTest() throws Exception {
-		final HttpResponse response = Request.Post(BASE_URL + "movement/rest/search/group")
-				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken())
-				.bodyByteArray(writeValueAsString(createMovementSearchGroup()).getBytes()).execute().returnResponse();
-
-		Map<String, Object> dataMap = checkSuccessResponseReturnMap(response);
+		MovementSearchGroup createMovementSearchGroup = createMovementSearchGroup();
+		assertNotNull(createMovementSearchGroup);
 	}
 
 	/**
 	 * Creates the movement search group.
 	 *
 	 * @return the movement search group
+	 * @throws Exception the exception
 	 */
-	public MovementSearchGroup createMovementSearchGroup() {
-		return new MovementSearchGroup();
+	private MovementSearchGroup createMovementSearchGroup() throws Exception {
+		Asset testAsset = createTestAsset();
+
+		MovementSearchGroup movementSearchGroup = new MovementSearchGroup();
+		movementSearchGroup.setDynamic(false);
+		movementSearchGroup.setUser("vms_admin_com");
+		movementSearchGroup.setName("Name" + UUID.randomUUID().toString());
+		GroupListCriteria groupListCriteria = new GroupListCriteria();
+		groupListCriteria.setType(SearchKeyType.ASSET);
+		groupListCriteria.setKey("GUID");
+		groupListCriteria.setValue(testAsset.getAssetId().getGuid());
+		movementSearchGroup.getSearchFields().add(groupListCriteria);
+		
+		final HttpResponse response = Request.Post(BASE_URL + "movement/rest/search/group")
+				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken())
+				.bodyByteArray(writeValueAsString(movementSearchGroup).getBytes()).execute().returnResponse();
+
+		Map<String, Object> dataMap = checkSuccessResponseReturnMap(response);
+		movementSearchGroup.setId(BigInteger.valueOf(Long.valueOf(""+ dataMap.get("id"))));
+		return movementSearchGroup;
 	}
 
 	/**
@@ -62,9 +83,11 @@ public class MovementMovementSearchRestIT extends AbstractRestServiceTest {
 	 *             the exception
 	 */
 	@Test
-	@Ignore
 	public void getMovementSearchGroupTest() throws Exception {
-		final HttpResponse response = Request.Get(BASE_URL + "movement/rest/search/group/{id}")
+		MovementSearchGroup createMovementSearchGroup = createMovementSearchGroup();
+		assertNotNull(createMovementSearchGroup);
+
+		final HttpResponse response = Request.Get(BASE_URL + "movement/rest/search/group/" + createMovementSearchGroup.getId())
 				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken()).execute()
 				.returnResponse();
 
@@ -78,11 +101,15 @@ public class MovementMovementSearchRestIT extends AbstractRestServiceTest {
 	 *             the exception
 	 */
 	@Test
-	@Ignore
 	public void updateMovementSeachGroupTest() throws Exception {
+		MovementSearchGroup movementSearchGroup = createMovementSearchGroup();
+		assertNotNull(movementSearchGroup);
+
+		movementSearchGroup.setName("ChangedName" + UUID.randomUUID().toString());
+		
 		final HttpResponse response = Request.Put(BASE_URL + "movement/rest/search/group")
 				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken())
-				.bodyByteArray(writeValueAsString(createMovementSearchGroup()).getBytes()).execute().returnResponse();
+				.bodyByteArray(writeValueAsString(movementSearchGroup).getBytes()).execute().returnResponse();
 
 		Map<String, Object> dataMap = checkSuccessResponseReturnMap(response);
 	}
@@ -95,13 +122,12 @@ public class MovementMovementSearchRestIT extends AbstractRestServiceTest {
 	 *             the exception
 	 */
 	@Test
-	@Ignore
 	public void getMovementSearchGroupsByUserTest() throws Exception {
-		final HttpResponse response = Request.Get(BASE_URL + "movement/rest/search/group/?user=usernmae")
+		final HttpResponse response = Request.Get(BASE_URL + "movement/rest/search/groups/?user=" + URLEncoder.encode("vms_admin_com", "UTF-8"))
 				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken()).execute()
 				.returnResponse();
 
-		Map<String, Object> dataMap = checkSuccessResponseReturnMap(response);
+		List dataList = checkSuccessResponseReturnType(response,List.class);
 	}
 
 	/**
@@ -111,9 +137,11 @@ public class MovementMovementSearchRestIT extends AbstractRestServiceTest {
 	 *             the exception
 	 */
 	@Test
-	@Ignore
 	public void deleteMovementSearchGroupTest() throws Exception {
-		final HttpResponse response = Request.Delete(BASE_URL + "movement/rest/search/group/{id}")
+		MovementSearchGroup createMovementSearchGroup = createMovementSearchGroup();
+		assertNotNull(createMovementSearchGroup);
+
+		final HttpResponse response = Request.Delete(BASE_URL + "movement/rest/search/group/" + createMovementSearchGroup.getId())
 				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken()).execute()
 				.returnResponse();
 
