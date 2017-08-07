@@ -64,32 +64,29 @@ public class PollRestIT extends AbstractMobileTerminalTest {
 	 *             the exception
 	 */
 	@Test
-	@Ignore
 	public void createPollTest() throws Exception {
 		Asset testAsset = createTestAsset();
 		MobileTerminalType createdMobileTerminalType = createMobileTerminalType();
-		
+
 		{
 			MobileTerminalAssignQuery mobileTerminalAssignQuery = new MobileTerminalAssignQuery();
 			mobileTerminalAssignQuery.setMobileTerminalId(createdMobileTerminalType.getMobileTerminalId());
 			mobileTerminalAssignQuery.setConnectId(testAsset.getAssetId().getGuid());
-		 	// Assign first
+			// Assign first
 			final HttpResponse response = Request
 					.Post(BASE_URL + "mobileterminal/rest/mobileterminal/assign?comment=comment")
 					.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken())
-					.bodyByteArray(writeValueAsString(mobileTerminalAssignQuery).getBytes()).execute()
-					.returnResponse();
-	
+					.bodyByteArray(writeValueAsString(mobileTerminalAssignQuery).getBytes()).execute().returnResponse();
+
 			Map<String, Object> dataMap = checkSuccessResponseReturnMap(response);
 		}
-		
+
 		String comChannelId = createdMobileTerminalType.getChannels().get(0).getGuid();
 
 		PollRequestType pollRequestType = new PollRequestType();
 		pollRequestType.setPollType(PollType.MANUAL_POLL);
 		pollRequestType.setUserName("vms_admin_com");
 		pollRequestType.setComment("Manual poll created by test");
-
 
 		PollMobileTerminal pollMobileTerminal = new PollMobileTerminal();
 		pollMobileTerminal.setComChannelId(comChannelId);
@@ -98,7 +95,7 @@ public class PollRestIT extends AbstractMobileTerminalTest {
 
 		List<MobileTerminalAttribute> mobileTerminalAttributes = createdMobileTerminalType.getAttributes();
 		for (MobileTerminalAttribute mobileTerminalAttribute : mobileTerminalAttributes) {
-			
+
 			String type = mobileTerminalAttribute.getType();
 			String value = mobileTerminalAttribute.getValue();
 			PollAttribute pollAttribute = new PollAttribute();
@@ -109,7 +106,7 @@ public class PollRestIT extends AbstractMobileTerminalTest {
 				pollAttribute.setValue(value);
 				pollRequestType.getAttributes().add(pollAttribute);
 			} catch (RuntimeException rte) {
-				// ignore 
+				// ignore
 			}
 		}
 

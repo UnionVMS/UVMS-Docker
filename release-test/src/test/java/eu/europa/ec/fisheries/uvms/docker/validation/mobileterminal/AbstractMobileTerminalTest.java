@@ -1,6 +1,7 @@
 package eu.europa.ec.fisheries.uvms.docker.validation.mobileterminal;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -76,6 +77,14 @@ public class AbstractMobileTerminalTest extends AbstractRestServiceTest {
 		assertNotNull(assetMap);
 		String mobileTerminalGuid = (String) assetMap.get("guid");
 		assertNotNull(mobileTerminalGuid);
+		
+		ArrayList channelsList =   (ArrayList)dataMap.get("channels");
+		assertNotNull(channelsList);
+		Map<String, Object> channelMap = (Map<String, Object>) channelsList.get(0);
+		assertNotNull(channelMap);
+		String channelGuid = (String)channelMap.get("guid");
+		comChannelType.setGuid(channelGuid);
+
 
 		mobileTerminalRequest.setId((Integer) dataMap.get("id"));
 
