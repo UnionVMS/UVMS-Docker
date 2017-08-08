@@ -32,7 +32,7 @@ ARG AUDIT_VERSION=3.0.4
 ARG EXCHANGE_VERSION=3.0.5
 ARG MOVEMENT_VERSION=3.0.7
 ARG MOBILE_TERMINAL_VERSION=3.0.4
-ARG RULES_VERSION=3.0.3
+ARG RULES_VERSION=3.0.5
 ARG SPATIAL_VERSION=1.0.4
 ARG REPORTING_VERSION=0.5.2
 ARG USM_VERSION=2.0.0
@@ -77,17 +77,14 @@ RUN unzip -q /liquibase/rules/rules-dbaccess-$RULES_VERSION -d /liquibase/rules
 RUN cp -r /liquibase/rules/UVMS-RulesModule-DB-rules-dbaccess-$RULES_VERSION/* /liquibase/rules/
 
 # Spatial - Remeber to update this when spatial starts releasing on Github
-##ADD $GITHUB/UVMS-SpatialModule-DB/archive/UVMS-SpatialModule-DB-$SPATIAL_VERSION.zip /liquibase/spatial
-##RUN unzip -q /liquibase/spatial/spatial-dbaccess-$SPATIAL_VERSION -d /liquibase/spatial
-##RUN cp -r /liquibase/spatial/UVMS-SpatialModule-DB-spatial-dbaccess-$SPATIAL_VERSION/* /liquibase/spatial/
-#No release tags for spatial, commit using 0.5.2 commit
-#ADD $GITHUB/UVMS-SpatialModule-DB/archive/418c616e9daf5c1274097fb32216b18b7f3a019e.zip /liquibase/spatial
-#RUN unzip -q /liquibase/spatial/418c616e9daf5c1274097fb32216b18b7f3a019e.zip -d /liquibase/spatial
-#RUN cp -r /liquibase/spatial/UVMS-SpatialModule-DB-418c616e9daf5c1274097fb32216b18b7f3a019e/* /liquibase/spatial/
-# Latest commit Dec 9 2016 
+#ADD https://github.com/UnionVMS/UVMS-SpatialModule-DB/archive/spatial-db-$SPATIAL_VERSION.zip /liquibase/spatial
+#RUN unzip -q /liquibase/spatial/spatial-db-$SPATIAL_VERSION.zip -d /liquibase/spatial
+#RUN cp -r /liquibase/spatial/UVMS-SpatialModule-DB-spatial-db-$SPATIAL_VERSION/* /liquibase/spatial/
+# Latest commit Dec 9 2016 (contains countries)
 ADD $GITHUB/UVMS-SpatialModule-DB/archive/f296d9afced50e6c3090bb727264572704942946.zip /liquibase/spatial
 RUN unzip -q /liquibase/spatial/f296d9afced50e6c3090bb727264572704942946.zip -d /liquibase/spatial
 RUN cp -r /liquibase/spatial/UVMS-SpatialModule-DB-f296d9afced50e6c3090bb727264572704942946/* /liquibase/spatial/
+
 
 # Reporting - Remeber to update this when reporting starts releasing on Github
 ADD $GITHUB/UVMS-ReportingModule-DB/archive/reporting-db-$REPORTING_VERSION.zip /liquibase/reporting

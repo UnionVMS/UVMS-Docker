@@ -815,9 +815,24 @@
                                 UVMSAuditEvent
                             </config-property>
                         </admin-object>
+                         <admin-object class-name="org.apache.activemq.command.ActiveMQQueue" jndi-name="java:/jms/queue/UVMSMdr" use-java-context="true" pool-name="UVMSMdr">
+                            <config-property name="PhysicalName">
+                                UVMSMdr
+                            </config-property>
+                        </admin-object>
                         <admin-object class-name="org.apache.activemq.command.ActiveMQQueue" jndi-name="java:/jms/queue/UVMSMdrEvent" use-java-context="true" pool-name="UVMSMdrEvent">
                             <config-property name="PhysicalName">
                                 UVMSMdrEvent
+                            </config-property>
+                        </admin-object>
+                        <admin-object class-name="org.apache.activemq.command.ActiveMQQueue" jndi-name="java:/jms/queue/UVMSSalesEvent" use-java-context="true" pool-name="UVMSSalesEvent">
+                            <config-property name="PhysicalName">
+                                UVMSSalesEvent
+                            </config-property>
+                        </admin-object>
+                        <admin-object class-name="org.apache.activemq.command.ActiveMQQueue" jndi-name="java:/jms/queue/UVMSSales" use-java-context="true" pool-name="UVMSSales">
+                            <config-property name="PhysicalName">
+                                UVMSSales
                             </config-property>
                         </admin-object>
                     </admin-objects>
