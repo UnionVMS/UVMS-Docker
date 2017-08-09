@@ -14,6 +14,7 @@ copy of the GNU General Public License along with the IFDM Suite. If not, see <h
 package eu.europa.ec.fisheries.uvms.docker.validation.exchange;
 
 import java.util.List;
+import java.util.Map;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.fluent.Request;
@@ -21,9 +22,11 @@ import org.junit.Ignore;
 import org.junit.Test;
 
 import eu.europa.ec.fisheries.schema.exchange.v1.ExchangeListCriteria;
+import eu.europa.ec.fisheries.schema.exchange.v1.ExchangeListCriteriaPair;
 import eu.europa.ec.fisheries.schema.exchange.v1.ExchangeListPagination;
 import eu.europa.ec.fisheries.schema.exchange.v1.ExchangeListQuery;
 import eu.europa.ec.fisheries.schema.exchange.v1.ExchangeLogStatusTypeType;
+import eu.europa.ec.fisheries.schema.exchange.v1.SearchField;
 import eu.europa.ec.fisheries.uvms.docker.validation.common.AbstractRestServiceTest;
 
 /**
@@ -38,19 +41,28 @@ public class ExchangeLogRestIT extends AbstractRestServiceTest {
 	 * @throws Exception the exception
 	 */
 	@Test
-	@Ignore
 	public void getLogListByCriteriaTest() throws Exception {
 		ExchangeListQuery exchangeListQuery = new ExchangeListQuery();
 		ExchangeListCriteria exchangeListCriteria = new ExchangeListCriteria();
+		exchangeListCriteria.setIsDynamic(true);
+		ExchangeListCriteriaPair exchangeListCriteriaPair = new ExchangeListCriteriaPair();
+		exchangeListCriteriaPair.setKey(SearchField.STATUS);
+		exchangeListCriteriaPair.setValue("SUCCESSFUL");
+		exchangeListCriteria.getCriterias().add(exchangeListCriteriaPair);
+		
 		exchangeListQuery.setExchangeSearchCriteria(exchangeListCriteria);
 		ExchangeListPagination exchangeListPagination = new ExchangeListPagination();
+		exchangeListPagination.setPage(1);
+		exchangeListPagination.setListSize(100);
 		exchangeListQuery.setPagination(exchangeListPagination);
 		
 		final HttpResponse response = Request.Post(BASE_URL + "exchange/rest/exchange/list")
 				.bodyByteArray(writeValueAsString(exchangeListQuery).getBytes())
 				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken()).execute()
 				.returnResponse();
-		List dataList = checkSuccessResponseReturnType(response,List.class);
+		Map<String, Object> dataMap = checkSuccessResponseReturnMap(response);
+		List<List> logList = (List) dataMap.get("logList");
+		assertFalse(logList.isEmpty());
 	}
 
 	/**
