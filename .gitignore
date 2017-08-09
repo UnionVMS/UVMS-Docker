@@ -3,3 +3,5 @@ target
 logging.properties
 changelog/
 .idea/
+*.DS_Store
+*.Rhistory
