@@ -3,6 +3,7 @@ package eu.europa.ec.fisheries.uvms.docker.validation.movement;
 import java.io.IOException;
 import java.io.StringReader;
 import java.io.StringWriter;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -58,6 +59,8 @@ public class MovementJmsIT extends AbstractRestServiceTest {
 	private static final ConnectionFactory connectionFactory = new ActiveMQConnectionFactory("tcp://localhost:61616");
 	private static Connection connection;
 	private static volatile Message responseMessage;
+	private static volatile List<Message> responseMessageList = new ArrayList<>();
+	
 
 	@BeforeClass
 	public static void beforeClass() {
@@ -109,36 +112,38 @@ public class MovementJmsIT extends AbstractRestServiceTest {
 		// assertEquals(createMovementRequest.getMovement().getPosition().getAltitude(),createMovementResponse.getMovement().getPosition().getAltitude());
 	}
 
-	@Test(timeout = 360000)
+	@Test(timeout = 720000)
 	public void createRouteTest() throws Exception {
 		String ResponseQueueName = "createMovementRouteRequestTest" + UUID.randomUUID().toString().replaceAll("-", "");
 		setupResponseConsumer(ResponseQueueName);
+		
+		
 
 		List<LatLong> route = MovementHelper.createRutt();
+		int numberOfPossibleMessages = route.size();
+		int numberOfMessages = 5;
+		
+		// guard
+		numberOfMessages = (numberOfMessages > numberOfPossibleMessages ? numberOfMessages : numberOfMessages);
 
 		Asset testAsset = createTestAsset();
 
+		int counter = 0;
 		for (LatLong position : route) {
+			counter++;
+			if(counter > numberOfMessages )break;
 
 			final CreateMovementRequest createMovementRequest = createMovementRequest(testAsset, position);
 			sendRequestToMovement(ResponseQueueName, createMovementRequest);
 		}
 
-		while (responseMessage == null)
+		while (responseMessageList.size() < numberOfMessages)
 			;
 
-		/*
-		CreateMovementResponse createMovementResponse = unMarshallCreateMovementResponse(responseMessage);
-		assertNotNull(createMovementResponse);
-		assertEquals(null, createMovementResponse.getMovement().getCalculatedCourse());
-		assertEquals(null, createMovementResponse.getMovement().getCalculatedSpeed());
-		assertFalse(createMovementResponse.getMovement().getMetaData().getAreas().isEmpty());
-		assertEquals(createMovementRequest.getMovement().getPosition().getLongitude(),
-				createMovementResponse.getMovement().getPosition().getLongitude());
-		assertEquals(createMovementRequest.getMovement().getPosition().getLatitude(),
-				createMovementResponse.getMovement().getPosition().getLatitude());
-				*/
-		// assertEquals(createMovementRequest.getMovement().getPosition().getAltitude(),createMovementResponse.getMovement().getPosition().getAltitude());
+		for(Message msg   : responseMessageList){
+			CreateMovementResponse createMovementResponse = unMarshallCreateMovementResponse(msg);
+			assertNotNull(createMovementResponse);			
+		}
 	}
 
 	/**
@@ -281,6 +286,7 @@ public class MovementJmsIT extends AbstractRestServiceTest {
 		@Override
 		public void onMessage(Message message) {
 			responseMessage = message;
+			responseMessageList.add(message);
 		}
 	}
 
