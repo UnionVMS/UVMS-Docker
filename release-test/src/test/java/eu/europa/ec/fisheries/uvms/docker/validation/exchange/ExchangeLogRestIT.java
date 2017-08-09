@@ -13,9 +13,13 @@ copy of the GNU General Public License along with the IFDM Suite. If not, see <h
 */
 package eu.europa.ec.fisheries.uvms.docker.validation.exchange;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.TimeZone;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.fluent.Request;
@@ -73,12 +77,13 @@ public class ExchangeLogRestIT extends AbstractRestServiceTest {
 	 * @throws Exception the exception
 	 */
 	@Test
-	@Ignore
 	public void getPollStatusQueryTest() throws Exception {
 		PollQuery pollQuery = new PollQuery();
 		pollQuery.setStatus(ExchangeLogStatusTypeType.SUCCESSFUL);
-		pollQuery.setStatusFromDate("2015-01-01");
-		pollQuery.setStatusToDate("2016-01-01");
+		Date oldDate = new Date();
+		oldDate.setTime( oldDate.getTime() - (long)10*1000*60*60*24 );
+		pollQuery.setStatusFromDate(formatDateAsUTC(oldDate));
+		pollQuery.setStatusToDate(formatDateAsUTC(new Date()));
 			
 		final HttpResponse response = Request.Post(BASE_URL + "exchange/rest/exchange/poll")
 				.bodyByteArray(writeValueAsString(pollQuery).getBytes())
@@ -87,7 +92,15 @@ public class ExchangeLogRestIT extends AbstractRestServiceTest {
 		List dataList = checkSuccessResponseReturnType(response,List.class);
 
 	}
-
+	
+	private String formatDateAsUTC(Date date) {
+		Calendar calendar = Calendar.getInstance();
+		calendar.setTime(date);
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss Z");
+		sdf.setTimeZone(TimeZone.getTimeZone("UTC"));
+		return sdf.format(date);
+	}
+	
 	/**
 	 * Gets the poll status ref guid test.
 	 *
