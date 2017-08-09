@@ -89,6 +89,7 @@ public class MovementJmsIT extends AbstractRestServiceTest {
 	 */
 	@Test(timeout = 10000)
 	public void createMovementRequestTest() throws Exception {
+		responseMessage=null;
 		String ResponseQueueName = "createMovementRequestTest" + UUID.randomUUID().toString().replaceAll("-", "");
 		setupResponseConsumer(ResponseQueueName);
 
