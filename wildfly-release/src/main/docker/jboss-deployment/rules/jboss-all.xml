@@ -2,7 +2,7 @@
 	<jboss-deployment-dependencies xmlns="urn:jboss:deployment-dependencies:1.0">
 		<dependency name="user-module-1.6.1.ear" />
 		<dependency name="config-module-3.0.6.ear" />
-		<dependency name="spatial-module-0.5.7.ear" />
+		<dependency name="spatial-module-0.5.8.ear" />
 		<dependency name="movement-module-3.0.10.ear" />
 		<dependency name="asset-module-3.0.10.ear" />
 		<dependency name="audit-module-3.0.6.ear" />
