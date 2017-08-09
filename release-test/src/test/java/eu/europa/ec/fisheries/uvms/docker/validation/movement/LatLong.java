@@ -7,7 +7,7 @@ public class LatLong {
 	public double latitude;
 	public double longitude;
 	public Date positionTime;
-	public LatLong(double latitude, double longitude, Date positionTime) {
+	public LatLong(double longitude, double latitude, Date positionTime) {
 		super();
 		this.latitude = latitude;
 		this.longitude = longitude;
