@@ -5,6 +5,7 @@ import java.io.StringReader;
 import java.io.StringWriter;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 import java.util.UUID;
 
 import javax.jms.Connection;
@@ -80,12 +81,40 @@ public class MovementJmsIT extends AbstractRestServiceTest {
 	/**
 	 * Creates the movement request test.
 	 *
-	 * @throws Exception the exception
+	 * @throws Exception
+	 *             the exception
 	 */
 	@Test(timeout = 10000)
 	public void createMovementRequestTest() throws Exception {
 		String ResponseQueueName = "createMovementRequestTest" + UUID.randomUUID().toString().replaceAll("-", "");
 		setupResponseConsumer(ResponseQueueName);
+
+		Asset testAsset = createTestAsset();
+		final CreateMovementRequest createMovementRequest = createMovementRequest(testAsset);
+
+		sendRequestToMovement(ResponseQueueName, createMovementRequest);
+
+		while (responseMessage == null)
+			;
+
+		CreateMovementResponse createMovementResponse = unMarshallCreateMovementResponse(responseMessage);
+		assertNotNull(createMovementResponse);
+		assertEquals(null, createMovementResponse.getMovement().getCalculatedCourse());
+		assertEquals(null, createMovementResponse.getMovement().getCalculatedSpeed());
+		assertFalse(createMovementResponse.getMovement().getMetaData().getAreas().isEmpty());
+		assertEquals(createMovementRequest.getMovement().getPosition().getLongitude(),
+				createMovementResponse.getMovement().getPosition().getLongitude());
+		assertEquals(createMovementRequest.getMovement().getPosition().getLatitude(),
+				createMovementResponse.getMovement().getPosition().getLatitude());
+		// assertEquals(createMovementRequest.getMovement().getPosition().getAltitude(),createMovementResponse.getMovement().getPosition().getAltitude());
+	}
+
+	@Test(timeout = 10000)
+	public void createRouteTest() throws Exception {
+		String ResponseQueueName = "createMovementRouteRequestTest" + UUID.randomUUID().toString().replaceAll("-", "");
+		setupResponseConsumer(ResponseQueueName);
+		
+		List<LatLong> route = MovementHelper.createRutt();
 
 		Asset testAsset = createTestAsset();
 		final CreateMovementRequest createMovementRequest = createMovementRequest(testAsset);
@@ -99,18 +128,24 @@ public class MovementJmsIT extends AbstractRestServiceTest {
 		assertEquals(null, createMovementResponse.getMovement().getCalculatedCourse());
 		assertEquals(null, createMovementResponse.getMovement().getCalculatedSpeed());
 		assertFalse(createMovementResponse.getMovement().getMetaData().getAreas().isEmpty());
-		assertEquals(createMovementRequest.getMovement().getPosition().getLongitude(),createMovementResponse.getMovement().getPosition().getLongitude());
-		assertEquals(createMovementRequest.getMovement().getPosition().getLatitude(),createMovementResponse.getMovement().getPosition().getLatitude());
-		//assertEquals(createMovementRequest.getMovement().getPosition().getAltitude(),createMovementResponse.getMovement().getPosition().getAltitude());				
+		assertEquals(createMovementRequest.getMovement().getPosition().getLongitude(),
+				createMovementResponse.getMovement().getPosition().getLongitude());
+		assertEquals(createMovementRequest.getMovement().getPosition().getLatitude(),
+				createMovementResponse.getMovement().getPosition().getLatitude());
+		// assertEquals(createMovementRequest.getMovement().getPosition().getAltitude(),createMovementResponse.getMovement().getPosition().getAltitude());
 	}
 
 	/**
 	 * Send request to movement.
 	 *
-	 * @param ResponseQueueName the response queue name
-	 * @param createMovementRequest the create movement request
-	 * @throws JMSException the JMS exception
-	 * @throws JAXBException the JAXB exception
+	 * @param ResponseQueueName
+	 *            the response queue name
+	 * @param createMovementRequest
+	 *            the create movement request
+	 * @throws JMSException
+	 *             the JMS exception
+	 * @throws JAXBException
+	 *             the JAXB exception
 	 */
 	private void sendRequestToMovement(String ResponseQueueName, final CreateMovementRequest createMovementRequest)
 			throws JMSException, JAXBException {
@@ -131,16 +166,44 @@ public class MovementJmsIT extends AbstractRestServiceTest {
 	/**
 	 * Creates the movement request.
 	 *
-	 * @param testAsset the test asset
+	 * @param testAsset
+	 *            the test asset
 	 * @return the creates the movement request
-	 * @throws IOException Signals that an I/O exception has occurred.
-	 * @throws ClientProtocolException the client protocol exception
-	 * @throws JsonProcessingException the json processing exception
-	 * @throws JsonParseException the json parse exception
-	 * @throws JsonMappingException the json mapping exception
+	 * @throws IOException
+	 *             Signals that an I/O exception has occurred.
+	 * @throws ClientProtocolException
+	 *             the client protocol exception
+	 * @throws JsonProcessingException
+	 *             the json processing exception
+	 * @throws JsonParseException
+	 *             the json parse exception
+	 * @throws JsonMappingException
+	 *             the json mapping exception
 	 */
+
 	private CreateMovementRequest createMovementRequest(Asset testAsset) throws IOException, ClientProtocolException,
 			JsonProcessingException, JsonParseException, JsonMappingException {
+		Date positionTime = getDate(2017, Calendar.DECEMBER, 24, 11, 45, 7, 980);
+		return createMovementRequest(testAsset, -16.9, 32.6333333, 5, positionTime);
+	}
+
+	/**
+	 * 
+	 * @param testAsset
+	 * @param longitude
+	 * @param latitude
+	 * @param altitude
+	 * @param positionTime
+	 * @return CreateMovementRequest
+	 * @throws IOException
+	 * @throws ClientProtocolException
+	 * @throws JsonProcessingException
+	 * @throws JsonParseException
+	 * @throws JsonMappingException
+	 */
+	private CreateMovementRequest createMovementRequest(Asset testAsset, double longitude, double latitude,
+			double altitude, Date positionTime) throws IOException, ClientProtocolException, JsonProcessingException,
+			JsonParseException, JsonMappingException {
 
 		final CreateMovementRequest createMovementRequest = new CreateMovementRequest();
 		final MovementBaseType movementBaseType = new MovementBaseType();
@@ -161,25 +224,25 @@ public class MovementJmsIT extends AbstractRestServiceTest {
 		createMovementRequest.setUsername("vms_admin_com");
 
 		MovementPoint movementPoint = new MovementPoint();
-		// Funchal
-		movementPoint.setLongitude(-16.9);
-		movementPoint.setLatitude(32.6333333);
+		movementPoint.setLongitude(longitude);
+		movementPoint.setLatitude(latitude);
+		movementPoint.setAltitude(altitude);
 
-		movementPoint.setAltitude(5d);
 		movementBaseType.setPosition(movementPoint);
-
-		Date positionTime = getDate(2017, Calendar.DECEMBER, 24, 11, 45, 7, 980);
 		movementBaseType.setPositionTime(positionTime);
 
 		movementBaseType.setMovementType(MovementTypeType.POS);
 		return createMovementRequest;
+
 	}
 
 	/**
 	 * Sets the up response consumer.
 	 *
-	 * @param queueName the new up response consumer
-	 * @throws Exception the exception
+	 * @param queueName
+	 *            the new up response consumer
+	 * @throws Exception
+	 *             the exception
 	 */
 	public void setupResponseConsumer(String queueName) throws Exception {
 		Connection consumerConnection = connectionFactory.createConnection();
@@ -193,13 +256,13 @@ public class MovementJmsIT extends AbstractRestServiceTest {
 	}
 
 	/**
-	 * The listener interface for receiving responseQueueMessage events.
-	 * The class that is interested in processing a responseQueueMessage
-	 * event implements this interface, and the object created
-	 * with that class is registered with a component using the
-	 * component's <code>addResponseQueueMessageListener<code> method. When
-	 * the responseQueueMessage event occurs, that object's appropriate
-	 * method is invoked.
+	 * The listener interface for receiving responseQueueMessage events. The
+	 * class that is interested in processing a responseQueueMessage event
+	 * implements this interface, and the object created with that class is
+	 * registered with a component using the component's
+	 * <code>addResponseQueueMessageListener<code> method. When the
+	 * responseQueueMessage event occurs, that object's appropriate method is
+	 * invoked.
 	 *
 	 * @see ResponseQueueMessageEvent
 	 */
@@ -213,7 +276,8 @@ public class MovementJmsIT extends AbstractRestServiceTest {
 	/**
 	 * Check dead letter queue.
 	 *
-	 * @throws Exception the exception
+	 * @throws Exception
+	 *             the exception
 	 */
 	@Test
 	@Ignore
@@ -225,7 +289,8 @@ public class MovementJmsIT extends AbstractRestServiceTest {
 	 * Check movement queue has elements.
 	 *
 	 * @return true, if successful
-	 * @throws Exception the exception
+	 * @throws Exception
+	 *             the exception
 	 */
 	private boolean checkMovementQueueHasElements() throws Exception {
 		final Session session = connection.createSession(false, Session.AUTO_ACKNOWLEDGE);
@@ -242,9 +307,11 @@ public class MovementJmsIT extends AbstractRestServiceTest {
 	/**
 	 * Marshall.
 	 *
-	 * @param createMovementRequest the create movement request
+	 * @param createMovementRequest
+	 *            the create movement request
 	 * @return the string
-	 * @throws JAXBException the JAXB exception
+	 * @throws JAXBException
+	 *             the JAXB exception
 	 */
 	private String marshall(final CreateMovementRequest createMovementRequest) throws JAXBException {
 		final StringWriter sw = new StringWriter();
@@ -255,14 +322,17 @@ public class MovementJmsIT extends AbstractRestServiceTest {
 	/**
 	 * Un marshall create movement response.
 	 *
-	 * @param response the response
+	 * @param response
+	 *            the response
 	 * @return the creates the movement response
-	 * @throws Exception the exception
+	 * @throws Exception
+	 *             the exception
 	 */
 	private CreateMovementResponse unMarshallCreateMovementResponse(final Message response) throws Exception {
 		TextMessage textMessage = (TextMessage) response;
 		JAXBContext jaxbContext = JAXBContext.newInstance(CreateMovementResponse.class);
-		return (CreateMovementResponse) jaxbContext.createUnmarshaller().unmarshal(new StringReader(textMessage.getText()));
+		return (CreateMovementResponse) jaxbContext.createUnmarshaller()
+				.unmarshal(new StringReader(textMessage.getText()));
 	}
 
 }
