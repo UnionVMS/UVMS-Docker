@@ -13,6 +13,7 @@ copy of the GNU General Public License along with the IFDM Suite. If not, see <h
 */
 package eu.europa.ec.fisheries.uvms.docker.validation.exchange;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -94,13 +95,17 @@ public class ExchangeLogRestIT extends AbstractRestServiceTest {
 	 * @throws Exception the exception
 	 */
 	@Test
-	@Ignore
 	public void getPollStatusRefGuidTest() throws Exception {
-		final HttpResponse response = Request.Get(BASE_URL + "exchange/rest/exchange/poll/{typeRefGuid}")
+		Map<String, Object> programPollDataMap = createPoll_Helper();
+		ArrayList sendPolls = (ArrayList) programPollDataMap.get("sentPolls");
+		String uid = (String) sendPolls.get(0);
+
+		final HttpResponse response = Request.Get(BASE_URL + "exchange/rest/exchange/poll/" + uid)
 				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken()).execute()
 				.returnResponse();
 
-		List dataList = checkSuccessResponseReturnType(response,List.class);
+		Map<String, Object> dataMap = checkSuccessResponseReturnMap(response);
+		assertNotNull(uid,dataMap.get("guid"));
 
 	}
 
@@ -111,13 +116,28 @@ public class ExchangeLogRestIT extends AbstractRestServiceTest {
 	 * @throws Exception the exception
 	 */
 	@Test
-	@Ignore
 	public void getExchangeLogByGuidTest() throws Exception {
-		final HttpResponse response = Request.Get(BASE_URL + "exchange/rest/exchange/{guid}")
+		String guid=null;
+		{
+			Map<String, Object> programPollDataMap = createPoll_Helper();
+			ArrayList sendPolls = (ArrayList) programPollDataMap.get("sentPolls");
+			String uid = (String) sendPolls.get(0);
+
+			final HttpResponse response = Request.Get(BASE_URL + "exchange/rest/exchange/poll/" + uid)
+					.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken()).execute()
+					.returnResponse();
+
+			Map<String, Object> dataMap = checkSuccessResponseReturnMap(response);
+			guid = (String) dataMap.get("guid");
+
+		}
+		
+		final HttpResponse response = Request.Get(BASE_URL + "exchange/rest/exchange/" + guid)
 				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken()).execute()
 				.returnResponse();
 
-		List dataList = checkSuccessResponseReturnType(response,List.class);
+		Map<String, Object> dataMap = checkSuccessResponseReturnMap(response);
+		assertEquals("SEND_POLL",(String)dataMap.get("type"));
 
 	}
 
