@@ -31,6 +31,7 @@ import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 
+import eu.europa.ec.fisheries.schema.mobileterminal.types.v1.MobileTerminalType;
 import eu.europa.ec.fisheries.schema.movement.asset.v1.AssetId;
 import eu.europa.ec.fisheries.schema.movement.asset.v1.AssetIdType;
 import eu.europa.ec.fisheries.schema.movement.asset.v1.AssetType;
@@ -44,6 +45,7 @@ import eu.europa.ec.fisheries.schema.movement.v1.MovementPoint;
 import eu.europa.ec.fisheries.schema.movement.v1.MovementTypeType;
 import eu.europa.ec.fisheries.uvms.docker.validation.asset.AssetTestHelper;
 import eu.europa.ec.fisheries.uvms.docker.validation.common.AbstractHelper;
+import eu.europa.ec.fisheries.uvms.docker.validation.mobileterminal.MobileTerminalTestHelper;
 import eu.europa.ec.fisheries.wsdl.asset.types.Asset;
 
 public class MovementHelper extends AbstractHelper {
@@ -54,15 +56,15 @@ public class MovementHelper extends AbstractHelper {
 	private volatile Message responseMessage;
 	private volatile List<Message> responseMessageList = Collections.synchronizedList(new ArrayList<Message>());
 
-	public CreateMovementRequest createMovementRequest(Asset testAsset) throws IOException, ClientProtocolException,
+	public CreateMovementRequest createMovementRequest(Asset testAsset, String mobileTerminalIdAsConnectId) throws IOException, ClientProtocolException,
 			JsonProcessingException, JsonParseException, JsonMappingException {
 		Date positionTime = getDate(2017, Calendar.DECEMBER, 24, 11, 45, 7, 980);
-		return createMovementRequest(testAsset, -16.9, 32.6333333, 5, positionTime);
+		return createMovementRequest(testAsset, -16.9, 32.6333333, 5, positionTime,mobileTerminalIdAsConnectId);
 	}
 
-	public CreateMovementRequest createMovementRequest(Asset testAsset, LatLong obs) throws IOException,
+	public CreateMovementRequest createMovementRequest(Asset testAsset, LatLong obs, String mobileTerminalIdAsConnectId) throws IOException,
 			ClientProtocolException, JsonProcessingException, JsonParseException, JsonMappingException {
-		return createMovementRequest(testAsset, obs.longitude, obs.latitude, 5, obs.positionTime);
+		return createMovementRequest(testAsset, obs.longitude, obs.latitude, 5, obs.positionTime,mobileTerminalIdAsConnectId);
 	}
 
 	/**
@@ -80,7 +82,7 @@ public class MovementHelper extends AbstractHelper {
 	 * @throws JsonMappingException
 	 */
 	public CreateMovementRequest createMovementRequest(Asset testAsset, double longitude, double latitude,
-			double altitude, Date positionTime) throws IOException, ClientProtocolException, JsonProcessingException,
+			double altitude, Date positionTime , String mobileTerminalIdAsConnectId) throws IOException, ClientProtocolException, JsonProcessingException,
 			JsonParseException, JsonMappingException {
 
 		final CreateMovementRequest createMovementRequest = new CreateMovementRequest();
@@ -90,7 +92,7 @@ public class MovementHelper extends AbstractHelper {
 		assetId.setIdType(AssetIdType.GUID);
 		assetId.setValue(testAsset.getAssetId().getGuid());
 		movementBaseType.setAssetId(assetId);
-		movementBaseType.setConnectId(testAsset.getAssetId().getGuid()); // skall
+		movementBaseType.setConnectId(mobileTerminalIdAsConnectId); // skall
 																			// vara
 																			// terminalens
 																			// ID
@@ -331,7 +333,11 @@ public class MovementHelper extends AbstractHelper {
 		String ResponseQueueName = "createMovementRequestTest" + UUID.randomUUID().toString().replaceAll("-", "");
 		setupResponseConsumer(connectionFactory, connection, ResponseQueueName);
 		Asset testAsset = AssetTestHelper.createTestAsset();
-		final CreateMovementRequest createMovementRequest = createMovementRequest(testAsset);
+		
+		MobileTerminalType mobileTerminalType = MobileTerminalTestHelper.createMobileTerminalType();
+		String guid = mobileTerminalType.getMobileTerminalId().getGuid();
+		
+		final CreateMovementRequest createMovementRequest = createMovementRequest(testAsset,guid);
 		sendRequest(connection,  ResponseQueueName, createMovementRequest);
 		
 		return createMovementRequest;

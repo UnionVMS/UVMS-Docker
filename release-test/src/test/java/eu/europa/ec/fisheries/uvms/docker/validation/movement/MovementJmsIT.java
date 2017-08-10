@@ -14,10 +14,12 @@ import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import eu.europa.ec.fisheries.schema.mobileterminal.types.v1.MobileTerminalType;
 import eu.europa.ec.fisheries.schema.movement.module.v1.CreateMovementRequest;
 import eu.europa.ec.fisheries.schema.movement.module.v1.CreateMovementResponse;
 import eu.europa.ec.fisheries.uvms.docker.validation.asset.AssetTestHelper;
 import eu.europa.ec.fisheries.uvms.docker.validation.common.AbstractRestServiceTest;
+import eu.europa.ec.fisheries.uvms.docker.validation.mobileterminal.MobileTerminalTestHelper;
 import eu.europa.ec.fisheries.wsdl.asset.types.Asset;
 
 /**
@@ -102,8 +104,12 @@ public class MovementJmsIT extends AbstractRestServiceTest {
 				break;
 			counter++;
 
+			MobileTerminalType mobileTerminalType = MobileTerminalTestHelper.createMobileTerminalType();
+			String guid = mobileTerminalType.getMobileTerminalId().getGuid();
+
+			
 			final CreateMovementRequest createMovementRequest = movementHelper.createMovementRequest(testAsset,
-					position);
+					position,guid);
 			movementHelper.sendRequest(connection,  ResponseQueueName,
 					createMovementRequest);
 		}
