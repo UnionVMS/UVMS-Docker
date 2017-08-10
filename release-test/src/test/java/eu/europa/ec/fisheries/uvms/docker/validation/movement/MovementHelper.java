@@ -1,26 +1,107 @@
 package eu.europa.ec.fisheries.uvms.docker.validation.movement;
 
+import java.io.IOException;
+import java.io.StringReader;
+import java.io.StringWriter;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 
+import javax.jms.Message;
+import javax.jms.TextMessage;
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBException;
+
+import org.apache.http.client.ClientProtocolException;
+
+import com.fasterxml.jackson.core.JsonParseException;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonMappingException;
+
+import eu.europa.ec.fisheries.schema.movement.asset.v1.AssetId;
+import eu.europa.ec.fisheries.schema.movement.asset.v1.AssetIdType;
+import eu.europa.ec.fisheries.schema.movement.asset.v1.AssetType;
+import eu.europa.ec.fisheries.schema.movement.module.v1.CreateMovementRequest;
+import eu.europa.ec.fisheries.schema.movement.module.v1.CreateMovementResponse;
+import eu.europa.ec.fisheries.schema.movement.module.v1.MovementModuleMethod;
+import eu.europa.ec.fisheries.schema.movement.v1.MovementActivityType;
+import eu.europa.ec.fisheries.schema.movement.v1.MovementActivityTypeType;
+import eu.europa.ec.fisheries.schema.movement.v1.MovementBaseType;
+import eu.europa.ec.fisheries.schema.movement.v1.MovementPoint;
+import eu.europa.ec.fisheries.schema.movement.v1.MovementTypeType;
 import eu.europa.ec.fisheries.uvms.docker.validation.common.AbstractHelper;
+import eu.europa.ec.fisheries.wsdl.asset.types.Asset;
 
 public class MovementHelper extends AbstractHelper {
 
+	public static CreateMovementRequest createMovementRequest(Asset testAsset) throws IOException,
+			ClientProtocolException, JsonProcessingException, JsonParseException, JsonMappingException {
+		Date positionTime = getDate(2017, Calendar.DECEMBER, 24, 11, 45, 7, 980);
+		return createMovementRequest(testAsset, -16.9, 32.6333333, 5, positionTime);
+	}
 
-	public static int SEC = 17;
-	public static int MILLIS = 42;
+	public static CreateMovementRequest createMovementRequest(Asset testAsset, LatLong obs) throws IOException,
+			ClientProtocolException, JsonProcessingException, JsonParseException, JsonMappingException {
+		return createMovementRequest(testAsset, obs.longitude, obs.latitude, 5, obs.positionTime);
+	}
 
+	/**
+	 * 
+	 * @param testAsset
+	 * @param longitude
+	 * @param latitude
+	 * @param altitude
+	 * @param positionTime
+	 * @return CreateMovementRequest
+	 * @throws IOException
+	 * @throws ClientProtocolException
+	 * @throws JsonProcessingException
+	 * @throws JsonParseException
+	 * @throws JsonMappingException
+	 */
+	public static CreateMovementRequest createMovementRequest(Asset testAsset, double longitude, double latitude,
+			double altitude, Date positionTime) throws IOException, ClientProtocolException, JsonProcessingException,
+			JsonParseException, JsonMappingException {
+
+		final CreateMovementRequest createMovementRequest = new CreateMovementRequest();
+		final MovementBaseType movementBaseType = new MovementBaseType();
+		AssetId assetId = new AssetId();
+		assetId.setAssetType(AssetType.VESSEL);
+		assetId.setIdType(AssetIdType.GUID);
+		assetId.setValue(testAsset.getAssetId().getGuid());
+		movementBaseType.setAssetId(assetId);
+		movementBaseType.setConnectId(testAsset.getAssetId().getGuid());
+
+		MovementActivityType movementActivityType = new MovementActivityType();
+		movementBaseType.setActivity(movementActivityType);
+		movementActivityType.setMessageId(UUID.randomUUID().toString());
+		movementActivityType.setMessageType(MovementActivityTypeType.ANC);
+
+		createMovementRequest.setMovement(movementBaseType);
+		createMovementRequest.setMethod(MovementModuleMethod.CREATE);
+		createMovementRequest.setUsername("vms_admin_com");
+
+		MovementPoint movementPoint = new MovementPoint();
+		movementPoint.setLongitude(longitude);
+		movementPoint.setLatitude(latitude);
+		movementPoint.setAltitude(altitude);
+
+		movementBaseType.setPosition(movementPoint);
+		movementBaseType.setPositionTime(positionTime);
+
+		movementBaseType.setMovementType(MovementTypeType.POS);
+		return createMovementRequest;
+
+	}
 
 	public static List<LatLong> createRutt() {
-		int MINUTE_DELTA = 15;
 		return createRutt(15 * 1000);
 	}
-	
-	
+
 	public static List<LatLong> createRutt(int movementTimeDeltaInMillis) {
-		
+
 		List<LatLong> rutt = new ArrayList<>();
 		long ts = System.currentTimeMillis();
 		rutt.add(new LatLong(57.42920, 11.58259, getDate(ts += movementTimeDeltaInMillis)));
@@ -80,12 +161,40 @@ public class MovementHelper extends AbstractHelper {
 
 	}
 
-	
-	
 	private static Date getDate(Long millis) {
 		return new Date(millis);
 	}
 
-	
+	/**
+	 * Marshall.
+	 *
+	 * @param createMovementRequest
+	 *            the create movement request
+	 * @return the string
+	 * @throws JAXBException
+	 *             the JAXB exception
+	 */
+
+	public static String marshall(final CreateMovementRequest createMovementRequest) throws JAXBException {
+		final StringWriter sw = new StringWriter();
+		JAXBContext.newInstance(CreateMovementRequest.class).createMarshaller().marshal(createMovementRequest, sw);
+		return sw.toString();
+	}
+
+	/**
+	 * Un marshall create movement response.
+	 *
+	 * @param response
+	 *            the response
+	 * @return the creates the movement response
+	 * @throws Exception
+	 *             the exception
+	 */
+	public static CreateMovementResponse unMarshallCreateMovementResponse(final Message response) throws Exception {
+		TextMessage textMessage = (TextMessage) response;
+		JAXBContext jaxbContext = JAXBContext.newInstance(CreateMovementResponse.class);
+		return (CreateMovementResponse) jaxbContext.createUnmarshaller()
+				.unmarshal(new StringReader(textMessage.getText()));
+	}
 
 }
