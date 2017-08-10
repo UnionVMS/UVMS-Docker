@@ -117,6 +117,7 @@ public class MovementJmsIT extends AbstractRestServiceTest {
 
 	@Test(timeout = 720000)
 	public void createRouteTest() throws Exception {
+		responseMessageList.clear();
 		String ResponseQueueName = "createMovementRouteRequestTest" + UUID.randomUUID().toString().replaceAll("-", "");
 		setupResponseConsumer(ResponseQueueName);
 		
@@ -142,7 +143,8 @@ public class MovementJmsIT extends AbstractRestServiceTest {
 
 		while (responseMessageList.size() != numberOfMessages);
 		
-		for(Message msg   : responseMessageList){
+		List<Message> copyList = new ArrayList<>(responseMessageList);
+		for(Message msg   : copyList){
 			CreateMovementResponse createMovementResponse = unMarshallCreateMovementResponse(msg);
 			assertNotNull(createMovementResponse);			
 		}
@@ -299,9 +301,8 @@ public class MovementJmsIT extends AbstractRestServiceTest {
 	 *             the exception
 	 */
 	@Test
-	@Ignore
-	public void checkDeadLetterQueue() throws Exception {
-		assertTrue(checkMovementQueueHasElements());
+	public void checkAllMovementsRequestProcessedOnQueue() throws Exception {
+		assertFalse(checkMovementQueueHasElements());
 	}
 
 	/**
@@ -313,7 +314,7 @@ public class MovementJmsIT extends AbstractRestServiceTest {
 	 */
 	private boolean checkMovementQueueHasElements() throws Exception {
 		final Session session = connection.createSession(false, Session.AUTO_ACKNOWLEDGE);
-		final Queue queue = session.createQueue("DLQ");
+		final Queue queue = session.createQueue("UVMSMovementEvent");
 		final QueueBrowser browser = session.createBrowser(queue);
 		while (browser.getEnumeration().hasMoreElements()) {
 			session.close();
