@@ -201,7 +201,7 @@ public class MovementJmsIT extends AbstractRestServiceTest {
 
 	private CreateMovementRequest createMovementRequest(Asset testAsset, LatLong obs) throws IOException,
 			ClientProtocolException, JsonProcessingException, JsonParseException, JsonMappingException {
-		return createMovementRequest(testAsset, obs.latitude, obs.longitude, 5, obs.positionTime);
+		return createMovementRequest(testAsset, obs.longitude, obs.latitude, 5, obs.positionTime);
 	}
 
 	/**
