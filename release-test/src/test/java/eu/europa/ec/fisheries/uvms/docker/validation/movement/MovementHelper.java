@@ -5,22 +5,11 @@ import java.io.StringReader;
 import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
-import javax.jms.Connection;
-import javax.jms.ConnectionFactory;
-import javax.jms.DeliveryMode;
-import javax.jms.JMSException;
 import javax.jms.Message;
-import javax.jms.MessageConsumer;
-import javax.jms.MessageListener;
-import javax.jms.MessageProducer;
-import javax.jms.Queue;
-import javax.jms.QueueBrowser;
-import javax.jms.Session;
 import javax.jms.TextMessage;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
@@ -43,23 +32,18 @@ import eu.europa.ec.fisheries.schema.movement.v1.MovementActivityTypeType;
 import eu.europa.ec.fisheries.schema.movement.v1.MovementBaseType;
 import eu.europa.ec.fisheries.schema.movement.v1.MovementPoint;
 import eu.europa.ec.fisheries.schema.movement.v1.MovementTypeType;
-import eu.europa.ec.fisheries.uvms.docker.validation.asset.AssetTestHelper;
 import eu.europa.ec.fisheries.uvms.docker.validation.common.AbstractHelper;
-import eu.europa.ec.fisheries.uvms.docker.validation.mobileterminal.MobileTerminalTestHelper;
+import eu.europa.ec.fisheries.uvms.docker.validation.common.MessageHelper;
 import eu.europa.ec.fisheries.wsdl.asset.types.Asset;
 
 public class MovementHelper extends AbstractHelper {
-	
+
 	private static final String UVMS_MOVEMENT_REQUEST_QUEUE = "UVMSMovementEvent";
 
-
-	private volatile Message responseMessage;
-	private volatile List<Message> responseMessageList = Collections.synchronizedList(new ArrayList<Message>());
-
-	public CreateMovementRequest createMovementRequest(Asset testAsset, String mobileTerminalIdAsConnectId) throws IOException, ClientProtocolException,
+	public CreateMovementRequest createMovementRequest(Asset testAsset, MobileTerminalType mobileTerminalType) throws IOException, ClientProtocolException,
 			JsonProcessingException, JsonParseException, JsonMappingException {
 		Date positionTime = getDate(2017, Calendar.DECEMBER, 24, 11, 45, 7, 980);
-		return createMovementRequest(testAsset, -16.9, 32.6333333, 5, positionTime,mobileTerminalIdAsConnectId);
+		return createMovementRequest(testAsset, -16.9, 32.6333333, 5, positionTime,mobileTerminalType.getMobileTerminalId().getGuid());
 	}
 
 	public CreateMovementRequest createMovementRequest(Asset testAsset, LatLong obs, String mobileTerminalIdAsConnectId) throws IOException,
@@ -68,7 +52,7 @@ public class MovementHelper extends AbstractHelper {
 	}
 
 	/**
-	 * 
+	 *
 	 * @param testAsset
 	 * @param longitude
 	 * @param latitude
@@ -119,11 +103,11 @@ public class MovementHelper extends AbstractHelper {
 
 	}
 
-	public List<LatLong> createRutt() {
-		return createRutt(15 * 1000);
+	public List<LatLong> createRutt(int numberPositions) {
+		return createRutt(15 * 1000,numberPositions);
 	}
 
-	public List<LatLong> createRutt(int movementTimeDeltaInMillis) {
+	public List<LatLong> createRutt(int movementTimeDeltaInMillis, int numberPositions) {
 
 		List<LatLong> rutt = new ArrayList<>();
 		long ts = System.currentTimeMillis();
@@ -180,7 +164,7 @@ public class MovementHelper extends AbstractHelper {
 		rutt.add(new LatLong(57.42945, 10.35521, getDate(ts += movementTimeDeltaInMillis)));
 		rutt.add(new LatLong(57.42946, 10.35416, getDate(ts += movementTimeDeltaInMillis)));
 		rutt.add(new LatLong(57.42928, 10.35400, getDate(ts += movementTimeDeltaInMillis)));
-		return rutt;
+		return rutt.subList(0, numberPositions);
 
 	}
 
@@ -220,128 +204,15 @@ public class MovementHelper extends AbstractHelper {
 				.unmarshal(new StringReader(textMessage.getText()));
 	}
 
-	/**
-	 * Check queue has elements.
-	 * 
-	 * @param connection
-	 * @param queueName
-	 * @return
-	 * @throws Exception
-	 */
 
-	public boolean checkQueueHasElements(Connection connection, String queueName) throws Exception {
-		final Session session = connection.createSession(false, Session.AUTO_ACKNOWLEDGE);
-		final Queue queue = session.createQueue(queueName);
-		final QueueBrowser browser = session.createBrowser(queue);
-		while (browser.getEnumeration().hasMoreElements()) {
-			session.close();
-			return true;
-		}
-		session.close();
-		return false;
-	}
 
-	/**
-	 * Send request to movement.
-	 *
-	 * @param ResponseQueueName
-	 *            the response queue name
-	 * @param createMovementRequest
-	 *            the create movement request
-	 * @throws JMSException
-	 *             the JMS exception
-	 * @throws JAXBException
-	 *             the JAXB exception
-	 */
-	public void sendRequest(Connection connection,  String ResponseQueueName,
-			final CreateMovementRequest createMovementRequest) throws JMSException, JAXBException {
-		final Session session = connection.createSession(false, Session.AUTO_ACKNOWLEDGE);
-		final Queue queue = session.createQueue(UVMS_MOVEMENT_REQUEST_QUEUE);
 
-		final MessageProducer messageProducer = session.createProducer(queue);
-		messageProducer.setDeliveryMode(DeliveryMode.PERSISTENT);
-		messageProducer.setTimeToLive(1000000000);
-		String marshalled = marshall(createMovementRequest);
-		TextMessage createTextMessage = session.createTextMessage(marshalled);
-		final Queue responseQueue = session.createQueue(ResponseQueueName);
-		createTextMessage.setJMSReplyTo(responseQueue);
-		messageProducer.send(createTextMessage);
-		session.close();
-	}
+	public  CreateMovementResponse createMovement(Asset testAsset,MobileTerminalType mobileTerminalType,CreateMovementRequest createMovementRequest) throws Exception{
 
-	/**
-	 * Sets the up response consumer.
-	 *
-	 * @param queueName
-	 *            the new up response consumer
-	 * @throws Exception
-	 *             the exception
-	 */
+		Message messageResponse = MessageHelper.getMessageResponse(UVMS_MOVEMENT_REQUEST_QUEUE, marshall(createMovementRequest));
 
-	public void setupResponseConsumer(ConnectionFactory connectionFactory, Connection connection, String queueName)
-			throws Exception {
-		Connection consumerConnection = connectionFactory.createConnection();
-		consumerConnection.setClientID(UUID.randomUUID().toString());
-		final Session session = connection.createSession(false, Session.AUTO_ACKNOWLEDGE);
-		final Queue responseQueue = session.createQueue(queueName);
-		MessageConsumer consumer = session.createConsumer(responseQueue);
-		consumer.setMessageListener(new ResponseQueueMessageListener());
-		connection.start();
+		return unMarshallCreateMovementResponse(messageResponse);
 
-	}
-	
-	/**
-	 * The listener interface for receiving responseQueueMessage events. The
-	 * class that is interested in processing a responseQueueMessage event
-	 * implements this interface, and the object created with that class is
-	 * registered with a component using the component's
-	 * <code>addResponseQueueMessageListener<code> method. When the
-	 * responseQueueMessage event occurs, that object's appropriate method is
-	 * invoked.
-	 *
-	 * @see ResponseQueueMessageEvent
-	 */
-	public  class ResponseQueueMessageListener implements MessageListener {
-		@Override
-		public void onMessage(Message message) {
-			responseMessage = message;
-			responseMessageList.add(message);
-		}
-	}
-
-	public Message getResponseMessage() {
-		return responseMessage;
-	}
-
-	public List<Message> getResponseMessageList() {
-		return responseMessageList;
-	}
-
-	public void setResponseMessage(Message responseMessage) {
-		this.responseMessage = responseMessage;
-	}
-
-	public void setResponseMessageList(List<Message> responseMessageList) {
-		this.responseMessageList = responseMessageList;
-	}
-	
-	public void clearResponseMessageList() {
-		this.responseMessageList.clear();
-	}
-	
-	public  CreateMovementRequest createMovement(ConnectionFactory connectionFactory, Connection connection) throws Exception{
-		String ResponseQueueName = "createMovementRequestTest" + UUID.randomUUID().toString().replaceAll("-", "");
-		setupResponseConsumer(connectionFactory, connection, ResponseQueueName);
-		Asset testAsset = AssetTestHelper.createTestAsset();
-		
-		MobileTerminalType mobileTerminalType = MobileTerminalTestHelper.createMobileTerminalType();
-		String guid = mobileTerminalType.getMobileTerminalId().getGuid();
-		
-		final CreateMovementRequest createMovementRequest = createMovementRequest(testAsset,guid);
-		sendRequest(connection,  ResponseQueueName, createMovementRequest);
-		
-		return createMovementRequest;
-		
 	}
 
 
