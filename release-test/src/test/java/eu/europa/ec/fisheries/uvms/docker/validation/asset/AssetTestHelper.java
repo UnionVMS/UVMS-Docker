@@ -1,17 +1,64 @@
 package eu.europa.ec.fisheries.uvms.docker.validation.asset;
 
+import java.io.IOException;
 import java.math.BigDecimal;
+import java.util.Map;
 import java.util.Random;
 import java.util.UUID;
 
+import org.apache.http.HttpResponse;
+import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.fluent.Request;
+
+import com.fasterxml.jackson.core.JsonParseException;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonMappingException;
+
 import eu.europa.ec.fisheries.uvms.docker.validation.common.AbstractHelper;
 import eu.europa.ec.fisheries.wsdl.asset.types.Asset;
+import eu.europa.ec.fisheries.wsdl.asset.types.AssetHistoryId;
 import eu.europa.ec.fisheries.wsdl.asset.types.AssetId;
 import eu.europa.ec.fisheries.wsdl.asset.types.AssetIdType;
 import eu.europa.ec.fisheries.wsdl.asset.types.AssetProdOrgModel;
 import eu.europa.ec.fisheries.wsdl.asset.types.CarrierSource;
+import eu.europa.ec.fisheries.wsdl.asset.types.EventCode;
 
 public class AssetTestHelper extends AbstractHelper {
+
+	public static Asset createTestAsset() throws IOException, ClientProtocolException, JsonProcessingException,
+			JsonParseException, JsonMappingException {
+
+		Asset asset = helper_createAsset(AssetIdType.GUID);
+		final HttpResponse response = Request.Post(getBaseUrl() + "asset/rest/asset")
+				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken())
+				.bodyByteArray(writeValueAsString(asset).getBytes()).execute().returnResponse();
+		Map<String, Object> dataMap = checkSuccessResponseReturnMap(response);
+
+		Map<String, Object> assetMap = (Map<String, Object>) dataMap.get("assetId");
+		assertNotNull(assetMap);
+		String assetGuid = (String) assetMap.get("value");
+		assertNotNull(assetGuid);
+
+		Map<String, Object> eventHistoryMap = (Map<String, Object>) dataMap.get("eventHistory");
+		assertNotNull(eventHistoryMap);
+		String eventId = (String) eventHistoryMap.get("eventId");
+		assertNotNull(eventId);
+		String eventCode = (String) eventHistoryMap.get("eventCode");
+		assertNotNull(eventCode);
+
+		AssetHistoryId assetHistoryId = new AssetHistoryId();
+		assetHistoryId.setEventId(eventId);
+		assetHistoryId.setEventCode(EventCode.fromValue(eventCode));
+		asset.setEventHistory(assetHistoryId);
+
+		asset.setName(asset.getName() + "Changed");
+		AssetId assetId = new AssetId();
+		assetId.setGuid(assetGuid);
+		assetId.setValue(assetGuid);
+		assetId.setType(AssetIdType.GUID);
+		asset.setAssetId(assetId);
+		return asset;
+	}
 
 	public static Asset helper_createAsset(AssetIdType assetIdType, String ircs) {
 

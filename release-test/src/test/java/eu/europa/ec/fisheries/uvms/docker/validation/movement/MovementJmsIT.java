@@ -5,6 +5,7 @@ import java.io.StringReader;
 import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
@@ -46,6 +47,7 @@ import eu.europa.ec.fisheries.schema.movement.v1.MovementActivityTypeType;
 import eu.europa.ec.fisheries.schema.movement.v1.MovementBaseType;
 import eu.europa.ec.fisheries.schema.movement.v1.MovementPoint;
 import eu.europa.ec.fisheries.schema.movement.v1.MovementTypeType;
+import eu.europa.ec.fisheries.uvms.docker.validation.asset.AssetTestHelper;
 import eu.europa.ec.fisheries.uvms.docker.validation.common.AbstractRestServiceTest;
 import eu.europa.ec.fisheries.wsdl.asset.types.Asset;
 
@@ -59,7 +61,7 @@ public class MovementJmsIT extends AbstractRestServiceTest {
 	private static final ConnectionFactory connectionFactory = new ActiveMQConnectionFactory("tcp://localhost:61616");
 	private static Connection connection;
 	private static volatile Message responseMessage;
-	private static volatile List<Message> responseMessageList = new ArrayList<>();
+	private static volatile List<Message> responseMessageList =  Collections.synchronizedList(new ArrayList<Message>());
 	
 
 	@BeforeClass
@@ -93,7 +95,7 @@ public class MovementJmsIT extends AbstractRestServiceTest {
 		String ResponseQueueName = "createMovementRequestTest" + UUID.randomUUID().toString().replaceAll("-", "");
 		setupResponseConsumer(ResponseQueueName);
 
-		Asset testAsset = createTestAsset();
+		Asset testAsset = AssetTestHelper.createTestAsset();
 		final CreateMovementRequest createMovementRequest = createMovementRequest(testAsset);
 
 		sendRequestToMovement(ResponseQueueName, createMovementRequest);
@@ -127,7 +129,7 @@ public class MovementJmsIT extends AbstractRestServiceTest {
 		// guard
 		numberOfMessages = (numberOfMessages > numberOfPossibleMessages ? numberOfMessages : numberOfMessages);
 
-		Asset testAsset = createTestAsset();
+		Asset testAsset = AssetTestHelper.createTestAsset();
 
 		int counter = 0;
 		for (LatLong position : route) {
@@ -138,9 +140,8 @@ public class MovementJmsIT extends AbstractRestServiceTest {
 			sendRequestToMovement(ResponseQueueName, createMovementRequest);
 		}
 
-		while (responseMessageList.size() < numberOfMessages)
-			;
-
+		while (responseMessageList.size() != numberOfMessages);
+		
 		for(Message msg   : responseMessageList){
 			CreateMovementResponse createMovementResponse = unMarshallCreateMovementResponse(msg);
 			assertNotNull(createMovementResponse);			

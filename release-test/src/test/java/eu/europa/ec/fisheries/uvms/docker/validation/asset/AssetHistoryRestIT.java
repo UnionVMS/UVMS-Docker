@@ -38,7 +38,7 @@ public class AssetHistoryRestIT extends AbstractRestServiceTest {
 	 */
 	@Test
 	public void getAssetHistoryListByAssetIdTest() throws Exception {
-		Asset asset = createTestAsset();
+		Asset asset = AssetTestHelper.createTestAsset();
 		final HttpResponse response = Request.Get(getBaseUrl() + "asset/rest/history/asset?assetId=" + asset.getAssetId().getGuid() + "&maxNbr=100")
 				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken()).execute()
 				.returnResponse();
@@ -54,7 +54,7 @@ public class AssetHistoryRestIT extends AbstractRestServiceTest {
 	 */
 	@Test
 	public void getAssetHistoryByAssetHistGuidTest() throws Exception {
-		Asset asset = createTestAsset();		
+		Asset asset = AssetTestHelper.createTestAsset();		
 		final HttpResponse response = Request.Get(getBaseUrl() + "asset/rest/history/" + asset.getEventHistory().getEventId())
 				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken()).execute()
 				.returnResponse();

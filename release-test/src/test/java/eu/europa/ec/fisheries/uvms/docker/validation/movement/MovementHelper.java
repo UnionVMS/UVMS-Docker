@@ -1,11 +1,12 @@
 package eu.europa.ec.fisheries.uvms.docker.validation.movement;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-public class MovementHelper {
+import eu.europa.ec.fisheries.uvms.docker.validation.common.AbstractHelper;
+
+public class MovementHelper extends AbstractHelper {
 
 
 	public static int SEC = 17;

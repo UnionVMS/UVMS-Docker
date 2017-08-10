@@ -24,6 +24,7 @@ import eu.europa.ec.fisheries.schema.mobileterminal.types.v1.MobileTerminalAssig
 import eu.europa.ec.fisheries.schema.mobileterminal.types.v1.MobileTerminalListQuery;
 import eu.europa.ec.fisheries.schema.mobileterminal.types.v1.MobileTerminalSearchCriteria;
 import eu.europa.ec.fisheries.schema.mobileterminal.types.v1.MobileTerminalType;
+import eu.europa.ec.fisheries.uvms.docker.validation.asset.AssetTestHelper;
 import eu.europa.ec.fisheries.wsdl.asset.types.Asset;
 
 /**
@@ -40,7 +41,7 @@ public class MobileTerminalRestIT extends AbstractMobileTerminalTest {
 	 */
 	@Test
 	public void createMobileTerminalTest() throws Exception {
-		createMobileTerminalType();
+		MobileTerminalTestHelper.createMobileTerminalType();
 	}
 
 	/**
@@ -52,7 +53,7 @@ public class MobileTerminalRestIT extends AbstractMobileTerminalTest {
 	 */
 	@Test
 	public void getMobileTerminalByIdTest() throws Exception {
-		MobileTerminalType createdMobileTerminalType = createMobileTerminalType();
+		MobileTerminalType createdMobileTerminalType = MobileTerminalTestHelper.createMobileTerminalType();
 		
 		final HttpResponse response = Request.Get(getBaseUrl() + "mobileterminal/rest/mobileterminal/" + createdMobileTerminalType.getMobileTerminalId().getGuid())
 				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken()).execute()
@@ -68,7 +69,7 @@ public class MobileTerminalRestIT extends AbstractMobileTerminalTest {
 	 */
 	@Test
 	public void updateMobileTerminalTest() throws Exception {
-		MobileTerminalType createdMobileTerminalType = createMobileTerminalType();
+		MobileTerminalType createdMobileTerminalType = MobileTerminalTestHelper.createMobileTerminalType();
 		
 		createdMobileTerminalType.setArchived(true);
 		
@@ -112,8 +113,8 @@ public class MobileTerminalRestIT extends AbstractMobileTerminalTest {
 	 */
 	@Test
 	public void assignMobileTerminalTest() throws Exception {
-		Asset testAsset = createTestAsset();
-		MobileTerminalType createdMobileTerminalType = createMobileTerminalType();
+		Asset testAsset = AssetTestHelper.createTestAsset();
+		MobileTerminalType createdMobileTerminalType = MobileTerminalTestHelper.createMobileTerminalType();
 
 		MobileTerminalAssignQuery mobileTerminalAssignQuery = new MobileTerminalAssignQuery();
 		mobileTerminalAssignQuery.setMobileTerminalId(createdMobileTerminalType.getMobileTerminalId());
@@ -136,8 +137,8 @@ public class MobileTerminalRestIT extends AbstractMobileTerminalTest {
 	 */
 	@Test
 	public void unAssignMobileTerminalTest() throws Exception {
-		Asset testAsset = createTestAsset();
-		MobileTerminalType createdMobileTerminalType = createMobileTerminalType();
+		Asset testAsset = AssetTestHelper.createTestAsset();
+		MobileTerminalType createdMobileTerminalType = MobileTerminalTestHelper.createMobileTerminalType();
 
 		MobileTerminalAssignQuery mobileTerminalAssignQuery = new MobileTerminalAssignQuery();
 		mobileTerminalAssignQuery.setMobileTerminalId(createdMobileTerminalType.getMobileTerminalId());
@@ -169,7 +170,7 @@ public class MobileTerminalRestIT extends AbstractMobileTerminalTest {
 	 */
 	@Test
 	public void setStatusActiveTest() throws Exception {
-		MobileTerminalType createdMobileTerminalType = createMobileTerminalType();
+		MobileTerminalType createdMobileTerminalType = MobileTerminalTestHelper.createMobileTerminalType();
 
 		final HttpResponse response = Request
 				.Put(getBaseUrl() + "mobileterminal/rest/mobileterminal/status/activate?comment=comment")
@@ -187,7 +188,7 @@ public class MobileTerminalRestIT extends AbstractMobileTerminalTest {
 	 */
 	@Test
 	public void setStatusInactiveTest() throws Exception {
-		MobileTerminalType createdMobileTerminalType = createMobileTerminalType();
+		MobileTerminalType createdMobileTerminalType = MobileTerminalTestHelper.createMobileTerminalType();
 
 		final HttpResponse response = Request
 				.Put(getBaseUrl() + "mobileterminal/rest/mobileterminal/status/inactivate?comment=comment")
@@ -205,7 +206,7 @@ public class MobileTerminalRestIT extends AbstractMobileTerminalTest {
 	 */
 	@Test
 	public void setStatusRemovedTest() throws Exception {
-		MobileTerminalType createdMobileTerminalType = createMobileTerminalType();
+		MobileTerminalType createdMobileTerminalType = MobileTerminalTestHelper.createMobileTerminalType();
 
 		final HttpResponse response = Request
 				.Put(getBaseUrl() + "mobileterminal/rest/mobileterminal/status/remove?comment=comment")
@@ -224,7 +225,7 @@ public class MobileTerminalRestIT extends AbstractMobileTerminalTest {
 	 */
 	@Test
 	public void getMobileTerminalHistoryListByMobileTerminalIdTest() throws Exception {
-		MobileTerminalType createdMobileTerminalType = createMobileTerminalType();
+		MobileTerminalType createdMobileTerminalType = MobileTerminalTestHelper.createMobileTerminalType();
 
 		final HttpResponse response = Request.Get(getBaseUrl() + "mobileterminal/rest/mobileterminal/history/" + createdMobileTerminalType.getMobileTerminalId().getGuid())
 				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken()).execute()

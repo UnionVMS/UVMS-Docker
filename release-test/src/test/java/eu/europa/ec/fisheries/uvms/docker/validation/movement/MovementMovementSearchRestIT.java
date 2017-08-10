@@ -26,6 +26,7 @@ import org.junit.Test;
 import eu.europa.ec.fisheries.schema.movement.search.v1.GroupListCriteria;
 import eu.europa.ec.fisheries.schema.movement.search.v1.MovementSearchGroup;
 import eu.europa.ec.fisheries.schema.movement.search.v1.SearchKeyType;
+import eu.europa.ec.fisheries.uvms.docker.validation.asset.AssetTestHelper;
 import eu.europa.ec.fisheries.uvms.docker.validation.common.AbstractRestServiceTest;
 import eu.europa.ec.fisheries.wsdl.asset.types.Asset;
 
@@ -54,7 +55,7 @@ public class MovementMovementSearchRestIT extends AbstractRestServiceTest {
 	 * @throws Exception the exception
 	 */
 	private MovementSearchGroup createMovementSearchGroup() throws Exception {
-		Asset testAsset = createTestAsset();
+		Asset testAsset = AssetTestHelper.createTestAsset();
 
 		MovementSearchGroup movementSearchGroup = new MovementSearchGroup();
 		movementSearchGroup.setDynamic(false);

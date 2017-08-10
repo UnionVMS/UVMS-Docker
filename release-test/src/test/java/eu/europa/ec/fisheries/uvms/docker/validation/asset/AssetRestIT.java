@@ -62,7 +62,7 @@ public class AssetRestIT extends AbstractRestServiceTest {
 
 	@Test
 	public void getAssetListItemCountTest() throws Exception {
-		Asset asset = createTestAsset();
+		Asset asset = AssetTestHelper.createTestAsset();
 		AssetListQuery assetListQuery = new AssetListQuery();
 		AssetListPagination assetListPagination = new AssetListPagination();
 		assetListPagination.setListSize(100);
@@ -107,7 +107,7 @@ public class AssetRestIT extends AbstractRestServiceTest {
 	 */
 	@Test
 	public void getAssetByIdTest() throws Exception {
-		Asset asset = createTestAsset();
+		Asset asset = AssetTestHelper.createTestAsset();
 		final HttpResponse response = Request.Get(getBaseUrl() + "asset/rest/asset/" + asset.getAssetId().getGuid())
 				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken()).execute()
 				.returnResponse();
@@ -122,7 +122,7 @@ public class AssetRestIT extends AbstractRestServiceTest {
 	 */
 	@Test
 	public void createAssetTest() throws Exception {
-		createTestAsset();
+		AssetTestHelper.createTestAsset();
 	}
 
 	/**
@@ -135,7 +135,7 @@ public class AssetRestIT extends AbstractRestServiceTest {
 	public void updateAssetTest() throws Exception {
 		final HttpResponse response = Request.Put(getBaseUrl() + "asset/rest/asset?comment=ChangedName")
 				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken())
-				.bodyByteArray(writeValueAsString(createTestAsset()).getBytes()).execute().returnResponse();
+				.bodyByteArray(writeValueAsString(AssetTestHelper.createTestAsset()).getBytes()).execute().returnResponse();
 		Map<String, Object> dataMap = checkSuccessResponseReturnMap(response);
 	}
 
@@ -150,7 +150,7 @@ public class AssetRestIT extends AbstractRestServiceTest {
 
 		final HttpResponse response = Request.Put(getBaseUrl() + "asset/rest/asset/archive?comment=Archive")
 				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken())
-				.bodyByteArray(writeValueAsString(createTestAsset()).getBytes()).execute().returnResponse();
+				.bodyByteArray(writeValueAsString(AssetTestHelper.createTestAsset()).getBytes()).execute().returnResponse();
 		Map<String, Object> dataMap = checkSuccessResponseReturnMap(response);
 	}
 
@@ -162,7 +162,7 @@ public class AssetRestIT extends AbstractRestServiceTest {
 	 */
 	@Test
 	public void assetListGroupByFlagStateTest() throws Exception {
-		Asset asset = createTestAsset();
+		Asset asset = AssetTestHelper.createTestAsset();
 		ArrayList<String> assetIdList = new ArrayList<String>();
 		assetIdList.add(asset.getAssetId().getGuid());
 

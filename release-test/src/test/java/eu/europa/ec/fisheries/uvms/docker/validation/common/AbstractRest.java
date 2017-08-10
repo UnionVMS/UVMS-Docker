@@ -9,6 +9,7 @@ import java.util.Map;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
 import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.fluent.Request;
 import org.junit.Assert;
 
 import com.fasterxml.jackson.core.JsonParseException;
@@ -27,6 +28,9 @@ public abstract class AbstractRest extends Assert {
 	/** The Constant BASE_URL. */
 	protected static final String BASE_URL = "http://localhost:28080/";
 
+	/** The valid jwt token. */
+	private static String validJwtToken;
+
 	protected static final String getBaseUrl() {
 		String property = System.getProperty(DOCKER_RELEASE_TEST_BASE_URL_PROPERTY);
 		if (property != null) {
@@ -35,8 +39,49 @@ public abstract class AbstractRest extends Assert {
 			return BASE_URL;
 		}		
 	}	
+	
 
-	protected final Map<String, Object> checkSuccessResponseReturnMap(final HttpResponse response)
+	/**
+	 * Aquire jwt token for test.
+	 *
+	 * @throws Exception
+	 *             the exception
+	 */
+	public static String aquireJwtTokenForTest() throws Exception {
+		return aquireJwtToken("vms_admin_com","password");
+	}
+
+	/**
+	 * Gets the valid jwt token.
+	 *
+	 * @return the valid jwt token
+	 */
+	protected static final String getValidJwtToken() {
+		if (validJwtToken == null) {
+			try {
+				validJwtToken = aquireJwtTokenForTest();
+			} catch (Exception e) {
+				Assert.fail("Not possible to get jwt token");
+			}
+		}
+		
+		return validJwtToken;
+	}
+
+	public static final String aquireJwtToken(final String username, final String password) throws Exception {
+		final HttpResponse response = Request.Post(getBaseUrl() + "usm-administration/rest/authenticate")
+				.setHeader("Content-Type", "application/json")
+				.bodyByteArray(("{\"userName\":\"" + username + "\",\"password\":\"" + password + "\"}").getBytes())
+				.execute().returnResponse();
+
+		assertEquals(HttpStatus.SC_OK, response.getStatusLine().getStatusCode());
+		final Map<String, Object> data = getJsonMap(response);
+		assertEquals(true, data.get("authenticated"));
+		return (String) data.get("jwtoken");
+	}
+
+
+	protected static final Map<String, Object> checkSuccessResponseReturnMap(final HttpResponse response)
 			throws IOException, JsonParseException, JsonMappingException, ClientProtocolException {
 				final Map<String, Object> data = checkSuccessResponseReturnDataMap(response);
 			
@@ -81,11 +126,11 @@ public abstract class AbstractRest extends Assert {
 	 * @throws JsonProcessingException
 	 *             the json processing exception
 	 */
-	protected final String writeValueAsString(final Object value) throws JsonProcessingException {
+	protected final static String writeValueAsString(final Object value) throws JsonProcessingException {
 		return OBJECT_MAPPER.writeValueAsString(value);
 	}
 
-	protected final String getDateAsString(int year4, int month, int day, int hour, int minute, int sec,
+	protected static final String getDateAsString(int year4, int month, int day, int hour, int minute, int sec,
 			int millis) {
 			
 				Date date = getDate(year4, month, day, hour, minute, sec, millis);
@@ -93,7 +138,7 @@ public abstract class AbstractRest extends Assert {
 				return sdf.format(date);
 			}
 
-	protected final Date getDate(int year4, int month, int day, int hour, int minute, int sec,
+	protected static final Date getDate(int year4, int month, int day, int hour, int minute, int sec,
 			int millis) {
 			
 				Calendar myCalendar = Calendar.getInstance();

@@ -84,7 +84,7 @@ public class AssetGroupRestIT extends AbstractRestServiceTest {
 	 * @throws Exception the exception
 	 */
 	private AssetGroup createTestAssetGroup() throws Exception {
-		Asset testAsset = createTestAsset();
+		Asset testAsset = AssetTestHelper.createTestAsset();
 		AssetGroup assetGroup = new AssetGroup();
 		assetGroup.setDynamic(false);
 		assetGroup.setGlobal(false);

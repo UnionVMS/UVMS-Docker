@@ -25,6 +25,8 @@ import eu.europa.ec.fisheries.schema.mobileterminal.polltypes.v1.PollListQuery;
 import eu.europa.ec.fisheries.schema.mobileterminal.polltypes.v1.PollSearchCriteria;
 import eu.europa.ec.fisheries.schema.mobileterminal.polltypes.v1.PollableQuery;
 import eu.europa.ec.fisheries.schema.mobileterminal.types.v1.ListPagination;
+import eu.europa.ec.fisheries.uvms.docker.validation.asset.AssetTestHelper;
+import eu.europa.ec.fisheries.wsdl.asset.types.Asset;
 
 /**
  * The Class PollRestIT.
@@ -55,8 +57,8 @@ public class PollRestIT extends AbstractMobileTerminalTest {
 	 */
 	@Test
 	public void createPollTest() throws Exception {
-
-		Map<String, Object> dataMap = createPoll_Helper();
+		Asset testAsset = AssetTestHelper.createTestAsset();
+		Map<String, Object> programPollDataMap = MobileTerminalTestHelper.createPoll_Helper(testAsset);
 	}
 
 	/**
@@ -67,8 +69,8 @@ public class PollRestIT extends AbstractMobileTerminalTest {
 	 */
 	@Test
 	public void startProgramPollTest() throws Exception {
-
-		Map<String, Object> programPollDataMap = createPoll_Helper();
+		Asset testAsset = AssetTestHelper.createTestAsset();
+		Map<String, Object> programPollDataMap = MobileTerminalTestHelper.createPoll_Helper(testAsset);
 		ArrayList sendPolls = (ArrayList) programPollDataMap.get("sentPolls");
 		String uid = (String) sendPolls.get(0);
 
@@ -91,9 +93,8 @@ public class PollRestIT extends AbstractMobileTerminalTest {
 	 */
 	@Test
 	public void stopProgramPollTest() throws Exception {
-
-		// create a program poll
-		Map<String, Object> programPollDataMap = createPoll_Helper();
+		Asset testAsset = AssetTestHelper.createTestAsset();
+		Map<String, Object> programPollDataMap = MobileTerminalTestHelper.createPoll_Helper(testAsset);
 		ArrayList sendPolls = (ArrayList) programPollDataMap.get("sentPolls");
 		String uid = (String) sendPolls.get(0);
 
@@ -124,9 +125,8 @@ public class PollRestIT extends AbstractMobileTerminalTest {
 	 */
 	@Test
 	public void inactivateProgramPollTest() throws Exception {
-		
-		// create a program poll
-		Map<String, Object> programPollDataMap = createPoll_Helper();
+		Asset testAsset = AssetTestHelper.createTestAsset();
+		Map<String, Object> programPollDataMap = MobileTerminalTestHelper.createPoll_Helper(testAsset);
 		ArrayList sendPolls = (ArrayList) programPollDataMap.get("sentPolls");
 		String uid = (String) sendPolls.get(0);
 
