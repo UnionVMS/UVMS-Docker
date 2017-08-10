@@ -24,7 +24,6 @@ import eu.europa.ec.fisheries.schema.rules.customrule.v1.CustomRuleType;
 import eu.europa.ec.fisheries.schema.rules.customrule.v1.UpdateSubscriptionType;
 import eu.europa.ec.fisheries.schema.rules.search.v1.CustomRuleQuery;
 import eu.europa.ec.fisheries.uvms.docker.validation.common.AbstractRestServiceTest;
-import un.unece.uncefact.data.standard.fluxresponsemessage._6.FLUXResponseMessage;
 
 /**
  * The Class CustomRulesRestIT.
@@ -134,21 +133,6 @@ public class CustomRulesRestIT extends AbstractRestServiceTest {
 		final HttpResponse response = Request.Put(getBaseUrl() + "rules/rest/customrules/")
 				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken())
 				.bodyByteArray(writeValueAsString(customRuleType).getBytes()).execute().returnResponse();
-		Map<String, Object> dataMap = checkSuccessResponseReturnMap(response);
-	}
-
-	/**
-	 * Evaluate FLUX response message test.
-	 *
-	 * @throws Exception the exception
-	 */
-	@Test
-	@Ignore
-	public void evaluateFLUXResponseMessageTest() throws Exception {
-		FLUXResponseMessage fluxResponseMessage = new FLUXResponseMessage();
-		final HttpResponse response = Request.Post(getBaseUrl() + "rules/rest/rules/evaluate/fluxfaResponsemessage")
-				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken())
-				.bodyByteArray(writeValueAsString(fluxResponseMessage).getBytes()).execute().returnResponse();
 		Map<String, Object> dataMap = checkSuccessResponseReturnMap(response);
 	}
 

@@ -13,6 +13,7 @@ copy of the GNU General Public License along with the IFDM Suite. If not, see <h
 */
 package eu.europa.ec.fisheries.uvms.docker.validation.rules;
 
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Map;
 
@@ -21,7 +22,10 @@ import org.apache.http.client.fluent.Request;
 import org.junit.Ignore;
 import org.junit.Test;
 
+import eu.europa.ec.fisheries.schema.rules.search.v1.ListPagination;
+import eu.europa.ec.fisheries.schema.rules.search.v1.TicketListCriteria;
 import eu.europa.ec.fisheries.schema.rules.search.v1.TicketQuery;
+import eu.europa.ec.fisheries.schema.rules.search.v1.TicketSearchKey;
 import eu.europa.ec.fisheries.schema.rules.ticket.v1.TicketStatusType;
 import eu.europa.ec.fisheries.schema.rules.ticket.v1.TicketType;
 import eu.europa.ec.fisheries.uvms.docker.validation.common.AbstractRestServiceTest;
@@ -39,10 +43,17 @@ public class RulesTicketRestIT extends AbstractRestServiceTest {
 	 * @throws Exception the exception
 	 */
 	@Test
-	@Ignore
 	public void getTicketListTest() throws Exception {
 		TicketQuery ticketQuery = new TicketQuery();
-		final HttpResponse response = Request.Post(getBaseUrl() + "rules/rest/tickets/list/{loggedInUser}")
+		ListPagination listPagination = new ListPagination();
+		listPagination.setListSize(100);
+		listPagination.setPage(1);
+		ticketQuery.setPagination(listPagination);
+		TicketListCriteria ticketListCriteria = new TicketListCriteria();
+		ticketListCriteria.setKey(TicketSearchKey.STATUS);
+		ticketListCriteria.setValue("Open");
+		ticketQuery.getTicketSearchCriteria().add(ticketListCriteria);
+		final HttpResponse response = Request.Post(getBaseUrl() + "rules/rest/tickets/list/" + URLEncoder.encode("vms_admin_com"))
 				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken())
 				.bodyByteArray(writeValueAsString(ticketQuery).getBytes()).execute().returnResponse();
 		Map<String, Object> dataMap = checkSuccessResponseReturnMap(response);
@@ -128,12 +139,11 @@ public class RulesTicketRestIT extends AbstractRestServiceTest {
 	 * @throws Exception the exception
 	 */
 	@Test
-	@Ignore
 	public void getNumberOfOpenTicketReportsTest() throws Exception {
-		final HttpResponse response = Request.Get(getBaseUrl() + "rules/rest/tickets/countopen/{loggedInUser}")
+		final HttpResponse response = Request.Get(getBaseUrl() + "rules/rest/tickets/countopen/" +URLEncoder.encode("vms_admin_com"))
 				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken()).execute()
 				.returnResponse();
-		Map<String, Object> dataMap = checkSuccessResponseReturnMap(response);
+		Integer numberOpenTickets = checkSuccessResponseReturnType(response,Integer.class);
 	}
 
 	/**
