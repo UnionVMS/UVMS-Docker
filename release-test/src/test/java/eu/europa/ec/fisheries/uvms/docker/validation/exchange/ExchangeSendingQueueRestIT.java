@@ -35,7 +35,7 @@ public class ExchangeSendingQueueRestIT extends AbstractRestServiceTest {
 	 */
 	@Test
 	public void getSendingQueueTest() throws Exception {
-		final HttpResponse response = Request.Get(BASE_URL + "exchange/rest/sendingqueue/list")
+		final HttpResponse response = Request.Get(getBaseUrl() + "exchange/rest/sendingqueue/list")
 				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken()).execute()
 				.returnResponse();
 
@@ -50,7 +50,7 @@ public class ExchangeSendingQueueRestIT extends AbstractRestServiceTest {
 	 */
 	@Test
 	public void getSendTest() throws Exception {
-		final HttpResponse response = Request.Put(BASE_URL + "exchange/rest/sendingqueue/send")
+		final HttpResponse response = Request.Put(getBaseUrl() + "exchange/rest/sendingqueue/send")
 				.bodyByteArray(writeValueAsString(new ArrayList<String>()).getBytes())
 				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken()).execute()
 				.returnResponse();

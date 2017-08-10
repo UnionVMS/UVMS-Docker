@@ -39,7 +39,7 @@ public class AssetHistoryRestIT extends AbstractRestServiceTest {
 	@Test
 	public void getAssetHistoryListByAssetIdTest() throws Exception {
 		Asset asset = createTestAsset();
-		final HttpResponse response = Request.Get(BASE_URL + "asset/rest/history/asset?assetId=" + asset.getAssetId().getGuid() + "&maxNbr=100")
+		final HttpResponse response = Request.Get(getBaseUrl() + "asset/rest/history/asset?assetId=" + asset.getAssetId().getGuid() + "&maxNbr=100")
 				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken()).execute()
 				.returnResponse();
 		List dataList = checkSuccessResponseReturnType(response,List.class);
@@ -55,7 +55,7 @@ public class AssetHistoryRestIT extends AbstractRestServiceTest {
 	@Test
 	public void getAssetHistoryByAssetHistGuidTest() throws Exception {
 		Asset asset = createTestAsset();		
-		final HttpResponse response = Request.Get(BASE_URL + "asset/rest/history/" + asset.getEventHistory().getEventId())
+		final HttpResponse response = Request.Get(getBaseUrl() + "asset/rest/history/" + asset.getEventHistory().getEventId())
 				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken()).execute()
 				.returnResponse();
 		Map<String, Object> dataMap = checkSuccessResponseReturnMap(response);

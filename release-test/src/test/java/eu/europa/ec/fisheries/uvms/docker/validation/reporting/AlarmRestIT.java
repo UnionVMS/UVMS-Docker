@@ -38,7 +38,7 @@ public class AlarmRestIT extends AbstractRestServiceTest {
 		ArrayList<AlarmMovement> alarmMovementListContent = new ArrayList<AlarmMovement>();
 		alarmMovementList.setAlarmMovementList(alarmMovementListContent);
 
-		final HttpResponse response = Request.Post(BASE_URL + "reporting/rest/alarms")
+		final HttpResponse response = Request.Post(getBaseUrl() + "reporting/rest/alarms")
 				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken())
 				.bodyByteArray(writeValueAsString(alarmMovementList).getBytes()).execute().returnResponse();
 		Map<String, Object> dataMap = checkSuccessResponseReturnMap(response);

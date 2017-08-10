@@ -36,7 +36,7 @@ public class ExchangeRegistryRestIT extends AbstractRestServiceTest {
 	 */
 	@Test
 	public void getListTest() throws Exception {
-		final HttpResponse response = Request.Get(BASE_URL + "exchange/rest/plugin/list")
+		final HttpResponse response = Request.Get(getBaseUrl() + "exchange/rest/plugin/list")
 				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken()).execute()
 				.returnResponse();
 
@@ -52,7 +52,7 @@ public class ExchangeRegistryRestIT extends AbstractRestServiceTest {
 	public void startServiceTest() throws Exception {
 		String serviceName = "eu.europa.ec.fisheries.uvms.plugins.sweagencyemail";
 		
-		final HttpResponse response = Request.Put(BASE_URL + "exchange/rest/plugin/start/" + serviceName)
+		final HttpResponse response = Request.Put(getBaseUrl() + "exchange/rest/plugin/start/" + serviceName)
 				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken()).execute()
 				.returnResponse();
 
@@ -69,7 +69,7 @@ public class ExchangeRegistryRestIT extends AbstractRestServiceTest {
 	public void stopServiceTest() throws Exception {
 		String serviceName = "eu.europa.ec.fisheries.uvms.plugins.sweagencyemail";
 		
-		final HttpResponse response = Request.Put(BASE_URL + "exchange/rest/plugin/stop/" + serviceName)
+		final HttpResponse response = Request.Put(getBaseUrl() + "exchange/rest/plugin/stop/" + serviceName)
 				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken()).execute()
 				.returnResponse();
 

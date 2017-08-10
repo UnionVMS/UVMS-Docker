@@ -45,7 +45,7 @@ public class MovementMovementRestIT extends AbstractRestServiceTest {
 	 */
 	@Test
 	public void getListByQueryTest() throws Exception {
-		final HttpResponse response = Request.Post(BASE_URL + "movement/rest/movement/list")
+		final HttpResponse response = Request.Post(getBaseUrl() + "movement/rest/movement/list")
 				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken())
 				.bodyByteArray(writeValueAsString(createMovementQuery()).getBytes()).execute().returnResponse();
 
@@ -82,7 +82,7 @@ public class MovementMovementRestIT extends AbstractRestServiceTest {
 	 */
 	@Test
 	public void getMinimalListByQueryTest() throws Exception {
-		final HttpResponse response = Request.Post(BASE_URL + "movement/rest/movement/list/minimal")
+		final HttpResponse response = Request.Post(getBaseUrl() + "movement/rest/movement/list/minimal")
 				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken())
 				.bodyByteArray(writeValueAsString(createMovementQuery()).getBytes()).execute().returnResponse();
 
@@ -99,7 +99,7 @@ public class MovementMovementRestIT extends AbstractRestServiceTest {
 	@Test
 	@Ignore
 	public void getLatestMovementsByConnectIdsTest() throws Exception {
-		final HttpResponse response = Request.Post(BASE_URL + "movement/rest/movement/latest")
+		final HttpResponse response = Request.Post(getBaseUrl() + "movement/rest/movement/latest")
 				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken())
 				.bodyByteArray(writeValueAsString(new ArrayList<String>()).getBytes()).execute().returnResponse();
 
@@ -115,7 +115,7 @@ public class MovementMovementRestIT extends AbstractRestServiceTest {
 	 */
 	@Test
 	public void getLatestMovementsTest() throws Exception {
-		final HttpResponse response = Request.Get(BASE_URL + "movement/rest/movement/latest/100")
+		final HttpResponse response = Request.Get(getBaseUrl() + "movement/rest/movement/latest/100")
 				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken()).execute()
 				.returnResponse();
 
@@ -132,7 +132,7 @@ public class MovementMovementRestIT extends AbstractRestServiceTest {
 	@Test
 	@Ignore
 	public void getByIdTest() throws Exception {
-		final HttpResponse response = Request.Get(BASE_URL + "movement/rest/movement/id")
+		final HttpResponse response = Request.Get(getBaseUrl() + "movement/rest/movement/id")
 				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken()).execute()
 				.returnResponse();
 
@@ -148,7 +148,7 @@ public class MovementMovementRestIT extends AbstractRestServiceTest {
 	 */
 	@Test
 	public void getListMovementByAreaAndTimeIntervalTest() throws Exception {
-		final HttpResponse response = Request.Post(BASE_URL + "movement/rest/movement/listByAreaAndTimeInterval")
+		final HttpResponse response = Request.Post(getBaseUrl() + "movement/rest/movement/listByAreaAndTimeInterval")
 				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken())
 				.bodyByteArray(writeValueAsString(new MovementAreaAndTimeIntervalCriteria()).getBytes()).execute()
 				.returnResponse();

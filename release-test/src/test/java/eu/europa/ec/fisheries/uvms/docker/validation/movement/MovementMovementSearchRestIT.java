@@ -66,7 +66,7 @@ public class MovementMovementSearchRestIT extends AbstractRestServiceTest {
 		groupListCriteria.setValue(testAsset.getAssetId().getGuid());
 		movementSearchGroup.getSearchFields().add(groupListCriteria);
 		
-		final HttpResponse response = Request.Post(BASE_URL + "movement/rest/search/group")
+		final HttpResponse response = Request.Post(getBaseUrl() + "movement/rest/search/group")
 				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken())
 				.bodyByteArray(writeValueAsString(movementSearchGroup).getBytes()).execute().returnResponse();
 
@@ -87,7 +87,7 @@ public class MovementMovementSearchRestIT extends AbstractRestServiceTest {
 		MovementSearchGroup createMovementSearchGroup = createMovementSearchGroup();
 		assertNotNull(createMovementSearchGroup);
 
-		final HttpResponse response = Request.Get(BASE_URL + "movement/rest/search/group/" + createMovementSearchGroup.getId())
+		final HttpResponse response = Request.Get(getBaseUrl() + "movement/rest/search/group/" + createMovementSearchGroup.getId())
 				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken()).execute()
 				.returnResponse();
 
@@ -107,7 +107,7 @@ public class MovementMovementSearchRestIT extends AbstractRestServiceTest {
 
 		movementSearchGroup.setName("ChangedName" + UUID.randomUUID().toString());
 		
-		final HttpResponse response = Request.Put(BASE_URL + "movement/rest/search/group")
+		final HttpResponse response = Request.Put(getBaseUrl() + "movement/rest/search/group")
 				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken())
 				.bodyByteArray(writeValueAsString(movementSearchGroup).getBytes()).execute().returnResponse();
 
@@ -123,7 +123,7 @@ public class MovementMovementSearchRestIT extends AbstractRestServiceTest {
 	 */
 	@Test
 	public void getMovementSearchGroupsByUserTest() throws Exception {
-		final HttpResponse response = Request.Get(BASE_URL + "movement/rest/search/groups/?user=" + URLEncoder.encode("vms_admin_com", "UTF-8"))
+		final HttpResponse response = Request.Get(getBaseUrl() + "movement/rest/search/groups/?user=" + URLEncoder.encode("vms_admin_com", "UTF-8"))
 				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken()).execute()
 				.returnResponse();
 
@@ -141,7 +141,7 @@ public class MovementMovementSearchRestIT extends AbstractRestServiceTest {
 		MovementSearchGroup createMovementSearchGroup = createMovementSearchGroup();
 		assertNotNull(createMovementSearchGroup);
 
-		final HttpResponse response = Request.Delete(BASE_URL + "movement/rest/search/group/" + createMovementSearchGroup.getId())
+		final HttpResponse response = Request.Delete(getBaseUrl() + "movement/rest/search/group/" + createMovementSearchGroup.getId())
 				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken()).execute()
 				.returnResponse();
 

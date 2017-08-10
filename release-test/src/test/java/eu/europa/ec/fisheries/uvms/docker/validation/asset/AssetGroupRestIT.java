@@ -42,7 +42,7 @@ public class AssetGroupRestIT extends AbstractRestServiceTest {
 	 */
 	@Test
 	public void getAssetGroupListByUserTest() throws Exception {
-		final HttpResponse response = Request.Get(BASE_URL + "asset/rest/group/list?user=vms_admin_com")
+		final HttpResponse response = Request.Get(getBaseUrl() + "asset/rest/group/list?user=vms_admin_com")
 				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken()).execute()
 				.returnResponse();
 		List dataList = checkSuccessResponseReturnType(response, List.class);
@@ -60,7 +60,7 @@ public class AssetGroupRestIT extends AbstractRestServiceTest {
 		AssetGroup testAssetGroup = createTestAssetGroup();
 		assertNotNull(testAssetGroup);
 
-		final HttpResponse response = Request.Get(BASE_URL + "asset/rest/group/" + testAssetGroup.getGuid())
+		final HttpResponse response = Request.Get(getBaseUrl() + "asset/rest/group/" + testAssetGroup.getGuid())
 				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken()).execute()
 				.returnResponse();
 		Map<String, Object> dataMap = checkSuccessResponseReturnMap(response);
@@ -97,7 +97,7 @@ public class AssetGroupRestIT extends AbstractRestServiceTest {
 		assetGroupSearchField.setValue(testAsset.getAssetId().getGuid());
 		assetGroup.getSearchFields().add(assetGroupSearchField);
 
-		final HttpResponse response = Request.Post(BASE_URL + "asset/rest/group")
+		final HttpResponse response = Request.Post(getBaseUrl() + "asset/rest/group")
 				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken())
 				.bodyByteArray(writeValueAsString(assetGroup).getBytes()).execute().returnResponse();
 		Map<String, Object> dataMap = checkSuccessResponseReturnMap(response);
@@ -118,7 +118,7 @@ public class AssetGroupRestIT extends AbstractRestServiceTest {
 		testAssetGroup.setName("ChangedName" + UUID.randomUUID().toString());
 
 		
-		final HttpResponse response = Request.Put(BASE_URL + "asset/rest/group")
+		final HttpResponse response = Request.Put(getBaseUrl() + "asset/rest/group")
 				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken())
 				.bodyByteArray(writeValueAsString(testAssetGroup).getBytes()).execute().returnResponse();
 		Map<String, Object> dataMap = checkSuccessResponseReturnMap(response);
@@ -134,7 +134,7 @@ public class AssetGroupRestIT extends AbstractRestServiceTest {
 		AssetGroup testAssetGroup = createTestAssetGroup();
 		assertNotNull(testAssetGroup);
 
-		final HttpResponse response = Request.Delete(BASE_URL + "asset/rest/group/" + testAssetGroup.getGuid())
+		final HttpResponse response = Request.Delete(getBaseUrl() + "asset/rest/group/" + testAssetGroup.getGuid())
 				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken()).execute()
 				.returnResponse();
 		Map<String, Object> dataMap = checkSuccessResponseReturnMap(response);

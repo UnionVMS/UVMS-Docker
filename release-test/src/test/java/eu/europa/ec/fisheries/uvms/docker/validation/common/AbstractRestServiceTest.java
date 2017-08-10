@@ -14,10 +14,8 @@ copy of the GNU General Public License along with the IFDM Suite. If not, see <h
 package eu.europa.ec.fisheries.uvms.docker.validation.common;
 
 import java.io.IOException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -26,14 +24,11 @@ import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.fluent.Request;
-import org.junit.Assert;
 import org.junit.BeforeClass;
 
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.type.MapType;
 
 import eu.europa.ec.fisheries.schema.mobileterminal.polltypes.v1.PollAttribute;
 import eu.europa.ec.fisheries.schema.mobileterminal.polltypes.v1.PollAttributeType;
@@ -59,16 +54,10 @@ import eu.europa.ec.fisheries.wsdl.asset.types.EventCode;
 /**
  * The Class AbstractRestServiceTest.
  */
-public abstract class AbstractRestServiceTest extends Assert {
-
-	/** The Constant BASE_URL. */
-	protected static final String BASE_URL = "http://localhost:28080/";
+public abstract class AbstractRestServiceTest extends AbstractRest {
 
 	/** The valid jwt token. */
 	private static String validJwtToken;
-
-	/** The Constant OBJECT_MAPPER. */
-	private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
 
 	/**
 	 * Aquire jwt token for test.
@@ -78,7 +67,7 @@ public abstract class AbstractRestServiceTest extends Assert {
 	 */
 	@BeforeClass
 	public static void aquireJwtTokenForTest() throws Exception {
-		final HttpResponse response = Request.Post(BASE_URL + "usm-administration/rest/authenticate")
+		final HttpResponse response = Request.Post(getBaseUrl() + "usm-administration/rest/authenticate")
 				.setHeader("Content-Type", "application/json")
 				.bodyByteArray("{\"userName\":\"vms_admin_com\",\"password\":\"password\"}".getBytes()).execute()
 				.returnResponse();
@@ -87,42 +76,6 @@ public abstract class AbstractRestServiceTest extends Assert {
 		final Map<String, Object> data = getJsonMap(response);
 		assertEquals(true, data.get("authenticated"));
 		validJwtToken = (String) data.get("jwtoken");
-	}
-
-	protected final Map<String, Object> checkSuccessResponseReturnMap(final HttpResponse response)
-			throws IOException, JsonParseException, JsonMappingException, ClientProtocolException {
-		final Map<String, Object> data = checkSuccessResponseReturnDataMap(response);
-
-		Map<String, Object> dataMap = (Map<String, Object>) data.get("data");
-		assertNotNull(dataMap);
-		return dataMap;
-	}
-
-	private static Map<String, Object> checkSuccessResponseReturnDataMap(final HttpResponse response)
-			throws IOException, JsonParseException, JsonMappingException, ClientProtocolException {
-		assertEquals(HttpStatus.SC_OK, response.getStatusLine().getStatusCode());
-		final Map<String, Object> data = getJsonMap(response);
-		assertFalse(data.isEmpty());
-		assertNotNull(data.get("data"));
-		assertEquals("200", "" + data.get("code"));
-		return data;
-	}
-
-	protected final Integer checkSuccessResponseReturnInt(final HttpResponse response)
-			throws IOException, JsonParseException, JsonMappingException, ClientProtocolException {
-		final Map<String, Object> data = checkSuccessResponseReturnDataMap(response);
-
-		Integer dataValue = (Integer) data.get("data");
-		assertNotNull(dataValue);
-		return dataValue;
-	}
-
-	protected final <T> T checkSuccessResponseReturnType(final HttpResponse response, Class<T> classCast)
-			throws IOException, JsonParseException, JsonMappingException, ClientProtocolException {
-		final Map<String, Object> data = checkSuccessResponseReturnDataMap(response);
-		T dataValue = (T) data.get("data");
-		assertNotNull(dataValue);
-		return dataValue;
 	}
 
 	/**
@@ -135,7 +88,7 @@ public abstract class AbstractRestServiceTest extends Assert {
 	}
 
 	public final String aquireJwtToken(final String username, final String password) throws Exception {
-		final HttpResponse response = Request.Post(BASE_URL + "usm-administration/rest/authenticate")
+		final HttpResponse response = Request.Post(getBaseUrl() + "usm-administration/rest/authenticate")
 				.setHeader("Content-Type", "application/json")
 				.bodyByteArray(("{\"userName\":\"" + username + "\",\"password\":\"" + password + "\"}").getBytes())
 				.execute().returnResponse();
@@ -146,24 +99,11 @@ public abstract class AbstractRestServiceTest extends Assert {
 		return (String) data.get("jwtoken");
 	}
 
-	/**
-	 * Write value as string.
-	 *
-	 * @param value
-	 *            the value
-	 * @return the string
-	 * @throws JsonProcessingException
-	 *             the json processing exception
-	 */
-	protected final String writeValueAsString(final Object value) throws JsonProcessingException {
-		return OBJECT_MAPPER.writeValueAsString(value);
-	}
-
 	protected Asset createTestAsset() throws IOException, ClientProtocolException, JsonProcessingException,
 			JsonParseException, JsonMappingException {
 
 		Asset asset = AssetTestHelper.helper_createAsset(AssetIdType.GUID);
-		final HttpResponse response = Request.Post(BASE_URL + "asset/rest/asset")
+		final HttpResponse response = Request.Post(getBaseUrl() + "asset/rest/asset")
 				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken())
 				.bodyByteArray(writeValueAsString(asset).getBytes()).execute().returnResponse();
 		Map<String, Object> dataMap = checkSuccessResponseReturnMap(response);
@@ -194,52 +134,6 @@ public abstract class AbstractRestServiceTest extends Assert {
 		return asset;
 	}
 
-	/**
-	 * Gets the json map.
-	 *
-	 * @param response
-	 *            the response
-	 * @return the json map
-	 * @throws IOException
-	 *             Signals that an I/O exception has occurred.
-	 * @throws JsonParseException
-	 *             the json parse exception
-	 * @throws JsonMappingException
-	 *             the json mapping exception
-	 * @throws ClientProtocolException
-	 *             the client protocol exception
-	 */
-	protected final static Map<String, Object> getJsonMap(final HttpResponse response)
-			throws IOException, JsonParseException, JsonMappingException, ClientProtocolException {
-		final ObjectMapper mapper = new ObjectMapper();
-		final MapType type = mapper.getTypeFactory().constructMapType(Map.class, String.class, Object.class);
-		final Map<String, Object> data = mapper.readValue(response.getEntity().getContent(), type);
-		return data;
-	}
-
-	protected String getDateAsString(int year4, int month, int day, int hour, int minute, int sec, int millis) {
-
-		Date date = getDate(year4, month, day, hour, minute, sec, millis);
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss Z");
-		return sdf.format(date);
-	}
-
-	protected Date getDate(int year4, int month, int day, int hour, int minute, int sec, int millis) {
-
-		Calendar myCalendar = Calendar.getInstance();
-		myCalendar.set(Calendar.YEAR, year4);
-		myCalendar.set(Calendar.MONTH, month);
-		myCalendar.set(Calendar.DAY_OF_MONTH, day);
-
-		myCalendar.set(Calendar.HOUR, hour);
-		myCalendar.set(Calendar.MINUTE, minute);
-		myCalendar.set(Calendar.SECOND, sec);
-		myCalendar.set(Calendar.MILLISECOND, millis);
-		Date date = myCalendar.getTime();
-		return date;
-
-	}
-
 	protected Map<String, Object> createPoll_Helper() throws Exception {
 		Asset testAsset = createTestAsset();
 		MobileTerminalType createdMobileTerminalType = createMobileTerminalType();
@@ -250,7 +144,7 @@ public abstract class AbstractRestServiceTest extends Assert {
 			mobileTerminalAssignQuery.setConnectId(testAsset.getAssetId().getGuid());
 			// Assign first
 			final HttpResponse response = Request
-					.Post(BASE_URL + "mobileterminal/rest/mobileterminal/assign?comment=comment")
+					.Post(getBaseUrl() + "mobileterminal/rest/mobileterminal/assign?comment=comment")
 					.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken())
 					.bodyByteArray(writeValueAsString(mobileTerminalAssignQuery).getBytes()).execute().returnResponse();
 	
@@ -304,7 +198,7 @@ public abstract class AbstractRestServiceTest extends Assert {
 	
 		pollRequestType.getMobileTerminals().add(pollMobileTerminal);
 	
-		final HttpResponse response = Request.Post(BASE_URL + "mobileterminal/rest/poll")
+		final HttpResponse response = Request.Post(getBaseUrl() + "mobileterminal/rest/poll")
 				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken())
 				.bodyByteArray(writeValueAsString(pollRequestType).getBytes()).execute().returnResponse();
 	
@@ -351,7 +245,7 @@ public abstract class AbstractRestServiceTest extends Assert {
 			
 				mobileTerminalRequest.setPlugin(plugin);
 			
-				final HttpResponse response = Request.Post(BASE_URL + "mobileterminal/rest/mobileterminal")
+				final HttpResponse response = Request.Post(getBaseUrl() + "mobileterminal/rest/mobileterminal")
 						.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken())
 						.bodyByteArray(writeValueAsString(mobileTerminalRequest).getBytes()).execute().returnResponse();
 			

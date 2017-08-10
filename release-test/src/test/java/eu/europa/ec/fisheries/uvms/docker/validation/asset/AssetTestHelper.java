@@ -4,13 +4,14 @@ import java.math.BigDecimal;
 import java.util.Random;
 import java.util.UUID;
 
+import eu.europa.ec.fisheries.uvms.docker.validation.common.AbstractHelper;
 import eu.europa.ec.fisheries.wsdl.asset.types.Asset;
 import eu.europa.ec.fisheries.wsdl.asset.types.AssetId;
 import eu.europa.ec.fisheries.wsdl.asset.types.AssetIdType;
 import eu.europa.ec.fisheries.wsdl.asset.types.AssetProdOrgModel;
 import eu.europa.ec.fisheries.wsdl.asset.types.CarrierSource;
 
-public class AssetTestHelper {
+public class AssetTestHelper extends AbstractHelper {
 
 	public static Asset helper_createAsset(AssetIdType assetIdType, String ircs) {
 

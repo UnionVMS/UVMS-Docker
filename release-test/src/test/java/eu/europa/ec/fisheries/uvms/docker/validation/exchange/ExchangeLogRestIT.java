@@ -23,7 +23,6 @@ import java.util.TimeZone;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.fluent.Request;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import eu.europa.ec.fisheries.schema.exchange.v1.ExchangeListCriteria;
@@ -61,7 +60,7 @@ public class ExchangeLogRestIT extends AbstractRestServiceTest {
 		exchangeListPagination.setListSize(100);
 		exchangeListQuery.setPagination(exchangeListPagination);
 		
-		final HttpResponse response = Request.Post(BASE_URL + "exchange/rest/exchange/list")
+		final HttpResponse response = Request.Post(getBaseUrl() + "exchange/rest/exchange/list")
 				.bodyByteArray(writeValueAsString(exchangeListQuery).getBytes())
 				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken()).execute()
 				.returnResponse();
@@ -85,7 +84,7 @@ public class ExchangeLogRestIT extends AbstractRestServiceTest {
 		pollQuery.setStatusFromDate(formatDateAsUTC(oldDate));
 		pollQuery.setStatusToDate(formatDateAsUTC(new Date()));
 			
-		final HttpResponse response = Request.Post(BASE_URL + "exchange/rest/exchange/poll")
+		final HttpResponse response = Request.Post(getBaseUrl() + "exchange/rest/exchange/poll")
 				.bodyByteArray(writeValueAsString(pollQuery).getBytes())
 				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken()).execute()
 				.returnResponse();
@@ -113,7 +112,7 @@ public class ExchangeLogRestIT extends AbstractRestServiceTest {
 		ArrayList sendPolls = (ArrayList) programPollDataMap.get("sentPolls");
 		String uid = (String) sendPolls.get(0);
 
-		final HttpResponse response = Request.Get(BASE_URL + "exchange/rest/exchange/poll/" + uid)
+		final HttpResponse response = Request.Get(getBaseUrl() + "exchange/rest/exchange/poll/" + uid)
 				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken()).execute()
 				.returnResponse();
 
@@ -136,7 +135,7 @@ public class ExchangeLogRestIT extends AbstractRestServiceTest {
 			ArrayList sendPolls = (ArrayList) programPollDataMap.get("sentPolls");
 			String uid = (String) sendPolls.get(0);
 
-			final HttpResponse response = Request.Get(BASE_URL + "exchange/rest/exchange/poll/" + uid)
+			final HttpResponse response = Request.Get(getBaseUrl() + "exchange/rest/exchange/poll/" + uid)
 					.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken()).execute()
 					.returnResponse();
 
@@ -145,7 +144,7 @@ public class ExchangeLogRestIT extends AbstractRestServiceTest {
 
 		}
 		
-		final HttpResponse response = Request.Get(BASE_URL + "exchange/rest/exchange/" + guid)
+		final HttpResponse response = Request.Get(getBaseUrl() + "exchange/rest/exchange/" + guid)
 				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken()).execute()
 				.returnResponse();
 

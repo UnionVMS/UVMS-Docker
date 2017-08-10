@@ -39,7 +39,7 @@ public class SettingsRestIT extends AbstractRestServiceTest {
 	 */
 	@Test
 	public void getByModuleNameTest() throws Exception {
-		final HttpResponse response = Request.Get(BASE_URL + "config/rest/settings?moduleName=audit")
+		final HttpResponse response = Request.Get(getBaseUrl() + "config/rest/settings?moduleName=audit")
 				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken()).execute()
 				.returnResponse();
 		List dataList = checkSuccessResponseReturnType(response,List.class);
@@ -56,7 +56,7 @@ public class SettingsRestIT extends AbstractRestServiceTest {
 		SettingType settingType = createTestSettingType();
 		assertNotNull(settingType);
 
-		final HttpResponse response = Request.Get(BASE_URL + "config/rest/settings/"+ settingType.getId())
+		final HttpResponse response = Request.Get(getBaseUrl() + "config/rest/settings/"+ settingType.getId())
 				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken()).execute()
 				.returnResponse();
 		Map<String, Object> dataMap = checkSuccessResponseReturnMap(response);
@@ -72,7 +72,7 @@ public class SettingsRestIT extends AbstractRestServiceTest {
 		SettingType settingType = createTestSettingType();
 		assertNotNull(settingType);
 		
-		final HttpResponse response = Request.Delete(BASE_URL + "config/rest/settings/" + settingType.getId())
+		final HttpResponse response = Request.Delete(getBaseUrl() + "config/rest/settings/" + settingType.getId())
 				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken()).execute()
 				.returnResponse();
 		Map<String, Object> dataMap = checkSuccessResponseReturnMap(response);
@@ -90,7 +90,7 @@ public class SettingsRestIT extends AbstractRestServiceTest {
 
 		settingType.setDescription("Updated Desc" + UUID.randomUUID().toString());
 		
-		final HttpResponse response = Request.Put(BASE_URL + "config/rest/settings/" + settingType.getId())
+		final HttpResponse response = Request.Put(getBaseUrl() + "config/rest/settings/" + settingType.getId())
 				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken())
 				.bodyByteArray(writeValueAsString(settingType).getBytes()).execute().returnResponse();
 		Map<String, Object> dataMap = checkSuccessResponseReturnMap(response);
@@ -123,7 +123,7 @@ public class SettingsRestIT extends AbstractRestServiceTest {
 		settingType.setValue(UUID.randomUUID().toString());
 		
 		settingsCreateQuery.setSetting(settingType);
-		final HttpResponse response = Request.Post(BASE_URL + "config/rest/settings")
+		final HttpResponse response = Request.Post(getBaseUrl() + "config/rest/settings")
 				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken())
 				.bodyByteArray(writeValueAsString(settingsCreateQuery).getBytes()).execute().returnResponse();
 		Map<String, Object> dataMap = checkSuccessResponseReturnMap(response);
@@ -138,7 +138,7 @@ public class SettingsRestIT extends AbstractRestServiceTest {
 	 */
 	@Test
 	public void catalogTest() throws Exception {
-		final HttpResponse response = Request.Get(BASE_URL + "config/rest/catalog")
+		final HttpResponse response = Request.Get(getBaseUrl() + "config/rest/catalog")
 				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken()).execute()
 				.returnResponse();
 		Map<String, Object> dataMap = checkSuccessResponseReturnMap(response);
@@ -152,7 +152,7 @@ public class SettingsRestIT extends AbstractRestServiceTest {
 	 */
 	@Test
 	public void getPingsTest() throws Exception {
-		final HttpResponse response = Request.Get(BASE_URL + "config/rest/pings")
+		final HttpResponse response = Request.Get(getBaseUrl() + "config/rest/pings")
 				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken()).execute()
 				.returnResponse();
 		Map<String, Object> dataMap = checkSuccessResponseReturnMap(response);
@@ -166,7 +166,7 @@ public class SettingsRestIT extends AbstractRestServiceTest {
 	 */
 	@Test
 	public void getGlobalSettingsTest() throws Exception {
-		final HttpResponse response = Request.Get(BASE_URL + "config/rest/globals")
+		final HttpResponse response = Request.Get(getBaseUrl() + "config/rest/globals")
 				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken()).execute()
 				.returnResponse();
 		List dataList = checkSuccessResponseReturnType(response,List.class);

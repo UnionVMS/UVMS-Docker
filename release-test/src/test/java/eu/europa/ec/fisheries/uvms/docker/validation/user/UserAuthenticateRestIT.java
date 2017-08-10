@@ -27,9 +27,6 @@ import eu.europa.ec.fisheries.uvms.docker.validation.common.AbstractRestServiceT
  */
 public class UserAuthenticateRestIT extends AbstractRestServiceTest {
 
-	/** The base url. */
-	private final String BASE_URL = "http://localhost:28080/";
-
 	/**
 	 * Authenticate get jwt token success test.
 	 *
@@ -38,7 +35,7 @@ public class UserAuthenticateRestIT extends AbstractRestServiceTest {
 	 */
 	@Test
 	public void authenticateGetJwtTokenSuccessTest() throws Exception {
-		final HttpResponse response = Request.Post(BASE_URL + "usm-administration/rest/authenticate")
+		final HttpResponse response = Request.Post(getBaseUrl() + "usm-administration/rest/authenticate")
 				.setHeader("Content-Type", "application/json")
 				.bodyByteArray("{\"userName\":\"vms_admin_com\",\"password\":\"password\"}".getBytes()).execute()
 				.returnResponse();
@@ -57,7 +54,7 @@ public class UserAuthenticateRestIT extends AbstractRestServiceTest {
 	 */
 	@Test
 	public void authenticateGetJwtTokenFailureTest() throws Exception {
-		final HttpResponse response = Request.Post(BASE_URL + "usm-administration/rest/authenticate")
+		final HttpResponse response = Request.Post(getBaseUrl() + "usm-administration/rest/authenticate")
 				.setHeader("Content-Type", "application/json")
 				.bodyByteArray("{\"userName\":\"vms_admin_com\",\"password\":\"invalidpassword\"}".getBytes()).execute()
 				.returnResponse();

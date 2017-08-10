@@ -45,7 +45,7 @@ public class AuditRestIT extends AbstractRestServiceTest {
 		listPagination.setListSize(BigInteger.valueOf(25));
 		auditLogListQuery.setPagination(listPagination);
 
-		final HttpResponse response = Request.Post(BASE_URL + "audit/rest/audit/list")
+		final HttpResponse response = Request.Post(getBaseUrl() + "audit/rest/audit/list")
 				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken())
 				.bodyByteArray(writeValueAsString(auditLogListQuery).getBytes()).execute().returnResponse();
 

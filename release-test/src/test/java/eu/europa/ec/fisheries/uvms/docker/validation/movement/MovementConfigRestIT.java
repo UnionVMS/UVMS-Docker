@@ -37,7 +37,7 @@ public class MovementConfigRestIT extends AbstractRestServiceTest {
 	 */
 	@Test
 	public void getMovementTypesTest() throws Exception {
-		final HttpResponse response = Request.Get(BASE_URL + "movement/rest/config/movementTypes")
+		final HttpResponse response = Request.Get(getBaseUrl() + "movement/rest/config/movementTypes")
 				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken()).execute()
 				.returnResponse();
 
@@ -53,7 +53,7 @@ public class MovementConfigRestIT extends AbstractRestServiceTest {
 	 */
 	@Test
 	public void getSegmentTypesTest() throws Exception {
-		final HttpResponse response = Request.Get(BASE_URL + "movement/rest/config/segmentCategoryTypes")
+		final HttpResponse response = Request.Get(getBaseUrl() + "movement/rest/config/segmentCategoryTypes")
 				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken()).execute()
 				.returnResponse();
 
@@ -70,7 +70,7 @@ public class MovementConfigRestIT extends AbstractRestServiceTest {
 	 */
 	@Test
 	public void getMovementSearchKeysTest() throws Exception {
-		final HttpResponse response = Request.Get(BASE_URL + "movement/rest/config/searchKeys")
+		final HttpResponse response = Request.Get(getBaseUrl() + "movement/rest/config/searchKeys")
 				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken()).execute()
 				.returnResponse();
 
@@ -86,7 +86,7 @@ public class MovementConfigRestIT extends AbstractRestServiceTest {
 	 */
 	@Test
 	public void getMovementSourceTypesTest() throws Exception {
-		final HttpResponse response = Request.Get(BASE_URL + "movement/rest/config/movementSourceTypes")
+		final HttpResponse response = Request.Get(getBaseUrl() + "movement/rest/config/movementSourceTypes")
 				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken()).execute()
 				.returnResponse();
 
@@ -102,7 +102,7 @@ public class MovementConfigRestIT extends AbstractRestServiceTest {
 	 */
 	@Test
 	public void getActivityTypesTest() throws Exception {
-		final HttpResponse response = Request.Get(BASE_URL + "movement/rest/config/activityTypes")
+		final HttpResponse response = Request.Get(getBaseUrl() + "movement/rest/config/activityTypes")
 				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken()).execute()
 				.returnResponse();
 
@@ -118,7 +118,7 @@ public class MovementConfigRestIT extends AbstractRestServiceTest {
 	 */
 	@Test
 	public void getConfigurationTest() throws Exception {
-		final HttpResponse response = Request.Get(BASE_URL + "movement/rest/config/")
+		final HttpResponse response = Request.Get(getBaseUrl() + "movement/rest/config/")
 				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken()).execute()
 				.returnResponse();
 

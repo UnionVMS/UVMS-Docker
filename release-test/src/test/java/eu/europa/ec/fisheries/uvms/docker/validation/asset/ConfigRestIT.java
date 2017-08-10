@@ -37,7 +37,7 @@ public class ConfigRestIT extends AbstractRestServiceTest {
 	 */
 	@Test
 	public void getConfigSearchFieldsTest() throws Exception {
-		final HttpResponse response = Request.Get(BASE_URL + "asset/rest/config/searchfields")
+		final HttpResponse response = Request.Get(getBaseUrl() + "asset/rest/config/searchfields")
 				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken()).execute()
 				.returnResponse();
 		List dataList = checkSuccessResponseReturnType(response,List.class);
@@ -52,7 +52,7 @@ public class ConfigRestIT extends AbstractRestServiceTest {
 	 */
 	@Test
 	public void getConfigurationTest() throws Exception {
-		final HttpResponse response = Request.Get(BASE_URL + "asset/rest/config")
+		final HttpResponse response = Request.Get(getBaseUrl() + "asset/rest/config")
 				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken()).execute()
 				.returnResponse();
 		Map<String, Object> dataMap = checkSuccessResponseReturnMap(response);
@@ -67,7 +67,7 @@ public class ConfigRestIT extends AbstractRestServiceTest {
 	 */
 	@Test
 	public void getParametersTest() throws Exception {
-		final HttpResponse response = Request.Get(BASE_URL + "asset/rest/config/parameters")
+		final HttpResponse response = Request.Get(getBaseUrl() + "asset/rest/config/parameters")
 				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken()).execute()
 				.returnResponse();
 		Map<String, Object> dataMap = checkSuccessResponseReturnMap(response);

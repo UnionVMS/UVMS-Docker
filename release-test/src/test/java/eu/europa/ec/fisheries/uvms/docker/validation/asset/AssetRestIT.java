@@ -54,7 +54,7 @@ public class AssetRestIT extends AbstractRestServiceTest {
 		assetListCriteriaPair.setValue("SWE");
 		assetListCriteria.getCriterias().add(assetListCriteriaPair);
 		assetListQuery.setAssetSearchCriteria(assetListCriteria);
-		final HttpResponse response = Request.Post(BASE_URL + "asset/rest/asset/list")
+		final HttpResponse response = Request.Post(getBaseUrl() + "asset/rest/asset/list")
 				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken())
 				.bodyByteArray(writeValueAsString(assetListQuery).getBytes()).execute().returnResponse();
 		Map<String, Object> dataMap = checkSuccessResponseReturnMap(response);
@@ -75,7 +75,7 @@ public class AssetRestIT extends AbstractRestServiceTest {
 		assetListCriteriaPair.setValue("SWE");
 		assetListCriteria.getCriterias().add(assetListCriteriaPair);
 		assetListQuery.setAssetSearchCriteria(assetListCriteria);
-		final HttpResponse response = Request.Post(BASE_URL + "asset/rest/asset/listcount")
+		final HttpResponse response = Request.Post(getBaseUrl() + "asset/rest/asset/listcount")
 				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken())
 				.bodyByteArray(writeValueAsString(assetListQuery).getBytes()).execute().returnResponse();
 		Integer dataValue = checkSuccessResponseReturnInt(response);
@@ -91,7 +91,7 @@ public class AssetRestIT extends AbstractRestServiceTest {
 	 */
 	@Test
 	public void getNoteActivityCodesTest() throws Exception {
-		final HttpResponse response = Request.Get(BASE_URL + "asset/rest/asset/activitycodes")
+		final HttpResponse response = Request.Get(getBaseUrl() + "asset/rest/asset/activitycodes")
 				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken()).execute()
 				.returnResponse();
 		Map<String, Object> dataMap = checkSuccessResponseReturnMap(response);
@@ -108,7 +108,7 @@ public class AssetRestIT extends AbstractRestServiceTest {
 	@Test
 	public void getAssetByIdTest() throws Exception {
 		Asset asset = createTestAsset();
-		final HttpResponse response = Request.Get(BASE_URL + "asset/rest/asset/" + asset.getAssetId().getGuid())
+		final HttpResponse response = Request.Get(getBaseUrl() + "asset/rest/asset/" + asset.getAssetId().getGuid())
 				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken()).execute()
 				.returnResponse();
 		Map<String, Object> dataMap = checkSuccessResponseReturnMap(response);
@@ -133,7 +133,7 @@ public class AssetRestIT extends AbstractRestServiceTest {
 	 */
 	@Test
 	public void updateAssetTest() throws Exception {
-		final HttpResponse response = Request.Put(BASE_URL + "asset/rest/asset?comment=ChangedName")
+		final HttpResponse response = Request.Put(getBaseUrl() + "asset/rest/asset?comment=ChangedName")
 				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken())
 				.bodyByteArray(writeValueAsString(createTestAsset()).getBytes()).execute().returnResponse();
 		Map<String, Object> dataMap = checkSuccessResponseReturnMap(response);
@@ -148,7 +148,7 @@ public class AssetRestIT extends AbstractRestServiceTest {
 	@Test
 	public void archiveAssetTest() throws Exception {
 
-		final HttpResponse response = Request.Put(BASE_URL + "asset/rest/asset/archive?comment=Archive")
+		final HttpResponse response = Request.Put(getBaseUrl() + "asset/rest/asset/archive?comment=Archive")
 				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken())
 				.bodyByteArray(writeValueAsString(createTestAsset()).getBytes()).execute().returnResponse();
 		Map<String, Object> dataMap = checkSuccessResponseReturnMap(response);
@@ -166,7 +166,7 @@ public class AssetRestIT extends AbstractRestServiceTest {
 		ArrayList<String> assetIdList = new ArrayList<String>();
 		assetIdList.add(asset.getAssetId().getGuid());
 
-		final HttpResponse response = Request.Post(BASE_URL + "asset/rest/asset/listGroupByFlagState")
+		final HttpResponse response = Request.Post(getBaseUrl() + "asset/rest/asset/listGroupByFlagState")
 				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken())
 				.bodyByteArray(writeValueAsString(assetIdList).getBytes()).execute().returnResponse();
 		Map<String, Object> dataMap = checkSuccessResponseReturnMap(response);

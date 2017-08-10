@@ -35,7 +35,7 @@ public class ConfigRestIT extends AbstractMobileTerminalTest {
 	 */
 	@Test
 	public void getConfigTranspondersTest() throws Exception {
-		final HttpResponse response = Request.Get(BASE_URL + "mobileterminal/rest/config/transponders")
+		final HttpResponse response = Request.Get(getBaseUrl() + "mobileterminal/rest/config/transponders")
 				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken()).execute()
 				.returnResponse();
 		List dataList = checkSuccessResponseReturnType(response,List.class);
@@ -50,7 +50,7 @@ public class ConfigRestIT extends AbstractMobileTerminalTest {
 	 */
 	@Test
 	public void getConfigSearchFieldsTest() throws Exception {
-		final HttpResponse response = Request.Get(BASE_URL + "mobileterminal/rest/config/searchfields")
+		final HttpResponse response = Request.Get(getBaseUrl() + "mobileterminal/rest/config/searchfields")
 				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken()).execute()
 				.returnResponse();
 		List dataList = checkSuccessResponseReturnType(response,List.class);
@@ -65,7 +65,7 @@ public class ConfigRestIT extends AbstractMobileTerminalTest {
 	 */
 	@Test
 	public void getConfigurationTest() throws Exception {
-		final HttpResponse response = Request.Get(BASE_URL + "mobileterminal/rest/config")
+		final HttpResponse response = Request.Get(getBaseUrl() + "mobileterminal/rest/config")
 				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken()).execute()
 				.returnResponse();
 		Map<String, Object> dataMap = checkSuccessResponseReturnMap(response);

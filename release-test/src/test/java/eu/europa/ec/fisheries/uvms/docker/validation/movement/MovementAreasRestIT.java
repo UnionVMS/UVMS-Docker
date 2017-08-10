@@ -35,7 +35,7 @@ public class MovementAreasRestIT extends AbstractRestServiceTest {
 	 */
 	@Test
 	public void getAreasTest() throws Exception {
-		final HttpResponse response = Request.Get(BASE_URL + "movement/rest/areas")
+		final HttpResponse response = Request.Get(getBaseUrl() + "movement/rest/areas")
 				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken()).execute()
 				.returnResponse();
 		List dataList = checkSuccessResponseReturnType(response,List.class);

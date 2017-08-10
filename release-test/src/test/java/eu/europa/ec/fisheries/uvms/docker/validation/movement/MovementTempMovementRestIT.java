@@ -42,7 +42,7 @@ public class MovementTempMovementRestIT extends AbstractRestServiceTest {
 	 */
 	@Test
 	public void createTempTest() throws Exception {
-		final HttpResponse response = Request.Post(BASE_URL + "movement/rest/tempmovement")
+		final HttpResponse response = Request.Post(getBaseUrl() + "movement/rest/tempmovement")
 				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken())
 				.bodyByteArray(writeValueAsString(createTempMovement()).getBytes()).execute().returnResponse();
 

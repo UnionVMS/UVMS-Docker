@@ -54,7 +54,7 @@ public class MobileTerminalRestIT extends AbstractMobileTerminalTest {
 	public void getMobileTerminalByIdTest() throws Exception {
 		MobileTerminalType createdMobileTerminalType = createMobileTerminalType();
 		
-		final HttpResponse response = Request.Get(BASE_URL + "mobileterminal/rest/mobileterminal/" + createdMobileTerminalType.getMobileTerminalId().getGuid())
+		final HttpResponse response = Request.Get(getBaseUrl() + "mobileterminal/rest/mobileterminal/" + createdMobileTerminalType.getMobileTerminalId().getGuid())
 				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken()).execute()
 				.returnResponse();
 		Map<String, Object> dataMap = checkSuccessResponseReturnMap(response);
@@ -72,7 +72,7 @@ public class MobileTerminalRestIT extends AbstractMobileTerminalTest {
 		
 		createdMobileTerminalType.setArchived(true);
 		
-		final HttpResponse response = Request.Put(BASE_URL + "mobileterminal/rest/mobileterminal?comment=comment")
+		final HttpResponse response = Request.Put(getBaseUrl() + "mobileterminal/rest/mobileterminal?comment=comment")
 				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken())
 				.bodyByteArray(writeValueAsString(createdMobileTerminalType).getBytes()).execute().returnResponse();
 
@@ -97,7 +97,7 @@ public class MobileTerminalRestIT extends AbstractMobileTerminalTest {
 		criteria.setIsDynamic(true);
 		queryRequest.setMobileTerminalSearchCriteria(criteria);
 		
-		final HttpResponse response = Request.Post(BASE_URL + "mobileterminal/rest/mobileterminal/list")
+		final HttpResponse response = Request.Post(getBaseUrl() + "mobileterminal/rest/mobileterminal/list")
 				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken())
 				.bodyByteArray(writeValueAsString(queryRequest).getBytes()).execute().returnResponse();
 
@@ -120,7 +120,7 @@ public class MobileTerminalRestIT extends AbstractMobileTerminalTest {
 		mobileTerminalAssignQuery.setConnectId(testAsset.getAssetId().getGuid());
 
 		final HttpResponse response = Request
-				.Post(BASE_URL + "mobileterminal/rest/mobileterminal/assign?comment=comment")
+				.Post(getBaseUrl() + "mobileterminal/rest/mobileterminal/assign?comment=comment")
 				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken())
 				.bodyByteArray(writeValueAsString(mobileTerminalAssignQuery).getBytes()).execute()
 				.returnResponse();
@@ -145,7 +145,7 @@ public class MobileTerminalRestIT extends AbstractMobileTerminalTest {
 		{
 			// Assign first
 			final HttpResponse response = Request
-					.Post(BASE_URL + "mobileterminal/rest/mobileterminal/assign?comment=comment")
+					.Post(getBaseUrl() + "mobileterminal/rest/mobileterminal/assign?comment=comment")
 					.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken())
 					.bodyByteArray(writeValueAsString(mobileTerminalAssignQuery).getBytes()).execute()
 					.returnResponse();
@@ -153,7 +153,7 @@ public class MobileTerminalRestIT extends AbstractMobileTerminalTest {
 			Map<String, Object> dataMap = checkSuccessResponseReturnMap(response);
 		}
 		final HttpResponse response = Request
-				.Post(BASE_URL + "mobileterminal/rest/mobileterminal/unassign?comment=comment")
+				.Post(getBaseUrl() + "mobileterminal/rest/mobileterminal/unassign?comment=comment")
 				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken())
 				.bodyByteArray(writeValueAsString(mobileTerminalAssignQuery).getBytes()).execute()
 				.returnResponse();
@@ -172,7 +172,7 @@ public class MobileTerminalRestIT extends AbstractMobileTerminalTest {
 		MobileTerminalType createdMobileTerminalType = createMobileTerminalType();
 
 		final HttpResponse response = Request
-				.Put(BASE_URL + "mobileterminal/rest/mobileterminal/status/activate?comment=comment")
+				.Put(getBaseUrl() + "mobileterminal/rest/mobileterminal/status/activate?comment=comment")
 				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken())
 				.bodyByteArray(writeValueAsString(createdMobileTerminalType.getMobileTerminalId()).getBytes()).execute().returnResponse();
 
@@ -190,7 +190,7 @@ public class MobileTerminalRestIT extends AbstractMobileTerminalTest {
 		MobileTerminalType createdMobileTerminalType = createMobileTerminalType();
 
 		final HttpResponse response = Request
-				.Put(BASE_URL + "mobileterminal/rest/mobileterminal/status/inactivate?comment=comment")
+				.Put(getBaseUrl() + "mobileterminal/rest/mobileterminal/status/inactivate?comment=comment")
 				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken())
 				.bodyByteArray(writeValueAsString(createdMobileTerminalType.getMobileTerminalId()).getBytes()).execute().returnResponse();
 
@@ -208,7 +208,7 @@ public class MobileTerminalRestIT extends AbstractMobileTerminalTest {
 		MobileTerminalType createdMobileTerminalType = createMobileTerminalType();
 
 		final HttpResponse response = Request
-				.Put(BASE_URL + "mobileterminal/rest/mobileterminal/status/remove?comment=comment")
+				.Put(getBaseUrl() + "mobileterminal/rest/mobileterminal/status/remove?comment=comment")
 				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken())
 				.bodyByteArray(writeValueAsString(createdMobileTerminalType.getMobileTerminalId()).getBytes()).execute().returnResponse();
 
@@ -226,7 +226,7 @@ public class MobileTerminalRestIT extends AbstractMobileTerminalTest {
 	public void getMobileTerminalHistoryListByMobileTerminalIdTest() throws Exception {
 		MobileTerminalType createdMobileTerminalType = createMobileTerminalType();
 
-		final HttpResponse response = Request.Get(BASE_URL + "mobileterminal/rest/mobileterminal/history/" + createdMobileTerminalType.getMobileTerminalId().getGuid())
+		final HttpResponse response = Request.Get(getBaseUrl() + "mobileterminal/rest/mobileterminal/history/" + createdMobileTerminalType.getMobileTerminalId().getGuid())
 				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken()).execute()
 				.returnResponse();
 		Map<String, Object> dataMap = checkSuccessResponseReturnMap(response);

@@ -35,7 +35,7 @@ public class ExchangeConfigRestIT extends AbstractRestServiceTest {
 	 */
 	@Test
 	public void getConfigSearchFieldsTest() throws Exception {
-		final HttpResponse response = Request.Get(BASE_URL + "exchange/rest/config/searchfields")
+		final HttpResponse response = Request.Get(getBaseUrl() + "exchange/rest/config/searchfields")
 				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken()).execute()
 				.returnResponse();
 
@@ -50,7 +50,7 @@ public class ExchangeConfigRestIT extends AbstractRestServiceTest {
 	 */
 	@Test
 	public void getConfigurationTest() throws Exception {
-		final HttpResponse response = Request.Get(BASE_URL + "exchange/rest/config")
+		final HttpResponse response = Request.Get(getBaseUrl() + "exchange/rest/config")
 				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken()).execute()
 				.returnResponse();
 
