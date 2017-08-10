@@ -131,8 +131,8 @@ public class MovementJmsIT extends AbstractRestServiceTest {
 
 		int counter = 0;
 		for (LatLong position : route) {
-			counter++;
 			if(counter > numberOfMessages )break;
+			counter++;
 
 			final CreateMovementRequest createMovementRequest = createMovementRequest(testAsset, position);
 			sendRequestToMovement(ResponseQueueName, createMovementRequest);
