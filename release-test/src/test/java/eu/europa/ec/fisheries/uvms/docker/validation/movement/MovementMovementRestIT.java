@@ -102,6 +102,10 @@ public class MovementMovementRestIT extends AbstractRestServiceTest {
 		final HttpResponse response = Request.Post(getBaseUrl() + "movement/rest/movement/latest")
 				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken())
 				.bodyByteArray(writeValueAsString(new ArrayList<String>()).getBytes()).execute().returnResponse();
+		
+		
+		//MovementHelper.createMovementRequest(testAsset)
+		
 
 		Map<String, Object> dataMap = checkSuccessResponseReturnMap(response);
 	}
@@ -132,6 +136,9 @@ public class MovementMovementRestIT extends AbstractRestServiceTest {
 	@Test
 	@Ignore
 	public void getByIdTest() throws Exception {
+		
+		
+		
 		final HttpResponse response = Request.Get(getBaseUrl() + "movement/rest/movement/id")
 				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken()).execute()
 				.returnResponse();
