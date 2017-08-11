@@ -11,7 +11,7 @@
 			<module name="deployment.exchange-module-3.0.8.ear" />
 			<module name="deployment.mobileterminal-module-3.0.11.ear" />
 			<module name="deployment.rules-module-3.0.3.ear" />
-			<module name="deployment.reporting-module-0.5.7.presweden1.ear" />
+			<module name="deployment.reporting-module-1.0.4.ear" />
 			<module name="deployment.naf-module-3.0.0.ear" />
 			<module name="deployment.sweagencyemail-module-3.0.0.ear" />
 			<module name="deployment.flux-module-2.1.2.ear" />
