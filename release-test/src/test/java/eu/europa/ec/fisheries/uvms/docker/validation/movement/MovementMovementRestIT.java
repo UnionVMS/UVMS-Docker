@@ -108,6 +108,7 @@ public class MovementMovementRestIT extends AbstractRestServiceTest {
 	 *             the exception
 	 */
 	@Test
+	@Ignore
 	public void getLatestMovementsByConnectIdsTest() throws Exception {
 		
 		
@@ -170,6 +171,7 @@ public class MovementMovementRestIT extends AbstractRestServiceTest {
 	 *             the exception
 	 */
 	@Test
+	@Ignore
 	public void getByIdTest() throws Exception {
 		
 		Asset testAsset = AssetTestHelper.createTestAsset();
