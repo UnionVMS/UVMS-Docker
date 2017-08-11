@@ -79,6 +79,12 @@
 			<scope>test</scope>
 		</dependency>
 		<dependency>
+			<groupId>eu.europa.ec.fisheries.uvms.spatial</groupId>
+			<artifactId>spatial-model</artifactId>
+			<version>1.0.5</version>
+			<scope>test</scope>
+		</dependency>		
+		<dependency>
 			<groupId>eu.europa.ec.fisheries.uvms.reporting</groupId>
 			<artifactId>service</artifactId>
 			<version>0.5.7.presweden1</version>
@@ -230,6 +236,8 @@
 								<get src="http://localhost:28080/movement/monitoring?format=pdf" dest="target/movement_monitoring.pdf" verbose="true" usetimestamp="true" />
 								<get src="http://localhost:28080/mobileterminal/monitoring?format=pdf" dest="target/mobileterminal_monitoring.pdf" verbose="true" usetimestamp="true" />
 								<get src="http://localhost:28080/asset/monitoring?format=pdf" dest="target/asset_monitoring.pdf" verbose="true" usetimestamp="true" />
+								<get src="http://localhost:28080/spatial/monitoring?format=pdf" dest="target/spatial_monitoring.pdf" verbose="true" usetimestamp="true" />
+								
 							</tasks>
 						</configuration>
 						<goals>
