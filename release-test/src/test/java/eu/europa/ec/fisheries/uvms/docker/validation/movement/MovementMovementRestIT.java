@@ -42,6 +42,9 @@ import eu.europa.ec.fisheries.wsdl.asset.types.Asset;
  */
 
 public class MovementMovementRestIT extends AbstractRestServiceTest {
+	
+	private MovementHelper movementHelper = new MovementHelper();
+
 
 	/**
 	 * Gets the list by query test.
@@ -107,11 +110,9 @@ public class MovementMovementRestIT extends AbstractRestServiceTest {
 	public void getLatestMovementsByConnectIdsTest() throws Exception {
 		
 		
-		MovementHelper movementHelper = new MovementHelper();
 		Asset testAsset = AssetTestHelper.createTestAsset();
 		MobileTerminalType mobileTerminalType = MobileTerminalTestHelper.createMobileTerminalType();
-		CreateMovementRequest createMovementRequest = movementHelper.createMovementRequest(testAsset, mobileTerminalType);
-		
+		CreateMovementRequest createMovementRequest = movementHelper.createMovementRequest(testAsset, mobileTerminalType);		
 		CreateMovementResponse createMovementResponse = movementHelper.createMovement(testAsset, mobileTerminalType, createMovementRequest);
 
 		List<String> connectIds = new ArrayList<>();
@@ -131,9 +132,9 @@ public class MovementMovementRestIT extends AbstractRestServiceTest {
 				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken())
 				.bodyByteArray(writeValueAsString(connectIds).getBytes()).execute().returnResponse();
 
-		List<MovementDTO> dataMap = checkSuccessResponseReturnType(response, ArrayList.class);
+		List<MovementDTO> dataList = checkSuccessResponseReturnType(response, ArrayList.class);
 		
-		assertTrue(dataMap.size() > 0);
+		assertTrue(dataList.size() > 0);
 	}
 
 	/**
@@ -145,11 +146,19 @@ public class MovementMovementRestIT extends AbstractRestServiceTest {
 	 */
 	@Test
 	public void getLatestMovementsTest() throws Exception {
+		
+		
+		Asset testAsset = AssetTestHelper.createTestAsset();
+		MobileTerminalType mobileTerminalType = MobileTerminalTestHelper.createMobileTerminalType();
+		CreateMovementRequest createMovementRequest = movementHelper.createMovementRequest(testAsset, mobileTerminalType);		
+		CreateMovementResponse createMovementResponse = movementHelper.createMovement(testAsset, mobileTerminalType, createMovementRequest);
+		
 		final HttpResponse response = Request.Get(getBaseUrl() + "movement/rest/movement/latest/100")
 				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken()).execute()
 				.returnResponse();
 
 		List dataList = checkSuccessResponseReturnType(response, List.class);
+		assertTrue(dataList.size() > 0);
 	}
 
 	/**
