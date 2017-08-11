@@ -236,7 +236,7 @@
 								<get src="http://localhost:28080/movement/monitoring?format=pdf" dest="target/movement_monitoring.pdf" verbose="true" usetimestamp="true" />
 								<get src="http://localhost:28080/mobileterminal/monitoring?format=pdf" dest="target/mobileterminal_monitoring.pdf" verbose="true" usetimestamp="true" />
 								<get src="http://localhost:28080/asset/monitoring?format=pdf" dest="target/asset_monitoring.pdf" verbose="true" usetimestamp="true" />
-								<!-- <get src="http://localhost:28080/spatial/monitoring?format=pdf" dest="target/spatial_monitoring.pdf" verbose="true" usetimestamp="true" /> -->
+								<get src="http://localhost:28080/spatial/monitoring?format=pdf" dest="target/spatial_monitoring.pdf" verbose="true" usetimestamp="true" />
 								
 							</tasks>
 						</configuration>

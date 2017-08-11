@@ -2,13 +2,11 @@ package eu.europa.ec.fisheries.uvms.docker.validation.spatial;
 
 import java.util.List;
 
-import org.junit.Ignore;
 import org.junit.Test;
 
 import eu.europa.ec.fisheries.uvms.docker.validation.common.AbstractRestServiceTest;
 import eu.europa.ec.fisheries.uvms.docker.validation.common.MessageHelper;
 import eu.europa.ec.fisheries.uvms.docker.validation.movement.LatLong;
-import eu.europa.ec.fisheries.uvms.docker.validation.movement.MovementHelper;
 import eu.europa.ec.fisheries.uvms.spatial.model.schemas.AreaType;
 import eu.europa.ec.fisheries.uvms.spatial.model.schemas.LocationType;
 import eu.europa.ec.fisheries.uvms.spatial.model.schemas.PointType;
@@ -27,9 +25,6 @@ public class SpatialJmsIT extends AbstractRestServiceTest {
 	/** The spatial helper. */
 	private SpatialHelper spatialHelper = new SpatialHelper();
 
-	/** The movement helper. */
-	private MovementHelper movementHelper = new MovementHelper();
-
 	/**
 	 * Creates the spatial enrichment request test.
 	 *
@@ -37,7 +32,7 @@ public class SpatialJmsIT extends AbstractRestServiceTest {
 	 */
 	@Test(timeout = 10000)
 	public void createSpatialEnrichmentRequestTest() throws Exception {
-		LatLong position = movementHelper.createRutt(1).get(0);
+		LatLong position = spatialHelper.createRutt(1).get(0);
 
 		SpatialEnrichmentRQ spatialEnrichmentRQ = new SpatialEnrichmentRQ();
 		AreaTypes areaTypes = new AreaTypes();
@@ -55,18 +50,19 @@ public class SpatialJmsIT extends AbstractRestServiceTest {
 		spatialEnrichmentRQ.setUnit(UnitType.NAUTICAL_MILES);
 		PointType pointType = new PointType();
 		spatialEnrichmentRQ.setPoint(pointType);
-		pointType.setLatitude(50d);
-		pointType.setLongitude(50d);
+		pointType.setLatitude(position.latitude);
+		pointType.setLongitude(position.longitude);
 		pointType.setCrs(4326);
 
 		SpatialEnrichmentRS spatialEnrichmentRS = spatialHelper.createSpatialEnrichment(spatialEnrichmentRQ);
 		assertNotNull(spatialEnrichmentRS);
 	}
+	
+
 
 	@Test(timeout = 40000)
-	@Ignore
 	public void createSpatialEnrichmentRequestForRuttTest() throws Exception {
-		List<LatLong> position = movementHelper.createRutt(10);
+		List<LatLong> position = spatialHelper.createRutt(4);
 
 		for (LatLong latLong : position) {
 			SpatialEnrichmentRQ spatialEnrichmentRQ = new SpatialEnrichmentRQ();
@@ -86,7 +82,7 @@ public class SpatialJmsIT extends AbstractRestServiceTest {
 			spatialEnrichmentRQ.setPoint(pointType);
 			pointType.setLatitude(latLong.latitude);
 			pointType.setLongitude(latLong.longitude);
-			pointType.setCrs(1);
+			pointType.setCrs(4326);
 
 			SpatialEnrichmentRS spatialEnrichmentRS = spatialHelper.createSpatialEnrichment(spatialEnrichmentRQ);
 			assertNotNull(spatialEnrichmentRS);
