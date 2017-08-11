@@ -183,7 +183,7 @@ public class MovementMovementRestIT extends AbstractRestServiceTest {
 		String id = createMovementResponse.getMovement().getGuid();
 
 		// give it some time to execute before retrieving
-		Thread.sleep(3000);
+		Thread.sleep(5000);
 
 		
 		
