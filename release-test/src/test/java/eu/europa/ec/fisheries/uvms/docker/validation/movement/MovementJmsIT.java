@@ -55,8 +55,9 @@ public class MovementJmsIT extends AbstractRestServiceTest {
 		MobileTerminalType mobileTerminalType = MobileTerminalTestHelper.createMobileTerminalType();
 		List<LatLong> route = movementHelper.createRutt(10);
 
+		String guid = mobileTerminalType.getMobileTerminalId().getGuid();
+
 		for (LatLong position : route) {
-			String guid = mobileTerminalType.getMobileTerminalId().getGuid();
 
 			final CreateMovementRequest createMovementRequest = movementHelper.createMovementRequest(testAsset,
 					position,guid);
