@@ -1,5 +1,8 @@
 package eu.europa.ec.fisheries.uvms.docker.validation.spatial;
 
+import java.util.List;
+
+import org.junit.Ignore;
 import org.junit.Test;
 
 import eu.europa.ec.fisheries.uvms.docker.validation.common.AbstractRestServiceTest;
@@ -39,8 +42,9 @@ public class SpatialJmsIT extends AbstractRestServiceTest {
 		SpatialEnrichmentRQ spatialEnrichmentRQ = new SpatialEnrichmentRQ();
 		AreaTypes areaTypes = new AreaTypes();
 		areaTypes.getAreaTypes().add(AreaType.COUNTRY);
-		areaTypes.getAreaTypes().add(AreaType.RFMO);
-		areaTypes.getAreaTypes().add(AreaType.EEZ);
+		areaTypes.getAreaTypes().add(AreaType.PORT);
+		areaTypes.getAreaTypes().add(AreaType.FMZ);
+		
 
 		spatialEnrichmentRQ.setAreaTypes(areaTypes);
 		LocationTypes locationTypes = new LocationTypes();
@@ -51,12 +55,43 @@ public class SpatialJmsIT extends AbstractRestServiceTest {
 		spatialEnrichmentRQ.setUnit(UnitType.NAUTICAL_MILES);
 		PointType pointType = new PointType();
 		spatialEnrichmentRQ.setPoint(pointType);
-		pointType.setLatitude(position.latitude);
-		pointType.setLongitude(position.longitude);
-		pointType.setCrs(3216);
+		pointType.setLatitude(50d);
+		pointType.setLongitude(50d);
+		pointType.setCrs(4326);
 
 		SpatialEnrichmentRS spatialEnrichmentRS = spatialHelper.createSpatialEnrichment(spatialEnrichmentRQ);
 		assertNotNull(spatialEnrichmentRS);
+	}
+
+	@Test(timeout = 40000)
+	@Ignore
+	public void createSpatialEnrichmentRequestForRuttTest() throws Exception {
+		List<LatLong> position = movementHelper.createRutt(10);
+
+		for (LatLong latLong : position) {
+			SpatialEnrichmentRQ spatialEnrichmentRQ = new SpatialEnrichmentRQ();
+			AreaTypes areaTypes = new AreaTypes();
+			areaTypes.getAreaTypes().add(AreaType.COUNTRY);
+			areaTypes.getAreaTypes().add(AreaType.RFMO);
+			areaTypes.getAreaTypes().add(AreaType.EEZ);
+
+			spatialEnrichmentRQ.setAreaTypes(areaTypes);
+			LocationTypes locationTypes = new LocationTypes();
+			locationTypes.getLocationTypes().add(LocationType.PORT);
+
+			spatialEnrichmentRQ.setLocationTypes(locationTypes);
+			spatialEnrichmentRQ.setMethod(SpatialModuleMethod.GET_ENRICHMENT);
+			spatialEnrichmentRQ.setUnit(UnitType.NAUTICAL_MILES);
+			PointType pointType = new PointType();
+			spatialEnrichmentRQ.setPoint(pointType);
+			pointType.setLatitude(latLong.latitude);
+			pointType.setLongitude(latLong.longitude);
+			pointType.setCrs(1);
+
+			SpatialEnrichmentRS spatialEnrichmentRS = spatialHelper.createSpatialEnrichment(spatialEnrichmentRQ);
+			assertNotNull(spatialEnrichmentRS);
+			
+		}
 	}
 
 	/**
