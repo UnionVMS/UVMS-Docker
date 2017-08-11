@@ -42,7 +42,7 @@ public class MovementHelper extends AbstractHelper {
 
 	public CreateMovementRequest createMovementRequest(Asset testAsset, MobileTerminalType mobileTerminalType) throws IOException, ClientProtocolException,
 			JsonProcessingException, JsonParseException, JsonMappingException {
-		Date positionTime = getDate(2017, Calendar.DECEMBER, 24, 11, 45, 7, 980);
+		Date positionTime = new Date(System.currentTimeMillis());
 		return createMovementRequest(testAsset, -16.9, 32.6333333, 5, positionTime,mobileTerminalType.getMobileTerminalId().getGuid());
 	}
 

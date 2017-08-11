@@ -23,12 +23,19 @@ import org.apache.http.client.fluent.Request;
 import org.junit.Ignore;
 import org.junit.Test;
 
+import eu.europa.ec.fisheries.schema.mobileterminal.types.v1.MobileTerminalType;
+import eu.europa.ec.fisheries.schema.movement.module.v1.CreateMovementRequest;
+import eu.europa.ec.fisheries.schema.movement.module.v1.CreateMovementResponse;
 import eu.europa.ec.fisheries.schema.movement.search.v1.ListCriteria;
 import eu.europa.ec.fisheries.schema.movement.search.v1.ListPagination;
 import eu.europa.ec.fisheries.schema.movement.search.v1.MovementAreaAndTimeIntervalCriteria;
 import eu.europa.ec.fisheries.schema.movement.search.v1.MovementQuery;
 import eu.europa.ec.fisheries.schema.movement.search.v1.SearchKey;
+import eu.europa.ec.fisheries.uvms.docker.validation.asset.AssetTestHelper;
 import eu.europa.ec.fisheries.uvms.docker.validation.common.AbstractRestServiceTest;
+import eu.europa.ec.fisheries.uvms.docker.validation.mobileterminal.MobileTerminalTestHelper;
+import eu.europa.ec.fisheries.uvms.reporting.service.dto.MovementDTO;
+import eu.europa.ec.fisheries.wsdl.asset.types.Asset;
 
 /**
  * The Class MovementMovementRestIT.
@@ -58,7 +65,7 @@ public class MovementMovementRestIT extends AbstractRestServiceTest {
 	 * @return the movement query
 	 */
 	private MovementQuery createMovementQuery() {
-		
+
 		MovementQuery movementQuery = new MovementQuery();
 		movementQuery.setExcludeFirstAndLastSegment(false);
 		ListPagination listPagination = new ListPagination();
@@ -69,7 +76,7 @@ public class MovementMovementRestIT extends AbstractRestServiceTest {
 		listCriteria.setKey(SearchKey.CONNECT_ID);
 		listCriteria.setValue("Some connectId");
 		movementQuery.getMovementSearchCriteria().add(listCriteria);
-		
+
 		return movementQuery;
 	}
 
@@ -97,17 +104,36 @@ public class MovementMovementRestIT extends AbstractRestServiceTest {
 	 *             the exception
 	 */
 	@Test
-	@Ignore
 	public void getLatestMovementsByConnectIdsTest() throws Exception {
+		
+		
+		MovementHelper movementHelper = new MovementHelper();
+		Asset testAsset = AssetTestHelper.createTestAsset();
+		MobileTerminalType mobileTerminalType = MobileTerminalTestHelper.createMobileTerminalType();
+		CreateMovementRequest createMovementRequest = movementHelper.createMovementRequest(testAsset, mobileTerminalType);
+		
+		CreateMovementResponse createMovementResponse = movementHelper.createMovement(testAsset, mobileTerminalType, createMovementRequest);
+
+		List<String> connectIds = new ArrayList<>();
+		
+		assertNotNull(createMovementResponse);
+		assertNotNull(createMovementResponse.getMovement());
+		assertNotNull(createMovementResponse.getMovement().getConnectId());	
+		
+		
+		connectIds.add(createMovementResponse.getMovement().getConnectId());
+		
+		// give it some time to execute before retrieving
+		Thread.sleep(3000);
+		
+		
 		final HttpResponse response = Request.Post(getBaseUrl() + "movement/rest/movement/latest")
 				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken())
-				.bodyByteArray(writeValueAsString(new ArrayList<String>()).getBytes()).execute().returnResponse();
-		
-		
-		//MovementHelper.createMovementRequest(testAsset)
-		
+				.bodyByteArray(writeValueAsString(connectIds).getBytes()).execute().returnResponse();
 
-		Map<String, Object> dataMap = checkSuccessResponseReturnMap(response);
+		List<MovementDTO> dataMap = checkSuccessResponseReturnType(response, ArrayList.class);
+		
+		assertTrue(dataMap.size() > 0);
 	}
 
 	/**
@@ -123,7 +149,7 @@ public class MovementMovementRestIT extends AbstractRestServiceTest {
 				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken()).execute()
 				.returnResponse();
 
-		List dataList = checkSuccessResponseReturnType(response,List.class);
+		List dataList = checkSuccessResponseReturnType(response, List.class);
 	}
 
 	/**
@@ -136,9 +162,7 @@ public class MovementMovementRestIT extends AbstractRestServiceTest {
 	@Test
 	@Ignore
 	public void getByIdTest() throws Exception {
-		
-		
-		
+
 		final HttpResponse response = Request.Get(getBaseUrl() + "movement/rest/movement/id")
 				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken()).execute()
 				.returnResponse();
