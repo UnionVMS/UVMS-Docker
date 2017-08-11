@@ -31,6 +31,7 @@ import eu.europa.ec.fisheries.schema.movement.search.v1.ListPagination;
 import eu.europa.ec.fisheries.schema.movement.search.v1.MovementAreaAndTimeIntervalCriteria;
 import eu.europa.ec.fisheries.schema.movement.search.v1.MovementQuery;
 import eu.europa.ec.fisheries.schema.movement.search.v1.SearchKey;
+import eu.europa.ec.fisheries.schema.movement.v1.MovementType;
 import eu.europa.ec.fisheries.uvms.docker.validation.asset.AssetTestHelper;
 import eu.europa.ec.fisheries.uvms.docker.validation.common.AbstractRestServiceTest;
 import eu.europa.ec.fisheries.uvms.docker.validation.mobileterminal.MobileTerminalTestHelper;
@@ -169,14 +170,31 @@ public class MovementMovementRestIT extends AbstractRestServiceTest {
 	 *             the exception
 	 */
 	@Test
-	@Ignore
 	public void getByIdTest() throws Exception {
+		
+		Asset testAsset = AssetTestHelper.createTestAsset();
+		MobileTerminalType mobileTerminalType = MobileTerminalTestHelper.createMobileTerminalType();
+		CreateMovementRequest createMovementRequest = movementHelper.createMovementRequest(testAsset, mobileTerminalType);		
+		CreateMovementResponse createMovementResponse = movementHelper.createMovement(testAsset, mobileTerminalType, createMovementRequest);
+		
+		assertNotNull(createMovementResponse);
+		assertNotNull(createMovementResponse.getMovement());
+		assertNotNull(createMovementResponse.getMovement().getGuid());
+		String id = createMovementResponse.getMovement().getGuid();
 
-		final HttpResponse response = Request.Get(getBaseUrl() + "movement/rest/movement/id")
+		// give it some time to execute before retrieving
+		Thread.sleep(3000);
+
+		
+		
+		final HttpResponse response = Request.Get(getBaseUrl() + "movement/rest/movement/" + id)
 				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken()).execute()
 				.returnResponse();
+		
 
-		Map<String, Object> dataMap = checkSuccessResponseReturnMap(response);
+
+		Object obj = checkSuccessResponseReturnType(response, Object.class);
+		assertTrue(obj != null);
 	}
 
 	/**
