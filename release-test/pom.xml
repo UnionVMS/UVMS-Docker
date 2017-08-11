@@ -10,7 +10,7 @@
         </parent>
 
 	<groupId>eu.europa.ec.fisheries.uvms.docker</groupId>
-	<version>3.5.0-SNAPSHOT</version>
+	<version>3.5.0</version>
 	<artifactId>uvms-release-test</artifactId>
 	<packaging>jar</packaging>
 	<name>uvms-release-test</name>
@@ -87,7 +87,7 @@
 		<dependency>
 			<groupId>eu.europa.ec.fisheries.uvms.reporting</groupId>
 			<artifactId>service</artifactId>
-			<version>0.5.7.presweden1</version>
+			<version>1.0.4</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
@@ -221,7 +221,7 @@
 						<phase>pre-integration-test</phase>
 						<configuration>
 							<tasks>
-								<sleep seconds="180"/>
+								<sleep seconds="180" />
 							</tasks>
 						</configuration>
 						<goals>
@@ -467,4 +467,8 @@
 			</properties>
 		</profile>
 	</profiles>
+
+  <scm>
+    <tag>uvms-docker-3.5.0</tag>
+  </scm>
 </project>
