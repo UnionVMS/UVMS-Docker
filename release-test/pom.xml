@@ -10,7 +10,7 @@
         </parent>
 
 	<groupId>eu.europa.ec.fisheries.uvms.docker</groupId>
-	<version>3.5.0</version>
+	<version>3.6.0-SNAPSHOT</version>
 	<artifactId>uvms-release-test</artifactId>
 	<packaging>jar</packaging>
 	<name>uvms-release-test</name>
@@ -467,8 +467,4 @@
 			</properties>
 		</profile>
 	</profiles>
-
-  <scm>
-    <tag>uvms-docker-3.5.0</tag>
-  </scm>
 </project>
