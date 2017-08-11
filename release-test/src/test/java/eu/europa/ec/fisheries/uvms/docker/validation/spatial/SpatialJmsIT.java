@@ -7,6 +7,7 @@ import org.junit.Test;
 import eu.europa.ec.fisheries.uvms.docker.validation.common.AbstractRestServiceTest;
 import eu.europa.ec.fisheries.uvms.docker.validation.common.MessageHelper;
 import eu.europa.ec.fisheries.uvms.docker.validation.movement.LatLong;
+import eu.europa.ec.fisheries.uvms.docker.validation.movement.MovementHelper;
 import eu.europa.ec.fisheries.uvms.spatial.model.schemas.AreaType;
 import eu.europa.ec.fisheries.uvms.spatial.model.schemas.LocationType;
 import eu.europa.ec.fisheries.uvms.spatial.model.schemas.PointType;
@@ -25,6 +26,8 @@ public class SpatialJmsIT extends AbstractRestServiceTest {
 	/** The spatial helper. */
 	private SpatialHelper spatialHelper = new SpatialHelper();
 
+	private MovementHelper movementHelper= new MovementHelper();
+	
 	/**
 	 * Creates the spatial enrichment request test.
 	 *
@@ -32,7 +35,7 @@ public class SpatialJmsIT extends AbstractRestServiceTest {
 	 */
 	@Test(timeout = 10000)
 	public void createSpatialEnrichmentRequestTest() throws Exception {
-		LatLong position = spatialHelper.createRutt(1).get(0);
+		LatLong position = movementHelper.createRutt(1).get(0);
 
 		SpatialEnrichmentRQ spatialEnrichmentRQ = new SpatialEnrichmentRQ();
 		AreaTypes areaTypes = new AreaTypes();
@@ -62,7 +65,7 @@ public class SpatialJmsIT extends AbstractRestServiceTest {
 
 	@Test(timeout = 40000)
 	public void createSpatialEnrichmentRequestForRuttTest() throws Exception {
-		List<LatLong> position = spatialHelper.createRutt(4);
+		List<LatLong> position = movementHelper.createRutt(10);
 
 		for (LatLong latLong : position) {
 			SpatialEnrichmentRQ spatialEnrichmentRQ = new SpatialEnrichmentRQ();
