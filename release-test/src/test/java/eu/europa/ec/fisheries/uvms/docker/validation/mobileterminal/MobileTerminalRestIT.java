@@ -116,17 +116,7 @@ public class MobileTerminalRestIT extends AbstractMobileTerminalTest {
 		Asset testAsset = AssetTestHelper.createTestAsset();
 		MobileTerminalType createdMobileTerminalType = MobileTerminalTestHelper.createMobileTerminalType();
 
-		MobileTerminalAssignQuery mobileTerminalAssignQuery = new MobileTerminalAssignQuery();
-		mobileTerminalAssignQuery.setMobileTerminalId(createdMobileTerminalType.getMobileTerminalId());
-		mobileTerminalAssignQuery.setConnectId(testAsset.getAssetId().getGuid());
-
-		final HttpResponse response = Request
-				.Post(getBaseUrl() + "mobileterminal/rest/mobileterminal/assign?comment=comment")
-				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken())
-				.bodyByteArray(writeValueAsString(mobileTerminalAssignQuery).getBytes()).execute()
-				.returnResponse();
-
-		Map<String, Object> dataMap = checkSuccessResponseReturnMap(response);
+		Map<String, Object> dataMap = MobileTerminalTestHelper.assignMobileTerminal(testAsset, createdMobileTerminalType);
 	}
 
 	/**
