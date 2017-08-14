@@ -55,6 +55,7 @@ public class MovementJmsIT extends AbstractRestServiceTest {
 		MobileTerminalType mobileTerminalType = MobileTerminalTestHelper.createMobileTerminalType();
 		MobileTerminalTestHelper.assignMobileTerminal(testAsset, mobileTerminalType);
 		List<LatLong> route = movementHelper.createRutt(10);
+		printCoordinates(route);
 
 		String guid = mobileTerminalType.getMobileTerminalId().getGuid();
 
@@ -68,6 +69,13 @@ public class MovementJmsIT extends AbstractRestServiceTest {
 
 		}
 
+	}
+
+	
+	private void printCoordinates(List<LatLong> route){	
+		for(LatLong l : route){
+			System.out.println(l.latitude+ ","+l.longitude);
+		}
 	}
 
 	/**

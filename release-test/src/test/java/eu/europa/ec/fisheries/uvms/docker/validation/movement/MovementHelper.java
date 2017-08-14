@@ -40,15 +40,19 @@ public class MovementHelper extends AbstractHelper {
 
 	private static final String UVMS_MOVEMENT_REQUEST_QUEUE = "UVMSMovementEvent";
 
-	public CreateMovementRequest createMovementRequest(Asset testAsset, MobileTerminalType mobileTerminalType) throws IOException, ClientProtocolException,
-			JsonProcessingException, JsonParseException, JsonMappingException {
+	public CreateMovementRequest createMovementRequest(Asset testAsset, MobileTerminalType mobileTerminalType)
+			throws IOException, ClientProtocolException, JsonProcessingException, JsonParseException,
+			JsonMappingException {
 		Date positionTime = new Date(System.currentTimeMillis());
-		return createMovementRequest(testAsset, -16.9, 32.6333333, 5, positionTime,mobileTerminalType.getMobileTerminalId().getGuid());
+		return createMovementRequest(testAsset, -16.9, 32.6333333, 5, positionTime,
+				mobileTerminalType.getMobileTerminalId().getGuid());
 	}
 
-	public CreateMovementRequest createMovementRequest(Asset testAsset, LatLong obs, String mobileTerminalIdAsConnectId) throws IOException,
-			ClientProtocolException, JsonProcessingException, JsonParseException, JsonMappingException {
-		return createMovementRequest(testAsset, obs.longitude, obs.latitude, 5, obs.positionTime,mobileTerminalIdAsConnectId);
+	public CreateMovementRequest createMovementRequest(Asset testAsset, LatLong obs, String mobileTerminalIdAsConnectId)
+			throws IOException, ClientProtocolException, JsonProcessingException, JsonParseException,
+			JsonMappingException {
+		return createMovementRequest(testAsset, obs.longitude, obs.latitude, 5, obs.positionTime,
+				mobileTerminalIdAsConnectId);
 	}
 
 	/**
@@ -66,8 +70,8 @@ public class MovementHelper extends AbstractHelper {
 	 * @throws JsonMappingException
 	 */
 	public CreateMovementRequest createMovementRequest(Asset testAsset, double longitude, double latitude,
-			double altitude, Date positionTime , String mobileTerminalIdAsConnectId) throws IOException, ClientProtocolException, JsonProcessingException,
-			JsonParseException, JsonMappingException {
+			double altitude, Date positionTime, String mobileTerminalIdAsConnectId) throws IOException,
+			ClientProtocolException, JsonProcessingException, JsonParseException, JsonMappingException {
 
 		final CreateMovementRequest createMovementRequest = new CreateMovementRequest();
 		final MovementBaseType movementBaseType = new MovementBaseType();
@@ -77,9 +81,9 @@ public class MovementHelper extends AbstractHelper {
 		assetId.setValue(testAsset.getAssetId().getGuid());
 		movementBaseType.setAssetId(assetId);
 		movementBaseType.setConnectId(mobileTerminalIdAsConnectId); // skall
-																			// vara
-																			// terminalens
-																			// ID
+																	// vara
+																	// terminalens
+																	// ID
 
 		MovementActivityType movementActivityType = new MovementActivityType();
 		movementBaseType.setActivity(movementActivityType);
@@ -104,13 +108,29 @@ public class MovementHelper extends AbstractHelper {
 	}
 
 	public List<LatLong> createRutt(int numberPositions) {
-		return createRutt(15 * 1000,numberPositions);
+		return createRutt(15 * 1000, numberPositions);
 	}
 
 	public List<LatLong> createRutt(int movementTimeDeltaInMillis, int numberPositions) {
 
 		List<LatLong> rutt = new ArrayList<>();
 		long ts = System.currentTimeMillis();
+		rutt.add(new LatLong(57.715434,11.970012, getDate(ts += movementTimeDeltaInMillis)));
+		rutt.add(new LatLong(57.714735,11.968242, getDate(ts += movementTimeDeltaInMillis)));
+		rutt.add(new LatLong(57.713837,11.965640, getDate(ts += movementTimeDeltaInMillis)));
+		rutt.add(new LatLong(57.712691,11.963301, getDate(ts += movementTimeDeltaInMillis)));
+		rutt.add(new LatLong(57.711178,1.960630, getDate(ts += movementTimeDeltaInMillis)));
+		rutt.add(new LatLong(57.708347,11.956049, getDate(ts += movementTimeDeltaInMillis)));
+		rutt.add(new LatLong(57.703993,11.951709, getDate(ts += movementTimeDeltaInMillis)));
+		rutt.add(new LatLong(57.701058,11.932225, getDate(ts += movementTimeDeltaInMillis)));
+
+		rutt.add(new LatLong(57.696225,11.913557, getDate(ts += movementTimeDeltaInMillis)));
+		rutt.add(new LatLong(57.684998,11.888752, getDate(ts += movementTimeDeltaInMillis)));
+		rutt.add(new LatLong(57.682245,11.861973, getDate(ts += movementTimeDeltaInMillis)));
+		rutt.add(new LatLong(57.676004,11.845493, getDate(ts += movementTimeDeltaInMillis)));
+		rutt.add(new LatLong(57.664253,11.754169, getDate(ts += movementTimeDeltaInMillis)));
+		rutt.add(new LatLong(57.646619,11.719151, getDate(ts += movementTimeDeltaInMillis)));
+
 		rutt.add(new LatLong(57.42920, 11.58259, getDate(ts += movementTimeDeltaInMillis)));
 		rutt.add(new LatLong(57.42905, 11.58192, getDate(ts += movementTimeDeltaInMillis)));
 		rutt.add(new LatLong(57.42897, 11.58149, getDate(ts += movementTimeDeltaInMillis)));
@@ -164,7 +184,11 @@ public class MovementHelper extends AbstractHelper {
 		rutt.add(new LatLong(57.42945, 10.35521, getDate(ts += movementTimeDeltaInMillis)));
 		rutt.add(new LatLong(57.42946, 10.35416, getDate(ts += movementTimeDeltaInMillis)));
 		rutt.add(new LatLong(57.42928, 10.35400, getDate(ts += movementTimeDeltaInMillis)));
-		return rutt.subList(0, numberPositions);
+		if (numberPositions == -1) {
+			return rutt;
+		} else {
+			return rutt.subList(0, numberPositions);
+		}
 
 	}
 
@@ -204,17 +228,14 @@ public class MovementHelper extends AbstractHelper {
 				.unmarshal(new StringReader(textMessage.getText()));
 	}
 
+	public CreateMovementResponse createMovement(Asset testAsset, MobileTerminalType mobileTerminalType,
+			CreateMovementRequest createMovementRequest) throws Exception {
 
-
-
-	public  CreateMovementResponse createMovement(Asset testAsset,MobileTerminalType mobileTerminalType,CreateMovementRequest createMovementRequest) throws Exception{
-
-		Message messageResponse = MessageHelper.getMessageResponse(UVMS_MOVEMENT_REQUEST_QUEUE, marshall(createMovementRequest));
+		Message messageResponse = MessageHelper.getMessageResponse(UVMS_MOVEMENT_REQUEST_QUEUE,
+				marshall(createMovementRequest));
 
 		return unMarshallCreateMovementResponse(messageResponse);
 
 	}
-
-
 
 }
