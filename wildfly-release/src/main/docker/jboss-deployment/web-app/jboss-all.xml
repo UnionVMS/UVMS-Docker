@@ -8,8 +8,8 @@
 		<dependency name="audit-module-3.0.8.ear" />
 		<dependency name="exchange-module-3.0.9.ear" />
 		<dependency name="mobileterminal-module-3.0.11.ear" />
-		<dependency name="rules-module-3.0.3.ear" />
-		<dependency name="reporting-module-1.0.4.ear" />
+		<dependency name="rules-module-3.0.4.ear" />
+		<dependency name="reporting-module-1.0.5.ear" />
 		<dependency name="naf-module-3.0.0.ear" />
 		<dependency name="sweagencyemail-module-3.0.0.ear" />
 		<dependency name="flux-module-2.1.2.ear" />
