@@ -28,7 +28,7 @@
         <unionvms.project.rules.dbaccess.module>3.0.5</unionvms.project.rules.dbaccess.module>
         <unionvms.project.movement.module>3.0.11</unionvms.project.movement.module>
         <unionvms.project.mobileterminal.module>3.0.11</unionvms.project.mobileterminal.module>
-        <unionvms.project.exchange.module>3.0.8</unionvms.project.exchange.module>
+        <unionvms.project.exchange.module>3.0.9</unionvms.project.exchange.module>
         <unionvms.project.exchange.dbaccess.module>3.0.5</unionvms.project.exchange.dbaccess.module>
         <unionvms.project.reporting.module>1.0.4</unionvms.project.reporting.module>
         <unionvms.project.spatial.module>0.5.9</unionvms.project.spatial.module>
