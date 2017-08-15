@@ -30,9 +30,10 @@ public class MovementJmsIT extends AbstractRestServiceTest {
 	 */
 	@Test(timeout = 10000)
 	public void createMovementRequestTest() throws Exception {
+		
 		Asset testAsset = AssetTestHelper.createTestAsset();
-
 		MobileTerminalType mobileTerminalType = MobileTerminalTestHelper.createMobileTerminalType();
+		MobileTerminalTestHelper.assignMobileTerminal(testAsset, mobileTerminalType);
 
 		final CreateMovementRequest createMovementRequest = movementHelper.createMovementRequest(testAsset,mobileTerminalType);
 
