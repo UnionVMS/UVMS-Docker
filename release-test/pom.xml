@@ -233,13 +233,13 @@
 						<phase>post-integration-test</phase>
 						<configuration>
 							<tasks>
+								<get src="http://localhost:28080/audit/monitoring?format=pdf" dest="target/audit_monitoring.pdf" verbose="true" usetimestamp="true" />
+								<get src="http://localhost:28080/config/monitoring?format=pdf" dest="target/config_monitoring.pdf" verbose="true" usetimestamp="true" />
 								<get src="http://localhost:28080/spatial/monitoring?format=pdf" dest="target/spatial_monitoring.pdf" verbose="true" usetimestamp="true" />
 								<get src="http://localhost:28080/asset/monitoring?format=pdf" dest="target/asset_monitoring.pdf" verbose="true" usetimestamp="true" />
 								<get src="http://localhost:28080/mobileterminal/monitoring?format=pdf" dest="target/mobileterminal_monitoring.pdf" verbose="true" usetimestamp="true" />
 								<get src="http://localhost:28080/movement/monitoring?format=pdf" dest="target/movement_monitoring.pdf" verbose="true" usetimestamp="true" />
 								<!-- TODO
-								<get src="http://localhost:28080/audit/monitoring?format=pdf" dest="target/audit_monitoring.pdf" verbose="true" usetimestamp="true" />
-								<get src="http://localhost:28080/config/monitoring?format=pdf" dest="target/config_monitoring.pdf" verbose="true" usetimestamp="true" />
 								<get src="http://localhost:28080/exchange/monitoring?format=pdf" dest="target/exchange_monitoring.pdf" verbose="true" usetimestamp="true" />
 								<get src="http://localhost:28080/rules/monitoring?format=pdf" dest="target/rules_monitoring.pdf" verbose="true" usetimestamp="true" />
 								<get src="http://localhost:28080/reporting/monitoring?format=pdf" dest="target/reporting_monitoring.pdf" verbose="true" usetimestamp="true" />
