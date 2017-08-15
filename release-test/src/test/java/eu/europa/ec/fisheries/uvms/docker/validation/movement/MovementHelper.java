@@ -171,7 +171,7 @@ public class MovementHelper extends AbstractHelper {
 		rutt.add(new LatLong(57.37787, 11.40996, getDate(ts += movementTimeDeltaInMillis)));
 		rutt.add(new LatLong(57.36099, 11.38318, getDate(ts += movementTimeDeltaInMillis)));
 		rutt.add(new LatLong(57.34045, 11.25876, getDate(ts += movementTimeDeltaInMillis)));
-		rutt.add(new LatLong(57.31126, 11.9727, getDate(ts += movementTimeDeltaInMillis)));
+		rutt.add(new LatLong(57.31126, 11.97270, getDate(ts += movementTimeDeltaInMillis)));
 		rutt.add(new LatLong(57.27140, 10.46655, getDate(ts += movementTimeDeltaInMillis)));
 		rutt.add(new LatLong(57.25455, 10.36438, getDate(ts += movementTimeDeltaInMillis)));
 		rutt.add(new LatLong(57.28647, 10.35944, getDate(ts += movementTimeDeltaInMillis)));
