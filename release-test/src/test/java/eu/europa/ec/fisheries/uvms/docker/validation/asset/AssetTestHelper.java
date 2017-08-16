@@ -51,7 +51,7 @@ public class AssetTestHelper extends AbstractHelper {
 		assetHistoryId.setEventCode(EventCode.fromValue(eventCode));
 		asset.setEventHistory(assetHistoryId);
 
-		asset.setName(asset.getName() + "Changed");
+		asset.setName(asset.getName());
 		AssetId assetId = new AssetId();
 		assetId.setGuid(assetGuid);
 		assetId.setValue(assetGuid);

@@ -133,9 +133,11 @@ public class AssetRestIT extends AbstractRestServiceTest {
 	 */
 	@Test
 	public void updateAssetTest() throws Exception {
+		Asset testAsset = AssetTestHelper.createTestAsset();
+		testAsset.setName(testAsset.getName() + "Changed");
 		final HttpResponse response = Request.Put(getBaseUrl() + "asset/rest/asset?comment=ChangedName")
 				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken())
-				.bodyByteArray(writeValueAsString(AssetTestHelper.createTestAsset()).getBytes()).execute().returnResponse();
+				.bodyByteArray(writeValueAsString(testAsset).getBytes()).execute().returnResponse();
 		Map<String, Object> dataMap = checkSuccessResponseReturnMap(response);
 	}
 
