@@ -1,5 +1,6 @@
 package eu.europa.ec.fisheries.uvms.docker.validation.movement;
 
+import java.util.Date;
 import java.util.List;
 
 import org.junit.Test;
@@ -35,7 +36,8 @@ public class MovementJmsIT extends AbstractRestServiceTest {
 		MobileTerminalType mobileTerminalType = MobileTerminalTestHelper.createMobileTerminalType();
 		MobileTerminalTestHelper.assignMobileTerminal(testAsset, mobileTerminalType);
 
-		final CreateMovementRequest createMovementRequest = movementHelper.createMovementRequest(testAsset,mobileTerminalType);
+		LatLong latLong = new LatLong(16.9, 32.6333333, new Date(System.currentTimeMillis()));
+		final CreateMovementRequest createMovementRequest = movementHelper.createMovementRequest(testAsset,mobileTerminalType, latLong);
 
 		CreateMovementResponse createMovementResponse = movementHelper.createMovement(testAsset, mobileTerminalType, createMovementRequest);
 

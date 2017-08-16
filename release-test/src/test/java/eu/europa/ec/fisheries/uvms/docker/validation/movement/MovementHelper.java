@@ -40,13 +40,18 @@ public class MovementHelper extends AbstractHelper {
 
 	private static final String UVMS_MOVEMENT_REQUEST_QUEUE = "UVMSMovementEvent";
 
-	public CreateMovementRequest createMovementRequest(Asset testAsset, MobileTerminalType mobileTerminalType)
-			throws IOException, ClientProtocolException, JsonProcessingException, JsonParseException,
+
+	
+	public CreateMovementRequest createMovementRequest(Asset testAsset, MobileTerminalType mobileTerminalType,
+			LatLong latlong) throws IOException, ClientProtocolException, JsonProcessingException, JsonParseException,
 			JsonMappingException {
+		
 		Date positionTime = new Date(System.currentTimeMillis());
-		return createMovementRequest(testAsset, -16.9, 32.6333333, 5, positionTime,
+		return createMovementRequest(testAsset, latlong.longitude, latlong.latitude, 5, positionTime,
 				mobileTerminalType.getMobileTerminalId().getGuid());
+
 	}
+
 
 	public CreateMovementRequest createMovementRequest(Asset testAsset, LatLong obs, String mobileTerminalIdAsConnectId)
 			throws IOException, ClientProtocolException, JsonProcessingException, JsonParseException,
@@ -115,21 +120,21 @@ public class MovementHelper extends AbstractHelper {
 
 		List<LatLong> rutt = new ArrayList<>();
 		long ts = System.currentTimeMillis();
-		rutt.add(new LatLong(57.715434,11.970012, getDate(ts += movementTimeDeltaInMillis)));
-		rutt.add(new LatLong(57.714735,11.968242, getDate(ts += movementTimeDeltaInMillis)));
-		rutt.add(new LatLong(57.713837,11.965640, getDate(ts += movementTimeDeltaInMillis)));
-		rutt.add(new LatLong(57.712691,11.963301, getDate(ts += movementTimeDeltaInMillis)));
-		rutt.add(new LatLong(57.711178,11.960630, getDate(ts += movementTimeDeltaInMillis)));
-		rutt.add(new LatLong(57.708347,11.956049, getDate(ts += movementTimeDeltaInMillis)));
-		rutt.add(new LatLong(57.703993,11.951709, getDate(ts += movementTimeDeltaInMillis)));
-		rutt.add(new LatLong(57.701058,11.932225, getDate(ts += movementTimeDeltaInMillis)));
+		rutt.add(new LatLong(57.715434, 11.970012, getDate(ts += movementTimeDeltaInMillis)));
+		rutt.add(new LatLong(57.714735, 11.968242, getDate(ts += movementTimeDeltaInMillis)));
+		rutt.add(new LatLong(57.713837, 11.965640, getDate(ts += movementTimeDeltaInMillis)));
+		rutt.add(new LatLong(57.712691, 11.963301, getDate(ts += movementTimeDeltaInMillis)));
+		rutt.add(new LatLong(57.711178, 11.960630, getDate(ts += movementTimeDeltaInMillis)));
+		rutt.add(new LatLong(57.708347, 11.956049, getDate(ts += movementTimeDeltaInMillis)));
+		rutt.add(new LatLong(57.703993, 11.951709, getDate(ts += movementTimeDeltaInMillis)));
+		rutt.add(new LatLong(57.701058, 11.932225, getDate(ts += movementTimeDeltaInMillis)));
 
-		rutt.add(new LatLong(57.696225,11.913557, getDate(ts += movementTimeDeltaInMillis)));
-		rutt.add(new LatLong(57.684998,11.888752, getDate(ts += movementTimeDeltaInMillis)));
-		rutt.add(new LatLong(57.682245,11.861973, getDate(ts += movementTimeDeltaInMillis)));
-		rutt.add(new LatLong(57.676004,11.845493, getDate(ts += movementTimeDeltaInMillis)));
-		rutt.add(new LatLong(57.664253,11.754169, getDate(ts += movementTimeDeltaInMillis)));
-		rutt.add(new LatLong(57.646619,11.719151, getDate(ts += movementTimeDeltaInMillis)));
+		rutt.add(new LatLong(57.696225, 11.913557, getDate(ts += movementTimeDeltaInMillis)));
+		rutt.add(new LatLong(57.684998, 11.888752, getDate(ts += movementTimeDeltaInMillis)));
+		rutt.add(new LatLong(57.682245, 11.861973, getDate(ts += movementTimeDeltaInMillis)));
+		rutt.add(new LatLong(57.676004, 11.845493, getDate(ts += movementTimeDeltaInMillis)));
+		rutt.add(new LatLong(57.664253, 11.754169, getDate(ts += movementTimeDeltaInMillis)));
+		rutt.add(new LatLong(57.646619, 11.719151, getDate(ts += movementTimeDeltaInMillis)));
 
 		rutt.add(new LatLong(57.42920, 11.58259, getDate(ts += movementTimeDeltaInMillis)));
 		rutt.add(new LatLong(57.42905, 11.58192, getDate(ts += movementTimeDeltaInMillis)));

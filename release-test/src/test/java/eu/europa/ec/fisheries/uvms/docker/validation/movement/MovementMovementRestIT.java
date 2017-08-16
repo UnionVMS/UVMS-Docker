@@ -15,6 +15,7 @@ package eu.europa.ec.fisheries.uvms.docker.validation.movement;
 
 import java.math.BigInteger;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -114,7 +115,8 @@ public class MovementMovementRestIT extends AbstractRestServiceTest {
 		Asset testAsset = AssetTestHelper.createTestAsset();
 		MobileTerminalType mobileTerminalType = MobileTerminalTestHelper.createMobileTerminalType();
 		MobileTerminalTestHelper.assignMobileTerminal(testAsset, mobileTerminalType);
-		CreateMovementRequest createMovementRequest = movementHelper.createMovementRequest(testAsset, mobileTerminalType);		
+		LatLong latLong = new LatLong(16.9, 32.6333333, new Date(System.currentTimeMillis()));
+		CreateMovementRequest createMovementRequest = movementHelper.createMovementRequest(testAsset, mobileTerminalType, latLong);		
 		CreateMovementResponse createMovementResponse = movementHelper.createMovement(testAsset, mobileTerminalType, createMovementRequest);
 
 		List<String> connectIds = new ArrayList<>();
@@ -155,7 +157,8 @@ public class MovementMovementRestIT extends AbstractRestServiceTest {
 		MobileTerminalType mobileTerminalType = MobileTerminalTestHelper.createMobileTerminalType();
 		Map<String, Object> assignedMap = MobileTerminalTestHelper.assignMobileTerminal(testAsset, mobileTerminalType);
 		
-		CreateMovementRequest createMovementRequest = movementHelper.createMovementRequest(testAsset, mobileTerminalType);		
+		LatLong latLong = new LatLong(16.9, 32.6333333, new Date(System.currentTimeMillis()));
+		CreateMovementRequest createMovementRequest = movementHelper.createMovementRequest(testAsset, mobileTerminalType, latLong);		
 		CreateMovementResponse createMovementResponse = movementHelper.createMovement(testAsset, mobileTerminalType, createMovementRequest);
 		
 		final HttpResponse response = Request.Get(getBaseUrl() + "movement/rest/movement/latest/100")
@@ -180,7 +183,9 @@ public class MovementMovementRestIT extends AbstractRestServiceTest {
 		MobileTerminalType mobileTerminalType = MobileTerminalTestHelper.createMobileTerminalType();
 		MobileTerminalTestHelper.assignMobileTerminal(testAsset, mobileTerminalType);
 		
-		CreateMovementRequest createMovementRequest = movementHelper.createMovementRequest(testAsset, mobileTerminalType);		
+		LatLong latLong = new LatLong(16.9, 32.6333333, new Date(System.currentTimeMillis()));
+
+		CreateMovementRequest createMovementRequest = movementHelper.createMovementRequest(testAsset, mobileTerminalType, latLong);		
 		CreateMovementResponse createMovementResponse = movementHelper.createMovement(testAsset, mobileTerminalType, createMovementRequest);
 		
 		assertNotNull(createMovementResponse);
