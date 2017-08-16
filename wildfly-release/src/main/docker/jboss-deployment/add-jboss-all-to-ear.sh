@@ -8,7 +8,7 @@ addJbossAll() {
 	jar cvf /opt/jboss/wildfly/standalone/deployments/${1} /opt/jboss/wildfly/standalone/deployments/${1}.ear
 	jar -cvf /opt/jboss/wildfly/standalone/deployments/${1}.ear  -C /opt/jboss/wildfly/standalone/deployments/${1} .
 	rm -rf /opt/jboss/wildfly/standalone/deployments/${1}
-	
+
 }
 
 addJbossAlltoWar() {
@@ -20,14 +20,14 @@ addJbossAlltoWar() {
 	jar cvf /opt/jboss/wildfly/standalone/deployments/${1} /opt/jboss/wildfly/standalone/deployments/${1}.war
 	jar -cvf /opt/jboss/wildfly/standalone/deployments/${1}.war  -C /opt/jboss/wildfly/standalone/deployments/${1} .
 	rm -rf /opt/jboss/wildfly/standalone/deployments/${1}
-	
+
 }
 
 
 chmod 755 /opt/jboss/wildfly/standalone/deployments/*.ear
 chmod 755 /opt/jboss/wildfly/standalone/deployments/*.war
-addJbossAll user-module-1.6.1 /opt/jboss/jboss-deployment/user/jboss-all.xml 
-addJbossAll config-dbaccess-module-3.0.4 /opt/jboss/jboss-deployment/config-db/jboss-all.xml 
+addJbossAll user-module-1.6.1 /opt/jboss/jboss-deployment/user/jboss-all.xml
+addJbossAll config-dbaccess-module-3.0.4 /opt/jboss/jboss-deployment/config-db/jboss-all.xml
 addJbossAll config-module-3.0.8 /opt/jboss/jboss-deployment/config/jboss-all.xml
 addJbossAll spatial-module-0.5.9 /opt/jboss/jboss-deployment/spatial/jboss-all.xml
 addJbossAll reporting-module-1.0.5 /opt/jboss/jboss-deployment/reporting/jboss-all.xml
@@ -38,8 +38,8 @@ addJbossAll audit-module-3.0.8 /opt/jboss/jboss-deployment/audit/jboss-all.xml
 addJbossAll exchange-dbaccess-module-3.0.5 /opt/jboss/jboss-deployment/general/jboss-all.xml
 addJbossAll exchange-module-3.0.9 /opt/jboss/jboss-deployment/exchange/jboss-all.xml
 addJbossAll mobileterminal-module-3.0.11 /opt/jboss/jboss-deployment/mobile/jboss-all.xml
-addJbossAll rules-dbaccess-module-3.0.4 /opt/jboss/jboss-deployment/general/jboss-all.xml
-addJbossAll rules-module-3.0.4 /opt/jboss/jboss-deployment/rules/jboss-all.xml
+addJbossAll rules-dbaccess-module-3.0.5 /opt/jboss/jboss-deployment/general/jboss-all.xml
+addJbossAll rules-module-3.0.5 /opt/jboss/jboss-deployment/rules/jboss-all.xml
 addJbossAll activity-module-postgres-0.5.10 /opt/jboss/jboss-deployment/activity/jboss-all.xml
 addJbossAll mdr-module-0.5.0 /opt/jboss/jboss-deployment/mdr/jboss-all.xml
 addJbossAll naf-module-3.0.0 /opt/jboss/jboss-deployment/plugins/jboss-all.xml

@@ -10,7 +10,7 @@
 			<module name="deployment.audit-module-3.0.8.ear" />
 			<module name="deployment.exchange-module-3.0.9.ear" />
 			<module name="deployment.mobileterminal-module-3.0.11.ear" />
-			<module name="deployment.rules-module-3.0.4.ear" />
+			<module name="deployment.rules-module-3.0.5.ear" />
 			<module name="deployment.reporting-module-1.0.5.ear" />
 			<module name="deployment.naf-module-3.0.0.ear" />
 			<module name="deployment.sweagencyemail-module-3.0.0.ear" />
@@ -18,7 +18,7 @@
 			<module name="deployment.twostage-module-3.0.0.ear" />
 			<module name="deployment.siriusone-module-3.0.0.ear" />
 			<module name="deployment.mdr-module-0.5.0.ear" />
-			<module name="deployment.activity-module-postgres-0.5.10.ear" />			
+			<module name="deployment.activity-module-postgres-0.5.10.ear" />
 		</dependencies>
 	</deployment>
 </jboss-deployment-structure>

@@ -24,7 +24,7 @@
         <unionvms.project.mapfishprint.version>3.4</unionvms.project.mapfishprint.version>
         <unionvms.project.geoserver.version>2.8.5.presweden1</unionvms.project.geoserver.version>
         <unionvms.project.user.module>1.6.1</unionvms.project.user.module>
-        <unionvms.project.rules.module>3.0.4</unionvms.project.rules.module>
+        <unionvms.project.rules.module>3.0.5</unionvms.project.rules.module>
         <unionvms.project.rules.dbaccess.module>3.0.5</unionvms.project.rules.dbaccess.module>
         <unionvms.project.movement.module>3.0.11</unionvms.project.movement.module>
         <unionvms.project.mobileterminal.module>3.0.11</unionvms.project.mobileterminal.module>
@@ -36,9 +36,9 @@
         <unionvms.project.config.dbaccess.module>3.0.4</unionvms.project.config.dbaccess.module>
         <unionvms.project.audit.module>3.0.8</unionvms.project.audit.module>
         <unionvms.project.audit.dbaccess.module>3.0.4</unionvms.project.audit.dbaccess.module>
-        <unionvms.project.asset.module>3.0.11</unionvms.project.asset.module>    
+        <unionvms.project.asset.module>3.0.11</unionvms.project.asset.module>
  		<unionvms.project.activity.module>0.5.10</unionvms.project.activity.module>
-		<unionvms.project.mdr.module>0.5.0</unionvms.project.mdr.module> 
+		<unionvms.project.mdr.module>0.5.0</unionvms.project.mdr.module>
         <unionvms.project.plugins.naf>3.0.0</unionvms.project.plugins.naf>
         <unionvms.project.plugins.sweagencyemail>3.0.0</unionvms.project.plugins.sweagencyemail>
         <unionvms.project.plugins.flux>2.1.2</unionvms.project.plugins.flux>
@@ -152,7 +152,7 @@
             <artifactId>mdr-module</artifactId>
             <type>ear</type>
             <version>${unionvms.project.mdr.module}</version>
-        </dependency>                
+        </dependency>
         <dependency>
             <groupId>eu.europa.ec.fisheries.uvms.reporting</groupId>
             <artifactId>reporting-module</artifactId>
