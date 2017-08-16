@@ -10,5 +10,7 @@
 		<dependency name="spatial-module-0.5.9.ear" />
 		<dependency name="rules-module-3.0.4.ear" />
 		<dependency name="reporting-module-1.0.5.ear" />
+		<dependency name="mdr-module-0.5.0.ear" />
+		<dependency name="activity-module-postgres-0.5.10.ear" />		
 	</jboss-deployment-dependencies>
 </jboss>

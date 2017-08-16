@@ -40,6 +40,8 @@ addJbossAll exchange-module-3.0.9 /opt/jboss/jboss-deployment/exchange/jboss-all
 addJbossAll mobileterminal-module-3.0.11 /opt/jboss/jboss-deployment/mobile/jboss-all.xml
 addJbossAll rules-dbaccess-module-3.0.4 /opt/jboss/jboss-deployment/general/jboss-all.xml
 addJbossAll rules-module-3.0.4 /opt/jboss/jboss-deployment/rules/jboss-all.xml
+addJbossAll activity-module-postgres-0.5.10 /opt/jboss/jboss-deployment/activity/jboss-all.xml
+addJbossAll mdr-module-0.5.0 /opt/jboss/jboss-deployment/mdr/jboss-all.xml
 addJbossAll naf-module-3.0.0 /opt/jboss/jboss-deployment/plugins/jboss-all.xml
 addJbossAll sweagencyemail-module-3.0.0 /opt/jboss/jboss-deployment/plugins/jboss-all.xml
 addJbossAll flux-module-2.1.2 /opt/jboss/jboss-deployment/plugins/jboss-all.xml

@@ -36,4 +36,10 @@ mvn liquibase:update -Ppostgres -Ddb.url=jdbc:postgresql://localhost:5432/db71u 
 cd /liquibase/reporting/LIQUIBASE
 mvn liquibase:update -Ppostgres -Ddb.url=jdbc:postgresql://localhost:5432/db71u -Dliquibase.skip=false
 
+cd /liquibase/activity/LIQUIBASE
+mvn liquibase:update -Ppostgres,exec -Ddb.url=jdbc:postgresql://localhost:5432/db71u -Dliquibase.skip=false
+
+cd /liquibase/mdr/LIQUIBASE
+mvn liquibase:update -Ppostgres,exec -Ddb.url=jdbc:postgresql://localhost:5432/db71u -Dliquibase.skip=false
+ 
 echo "All uvms databases scripts prepared"

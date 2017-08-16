@@ -8,6 +8,8 @@
 		<dependency name="audit-module-3.0.8.ear" />
 		<dependency name="exchange-module-3.0.9.ear" />
 		<dependency name="mobileterminal-module-3.0.11.ear" />
+		<dependency name="mdr-module-0.5.0.ear" />
+		<dependency name="activity-module-postgres-0.5.10.ear" />		
 		<dependency name="rules-dbaccess-module-3.0.5.ear" />
 	</jboss-deployment-dependencies>
 </jboss>
