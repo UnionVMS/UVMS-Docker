@@ -180,13 +180,47 @@ public class ModuleAvailableSystemIT extends AbstractRest {
 		assertEquals(HttpStatus.SC_FORBIDDEN,
 				Request.Get(getBaseUrl() + "reporting/").execute().returnResponse().getStatusLine().getStatusCode());
 	}
+	
+	/**
+	 * Check Activity access test.
+	 *
+	 * @throws Exception
+	 *             the exception
+	 */
+	@Test
+	public void checkActivityAccessTest() throws Exception {
+		assertEquals(HttpStatus.SC_FORBIDDEN,Request.Get(BASE_URL + "activity/").execute().returnResponse().getStatusLine().getStatusCode());
+		assertEquals(HttpStatus.SC_FORBIDDEN,Request.Get(BASE_URL + "activity/rest").execute().returnResponse().getStatusLine().getStatusCode());
+	}
 
+	/**
+	 * Check Mdr access test.
+	 *
+	 * @throws Exception
+	 *             the exception
+	 */
+	@Test
+	public void checkMdrAccessTest() throws Exception {
+		assertEquals(HttpStatus.SC_FORBIDDEN,Request.Get(BASE_URL + "mdr/").execute().returnResponse().getStatusLine().getStatusCode());
+		assertEquals(HttpStatus.SC_FORBIDDEN,Request.Get(BASE_URL + "mdr/rest").execute().returnResponse().getStatusLine().getStatusCode());
+	}
+
+	/**
+	 * Check mapfish print access test.
+	 *
+	 * @throws Exception the exception
+	 */
 	@Test
 	public void checkMapfishPrintAccessTest() throws Exception {
 		assertEquals(HttpStatus.SC_FORBIDDEN,
 				Request.Get(getBaseUrl() + "mapfish-print/").execute().returnResponse().getStatusLine().getStatusCode());
 	}
 
+	/**
+	 * Check geoserver access test.
+	 *
+	 * @throws Exception the exception
+	 */
 	@Test
 	public void checkGeoserverAccessTest() throws Exception {
 		assertEquals(HttpStatus.SC_OK,
