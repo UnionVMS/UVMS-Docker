@@ -50,6 +50,7 @@ public final class MessageHelper {
 	}
 	
 	public static void sendMessage(String queueName, final String msg) throws Exception {
+		String responseQueueName = queueName + "Response" + UUID.randomUUID().toString().replaceAll("-", "");
 
 		Connection connection = connectionFactory.createConnection();
 		connection.setClientID(UUID.randomUUID().toString());
@@ -60,7 +61,10 @@ public final class MessageHelper {
 		final MessageProducer messageProducer = session.createProducer(queue);
 		messageProducer.setDeliveryMode(DeliveryMode.PERSISTENT);
 		messageProducer.setTimeToLive(1000000000);
+		final Queue responseQueue = session
+				.createQueue(responseQueueName);
 		TextMessage createTextMessage = session.createTextMessage(msg);
+		createTextMessage.setJMSReplyTo(responseQueue);
 		messageProducer.send(createTextMessage);
 		session.close();
 	}
