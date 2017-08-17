@@ -21,7 +21,6 @@ import java.util.Map;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.fluent.Request;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import eu.europa.ec.fisheries.schema.mobileterminal.types.v1.MobileTerminalType;
@@ -32,7 +31,6 @@ import eu.europa.ec.fisheries.schema.movement.search.v1.ListPagination;
 import eu.europa.ec.fisheries.schema.movement.search.v1.MovementAreaAndTimeIntervalCriteria;
 import eu.europa.ec.fisheries.schema.movement.search.v1.MovementQuery;
 import eu.europa.ec.fisheries.schema.movement.search.v1.SearchKey;
-import eu.europa.ec.fisheries.schema.movement.v1.MovementType;
 import eu.europa.ec.fisheries.uvms.docker.validation.asset.AssetTestHelper;
 import eu.europa.ec.fisheries.uvms.docker.validation.common.AbstractRestServiceTest;
 import eu.europa.ec.fisheries.uvms.docker.validation.mobileterminal.MobileTerminalTestHelper;
@@ -183,7 +181,7 @@ public class MovementMovementRestIT extends AbstractRestServiceTest {
 		MobileTerminalType mobileTerminalType = MobileTerminalTestHelper.createMobileTerminalType();
 		MobileTerminalTestHelper.assignMobileTerminal(testAsset, mobileTerminalType);
 		
-		LatLong latLong = new LatLong(16.9, 32.6333333, new Date(System.currentTimeMillis()));
+		LatLong latLong = movementHelper.createRutt(1).get(0);
 
 		CreateMovementRequest createMovementRequest = movementHelper.createMovementRequest(testAsset, mobileTerminalType, latLong);		
 		CreateMovementResponse createMovementResponse = movementHelper.createMovement(testAsset, mobileTerminalType, createMovementRequest);
@@ -195,17 +193,13 @@ public class MovementMovementRestIT extends AbstractRestServiceTest {
 
 		// give it some time to execute before retrieving
 		Thread.sleep(10000);
-
-		
 		
 		final HttpResponse response = Request.Get(getBaseUrl() + "movement/rest/movement/" + id)
 				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken()).execute()
 				.returnResponse();
-		
 
-
-		Object obj = checkSuccessResponseReturnType(response, Object.class);
-		assertTrue(obj != null);
+		Map<String, Object> map = checkSuccessResponseReturnMap(response);
+		assertNotNull(map);
 	}
 
 	/**

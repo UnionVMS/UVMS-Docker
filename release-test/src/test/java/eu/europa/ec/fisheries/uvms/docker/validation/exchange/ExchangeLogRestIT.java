@@ -154,7 +154,7 @@ public class ExchangeLogRestIT extends AbstractRestServiceTest {
 				.returnResponse();
 
 		Map<String, Object> dataMap = checkSuccessResponseReturnMap(response);
-		assertEquals("SEND_POLL",(String)dataMap.get("type"));
+		assertEquals("SEND_POLL",dataMap.get("type"));
 
 	}
 

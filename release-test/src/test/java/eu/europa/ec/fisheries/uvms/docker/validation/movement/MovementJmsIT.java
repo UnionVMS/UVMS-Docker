@@ -1,6 +1,5 @@
 package eu.europa.ec.fisheries.uvms.docker.validation.movement;
 
-import java.util.Date;
 import java.util.List;
 
 import org.junit.Test;
@@ -36,7 +35,7 @@ public class MovementJmsIT extends AbstractRestServiceTest {
 		MobileTerminalType mobileTerminalType = MobileTerminalTestHelper.createMobileTerminalType();
 		MobileTerminalTestHelper.assignMobileTerminal(testAsset, mobileTerminalType);
 
-		LatLong latLong = new LatLong(16.9, 32.6333333, new Date(System.currentTimeMillis()));
+		LatLong latLong = movementHelper.createRutt(0).get(0);
 		final CreateMovementRequest createMovementRequest = movementHelper.createMovementRequest(testAsset,mobileTerminalType, latLong);
 
 		CreateMovementResponse createMovementResponse = movementHelper.createMovement(testAsset, mobileTerminalType, createMovementRequest);
@@ -58,27 +57,16 @@ public class MovementJmsIT extends AbstractRestServiceTest {
 		MobileTerminalType mobileTerminalType = MobileTerminalTestHelper.createMobileTerminalType();
 		MobileTerminalTestHelper.assignMobileTerminal(testAsset, mobileTerminalType);
 		List<LatLong> route = movementHelper.createRutt(14);
-		//printCoordinates(route);
-
-		String guid = mobileTerminalType.getMobileTerminalId().getGuid();
 
 		for (LatLong position : route) {
 
-			final CreateMovementRequest createMovementRequest = movementHelper.createMovementRequest(testAsset,
-					position,guid);
+			final CreateMovementRequest createMovementRequest = movementHelper.createMovementRequest(testAsset,mobileTerminalType,position);
 
 			CreateMovementResponse createMovementResponse = movementHelper.createMovement(testAsset, mobileTerminalType, createMovementRequest);
 			assertNotNull(createMovementResponse);
 
 		}
 
-	}
-
-	
-	private void printCoordinates(List<LatLong> route){	
-		for(LatLong l : route){
-			System.out.println(l.latitude+ ","+l.longitude);
-		}
 	}
 
 	/**
@@ -91,7 +79,6 @@ public class MovementJmsIT extends AbstractRestServiceTest {
 	public void checkAllMovementsRequestProcessedOnQueue() throws Exception {
 		assertFalse(MessageHelper.checkQueueHasElements("UVMSMovementEvent"));
 	}
-
 
 
 }

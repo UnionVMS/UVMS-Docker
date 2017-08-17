@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.io.StringReader;
 import java.io.StringWriter;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
@@ -47,68 +46,34 @@ public class MovementHelper extends AbstractHelper {
 			JsonMappingException {
 		
 		Date positionTime = new Date(System.currentTimeMillis());
-		return createMovementRequest(testAsset, latlong.longitude, latlong.latitude, 5, positionTime,
-				mobileTerminalType.getMobileTerminalId().getGuid());
-
-	}
-
-
-	public CreateMovementRequest createMovementRequest(Asset testAsset, LatLong obs, String mobileTerminalIdAsConnectId)
-			throws IOException, ClientProtocolException, JsonProcessingException, JsonParseException,
-			JsonMappingException {
-		return createMovementRequest(testAsset, obs.longitude, obs.latitude, 5, obs.positionTime,
-				mobileTerminalIdAsConnectId);
-	}
-
-	/**
-	 *
-	 * @param testAsset
-	 * @param longitude
-	 * @param latitude
-	 * @param altitude
-	 * @param positionTime
-	 * @return CreateMovementRequest
-	 * @throws IOException
-	 * @throws ClientProtocolException
-	 * @throws JsonProcessingException
-	 * @throws JsonParseException
-	 * @throws JsonMappingException
-	 */
-	public CreateMovementRequest createMovementRequest(Asset testAsset, double longitude, double latitude,
-			double altitude, Date positionTime, String mobileTerminalIdAsConnectId) throws IOException,
-			ClientProtocolException, JsonProcessingException, JsonParseException, JsonMappingException {
-
-		final CreateMovementRequest createMovementRequest = new CreateMovementRequest();
+		final CreateMovementRequest createMovementRequest1 = new CreateMovementRequest();
 		final MovementBaseType movementBaseType = new MovementBaseType();
 		AssetId assetId = new AssetId();
 		assetId.setAssetType(AssetType.VESSEL);
 		assetId.setIdType(AssetIdType.GUID);
 		assetId.setValue(testAsset.getAssetId().getGuid());
 		movementBaseType.setAssetId(assetId);
-		movementBaseType.setConnectId(mobileTerminalIdAsConnectId); // skall
-																	// vara
-																	// terminalens
-																	// ID
-
+		movementBaseType.setConnectId(mobileTerminalType.getConnectId()); 
+		
 		MovementActivityType movementActivityType = new MovementActivityType();
 		movementBaseType.setActivity(movementActivityType);
 		movementActivityType.setMessageId(UUID.randomUUID().toString());
 		movementActivityType.setMessageType(MovementActivityTypeType.ANC);
-
-		createMovementRequest.setMovement(movementBaseType);
-		createMovementRequest.setMethod(MovementModuleMethod.CREATE);
-		createMovementRequest.setUsername("vms_admin_com");
-
+		
+		createMovementRequest1.setMovement(movementBaseType);
+		createMovementRequest1.setMethod(MovementModuleMethod.CREATE);
+		createMovementRequest1.setUsername("vms_admin_com");
+		
 		MovementPoint movementPoint = new MovementPoint();
-		movementPoint.setLongitude(longitude);
-		movementPoint.setLatitude(latitude);
-		movementPoint.setAltitude(altitude);
-
+		movementPoint.setLongitude(latlong.longitude);
+		movementPoint.setLatitude(latlong.latitude);
+		movementPoint.setAltitude((double) 5);
+		
 		movementBaseType.setPosition(movementPoint);
 		movementBaseType.setPositionTime(positionTime);
-
+		
 		movementBaseType.setMovementType(MovementTypeType.POS);
-		return createMovementRequest;
+		return createMovementRequest1;
 
 	}
 

@@ -47,8 +47,24 @@ public final class MessageHelper {
 		connection.close();
 
 		return listener.getMessage();
-
 	}
+	
+	public static void sendMessage(String queueName, final String msg) throws Exception {
+
+		Connection connection = connectionFactory.createConnection();
+		connection.setClientID(UUID.randomUUID().toString());
+
+		final Session session = connection.createSession(false, Session.AUTO_ACKNOWLEDGE);
+		final Queue queue = session.createQueue(queueName);
+
+		final MessageProducer messageProducer = session.createProducer(queue);
+		messageProducer.setDeliveryMode(DeliveryMode.PERSISTENT);
+		messageProducer.setTimeToLive(1000000000);
+		TextMessage createTextMessage = session.createTextMessage(msg);
+		messageProducer.send(createTextMessage);
+		session.close();
+	}
+	
 
 	private static void setupResponseConsumer(String queueName, ResponseQueueMessageListener listener) throws Exception {
 		Connection consumerConnection = connectionFactory.createConnection();
