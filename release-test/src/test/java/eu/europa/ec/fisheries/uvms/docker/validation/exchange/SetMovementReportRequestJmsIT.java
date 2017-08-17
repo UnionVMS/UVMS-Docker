@@ -56,7 +56,7 @@ public class SetMovementReportRequestJmsIT extends AbstractRestServiceTest {
 		MobileTerminalType mobileTerminalType = MobileTerminalTestHelper.createMobileTerminalType();
 		MobileTerminalTestHelper.assignMobileTerminal(testAsset, mobileTerminalType);
 
-		LatLong latLong = movementHelper.createRutt(0).get(0);
+		LatLong latLong = movementHelper.createRutt(1).get(0);
 		final CreateMovementRequest createMovementRequest = movementHelper.createMovementRequest(testAsset,mobileTerminalType,latLong);
 
 		MessageHelper.sendMessage("UVMSExchangeEvent",
@@ -68,7 +68,7 @@ public class SetMovementReportRequestJmsIT extends AbstractRestServiceTest {
 	 *
 	 * @throws Exception the exception
 	 */
-	@Test(timeout = 5000)
+	@Test(timeout = 25000)
 	public void setMovementReportRequestRouteTest() throws Exception {		
 		Asset testAsset = AssetTestHelper.createTestAsset();
 		MobileTerminalType mobileTerminalType = MobileTerminalTestHelper.createMobileTerminalType();
