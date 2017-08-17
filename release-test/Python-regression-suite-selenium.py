@@ -935,12 +935,12 @@ class UnionVMSTestCase(unittest.TestCase):
         startup_browser_and_login_to_unionVMS(self,"vms_admin_com","password","AdminAll")
         # Select Audit Log tab
         time.sleep(browserWaitAfterClick)
-                
+
         WebDriverWait(self.driver, browserTimeout).until(EC.presence_of_element_located((By.ID,"uvms-header-menu-item-audit-log")))
-                
+
         action=ActionChains(self.driver)
-        action.move_to_element(self.driver.find_element_by_id("uvms-header-menu-item-audit-log")).perform() 
-        
+        action.move_to_element(self.driver.find_element_by_id("uvms-header-menu-item-audit-log")).perform()
+
         WebDriverWait(self.driver, browserTimeout).until(EC.element_to_be_clickable((By.ID,"uvms-header-menu-item-audit-log"))).click()
         time.sleep(browserWaitAfterClick)
 
@@ -979,13 +979,13 @@ class UnionVMSTestCase(unittest.TestCase):
         startup_browser_and_login_to_unionVMS(self,"vms_admin_com","password","AdminAll")
         # Select Admin tab
         time.sleep(browserWaitAfterClick)
-        
-        WebDriverWait(self.driver, browserTimeout).until(EC.presence_of_element_located((By.ID,"uvms-header-menu-item-audit-log")))
-        
-        action=ActionChains(self.driver)
-        action.move_to_element(self.driver.find_element_by_id("uvms-header-menu-item-audit-log")).perform() 
 
-        
+        WebDriverWait(self.driver, browserTimeout).until(EC.presence_of_element_located((By.ID,"uvms-header-menu-item-audit-log")))
+
+        action=ActionChains(self.driver)
+        action.move_to_element(self.driver.find_element_by_id("uvms-header-menu-item-audit-log")).perform()
+
+
         WebDriverWait(self.driver, browserTimeout).until(EC.element_to_be_clickable((By.ID,"uvms-header-menu-item-audit-log"))).click()
         time.sleep(browserWaitAfterClick)
 
@@ -1027,9 +1027,8 @@ class UnionVMSTestCase(unittest.TestCase):
         self.driver.switch_to.window(self.driver.window_handles[-1])
 
         # Check User guide page
-        self.assertEqual("Union VMS - User Manual", WebDriverWait(self.driver, browserTimeout).until(EC.presence_of_element_located((By.XPATH,"//*[@id='title-text']/a"))).text)
+        self.assertEqual("Union VMS - User Manual", WebDriverWait(self.driver, browserTimeout).until(EC.presence_of_element_located((By.ID,"title-text"))).text)
 
-        self.assertEqual("Welcome to Union VMS!", WebDriverWait(self.driver, browserTimeout).until(EC.presence_of_element_located((By.XPATH,"//*[@id='main-content']/div[3]/ul/li[1]/span/a"))).text)
         # Shutdown browser
         shutdown_browser(self)
 
