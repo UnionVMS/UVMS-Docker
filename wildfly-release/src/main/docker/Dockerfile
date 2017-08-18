@@ -57,8 +57,5 @@ USER jboss
 USER root
 RUN mkdir -p /app/indexes/mdr
 RUN chmod 777 /app/indexes/mdr
-RUN chmod 777 /opt/jboss/wildfly/standalone/log/
-RUN mv /root/.m2/settings.xml /root/settings.xml
-RUN rm -r /root/.m2
-RUN mkdir /root/.m2 && mv /root/settings.xml /root/.m2/settings.xml
+RUN rm -rf /root/.m2
 USER jboss
