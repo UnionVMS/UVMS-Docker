@@ -1,3 +1,5 @@
+See https://focusfish.atlassian.net/wiki/spaces/UVMS/pages/11403266/Docker+Installation for documentation (Below contains old documentation, need to be moved and updated).
+
 These containers downloads and setups a complete Union-VMS system, using the latest available binaries, including snapshots, from the nexus at nexus.focus.fish. The binaries are downloaded at build time, meaning that if newer binaries are made available, a rebuild will be required.
 
 # Build & Run 
