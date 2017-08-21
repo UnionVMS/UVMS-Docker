@@ -5,6 +5,7 @@ import java.util.UUID;
 import javax.jms.Connection;
 import javax.jms.ConnectionFactory;
 import javax.jms.DeliveryMode;
+import javax.jms.JMSException;
 import javax.jms.Message;
 import javax.jms.MessageConsumer;
 import javax.jms.MessageListener;
@@ -48,7 +49,7 @@ public final class MessageHelper {
 
 		return listener.getMessage();
 	}
-	
+
 	public static void sendMessage(String queueName, final String msg) throws Exception {
 		String responseQueueName = queueName + "Response" + UUID.randomUUID().toString().replaceAll("-", "");
 
@@ -67,8 +68,9 @@ public final class MessageHelper {
 		createTextMessage.setJMSReplyTo(responseQueue);
 		messageProducer.send(createTextMessage);
 		session.close();
+		connection.close();
 	}
-	
+
 
 	private static void setupResponseConsumer(String queueName, ResponseQueueMessageListener listener) throws Exception {
 		Connection consumerConnection = connectionFactory.createConnection();
@@ -78,16 +80,28 @@ public final class MessageHelper {
 		MessageConsumer consumer = session.createConsumer(responseQueue);
 
 		consumer.setMessageListener(listener);
+		listener.setConsumerConnection(consumerConnection);
 		consumerConnection.start();
 
 	}
 
 	private static class ResponseQueueMessageListener implements MessageListener {
 		private volatile Message message = null;
+		private Connection consumerConnection;
+
+
+		public void setConsumerConnection(Connection consumerConnection) {
+			this.consumerConnection = consumerConnection;
+		}
 
 		@Override
 		public void onMessage(Message message) {
 			this.message = message;
+			try {
+				this.consumerConnection.close();
+			} catch (JMSException e) {
+				e.printStackTrace();
+			}
 		}
 
 		public Message getMessage() {
