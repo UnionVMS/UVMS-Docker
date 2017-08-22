@@ -406,39 +406,40 @@
 		</repository>
 	</repositories>
 	<profiles>
-		<profile>
-			<id>frontend-test</id>
-			<build>
-				<plugins>
-					<plugin>
-						<groupId>org.codehaus.mojo</groupId>
-						<artifactId>exec-maven-plugin</artifactId>
-						<version>1.6.0</version>
-						<executions>
-							<execution>
-								<id>python-build</id>
-								<phase>pre-integration-test</phase>
-								<goals>
-									<goal>exec</goal>
-								</goals>
-							</execution>
-						</executions>
-						<configuration>
-							<executable>python3</executable>
-							<workingDirectory>${project.basedir}</workingDirectory>
-							<arguments>
-								<argument>Python-regression-suite-selenium.py</argument>
-							</arguments>
-							<successCodes>
-								<successCode>0</successCode>
-								<successCode>1</successCode>
-								<successCode>2</successCode>
-							</successCodes>
-						</configuration>
-					</plugin>
-				</plugins>
-			</build>
-		</profile>
+	<profile>
+		<id>frontend-test</id>
+		<build>
+			<plugins>
+				<plugin>
+					<groupId>org.codehaus.mojo</groupId>
+					<artifactId>exec-maven-plugin</artifactId>
+					<version>1.6.0</version>
+					<executions>
+						<execution>
+							<id>python-build</id>
+							<phase>pre-integration-test</phase>
+							<goals>
+								<goal>exec</goal>
+							</goals>
+							<configuration>
+								<executable>python3</executable>
+								<workingDirectory>${project.basedir}</workingDirectory>
+								<arguments>
+									<argument>Python-regression-suite-selenium.py</argument>
+								</arguments>
+								<successCodes>
+									<successCode>0</successCode>
+									<successCode>1</successCode>
+									<successCode>2</successCode>
+								</successCodes>
+							</configuration>
+
+						</execution>
+					</executions>
+				</plugin>
+			</plugins>
+		</build>
+	</profile>
 		<profile>
 			<id>postman-test</id>
 			<build>
@@ -454,30 +455,30 @@
 								<goals>
 									<goal>exec</goal>
 								</goals>
+								<configuration>
+									<executable>newman</executable>
+									<workingDirectory>${project.basedir}</workingDirectory>
+									<arguments>
+										<argument>run</argument>
+										<argument>${project.basedir}${file.separator}src${file.separator}test${file.separator}resources${file.separator}QASmoke.postman_collection.json</argument>
+										<argument>--environment</argument>
+										<argument>${project.basedir}${file.separator}src${file.separator}test${file.separator}resources${file.separator}test_environment</argument>
+										<argument>--color</argument>
+										<argument>--reporters</argument>
+										<argument>junit,cli,html</argument>
+										<argument>--reporter-junit-export</argument>
+										<argument>${project.basedir}${file.separator}target${file.separator}failsafe-reports${file.separator}QASmokeTest.xml</argument>
+										<argument>--reporter-html-export</argument>
+										<argument>${project.basedir}${file.separator}target${file.separator}failsafe-reports${file.separator}QASmokeTest.html</argument>
+									</arguments>
+									<successCodes>
+										<successCode>0</successCode>
+										<successCode>1</successCode>
+										<successCode>2</successCode>
+									</successCodes>
+								</configuration>		
 							</execution>
 						</executions>
-						<configuration>
-							<executable>newman</executable>
-							<workingDirectory>${project.basedir}</workingDirectory>
-							<arguments>
-								<argument>run</argument>
-								<argument>${project.basedir}${file.separator}src${file.separator}test${file.separator}resources${file.separator}QASmoke.postman_collection.json</argument>
-								<argument>--environment</argument>
-								<argument>${project.basedir}${file.separator}src${file.separator}test${file.separator}resources${file.separator}test_environment</argument>								
-								<argument>--color</argument>
-								<argument>--reporters</argument>
-								<argument>junit,cli,html</argument>								
-								<argument>--reporter-junit-export</argument>
-								<argument>${project.basedir}${file.separator}target${file.separator}failsafe-reports${file.separator}QASmokeTest.xml</argument>								
-								<argument>--reporter-html-export</argument>
-								<argument>${project.basedir}${file.separator}target${file.separator}failsafe-reports${file.separator}QASmokeTest.html</argument>								
-							</arguments>
-							<successCodes>
-								<successCode>0</successCode>
-								<successCode>1</successCode>
-								<successCode>2</successCode>
-							</successCodes>
-						</configuration>
 					</plugin>
 				</plugins>
 			</build>
