@@ -5,3 +5,5 @@ changelog/
 .idea/
 .settings/
 *.project
+.DS_Store
+.Rhistory
