@@ -93,7 +93,6 @@ public class MovementHelper extends AbstractHelper {
 		rutt.add(new LatLong(57.708347, 11.956049, getDate(ts += movementTimeDeltaInMillis)));
 		rutt.add(new LatLong(57.703993, 11.951709, getDate(ts += movementTimeDeltaInMillis)));
 		rutt.add(new LatLong(57.701058, 11.932225, getDate(ts += movementTimeDeltaInMillis)));
-
 		rutt.add(new LatLong(57.696225, 11.913557, getDate(ts += movementTimeDeltaInMillis)));
 		rutt.add(new LatLong(57.684998, 11.888752, getDate(ts += movementTimeDeltaInMillis)));
 		rutt.add(new LatLong(57.682245, 11.861973, getDate(ts += movementTimeDeltaInMillis)));
@@ -101,6 +100,17 @@ public class MovementHelper extends AbstractHelper {
 		rutt.add(new LatLong(57.664253, 11.754169, getDate(ts += movementTimeDeltaInMillis)));
 		rutt.add(new LatLong(57.646619, 11.719151, getDate(ts += movementTimeDeltaInMillis)));
 
+		rutt.add(new LatLong(57.632, 11.684, getDate(ts += movementTimeDeltaInMillis)));
+		rutt.add(new LatLong(57.601, 11.683, getDate(ts += movementTimeDeltaInMillis)));
+		rutt.add(new LatLong(57.582, 11.521, getDate(ts += movementTimeDeltaInMillis)));
+		rutt.add(new LatLong(57.562, 11.411, getDate(ts += movementTimeDeltaInMillis)));
+		rutt.add(new LatLong(57.535, 11.253, getDate(ts += movementTimeDeltaInMillis)));
+		rutt.add(new LatLong(57.508, 11.106, getDate(ts += movementTimeDeltaInMillis)));
+		rutt.add(new LatLong(57.486, 10.970, getDate(ts += movementTimeDeltaInMillis)));
+		rutt.add(new LatLong(57.469, 10.867, getDate(ts += movementTimeDeltaInMillis)));
+		rutt.add(new LatLong(57.425, 10.624, getDate(ts += movementTimeDeltaInMillis)));
+		rutt.add(new LatLong(57.420, 10.580, getDate(ts += movementTimeDeltaInMillis)));
+		
 		rutt.add(new LatLong(57.42920, 11.58259, getDate(ts += movementTimeDeltaInMillis)));
 		rutt.add(new LatLong(57.42905, 11.58192, getDate(ts += movementTimeDeltaInMillis)));
 		rutt.add(new LatLong(57.42897, 11.58149, getDate(ts += movementTimeDeltaInMillis)));
