@@ -440,6 +440,49 @@
 			</build>
 		</profile>
 		<profile>
+			<id>postman-test</id>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.codehaus.mojo</groupId>
+						<artifactId>exec-maven-plugin</artifactId>
+						<version>1.6.0</version>
+						<executions>
+							<execution>
+								<id>postman-test</id>
+								<phase>integration-test</phase>
+								<goals>
+									<goal>exec</goal>
+								</goals>
+							</execution>
+						</executions>
+						<configuration>
+							<executable>newman</executable>
+							<workingDirectory>${project.basedir}</workingDirectory>
+							<arguments>
+								<argument>run</argument>
+								<argument>${project.basedir}${file.separator}src${file.separator}test${file.separator}resources${file.separator}QASmoke.postman_collection.json</argument>
+								<argument>--environment</argument>
+								<argument>${project.basedir}${file.separator}src${file.separator}test${file.separator}resources${file.separator}test_environment</argument>								
+								<argument>--color</argument>
+								<argument>--reporters</argument>
+								<argument>junit,cli,html</argument>								
+								<argument>--reporter-junit-export</argument>
+								<argument>${project.basedir}${file.separator}target${file.separator}failsafe-reports${file.separator}QASmokeTest.xml</argument>								
+								<argument>--reporter-html-export</argument>
+								<argument>${project.basedir}${file.separator}target${file.separator}failsafe-reports${file.separator}QASmokeTest.html</argument>								
+							</arguments>
+							<successCodes>
+								<successCode>0</successCode>
+								<successCode>1</successCode>
+								<successCode>2</successCode>
+							</successCodes>
+						</configuration>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>		
+		<profile>
 			<id>dev-windows</id>
 			<activation>
 				<os>

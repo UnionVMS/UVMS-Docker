@@ -17,7 +17,7 @@
     {
       "key": "hostname",
       "type": "text",
-      "value": "dgmare-uvms.aris-brx.lan",
+      "value": "localhost",
       "enabled": true
     },
     {
