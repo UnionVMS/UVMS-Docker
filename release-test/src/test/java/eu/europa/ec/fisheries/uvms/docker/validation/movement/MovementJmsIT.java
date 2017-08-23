@@ -68,6 +68,32 @@ public class MovementJmsIT extends AbstractRestServiceTest {
 		}
 
 	}
+	
+	@Test
+	public void createRouteTestVarbergGrena() throws Exception {
+		
+		
+		long then = System.currentTimeMillis();
+		
+		Asset testAsset = AssetTestHelper.createTestAsset();
+		MobileTerminalType mobileTerminalType = MobileTerminalTestHelper.createMobileTerminalType();
+		MobileTerminalTestHelper.assignMobileTerminal(testAsset, mobileTerminalType);
+		List<LatLong> route = movementHelper.createRuttVarbergGrena(-1);
+
+		for (LatLong position : route) {
+
+			final CreateMovementRequest createMovementRequest = movementHelper.createMovementRequest(testAsset,mobileTerminalType,position);
+
+			CreateMovementResponse createMovementResponse = movementHelper.createMovement(testAsset, mobileTerminalType, createMovementRequest);
+			assertNotNull(createMovementResponse);
+
+		}
+		
+		
+		
+		System.out.println("elapsed : " + (System.currentTimeMillis() - then));
+
+	}
 
 	/**
 	 * Check dead letter queue.
