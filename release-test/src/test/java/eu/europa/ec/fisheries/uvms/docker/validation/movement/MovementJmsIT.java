@@ -73,7 +73,7 @@ public class MovementJmsIT extends AbstractRestServiceTest {
 	public void createRouteTestVarbergGrena() throws Exception {
 		
 		
-		long then = System.currentTimeMillis();
+	//	long then = System.currentTimeMillis();
 		
 		Asset testAsset = AssetTestHelper.createTestAsset();
 		MobileTerminalType mobileTerminalType = MobileTerminalTestHelper.createMobileTerminalType();
@@ -91,7 +91,8 @@ public class MovementJmsIT extends AbstractRestServiceTest {
 		
 		
 		
-		System.out.println("elapsed : " + (System.currentTimeMillis() - then));
+	//	System.out.println("elapsed : " + (System.currentTimeMillis() - then));
+		// elapsed : 400914
 
 	}
 
