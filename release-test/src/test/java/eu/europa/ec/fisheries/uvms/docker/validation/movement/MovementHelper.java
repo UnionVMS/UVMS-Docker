@@ -88,14 +88,14 @@ public class MovementHelper extends AbstractHelper {
 		double latitude = 57.110;
 		double longitude = 12.244;
 
-		// 56.408
-		// 10.926
+		double END_LATITUDE =  56.408;
+		double END_LONGITUDE = 10.926;
 
 		while (true) {
 			
-			if(latitude >= 56.408) latitude =latitude -  0.01;
-			if(longitude >= 10.926) longitude =longitude -  0.01;
-			if(latitude < 56.408 && longitude < 10.926) break;
+			if(latitude >= END_LATITUDE) latitude =latitude -  0.03;
+			if(longitude >= END_LONGITUDE) longitude =longitude -  0.03;
+			if(latitude < END_LATITUDE && longitude < END_LONGITUDE) break;
 			rutt.add(new LatLong(latitude, longitude, getDate(ts += movementTimeDeltaInMillis)));
 		}
 
@@ -105,6 +105,36 @@ public class MovementHelper extends AbstractHelper {
 			return rutt.subList(0, numberPositions);
 		}
 	}
+	
+	
+	public List<LatLong> createRuttCobhNewYork(int numberPositions) {
+
+		int movementTimeDeltaInMillis = 30000;
+		List<LatLong> rutt = new ArrayList<>();
+		long ts = System.currentTimeMillis();
+
+		double latitude = 51.844;
+		double longitude = -8.311;
+
+		double END_LATITUDE =  40.313;
+		double END_LONGITUDE =  -73.740;
+
+		while (true) {
+			
+			if(latitude >= END_LATITUDE) latitude =latitude -  0.5;
+			if(longitude >= END_LONGITUDE) longitude =longitude -  0.5;
+			if(latitude < END_LATITUDE && longitude < END_LONGITUDE) break;
+			rutt.add(new LatLong(latitude, longitude, getDate(ts += movementTimeDeltaInMillis)));
+		}
+
+		if (numberPositions == -1) {
+			return rutt;
+		} else {
+			return rutt.subList(0, numberPositions);
+		}
+	}
+
+	
 	
 	public List<LatLong> createRutt(int movementTimeDeltaInMillis, int numberPositions) {
 
