@@ -91,14 +91,11 @@ public class MovementHelper extends AbstractHelper {
 		// 56.408
 		// 10.926
 
-		int count = 0;
 		while (true) {
-			count++;
 			
 			if(latitude >= 56.408) latitude =latitude -  0.01;
 			if(longitude >= 10.926) longitude =longitude -  0.01;
 			if(latitude < 56.408 && longitude < 10.926) break;
-			System.out.print(".");
 			rutt.add(new LatLong(latitude, longitude, getDate(ts += movementTimeDeltaInMillis)));
 		}
 
