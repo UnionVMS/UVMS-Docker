@@ -38,8 +38,6 @@ https://nodejs.org/en/download/
 2. Install newman
 npm install -g newman
 
-newman run src\test\resources\QASmoke.postman_collection.json  --environment src\test\resources\test_environment --color  --reporters junit,cli,html --reporter-junit-export target/failsafe-reports/QASmokeTest.xml --reporter-html-export target/failsafe-reports/QASmokeTest.html
-
 Linux
 
 1. Install Node and npm
@@ -47,3 +45,5 @@ sudo apt-get install npm
 
 2. Install newman
 npm install -g newman
+
+

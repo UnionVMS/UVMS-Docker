@@ -40,7 +40,7 @@ ARG RULES_VERSION=3.0.5
 ARG SPATIAL_VERSION=1.0.4
 ARG REPORTING_VERSION=1.0.3
 ARG USM_VERSION=2.0.0
-ARG ACTIVITY_VERSION=0.5.2
+ARG ACTIVITY_VERSION=0.5.12
 ARG MDR_VERSION=0.5.1
 
 
@@ -106,9 +106,9 @@ RUN unzip -q /liquibase/usm/68c1100c43463570c763e8bdb26176919703e1b5.zip -d /liq
 RUN cp -r /liquibase/usm/USM-68c1100c43463570c763e8bdb26176919703e1b5/* /liquibase/usm/
 
 # Activity
-ADD $GITHUB/UVMS-ActivityModule-DB/archive/activity-db-$ACTIVITY_VERSION.zip /liquibase/activity
-RUN unzip -q /liquibase/activity/activity-db-$ACTIVITY_VERSION -d /liquibase/activity
-RUN cp -r /liquibase/activity/UVMS-ActivityModule-DB-activity-db-$ACTIVITY_VERSION/* /liquibase/activity/
+ADD https://github.com/UnionVMS/UVMS-ActivityModule-APP/archive/activity-$ACTIVITY_VERSION.zip /liquibase/activity
+RUN unzip -q /liquibase/activity/activity-$ACTIVITY_VERSION.zip -d /liquibase/activity
+RUN cp -r /liquibase/activity/UVMS-ActivityModule-APP-activity-$ACTIVITY_VERSION/LIQUIBASE /liquibase/activity/
 
 # MDR
 ADD $GITHUB/UVMS-MDRCacheModule-DB/archive/mdr-db-$MDR_VERSION.zip /liquibase/mdr

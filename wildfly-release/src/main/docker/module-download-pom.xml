@@ -24,20 +24,20 @@
         <unionvms.project.mapfishprint.version>3.4</unionvms.project.mapfishprint.version>
         <unionvms.project.geoserver.version>2.8.5.presweden1</unionvms.project.geoserver.version>
         <unionvms.project.user.module>1.6.1</unionvms.project.user.module>
-        <unionvms.project.rules.module>3.0.6</unionvms.project.rules.module>
+        <unionvms.project.rules.module>3.0.7</unionvms.project.rules.module>
         <unionvms.project.rules.dbaccess.module>3.0.5</unionvms.project.rules.dbaccess.module>
-        <unionvms.project.movement.module>3.0.11</unionvms.project.movement.module>
-        <unionvms.project.mobileterminal.module>3.0.11</unionvms.project.mobileterminal.module>
-        <unionvms.project.exchange.module>3.0.10</unionvms.project.exchange.module>
+        <unionvms.project.movement.module>3.0.12</unionvms.project.movement.module>
+        <unionvms.project.mobileterminal.module>3.0.12</unionvms.project.mobileterminal.module>
+        <unionvms.project.exchange.module>3.0.11</unionvms.project.exchange.module>
         <unionvms.project.exchange.dbaccess.module>3.0.5</unionvms.project.exchange.dbaccess.module>
         <unionvms.project.reporting.module>1.0.5</unionvms.project.reporting.module>
         <unionvms.project.spatial.module>0.5.9</unionvms.project.spatial.module>
-        <unionvms.project.config.module>3.0.9</unionvms.project.config.module>
+        <unionvms.project.config.module>3.0.10</unionvms.project.config.module>
         <unionvms.project.config.dbaccess.module>3.0.4</unionvms.project.config.dbaccess.module>
-        <unionvms.project.audit.module>3.0.9</unionvms.project.audit.module>
+        <unionvms.project.audit.module>3.0.10</unionvms.project.audit.module>
         <unionvms.project.audit.dbaccess.module>3.0.4</unionvms.project.audit.dbaccess.module>
-        <unionvms.project.asset.module>3.0.11</unionvms.project.asset.module>
- 		<unionvms.project.activity.module>0.5.10</unionvms.project.activity.module>
+        <unionvms.project.asset.module>3.0.12</unionvms.project.asset.module>
+ 		<unionvms.project.activity.module>0.5.12</unionvms.project.activity.module>
 		<unionvms.project.mdr.module>0.5.0</unionvms.project.mdr.module>
         <unionvms.project.plugins.naf>3.0.0</unionvms.project.plugins.naf>
         <unionvms.project.plugins.sweagencyemail>3.0.0</unionvms.project.plugins.sweagencyemail>
