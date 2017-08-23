@@ -39,12 +39,10 @@ public class MovementHelper extends AbstractHelper {
 
 	private static final String UVMS_MOVEMENT_REQUEST_QUEUE = "UVMSMovementEvent";
 
-
-	
 	public CreateMovementRequest createMovementRequest(Asset testAsset, MobileTerminalType mobileTerminalType,
 			LatLong latlong) throws IOException, ClientProtocolException, JsonProcessingException, JsonParseException,
 			JsonMappingException {
-		
+
 		Date positionTime = new Date(System.currentTimeMillis());
 		final CreateMovementRequest createMovementRequest1 = new CreateMovementRequest();
 		final MovementBaseType movementBaseType = new MovementBaseType();
@@ -53,25 +51,25 @@ public class MovementHelper extends AbstractHelper {
 		assetId.setIdType(AssetIdType.GUID);
 		assetId.setValue(testAsset.getAssetId().getGuid());
 		movementBaseType.setAssetId(assetId);
-		movementBaseType.setConnectId(mobileTerminalType.getConnectId()); 
-		
+		movementBaseType.setConnectId(mobileTerminalType.getConnectId());
+
 		MovementActivityType movementActivityType = new MovementActivityType();
 		movementBaseType.setActivity(movementActivityType);
 		movementActivityType.setMessageId(UUID.randomUUID().toString());
 		movementActivityType.setMessageType(MovementActivityTypeType.ANC);
-		
+
 		createMovementRequest1.setMovement(movementBaseType);
 		createMovementRequest1.setMethod(MovementModuleMethod.CREATE);
 		createMovementRequest1.setUsername("vms_admin_com");
-		
+
 		MovementPoint movementPoint = new MovementPoint();
 		movementPoint.setLongitude(latlong.longitude);
 		movementPoint.setLatitude(latlong.latitude);
 		movementPoint.setAltitude((double) 5);
-		
+
 		movementBaseType.setPosition(movementPoint);
 		movementBaseType.setPositionTime(positionTime);
-		
+
 		movementBaseType.setMovementType(MovementTypeType.POS);
 		return createMovementRequest1;
 
@@ -81,6 +79,36 @@ public class MovementHelper extends AbstractHelper {
 		return createRutt(15 * 1000, numberPositions);
 	}
 
+	public List<LatLong> createRuttVarbergGrena(int numberPositions) {
+
+		int movementTimeDeltaInMillis = 30000;
+		List<LatLong> rutt = new ArrayList<>();
+		long ts = System.currentTimeMillis();
+
+		double latitude = 57.110;
+		double longitude = 12.244;
+
+		// 56.408
+		// 10.926
+
+		int count = 0;
+		while (true) {
+			count++;
+			
+			if(latitude >= 56.408) latitude =latitude -  0.01;
+			if(longitude >= 10.926) longitude =longitude -  0.01;
+			if(latitude < 56.408 && longitude < 10.926) break;
+			System.out.print(".");
+			rutt.add(new LatLong(latitude, longitude, getDate(ts += movementTimeDeltaInMillis)));
+		}
+
+		if (numberPositions == -1) {
+			return rutt;
+		} else {
+			return rutt.subList(0, numberPositions);
+		}
+	}
+	
 	public List<LatLong> createRutt(int movementTimeDeltaInMillis, int numberPositions) {
 
 		List<LatLong> rutt = new ArrayList<>();
@@ -110,7 +138,7 @@ public class MovementHelper extends AbstractHelper {
 		rutt.add(new LatLong(57.469, 10.867, getDate(ts += movementTimeDeltaInMillis)));
 		rutt.add(new LatLong(57.425, 10.624, getDate(ts += movementTimeDeltaInMillis)));
 		rutt.add(new LatLong(57.420, 10.580, getDate(ts += movementTimeDeltaInMillis)));
-		
+
 		rutt.add(new LatLong(57.42920, 11.58259, getDate(ts += movementTimeDeltaInMillis)));
 		rutt.add(new LatLong(57.42905, 11.58192, getDate(ts += movementTimeDeltaInMillis)));
 		rutt.add(new LatLong(57.42897, 11.58149, getDate(ts += movementTimeDeltaInMillis)));
