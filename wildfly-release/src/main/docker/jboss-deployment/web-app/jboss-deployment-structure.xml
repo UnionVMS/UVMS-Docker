@@ -5,11 +5,11 @@
 			<module name="deployment.user-module-1.6.1.ear" />
 			<module name="deployment.config-module-3.0.10.ear" />
 			<module name="deployment.spatial-module-0.5.9.ear" />
-			<module name="deployment.movement-module-3.0.12.ear" />
+			<module name="deployment.movement-module-3.0.13.ear" />
 			<module name="deployment.asset-module-3.0.12.ear" />
 			<module name="deployment.audit-module-3.0.10.ear" />
 			<module name="deployment.exchange-module-3.0.11.ear" />
-			<module name="deployment.mobileterminal-module-3.0.12.ear" />
+			<module name="deployment.mobileterminal-module-3.0.13.ear" />
 			<module name="deployment.rules-module-3.0.7.ear" />
 			<module name="deployment.reporting-module-1.0.5.ear" />
 			<module name="deployment.naf-module-3.0.0.ear" />

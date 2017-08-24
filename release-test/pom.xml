@@ -154,7 +154,7 @@
 									<artifactId>movement-rest</artifactId>
 									<groupId>eu.europa.ec.fisheries.uvms.movement</groupId>
 									<type>war</type>
-									<version>3.0.12</version>
+									<version>3.0.11</version>
 									<overWrite>false</overWrite>
 									<outputDirectory>${project.build.directory}/warclasses/</outputDirectory>
 									<includes>WEB-INF/classes/**/*.*</includes>
