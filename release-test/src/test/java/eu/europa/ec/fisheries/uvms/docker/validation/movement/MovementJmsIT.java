@@ -1,5 +1,7 @@
 package eu.europa.ec.fisheries.uvms.docker.validation.movement;
 
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 import org.junit.Test;
@@ -96,6 +98,29 @@ public class MovementJmsIT extends AbstractRestServiceTest {
 			assertNotNull(createMovementResponse);
 		}
 	}
+	
+	
+	@Test
+	public void createRouteAddPositionsInRandomOrder() throws Exception {
+		Asset testAsset = AssetTestHelper.createTestAsset();
+		MobileTerminalType mobileTerminalType = MobileTerminalTestHelper.createMobileTerminalType();
+		MobileTerminalTestHelper.assignMobileTerminal(testAsset, mobileTerminalType);
+		List<LatLong> route = movementHelper.createRuttVarbergGrena(10);
+		
+		// shake the content so it is not in a deterministic order
+		Collections.shuffle(route);
+
+		for (LatLong position : route) {
+			final CreateMovementRequest createMovementRequest = movementHelper.createMovementRequest(testAsset,mobileTerminalType,position);
+			CreateMovementResponse createMovementResponse = movementHelper.createMovement(testAsset, mobileTerminalType, createMovementRequest);
+			assertNotNull(createMovementResponse);
+		}
+	}
+
+	
+	
+	
+	
 
 	/**
 	 * Check dead letter queue.
