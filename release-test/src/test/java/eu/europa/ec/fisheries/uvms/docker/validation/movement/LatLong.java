@@ -13,5 +13,19 @@ public class LatLong {
 		this.longitude = longitude;
 		this.positionTime = positionTime;
 	}
+	@Override
+	public String toString() {
+		
+		String formatStr = "%2.6f";
+		String la = String.format(formatStr , latitude) ;
+		String lo = String.format(formatStr , longitude) ;
+		
+		
+		return "LatLong [latitude=" + la + ", longitude=" + lo + ", positionTime=" + positionTime + "]";
+	}
+	
+	
+	
+	
 
 }
