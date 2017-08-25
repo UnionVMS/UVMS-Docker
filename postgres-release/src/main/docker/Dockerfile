@@ -101,9 +101,9 @@ RUN cp -r /liquibase/reporting/UVMS-ReportingModule-DB-reporting-db-$REPORTING_V
 ##ADD $GITHUB/USM/archive/$USM_VERSION.zip /liquibase/usm
 ##RUN unzip -q /liquibase/usm/$USM_VERSION.zip -d /liquibase/usm
 ##RUN cp -r /liquibase/usm/USM-$USM_VERSION/* /liquibase/usm/
-ADD $GITHUB/USM/archive/68c1100c43463570c763e8bdb26176919703e1b5.zip /liquibase/usm
-RUN unzip -q /liquibase/usm/68c1100c43463570c763e8bdb26176919703e1b5.zip -d /liquibase/usm
-RUN cp -r /liquibase/usm/USM-68c1100c43463570c763e8bdb26176919703e1b5/* /liquibase/usm/
+ADD $GITHUB/USM/archive/1638887a524314cfb40ff49585159eeae2a612e6.zip /liquibase/usm
+RUN unzip -q /liquibase/usm/1638887a524314cfb40ff49585159eeae2a612e6.zip -d /liquibase/usm
+RUN cp -r /liquibase/usm/USM-1638887a524314cfb40ff49585159eeae2a612e6/* /liquibase/usm/
 
 # Activity
 ADD https://github.com/UnionVMS/UVMS-ActivityModule-APP/archive/activity-$ACTIVITY_VERSION.zip /liquibase/activity

@@ -42,6 +42,7 @@ Linux
 
 1. Install Node and npm
 sudo apt-get install npm
+sudo apt-get install nodejs-legacy
 
 2. Install newman
 npm install -g newman
