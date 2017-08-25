@@ -10,6 +10,7 @@ import java.util.Map;
 import javax.json.JsonArray;
 
 import org.json.simple.JSONArray;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -121,9 +122,10 @@ public class MovementJmsIT extends AbstractRestServiceTest {
 	}
 
 	@Test
+	@Ignore
 	public void createRouteAddPositionsInRandomOrder() throws Exception {
 
-		int NUMBER_OF_POSITIONS = 10;
+		int NUMBER_OF_POSITIONS = 3;
 
 		Asset testAsset = AssetTestHelper.createTestAsset();
 		MobileTerminalType mobileTerminalType = MobileTerminalTestHelper.createMobileTerminalType();
@@ -134,7 +136,7 @@ public class MovementJmsIT extends AbstractRestServiceTest {
 		List<LatLong> routeBeforeShake = new ArrayList<>(route);
 		Collections.shuffle(route);
 
-		List<MovementPoint> pointFromAPI = new ArrayList<>();
+		List<CreateMovementResponse> fromAPI = new ArrayList<>();
 		for (LatLong position : route) {
 			final CreateMovementRequest createMovementRequest = movementHelper.createMovementRequest(testAsset,
 					mobileTerminalType, position);
@@ -143,8 +145,7 @@ public class MovementJmsIT extends AbstractRestServiceTest {
 			assertNotNull(createMovementResponse);
 			assertNotNull(createMovementResponse.getMovement());
 			assertNotNull(createMovementResponse.getMovement().getPosition());
-			MovementPoint movementPoint = createMovementResponse.getMovement().getPosition();
-			pointFromAPI.add(movementPoint);
+			fromAPI.add(createMovementResponse);
 		}
 
 
@@ -152,12 +153,11 @@ public class MovementJmsIT extends AbstractRestServiceTest {
 		movementQuery.setExcludeFirstAndLastSegment(false);
 
 		ListPagination listPagination = new ListPagination();
-		listPagination.setListSize(BigInteger.valueOf(NUMBER_OF_POSITIONS));
+		listPagination.setListSize(BigInteger.valueOf(100));
 		listPagination.setPage(BigInteger.valueOf(1));
 		movementQuery.setPagination(listPagination);
 
-		ListCriteria listCriteria = new ListCriteria();
-
+		ListCriteria listCriteria1 = new ListCriteria();
 		// @formatter:off
 		/*
 		    MOVEMENT_ID,
@@ -176,12 +176,12 @@ public class MovementJmsIT extends AbstractRestServiceTest {
 		*/
 		// @formatter:on
 
-		listCriteria.setKey(SearchKey.NR_OF_LATEST_REPORTS);
-		listCriteria.setValue(String.valueOf(NUMBER_OF_POSITIONS));
+		listCriteria1.setKey(SearchKey.NR_OF_LATEST_REPORTS);
+		listCriteria1.setValue(String.valueOf(NUMBER_OF_POSITIONS));
 
-		movementQuery.getMovementSearchCriteria().add(listCriteria);
-
-		Map<String, Object> ret = movementHelper.getMinimalListByQuery(movementQuery);
+		movementQuery.getMovementSearchCriteria().add(listCriteria1);
+		
+		Map<String, Object> ret = movementHelper.getListByQuery(movementQuery);
 		List movements = (List) ret.get("movement");
 
 		StringWriter stringWriter = new StringWriter();
@@ -190,27 +190,31 @@ public class MovementJmsIT extends AbstractRestServiceTest {
 		
 		ObjectMapper mapper = new ObjectMapper();
 		TypeReference<List<MovementType>> tr = new TypeReference<List<MovementType>>(){};
-		ArrayList<MovementType> movementTypes = mapper.readValue(stringWriter.toString(), tr);
+		ArrayList<MovementType> movementTypesFromQuery = mapper.readValue(stringWriter.toString(), tr);
 		
 		
 		
 		for(int i = 0 ; i < NUMBER_OF_POSITIONS ; i++){
 			
-			MovementPoint movementPointFromAPI = pointFromAPI.get(i);
+			MovementPoint movementPointFromAPI = fromAPI.get(i).getMovement().getPosition();
+			String  id_fromAPI = fromAPI.get(i).getMovement().getGuid();
 			
-			LatLong fromAPI = new LatLong(movementPointFromAPI.getLatitude(), movementPointFromAPI.getLongitude(), null);
+			LatLong latLongFromAPI = new LatLong(movementPointFromAPI.getLatitude(), movementPointFromAPI.getLongitude(), null);
 			
-			LatLong before = routeBeforeShake.get(i);
 			
-			MovementType movementType = movementTypes.get(i);
+			MovementType movementType = movementTypesFromQuery.get(i);
+			String prevMovementID =  movementTypesFromQuery.get(i).getMetaData().getPreviousMovementId();
+			String  id_fromQRY = movementType.getGuid();
 			MovementPoint movementPoint = movementType.getPosition();
 			LatLong retrieved = new LatLong(movementPoint.getLatitude(), movementPoint.getLongitude(), movementType.getPositionTime());
 
 			
 			System.out.println("-------------------------------------------------------------------------------------------------------------------------");
-			System.out.println("Before = in order           " + before);
-			System.out.println("After  = unordered          " + fromAPI);
-			System.out.println("Retr   = should be in order " + retrieved);
+			//System.out.println("Before = in order           " + routeBeforeShake.get(i));
+			//System.out.println("After  = unordered          " + route.get(i)  + "      id from API  " + id_fromAPI);
+			//System.out.println("Retr   = should be in order " + retrieved  + "      id from QRY  " + id_fromQRY);
+			
+			System.out.println(prevMovementID);
 			
 			
 			
