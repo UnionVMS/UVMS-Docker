@@ -6,6 +6,7 @@ import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 import javax.jms.Message;
@@ -13,11 +14,16 @@ import javax.jms.TextMessage;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 
+import org.apache.http.HttpResponse;
 import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.fluent.Request;
 
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.type.CollectionType;
+import com.fasterxml.jackson.databind.type.MapType;
 
 import eu.europa.ec.fisheries.schema.mobileterminal.types.v1.MobileTerminalType;
 import eu.europa.ec.fisheries.schema.movement.asset.v1.AssetId;
@@ -26,10 +32,12 @@ import eu.europa.ec.fisheries.schema.movement.asset.v1.AssetType;
 import eu.europa.ec.fisheries.schema.movement.module.v1.CreateMovementRequest;
 import eu.europa.ec.fisheries.schema.movement.module.v1.CreateMovementResponse;
 import eu.europa.ec.fisheries.schema.movement.module.v1.MovementModuleMethod;
+import eu.europa.ec.fisheries.schema.movement.search.v1.MovementQuery;
 import eu.europa.ec.fisheries.schema.movement.v1.MovementActivityType;
 import eu.europa.ec.fisheries.schema.movement.v1.MovementActivityTypeType;
 import eu.europa.ec.fisheries.schema.movement.v1.MovementBaseType;
 import eu.europa.ec.fisheries.schema.movement.v1.MovementPoint;
+import eu.europa.ec.fisheries.schema.movement.v1.MovementType;
 import eu.europa.ec.fisheries.schema.movement.v1.MovementTypeType;
 import eu.europa.ec.fisheries.uvms.docker.validation.common.AbstractHelper;
 import eu.europa.ec.fisheries.uvms.docker.validation.common.MessageHelper;
@@ -88,14 +96,17 @@ public class MovementHelper extends AbstractHelper {
 		double latitude = 57.110;
 		double longitude = 12.244;
 
-		double END_LATITUDE =  56.408;
+		double END_LATITUDE = 56.408;
 		double END_LONGITUDE = 10.926;
 
 		while (true) {
-			
-			if(latitude >= END_LATITUDE) latitude =latitude -  0.03;
-			if(longitude >= END_LONGITUDE) longitude =longitude -  0.03;
-			if(latitude < END_LATITUDE && longitude < END_LONGITUDE) break;
+
+			if (latitude >= END_LATITUDE)
+				latitude = latitude - 0.03;
+			if (longitude >= END_LONGITUDE)
+				longitude = longitude - 0.03;
+			if (latitude < END_LATITUDE && longitude < END_LONGITUDE)
+				break;
 			rutt.add(new LatLong(latitude, longitude, getDate(ts += movementTimeDeltaInMillis)));
 		}
 
@@ -105,8 +116,7 @@ public class MovementHelper extends AbstractHelper {
 			return rutt.subList(0, numberPositions);
 		}
 	}
-	
-	
+
 	public List<LatLong> createRuttCobhNewYork(int numberPositions) {
 
 		int movementTimeDeltaInMillis = 30000;
@@ -116,14 +126,17 @@ public class MovementHelper extends AbstractHelper {
 		double latitude = 51.844;
 		double longitude = -8.311;
 
-		double END_LATITUDE =  40.313;
-		double END_LONGITUDE =  -73.740;
+		double END_LATITUDE = 40.313;
+		double END_LONGITUDE = -73.740;
 
 		while (true) {
-			
-			if(latitude >= END_LATITUDE) latitude =latitude -  0.5;
-			if(longitude >= END_LONGITUDE) longitude =longitude -  0.5;
-			if(latitude < END_LATITUDE && longitude < END_LONGITUDE) break;
+
+			if (latitude >= END_LATITUDE)
+				latitude = latitude - 0.5;
+			if (longitude >= END_LONGITUDE)
+				longitude = longitude - 0.5;
+			if (latitude < END_LATITUDE && longitude < END_LONGITUDE)
+				break;
 			rutt.add(new LatLong(latitude, longitude, getDate(ts += movementTimeDeltaInMillis)));
 		}
 
@@ -134,8 +147,6 @@ public class MovementHelper extends AbstractHelper {
 		}
 	}
 
-	
-	
 	public List<LatLong> createRutt(int movementTimeDeltaInMillis, int numberPositions) {
 
 		List<LatLong> rutt = new ArrayList<>();
@@ -271,6 +282,26 @@ public class MovementHelper extends AbstractHelper {
 
 		return unMarshallCreateMovementResponse(messageResponse);
 
+	}
+
+	public Map<String, Object> getListByQuery(MovementQuery movementQuery) throws Exception {
+
+		final HttpResponse response = Request.Post(getBaseUrl() + "movement/rest/movement/list")
+				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken())
+				.bodyByteArray(writeValueAsString(movementQuery).getBytes()).execute().returnResponse();
+
+		Map<String, Object> dataMap = checkSuccessResponseReturnMap(response);
+		return dataMap;
+	}
+	
+	public Map<String, Object> getMinimalListByQuery(MovementQuery movementQuery) throws Exception {
+
+		final HttpResponse response = Request.Post(getBaseUrl() + "movement/rest/movement/list/minimal")
+				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken())
+				.bodyByteArray(writeValueAsString(movementQuery).getBytes()).execute().returnResponse();
+
+		Map<String, Object> dataMap = checkSuccessResponseReturnMap(response);
+		return dataMap;
 	}
 
 }

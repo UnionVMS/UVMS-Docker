@@ -55,11 +55,8 @@ public class MovementMovementRestIT extends AbstractRestServiceTest {
 	 */
 	@Test
 	public void getListByQueryTest() throws Exception {
-		final HttpResponse response = Request.Post(getBaseUrl() + "movement/rest/movement/list")
-				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken())
-				.bodyByteArray(writeValueAsString(createMovementQuery()).getBytes()).execute().returnResponse();
-
-		Map<String, Object> dataMap = checkSuccessResponseReturnMap(response);
+		
+		Map<String, Object> dataMap = movementHelper.getListByQuery(createMovementQuery());
 	}
 
 	/**

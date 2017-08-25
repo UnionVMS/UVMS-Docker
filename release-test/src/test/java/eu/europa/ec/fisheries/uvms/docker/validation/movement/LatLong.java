@@ -21,7 +21,7 @@ public class LatLong {
 		String lo = String.format(formatStr , longitude) ;
 		
 		
-		return "LatLong [latitude=" + la + ", longitude=" + lo + ", positionTime=" + positionTime + "]";
+		return "[lat=" + la + ", lon=" + lo + ", pos=" + positionTime + "]";
 	}
 	
 	
