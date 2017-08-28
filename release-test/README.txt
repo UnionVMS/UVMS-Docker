@@ -47,4 +47,6 @@ sudo apt-get install nodejs-legacy
 2. Install newman
 npm install -g newman
 
+Run on Windows
 
+newman run src\test\resources\QASmoke.postman_collection.json --environment src\test\resources\test_environment --color --reporters junit,cli,html 
