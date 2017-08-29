@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import org.junit.Ignore;
 import org.junit.Test;
 
 import eu.europa.ec.fisheries.schema.mobileterminal.types.v1.MobileTerminalType;
@@ -27,6 +28,7 @@ public class MovementJmsIT extends AbstractRestServiceTest {
 	private static MovementHelper movementHelper = new MovementHelper();
 
 	@Test
+	@Ignore
 	public void createMovementBatchRequestTest() throws Exception {
 		Asset testAsset = AssetTestHelper.createTestAsset();
 		MobileTerminalType mobileTerminalType = MobileTerminalTestHelper.createMobileTerminalType();
