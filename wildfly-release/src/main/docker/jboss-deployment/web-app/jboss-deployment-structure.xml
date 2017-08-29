@@ -4,7 +4,7 @@
 		<dependencies>
 			<module name="deployment.user-module-1.6.1.ear" />
 			<module name="deployment.config-module-3.0.10.ear" />
-			<module name="deployment.spatial-module-0.5.9.ear" />
+			<module name="deployment.spatial-module-0.5.10-SNAPSHOT.ear" />
 			<module name="deployment.movement-module-3.0.13.ear" />
 			<module name="deployment.asset-module-3.0.12.ear" />
 			<module name="deployment.audit-module-3.0.10.ear" />
