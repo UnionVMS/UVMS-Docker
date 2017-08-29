@@ -1,30 +1,16 @@
 package eu.europa.ec.fisheries.uvms.docker.validation.movement;
 
-import java.io.StringWriter;
-import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Map;
 
-import javax.json.JsonArray;
-
-import org.json.simple.JSONArray;
-import org.junit.Ignore;
 import org.junit.Test;
 
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
-
 import eu.europa.ec.fisheries.schema.mobileterminal.types.v1.MobileTerminalType;
+import eu.europa.ec.fisheries.schema.movement.module.v1.CreateMovementBatchRequest;
+import eu.europa.ec.fisheries.schema.movement.module.v1.CreateMovementBatchResponse;
 import eu.europa.ec.fisheries.schema.movement.module.v1.CreateMovementRequest;
 import eu.europa.ec.fisheries.schema.movement.module.v1.CreateMovementResponse;
-import eu.europa.ec.fisheries.schema.movement.search.v1.ListCriteria;
-import eu.europa.ec.fisheries.schema.movement.search.v1.ListPagination;
-import eu.europa.ec.fisheries.schema.movement.search.v1.MovementQuery;
-import eu.europa.ec.fisheries.schema.movement.search.v1.SearchKey;
-import eu.europa.ec.fisheries.schema.movement.v1.MovementPoint;
-import eu.europa.ec.fisheries.schema.movement.v1.MovementType;
 import eu.europa.ec.fisheries.uvms.docker.validation.asset.AssetTestHelper;
 import eu.europa.ec.fisheries.uvms.docker.validation.common.AbstractRestServiceTest;
 import eu.europa.ec.fisheries.uvms.docker.validation.common.MessageHelper;
@@ -35,8 +21,23 @@ import eu.europa.ec.fisheries.wsdl.asset.types.Asset;
  * The Class MovementJmsIT.
  */
 public class MovementJmsIT extends AbstractRestServiceTest {
+	
+	public static  int ALL = -1;
 
 	private static MovementHelper movementHelper = new MovementHelper();
+
+	@Test
+	public void createMovementBatchRequestTest() throws Exception {
+		Asset testAsset = AssetTestHelper.createTestAsset();
+		MobileTerminalType mobileTerminalType = MobileTerminalTestHelper.createMobileTerminalType();
+		MobileTerminalTestHelper.assignMobileTerminal(testAsset, mobileTerminalType);
+		List<LatLong> latLongList = movementHelper.createRuttCobhNewYork(ALL);
+
+		final CreateMovementBatchRequest createMovementBatchRequest = movementHelper
+				.createMovementBatchRequest(testAsset, mobileTerminalType, latLongList);
+		CreateMovementBatchResponse createMovementResponse = movementHelper.createMovementBatch(testAsset,
+				mobileTerminalType, createMovementBatchRequest);
+	}
 
 	/**
 	 * Creates the movement request test.
@@ -123,8 +124,9 @@ public class MovementJmsIT extends AbstractRestServiceTest {
 
 	@Test
 	public void createRouteAddPositionsInRandomOrder() throws Exception {
-		
-		// currently there is no way to check if randomly added positions actually is processed ok
+
+		// currently there is no way to check if randomly added positions
+		// actually is processed ok
 		// so we say its ok just to add them for now . . .
 
 		int NUMBER_OF_POSITIONS = 5;
@@ -148,14 +150,13 @@ public class MovementJmsIT extends AbstractRestServiceTest {
 			assertNotNull(createMovementResponse.getMovement());
 			assertNotNull(createMovementResponse.getMovement().getPosition());
 			fromAPI.add(createMovementResponse);
-			
-			
-			System.out.println(createMovementResponse.getMovement().getInternalReferenceNumber()  + "\t" + createMovementResponse.getMovement().getGuid());
+
+			System.out.println(createMovementResponse.getMovement().getInternalReferenceNumber() + "\t"
+					+ createMovementResponse.getMovement().getGuid());
 		}
 
-
-
 	}
+
 	/**
 	 * Check dead letter queue.
 	 *

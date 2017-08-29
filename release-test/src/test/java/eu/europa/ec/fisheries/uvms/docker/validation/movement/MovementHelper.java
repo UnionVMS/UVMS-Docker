@@ -21,14 +21,13 @@ import org.apache.http.client.fluent.Request;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.type.CollectionType;
-import com.fasterxml.jackson.databind.type.MapType;
 
 import eu.europa.ec.fisheries.schema.mobileterminal.types.v1.MobileTerminalType;
 import eu.europa.ec.fisheries.schema.movement.asset.v1.AssetId;
 import eu.europa.ec.fisheries.schema.movement.asset.v1.AssetIdType;
 import eu.europa.ec.fisheries.schema.movement.asset.v1.AssetType;
+import eu.europa.ec.fisheries.schema.movement.module.v1.CreateMovementBatchRequest;
+import eu.europa.ec.fisheries.schema.movement.module.v1.CreateMovementBatchResponse;
 import eu.europa.ec.fisheries.schema.movement.module.v1.CreateMovementRequest;
 import eu.europa.ec.fisheries.schema.movement.module.v1.CreateMovementResponse;
 import eu.europa.ec.fisheries.schema.movement.module.v1.MovementModuleMethod;
@@ -37,7 +36,6 @@ import eu.europa.ec.fisheries.schema.movement.v1.MovementActivityType;
 import eu.europa.ec.fisheries.schema.movement.v1.MovementActivityTypeType;
 import eu.europa.ec.fisheries.schema.movement.v1.MovementBaseType;
 import eu.europa.ec.fisheries.schema.movement.v1.MovementPoint;
-import eu.europa.ec.fisheries.schema.movement.v1.MovementType;
 import eu.europa.ec.fisheries.schema.movement.v1.MovementTypeType;
 import eu.europa.ec.fisheries.uvms.docker.validation.common.AbstractHelper;
 import eu.europa.ec.fisheries.uvms.docker.validation.common.MessageHelper;
@@ -51,7 +49,7 @@ public class MovementHelper extends AbstractHelper {
 			LatLong latlong) throws IOException, ClientProtocolException, JsonProcessingException, JsonParseException,
 			JsonMappingException {
 
-		Date positionTime = new Date(System.currentTimeMillis());
+		//Date positionTime = new Date(System.currentTimeMillis());
 		final CreateMovementRequest createMovementRequest1 = new CreateMovementRequest();
 		final MovementBaseType movementBaseType = new MovementBaseType();
 		AssetId assetId = new AssetId();
@@ -76,12 +74,60 @@ public class MovementHelper extends AbstractHelper {
 		movementPoint.setAltitude((double) 5);
 
 		movementBaseType.setPosition(movementPoint);
-		movementBaseType.setPositionTime(positionTime);
+		movementBaseType.setPositionTime(latlong.positionTime);
 
 		movementBaseType.setMovementType(MovementTypeType.POS);
 		return createMovementRequest1;
 
 	}
+	
+	
+	public CreateMovementBatchRequest createMovementBatchRequest(Asset testAsset, MobileTerminalType mobileTerminalType,
+			List<LatLong> route) throws IOException, ClientProtocolException, JsonProcessingException, JsonParseException,
+			JsonMappingException {
+		
+		//Date positionTime = new Date(System.currentTimeMillis());
+		final CreateMovementBatchRequest createMovementBatchRequest = new CreateMovementBatchRequest();
+		
+		AssetId assetId = new AssetId();
+		assetId.setAssetType(AssetType.VESSEL);
+		assetId.setIdType(AssetIdType.GUID);
+		assetId.setValue(testAsset.getAssetId().getGuid());
+
+		MovementActivityType movementActivityType = new MovementActivityType();
+		movementActivityType.setMessageId(UUID.randomUUID().toString());
+		movementActivityType.setMessageType(MovementActivityTypeType.ANC);
+
+		createMovementBatchRequest.setMethod(MovementModuleMethod.CREATE_BATCH);
+		createMovementBatchRequest.setUsername("vms_admin_com");
+
+		
+		
+		for(LatLong latlong : route){
+
+			MovementBaseType movementBaseType = new MovementBaseType();
+			movementBaseType.setAssetId(assetId);
+			movementBaseType.setConnectId(mobileTerminalType.getConnectId());
+			movementBaseType.setActivity(movementActivityType);
+
+			MovementPoint movementPoint = new MovementPoint();
+			movementPoint.setLongitude(latlong.longitude);
+			movementPoint.setLatitude(latlong.latitude);
+			movementPoint.setAltitude((double) 5);
+
+			movementBaseType.setPosition(movementPoint);
+			movementBaseType.setPositionTime(latlong.positionTime);
+			movementBaseType.setMovementType(MovementTypeType.POS);
+			createMovementBatchRequest.getMovement().add(movementBaseType);
+		}
+		return createMovementBatchRequest;
+	}
+
+	
+	
+	
+	
+	
 
 	public List<LatLong> createRutt(int numberPositions) {
 		return createRutt(15 * 1000, numberPositions);
@@ -259,6 +305,19 @@ public class MovementHelper extends AbstractHelper {
 	}
 
 	/**
+	 * 
+	 * @param createMovementBatchRequest
+	 * @return
+	 * @throws JAXBException
+	 */
+	public String marshall(final CreateMovementBatchRequest createMovementBatchRequest) throws JAXBException {
+		final StringWriter sw = new StringWriter();
+		JAXBContext.newInstance(CreateMovementBatchRequest.class).createMarshaller().marshal(createMovementBatchRequest, sw);
+		return sw.toString();
+	}
+
+
+	/**
 	 * Un marshall create movement response.
 	 *
 	 * @param response
@@ -274,14 +333,26 @@ public class MovementHelper extends AbstractHelper {
 				.unmarshal(new StringReader(textMessage.getText()));
 	}
 
+	/**
+	 * 
+	 * @param response
+	 * @return
+	 * @throws Exception
+	 */
+	public CreateMovementBatchResponse unMarshallCreateMovementBatchResponse(final Message response) throws Exception {
+		TextMessage textMessage = (TextMessage) response;
+		JAXBContext jaxbContext = JAXBContext.newInstance(CreateMovementBatchResponse.class);
+		return (CreateMovementBatchResponse) jaxbContext.createUnmarshaller()
+				.unmarshal(new StringReader(textMessage.getText()));
+	}
+
+
 	public CreateMovementResponse createMovement(Asset testAsset, MobileTerminalType mobileTerminalType,
 			CreateMovementRequest createMovementRequest) throws Exception {
 
 		Message messageResponse = MessageHelper.getMessageResponse(UVMS_MOVEMENT_REQUEST_QUEUE,
 				marshall(createMovementRequest));
-
 		return unMarshallCreateMovementResponse(messageResponse);
-
 	}
 
 	public Map<String, Object> getListByQuery(MovementQuery movementQuery) throws Exception {
@@ -302,6 +373,17 @@ public class MovementHelper extends AbstractHelper {
 
 		Map<String, Object> dataMap = checkSuccessResponseReturnMap(response);
 		return dataMap;
+	}
+
+
+	
+
+	public CreateMovementBatchResponse createMovementBatch(Asset testAsset, MobileTerminalType mobileTerminalType,
+			CreateMovementBatchRequest createMovementBatchRequest) throws JAXBException, Exception {
+		
+		Message messageResponse = MessageHelper.getMessageResponse(UVMS_MOVEMENT_REQUEST_QUEUE,
+				marshall(createMovementBatchRequest));
+		return unMarshallCreateMovementBatchResponse(messageResponse);
 	}
 
 }
