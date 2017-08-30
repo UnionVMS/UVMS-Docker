@@ -32,7 +32,7 @@ addJbossAll spatial-module-0.5.10-SNAPSHOT /opt/jboss/jboss-deployment/spatial/j
 addJbossAll reporting-module-1.0.5 /opt/jboss/jboss-deployment/reporting/jboss-all.xml
 addJbossAll movement-module-3.0.14 /opt/jboss/jboss-deployment/movement/jboss-all.xml
 addJbossAll asset-module-3.0.13 /opt/jboss/jboss-deployment/asset/jboss-all.xml
-addJbossAll audit-module-3.0.11 /opt/jboss/jboss-deployment/audit/jboss-all.xml
+addJbossAll audit-module-3.0.12 /opt/jboss/jboss-deployment/audit/jboss-all.xml
 addJbossAll exchange-module-3.0.12 /opt/jboss/jboss-deployment/exchange/jboss-all.xml
 addJbossAll mobileterminal-module-3.0.14 /opt/jboss/jboss-deployment/mobile/jboss-all.xml
 addJbossAll rules-dbaccess-module-3.0.5 /opt/jboss/jboss-deployment/general/jboss-all.xml
