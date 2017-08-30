@@ -29,7 +29,7 @@ chmod 755 /opt/jboss/wildfly/standalone/deployments/*.war
 addJbossAll user-module-1.6.1 /opt/jboss/jboss-deployment/user/jboss-all.xml
 addJbossAll config-dbaccess-module-3.0.4 /opt/jboss/jboss-deployment/config-db/jboss-all.xml
 addJbossAll config-module-3.0.10 /opt/jboss/jboss-deployment/config/jboss-all.xml
-addJbossAll spatial-module-0.5.9 /opt/jboss/jboss-deployment/spatial/jboss-all.xml
+addJbossAll spatial-module-0.5.10-SNAPSHOT /opt/jboss/jboss-deployment/spatial/jboss-all.xml
 addJbossAll reporting-module-1.0.5 /opt/jboss/jboss-deployment/reporting/jboss-all.xml
 addJbossAll movement-module-3.0.13 /opt/jboss/jboss-deployment/movement/jboss-all.xml
 addJbossAll asset-module-3.0.12 /opt/jboss/jboss-deployment/asset/jboss-all.xml
