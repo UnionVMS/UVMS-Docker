@@ -169,11 +169,11 @@
                         <password>sa</password>
                     </security>
                 </datasource>
-                <xa-datasource jta="true" jndi-name="java:/jdbc/uvms_audit" pool-name="jdbc/uvms_audit" enabled="true" use-ccm="true">
+                <xa-datasource jta="true" jndi-name="java:/jdbc/uvms_audit" pool-name="jdbc/uvms_audit" enabled="true" use-ccm="true" statistics-enabled="true">
                     <xa-datasource-property name="ServerName">postgres</xa-datasource-property>
     				<xa-datasource-property name="PortNumber">5432</xa-datasource-property>
     				<xa-datasource-property name="DatabaseName">db71u</xa-datasource-property>
-    
+
                     <driver>postgresql</driver>
                     <xa-pool>
 				        <min-pool-size>2</min-pool-size>
@@ -192,11 +192,11 @@
                         <password>audit</password>
                     </security>
                 </xa-datasource>
-                <xa-datasource jta="true" jndi-name="java:/jdbc/uvms_mobterm" pool-name="jdbc/uvms_mobterm" enabled="true" use-ccm="true">
+                <xa-datasource jta="true" jndi-name="java:/jdbc/uvms_mobterm" pool-name="jdbc/uvms_mobterm" enabled="true" use-ccm="true" statistics-enabled="true">
                     <xa-datasource-property name="ServerName">postgres</xa-datasource-property>
     				<xa-datasource-property name="PortNumber">5432</xa-datasource-property>
     				<xa-datasource-property name="DatabaseName">db71u</xa-datasource-property>
-                    
+
                     <driver>postgresql</driver>
                     <xa-pool>
 				        <min-pool-size>2</min-pool-size>
@@ -215,11 +215,11 @@
                         <password>mobterm</password>
                     </security>
                 </xa-datasource>
-                <xa-datasource jta="true" jndi-name="java:/jdbc/uvms_movement" pool-name="jdbc/uvms_movement" enabled="true" use-ccm="true">
+                <xa-datasource jta="true" jndi-name="java:/jdbc/uvms_movement" pool-name="jdbc/uvms_movement" enabled="true" use-ccm="true" statistics-enabled="true">
                     <xa-datasource-property name="ServerName">postgres</xa-datasource-property>
     				<xa-datasource-property name="PortNumber">5432</xa-datasource-property>
     				<xa-datasource-property name="DatabaseName">db71u</xa-datasource-property>
-    				
+
                     <driver>postgresql</driver>
                     <xa-pool>
 				        <min-pool-size>2</min-pool-size>
@@ -238,11 +238,11 @@
                         <password>movement</password>
                     </security>
                 </xa-datasource>
-                <xa-datasource jta="true" jndi-name="java:/jdbc/uvms_asset" pool-name="jdbc/uvms_asset" enabled="true" use-ccm="true">
+                <xa-datasource jta="true" jndi-name="java:/jdbc/uvms_asset" pool-name="jdbc/uvms_asset" enabled="true" use-ccm="true" statistics-enabled="true">
                     <xa-datasource-property name="ServerName">postgres</xa-datasource-property>
     				<xa-datasource-property name="PortNumber">5432</xa-datasource-property>
     				<xa-datasource-property name="DatabaseName">db71u</xa-datasource-property>
-    				
+
                     <driver>postgresql</driver>
                     <xa-pool>
 				        <min-pool-size>2</min-pool-size>
@@ -261,11 +261,11 @@
                         <password>asset</password>
                     </security>
                 </xa-datasource>
-                <xa-datasource jta="true" jndi-name="java:/jdbc/uvms_exchange" pool-name="jdbc/uvms_exchange" enabled="true" use-ccm="true">
+                <xa-datasource jta="true" jndi-name="java:/jdbc/uvms_exchange" pool-name="jdbc/uvms_exchange" enabled="true" use-ccm="true" statistics-enabled="true">
                     <xa-datasource-property name="ServerName">postgres</xa-datasource-property>
     				<xa-datasource-property name="PortNumber">5432</xa-datasource-property>
     				<xa-datasource-property name="DatabaseName">db71u</xa-datasource-property>
-    				
+
                     <driver>postgresql</driver>
                     <xa-pool>
 				        <min-pool-size>2</min-pool-size>
@@ -284,11 +284,11 @@
                         <password>exchange</password>
                     </security>
                 </xa-datasource>
-                <xa-datasource jta="true" jndi-name="java:/jdbc/uvms_rules" pool-name="jdbc/uvms_rules" enabled="true" use-ccm="true">
+                <xa-datasource jta="true" jndi-name="java:/jdbc/uvms_rules" pool-name="jdbc/uvms_rules" enabled="true" use-ccm="true" statistics-enabled="true">
                     <xa-datasource-property name="ServerName">postgres</xa-datasource-property>
     				<xa-datasource-property name="PortNumber">5432</xa-datasource-property>
     				<xa-datasource-property name="DatabaseName">db71u</xa-datasource-property>
-    				
+
                     <driver>postgresql</driver>
                     <xa-pool>
 				        <min-pool-size>2</min-pool-size>
@@ -307,11 +307,11 @@
                         <password>rules</password>
                     </security>
                 </xa-datasource>
-                <xa-datasource jta="true" jndi-name="java:jboss/datasources/uvms_usm" pool-name="uvms_usm" enabled="true" use-ccm="true">
+                <xa-datasource jta="true" jndi-name="java:jboss/datasources/uvms_usm" pool-name="uvms_usm" enabled="true" use-ccm="true" statistics-enabled="true">
                     <xa-datasource-property name="ServerName">postgres</xa-datasource-property>
     				<xa-datasource-property name="PortNumber">5432</xa-datasource-property>
     				<xa-datasource-property name="DatabaseName">db71u</xa-datasource-property>
-    				
+
                     <driver>postgresql</driver>
                     <xa-pool>
 				        <min-pool-size>2</min-pool-size>
@@ -330,11 +330,11 @@
                         <password>usm</password>
                     </security>
                 </xa-datasource>
-                <xa-datasource jta="true" jndi-name="java:/jdbc/USM2" pool-name="jdbc/USM2" enabled="true" use-ccm="true">
+                <xa-datasource jta="true" jndi-name="java:/jdbc/USM2" pool-name="jdbc/USM2" enabled="true" use-ccm="true" statistics-enabled="true">
                     <xa-datasource-property name="ServerName">postgres</xa-datasource-property>
     				<xa-datasource-property name="PortNumber">5432</xa-datasource-property>
     				<xa-datasource-property name="DatabaseName">db71u</xa-datasource-property>
-    				
+
                     <driver>postgresql</driver>
                     <xa-pool>
 				        <min-pool-size>2</min-pool-size>
@@ -353,11 +353,11 @@
                         <password>usm</password>
                     </security>
                 </xa-datasource>
-                <xa-datasource jta="true" jndi-name="java:jboss/datasources/uvms_spatial" pool-name="uvms_spatial" enabled="true" use-ccm="true">
+                <xa-datasource jta="true" jndi-name="java:jboss/datasources/uvms_spatial" pool-name="uvms_spatial" enabled="true" use-ccm="true" statistics-enabled="true">
                     <xa-datasource-property name="ServerName">postgres</xa-datasource-property>
     				<xa-datasource-property name="PortNumber">5432</xa-datasource-property>
     				<xa-datasource-property name="DatabaseName">db71u</xa-datasource-property>
-    				
+
                     <driver>postgresql</driver>
                     <xa-pool>
 				        <min-pool-size>2</min-pool-size>
@@ -376,11 +376,11 @@
                         <password>postgres</password>
                     </security>
                 </xa-datasource>
-                <xa-datasource jta="true" jndi-name="java:jboss/datasources/uvms_reporting" pool-name="uvms_reporting" enabled="true" use-ccm="true">
+                <xa-datasource jta="true" jndi-name="java:jboss/datasources/uvms_reporting" pool-name="uvms_reporting" enabled="true" use-ccm="true" statistics-enabled="true">
                     <xa-datasource-property name="ServerName">postgres</xa-datasource-property>
     				<xa-datasource-property name="PortNumber">5432</xa-datasource-property>
     				<xa-datasource-property name="DatabaseName">db71u</xa-datasource-property>
-    				
+
                     <driver>postgresql</driver>
                     <xa-pool>
 				        <min-pool-size>2</min-pool-size>
@@ -399,11 +399,11 @@
                         <password>reporting</password>
                     </security>
                 </xa-datasource>
-                <xa-datasource jta="true" jndi-name="java:jboss/datasources/uvms_activity" pool-name="uvms_activity" enabled="true" use-ccm="true">
+                <xa-datasource jta="true" jndi-name="java:jboss/datasources/uvms_activity" pool-name="uvms_activity" enabled="true" use-ccm="true" statistics-enabled="true">
                      <xa-datasource-property name="ServerName">postgres</xa-datasource-property>
                      <xa-datasource-property name="PortNumber">5432</xa-datasource-property>
                      <xa-datasource-property name="DatabaseName">db71u</xa-datasource-property>
- 
+
                      <driver>postgresql</driver>
                      <xa-pool>
                          <min-pool-size>2</min-pool-size>
@@ -421,12 +421,12 @@
                          <user-name>activity</user-name>
                          <password>activity</password>
                      </security>
-                 </xa-datasource> 
-                 <xa-datasource jta="true" jndi-name="java:jboss/datasources/uvms_mdr" pool-name="uvms_mdr" enabled="true" use-ccm="true">
+                 </xa-datasource>
+                 <xa-datasource jta="true" jndi-name="java:jboss/datasources/uvms_mdr" pool-name="uvms_mdr" enabled="true" use-ccm="true" statistics-enabled="true">
                      <xa-datasource-property name="ServerName">postgres</xa-datasource-property>
                      <xa-datasource-property name="PortNumber">5432</xa-datasource-property>
                      <xa-datasource-property name="DatabaseName">db71u</xa-datasource-property>
- 
+
                      <driver>postgresql</driver>
                      <xa-pool>
                          <min-pool-size>2</min-pool-size>
@@ -445,11 +445,11 @@
                          <password>mdr</password>
                      </security>
                  </xa-datasource>
-                 <xa-datasource jta="true" jndi-name="java:jboss/datasources/uvms_sales" pool-name="uvms_sales" enabled="true" use-ccm="true">
+                 <xa-datasource jta="true" jndi-name="java:jboss/datasources/uvms_sales" pool-name="uvms_sales" enabled="true" use-ccm="true" statistics-enabled="true">
                      <xa-datasource-property name="ServerName">postgres</xa-datasource-property>
                      <xa-datasource-property name="PortNumber">5432</xa-datasource-property>
                      <xa-datasource-property name="DatabaseName">db71u</xa-datasource-property>
- 
+
                      <driver>postgresql</driver>
                      <xa-pool>
                          <min-pool-size>2</min-pool-size>
@@ -467,12 +467,12 @@
                          <user-name>sales</user-name>
                          <password>sales</password>
                      </security>
-                </xa-datasource>                
-                <xa-datasource jta="true" jndi-name="java:/jdbc/uvms_config" pool-name="jdbc/uvms_config" enabled="true" use-ccm="true">
+                </xa-datasource>
+                <xa-datasource jta="true" jndi-name="java:/jdbc/uvms_config" pool-name="jdbc/uvms_config" enabled="true" use-ccm="true" statistics-enabled="true">
                     <xa-datasource-property name="ServerName">postgres</xa-datasource-property>
     				<xa-datasource-property name="PortNumber">5432</xa-datasource-property>
     				<xa-datasource-property name="DatabaseName">db71u</xa-datasource-property>
-    				
+
                     <driver>postgresql</driver>
                     <xa-pool>
 				        <min-pool-size>2</min-pool-size>
@@ -798,7 +798,7 @@
                             <config-property name="PhysicalName">
                                 UVMSActivity
                             </config-property>
-                        </admin-object>                        
+                        </admin-object>
                         <admin-object class-name="org.apache.activemq.command.ActiveMQQueue" jndi-name="java:/jms/queue/UVMSMobileTerminalNational" use-java-context="true" pool-name="UVMSMobileTerminalNational">
                             <config-property name="PhysicalName">
                                 UVMSMobileTerminalNational
