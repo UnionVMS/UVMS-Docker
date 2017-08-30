@@ -9,7 +9,6 @@ RUN mkdir -p /opt/jboss/jboss-deployment
 RUN mkdir -p /opt/jboss/jboss-deployment/asset
 RUN mkdir -p /opt/jboss/jboss-deployment/audit
 RUN mkdir -p /opt/jboss/jboss-deployment/config
-RUN mkdir -p /opt/jboss/jboss-deployment/config-db
 RUN mkdir -p /opt/jboss/jboss-deployment/exchange
 RUN mkdir -p /opt/jboss/jboss-deployment/general
 RUN mkdir -p /opt/jboss/jboss-deployment/mobile
@@ -28,7 +27,6 @@ COPY jboss-deployment/add-jboss-all-to-ear.sh /opt/jboss/jboss-deployment/
 COPY jboss-deployment/asset/jboss-all.xml /opt/jboss/jboss-deployment/asset/
 COPY jboss-deployment/audit/jboss-all.xml /opt/jboss/jboss-deployment/audit/
 COPY jboss-deployment/config/jboss-all.xml /opt/jboss/jboss-deployment/config/
-COPY jboss-deployment/config-db/jboss-all.xml /opt/jboss/jboss-deployment/config-db/
 COPY jboss-deployment/exchange/jboss-all.xml /opt/jboss/jboss-deployment/exchange/
 COPY jboss-deployment/general/jboss-all.xml /opt/jboss/jboss-deployment/general/
 COPY jboss-deployment/mobile/jboss-all.xml /opt/jboss/jboss-deployment/mobile/

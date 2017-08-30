@@ -30,12 +30,12 @@ RUN mkdir -p /liquibase/config \
 
 RUN chown -R postgres:postgres /liquibase
 
-ARG ASSET_VERSION=3.0.4
-ARG CONFIG_VERSION=3.0.4
-ARG AUDIT_VERSION=3.0.4
-ARG EXCHANGE_VERSION=3.0.5
-ARG MOVEMENT_VERSION=3.0.7
-ARG MOBILE_TERMINAL_VERSION=3.0.4
+ARG ASSET_VERSION=3.0.13
+ARG CONFIG_VERSION=3.0.11
+ARG AUDIT_VERSION=3.0.11
+ARG EXCHANGE_VERSION=3.0.12
+ARG MOVEMENT_VERSION=3.0.14
+ARG MOBILE_TERMINAL_VERSION=3.0.14
 ARG RULES_VERSION=3.0.5
 ARG SPATIAL_VERSION=1.0.4
 ARG REPORTING_VERSION=1.0.3
@@ -48,34 +48,34 @@ ARG MDR_VERSION=0.5.1
 # USM liquibase should be located in /liquibase/usm/database/liquibase/
 
 # Asset
-ADD $GITHUB/UVMS-AssetModule-DB/archive/asset-dbaccess-$ASSET_VERSION.zip /liquibase/asset
-RUN unzip -q /liquibase/asset/asset-dbaccess-$ASSET_VERSION.zip -d /liquibase/asset
-RUN cp -r /liquibase/asset/UVMS-AssetModule-DB-asset-dbaccess-$ASSET_VERSION/* /liquibase/asset/
+ADD $GITHUB/UVMS-AssetModule-APP/archive/asset-$ASSET_VERSION.zip /liquibase/asset
+RUN unzip -q /liquibase/asset/asset-$ASSET_VERSION.zip -d /liquibase/asset
+RUN cp -r /liquibase/asset/UVMS-AssetModule-APP-asset-$ASSET_VERSION/LIQUIBASE/* /liquibase/asset/
 
 # Config
-ADD $GITHUB/UVMS-ConfigModule-DB/archive/config-dbaccess-$CONFIG_VERSION.zip /liquibase/config
-RUN unzip -q /liquibase/config/config-dbaccess-$CONFIG_VERSION -d /liquibase/config
-RUN cp -r /liquibase/config/UVMS-ConfigModule-DB-config-dbaccess-$CONFIG_VERSION/* /liquibase/config/
+ADD $GITHUB/UVMS-ConfigModule-APP/archive/config-$CONFIG_VERSION.zip /liquibase/config
+RUN unzip -q /liquibase/config/config-$CONFIG_VERSION.zip -d /liquibase/config
+RUN cp -r /liquibase/config/UVMS-ConfigModule-APP-config-$CONFIG_VERSION/LIQUIBASE/* /liquibase/config/
 
 # Audit
-ADD $GITHUB/UVMS-AuditModule-DB/archive/audit-dbaccess-$AUDIT_VERSION.zip /liquibase/audit
-RUN unzip -q /liquibase/audit/audit-dbaccess-$AUDIT_VERSION -d /liquibase/audit
-RUN cp -r /liquibase/audit/UVMS-AuditModule-DB-audit-dbaccess-$AUDIT_VERSION/* /liquibase/audit/
+ADD $GITHUB/UVMS-AuditModule-APP/archive/audit-$AUDIT_VERSION.zip /liquibase/audit
+RUN unzip -q /liquibase/audit/audit-$AUDIT_VERSION.zip -d /liquibase/audit
+RUN cp -r /liquibase/audit/UVMS-AuditModule-APP-audit-$AUDIT_VERSION/LIQUIBASE/* /liquibase/audit/
 
 # Exchange
-ADD $GITHUB/UVMS-ExchangeModule-DB/archive/exchange-dbaccess-$EXCHANGE_VERSION.zip /liquibase/exchange
-RUN unzip -q /liquibase/exchange/exchange-dbaccess-$EXCHANGE_VERSION.zip -d /liquibase/exchange
-RUN cp -r /liquibase/exchange/UVMS-ExchangeModule-DB-exchange-dbaccess-$EXCHANGE_VERSION/* /liquibase/exchange/
+ADD $GITHUB/UVMS-ExchangeModule-APP/archive/exchange-$EXCHANGE_VERSION.zip /liquibase/exchange
+RUN unzip -q /liquibase/exchange/exchange-$EXCHANGE_VERSION.zip -d /liquibase/exchange
+RUN cp -r /liquibase/exchange/UVMS-ExchangeModule-APP-exchange-$EXCHANGE_VERSION/LIQUIBASE/* /liquibase/exchange/
 
 # Movement  https://github.com/UnionVMS/
 ADD $GITHUB/UVMS-MovementModule-APP/archive/movement-$MOVEMENT_VERSION.zip /liquibase/movement
-RUN unzip -q /liquibase/movement/movement-$MOVEMENT_VERSION -d /liquibase/movement
-RUN cp -r /liquibase/movement/UVMS-MovementModule-APP-movement-$MOVEMENT_VERSION/* /liquibase/movement/
+RUN unzip -q /liquibase/movement/movement-$MOVEMENT_VERSION.zip -d /liquibase/movement
+RUN cp -r /liquibase/movement/UVMS-MovementModule-APP-movement-$MOVEMENT_VERSION/LIQUIBASE/* /liquibase/movement/
 
 # Mobile Terminal
-ADD $GITHUB/REMOVED_UVMS-MobileTerminalModule-DB/archive/mobileterminal-dbaccess-$MOBILE_TERMINAL_VERSION.zip /liquibase/mobterm
-RUN unzip -q /liquibase/mobterm/mobileterminal-dbaccess-$MOBILE_TERMINAL_VERSION -d /liquibase/mobterm
-RUN cp -r /liquibase/mobterm/REMOVED_UVMS-MobileTerminalModule-DB-mobileterminal-dbaccess-$MOBILE_TERMINAL_VERSION/* /liquibase/mobterm/
+ADD $GITHUB/UVMS-MobileTerminalModule-APP/archive/mobileterminal-$MOBILE_TERMINAL_VERSION.zip /liquibase/mobterm
+RUN unzip -q /liquibase/mobterm/mobileterminal-$MOBILE_TERMINAL_VERSION.zip -d /liquibase/mobterm
+RUN cp -r /liquibase/mobterm/UVMS-MobileTerminalModule-APP-mobileterminal-$MOBILE_TERMINAL_VERSION/LIQUIBASE/* /liquibase/mobterm/
 
 # Rules
 ADD $GITHUB/UVMS-RulesModule-DB/archive/rules-dbaccess-$RULES_VERSION.zip /liquibase/rules
