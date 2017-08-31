@@ -6,7 +6,7 @@ ENV HIBERNATE_SPATIAL_VERSION 4.3
 ENV JTS_VERSION 1.13
 ENV POSTGIS_VERSION 1.5.3
 ENV POSTGRES_VERSION 42.1.4.jre7
-ENV ACTIVEMQ_VERSION 5.13.5
+ENV ACTIVEMQ_VERSION 5.14.5
 
 ENV NEXUS http://nexus.focus.fish/nexus/service/local/artifact/maven/content
 ENV HIBERNATE_MODULE $JBOSS_HOME/modules/system/layers/base/org/hibernate/main
