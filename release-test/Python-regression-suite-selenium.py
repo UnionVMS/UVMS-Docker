@@ -529,11 +529,11 @@ def generate_and_verify_manual_position(self,speedValue,courseValue,ircsValue,cf
 
     WebDriverWait(self.driver, browserTimeout).until(EC.presence_of_element_located((By.NAME,"course"))).send_keys(str(courseValue))
     # Click on Save Button
-    WebDriverWait(self.driver, browserTimeout).until(EC.element_to_be_clickable((By.XPATH,"(//button[@type='submit'])[4]"))).click()
+    WebDriverWait(self.driver, browserTimeout).until(EC.element_to_be_clickable((By.LINK_TEXT,"Save"))).click()
     time.sleep(browserWaitAfterClick)
 
     # Click on Confirm button
-    WebDriverWait(self.driver, browserTimeout).until(EC.element_to_be_clickable((By.XPATH,"(//button[@type='submit'])[4]"))).click()
+    # WebDriverWait(self.driver, browserTimeout).until(EC.element_to_be_clickable((By.XPATH,"(//button[@type='submit'])[4]"))).click()
     time.sleep(browserLongWaitAfterClick)
     WebDriverWait(self.driver, browserTimeout).until(EC.element_to_be_clickable((By.LINK_TEXT,"MANUAL POSITION REPORTS"))).click()
 
