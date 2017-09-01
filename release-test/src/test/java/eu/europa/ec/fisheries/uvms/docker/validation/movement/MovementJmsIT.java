@@ -28,7 +28,6 @@ public class MovementJmsIT extends AbstractRestServiceTest {
 	private static MovementHelper movementHelper = new MovementHelper();
 
 	@Test
-	@Ignore
 	public void createMovementBatchRequestTest() throws Exception {
 		Asset testAsset = AssetTestHelper.createTestAsset();
 		MobileTerminalType mobileTerminalType = MobileTerminalTestHelper.createMobileTerminalType();
