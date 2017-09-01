@@ -154,7 +154,7 @@
 									<artifactId>movement-rest</artifactId>
 									<groupId>eu.europa.ec.fisheries.uvms.movement</groupId>
 									<type>war</type>
-									<version>3.0.15</version>
+									<version>3.0.16</version>
 									<overWrite>false</overWrite>
 									<outputDirectory>${project.build.directory}/warclasses/</outputDirectory>
 									<includes>WEB-INF/classes/**/*.*</includes>
@@ -163,7 +163,7 @@
 									<artifactId>exchange-rest</artifactId>
 									<groupId>eu.europa.ec.fisheries.uvms.exchange</groupId>
 									<type>war</type>
-									<version>3.0.13</version>
+									<version>3.0.14</version>
 									<overWrite>false</overWrite>
 									<outputDirectory>${project.build.directory}/warclasses/</outputDirectory>
 									<includes>WEB-INF/classes/**/*.*</includes>
