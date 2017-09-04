@@ -14,7 +14,7 @@
 		<dependency name="activity-module-postgres-0.5.12.ear" />
 		<dependency name="naf-module-3.0.3.ear" />
 		<dependency name="sweagencyemail-module-3.0.0.ear" />
-		<dependency name="flux-module-2.1.2.ear" />
+		<dependency name="flux-module-3.0.1.ear" />
 		<dependency name="twostage-module-3.0.3.ear" />
 		<dependency name="siriusone-module-3.0.4.ear" />
 	</jboss-deployment-dependencies>
