@@ -49,7 +49,7 @@ public class MovementHelper extends AbstractHelper {
 			LatLong latlong) throws IOException, ClientProtocolException, JsonProcessingException, JsonParseException,
 			JsonMappingException {
 
-		//Date positionTime = new Date(System.currentTimeMillis());
+		// Date positionTime = new Date(System.currentTimeMillis());
 		final CreateMovementRequest createMovementRequest1 = new CreateMovementRequest();
 		final MovementBaseType movementBaseType = new MovementBaseType();
 		AssetId assetId = new AssetId();
@@ -80,15 +80,14 @@ public class MovementHelper extends AbstractHelper {
 		return createMovementRequest1;
 
 	}
-	
-	
+
 	public CreateMovementBatchRequest createMovementBatchRequest(Asset testAsset, MobileTerminalType mobileTerminalType,
-			List<LatLong> route) throws IOException, ClientProtocolException, JsonProcessingException, JsonParseException,
-			JsonMappingException {
-		
-		//Date positionTime = new Date(System.currentTimeMillis());
+			List<LatLong> route) throws IOException, ClientProtocolException, JsonProcessingException,
+			JsonParseException, JsonMappingException {
+
+		// Date positionTime = new Date(System.currentTimeMillis());
 		final CreateMovementBatchRequest createMovementBatchRequest = new CreateMovementBatchRequest();
-		
+
 		AssetId assetId = new AssetId();
 		assetId.setAssetType(AssetType.VESSEL);
 		assetId.setIdType(AssetIdType.GUID);
@@ -101,9 +100,7 @@ public class MovementHelper extends AbstractHelper {
 		createMovementBatchRequest.setMethod(MovementModuleMethod.CREATE_BATCH);
 		createMovementBatchRequest.setUsername("vms_admin_com");
 
-		
-		
-		for(LatLong latlong : route){
+		for (LatLong latlong : route) {
 
 			MovementBaseType movementBaseType = new MovementBaseType();
 			movementBaseType.setAssetId(assetId);
@@ -122,12 +119,6 @@ public class MovementHelper extends AbstractHelper {
 		}
 		return createMovementBatchRequest;
 	}
-
-	
-	
-	
-	
-	
 
 	public List<LatLong> createRutt(int numberPositions) {
 		return createRutt(15 * 1000, numberPositions);
@@ -184,6 +175,30 @@ public class MovementHelper extends AbstractHelper {
 			if (latitude < END_LATITUDE && longitude < END_LONGITUDE)
 				break;
 			rutt.add(new LatLong(latitude, longitude, getDate(ts += movementTimeDeltaInMillis)));
+		}
+
+		if (numberPositions == -1) {
+			return rutt;
+		} else {
+			return rutt.subList(0, numberPositions);
+		}
+	}
+
+	public List<LatLong> createRuttGeneric(double START_LATITUDE, double START_LONGITUDE,double END_LATITUDE, double END_LONGITUDE,  int numberPositions) {
+
+		int movementTimeDeltaInMillis = 30000;
+		List<LatLong> rutt = new ArrayList<>();
+		long ts = System.currentTimeMillis();
+		
+		while (true) {
+
+			if (START_LATITUDE >= END_LATITUDE)
+				START_LATITUDE = START_LATITUDE - 0.5;
+			if (START_LONGITUDE >= END_LONGITUDE)
+				START_LONGITUDE = START_LONGITUDE - 0.5;
+			if (START_LATITUDE < END_LATITUDE && START_LONGITUDE < END_LONGITUDE)
+				break;
+			rutt.add(new LatLong(START_LATITUDE, START_LONGITUDE, getDate(ts += movementTimeDeltaInMillis)));
 		}
 
 		if (numberPositions == -1) {
@@ -312,10 +327,10 @@ public class MovementHelper extends AbstractHelper {
 	 */
 	public String marshall(final CreateMovementBatchRequest createMovementBatchRequest) throws JAXBException {
 		final StringWriter sw = new StringWriter();
-		JAXBContext.newInstance(CreateMovementBatchRequest.class).createMarshaller().marshal(createMovementBatchRequest, sw);
+		JAXBContext.newInstance(CreateMovementBatchRequest.class).createMarshaller().marshal(createMovementBatchRequest,
+				sw);
 		return sw.toString();
 	}
-
 
 	/**
 	 * Un marshall create movement response.
@@ -346,7 +361,6 @@ public class MovementHelper extends AbstractHelper {
 				.unmarshal(new StringReader(textMessage.getText()));
 	}
 
-
 	public CreateMovementResponse createMovement(Asset testAsset, MobileTerminalType mobileTerminalType,
 			CreateMovementRequest createMovementRequest) throws Exception {
 
@@ -364,7 +378,7 @@ public class MovementHelper extends AbstractHelper {
 		Map<String, Object> dataMap = checkSuccessResponseReturnMap(response);
 		return dataMap;
 	}
-	
+
 	public Map<String, Object> getMinimalListByQuery(MovementQuery movementQuery) throws Exception {
 
 		final HttpResponse response = Request.Post(getBaseUrl() + "movement/rest/movement/list/minimal")
@@ -375,12 +389,9 @@ public class MovementHelper extends AbstractHelper {
 		return dataMap;
 	}
 
-
-	
-
 	public CreateMovementBatchResponse createMovementBatch(Asset testAsset, MobileTerminalType mobileTerminalType,
 			CreateMovementBatchRequest createMovementBatchRequest) throws JAXBException, Exception {
-		
+
 		Message messageResponse = MessageHelper.getMessageResponse(UVMS_MOVEMENT_REQUEST_QUEUE,
 				marshall(createMovementBatchRequest));
 		return unMarshallCreateMovementBatchResponse(messageResponse);
