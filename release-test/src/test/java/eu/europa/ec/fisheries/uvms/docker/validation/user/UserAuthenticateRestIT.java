@@ -19,6 +19,7 @@ import java.util.UUID;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
 import org.apache.http.client.fluent.Request;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -105,6 +106,7 @@ public class UserAuthenticateRestIT extends AbstractRestServiceTest {
 	}
 
 	@Test
+	@Ignore
 	public void challengeAuth() throws Exception {
 		
 	/* in SCHEMA USM
@@ -179,6 +181,33 @@ public class UserAuthenticateRestIT extends AbstractRestServiceTest {
 		String auth = String.valueOf(data2.get("authenticated"));
 		assertTrue(auth.equals("false"));
 	}
+	
+	
+	@Test
+	public void userContexts() throws Exception {
+		
+		final Map<String, Object> authData = userHelper.authenticate("vms_admin_com", "password");
+		assertEquals(true, authData.get("authenticated"));
+		assertNotNull(authData.get("jwtoken"));
+
+		String jwtoken = String.valueOf(authData.get("jwtoken"));
+		
+		final HttpResponse response = Request.Get(getBaseUrl() + "usm-administration/rest/userContexts")
+				.setHeader("Content-Type", "application/json").setHeader("authorization", jwtoken).execute()
+				.returnResponse();
+
+		assertEquals(HttpStatus.SC_OK, response.getStatusLine().getStatusCode());
+		Map<String, Object> data2 = getJsonMap(response);
+		Object contextSet = data2.get("contextSet");
+
+
+		assertEquals(HttpStatus.SC_OK, response.getStatusLine().getStatusCode());
+		String ctx = String.valueOf(contextSet).trim();
+		assertNotNull(contextSet);
+		assertTrue(ctx.length() > 0);
+		
+	}
+
 
 	
 
