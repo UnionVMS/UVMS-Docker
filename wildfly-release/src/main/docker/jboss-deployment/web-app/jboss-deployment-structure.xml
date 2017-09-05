@@ -13,7 +13,7 @@
 			<module name="deployment.rules-module-3.0.7.ear" />
 			<module name="deployment.reporting-module-1.0.5.ear" />
 			<module name="deployment.naf-module-3.0.3.ear" />
-			<module name="deployment.sweagencyemail-module-3.0.0.ear" />
+			<!-- <module name="deployment.sweagencyemail-module-3.0.0.ear" />-->
 			<module name="deployment.flux-module-3.0.1.ear" />
 			<module name="deployment.twostage-module-3.0.3.ear" />
 			<module name="deployment.siriusone-module-3.0.4.ear" />
