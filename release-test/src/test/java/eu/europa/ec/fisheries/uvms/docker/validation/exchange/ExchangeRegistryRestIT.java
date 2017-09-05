@@ -17,6 +17,7 @@ import java.util.List;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.fluent.Request;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import eu.europa.ec.fisheries.uvms.docker.validation.common.AbstractRestServiceTest;
@@ -49,6 +50,7 @@ public class ExchangeRegistryRestIT extends AbstractRestServiceTest {
 	 * @throws Exception the exception
 	 */
 	@Test
+	@Ignore
 	public void startServiceTest() throws Exception {
 		String serviceName = "eu.europa.ec.fisheries.uvms.plugins.sweagencyemail";
 		
@@ -66,6 +68,7 @@ public class ExchangeRegistryRestIT extends AbstractRestServiceTest {
 	 * @throws Exception the exception
 	 */
 	@Test
+	@Ignore
 	public void stopServiceTest() throws Exception {
 		String serviceName = "eu.europa.ec.fisheries.uvms.plugins.sweagencyemail";
 		

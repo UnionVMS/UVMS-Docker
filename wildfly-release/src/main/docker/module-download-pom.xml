@@ -37,7 +37,7 @@
  		<unionvms.project.activity.module>0.5.12</unionvms.project.activity.module>
 		<unionvms.project.mdr.module>0.5.0</unionvms.project.mdr.module>
         <unionvms.project.plugins.naf>3.0.3</unionvms.project.plugins.naf>
-        <unionvms.project.plugins.sweagencyemail>3.0.0</unionvms.project.plugins.sweagencyemail>
+       <!-- <unionvms.project.plugins.sweagencyemail>3.0.0</unionvms.project.plugins.sweagencyemail>-->
         <unionvms.project.plugins.flux>3.0.1</unionvms.project.plugins.flux>
         <unionvms.project.plugins.twostage>3.0.3</unionvms.project.plugins.twostage>
         <unionvms.project.plugins.siriusone>3.0.4</unionvms.project.plugins.siriusone>
@@ -178,12 +178,14 @@
             <type>ear</type>
             <version>${unionvms.project.plugins.naf}</version>
         </dependency>
+        <!-- 
         <dependency>
             <groupId>eu.europa.ec.fisheries.uvms.plugins</groupId>
             <artifactId>sweagencyemail-module</artifactId>
             <type>ear</type>
             <version>${unionvms.project.plugins.sweagencyemail}</version>
         </dependency>
+        -->
         <dependency>
             <groupId>eu.europa.ec.fisheries.uvms.plugins</groupId>
             <artifactId>flux-module</artifactId>

@@ -40,7 +40,7 @@ addJbossAll rules-module-3.0.7 /opt/jboss/jboss-deployment/rules/jboss-all.xml
 addJbossAll activity-module-postgres-0.5.12 /opt/jboss/jboss-deployment/activity/jboss-all.xml
 addJbossAll mdr-module-0.5.0 /opt/jboss/jboss-deployment/mdr/jboss-all.xml
 addJbossAll naf-module-3.0.3 /opt/jboss/jboss-deployment/plugins/jboss-all.xml
-addJbossAll sweagencyemail-module-3.0.0 /opt/jboss/jboss-deployment/plugins/jboss-all.xml
+##addJbossAll sweagencyemail-module-3.0.0 /opt/jboss/jboss-deployment/plugins/jboss-all.xml
 addJbossAll flux-module-2.1.2 /opt/jboss/jboss-deployment/plugins/jboss-all.xml
 addJbossAll twostage-module-3.0.3 /opt/jboss/jboss-deployment/plugins/jboss-all.xml
 addJbossAll siriusone-module-3.0.4 /opt/jboss/jboss-deployment/plugins/jboss-all.xml
