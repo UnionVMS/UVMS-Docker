@@ -14,11 +14,14 @@ copy of the GNU General Public License along with the IFDM Suite. If not, see <h
 package eu.europa.ec.fisheries.uvms.docker.validation.user;
 
 import java.util.Map;
+import java.util.UUID;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
 import org.apache.http.client.fluent.Request;
 import org.junit.Test;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import eu.europa.ec.fisheries.uvms.docker.validation.common.AbstractRestServiceTest;
 
@@ -26,6 +29,10 @@ import eu.europa.ec.fisheries.uvms.docker.validation.common.AbstractRestServiceT
  * The Class UserAuthenticateRestIT.
  */
 public class UserAuthenticateRestIT extends AbstractRestServiceTest {
+
+	private ObjectMapper MAPPER = new ObjectMapper();
+
+	UserHelper userHelper = new UserHelper();
 
 	/**
 	 * Authenticate get jwt token success test.
@@ -35,13 +42,8 @@ public class UserAuthenticateRestIT extends AbstractRestServiceTest {
 	 */
 	@Test
 	public void authenticateGetJwtTokenSuccessTest() throws Exception {
-		final HttpResponse response = Request.Post(getBaseUrl() + "usm-administration/rest/authenticate")
-				.setHeader("Content-Type", "application/json")
-				.bodyByteArray("{\"userName\":\"vms_admin_com\",\"password\":\"password\"}".getBytes()).execute()
-				.returnResponse();
 
-		assertEquals(HttpStatus.SC_OK, response.getStatusLine().getStatusCode());
-		final Map<String, Object> data = getJsonMap(response);
+		final Map<String, Object> data = userHelper.authenticate("vms_admin_com", "password");
 		assertEquals(true, data.get("authenticated"));
 		assertNotNull(data.get("jwtoken"));
 	}
@@ -54,15 +56,130 @@ public class UserAuthenticateRestIT extends AbstractRestServiceTest {
 	 */
 	@Test
 	public void authenticateGetJwtTokenFailureTest() throws Exception {
-		final HttpResponse response = Request.Post(getBaseUrl() + "usm-administration/rest/authenticate")
-				.setHeader("Content-Type", "application/json")
-				.bodyByteArray("{\"userName\":\"vms_admin_com\",\"password\":\"invalidpassword\"}".getBytes()).execute()
-				.returnResponse();
-
-		assertEquals(HttpStatus.SC_OK, response.getStatusLine().getStatusCode());
-		final Map<String, Object> data = getJsonMap(response);
+		final Map<String, Object> data = userHelper.authenticate("vms_admin_com", "invalidpassword");
 		assertEquals(false, data.get("authenticated"));
 		assertNull(data.get("jwtoken"));
 	}
+
+	/**
+	 * get challenge for an authenticated user
+	 * 
+	 * @throws Exception
+	 */
+	@Test
+	public void getUserChallenge() throws Exception {
+
+		// logon
+		final Map<String, Object> authData = userHelper.authenticate("vms_admin_com", "password");
+		assertEquals(true, authData.get("authenticated"));
+		assertNotNull(authData.get("jwtoken"));
+
+		String jwtoken = String.valueOf(authData.get("jwtoken"));
+
+		// use the jwToken to get challenge
+		final Map<String, Object> data = userHelper.getChallenge(jwtoken);
+		assertNotNull(data.get("challenge"));
+		assertEquals("vms_admin_com", data.get("userName"));
+	}
+
+	/**
+	 * check if its allowed to tamper with jwToken
+	 * 
+	 * @throws Exception
+	 */
+	@Test
+	public void getUserChallengeTamperedJwt() throws Exception {
+
+		final Map<String, Object> authData = userHelper.authenticate("vms_admin_com", "password");
+		assertEquals(true, authData.get("authenticated"));
+		assertNotNull(authData.get("jwtoken"));
+
+		String jwtoken = String.valueOf(authData.get("jwtoken"));
+		jwtoken += "tampered";
+
+		final HttpResponse response = Request.Get(getBaseUrl() + "usm-administration/rest/challenge")
+				.setHeader("Content-Type", "application/json").setHeader("authorization", jwtoken).execute()
+				.returnResponse();
+
+		assertEquals(HttpStatus.SC_FORBIDDEN, response.getStatusLine().getStatusCode());
+	}
+
+	@Test
+	public void challengeAuth() throws Exception {
+		
+	/* in SCHEMA USM
+        select t.response from usm.user_t u
+        join usm.challenge_t t
+        on u.user_id = t.user_id
+        where u.user_name='vms_admin_com' and t.challenge='Name of first pet'
+	*/
+		
+
+		final Map<String, Object> authData = userHelper.authenticate("vms_admin_com", "password");
+		assertEquals(true, authData.get("authenticated"));
+		assertNotNull(authData.get("jwtoken"));
+
+		String jwtoken = String.valueOf(authData.get("jwtoken"));
+
+		// use the jwToken to get challenge
+		Map<String, Object> data = userHelper.getChallenge(jwtoken);
+		String challenge = String.valueOf(data.get("challenge"));
+		String userName = String.valueOf(data.get("userName"));
+
+
+		// use the jwToken to get challenge
+
+		ChallengeResponseTEST challengeResponseTest = new ChallengeResponseTEST("vms_admin_com", challenge, "Tartampion");
+		String json = MAPPER.writeValueAsString(challengeResponseTest);
+
+		final HttpResponse response = Request.Post(getBaseUrl() + "usm-administration/rest/challengeauth")
+				.setHeader("Content-Type", "application/json").bodyByteArray(json.getBytes()).execute()
+				.returnResponse();
+
+		assertEquals(HttpStatus.SC_OK, response.getStatusLine().getStatusCode());
+		Map<String, Object> data2 = getJsonMap(response);
+		String auth = String.valueOf(data2.get("authenticated"));
+		assertTrue(auth.equals("true"));
+	}
+	
+	@Test
+	public void challengeAuthVerifyWrongChallengeIsNotAccepted() throws Exception {
+		
+	/* in SCHEMA USM
+        select t.response from usm.user_t u
+        join usm.challenge_t t
+        on u.user_id = t.user_id
+        where u.user_name='vms_admin_com' and t.challenge='Name of first pet'
+	*/
+		
+
+		final Map<String, Object> authData = userHelper.authenticate("vms_admin_com", "password");
+		assertEquals(true, authData.get("authenticated"));
+		assertNotNull(authData.get("jwtoken"));
+
+		String jwtoken = String.valueOf(authData.get("jwtoken"));
+
+		// use the jwToken to get challenge
+		Map<String, Object> data = userHelper.getChallenge(jwtoken);
+		String challenge = String.valueOf(data.get("challenge"));
+		String userName = String.valueOf(data.get("userName"));
+
+
+		String answer = UUID.randomUUID().toString();
+
+		ChallengeResponseTEST challengeResponseTest = new ChallengeResponseTEST("vms_admin_com", challenge, answer);
+		String json = MAPPER.writeValueAsString(challengeResponseTest);
+
+		final HttpResponse response = Request.Post(getBaseUrl() + "usm-administration/rest/challengeauth")
+				.setHeader("Content-Type", "application/json").bodyByteArray(json.getBytes()).execute()
+				.returnResponse();
+
+		assertEquals(HttpStatus.SC_OK, response.getStatusLine().getStatusCode());
+		Map<String, Object> data2 = getJsonMap(response);
+		String auth = String.valueOf(data2.get("authenticated"));
+		assertTrue(auth.equals("false"));
+	}
+
+	
 
 }
