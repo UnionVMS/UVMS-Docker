@@ -67,7 +67,7 @@ public class SpatialConfigRestIT extends AbstractRestServiceTest {
 
 		final HttpResponse response = Request.Get(getBaseUrl() + "spatial/rest/config/admin")
 				.setHeader("Content-Type", "application/json")
-				.setHeader("Authorization", getValidJwtToken(uid, pwd))
+				.setHeader("Authorization", token)
 				.setHeader(AuthConstants.HTTP_HEADER_SCOPE_NAME, scopeName)
 				.setHeader(AuthConstants.HTTP_HEADER_ROLE_NAME, roleName)
 				.execute()
