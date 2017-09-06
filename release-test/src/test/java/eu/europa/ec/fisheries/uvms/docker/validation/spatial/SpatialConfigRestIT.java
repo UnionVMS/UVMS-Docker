@@ -31,16 +31,50 @@ public class SpatialConfigRestIT extends AbstractRestServiceTest {
 	 * Gets the all projections test.
 	 *
 	 * @return the all projections test
-	 * @throws Exception the exception
+	 * @throws Exception
+	 *             the exception
 	 */
+	// @formatter:off
 	@Test
 	@Ignore
 	public void getAllProjectionsTest() throws Exception {
+		
+		String uid = "rep_power";
+		String pwd = "abcd-1234";
+		String token = getValidJwtToken(uid, pwd);
+
+		
 		final HttpResponse response = Request.Get(getBaseUrl() + "spatial/rest/config/projections")
-				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken()).execute()
+				.setHeader("Content-Type", "application/json")
+				.setHeader("Authorization", token)
+				.execute()
 				.returnResponse();
 
-		List dataList = checkSuccessResponseReturnType(response,List.class);
+		 List dataList = checkSuccessResponseReturnType(response,List.class);
 	}
+	// @formatter:on
+
+	// @formatter:off
+	@Test
+	@Ignore
+	public void admin() throws Exception {
+
+		String scopeName = "EC";
+		String roleName = "rep_power_role";
+		String uid = "rep_power";
+		String pwd = "abcd-1234";
+		String token = getValidJwtToken(uid, pwd);
+
+		final HttpResponse response = Request.Get(getBaseUrl() + "spatial/rest/config/admin")
+				.setHeader("Content-Type", "application/json")
+				.setHeader("Authorization", getValidJwtToken(uid, pwd))
+				.setHeader(AuthConstants.HTTP_HEADER_SCOPE_NAME, scopeName)
+				.setHeader(AuthConstants.HTTP_HEADER_ROLE_NAME, roleName)
+				.execute()
+				.returnResponse();
+
+		List dataList = checkSuccessResponseReturnType(response, List.class);
+	}
+	// @formatter:on
 
 }

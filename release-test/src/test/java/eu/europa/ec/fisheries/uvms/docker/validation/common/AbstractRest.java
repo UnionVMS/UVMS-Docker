@@ -67,6 +67,18 @@ public abstract class AbstractRest extends Assert {
 		
 		return validJwtToken;
 	}
+	
+	protected static final String getValidJwtToken(String uid, String pwd) {
+		if (validJwtToken == null) {
+			try {
+				validJwtToken = aquireJwtToken(uid,pwd);
+			} catch (Exception e) {
+				Assert.fail("Not possible to get jwt token");
+			}
+		}
+		
+		return validJwtToken;
+	}
 
 	public static final String aquireJwtToken(final String username, final String password) throws Exception {
 		final HttpResponse response = Request.Post(getBaseUrl() + "usm-administration/rest/authenticate")
