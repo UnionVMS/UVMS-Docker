@@ -19,7 +19,6 @@ import java.util.UUID;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
 import org.apache.http.client.fluent.Request;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -106,16 +105,17 @@ public class UserAuthenticateRestIT extends AbstractRestServiceTest {
 	}
 
 	@Test
-	@Ignore
 	public void challengeAuth() throws Exception {
-		
-	/* in SCHEMA USM
-        select t.response from usm.user_t u
-        join usm.challenge_t t
-        on u.user_id = t.user_id
-        where u.user_name='vms_admin_com' and t.challenge='Name of first pet'
-	*/
-		
+
+		// until the backend jdbc code is corrected this test is
+		// undeterministical
+		// actually the others as well .... since jdbc is wrong coded
+
+		/*
+		 * in SCHEMA USM select t.response from usm.user_t u join
+		 * usm.challenge_t t on u.user_id = t.user_id where
+		 * u.user_name='vms_admin_com' and t.challenge='Name of first pet'
+		 */
 
 		final Map<String, Object> authData = userHelper.authenticate("vms_admin_com", "password");
 		assertEquals(true, authData.get("authenticated"));
@@ -128,10 +128,10 @@ public class UserAuthenticateRestIT extends AbstractRestServiceTest {
 		String challenge = String.valueOf(data.get("challenge"));
 		String userName = String.valueOf(data.get("userName"));
 
-
 		// use the jwToken to get challenge
 
-		ChallengeResponseTEST challengeResponseTest = new ChallengeResponseTEST("vms_admin_com", challenge, "Tartampion");
+		ChallengeResponseTEST challengeResponseTest = new ChallengeResponseTEST("vms_admin_com", challenge,
+				"Tartampion");
 		String json = MAPPER.writeValueAsString(challengeResponseTest);
 
 		final HttpResponse response = Request.Post(getBaseUrl() + "usm-administration/rest/challengeauth")
@@ -143,17 +143,15 @@ public class UserAuthenticateRestIT extends AbstractRestServiceTest {
 		String auth = String.valueOf(data2.get("authenticated"));
 		assertTrue(auth.equals("true"));
 	}
-	
+
 	@Test
 	public void challengeAuthVerifyWrongChallengeIsNotAccepted() throws Exception {
-		
-	/* in SCHEMA USM
-        select t.response from usm.user_t u
-        join usm.challenge_t t
-        on u.user_id = t.user_id
-        where u.user_name='vms_admin_com' and t.challenge='Name of first pet'
-	*/
-		
+
+		/*
+		 * in SCHEMA USM select t.response from usm.user_t u join
+		 * usm.challenge_t t on u.user_id = t.user_id where
+		 * u.user_name='vms_admin_com' and t.challenge='Name of first pet'
+		 */
 
 		final Map<String, Object> authData = userHelper.authenticate("vms_admin_com", "password");
 		assertEquals(true, authData.get("authenticated"));
@@ -164,8 +162,6 @@ public class UserAuthenticateRestIT extends AbstractRestServiceTest {
 		// use the jwToken to get challenge
 		Map<String, Object> data = userHelper.getChallenge(jwtoken);
 		String challenge = String.valueOf(data.get("challenge"));
-		String userName = String.valueOf(data.get("userName"));
-
 
 		String answer = UUID.randomUUID().toString();
 
@@ -181,17 +177,16 @@ public class UserAuthenticateRestIT extends AbstractRestServiceTest {
 		String auth = String.valueOf(data2.get("authenticated"));
 		assertTrue(auth.equals("false"));
 	}
-	
-	
+
 	@Test
 	public void userContexts() throws Exception {
-		
+
 		final Map<String, Object> authData = userHelper.authenticate("vms_admin_com", "password");
 		assertEquals(true, authData.get("authenticated"));
 		assertNotNull(authData.get("jwtoken"));
 
 		String jwtoken = String.valueOf(authData.get("jwtoken"));
-		
+
 		final HttpResponse response = Request.Get(getBaseUrl() + "usm-administration/rest/userContexts")
 				.setHeader("Content-Type", "application/json").setHeader("authorization", jwtoken).execute()
 				.returnResponse();
@@ -200,15 +195,33 @@ public class UserAuthenticateRestIT extends AbstractRestServiceTest {
 		Map<String, Object> data2 = getJsonMap(response);
 		Object contextSet = data2.get("contextSet");
 
-
 		assertEquals(HttpStatus.SC_OK, response.getStatusLine().getStatusCode());
 		String ctx = String.valueOf(contextSet).trim();
 		assertNotNull(contextSet);
 		assertTrue(ctx.length() > 0);
-		
+
 	}
 
+	@Test
+	public void ping() throws Exception {
 
-	
+		final Map<String, Object> authData = userHelper.authenticate("vms_admin_com", "password");
+		assertEquals(true, authData.get("authenticated"));
+		assertNotNull(authData.get("jwtoken"));
+
+		String jwtoken = String.valueOf(authData.get("jwtoken"));
+
+		final HttpResponse response = Request.Get(getBaseUrl() + "usm-administration/rest/ping")
+				.setHeader("Content-Type", "application/json").setHeader("authorization", jwtoken).execute()
+				.returnResponse();
+
+		assertEquals(HttpStatus.SC_OK, response.getStatusLine().getStatusCode());
+		Map<String, Object> data2 = getJsonMap(response);
+		String statusCode = String.valueOf(data2.get("statusCode"));
+		String message = String.valueOf(data2.get("message"));
+		assertTrue(statusCode.equalsIgnoreCase("200"));
+		assertTrue(message.equalsIgnoreCase("OK"));
+
+	}
 
 }
