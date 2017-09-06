@@ -41,7 +41,7 @@ ARG SPATIAL_VERSION=1.0.4
 ARG REPORTING_VERSION=1.0.3
 ARG USM_VERSION=2.0.0
 ARG ACTIVITY_VERSION=0.5.13
-ARG MDR_VERSION=0.5.1
+ARG MDR_VERSION=0.5.2
 
 
 # Copy step is important, uvms/postgres runs a script that runs maven in /liquibase/MODULE for all but USM.
