@@ -40,7 +40,7 @@ ARG RULES_VERSION=3.0.5
 ARG SPATIAL_VERSION=1.0.4
 ARG REPORTING_VERSION=1.0.3
 ARG USM_VERSION=2.0.0
-ARG ACTIVITY_VERSION=0.5.12
+ARG ACTIVITY_VERSION=0.5.13
 ARG MDR_VERSION=0.5.1
 
 
@@ -101,9 +101,9 @@ RUN cp -r /liquibase/reporting/UVMS-ReportingModule-DB-reporting-db-$REPORTING_V
 ##ADD $GITHUB/USM/archive/$USM_VERSION.zip /liquibase/usm
 ##RUN unzip -q /liquibase/usm/$USM_VERSION.zip -d /liquibase/usm
 ##RUN cp -r /liquibase/usm/USM-$USM_VERSION/* /liquibase/usm/
-ADD $GITHUB/USM/archive/6e3ada1c608da50c8fa0cd3472b17e27a6f50102.zip /liquibase/usm
-RUN unzip -q /liquibase/usm/6e3ada1c608da50c8fa0cd3472b17e27a6f50102.zip -d /liquibase/usm
-RUN cp -r /liquibase/usm/USM-6e3ada1c608da50c8fa0cd3472b17e27a6f50102/* /liquibase/usm/
+ADD $GITHUB/USM/archive/e0d37b36c8893a73bc6506abbab1cedb31d19640.zip /liquibase/usm
+RUN unzip -q /liquibase/usm/e0d37b36c8893a73bc6506abbab1cedb31d19640.zip -d /liquibase/usm
+RUN cp -r /liquibase/usm/USM-e0d37b36c8893a73bc6506abbab1cedb31d19640/* /liquibase/usm/
 
 # Activity
 ADD https://github.com/UnionVMS/UVMS-ActivityModule-APP/archive/activity-$ACTIVITY_VERSION.zip /liquibase/activity

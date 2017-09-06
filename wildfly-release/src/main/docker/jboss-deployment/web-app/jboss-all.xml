@@ -11,7 +11,7 @@
 		<dependency name="rules-module-3.0.7.ear" />
 		<dependency name="reporting-module-1.0.5.ear" />
 		<dependency name="mdr-module-0.5.1.ear" />
-		<dependency name="activity-module-postgres-0.5.12.ear" />
+		<dependency name="activity-module-postgres-0.5.13.ear" />
 		<dependency name="naf-module-3.0.3.ear" />
 		<!-- <dependency name="sweagencyemail-module-3.0.0.ear" />-->
 		<dependency name="flux-module-3.0.1.ear" />

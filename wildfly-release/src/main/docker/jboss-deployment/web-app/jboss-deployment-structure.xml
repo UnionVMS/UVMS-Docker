@@ -18,7 +18,7 @@
 			<module name="deployment.twostage-module-3.0.3.ear" />
 			<module name="deployment.siriusone-module-3.0.4.ear" />
 			<module name="deployment.mdr-module-0.5.1.ear" />
-			<module name="deployment.activity-module-postgres-0.5.12.ear" />
+			<module name="deployment.activity-module-postgres-0.5.13.ear" />
 		</dependencies>
 	</deployment>
 </jboss-deployment-structure>
