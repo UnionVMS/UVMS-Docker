@@ -7,6 +7,7 @@ services:
      - "29990:9990"
      - "28787:8787"
      - "28080:8080"
+     - "28443:8443"
     volumes:
      - /app/logs:/app/logs
      - /opt/jboss/wildfly/standalone/log:/opt/jboss/wildfly/standalone/log
