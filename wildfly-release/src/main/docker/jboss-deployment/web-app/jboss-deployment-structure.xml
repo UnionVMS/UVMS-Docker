@@ -2,7 +2,7 @@
 <jboss-deployment-structure>
 	<deployment>
 		<dependencies>
-			<module name="deployment.user-module-1.6.1.ear" />
+			<module name="deployment.user-module-2.0.2.ear" />
 			<module name="deployment.config-module-3.0.13.ear" />
 			<module name="deployment.spatial-module-0.5.10.ear" />
 			<module name="deployment.movement-module-3.0.17.ear" />

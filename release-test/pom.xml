@@ -242,7 +242,7 @@
 								<get src="http://localhost:28080/movement/monitoring?format=pdf" dest="target/movement_monitoring.pdf" verbose="true" usetimestamp="true" />
 								<get src="http://localhost:28080/rules/monitoring?format=pdf" dest="target/rules_monitoring.pdf" verbose="true" usetimestamp="true" />
 								<get src="http://localhost:28080/reporting/monitoring?format=pdf" dest="target/reporting_monitoring.pdf" verbose="true" usetimestamp="true" />
-
+								<get src="http://localhost:28080/user/monitoring?format=pdf" dest="target/user_monitoring.pdf" verbose="true" usetimestamp="true" />
 								<get username="admin" password="admin" src="http://localhost:18161/admin/xml/subscribers.jsp" dest="target/activemq-subscribers.xml" verbose="true" usetimestamp="true" />
 								<get username="admin" password="admin" src="http://localhost:18161/admin/xml/topics.jsp" dest="target/activemq-topics.xml" verbose="true" usetimestamp="true" />
 								<get username="admin" password="admin" src="http://localhost:18161/admin/xml/queues.jsp" dest="target/activemq-queues.xml" verbose="true" usetimestamp="true" />
@@ -361,6 +361,7 @@
 									<port>29990:9990</port>
 									<port>28787:8787</port>
 									<port>28080:8080</port>
+									<port>28443:8443</port>									
 								</ports>
 								<wait>
 									<http>
