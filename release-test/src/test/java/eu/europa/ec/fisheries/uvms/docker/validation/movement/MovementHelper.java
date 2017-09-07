@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 import java.util.UUID;
 
 import javax.jms.Message;
@@ -44,6 +45,8 @@ import eu.europa.ec.fisheries.wsdl.asset.types.Asset;
 public class MovementHelper extends AbstractHelper {
 
 	private static final String UVMS_MOVEMENT_REQUEST_QUEUE = "UVMSMovementEvent";
+	
+	private Random rnd = new Random();
 
 	public CreateMovementRequest createMovementRequest(Asset testAsset, MobileTerminalType mobileTerminalType,
 			LatLong latlong) throws IOException, ClientProtocolException, JsonProcessingException, JsonParseException,
@@ -130,8 +133,12 @@ public class MovementHelper extends AbstractHelper {
 		List<LatLong> rutt = new ArrayList<>();
 		long ts = System.currentTimeMillis();
 
-		double latitude = 57.110;
-		double longitude = 12.244;
+		double divideramed = 10;
+		double randomFactorLat = rnd.nextDouble() / divideramed;
+		double randomFactorLong = rnd.nextDouble() / divideramed;
+		
+		double latitude = 57.110 + randomFactorLat;
+		double longitude = 12.244  + randomFactorLong ;
 
 		double END_LATITUDE = 56.408;
 		double END_LONGITUDE = 10.926;
@@ -159,9 +166,15 @@ public class MovementHelper extends AbstractHelper {
 		int movementTimeDeltaInMillis = 30000;
 		List<LatLong> rutt = new ArrayList<>();
 		long ts = System.currentTimeMillis();
+		
+		
+		double divideramed = 10;
+		double randomFactorLat = rnd.nextDouble() / divideramed;
+		double randomFactorLong = rnd.nextDouble() / divideramed;
+		
+		double latitude = 51.844 + randomFactorLat;
+		double longitude = -8.311  + randomFactorLong ;
 
-		double latitude = 51.844;
-		double longitude = -8.311;
 
 		double END_LATITUDE = 40.313;
 		double END_LONGITUDE = -73.740;
@@ -209,45 +222,53 @@ public class MovementHelper extends AbstractHelper {
 	}
 
 	public List<LatLong> createRutt(int movementTimeDeltaInMillis, int numberPositions) {
+		
+		
+		double divideramed = 10;
+		double randomFactorLat = rnd.nextDouble() / divideramed;
+		double randomFactorLong = rnd.nextDouble() / divideramed;
+		
+
+		
 
 		List<LatLong> rutt = new ArrayList<>();
 		long ts = System.currentTimeMillis();
-		rutt.add(new LatLong(57.715434, 11.970012, getDate(ts += movementTimeDeltaInMillis)));
-		rutt.add(new LatLong(57.714735, 11.968242, getDate(ts += movementTimeDeltaInMillis)));
-		rutt.add(new LatLong(57.713837, 11.965640, getDate(ts += movementTimeDeltaInMillis)));
-		rutt.add(new LatLong(57.712691, 11.963301, getDate(ts += movementTimeDeltaInMillis)));
-		rutt.add(new LatLong(57.711178, 11.960630, getDate(ts += movementTimeDeltaInMillis)));
-		rutt.add(new LatLong(57.708347, 11.956049, getDate(ts += movementTimeDeltaInMillis)));
-		rutt.add(new LatLong(57.703993, 11.951709, getDate(ts += movementTimeDeltaInMillis)));
-		rutt.add(new LatLong(57.701058, 11.932225, getDate(ts += movementTimeDeltaInMillis)));
-		rutt.add(new LatLong(57.696225, 11.913557, getDate(ts += movementTimeDeltaInMillis)));
-		rutt.add(new LatLong(57.684998, 11.888752, getDate(ts += movementTimeDeltaInMillis)));
-		rutt.add(new LatLong(57.682245, 11.861973, getDate(ts += movementTimeDeltaInMillis)));
-		rutt.add(new LatLong(57.676004, 11.845493, getDate(ts += movementTimeDeltaInMillis)));
-		rutt.add(new LatLong(57.664253, 11.754169, getDate(ts += movementTimeDeltaInMillis)));
-		rutt.add(new LatLong(57.646619, 11.719151, getDate(ts += movementTimeDeltaInMillis)));
+		rutt.add(new LatLong(57.715434 + randomFactorLat, 11.970012 + randomFactorLong, getDate(ts += movementTimeDeltaInMillis)));
+		rutt.add(new LatLong(57.714735 + randomFactorLat, 11.968242, getDate(ts += movementTimeDeltaInMillis)));
+		rutt.add(new LatLong(57.713837 + randomFactorLat, 11.965640, getDate(ts += movementTimeDeltaInMillis)));
+		rutt.add(new LatLong(57.712691 + randomFactorLat, 11.963301, getDate(ts += movementTimeDeltaInMillis)));
+		rutt.add(new LatLong(57.711178 + randomFactorLat, 11.960630, getDate(ts += movementTimeDeltaInMillis)));
+		rutt.add(new LatLong(57.708347 + randomFactorLat, 11.956049, getDate(ts += movementTimeDeltaInMillis)));
+		rutt.add(new LatLong(57.703993 + randomFactorLat, 11.951709, getDate(ts += movementTimeDeltaInMillis)));
+		rutt.add(new LatLong(57.701058 + randomFactorLat, 11.932225, getDate(ts += movementTimeDeltaInMillis)));
+		rutt.add(new LatLong(57.696225 + randomFactorLat, 11.913557, getDate(ts += movementTimeDeltaInMillis)));
+		rutt.add(new LatLong(57.684998 + randomFactorLat, 11.888752, getDate(ts += movementTimeDeltaInMillis)));
+		rutt.add(new LatLong(57.682245 + randomFactorLat, 11.861973, getDate(ts += movementTimeDeltaInMillis)));
+		rutt.add(new LatLong(57.676004 + randomFactorLat, 11.845493, getDate(ts += movementTimeDeltaInMillis)));
+		rutt.add(new LatLong(57.664253 + randomFactorLat, 11.754169, getDate(ts += movementTimeDeltaInMillis)));
+		rutt.add(new LatLong(57.646619 + randomFactorLat, 11.719151, getDate(ts += movementTimeDeltaInMillis)));
 
-		rutt.add(new LatLong(57.632, 11.684, getDate(ts += movementTimeDeltaInMillis)));
-		rutt.add(new LatLong(57.601, 11.683, getDate(ts += movementTimeDeltaInMillis)));
-		rutt.add(new LatLong(57.582, 11.521, getDate(ts += movementTimeDeltaInMillis)));
-		rutt.add(new LatLong(57.562, 11.411, getDate(ts += movementTimeDeltaInMillis)));
-		rutt.add(new LatLong(57.535, 11.253, getDate(ts += movementTimeDeltaInMillis)));
-		rutt.add(new LatLong(57.508, 11.106, getDate(ts += movementTimeDeltaInMillis)));
-		rutt.add(new LatLong(57.486, 10.970, getDate(ts += movementTimeDeltaInMillis)));
-		rutt.add(new LatLong(57.469, 10.867, getDate(ts += movementTimeDeltaInMillis)));
-		rutt.add(new LatLong(57.425, 10.624, getDate(ts += movementTimeDeltaInMillis)));
-		rutt.add(new LatLong(57.420, 10.580, getDate(ts += movementTimeDeltaInMillis)));
+		rutt.add(new LatLong(57.632 + randomFactorLat, 11.684, getDate(ts += movementTimeDeltaInMillis)));
+		rutt.add(new LatLong(57.601 + randomFactorLat, 11.683, getDate(ts += movementTimeDeltaInMillis)));
+		rutt.add(new LatLong(57.582 + randomFactorLat, 11.521, getDate(ts += movementTimeDeltaInMillis)));
+		rutt.add(new LatLong(57.562 + randomFactorLat, 11.411, getDate(ts += movementTimeDeltaInMillis)));
+		rutt.add(new LatLong(57.535 + randomFactorLat, 11.253, getDate(ts += movementTimeDeltaInMillis)));
+		rutt.add(new LatLong(57.508 + randomFactorLat, 11.106, getDate(ts += movementTimeDeltaInMillis)));
+		rutt.add(new LatLong(57.486 + randomFactorLat, 10.970, getDate(ts += movementTimeDeltaInMillis)));
+		rutt.add(new LatLong(57.469 + randomFactorLat, 10.867, getDate(ts += movementTimeDeltaInMillis)));
+		rutt.add(new LatLong(57.425 + randomFactorLat, 10.624, getDate(ts += movementTimeDeltaInMillis)));
+		rutt.add(new LatLong(57.420 + randomFactorLat, 10.580, getDate(ts += movementTimeDeltaInMillis)));
 
-		rutt.add(new LatLong(57.42920, 11.58259, getDate(ts += movementTimeDeltaInMillis)));
-		rutt.add(new LatLong(57.42905, 11.58192, getDate(ts += movementTimeDeltaInMillis)));
-		rutt.add(new LatLong(57.42897, 11.58149, getDate(ts += movementTimeDeltaInMillis)));
-		rutt.add(new LatLong(57.42882, 11.58116, getDate(ts += movementTimeDeltaInMillis)));
-		rutt.add(new LatLong(57.42858, 11.58071, getDate(ts += movementTimeDeltaInMillis)));
-		rutt.add(new LatLong(57.42825, 11.57973, getDate(ts += movementTimeDeltaInMillis)));
-		rutt.add(new LatLong(57.42796, 11.57890, getDate(ts += movementTimeDeltaInMillis)));
-		rutt.add(new LatLong(57.42762, 11.57814, getDate(ts += movementTimeDeltaInMillis)));
-		rutt.add(new LatLong(57.42707, 11.57713, getDate(ts += movementTimeDeltaInMillis)));
-		rutt.add(new LatLong(57.42624, 11.57576, getDate(ts += movementTimeDeltaInMillis)));
+		rutt.add(new LatLong(57.42920 + randomFactorLat, 11.58259, getDate(ts += movementTimeDeltaInMillis)));
+		rutt.add(new LatLong(57.42905 + randomFactorLat, 11.58192, getDate(ts += movementTimeDeltaInMillis)));
+		rutt.add(new LatLong(57.42897 + randomFactorLat, 11.58149, getDate(ts += movementTimeDeltaInMillis)));
+		rutt.add(new LatLong(57.42882 + randomFactorLat, 11.58116, getDate(ts += movementTimeDeltaInMillis)));
+		rutt.add(new LatLong(57.42858 + randomFactorLat, 11.58071, getDate(ts += movementTimeDeltaInMillis)));
+		rutt.add(new LatLong(57.42825 + randomFactorLat, 11.57973, getDate(ts += movementTimeDeltaInMillis)));
+		rutt.add(new LatLong(57.42796 + randomFactorLat, 11.57890, getDate(ts += movementTimeDeltaInMillis)));
+		rutt.add(new LatLong(57.42762 + randomFactorLat, 11.57814, getDate(ts += movementTimeDeltaInMillis)));
+		rutt.add(new LatLong(57.42707 + randomFactorLat, 11.57713, getDate(ts += movementTimeDeltaInMillis)));
+		rutt.add(new LatLong(57.42624 + randomFactorLat, 11.57576, getDate(ts += movementTimeDeltaInMillis)));
 		rutt.add(new LatLong(57.42550, 11.57458, getDate(ts += movementTimeDeltaInMillis)));
 		rutt.add(new LatLong(57.42462, 11.57373, getDate(ts += movementTimeDeltaInMillis)));
 		rutt.add(new LatLong(57.42386, 11.57265, getDate(ts += movementTimeDeltaInMillis)));

@@ -36,7 +36,6 @@ public class SpatialConfigRestIT extends AbstractRestServiceTest {
 	 */
 	// @formatter:off
 	@Test
-	@Ignore
 	public void getAllProjectionsTest() throws Exception {
 		
 		String uid = "rep_power";
@@ -56,7 +55,6 @@ public class SpatialConfigRestIT extends AbstractRestServiceTest {
 
 	// @formatter:off
 	@Test
-	@Ignore
 	public void admin() throws Exception {
 
 		String scopeName = "EC";
