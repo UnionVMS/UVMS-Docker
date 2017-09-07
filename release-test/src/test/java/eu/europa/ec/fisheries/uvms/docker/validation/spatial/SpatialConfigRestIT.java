@@ -54,6 +54,9 @@ public class SpatialConfigRestIT extends AbstractRestServiceTest {
 				.returnResponse();
 
 		 List dataList = checkSuccessResponseReturnType(response,List.class);
+		 assertTrue(dataList != null);
+		 assertTrue(dataList.size() > 0);
+		 
 	}
 	// @formatter:on
 
