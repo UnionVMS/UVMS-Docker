@@ -41,11 +41,15 @@ public class SpatialConfigRestIT extends AbstractRestServiceTest {
 		String uid = "rep_power";
 		String pwd = "abcd-1234";
 		String token = getValidJwtToken(uid, pwd);
+		String scopeName = "EC";
+		String roleName = "rep_power_role";
 
 		
 		final HttpResponse response = Request.Get(getBaseUrl() + "spatial/rest/config/projections")
 				.setHeader("Content-Type", "application/json")
 				.setHeader("Authorization", token)
+				.setHeader(AuthConstants.HTTP_HEADER_SCOPE_NAME, scopeName)
+				.setHeader(AuthConstants.HTTP_HEADER_ROLE_NAME, roleName)
 				.execute()
 				.returnResponse();
 
@@ -55,13 +59,14 @@ public class SpatialConfigRestIT extends AbstractRestServiceTest {
 
 	// @formatter:off
 	@Test
+	@Ignore
 	public void admin() throws Exception {
 
-		String scopeName = "EC";
-		String roleName = "rep_power_role";
 		String uid = "rep_power";
 		String pwd = "abcd-1234";
 		String token = getValidJwtToken(uid, pwd);
+		String scopeName = "EC";
+		String roleName = "rep_power_role";
 
 		final HttpResponse response = Request.Get(getBaseUrl() + "spatial/rest/config/admin")
 				.setHeader("Content-Type", "application/json")
