@@ -17,7 +17,6 @@ import java.util.Map;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
 import org.apache.http.client.fluent.Request;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import eu.europa.ec.fisheries.uvms.docker.validation.common.AbstractRestServiceTest;
@@ -35,11 +34,10 @@ public class ActivityRestIT extends AbstractRestServiceTest {
 	 *             the exception
 	 */
 	@Test
-	@Ignore
 	public void getAdminConfigTest() throws Exception {
 		final HttpResponse response = Request.Get(BASE_URL + "activity/rest/config/admin")
 				.setHeader("Content-Type", "application/json").setHeader("scopeName", "EC")
-				.setHeader("roleName", "REP_POWER_ROLE").setHeader("Authorization", getValidJwtToken()).execute()
+				.setHeader("roleName", "REP_POWER_ROLE").setHeader("Authorization", getValidJwtToken("rep_power","abcd-1234")).execute()
 				.returnResponse();
 		assertEquals(HttpStatus.SC_OK, response.getStatusLine().getStatusCode());
 		final Map<String, Object> data = getJsonMap(response);
@@ -55,11 +53,10 @@ public class ActivityRestIT extends AbstractRestServiceTest {
 	 *             the exception
 	 */
 	@Test
-	@Ignore
 	public void getUserConfigTest() throws Exception {
-		final HttpResponse response = Request.Get(BASE_URL + "asset/rest/user")
+		final HttpResponse response = Request.Get(BASE_URL + "activity/rest/config/user")
 				.setHeader("Content-Type", "application/json").setHeader("scopeName", "EC")
-				.setHeader("roleName", "REP_POWER_ROLE").setHeader("Authorization", getValidJwtToken()).execute()
+				.setHeader("roleName", "REP_POWER_ROLE").setHeader("Authorization", getValidJwtToken("rep_power","abcd-1234")).execute()
 				.returnResponse();
 		assertEquals(HttpStatus.SC_OK, response.getStatusLine().getStatusCode());
 		final Map<String, Object> data = getJsonMap(response);
