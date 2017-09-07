@@ -69,15 +69,12 @@ public abstract class AbstractRest extends Assert {
 	}
 	
 	protected static final String getValidJwtToken(String uid, String pwd) {
-		if (validJwtToken == null) {
-			try {
-				validJwtToken = aquireJwtToken(uid,pwd);
-			} catch (Exception e) {
-				Assert.fail("Not possible to get jwt token");
-			}
+		try {
+			return aquireJwtToken(uid, pwd);
+		} catch (Exception e) {
+			Assert.fail("Not possible to get jwt token");
+			return null;
 		}
-		
-		return validJwtToken;
 	}
 
 	public static final String aquireJwtToken(final String username, final String password) throws Exception {
