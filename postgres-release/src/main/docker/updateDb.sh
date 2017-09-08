@@ -55,4 +55,8 @@ mvn liquibase:update -Ppostgres,exec -Ddb.url=jdbc:postgresql://localhost:5432/d
 cd /liquibase/mdr/LIQUIBASE
 mvn liquibase:update -Ppostgres,exec -Ddb.url=jdbc:postgresql://localhost:5432/db71u
 
+rm -rf /home/postgres/.m2/repository
+
+psql -U spatial -d db71u -c "update system_configurations set value = 'http://localhost:28080/geoserver/' where name='geo_server_url'"
+
 echo "All uvms databases created"
