@@ -46,6 +46,8 @@ public class ModuleAvailableSystemIT extends AbstractRest {
 	public void checkUserAccessTest() throws Exception {
 		assertEquals(HttpStatus.SC_OK, Request.Get(getBaseUrl() + "usm-administration/").execute().returnResponse()
 				.getStatusLine().getStatusCode());
+		assertEquals(HttpStatus.SC_OK, Request.Get(getBaseUrl() + "user/monitoring").execute().returnResponse()
+				.getStatusLine().getStatusCode());		
 		assertEquals(HttpStatus.SC_FORBIDDEN, Request.Get(getBaseUrl() + "/usm-administration/rest").execute()
 				.returnResponse().getStatusLine().getStatusCode());
 	}
@@ -60,6 +62,8 @@ public class ModuleAvailableSystemIT extends AbstractRest {
 	public void checkConfigAccessTest() throws Exception {
 		assertEquals(HttpStatus.SC_OK,
 				Request.Get(getBaseUrl() + "config/").execute().returnResponse().getStatusLine().getStatusCode());
+		assertEquals(HttpStatus.SC_OK,
+				Request.Get(getBaseUrl() + "config/monitoring").execute().returnResponse().getStatusLine().getStatusCode());		
 		assertEquals(HttpStatus.SC_FORBIDDEN,
 				Request.Get(getBaseUrl() + "config/rest").execute().returnResponse().getStatusLine().getStatusCode());
 	}
@@ -74,6 +78,8 @@ public class ModuleAvailableSystemIT extends AbstractRest {
 	public void checkExchangeAccessTest() throws Exception {
 		assertEquals(HttpStatus.SC_FORBIDDEN,
 				Request.Get(getBaseUrl() + "exchange/").execute().returnResponse().getStatusLine().getStatusCode());
+		assertEquals(HttpStatus.SC_OK,
+				Request.Get(getBaseUrl() + "exchange/monitoring").execute().returnResponse().getStatusLine().getStatusCode());		
 		assertEquals(HttpStatus.SC_FORBIDDEN,
 				Request.Get(getBaseUrl() + "exchange/rest").execute().returnResponse().getStatusLine().getStatusCode());
 	}
@@ -88,6 +94,8 @@ public class ModuleAvailableSystemIT extends AbstractRest {
 	public void checkSpatialAccessTest() throws Exception {
 		assertEquals(HttpStatus.SC_FORBIDDEN,
 				Request.Get(getBaseUrl() + "spatial/").execute().returnResponse().getStatusLine().getStatusCode());
+		assertEquals(HttpStatus.SC_OK,
+				Request.Get(getBaseUrl() + "spatial/monitoring").execute().returnResponse().getStatusLine().getStatusCode());		
 		assertEquals(HttpStatus.SC_FORBIDDEN,
 				Request.Get(getBaseUrl() + "spatial/rest").execute().returnResponse().getStatusLine().getStatusCode());
 	}
@@ -102,6 +110,8 @@ public class ModuleAvailableSystemIT extends AbstractRest {
 	public void checkMovementAccessTest() throws Exception {
 		assertEquals(HttpStatus.SC_FORBIDDEN,
 				Request.Get(getBaseUrl() + "movement/").execute().returnResponse().getStatusLine().getStatusCode());
+		assertEquals(HttpStatus.SC_OK,
+				Request.Get(getBaseUrl() + "movement/monitoring").execute().returnResponse().getStatusLine().getStatusCode());		
 		assertEquals(HttpStatus.SC_FORBIDDEN,
 				Request.Get(getBaseUrl() + "movement/rest").execute().returnResponse().getStatusLine().getStatusCode());
 		assertEquals(HttpStatus.SC_OK, Request.Get(getBaseUrl() + "movement/monitoring").execute().returnResponse()
@@ -118,6 +128,8 @@ public class ModuleAvailableSystemIT extends AbstractRest {
 	public void checkAuditAccessTest() throws Exception {
 		assertEquals(HttpStatus.SC_OK,
 				Request.Get(getBaseUrl() + "audit/").execute().returnResponse().getStatusLine().getStatusCode());
+		assertEquals(HttpStatus.SC_OK,
+				Request.Get(getBaseUrl() + "audit/monitoring").execute().returnResponse().getStatusLine().getStatusCode());
 		assertEquals(HttpStatus.SC_FORBIDDEN,
 				Request.Get(getBaseUrl() + "audit/rest").execute().returnResponse().getStatusLine().getStatusCode());
 	}
@@ -132,10 +144,10 @@ public class ModuleAvailableSystemIT extends AbstractRest {
 	public void checkAssetAccessTest() throws Exception {
 		assertEquals(HttpStatus.SC_OK,
 				Request.Get(getBaseUrl() + "asset/").execute().returnResponse().getStatusLine().getStatusCode());
+		assertEquals(HttpStatus.SC_OK,
+				Request.Get(getBaseUrl() + "asset/monitoring").execute().returnResponse().getStatusLine().getStatusCode());		
 		assertEquals(HttpStatus.SC_FORBIDDEN,
 				Request.Get(getBaseUrl() + "asset/rest").execute().returnResponse().getStatusLine().getStatusCode());
-		// assertEquals(HttpStatus.SC_OK,Request.Get(getBaseUrl() +
-		// "asset/monitoring").execute().returnResponse().getStatusLine().getStatusCode());
 	}
 
 	/**
@@ -165,6 +177,8 @@ public class ModuleAvailableSystemIT extends AbstractRest {
 	public void checkRulesAccessTest() throws Exception {
 		assertEquals(HttpStatus.SC_FORBIDDEN,
 				Request.Get(getBaseUrl() + "rules/").execute().returnResponse().getStatusLine().getStatusCode());
+		assertEquals(HttpStatus.SC_OK,
+				Request.Get(getBaseUrl() + "rules/monitoring").execute().returnResponse().getStatusLine().getStatusCode());		
 		assertEquals(HttpStatus.SC_FORBIDDEN,
 				Request.Get(getBaseUrl() + "rules/rest").execute().returnResponse().getStatusLine().getStatusCode());
 	}
@@ -179,6 +193,8 @@ public class ModuleAvailableSystemIT extends AbstractRest {
 	public void checkReportingAccessTest() throws Exception {
 		assertEquals(HttpStatus.SC_FORBIDDEN,
 				Request.Get(getBaseUrl() + "reporting/").execute().returnResponse().getStatusLine().getStatusCode());
+		assertEquals(HttpStatus.SC_OK,
+				Request.Get(getBaseUrl() + "reporting/monitoring").execute().returnResponse().getStatusLine().getStatusCode());		
 	}
 	
 	/**

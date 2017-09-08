@@ -15,6 +15,7 @@ package eu.europa.ec.fisheries.uvms.docker.validation.config;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.UUID;
 
 import org.apache.http.HttpResponse;
@@ -45,6 +46,32 @@ public class SettingsRestIT extends AbstractRestServiceTest {
 		List dataList = checkSuccessResponseReturnType(response,List.class);
 	}
 
+	
+	/**
+	 * Gets the by module name all modules test.
+	 *
+	 * @return the by module name all modules test
+	 * @throws Exception the exception
+	 */
+	@Test
+	public void getByModuleNameAllModulesTest() throws Exception {
+		String validJwtToken = getValidJwtToken();
+		final HttpResponse response = Request.Get(getBaseUrl() + "config/rest/catalog")
+				.setHeader("Content-Type", "application/json").setHeader("Authorization", validJwtToken).execute()
+				.returnResponse();
+		Map<String, Object> dataMap = checkSuccessResponseReturnMap(response);
+		Set<String> modules = dataMap.keySet();
+
+		for (String module : modules) {
+			final HttpResponse moduleResponse = Request.Get(getBaseUrl() + "config/rest/settings?moduleName=" + module)
+					.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken()).execute()
+					.returnResponse();
+			List dataList = checkSuccessResponseReturnType(moduleResponse,List.class);			
+		}
+		
+	}
+
+	
 	/**
 	 * Gets the by id test.
 	 *
