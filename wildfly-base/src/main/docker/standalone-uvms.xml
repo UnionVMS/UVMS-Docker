@@ -374,7 +374,7 @@
 				    </validation>
                     <security>
                         <user-name>spatial</user-name>
-                        <password>postgres</password>
+                        <password>spatial</password>
                     </security>
                 </xa-datasource>
                 <xa-datasource jta="true" jndi-name="java:jboss/datasources/uvms_reporting" pool-name="uvms_reporting" enabled="true" use-ccm="true" statistics-enabled="true">
