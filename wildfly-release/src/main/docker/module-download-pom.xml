@@ -24,8 +24,8 @@
         <unionvms.project.mapfishprint.version>3.4</unionvms.project.mapfishprint.version>
         <unionvms.project.geoserver.version>2.8.5.presweden1</unionvms.project.geoserver.version>
         <unionvms.project.user.module>2.0.2</unionvms.project.user.module>
-        <unionvms.project.rules.module>3.0.7</unionvms.project.rules.module>
-        <unionvms.project.rules.dbaccess.module>3.0.5</unionvms.project.rules.dbaccess.module>
+        <unionvms.project.rules.module>3.0.8</unionvms.project.rules.module>
+        <unionvms.project.rules.dbaccess.module>3.0.6</unionvms.project.rules.dbaccess.module>
         <unionvms.project.movement.module>3.0.17</unionvms.project.movement.module>
         <unionvms.project.mobileterminal.module>3.0.17</unionvms.project.mobileterminal.module>
         <unionvms.project.exchange.module>3.0.14</unionvms.project.exchange.module>

@@ -35,8 +35,8 @@ addJbossAll asset-module-3.0.15 /opt/jboss/jboss-deployment/asset/jboss-all.xml
 addJbossAll audit-module-3.0.14 /opt/jboss/jboss-deployment/audit/jboss-all.xml
 addJbossAll exchange-module-3.0.14 /opt/jboss/jboss-deployment/exchange/jboss-all.xml
 addJbossAll mobileterminal-module-3.0.17 /opt/jboss/jboss-deployment/mobile/jboss-all.xml
-addJbossAll rules-dbaccess-module-3.0.5 /opt/jboss/jboss-deployment/general/jboss-all.xml
-addJbossAll rules-module-3.0.7 /opt/jboss/jboss-deployment/rules/jboss-all.xml
+addJbossAll rules-dbaccess-module-3.0.6 /opt/jboss/jboss-deployment/general/jboss-all.xml
+addJbossAll rules-module-3.0.8 /opt/jboss/jboss-deployment/rules/jboss-all.xml
 addJbossAll activity-module-postgres-0.5.13 /opt/jboss/jboss-deployment/activity/jboss-all.xml
 addJbossAll mdr-module-0.5.1 /opt/jboss/jboss-deployment/mdr/jboss-all.xml
 addJbossAll naf-module-3.0.3 /opt/jboss/jboss-deployment/plugins/jboss-all.xml

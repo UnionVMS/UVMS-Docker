@@ -8,7 +8,7 @@
 		<dependency name="audit-module-3.0.14.ear" />
 		<dependency name="exchange-module-3.0.14.ear" />
 		<dependency name="mobileterminal-module-3.0.17.ear" />
-		<dependency name="rules-module-3.0.7.ear" />
+		<dependency name="rules-module-3.0.8.ear" />
 		<dependency name="reporting-module-1.0.5.ear" />
 		<dependency name="mdr-module-0.5.1.ear" />
 		<dependency name="activity-module-postgres-0.5.13.ear" />

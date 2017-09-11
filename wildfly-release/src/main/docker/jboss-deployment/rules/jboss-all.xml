@@ -10,6 +10,6 @@
 		<dependency name="mobileterminal-module-3.0.17.ear" />
 		<dependency name="mdr-module-0.5.1.ear" />
 		<dependency name="activity-module-postgres-0.5.13.ear" />		
-		<dependency name="rules-dbaccess-module-3.0.5.ear" />
+		<dependency name="rules-dbaccess-module-3.0.6.ear" />
 	</jboss-deployment-dependencies>
 </jboss>

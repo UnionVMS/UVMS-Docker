@@ -10,7 +10,7 @@
 			<module name="deployment.audit-module-3.0.14.ear" />
 			<module name="deployment.exchange-module-3.0.14.ear" />
 			<module name="deployment.mobileterminal-module-3.0.17.ear" />
-			<module name="deployment.rules-module-3.0.7.ear" />
+			<module name="deployment.rules-module-3.0.8.ear" />
 			<module name="deployment.reporting-module-1.0.5.ear" />
 			<module name="deployment.naf-module-3.0.3.ear" />
 			<!-- <module name="deployment.sweagencyemail-module-3.0.0.ear" />-->
