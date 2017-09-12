@@ -23,6 +23,7 @@
 			</plugins>
 		</pluginManagement>
 		<plugins>
+			<!-- 
 			<plugin>
 				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>keytool-maven-plugin</artifactId>
@@ -60,6 +61,7 @@
 					<skipIfExist>true</skipIfExist>
 				</configuration>
 			</plugin>
+			-->
 			<plugin>
 				<artifactId>maven-resources-plugin</artifactId>
 				<executions>
