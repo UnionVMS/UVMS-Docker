@@ -127,7 +127,26 @@
             </logger>
             <logger category="org.jboss.as.config">
                 <level name="DEBUG"/>
+            </logger>            
+            <logger category="org.jboss.as.jpa">
+                <level name="WARN"/>
             </logger>
+            <logger category="org.jboss.as.ejb3">
+                <level name="WARN"/>
+            </logger>
+            <logger category="org.hibernate">
+                <level name="WARN"/>
+            </logger>  
+            <logger category="org.jboss.modules">
+                <level name="ERROR"/>
+            </logger>
+            <logger category="org.jboss.weld">
+                <level name="WARN"/>
+            </logger>
+            <logger category="org.jboss.as.server.deployment">
+                <level name="ERROR"/>
+            </logger>
+            
             <logger category="sun.rmi">
                 <level name="WARN"/>
             </logger>
@@ -137,6 +156,23 @@
             <logger category="jacorb.config">
                 <level name="ERROR"/>
             </logger>
+            
+            <logger category="org.geoserver">
+                <level name="WARN"/>
+            </logger>
+            <logger category="org.geowebcache">
+                <level name="WARN"/>
+            </logger>
+            <logger category="org.vfny">
+                <level name="WARN"/>
+            </logger>            
+            <logger category="org.geotools">
+                <level name="WARN"/>
+            </logger>            
+            <logger category="org.springframework">
+                <level name="WARN"/>
+            </logger>
+            
             <root-logger>
                 <level name="INFO"/>
                 <handlers>
