@@ -14,11 +14,10 @@ copy of the GNU General Public License along with the IFDM Suite. If not, see <h
 package eu.europa.ec.fisheries.uvms.docker.validation.reporting;
 
 import java.util.ArrayList;
-import java.util.Map;
 
 import org.apache.http.HttpResponse;
+import org.apache.http.HttpStatus;
 import org.apache.http.client.fluent.Request;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import eu.europa.ec.fisheries.uvms.docker.validation.common.AbstractRestServiceTest;
@@ -32,16 +31,21 @@ import eu.europa.ec.fisheries.uvms.reporting.service.dto.rules.AlarmMovementList
 public class AlarmRestIT extends AbstractRestServiceTest {
 
 	@Test
-	@Ignore
 	public void getAlarmsTest() throws Exception {
 		AlarmMovementList alarmMovementList = new AlarmMovementList();
 		ArrayList<AlarmMovement> alarmMovementListContent = new ArrayList<AlarmMovement>();
+		AlarmMovement alarmMovement = new AlarmMovement();
+		alarmMovement.setMovementId("movementId");
+		alarmMovement.setxCoordinate("57.715434");
+		alarmMovement.setyCoordinate("11.970012");
+		alarmMovementListContent.add(alarmMovement);	
+		
 		alarmMovementList.setAlarmMovementList(alarmMovementListContent);
 
 		final HttpResponse response = Request.Post(getBaseUrl() + "reporting/rest/alarms")
 				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken())
 				.bodyByteArray(writeValueAsString(alarmMovementList).getBytes()).execute().returnResponse();
-		Map<String, Object> dataMap = checkSuccessResponseReturnMap(response);
+		assertEquals(HttpStatus.SC_OK, response.getStatusLine().getStatusCode());
 	}
 
 }
