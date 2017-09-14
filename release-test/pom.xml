@@ -301,7 +301,6 @@
 									<port>61616:61616</port>
 								</ports>
 								<wait>
-									<log>database system is ready to accept connections</log>
 									<tcp>
 										<host>127.0.0.1</host>
 										<ports>

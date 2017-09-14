@@ -150,9 +150,6 @@ public class MovementJmsIT extends AbstractRestServiceTest {
 			assertNotNull(createMovementResponse.getMovement());
 			assertNotNull(createMovementResponse.getMovement().getPosition());
 			fromAPI.add(createMovementResponse);
-
-			System.out.println(createMovementResponse.getMovement().getInternalReferenceNumber() + "\t"
-					+ createMovementResponse.getMovement().getGuid());
 		}
 
 	}
