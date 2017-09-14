@@ -20,6 +20,7 @@ import java.util.Map;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
 import org.apache.http.client.fluent.Request;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -99,6 +100,7 @@ public class SpatialConfigRestIT extends AbstractRestServiceTest {
 	
 	
 	@Test
+	@Ignore
 	public void getReportMapConfigWithoutSave() throws Exception {
 
 		String uid = "rep_power";

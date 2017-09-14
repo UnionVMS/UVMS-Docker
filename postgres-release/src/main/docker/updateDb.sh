@@ -50,10 +50,10 @@ cd /liquibase/reporting/LIQUIBASE
 mvn liquibase:update -Ppostgres,exec -Ddb.url=jdbc:postgresql://localhost:5432/db71u
 
 cd /liquibase/activity/LIQUIBASE
-mvn liquibase:update -Ppostgres,exec -Ddb.url=jdbc:postgresql://localhost:5432/db71u
+mvn liquibase:update -Ppostgres,exec,testdata -Ddb.url=jdbc:postgresql://localhost:5432/db71u
 
 cd /liquibase/mdr/LIQUIBASE
-mvn liquibase:update -Ppostgres,exec -Ddb.url=jdbc:postgresql://localhost:5432/db71u
+mvn liquibase:update -Ppostgres,exec,testdata -Ddb.url=jdbc:postgresql://localhost:5432/db71u
 
 rm -rf /home/postgres/.m2/repository
 
