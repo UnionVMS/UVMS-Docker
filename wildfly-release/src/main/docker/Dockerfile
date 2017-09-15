@@ -21,7 +21,6 @@ RUN mkdir -p /opt/jboss/jboss-deployment/mdr
 RUN mkdir -p /opt/jboss/jboss-deployment/user
 RUN mkdir -p /opt/jboss/jboss-deployment/web-app
 RUN mkdir -p /opt/jboss/jboss-deployment/plugins
-RUN mkdir -p /opt/jboss/jboss-deployment/fluxBridge
 
 
 COPY jboss-deployment/add-jboss-all-to-ear.sh /opt/jboss/jboss-deployment/
@@ -41,10 +40,6 @@ COPY jboss-deployment/user/jboss-all.xml /opt/jboss/jboss-deployment/user/
 COPY jboss-deployment/plugins/jboss-all.xml /opt/jboss/jboss-deployment/plugins/
 COPY jboss-deployment/web-app/jboss-deployment-structure.xml /opt/jboss/jboss-deployment/web-app/
 COPY jboss-deployment/web-app/jboss-all.xml /opt/jboss/jboss-deployment/web-app/
-
-# Folder containing connection properties of jmsScheduler bridge app, needed for the plugins to dispatch messages to FLUX TL
-COPY FluxBridgeProperties/bridge.properties /opt/jboss/jboss-deployment/fluxBridge
-COPY FluxBridgeProperties/bridge-queues.properties /opt/jboss/jboss-deployment/fluxBridge
 
  
 USER root
