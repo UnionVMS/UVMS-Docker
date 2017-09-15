@@ -9,7 +9,7 @@
 	</parent>
 	<groupId>eu.europa.ec.fisheries.uvms.docker</groupId>
 	<artifactId>uvms-docker-amq</artifactId>
-	<version>3.11.0-SNAPSHOT</version>
+	<version>3.10.alpine</version>
 	<packaging>pom</packaging>
 	<name>uvms-docker-amq</name>
 	<build>
@@ -91,6 +91,6 @@
 		</profile>
 	</profiles>
 	<scm>
-		<tag>HEAD</tag>
+		<tag>uvms-docker-3.10.alpine</tag>
 	</scm>
 </project>
