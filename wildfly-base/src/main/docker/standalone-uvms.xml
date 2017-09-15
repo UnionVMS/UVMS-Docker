@@ -37,9 +37,7 @@
         <property name="javax.net.ssl.trustStore" value="${jboss.server.config.dir}/client.truststore"/>
         <property name="javax.net.ssl.trustStorePassword" value="keypassword"/>
         <property name="db.dialect" value="postgres"/>
-        <property name="hibernate.dialect" value="org.hibernate.dialect.PostgreSQLDialect"/>
-        <property name="jmxToMqBrokerPropFile" value="/opt/jboss/jboss-deployment/fluxBridge/bridge.properties"/>
-        <property name="mqBrokerToJmxPropFile" value="/opt/jboss/jboss-deployment/fluxBridge/bridge-queues.properties"/>
+        <property name="hibernate.dialect" value="org.hibernate.dialect.PostgreSQLDialect"/>        
     </system-properties>
 
 
@@ -946,21 +944,6 @@
                         <admin-object class-name="org.apache.activemq.command.ActiveMQQueue" jndi-name="java:/jms/queue/UVMSSales" use-java-context="true" pool-name="UVMSSales">
                             <config-property name="PhysicalName">
                                 UVMSSales
-                            </config-property>
-                        </admin-object>
-                        <admin-object class-name="org.apache.activemq.command.ActiveMQQueue" jndi-name="java:/jms/queue/UVMSPluginBridge" use-java-context="true" pool-name="UVMSPluginBridge">
-                            <config-property name="PhysicalName">
-                                UVMSPluginBridge
-                            </config-property>
-                        </admin-object>
-                        <admin-object class-name="org.apache.activemq.command.ActiveMQQueue" jndi-name="java:/jms/queue/UVMSMdrPluginEvent" use-java-context="true" pool-name="UVMSMdrPluginEvent">
-                            <config-property name="PhysicalName">
-                                UVMSMdrPluginEvent
-                            </config-property>
-                        </admin-object>
-                        <admin-object class-name="org.apache.activemq.command.ActiveMQQueue" jndi-name="java:/jms/queue/UVMSActivityPluginEvent" use-java-context="true" pool-name="UVMSFAPluginEvent">
-                            <config-property name="PhysicalName">
-                                UVMSFAPluginEvent
                             </config-property>
                         </admin-object>
                     </admin-objects>
