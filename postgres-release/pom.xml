@@ -9,14 +9,14 @@
 	</parent>
 	<groupId>eu.europa.ec.fisheries.uvms.docker</groupId>
 	<artifactId>uvms-docker-postgres-release</artifactId>
-	<version>3.10.0-SNAPSHOT</version>
+	<version>3.10.0</version>
 	<packaging>pom</packaging>
 	<name>uvms-docker-postgres-release</name>
 	<dependencies>
 		<dependency>
 			<groupId>eu.europa.ec.fisheries.uvms.docker</groupId>
 			<artifactId>uvms-docker-postgres-base</artifactId>
-			<version>3.10.0-SNAPSHOT</version>
+			<version>3.10.0</version>
 			<type>pom</type>
 		</dependency>
 	</dependencies>
@@ -130,6 +130,6 @@
 		</profile>
 	</profiles>
 	<scm>
-		<tag>HEAD</tag>
+		<tag>uvms-docker-3.10.0</tag>
 	</scm>
 </project>
