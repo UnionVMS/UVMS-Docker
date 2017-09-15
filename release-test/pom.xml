@@ -373,7 +373,7 @@
 									<shutdown>15000</shutdown>
 								</wait>
 								<cmd>
-									<shell>/opt/jboss/start.sh /opt/jboss/wildfly/bin/standalone.sh
+									<shell>/opt/jboss/wildfly/bin/standalone.sh
 										-c standalone-uvms.xml -b 0.0.0.0 -bmanagement 0.0.0.0 --debug</shell>
 								</cmd>
 								<dependsOn>

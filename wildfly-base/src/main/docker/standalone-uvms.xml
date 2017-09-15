@@ -37,7 +37,7 @@
         <property name="javax.net.ssl.trustStore" value="${jboss.server.config.dir}/client.truststore"/>
         <property name="javax.net.ssl.trustStorePassword" value="keypassword"/>
         <property name="db.dialect" value="postgres"/>
-        <property name="hibernate.dialect" value="org.hibernate.dialect.PostgreSQLDialect"/>        
+        <property name="hibernate.dialect" value="org.hibernate.dialect.PostgreSQLDialect"/>
     </system-properties>
 
 
@@ -125,8 +125,11 @@
             <logger category="org.apache.tomcat.util.modeler">
                 <level name="WARN"/>
             </logger>
+            <logger category="eu.europa.ec.mare.usm.jwt">
+              <level name="INFO"/>
+            </logger>
             <logger category="org.jboss.as.config">
-                <level name="DEBUG"/>
+                <level name="INFO"/>
             </logger>            
             <logger category="org.jboss.as.jpa">
                 <level name="WARN"/>
@@ -1054,7 +1057,7 @@
         <socket-binding name="txn-recovery-environment" port="4712"/>
         <socket-binding name="txn-status-manager" port="4713"/>
         <outbound-socket-binding name="mail-smtp">
-            <remote-destination host="localhost" port="25"/>
+            <remote-destination host="localhost" port="1025"/>
         </outbound-socket-binding>
     </socket-binding-group>
 </server>

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
 		<groupId>fish.focus.maven</groupId>
@@ -12,12 +13,179 @@
 	<version>3.11.0-SNAPSHOT</version>
 	<packaging>pom</packaging>
 	<name>uvms-docker-wildfly-release</name>
+	<properties>
+		<unionvms.project.unionvms.web.version>3.0.7</unionvms.project.unionvms.web.version>
+		<unionvms.project.mapfishprint.version>3.4</unionvms.project.mapfishprint.version>
+		<unionvms.project.geoserver.version>2.8.5.presweden1</unionvms.project.geoserver.version>
+		<unionvms.project.user.module>2.0.2</unionvms.project.user.module>
+		<unionvms.project.rules.module>3.0.8</unionvms.project.rules.module>
+		<unionvms.project.rules.dbaccess.module>3.0.6</unionvms.project.rules.dbaccess.module>
+		<unionvms.project.movement.module>3.0.17</unionvms.project.movement.module>
+		<unionvms.project.mobileterminal.module>3.0.17</unionvms.project.mobileterminal.module>
+		<unionvms.project.exchange.module>3.0.14</unionvms.project.exchange.module>
+		<unionvms.project.reporting.module>1.0.5</unionvms.project.reporting.module>
+		<unionvms.project.spatial.module>0.5.10</unionvms.project.spatial.module>
+		<unionvms.project.config.module>3.0.13</unionvms.project.config.module>
+		<unionvms.project.audit.module>3.0.14</unionvms.project.audit.module>
+		<unionvms.project.asset.module>3.0.15</unionvms.project.asset.module>
+		<unionvms.project.activity.module>0.5.13</unionvms.project.activity.module>
+		<unionvms.project.mdr.module>0.5.1</unionvms.project.mdr.module>
+		<unionvms.project.plugins.naf>3.0.3</unionvms.project.plugins.naf>
+		<unionvms.project.plugins.flux>3.0.1</unionvms.project.plugins.flux>
+		<unionvms.project.plugins.twostage>3.0.3</unionvms.project.plugins.twostage>
+		<unionvms.project.plugins.siriusone>3.0.4</unionvms.project.plugins.siriusone>
+	</properties>
+	<repositories>
+		<repository>
+			<id>focus-repo</id>
+			<name>Focus nexus repository</name>
+			<url>http://nexus.focus.fish/nexus/</url>
+		</repository>
+	</repositories>
+
+	<distributionManagement>
+		<repository>
+			<id>focus-releases</id>
+			<name>UnionVms Repository</name>
+			<url>http://nexus.focus.fish/nexus/content/repositories/releases/</url>
+		</repository>
+		<snapshotRepository>
+			<id>focus-snapshots</id>
+			<name>UnionVms Snapshot Repository</name>
+			<url>http://nexus.focus.fish/nexus/content/repositories/snapshots/</url>
+		</snapshotRepository>
+	</distributionManagement>
+
 	<dependencies>
+		<!-- frontend modules -->
 		<dependency>
-			<groupId>eu.europa.ec.fisheries.uvms.docker</groupId>
-			<artifactId>uvms-docker-wildfly-base</artifactId>
-			<version>3.11.0-SNAPSHOT</version>
-			<type>pom</type>
+			<groupId>eu.europa.ec.fisheries.uvms</groupId>
+			<artifactId>unionvms-web</artifactId>
+			<type>war</type>
+			<version>${unionvms.project.unionvms.web.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>eu.europa.ec.fisheries.uvms.mapfish.print</groupId>
+			<artifactId>mapfish-print</artifactId>
+			<type>war</type>
+			<version>${unionvms.project.mapfishprint.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>eu.europa.ec.fisheries.uvms.geoserver.web</groupId>
+			<artifactId>gs-web-app</artifactId>
+			<classifier>postgres</classifier>
+			<type>war</type>
+			<version>${unionvms.project.geoserver.version}</version>
+		</dependency>
+
+		<!-- app modules -->
+		<dependency>
+			<groupId>eu.europa.ec.fisheries.uvms.asset</groupId>
+			<artifactId>asset-module</artifactId>
+			<type>ear</type>
+			<version>${unionvms.project.asset.module}</version>
+		</dependency>
+		<dependency>
+			<groupId>eu.europa.ec.fisheries.uvms.audit</groupId>
+			<artifactId>audit-module</artifactId>
+			<type>ear</type>
+			<version>${unionvms.project.audit.module}</version>
+		</dependency>
+		<dependency>
+			<groupId>eu.europa.ec.fisheries.uvms.config</groupId>
+			<artifactId>config-module</artifactId>
+			<type>ear</type>
+			<version>${unionvms.project.config.module}</version>
+		</dependency>
+		<dependency>
+			<groupId>eu.europa.ec.fisheries.uvms.exchange</groupId>
+			<artifactId>exchange-module</artifactId>
+			<type>ear</type>
+			<version>${unionvms.project.exchange.module}</version>
+		</dependency>
+		<dependency>
+			<groupId>eu.europa.ec.fisheries.uvms.mobileterminal</groupId>
+			<artifactId>mobileterminal-module</artifactId>
+			<type>ear</type>
+			<version>${unionvms.project.mobileterminal.module}</version>
+		</dependency>
+		<dependency>
+			<groupId>eu.europa.ec.fisheries.uvms.movement</groupId>
+			<artifactId>movement-module</artifactId>
+			<type>ear</type>
+			<version>${unionvms.project.movement.module}</version>
+		</dependency>
+		<dependency>
+			<groupId>eu.europa.ec.fisheries.uvms.rules</groupId>
+			<artifactId>rules-module</artifactId>
+			<type>ear</type>
+			<version>${unionvms.project.rules.module}</version>
+		</dependency>
+		<dependency>
+			<groupId>eu.europa.ec.fisheries.uvms.spatial</groupId>
+			<artifactId>spatial-module</artifactId>
+			<type>ear</type>
+			<version>${unionvms.project.spatial.module}</version>
+		</dependency>
+		<dependency>
+			<groupId>eu.europa.ec.fisheries.uvms.activity</groupId>
+			<artifactId>activity-module-postgres</artifactId>
+			<type>ear</type>
+			<version>${unionvms.project.activity.module}</version>
+		</dependency>
+		<dependency>
+			<groupId>eu.europa.ec.fisheries.uvms.mdr</groupId>
+			<artifactId>mdr-module</artifactId>
+			<type>ear</type>
+			<version>${unionvms.project.mdr.module}</version>
+		</dependency>
+		<dependency>
+			<groupId>eu.europa.ec.fisheries.uvms.reporting</groupId>
+			<artifactId>reporting-module</artifactId>
+			<type>ear</type>
+			<version>${unionvms.project.reporting.module}</version>
+		</dependency>
+		<dependency>
+			<groupId>eu.europa.ec.fisheries.uvms.user</groupId>
+			<artifactId>user-module</artifactId>
+			<type>ear</type>
+			<version>${unionvms.project.user.module}</version>
+		</dependency>
+
+		<!-- db modules -->
+		<dependency>
+			<groupId>eu.europa.ec.fisheries.uvms.rules</groupId>
+			<artifactId>rules-dbaccess-module</artifactId>
+			<type>ear</type>
+			<version>${unionvms.project.rules.dbaccess.module}</version>
+		</dependency>
+
+		<!-- plugin modules -->
+		<dependency>
+			<groupId>eu.europa.ec.fisheries.uvms.plugins</groupId>
+			<artifactId>naf-module</artifactId>
+			<type>ear</type>
+			<version>${unionvms.project.plugins.naf}</version>
+		</dependency>
+		<dependency>
+			<groupId>eu.europa.ec.fisheries.uvms.plugins</groupId>
+			<artifactId>flux-module</artifactId>
+			<type>ear</type>
+			<version>${unionvms.project.plugins.flux}</version>
+		</dependency>
+		<dependency>
+			<groupId>eu.europa.ec.fisheries.uvms.plugins.inmarsat</groupId>
+			<artifactId>twostage-module</artifactId>
+			<type>ear</type>
+			<version>${unionvms.project.plugins.twostage}</version>
+		</dependency>
+		<dependency>
+			<groupId>eu.europa.ec.fisheries.uvms.plugins.iridium</groupId>
+			<artifactId>siriusone-module</artifactId>
+			<type>ear</type>
+			<version>${unionvms.project.plugins.siriusone}</version>
 		</dependency>
 	</dependencies>
 	<build>
@@ -32,11 +200,130 @@
 		</pluginManagement>
 		<plugins>
 			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-dependency-plugin</artifactId>
+				<version>3.0.1</version>
+				<executions>
+					<execution>
+						<id>copy-dependencies</id>
+						<phase>generate-resources</phase>
+						<goals>
+							<goal>copy-dependencies</goal>
+						</goals>
+						<configuration>
+							<copyPom>false</copyPom>
+							<outputDirectory>${project.basedir}/target/dockerfile/deployments</outputDirectory>
+							<excludeTypes>pom</excludeTypes>
+
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+
+			<plugin>
+				<artifactId>maven-antrun-plugin</artifactId>
+				<version>1.7</version>
+				<executions>
+					<execution>
+						<phase>compile</phase>
+						<configuration>
+							<tasks>
+							
+							
+								<jar destfile="${project.basedir}/target/dockerfile/deployments/user-module-${unionvms.project.user.module}.ear" update="true">
+									<zipfileset dir="${project.basedir}/src/main/docker/jboss-deployment/user" includes="*.xml" prefix="META-INF"/>
+								</jar>
+		
+								<jar destfile="${project.basedir}/target/dockerfile/deployments/config-module-${unionvms.project.config.module}.ear" update="true">
+									<zipfileset dir="${project.basedir}/src/main/docker/jboss-deployment/config" includes="*.xml" prefix="META-INF"/>
+								</jar>
+								
+								<jar destfile="${project.basedir}/target/dockerfile/deployments/spatial-module-${unionvms.project.spatial.module}.ear" update="true">
+									<zipfileset dir="${project.basedir}/src/main/docker/jboss-deployment/spatial" includes="*.xml" prefix="META-INF"/>
+								</jar>
+
+								<jar destfile="${project.basedir}/target/dockerfile/deployments/reporting-module-${unionvms.project.reporting.module}.ear" update="true">
+									<zipfileset dir="${project.basedir}/src/main/docker/jboss-deployment/reporting" includes="*.xml" prefix="META-INF"/>
+								</jar>
+
+								<jar destfile="${project.basedir}/target/dockerfile/deployments/movement-module-${unionvms.project.movement.module}.ear" update="true">
+									<zipfileset dir="${project.basedir}/src/main/docker/jboss-deployment/movement" includes="*.xml" prefix="META-INF"/>
+								</jar>
+
+								<jar destfile="${project.basedir}/target/dockerfile/deployments/asset-module-${unionvms.project.asset.module}.ear" update="true">
+									<zipfileset dir="${project.basedir}/src/main/docker/jboss-deployment/asset" includes="*.xml" prefix="META-INF"/>
+								</jar>
+								
+								<jar destfile="${project.basedir}/target/dockerfile/deployments/audit-module-${unionvms.project.audit.module}.ear" update="true">
+									<zipfileset dir="${project.basedir}/src/main/docker/jboss-deployment/audit" includes="*.xml" prefix="META-INF"/>
+								</jar>
+
+								<jar destfile="${project.basedir}/target/dockerfile/deployments/exchange-module-${unionvms.project.exchange.module}.ear" update="true">
+									<zipfileset dir="${project.basedir}/src/main/docker/jboss-deployment/exchange" includes="*.xml" prefix="META-INF"/>
+								</jar>
+								
+								<jar destfile="${project.basedir}/target/dockerfile/deployments/mobileterminal-module-${unionvms.project.mobileterminal.module}.ear" update="true">
+									<zipfileset dir="${project.basedir}/src/main/docker/jboss-deployment/mobile" includes="*.xml" prefix="META-INF"/>
+								</jar>
+
+								<jar destfile="${project.basedir}/target/dockerfile/deployments/rules-dbaccess-module-${unionvms.project.rules.dbaccess.module}.ear" update="true">
+									<zipfileset dir="${project.basedir}/src/main/docker/jboss-deployment/general" includes="*.xml" prefix="META-INF"/>
+								</jar>
+								
+								<jar destfile="${project.basedir}/target/dockerfile/deployments/rules-module-${unionvms.project.rules.module}.ear" update="true">
+									<zipfileset dir="${project.basedir}/src/main/docker/jboss-deployment/rules" includes="*.xml" prefix="META-INF"/>
+								</jar>
+								
+								<jar destfile="${project.basedir}/target/dockerfile/deployments/activity-module-postgres-${unionvms.project.activity.module}.ear" update="true">
+									<zipfileset dir="${project.basedir}/src/main/docker/jboss-deployment/activity" includes="*.xml" prefix="META-INF"/>
+								</jar>
+								
+								<jar destfile="${project.basedir}/target/dockerfile/deployments/mdr-module-${unionvms.project.mdr.module}.ear" update="true">
+									<zipfileset dir="${project.basedir}/src/main/docker/jboss-deployment/mdr" includes="*.xml" prefix="META-INF"/>
+								</jar>
+				
+								<jar destfile="${project.basedir}/target/dockerfile/deployments/naf-module-${unionvms.project.plugins.naf}.ear" update="true">
+									<zipfileset dir="${project.basedir}/src/main/docker/jboss-deployment/plugins" includes="*.xml" prefix="META-INF"/>
+								</jar>
+								
+								<jar destfile="${project.basedir}/target/dockerfile/deployments/flux-module-${unionvms.project.plugins.flux}.ear" update="true">
+									<zipfileset dir="${project.basedir}/src/main/docker/jboss-deployment/plugins" includes="*.xml" prefix="META-INF"/>
+								</jar>
+								
+								<jar destfile="${project.basedir}/target/dockerfile/deployments/twostage-module-${unionvms.project.plugins.twostage}.ear" update="true">
+									<zipfileset dir="${project.basedir}/src/main/docker/jboss-deployment/plugins" includes="*.xml" prefix="META-INF"/>
+								</jar>
+								
+								<jar destfile="${project.basedir}/target/dockerfile/deployments/siriusone-module-${unionvms.project.plugins.siriusone}.ear" update="true">
+									<zipfileset dir="${project.basedir}/src/main/docker/jboss-deployment/plugins" includes="*.xml" prefix="META-INF"/>
+								</jar>
+								
+								<jar destfile="${project.basedir}/target/dockerfile/deployments/gs-web-app-${unionvms.project.geoserver.version}-postgres.war" update="true">
+									<zipfileset dir="${project.basedir}/src/main/docker/jboss-deployment/web-app" includes="*.xml" prefix="WEB-INF"/>
+								</jar>
+								<jar destfile="${project.basedir}/target/dockerfile/deployments/unionvms-web-${unionvms.project.unionvms.web.version}.war" update="true">
+									<zipfileset dir="${project.basedir}/src/main/docker/jboss-deployment/web-app" includes="*.xml" prefix="WEB-INF"/>
+								</jar>
+								<jar destfile="${project.basedir}/target/dockerfile/deployments/mapfish-print-${unionvms.project.mapfishprint.version}.war" update="true">
+									<zipfileset dir="${project.basedir}/src/main/docker/jboss-deployment/web-app" includes="*.xml" prefix="WEB-INF"/>
+								</jar>
+		
+								<move file="${project.basedir}/target/dockerfile/deployments/mapfish-print-${unionvms.project.mapfishprint.version}.war" tofile="${project.basedir}/target/dockerfile/deployments/mapfish-print.war"/>
+								<move file="${project.basedir}/target/dockerfile/deployments/gs-web-app-${unionvms.project.geoserver.version}-postgres.war" tofile="${project.basedir}/target/dockerfile/deployments/geoserver.war"/>
+							</tasks>
+						</configuration>
+						<goals>
+							<goal>run</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+
+			<plugin>
 				<artifactId>maven-resources-plugin</artifactId>
 				<executions>
 					<execution>
 						<id>filter-resources</id>
-						<phase>validate</phase>
 						<goals>
 							<goal>resources</goal>
 						</goals>
@@ -68,7 +355,7 @@
 				<executions>
 					<execution>
 						<id>package</id>
-						<phase>package</phase>
+						<phase>test</phase>
 						<goals>
 							<goal>build</goal>
 						</goals>
