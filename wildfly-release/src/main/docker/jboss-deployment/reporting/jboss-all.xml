@@ -1,13 +1,15 @@
 <jboss umlns="urn:jboss:1.0">
 	<jboss-deployment-dependencies xmlns="urn:jboss:deployment-dependencies:1.0">
-		<dependency name="user-module-2.0.2.ear" />
-		<dependency name="config-module-3.0.13.ear" />
-		<dependency name="spatial-module-0.5.10.ear" />
-		<dependency name="movement-module-3.0.17.ear" />
-		<dependency name="asset-module-3.0.15.ear" />
-		<dependency name="audit-module-3.0.14.ear" />
-		<dependency name="exchange-module-3.0.14.ear" />
-		<dependency name="mobileterminal-module-3.0.17.ear" />
-		<dependency name="rules-module-3.0.8.ear" />
+		<dependency name="user-module-${unionvms.project.user.module}.ear" />
+		<dependency name="config-module-${unionvms.project.config.module}.ear" />
+		<dependency name="exchange-module-${unionvms.project.exchange.module}.ear" />
+		<dependency name="audit-module-${unionvms.project.audit.module}.ear" />
+		<dependency name="spatial-module-${unionvms.project.spatial.module}.ear" />
+		<dependency name="movement-module-${unionvms.project.movement.module}.ear" />
+		<dependency name="asset-module-${unionvms.project.asset.module}.ear" />
+		<dependency name="mobileterminal-module-${unionvms.project.mobileterminal.module}.ear" />
+		<dependency name="rules-module-${unionvms.project.rules.module}.ear" />
+		<dependency name="mdr-module-${unionvms.project.mdr.module}.ear" />
+		<dependency name="activity-module-postgres-${unionvms.project.activity.module}.ear" />		
 	</jboss-deployment-dependencies>
 </jboss>

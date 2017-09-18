@@ -1,9 +1,9 @@
 <jboss umlns="urn:jboss:1.0">
 	<jboss-deployment-dependencies xmlns="urn:jboss:deployment-dependencies:1.0">
-		<dependency name="user-module-2.0.2.ear" />
-		<dependency name="config-module-3.0.13.ear" />
-		<dependency name="exchange-module-3.0.14.ear" />
-		<dependency name="audit-module-3.0.14.ear" />
-		<dependency name="spatial-module-0.5.10.ear" />
+		<dependency name="user-module-${unionvms.project.user.module}.ear" />
+		<dependency name="config-module-${unionvms.project.config.module}.ear" />
+		<dependency name="exchange-module-${unionvms.project.exchange.module}.ear" />
+		<dependency name="audit-module-${unionvms.project.audit.module}.ear" />
+		<dependency name="spatial-module-${unionvms.project.spatial.module}.ear" />
 	</jboss-deployment-dependencies>
 </jboss>
