@@ -51,7 +51,7 @@ RUN mkdir -p /opt/jboss/fakesmtp/logs && \
 # install TZDATA, set timesone then delete TZDATA
 # alpine linux does not include curl. install it, but delete the apk cache to keep layer size small
 RUN echo "@edge http://nl.alpinelinux.org/alpine/edge/main" >> /etc/apk/repositories && \
-    apk update && apk add tzdata && \
+    apk update && apk add tzdata postgresql-client bash && \
     cp /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone && \
     apk del tzdata && \
     rm -rf /var/cache/apk/*
@@ -65,4 +65,4 @@ VOLUME ["/app/logs", "/opt/jboss/wildfly/standalone/log"]
 # we don't have to wait for usm.databasechangeloglock locked on the db.
 # the wait should be part of the docker compose file on the postgres side
 # or on the maven docker plugin config
-CMD ["/opt/jboss/wildfly/bin/standalone.sh", "-c", "standalone-uvms.xml", "-b", "0.0.0.0", "-bmanagement", "0.0.0.0", "--debug"]
+CMD ["/opt/jboss/start.sh", "/opt/jboss/wildfly/bin/standalone.sh", "-c", "standalone-uvms.xml", "-b", "0.0.0.0", "-bmanagement", "0.0.0.0", "--debug"]
