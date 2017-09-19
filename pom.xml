@@ -31,6 +31,7 @@
 		<module>postgres-release</module>
 		<module>wildfly-base</module>
 		<module>wildfly-release</module>
-		<module>release-test</module>		
+		<module>release-test</module>
+		<module>docker-compose</module>	
 	</modules>
 </project>

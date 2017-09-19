@@ -1,7 +1,7 @@
 version: '2'
 services:
   wildfly:
-    image: uvms/wildfly-release:3.10.alpine
+    image: uvms/wildfly-release:${project.version}
     container_name: wildfly
     ports:
      - "29990:9990"
@@ -19,12 +19,12 @@ services:
      - activemq
     command: ["/opt/jboss/start.sh", "/opt/jboss/wildfly/bin/standalone.sh", "-c", "standalone-uvms.xml", "-b", "0.0.0.0", "-bmanagement", "0.0.0.0", "--debug"]
   postgres:
-    image: uvms/postgres-release:3.10.alpine
+    image: uvms/postgres-release:${project.version}
     container_name: postgres
     ports: 
      - "25432:5432"
   activemq:
-    image: uvms/activemq:3.10.alpine
+    image: uvms/activemq:${project.version}
     container_name: activemq
     ports:
      - "18161:8161"
