@@ -78,9 +78,9 @@ RUN unzip -q /liquibase/mobterm/mobileterminal-$MOBILE_TERMINAL_VERSION.zip -d /
 RUN cp -r /liquibase/mobterm/UVMS-MobileTerminalModule-APP-mobileterminal-$MOBILE_TERMINAL_VERSION/LIQUIBASE /liquibase/mobterm/
 
 # Rules
-ADD $GITHUB/UVMS-RulesModule-DB/archive/rules-dbaccess-$RULES_VERSION.zip /liquibase/rules
-RUN unzip -q /liquibase/rules/rules-dbaccess-$RULES_VERSION -d /liquibase/rules
-RUN cp -r /liquibase/rules/UVMS-RulesModule-DB-rules-dbaccess-$RULES_VERSION/* /liquibase/rules/
+ADD $GITHUB/UVMS-RulesModule-DB/archive/9d61952860ed27ce01db4ae64afc43b6eda48336.zip /liquibase/rules
+RUN unzip -q /liquibase/rules/9d61952860ed27ce01db4ae64afc43b6eda48336.zip -d /liquibase/rules
+RUN cp -r /liquibase/rules/UVMS-RulesModule-DB-9d61952860ed27ce01db4ae64afc43b6eda48336/* /liquibase/rules/
 
 # Spatial - Remeber to update this when spatial starts releasing on Github
 #ADD https://github.com/UnionVMS/UVMS-SpatialModule-DB/archive/spatial-db-$SPATIAL_VERSION.zip /liquibase/spatial
