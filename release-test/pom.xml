@@ -360,7 +360,7 @@
 									<port>29990:9990</port>
 									<port>28787:8787</port>
 									<port>28080:8080</port>
-									<port>28443:8443</port>									
+									<port>28443:8443</port>
 								</ports>
 								<wait>
 									<http>
@@ -373,7 +373,7 @@
 									<shutdown>15000</shutdown>
 								</wait>
 								<cmd>
-									<shell>/opt/jboss/wildfly/bin/standalone.sh
+									<shell>/opt/jboss/start.sh /opt/jboss/wildfly/bin/standalone.sh
 										-c standalone-uvms.xml -b 0.0.0.0 -bmanagement 0.0.0.0 --debug</shell>
 								</cmd>
 								<dependsOn>
@@ -476,7 +476,7 @@
 										<successCode>1</successCode>
 										<successCode>2</successCode>
 									</successCodes>
-								</configuration>		
+								</configuration>
 							</execution>
 							<execution>
 								<id>postman-test2</id>
@@ -505,13 +505,13 @@
 										<successCode>1</successCode>
 										<successCode>2</successCode>
 									</successCodes>
-								</configuration>		
-							</execution>							
+								</configuration>
+							</execution>
 						</executions>
 					</plugin>
 				</plugins>
 			</build>
-		</profile>		
+		</profile>
 		<profile>
 			<id>dev-windows</id>
 			<activation>

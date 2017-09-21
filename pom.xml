@@ -1,20 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
-	
+
 	<parent>
 		<groupId>fish.focus.maven</groupId>
 		<artifactId>focus-pom</artifactId>
 		<version>1.10</version>
 		<relativePath />
 	</parent>
-	
+
 	<groupId>eu.europa.ec.fisheries.uvms.docker</groupId>
 	<artifactId>uvms-docker</artifactId>
 	<version>3.11.0-SNAPSHOT</version>
 	<packaging>pom</packaging>
 	<name>uvms-docker</name>
-	
+
 	<properties>
 		<project.scm.id>github</project.scm.id>
 	    <scm.connection>scm:git:https://github.com/UnionVMS/UVMS-Docker.git</scm.connection>
@@ -24,13 +24,14 @@
         <connection>${scm.connection}</connection>
         <tag>uvms-docker-3.1.0-SNAPSHOT</tag>
     </scm>
-	
+
 	<modules>
 		<module>amq</module>
 		<module>postgres-base</module>
 		<module>postgres-release</module>
 		<module>wildfly-base</module>
 		<module>wildfly-release</module>
-		<module>release-test</module>		
+		<module>docker-compose</module>
+		<module>release-test</module>
 	</modules>
 </project>
