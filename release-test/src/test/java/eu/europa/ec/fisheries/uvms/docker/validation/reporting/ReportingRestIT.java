@@ -49,6 +49,7 @@ import eu.europa.ec.fisheries.uvms.reporting.service.dto.PositionSelectorDTO;
 import eu.europa.ec.fisheries.uvms.reporting.service.dto.report.ReportDTO;
 import eu.europa.ec.fisheries.uvms.reporting.service.dto.report.VisibilityEnum;
 import eu.europa.ec.fisheries.uvms.reporting.service.entities.FilterType;
+import eu.europa.ec.fisheries.uvms.reporting.service.entities.Position;
 import eu.europa.ec.fisheries.uvms.reporting.service.entities.Selector;
 import eu.europa.ec.fisheries.uvms.reporting.service.enums.ReportTypeEnum;
 import eu.europa.ec.fisheries.uvms.reporting.service.enums.VelocityType;
@@ -230,6 +231,46 @@ public class ReportingRestIT extends AbstractRestServiceTest {
 		return reportDTO;
 	}
 
+	private ReportDTO createTwoWeeksLastFourPositionsReport(final String name, final String description, ReportTypeEnum reportTypeEnum,
+			VisibilityEnum visibilityEnum,Asset asset) throws IOException, ClientProtocolException, JsonProcessingException,
+			JsonParseException, JsonMappingException {
+		ReportDTO reportDTO = new ReportDTO();
+		long time = new Date().getTime();
+		reportDTO.setDescription(name + time);
+		reportDTO.setName(description + time);
+		reportDTO.setReportTypeEnum(reportTypeEnum);
+		reportDTO.setVisibility(visibilityEnum);
+		reportDTO.setWithMap(true);
+
+		CommonFilterDTO commonFilterDTO = new CommonFilterDTO();
+		commonFilterDTO.setStartDate(new Date(new Date().getTime() - (60 * 1000 * 60 * 24 * 7)));
+		commonFilterDTO.setEndDate(new Date(new Date().getTime() + (60 * 1000 * 60 * 24 * 7)));
+		PositionSelectorDTO positionSelector = new PositionSelectorDTO();
+		positionSelector.setSelector(Selector.last);
+		positionSelector.setValue(4f);
+		positionSelector.setPosition(Position.positions);
+		commonFilterDTO.setPositionSelector(positionSelector);
+		commonFilterDTO.setType(FilterType.common);
+		reportDTO.addFilter(commonFilterDTO);
+
+		if (asset != null) {
+			AssetFilterDTO assetFilterDTO = new AssetFilterDTO();
+			assetFilterDTO.setGuid(asset.getAssetId().getGuid());
+			assetFilterDTO.setName(asset.getName());
+			reportDTO.addFilter(assetFilterDTO);
+		}
+		
+		String writeValueAsString = writeValueAsString(reportDTO);
+		final HttpResponse response = Request.Post(getBaseUrl() + "reporting/rest/report?projection=DEFAULT")
+				.setHeader("Content-Type", "application/json").setHeader("scopeName", "All Reports")
+				.setHeader("roleName", "AdminAll").setHeader("Authorization", getValidJwtToken())
+				.bodyByteArray(writeValueAsString.getBytes()).execute().returnResponse();
+		reportDTO.setId(checkSuccessResponseReturnType(response, Integer.class).longValue());
+
+		return reportDTO;
+	}
+
+	
 	/**
 	 * Delete report test.
 	 *
@@ -316,6 +357,35 @@ public class ReportingRestIT extends AbstractRestServiceTest {
 		assertNotNull(dataMap);
 	}
 
+	@Test
+	@Ignore
+	public void executeStandardTwoWeekReportWithIdForOneAssetFourLastPositionsTest() throws Exception {
+		ReportDTO twoWeeksReport = createTwoWeeksLastFourPositionsReport("executeStandardTwoWeekReportWithIdForOneAssetFourLastPositionsTest", "TwoWeeksReports",ReportTypeEnum.STANDARD,VisibilityEnum.PRIVATE,testAsset);
+		
+		DisplayFormat displayFormat = new DisplayFormat();
+		displayFormat.setLengthType(LengthType.NM);
+		displayFormat.setVelocityType(VelocityType.KTS);
+		HashMap<String, Object> additionalProperties = new HashMap<String, Object>();
+		HashMap<String, Object> valueMap = new HashMap<String, Object>();
+		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+		String timeStampValue = dateFormat.format(new Date());
+		valueMap.put("timestamp", timeStampValue);
+		additionalProperties.put("additionalProperties", valueMap);
+		additionalProperties.put("timestamp", timeStampValue);
+
+		displayFormat.setAdditionalProperties(additionalProperties);
+
+		final HttpResponse response = Request
+				.Post(getBaseUrl() + "reporting/rest/report/execute/" + twoWeeksReport.getId())
+				.setHeader("Content-Type", "application/json").setHeader("scopeName", "All Reports")
+				.setHeader("roleName", "AdminAll").setHeader("Authorization", getValidJwtToken())
+				.bodyByteArray(writeValueAsString(displayFormat).getBytes()).execute().returnResponse();
+		Map<String, Object> dataMap = checkSuccessResponseReturnMap(response);
+		assertNotNull(dataMap);
+		System.out.println(dataMap);
+	}
+
+	
 	/**
 	 * Execute summary two week report with id for one asset test.
 	 *

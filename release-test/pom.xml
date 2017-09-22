@@ -23,8 +23,7 @@
 		<dependency>
 			<artifactId>movement-model</artifactId>
 			<groupId>eu.europa.ec.fisheries.uvms.movement</groupId>
-			<version>3.0.8</version>
-			<classifier>date</classifier>
+			<version>4.0.0</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
@@ -36,22 +35,19 @@
 		<dependency>
 			<artifactId>mobileterminal-model</artifactId>
 			<groupId>eu.europa.ec.fisheries.uvms.mobileterminal</groupId>
-			<version>3.0.9</version>
-			<classifier>date</classifier>
+			<version>4.0.0</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>eu.europa.ec.fisheries.uvms.exchange</groupId>
     		<artifactId>exchange-model</artifactId>
-    		<version>3.0.7</version>
-    		<classifier>date</classifier>
+    		<version>4.0.0</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>eu.europa.ec.fisheries.uvms.asset</groupId>
 			<artifactId>asset-model</artifactId>
-			<version>3.0.7</version>
-			<classifier>date</classifier>
+			<version>4.0.0</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
@@ -63,13 +59,13 @@
 		<dependency>
 			<groupId>eu.europa.ec.fisheries.uvms.config</groupId>
 			<artifactId>config-model</artifactId>
-			<version>3.0.5</version>
+			<version>4.0.0</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>eu.europa.ec.fisheries.uvms.audit</groupId>
 			<artifactId>audit-model</artifactId>
-			<version>3.0.5</version>
+			<version>4.0.0</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
@@ -154,7 +150,7 @@
 									<artifactId>movement-rest</artifactId>
 									<groupId>eu.europa.ec.fisheries.uvms.movement</groupId>
 									<type>war</type>
-									<version>3.0.17</version>
+									<version>4.0.0</version>
 									<overWrite>false</overWrite>
 									<outputDirectory>${project.build.directory}/warclasses/</outputDirectory>
 									<includes>WEB-INF/classes/**/*.*</includes>
@@ -163,7 +159,7 @@
 									<artifactId>exchange-rest</artifactId>
 									<groupId>eu.europa.ec.fisheries.uvms.exchange</groupId>
 									<type>war</type>
-									<version>3.0.14</version>
+									<version>4.0.0</version>
 									<overWrite>false</overWrite>
 									<outputDirectory>${project.build.directory}/warclasses/</outputDirectory>
 									<includes>WEB-INF/classes/**/*.*</includes>
@@ -243,6 +239,7 @@
 								<get src="http://localhost:28080/rules/monitoring?format=pdf" dest="target/rules_monitoring.pdf" verbose="true" usetimestamp="true" />
 								<get src="http://localhost:28080/reporting/monitoring?format=pdf" dest="target/reporting_monitoring.pdf" verbose="true" usetimestamp="true" />
 								<get src="http://localhost:28080/user/monitoring?format=pdf" dest="target/user_monitoring.pdf" verbose="true" usetimestamp="true" />
+								<get src="http://localhost:28080/activity/monitoring?format=pdf" dest="target/activity_monitoring.pdf" verbose="true" usetimestamp="true" />								
 								<get username="admin" password="admin" src="http://localhost:18161/admin/xml/subscribers.jsp" dest="target/activemq-subscribers.xml" verbose="true" usetimestamp="true" />
 								<get username="admin" password="admin" src="http://localhost:18161/admin/xml/topics.jsp" dest="target/activemq-topics.xml" verbose="true" usetimestamp="true" />
 								<get username="admin" password="admin" src="http://localhost:18161/admin/xml/queues.jsp" dest="target/activemq-queues.xml" verbose="true" usetimestamp="true" />
