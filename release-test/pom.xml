@@ -218,6 +218,8 @@
 						<configuration>
 							<tasks>
 								<sleep seconds="210" />
+								<!-- Get the regression-suite-selenium front-end -->
+								<get src="https://github.com/UnionVMS/UVMS-SeleniumTests/raw/swe-dev/Python-regression-suite-selenium.py" dest="target/Python-regression-suite-selenium.py" verbose="true" usetimestamp="true" />
 							</tasks>
 						</configuration>
 						<goals>
@@ -239,7 +241,7 @@
 								<get src="http://localhost:28080/rules/monitoring?format=pdf" dest="target/rules_monitoring.pdf" verbose="true" usetimestamp="true" />
 								<get src="http://localhost:28080/reporting/monitoring?format=pdf" dest="target/reporting_monitoring.pdf" verbose="true" usetimestamp="true" />
 								<get src="http://localhost:28080/user/monitoring?format=pdf" dest="target/user_monitoring.pdf" verbose="true" usetimestamp="true" />
-								<get src="http://localhost:28080/activity/monitoring?format=pdf" dest="target/activity_monitoring.pdf" verbose="true" usetimestamp="true" />								
+								<get src="http://localhost:28080/activity/monitoring?format=pdf" dest="target/activity_monitoring.pdf" verbose="true" usetimestamp="true" />
 								<get username="admin" password="admin" src="http://localhost:18161/admin/xml/subscribers.jsp" dest="target/activemq-subscribers.xml" verbose="true" usetimestamp="true" />
 								<get username="admin" password="admin" src="http://localhost:18161/admin/xml/topics.jsp" dest="target/activemq-topics.xml" verbose="true" usetimestamp="true" />
 								<get username="admin" password="admin" src="http://localhost:18161/admin/xml/queues.jsp" dest="target/activemq-queues.xml" verbose="true" usetimestamp="true" />
