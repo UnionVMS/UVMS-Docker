@@ -263,7 +263,7 @@
 								<if>
 								    <not><equals arg1="${docker.dependency.skip}" arg2="true" /></not>
 								    <then>
-									<echo message="Modify no ear/war:s to define startup order!"/>
+									<echo message="Modify ear/war:s to define startup order!"/>
 
 									<jar destfile="${project.basedir}/target/dockerfile/deployments/user-module-${unionvms.project.user.module}.ear" update="true">
 										<zipfileset dir="${project.basedir}/target/dockerfile/jboss-deployment/user" includes="*.xml" prefix="META-INF" />
