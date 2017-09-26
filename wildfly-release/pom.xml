@@ -55,7 +55,7 @@
 	</distributionManagement>
 
 	<dependencies>
-		<!-- frontend modules -->
+		<!-- frontend modules
 		<dependency>
 			<groupId>eu.europa.ec.fisheries.uvms</groupId>
 			<artifactId>unionvms-web</artifactId>
@@ -77,6 +77,7 @@
 			<type>war</type>
 			<version>${unionvms.project.geoserver.version}</version>
 		</dependency>
+ 		-->
 
 		<!-- app modules -->
 		<dependency>
@@ -152,7 +153,7 @@
 			<version>${unionvms.project.user.module}</version>
 		</dependency>
 
-		<!-- plugin modules -->
+		<!-- plugin modules
 		<dependency>
 			<groupId>eu.europa.ec.fisheries.uvms.plugins</groupId>
 			<artifactId>naf-module</artifactId>
@@ -176,7 +177,7 @@
 			<artifactId>siriusone-module</artifactId>
 			<type>ear</type>
 			<version>${unionvms.project.plugins.siriusone}</version>
-		</dependency>
+		</dependency> -->
 	</dependencies>
 	<build>
 		<pluginManagement>
@@ -304,6 +305,7 @@
 										<zipfileset dir="${project.basedir}/target/dockerfile/jboss-deployment/mdr" includes="*.xml" prefix="META-INF" />
 									</jar>
 
+									<!--
 									<jar destfile="${project.basedir}/target/dockerfile/deployments/naf-module-${unionvms.project.plugins.naf}.ear" update="true">
 										<zipfileset dir="${project.basedir}/target/dockerfile/jboss-deployment/plugins" includes="*.xml" prefix="META-INF" />
 									</jar>
@@ -320,6 +322,9 @@
 										<zipfileset dir="${project.basedir}/target/dockerfile/jboss-deployment/plugins" includes="*.xml" prefix="META-INF" />
 									</jar>
 
+ 									-->
+
+									<!--
 									<jar destfile="${project.basedir}/target/dockerfile/deployments/gs-web-app-${unionvms.project.geoserver.version}-postgres.war" update="true">
 										<zipfileset dir="${project.basedir}/target/dockerfile/jboss-deployment/web-app" includes="*.xml" prefix="WEB-INF" />
 									</jar>
@@ -329,15 +334,16 @@
 									<jar destfile="${project.basedir}/target/dockerfile/deployments/mapfish-print-${unionvms.project.mapfishprint.version}.war" update="true">
 										<zipfileset dir="${project.basedir}/target/dockerfile/jboss-deployment/web-app" includes="*.xml" prefix="WEB-INF" />
 									</jar>
+									 -->
 								</then>
 								<else>
 								        <echo message="Ignore dependency order at startup, no ear/war:s is modified "/>
 								</else>
 							</if>
-
+							<!--
 							<move file="${project.basedir}/target/dockerfile/deployments/mapfish-print-${unionvms.project.mapfishprint.version}.war" tofile="${project.basedir}/target/dockerfile/deployments/mapfish-print.war" />
 							<move file="${project.basedir}/target/dockerfile/deployments/gs-web-app-${unionvms.project.geoserver.version}-postgres.war" tofile="${project.basedir}/target/dockerfile/deployments/geoserver.war" />
-
+-->
 							</tasks>
 						</configuration>
 						<goals>
