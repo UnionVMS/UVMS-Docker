@@ -51,7 +51,7 @@ RUN mkdir -p /opt/jboss/fakesmtp/logs && \
 # install TZDATA, set timesone then delete TZDATA
 # alpine linux does not include curl. install it, but delete the apk cache to keep layer size small
 RUN echo "@edge http://nl.alpinelinux.org/alpine/edge/main" >> /etc/apk/repositories && \
-    apk update && apk add tzdata postgresql-client bash && \
+    apk update && apk add tzdata ttf-dejavu postgresql-client bash && \
     cp /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone && \
     apk del tzdata && \
     rm -rf /var/cache/apk/*
