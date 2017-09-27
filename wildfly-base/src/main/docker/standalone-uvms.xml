@@ -197,8 +197,8 @@
                 <in-memory/>
             </job-repository>
             <thread-pool>
-                <max-threads count="10"/>
-                <keepalive-time time="30" unit="seconds"/>
+                <max-threads count="20"/>
+                <keepalive-time time="60" unit="seconds"/>
             </thread-pool>
         </subsystem>
         <subsystem xmlns="urn:jboss:domain:datasources:2.0">
@@ -574,7 +574,7 @@
                     <bean-instance-pool-ref pool-name="slsb-strict-max-pool"/>
                 </stateless>
                 <stateful default-access-timeout="5000" cache-ref="simple" passivation-disabled-cache-ref="simple"/>
-                <singleton default-access-timeout="5000"/>
+                <singleton default-access-timeout="15000"/>
             </session-bean>
             <mdb>
                 <resource-adapter-ref resource-adapter-name="activemq-rar.rar"/>
@@ -602,8 +602,8 @@
             <remote connector-ref="http-remoting-connector" thread-pool-name="default"/>
             <thread-pools>
                 <thread-pool name="default">
-                    <max-threads count="10"/>
-                    <keepalive-time time="100" unit="milliseconds"/>
+                    <max-threads count="20"/>
+                    <keepalive-time time="200" unit="milliseconds"/>
                 </thread-pool>
             </thread-pools>
             <iiop enable-by-default="false" use-qualified-name="false"/>
@@ -1018,7 +1018,7 @@
                 </process-id>
             </core-environment>
             <recovery-environment socket-binding="txn-recovery-environment" status-socket-binding="txn-status-manager"/>
-            <coordinator-environment default-timeout="300" statistics-enabled="true"/>            
+            <coordinator-environment default-timeout="600" statistics-enabled="true"/>            
         </subsystem>
         <subsystem xmlns="urn:jboss:domain:undertow:1.2">
             <buffer-cache name="default"/>
