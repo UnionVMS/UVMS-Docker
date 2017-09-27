@@ -379,7 +379,7 @@
 										<method>GET</method>
 										<status>200</status>
 									</http>
-									<time>300000</time>
+									<time>450000</time>
 									<kill>15000</kill>
 									<shutdown>15000</shutdown>
 								</wait>
