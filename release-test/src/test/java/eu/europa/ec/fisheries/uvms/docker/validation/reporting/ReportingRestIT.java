@@ -355,6 +355,14 @@ public class ReportingRestIT extends AbstractRestServiceTest {
 				.bodyByteArray(writeValueAsString(displayFormat).getBytes()).execute().returnResponse();
 		Map<String, Object> dataMap = checkSuccessResponseReturnMap(response);
 		assertNotNull(dataMap);
+		Map<String, Object> movementDataMap = (Map<String, Object>) dataMap.get("movements");
+		assertNotNull(movementDataMap);
+		List<Map<String,Object>> movementPropertyDataMap = (List<Map<String,Object>>) movementDataMap.get("features");
+		assertNotNull(movementPropertyDataMap);
+	
+		for (Map map : movementPropertyDataMap) {
+			assertEquals(testAsset.getCfr(), ((Map) map.get("properties")).get("cfr"));
+		}
 	}
 
 	@Test
@@ -382,7 +390,14 @@ public class ReportingRestIT extends AbstractRestServiceTest {
 				.bodyByteArray(writeValueAsString(displayFormat).getBytes()).execute().returnResponse();
 		Map<String, Object> dataMap = checkSuccessResponseReturnMap(response);
 		assertNotNull(dataMap);
-		System.out.println(dataMap);
+		Map<String, Object> movementDataMap = (Map<String, Object>) dataMap.get("movements");
+		assertNotNull(movementDataMap);
+		List<Map<String,Object>> movementPropertyDataMap = (List<Map<String,Object>>) movementDataMap.get("features");
+		assertNotNull(movementPropertyDataMap);
+	
+		for (Map map : movementPropertyDataMap) {
+			assertEquals(testAsset.getCfr(), ((Map) map.get("properties")).get("cfr"));
+		}
 	}
 
 	
@@ -393,8 +408,8 @@ public class ReportingRestIT extends AbstractRestServiceTest {
 	 */
 	@Test
 	@Ignore
-	public void executeSummaryTwoWeekReportWithIdForOneAssetTest() throws Exception {
-		ReportDTO twoWeeksReport = createTwoWeeksReport("executeSummaryTwoWeekReportWithIdForOneAssetTest", "TwoWeeksReports",ReportTypeEnum.SUMMARY,VisibilityEnum.PRIVATE,testAsset);
+	public void executeSummaryTwoWeekReportTest() throws Exception {
+		ReportDTO twoWeeksReport = createTwoWeeksReport("executeSummaryTwoWeekReportTest", "TwoWeeksReports",ReportTypeEnum.SUMMARY,VisibilityEnum.PRIVATE,null);
 		
 		DisplayFormat displayFormat = new DisplayFormat();
 		displayFormat.setLengthType(LengthType.NM);
@@ -415,7 +430,14 @@ public class ReportingRestIT extends AbstractRestServiceTest {
 				.setHeader("roleName", "AdminAll").setHeader("Authorization", getValidJwtToken())
 				.bodyByteArray(writeValueAsString(displayFormat).getBytes()).execute().returnResponse();
 		Map<String, Object> dataMap = checkSuccessResponseReturnMap(response);
-		assertNotNull(dataMap);
+		Map<String, Object> movementDataMap = (Map<String, Object>) dataMap.get("movements");
+		assertNotNull(movementDataMap);
+		List<Map<String,Object>> movementPropertyDataMap = (List<Map<String,Object>>) movementDataMap.get("features");
+		assertNotNull(movementPropertyDataMap);
+	
+		for (Map map : movementPropertyDataMap) {
+			assertEquals(testAsset.getCfr(), ((Map) map.get("properties")).get("cfr"));
+		}
 	}
 
 }
