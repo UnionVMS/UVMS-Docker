@@ -19,8 +19,13 @@ import eu.europa.ec.fisheries.wsdl.asset.types.Asset;
 import eu.europa.ec.fisheries.wsdl.asset.types.AssetHistoryId;
 import eu.europa.ec.fisheries.wsdl.asset.types.AssetId;
 import eu.europa.ec.fisheries.wsdl.asset.types.AssetIdType;
+import eu.europa.ec.fisheries.wsdl.asset.types.AssetListCriteria;
+import eu.europa.ec.fisheries.wsdl.asset.types.AssetListCriteriaPair;
+import eu.europa.ec.fisheries.wsdl.asset.types.AssetListPagination;
+import eu.europa.ec.fisheries.wsdl.asset.types.AssetListQuery;
 import eu.europa.ec.fisheries.wsdl.asset.types.AssetProdOrgModel;
 import eu.europa.ec.fisheries.wsdl.asset.types.CarrierSource;
+import eu.europa.ec.fisheries.wsdl.asset.types.ConfigSearchField;
 import eu.europa.ec.fisheries.wsdl.asset.types.EventCode;
 
 public class AssetTestHelper extends AbstractHelper {
@@ -60,6 +65,26 @@ public class AssetTestHelper extends AbstractHelper {
 		return asset;
 	}
 
+	public static Integer getAssetCountSweden() throws ClientProtocolException, JsonProcessingException, IOException {
+		AssetListQuery assetListQuery = new AssetListQuery();
+		AssetListPagination assetListPagination = new AssetListPagination();
+		assetListPagination.setListSize(100);
+		assetListPagination.setPage(1);
+		assetListQuery.setPagination(assetListPagination);
+		AssetListCriteria assetListCriteria = new AssetListCriteria();
+		assetListCriteria.setIsDynamic(true);
+		AssetListCriteriaPair assetListCriteriaPair = new AssetListCriteriaPair();
+		assetListCriteriaPair.setKey(ConfigSearchField.FLAG_STATE);
+		assetListCriteriaPair.setValue("SWE");
+		assetListCriteria.getCriterias().add(assetListCriteriaPair);
+		assetListQuery.setAssetSearchCriteria(assetListCriteria);
+		final HttpResponse response = Request.Post(getBaseUrl() + "asset/rest/asset/listcount")
+				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken())
+				.bodyByteArray(writeValueAsString(assetListQuery).getBytes()).execute().returnResponse();
+		return checkSuccessResponseReturnInt(response);
+
+	}
+	
 	public static Asset helper_createAsset(AssetIdType assetIdType, String ircs) {
 
 		Asset asset = new Asset();

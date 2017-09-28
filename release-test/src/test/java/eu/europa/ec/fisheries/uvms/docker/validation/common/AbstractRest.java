@@ -109,7 +109,7 @@ public abstract class AbstractRest extends Assert {
 				return data;
 			}
 
-	protected final Integer checkSuccessResponseReturnInt(final HttpResponse response)
+	protected final static Integer checkSuccessResponseReturnInt(final HttpResponse response)
 			throws IOException, JsonParseException, JsonMappingException, ClientProtocolException {
 				final Map<String, Object> data = checkSuccessResponseReturnDataMap(response);
 			
