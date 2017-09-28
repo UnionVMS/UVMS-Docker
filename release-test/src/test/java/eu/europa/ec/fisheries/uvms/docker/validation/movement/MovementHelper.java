@@ -9,20 +9,16 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 import java.util.UUID;
-
 import javax.jms.Message;
 import javax.jms.TextMessage;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
-
 import org.apache.http.HttpResponse;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.fluent.Request;
-
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
-
 import eu.europa.ec.fisheries.schema.mobileterminal.types.v1.MobileTerminalType;
 import eu.europa.ec.fisheries.schema.movement.asset.v1.AssetId;
 import eu.europa.ec.fisheries.schema.movement.asset.v1.AssetIdType;
@@ -45,7 +41,7 @@ import eu.europa.ec.fisheries.wsdl.asset.types.Asset;
 public class MovementHelper extends AbstractHelper {
 
 	private static final String UVMS_MOVEMENT_REQUEST_QUEUE = "UVMSMovementEvent";
-	
+
 	private Random rnd = new Random();
 
 	public CreateMovementRequest createMovementRequest(Asset testAsset, MobileTerminalType mobileTerminalType,
@@ -80,6 +76,7 @@ public class MovementHelper extends AbstractHelper {
 		movementBaseType.setPositionTime(latlong.positionTime);
 
 		movementBaseType.setMovementType(MovementTypeType.POS);
+		movementBaseType.setReportedCourse(latlong.bearing);
 		return createMovementRequest1;
 
 	}
@@ -136,9 +133,9 @@ public class MovementHelper extends AbstractHelper {
 		double divideramed = 10;
 		double randomFactorLat = rnd.nextDouble() / divideramed;
 		double randomFactorLong = rnd.nextDouble() / divideramed;
-		
+
 		double latitude = 57.110 + randomFactorLat;
-		double longitude = 12.244  + randomFactorLong ;
+		double longitude = 12.244 + randomFactorLong;
 
 		double END_LATITUDE = 56.408;
 		double END_LONGITUDE = 10.926;
@@ -153,6 +150,8 @@ public class MovementHelper extends AbstractHelper {
 				break;
 			rutt.add(new LatLong(latitude, longitude, getDate(ts += movementTimeDeltaInMillis)));
 		}
+		
+		rutt = calculateReportedDataForRoute(rutt);
 
 		if (numberPositions == -1) {
 			return rutt;
@@ -166,14 +165,14 @@ public class MovementHelper extends AbstractHelper {
 		int movementTimeDeltaInMillis = 30000;
 		List<LatLong> rutt = new ArrayList<>();
 		long ts = System.currentTimeMillis();
-		
-		
+
+
 		double divideramed = 10;
 		double randomFactorLat = rnd.nextDouble() / divideramed;
 		double randomFactorLong = rnd.nextDouble() / divideramed;
-		
+
 		double latitude = 51.844 + randomFactorLat;
-		double longitude = -8.311  + randomFactorLong ;
+		double longitude = -8.311 + randomFactorLong;
 
 
 		double END_LATITUDE = 40.313;
@@ -190,6 +189,8 @@ public class MovementHelper extends AbstractHelper {
 			rutt.add(new LatLong(latitude, longitude, getDate(ts += movementTimeDeltaInMillis)));
 		}
 
+		rutt = calculateReportedDataForRoute(rutt);
+
 		if (numberPositions == -1) {
 			return rutt;
 		} else {
@@ -197,12 +198,13 @@ public class MovementHelper extends AbstractHelper {
 		}
 	}
 
-	public List<LatLong> createRuttGeneric(double START_LATITUDE, double START_LONGITUDE,double END_LATITUDE, double END_LONGITUDE,  int numberPositions) {
+	public List<LatLong> createRuttGeneric(double START_LATITUDE, double START_LONGITUDE, double END_LATITUDE,
+			double END_LONGITUDE, int numberPositions) {
 
 		int movementTimeDeltaInMillis = 30000;
 		List<LatLong> rutt = new ArrayList<>();
 		long ts = System.currentTimeMillis();
-		
+
 		while (true) {
 
 			if (START_LATITUDE >= END_LATITUDE)
@@ -222,18 +224,18 @@ public class MovementHelper extends AbstractHelper {
 	}
 
 	public List<LatLong> createRutt(int movementTimeDeltaInMillis, int numberPositions) {
-		
-		
+
+
 		double divideramed = 10;
 		double randomFactorLat = rnd.nextDouble() / divideramed;
 		double randomFactorLong = rnd.nextDouble() / divideramed;
-		
 
-		
+
 
 		List<LatLong> rutt = new ArrayList<>();
 		long ts = System.currentTimeMillis();
-		rutt.add(new LatLong(57.715434 + randomFactorLat, 11.970012 + randomFactorLong, getDate(ts += movementTimeDeltaInMillis)));
+		rutt.add(new LatLong(57.715434 + randomFactorLat, 11.970012 + randomFactorLong,
+				getDate(ts += movementTimeDeltaInMillis)));
 		rutt.add(new LatLong(57.714735 + randomFactorLat, 11.968242, getDate(ts += movementTimeDeltaInMillis)));
 		rutt.add(new LatLong(57.713837 + randomFactorLat, 11.965640, getDate(ts += movementTimeDeltaInMillis)));
 		rutt.add(new LatLong(57.712691 + randomFactorLat, 11.963301, getDate(ts += movementTimeDeltaInMillis)));
@@ -327,11 +329,9 @@ public class MovementHelper extends AbstractHelper {
 	/**
 	 * Marshall.
 	 *
-	 * @param createMovementRequest
-	 *            the create movement request
+	 * @param createMovementRequest the create movement request
 	 * @return the string
-	 * @throws JAXBException
-	 *             the JAXB exception
+	 * @throws JAXBException the JAXB exception
 	 */
 
 	public String marshall(final CreateMovementRequest createMovementRequest) throws JAXBException {
@@ -356,11 +356,9 @@ public class MovementHelper extends AbstractHelper {
 	/**
 	 * Un marshall create movement response.
 	 *
-	 * @param response
-	 *            the response
+	 * @param response the response
 	 * @return the creates the movement response
-	 * @throws Exception
-	 *             the exception
+	 * @throws Exception the exception
 	 */
 	public CreateMovementResponse unMarshallCreateMovementResponse(final Message response) throws Exception {
 		TextMessage textMessage = (TextMessage) response;
@@ -385,8 +383,8 @@ public class MovementHelper extends AbstractHelper {
 	public CreateMovementResponse createMovement(Asset testAsset, MobileTerminalType mobileTerminalType,
 			CreateMovementRequest createMovementRequest) throws Exception {
 
-		Message messageResponse = MessageHelper.getMessageResponse(UVMS_MOVEMENT_REQUEST_QUEUE,
-				marshall(createMovementRequest));
+		Message messageResponse =
+				MessageHelper.getMessageResponse(UVMS_MOVEMENT_REQUEST_QUEUE, marshall(createMovementRequest));
 		return unMarshallCreateMovementResponse(messageResponse);
 	}
 
@@ -413,9 +411,54 @@ public class MovementHelper extends AbstractHelper {
 	public CreateMovementBatchResponse createMovementBatch(Asset testAsset, MobileTerminalType mobileTerminalType,
 			CreateMovementBatchRequest createMovementBatchRequest) throws JAXBException, Exception {
 
-		Message messageResponse = MessageHelper.getMessageResponse(UVMS_MOVEMENT_REQUEST_QUEUE,
-				marshall(createMovementBatchRequest));
+		Message messageResponse =
+				MessageHelper.getMessageResponse(UVMS_MOVEMENT_REQUEST_QUEUE, marshall(createMovementBatchRequest));
 		return unMarshallCreateMovementBatchResponse(messageResponse);
 	}
+
+
+	
+    List<LatLong> calculateReportedDataForRoute(List<LatLong>  route){
+
+        LatLong previousPosition = null;
+        LatLong currentPosition = null;
+        int i = 0;
+        int n = route.size();
+        while(i < n){
+            currentPosition = route.get(i);
+            if(i == 0){
+                previousPosition = route.get(i);
+                i++;
+                continue;
+            }
+
+            double bearing = bearingInDegrees(previousPosition, currentPosition);
+            route.get(i - 1).bearing = bearing;
+            if(i < n){
+                previousPosition = currentPosition;
+            }
+            i++;
+        }
+        double bearing = bearingInDegrees(previousPosition, currentPosition);
+        route.get(i - 1).bearing = bearing;
+        return route;
+    }
+
+	
+
+	private double bearingInRadians(LatLong src, LatLong dst) {
+		double srcLat = Math.toRadians(src.latitude);
+		double dstLat = Math.toRadians(dst.latitude);
+		double dLng = Math.toRadians(dst.longitude - src.longitude);
+
+		return Math.atan2(Math.sin(dLng) * Math.cos(dstLat),
+				Math.cos(srcLat) * Math.sin(dstLat) - Math.sin(srcLat) * Math.cos(dstLat) * Math.cos(dLng));
+	}
+
+	private double bearingInDegrees(LatLong src, LatLong dst) {
+		return Math.toDegrees((bearingInRadians(src, dst) + Math.PI) % Math.PI);
+	}
+
+
 
 }
