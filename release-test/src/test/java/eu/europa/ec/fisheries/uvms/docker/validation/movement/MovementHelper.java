@@ -150,7 +150,7 @@ public class MovementHelper extends AbstractHelper {
 				break;
 			rutt.add(new LatLong(latitude, longitude, getDate(ts += movementTimeDeltaInMillis)));
 		}
-		
+
 		rutt = calculateReportedDataForRoute(rutt);
 
 		if (numberPositions == -1) {
@@ -417,34 +417,55 @@ public class MovementHelper extends AbstractHelper {
 	}
 
 
-	
-    List<LatLong> calculateReportedDataForRoute(List<LatLong>  route){
 
-        LatLong previousPosition = null;
-        LatLong currentPosition = null;
-        int i = 0;
-        int n = route.size();
-        while(i < n){
-            currentPosition = route.get(i);
-            if(i == 0){
-                previousPosition = route.get(i);
-                i++;
-                continue;
-            }
+	List<LatLong> calculateReportedDataForRoute(List<LatLong> route) {
 
-            double bearing = bearingInDegrees(previousPosition, currentPosition);
-            route.get(i - 1).bearing = bearing;
-            if(i < n){
-                previousPosition = currentPosition;
-            }
-            i++;
-        }
-        double bearing = bearingInDegrees(previousPosition, currentPosition);
-        route.get(i - 1).bearing = bearing;
-        return route;
-    }
+		LatLong previousPosition = null;
+		LatLong currentPosition = null;
+		int i = 0;
+		int n = route.size();
+		while (i < n) {
+			currentPosition = route.get(i);
+			if (i == 0) {
+				previousPosition = route.get(i);
+				i++;
+				continue;
+			}
 
-	
+			double bearing = bearingInDegrees(previousPosition, currentPosition);
+			route.get(i - 1).bearing = bearing;
+			if (i < n) {
+				previousPosition = currentPosition;
+			}
+			i++;
+		}
+		double bearing = bearingInDegrees(previousPosition, currentPosition);
+		route.get(i - 1).bearing = bearing;
+		return route;
+	}
+
+
+
+	private double bearingInDegreesTEST(LatLong src, LatLong dst) {
+		return bearing(src.latitude, src.longitude, dst.latitude, dst.longitude);
+	}
+
+
+
+	protected static double bearing(double lat1, double lon1, double lat2, double lon2) {
+		double longitude1 = lon1;
+		double longitude2 = lon2;
+		double latitude1 = Math.toRadians(lat1);
+		double latitude2 = Math.toRadians(lat2);
+		double longDiff = Math.toRadians(longitude2 - longitude1);
+		double y = Math.sin(longDiff) * Math.cos(latitude2);
+		double x = Math.cos(latitude1) * Math.sin(latitude2)
+				- Math.sin(latitude1) * Math.cos(latitude2) * Math.cos(longDiff);
+
+		return (Math.toDegrees(Math.atan2(y, x)) + 360) % 360;
+	}
+
+
 
 	private double bearingInRadians(LatLong src, LatLong dst) {
 		double srcLat = Math.toRadians(src.latitude);
@@ -454,6 +475,7 @@ public class MovementHelper extends AbstractHelper {
 		return Math.atan2(Math.sin(dLng) * Math.cos(dstLat),
 				Math.cos(srcLat) * Math.sin(dstLat) - Math.sin(srcLat) * Math.cos(dstLat) * Math.cos(dLng));
 	}
+
 
 	private double bearingInDegrees(LatLong src, LatLong dst) {
 		return Math.toDegrees((bearingInRadians(src, dst) + Math.PI) % Math.PI);
