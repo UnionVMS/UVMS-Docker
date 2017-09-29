@@ -19,7 +19,7 @@
 		<unionvms.project.user.module>2.0.2</unionvms.project.user.module>
 		<unionvms.project.rules.module>3.0.8</unionvms.project.rules.module>
 		<unionvms.project.rules.dbaccess.module>3.0.7</unionvms.project.rules.dbaccess.module>
-		<unionvms.project.movement.module>4.0.0</unionvms.project.movement.module>
+		<unionvms.project.movement.module>4.0.1</unionvms.project.movement.module>
 		<unionvms.project.mobileterminal.module>4.0.0</unionvms.project.mobileterminal.module>
 		<unionvms.project.exchange.module>4.0.0</unionvms.project.exchange.module>
 		<unionvms.project.reporting.module>1.0.7</unionvms.project.reporting.module>
