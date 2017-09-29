@@ -9,7 +9,7 @@
 	</parent>
 	<groupId>eu.europa.ec.fisheries.uvms.docker</groupId>
 	<artifactId>uvms-docker-wildfly-release</artifactId>
-	<version>3.12.0-SNAPSHOT</version>
+	<version>3.12.0</version>
 	<packaging>pom</packaging>
 	<name>uvms-docker-wildfly-release</name>
 	<properties>
@@ -258,12 +258,12 @@
 						<phase>compile</phase>
 						<configuration>
 							<tasks>
-								<taskdef resource="net/sf/antcontrib/antcontrib.properties" classpathref="maven.plugin.classpath"/>
+								<taskdef resource="net/sf/antcontrib/antcontrib.properties" classpathref="maven.plugin.classpath" />
 								
 								<if>
 								    <not><equals arg1="${docker.dependency.skip}" arg2="true" /></not>
 								    <then>
-									<echo message="Modify ear/war:s to define startup order!"/>
+									<echo message="Modify ear/war:s to define startup order!" />
 
 									<jar destfile="${project.basedir}/target/dockerfile/deployments/user-module-${unionvms.project.user.module}.ear" update="true">
 										<zipfileset dir="${project.basedir}/target/dockerfile/jboss-deployment/user" includes="*.xml" prefix="META-INF" />
@@ -344,7 +344,7 @@
 									</jar>
 								</then>
 								<else>
-								        <echo message="Ignore dependency order at startup, no ear/war:s is modified "/>
+								        <echo message="Ignore dependency order at startup, no ear/war:s is modified " />
 								</else>
 							</if>
 								
@@ -445,6 +445,6 @@
 		</profile>
 	</profiles>
 	<scm>
-		<tag>HEAD</tag>
+		<tag>uvms-docker-3.12.0</tag>
 	</scm>
 </project>
