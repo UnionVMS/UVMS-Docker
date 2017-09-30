@@ -20,6 +20,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
@@ -366,7 +367,6 @@ public class ReportingRestIT extends AbstractRestServiceTest {
 	}
 
 	@Test
-	@Ignore
 	public void executeStandardTwoWeekReportWithIdForOneAssetFourLastPositionsTest() throws Exception {
 		ReportDTO twoWeeksReport = createTwoWeeksLastFourPositionsReport("executeStandardTwoWeekReportWithIdForOneAssetFourLastPositionsTest", "TwoWeeksReports",ReportTypeEnum.STANDARD,VisibilityEnum.PRIVATE,testAsset);
 		
@@ -395,9 +395,63 @@ public class ReportingRestIT extends AbstractRestServiceTest {
 		List<Map<String,Object>> movementPropertyDataMap = (List<Map<String,Object>>) movementDataMap.get("features");
 		assertNotNull(movementPropertyDataMap);
 	
+		System.out.println(movementPropertyDataMap.size());
+		System.out.println(movementPropertyDataMap);
+		
+		assertEquals(4,movementPropertyDataMap.size());
 		for (Map map : movementPropertyDataMap) {
 			assertEquals(testAsset.getCfr(), ((Map) map.get("properties")).get("cfr"));
 		}
+	}
+
+	@Test
+	@Ignore
+	public void executeStandardTwoWeekReportWithIdForAllAssetFourLastPositionsKnownBugJira3215Test() throws Exception {
+		ReportDTO twoWeeksReport = createTwoWeeksLastFourPositionsReport("executeStandardTwoWeekReportWithIdForOneAssetFourLastPositionsTest", "TwoWeeksReports",ReportTypeEnum.STANDARD,VisibilityEnum.PRIVATE,null);
+		
+		DisplayFormat displayFormat = new DisplayFormat();
+		displayFormat.setLengthType(LengthType.NM);
+		displayFormat.setVelocityType(VelocityType.KTS);
+		HashMap<String, Object> additionalProperties = new HashMap<String, Object>();
+		HashMap<String, Object> valueMap = new HashMap<String, Object>();
+		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+		String timeStampValue = dateFormat.format(new Date());
+		valueMap.put("timestamp", timeStampValue);
+		additionalProperties.put("additionalProperties", valueMap);
+		additionalProperties.put("timestamp", timeStampValue);
+
+		displayFormat.setAdditionalProperties(additionalProperties);
+
+		final HttpResponse response = Request
+				.Post(getBaseUrl() + "reporting/rest/report/execute/" + twoWeeksReport.getId())
+				.setHeader("Content-Type", "application/json").setHeader("scopeName", "All Reports")
+				.setHeader("roleName", "AdminAll").setHeader("Authorization", getValidJwtToken())
+				.bodyByteArray(writeValueAsString(displayFormat).getBytes()).execute().returnResponse();
+		Map<String, Object> dataMap = checkSuccessResponseReturnMap(response);
+		assertNotNull(dataMap);
+		Map<String, Object> movementDataMap = (Map<String, Object>) dataMap.get("movements");
+		assertNotNull(movementDataMap);
+		List<Map<String,Object>> movementPropertyDataMap = (List<Map<String,Object>>) movementDataMap.get("features");
+		assertNotNull(movementPropertyDataMap);
+	
+		Map<String,Integer> positionsPerShip = new HashMap<>();
+		for (Map map : movementPropertyDataMap) {
+			String cfr = (String) ((Map) map.get("properties")).get("cfr");			
+			if (positionsPerShip.get(cfr) == null) {
+				positionsPerShip.put(cfr, 1);
+			} else {
+				positionsPerShip.put(cfr, 1 +positionsPerShip.get(cfr));
+			}
+		}
+		
+		assertNotEquals(AssetTestHelper.getAssetCountSweden(),Integer.valueOf(positionsPerShip.keySet().size()));
+		//Correct assertEquals(AssetTestHelper.getAssetCountSweden(),Integer.valueOf(positionsPerShip.keySet().size()));
+		
+		for (Entry<String, Integer> map : positionsPerShip.entrySet()) {
+			assertNotEquals("Ship do not contain 4 positions:" + map.getKey(),new Integer(4),map.getValue());
+			// Correct assertEquals("Ship do not contain 4 positions:" + map.getKey(),new Integer(4),map.getValue());			
+		}
+		
 	}
 
 	
