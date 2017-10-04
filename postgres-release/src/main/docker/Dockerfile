@@ -36,7 +36,7 @@ ARG AUDIT_VERSION=4.0.0
 ARG EXCHANGE_VERSION=4.0.0
 ARG MOVEMENT_VERSION=4.0.0
 ARG MOBILE_TERMINAL_VERSION=4.0.0
-ARG RULES_VERSION=3.0.7
+ARG RULES_VERSION=3.0.9
 ARG SPATIAL_VERSION=1.0.4
 ARG REPORTING_VERSION=1.0.3
 ARG USM_VERSION=2.0.0
@@ -81,9 +81,9 @@ RUN cp -r /liquibase/mobterm/UVMS-MobileTerminalModule-APP-mobileterminal-$MOBIL
 #ADD $GITHUB/UVMS-RulesModule-DB/archive/rules-dbaccess-$RULES_VERSION.zip /liquibase/rules
 #RUN unzip -q /liquibase/rules/rules-dbaccess-$RULES_VERSION -d /liquibase/rules
 #RUN cp -r /liquibase/rules/UVMS-RulesModule-DB-rules-dbaccess-$RULES_VERSION/* /liquibase/rules/
-ADD $GITHUB/UVMS-RulesModule-APP/archive/0b0e83e673fc55c4d46711050cf0868e554c49a5.zip /liquibase/rules
-RUN unzip -q /liquibase/rules/0b0e83e673fc55c4d46711050cf0868e554c49a5.zip -d /liquibase/rules
-RUN cp -r /liquibase/rules/UVMS-RulesModule-APP-0b0e83e673fc55c4d46711050cf0868e554c49a5/LIQUIBASE /liquibase/rules/
+ADD $GITHUB/UVMS-RulesModule-APP/archive/rules-$RULES_VERSION.zip /liquibase/rules
+RUN unzip -q /liquibase/rules/rules-$RULES_VERSION.zip -d /liquibase/rules
+RUN cp -r /liquibase/rules/UVMS-RulesModule-APP-rules-$RULES_VERSION/LIQUIBASE /liquibase/rules/
 
 # Spatial - Remeber to update this when spatial starts releasing on Github
 #ADD https://github.com/UnionVMS/UVMS-SpatialModule-DB/archive/spatial-db-$SPATIAL_VERSION.zip /liquibase/spatial
