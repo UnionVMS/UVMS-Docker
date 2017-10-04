@@ -33,7 +33,7 @@ RUN chown -R postgres:postgres /liquibase
 ARG ASSET_VERSION=4.0.0
 ARG CONFIG_VERSION=4.0.0
 ARG AUDIT_VERSION=4.0.0
-ARG EXCHANGE_VERSION=4.0.0
+ARG EXCHANGE_VERSION=4.0.1
 ARG MOVEMENT_VERSION=4.0.0
 ARG MOBILE_TERMINAL_VERSION=4.0.0
 ARG RULES_VERSION=3.0.9
@@ -86,13 +86,13 @@ RUN unzip -q /liquibase/rules/rules-$RULES_VERSION.zip -d /liquibase/rules
 RUN cp -r /liquibase/rules/UVMS-RulesModule-APP-rules-$RULES_VERSION/LIQUIBASE /liquibase/rules/
 
 # Spatial - Remeber to update this when spatial starts releasing on Github
-#ADD https://github.com/UnionVMS/UVMS-SpatialModule-DB/archive/spatial-db-$SPATIAL_VERSION.zip /liquibase/spatial
-#RUN unzip -q /liquibase/spatial/spatial-db-$SPATIAL_VERSION.zip -d /liquibase/spatial
-#RUN cp -r /liquibase/spatial/UVMS-SpatialModule-DB-spatial-db-$SPATIAL_VERSION/* /liquibase/spatial/
+ADD https://github.com/UnionVMS/UVMS-SpatialModule-DB/archive/spatial-db-$SPATIAL_VERSION.zip /liquibase/spatial
+RUN unzip -q /liquibase/spatial/spatial-db-$SPATIAL_VERSION.zip -d /liquibase/spatial
+RUN cp -r /liquibase/spatial/UVMS-SpatialModule-DB-spatial-db-$SPATIAL_VERSION/* /liquibase/spatial/
 # Latest commit Dec 9 2016 (contains countries)
-ADD $GITHUB/UVMS-SpatialModule-DB/archive/f296d9afced50e6c3090bb727264572704942946.zip /liquibase/spatial
-RUN unzip -q /liquibase/spatial/f296d9afced50e6c3090bb727264572704942946.zip -d /liquibase/spatial
-RUN cp -r /liquibase/spatial/UVMS-SpatialModule-DB-f296d9afced50e6c3090bb727264572704942946/* /liquibase/spatial/
+#ADD $GITHUB/UVMS-SpatialModule-DB/archive/f296d9afced50e6c3090bb727264572704942946.zip /liquibase/spatial
+#RUN unzip -q /liquibase/spatial/f296d9afced50e6c3090bb727264572704942946.zip -d /liquibase/spatial
+#RUN cp -r /liquibase/spatial/UVMS-SpatialModule-DB-f296d9afced50e6c3090bb727264572704942946/* /liquibase/spatial/
 
 
 # Reporting - Remeber to update this when reporting starts releasing on Github
