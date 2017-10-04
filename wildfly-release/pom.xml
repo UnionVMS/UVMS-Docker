@@ -17,8 +17,7 @@
 		<unionvms.project.mapfishprint.version>3.5</unionvms.project.mapfishprint.version>
 		<unionvms.project.geoserver.version>2.8.5.presweden1</unionvms.project.geoserver.version>
 		<unionvms.project.user.module>2.0.2</unionvms.project.user.module>
-		<unionvms.project.rules.module>3.0.8</unionvms.project.rules.module>
-		<unionvms.project.rules.dbaccess.module>3.0.7</unionvms.project.rules.dbaccess.module>
+		<unionvms.project.rules.module>3.0.9</unionvms.project.rules.module>
 		<unionvms.project.movement.module>4.0.1</unionvms.project.movement.module>
 		<unionvms.project.mobileterminal.module>4.0.0</unionvms.project.mobileterminal.module>
 		<unionvms.project.exchange.module>4.0.0</unionvms.project.exchange.module>
@@ -151,14 +150,6 @@
 			<artifactId>user-module</artifactId>
 			<type>ear</type>
 			<version>${unionvms.project.user.module}</version>
-		</dependency>
-
-		<!-- db modules -->
-		<dependency>
-			<groupId>eu.europa.ec.fisheries.uvms.rules</groupId>
-			<artifactId>rules-dbaccess-module</artifactId>
-			<type>ear</type>
-			<version>${unionvms.project.rules.dbaccess.module}</version>
 		</dependency>
 
 		<!-- plugin modules -->
@@ -299,10 +290,6 @@
 	
 									<jar destfile="${project.basedir}/target/dockerfile/deployments/mobileterminal-module-${unionvms.project.mobileterminal.module}.ear" update="true">
 										<zipfileset dir="${project.basedir}/target/dockerfile/jboss-deployment/mobile" includes="*.xml" prefix="META-INF" />
-									</jar>
-	
-									<jar destfile="${project.basedir}/target/dockerfile/deployments/rules-dbaccess-module-${unionvms.project.rules.dbaccess.module}.ear" update="true">
-										<zipfileset dir="${project.basedir}/target/dockerfile/jboss-deployment/general" includes="*.xml" prefix="META-INF" />
 									</jar>
 	
 									<jar destfile="${project.basedir}/target/dockerfile/deployments/rules-module-${unionvms.project.rules.module}.ear" update="true">
