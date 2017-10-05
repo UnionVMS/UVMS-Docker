@@ -166,7 +166,6 @@ public class MovementMovementRestIT extends AbstractRestServiceTest {
 		Map<String,Integer> positionsPerShip = new HashMap<>();
 		
 		for (Map<String, Object> map : movementDataMap) {
-			//System.out.println(map);
 			String connectId = (String) map.get("connectId");			
 			if (positionsPerShip.get(connectId) == null) {
 				positionsPerShip.put(connectId, 1);

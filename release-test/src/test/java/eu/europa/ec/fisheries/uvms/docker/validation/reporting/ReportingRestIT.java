@@ -395,9 +395,6 @@ public class ReportingRestIT extends AbstractRestServiceTest {
 		List<Map<String,Object>> movementPropertyDataMap = (List<Map<String,Object>>) movementDataMap.get("features");
 		assertNotNull(movementPropertyDataMap);
 	
-		System.out.println(movementPropertyDataMap.size());
-		System.out.println(movementPropertyDataMap);
-		
 		assertEquals(4,movementPropertyDataMap.size());
 		for (Map map : movementPropertyDataMap) {
 			assertEquals(testAsset.getCfr(), ((Map) map.get("properties")).get("cfr"));
