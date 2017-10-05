@@ -16,8 +16,10 @@ package eu.europa.ec.fisheries.uvms.docker.validation.movement;
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.fluent.Request;
@@ -30,6 +32,8 @@ import eu.europa.ec.fisheries.schema.movement.search.v1.ListCriteria;
 import eu.europa.ec.fisheries.schema.movement.search.v1.ListPagination;
 import eu.europa.ec.fisheries.schema.movement.search.v1.MovementAreaAndTimeIntervalCriteria;
 import eu.europa.ec.fisheries.schema.movement.search.v1.MovementQuery;
+import eu.europa.ec.fisheries.schema.movement.search.v1.RangeCriteria;
+import eu.europa.ec.fisheries.schema.movement.search.v1.RangeKeyType;
 import eu.europa.ec.fisheries.schema.movement.search.v1.SearchKey;
 import eu.europa.ec.fisheries.uvms.docker.validation.asset.AssetTestHelper;
 import eu.europa.ec.fisheries.uvms.docker.validation.common.AbstractRestServiceTest;
@@ -43,6 +47,7 @@ import eu.europa.ec.fisheries.wsdl.asset.types.Asset;
 
 public class MovementMovementRestIT extends AbstractRestServiceTest {
 	
+	/** The movement helper. */
 	private MovementHelper movementHelper = new MovementHelper();
 
 
@@ -54,11 +59,55 @@ public class MovementMovementRestIT extends AbstractRestServiceTest {
 	 *             the exception
 	 */
 	@Test
-	public void getListByQueryTest() throws Exception {
-		
+	public void getListByQueryTest() throws Exception {		
 		Map<String, Object> dataMap = movementHelper.getListByQuery(createMovementQuery());
+		assertNotNull(dataMap);
 	}
 
+	/**
+	 * Gets the list by query number of latest report test.
+	 *
+	 * @return the list by query number of latest report test
+	 * @throws Exception the exception
+	 */
+	@Test
+	public void getListByQueryNumberOfLatestReportTest() throws Exception {	
+		int numberPositions = 4;
+		Map<String, Object> dataMap = movementHelper.getListByQuery(createMovementQueryNumberOfLatestReports(numberPositions));
+				
+		validateNumberMovementPosisitionsPerShip(numberPositions, dataMap);		
+	}
+
+	/**
+	 * Creates the movement query number of latest reports.
+	 *
+	 * @param numberPositions the number positions
+	 * @return the movement query
+	 */
+	private MovementQuery createMovementQueryNumberOfLatestReports(int numberPositions) {
+
+		MovementQuery movementQuery = new MovementQuery();
+		movementQuery.setExcludeFirstAndLastSegment(false);
+		ListPagination listPagination = new ListPagination();
+		listPagination.setListSize(BigInteger.valueOf(1000000));
+		listPagination.setPage(BigInteger.valueOf(1));
+		movementQuery.setPagination(listPagination);
+		
+		
+		ListCriteria listCriteria = new ListCriteria();
+		listCriteria.setKey(SearchKey.NR_OF_LATEST_REPORTS);
+		listCriteria.setValue("" + numberPositions);
+		movementQuery.getMovementSearchCriteria().add(listCriteria);
+
+		RangeCriteria rangeCriteria = new RangeCriteria();
+		rangeCriteria.setKey(RangeKeyType.DATE);
+		rangeCriteria.setFrom("2017-09-25 15:33:14 +0200");
+		rangeCriteria.setTo("2017-10-09 15:33:14 +0200");
+		
+		return movementQuery;
+	}
+
+	
 	/**
 	 * Creates the movement query.
 	 *
@@ -88,14 +137,61 @@ public class MovementMovementRestIT extends AbstractRestServiceTest {
 	 *             the exception
 	 */
 	@Test
+	public void getMinimalListByQueryNumberOfLatestReportTest() throws Exception {
+		int numberPositions = 4;
+		final HttpResponse response = Request.Post(getBaseUrl() + "movement/rest/movement/list/minimal")
+				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken())
+				.bodyByteArray(writeValueAsString(createMovementQueryNumberOfLatestReports(numberPositions)).getBytes()).execute().returnResponse();
+
+		Map<String, Object> dataMap = checkSuccessResponseReturnMap(response);
+					
+		validateNumberMovementPosisitionsPerShip(numberPositions, dataMap);		
+
+	}
+
+	/**
+	 * Validate number movement posisitions per ship.
+	 *
+	 * @param numberPositions the number positions
+	 * @param dataMap the data map
+	 */
+	private void validateNumberMovementPosisitionsPerShip(int numberPositions, Map<String, Object> dataMap) {
+		List<Map<String,Object>> movementDataMap = (List<Map<String,Object>>) dataMap.get("movement");
+		assertNotNull(movementDataMap);
+		
+		Map<String,Integer> positionsPerShip = new HashMap<>();
+		
+		for (Map<String, Object> map : movementDataMap) {
+			String connectId = (String) map.get("connectId");			
+			if (positionsPerShip.get(connectId) == null) {
+				positionsPerShip.put(connectId, 1);
+			} else {
+				positionsPerShip.put(connectId, 1 +positionsPerShip.get(connectId));
+			}
+		}
+
+		for (Entry<String, Integer> map : positionsPerShip.entrySet()) {
+			assertNotEquals("Ship do not contain 4 positions:" + map.getKey(),new Integer(numberPositions),map.getValue());
+		}
+	}
+
+	/**
+	 * Gets the minimal list by query test.
+	 *
+	 * @return the minimal list by query test
+	 * @throws Exception the exception
+	 */
+	@Test
 	public void getMinimalListByQueryTest() throws Exception {
 		final HttpResponse response = Request.Post(getBaseUrl() + "movement/rest/movement/list/minimal")
 				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken())
 				.bodyByteArray(writeValueAsString(createMovementQuery()).getBytes()).execute().returnResponse();
 
 		Map<String, Object> dataMap = checkSuccessResponseReturnMap(response);
+		assertNotNull(dataMap);
 	}
 
+	
 	/**
 	 * Gets the latest movements by connect ids test.
 	 *
@@ -161,7 +257,7 @@ public class MovementMovementRestIT extends AbstractRestServiceTest {
 				.returnResponse();
 
 		List dataList = checkSuccessResponseReturnType(response, List.class);
-		//assertTrue(dataList.size() > 0);
+		assertTrue(dataList.size() > 0);
 	}
 
 	/**
@@ -214,6 +310,7 @@ public class MovementMovementRestIT extends AbstractRestServiceTest {
 				.returnResponse();
 
 		Map<String, Object> dataMap = checkSuccessResponseReturnMap(response);
+		assertNotNull(dataMap);
 	}
 
 }
