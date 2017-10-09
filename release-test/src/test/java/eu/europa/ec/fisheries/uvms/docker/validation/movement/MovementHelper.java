@@ -451,8 +451,8 @@ public class MovementHelper extends AbstractHelper {
 	        double distance = distance(previousPosition, currentPosition);
 	        route.get(i - 1).distance= distance;
 	        route.get(i - 1).bearing = bearing;
-	        double speed = calcSpeed(previousPosition, currentPosition);
-	        route.get(i - 1).speed= speed;
+	        //double speed = calcSpeed(previousPosition, currentPosition);
+	        route.get(i - 1).speed= 0d;
 	        return route;
 
 	}
