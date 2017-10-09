@@ -77,6 +77,7 @@ public class MovementHelper extends AbstractHelper {
 
 		movementBaseType.setMovementType(MovementTypeType.POS);
 		movementBaseType.setReportedCourse(latlong.bearing);
+		movementBaseType.setReportedSpeed(latlong.speed);
 		return createMovementRequest1;
 
 	}
@@ -115,6 +116,8 @@ public class MovementHelper extends AbstractHelper {
 			movementBaseType.setPosition(movementPoint);
 			movementBaseType.setPositionTime(latlong.positionTime);
 			movementBaseType.setMovementType(MovementTypeType.POS);
+			movementBaseType.setReportedCourse(latlong.bearing);
+			movementBaseType.setReportedSpeed(latlong.speed);
 			createMovementBatchRequest.getMovement().add(movementBaseType);
 		}
 		return createMovementBatchRequest;
@@ -143,9 +146,9 @@ public class MovementHelper extends AbstractHelper {
 		while (true) {
 
 			if (latitude >= END_LATITUDE)
-				latitude = latitude - 0.03;
+				latitude = latitude - 0.003;
 			if (longitude >= END_LONGITUDE)
-				longitude = longitude - 0.03;
+				longitude = longitude - 0.003;
 			if (latitude < END_LATITUDE && longitude < END_LONGITUDE)
 				break;
 			rutt.add(new LatLong(latitude, longitude, getDate(ts += movementTimeDeltaInMillis)));
@@ -181,9 +184,9 @@ public class MovementHelper extends AbstractHelper {
 		while (true) {
 
 			if (latitude >= END_LATITUDE)
-				latitude = latitude - 0.5;
+				latitude = latitude - 0.01;
 			if (longitude >= END_LONGITUDE)
-				longitude = longitude - 0.5;
+				longitude = longitude - 0.01;
 			if (latitude < END_LATITUDE && longitude < END_LONGITUDE)
 				break;
 			rutt.add(new LatLong(latitude, longitude, getDate(ts += movementTimeDeltaInMillis)));
@@ -420,45 +423,111 @@ public class MovementHelper extends AbstractHelper {
 
 	List<LatLong> calculateReportedDataForRoute(List<LatLong> route) {
 
-		LatLong previousPosition = null;
-		LatLong currentPosition = null;
-		int i = 0;
-		int n = route.size();
-		while (i < n) {
-			currentPosition = route.get(i);
-			if (i == 0) {
-				previousPosition = route.get(i);
-				i++;
-				continue;
-			}
+	       LatLong previousPosition = null;
+	        LatLong currentPosition = null;
+	        int i = 0;
+	        int n = route.size();
+	        while(i < n){
+	            currentPosition = route.get(i);
+	            if(i == 0){
+	                previousPosition = route.get(i);
+	                i++;
+	                continue;
+	            }
 
-			double bearing = bearingInDegrees(previousPosition, currentPosition);
-			route.get(i - 1).bearing = bearing;
-			if (i < n) {
-				previousPosition = currentPosition;
-			}
-			i++;
-		}
-		double bearing = bearingInDegrees(previousPosition, currentPosition);
-		route.get(i - 1).bearing = bearing;
-		return route;
-	}
+	            double bearing = bearingInDegrees(previousPosition, currentPosition);
+	            double distance = distance(previousPosition, currentPosition);
+	            route.get(i - 1).bearing = bearing;
+	            route.get(i - 1).distance= distance;
+	            double speed = calcSpeed(previousPosition, currentPosition);
+	            route.get(i - 1).speed= speed;
 
-
-	private double bearingInRadians(LatLong src, LatLong dst) {
-		double srcLat = Math.toRadians(src.latitude);
-		double dstLat = Math.toRadians(dst.latitude);
-		double dLng = Math.toRadians(dst.longitude - src.longitude);
-
-		return Math.atan2(Math.sin(dLng) * Math.cos(dstLat),
-				Math.cos(srcLat) * Math.sin(dstLat) - Math.sin(srcLat) * Math.cos(dstLat) * Math.cos(dLng));
-	}
-
-
-	private double bearingInDegrees(LatLong src, LatLong dst) {
-        return (Math.toDegrees((bearingInRadians(src, dst) + Math.PI) % Math.PI) + 180) % 360;
+	            if(i < n){
+	                previousPosition = currentPosition;
+	            }
+	            i++;
+	        }
+	        double bearing = bearingInDegrees(previousPosition, currentPosition);
+	        double distance = distance(previousPosition, currentPosition);
+	        route.get(i - 1).distance= distance;
+	        route.get(i - 1).bearing = bearing;
+	        double speed = calcSpeed(previousPosition, currentPosition);
+	        route.get(i - 1).speed= speed;
+	        return route;
 
 	}
+
+
+	 private  double bearingInRadians(LatLong src, LatLong dst) {
+	        double srcLat = Math.toRadians(src.latitude);
+	        double dstLat = Math.toRadians(dst.latitude);
+	        double dLng = Math.toRadians(dst.longitude - src.longitude);
+
+	        return Math.atan2(Math.sin(dLng) * Math.cos(dstLat),
+	                Math.cos(srcLat) * Math.sin(dstLat) -
+	                        Math.sin(srcLat) * Math.cos(dstLat) * Math.cos(dLng));
+	    }
+
+	    private  double bearingInDegrees(LatLong src, LatLong dst) {
+	        return (Math.toDegrees((bearingInRadians(src, dst) + Math.PI) % Math.PI) + 180) % 360;
+	    }
+
+	    private double distance(LatLong src, LatLong dst) {
+
+	        // in kilometers
+	        char unit = 'K';
+	        double lat1 = src.latitude;
+	        double lon1 = src.longitude;
+	        double lat2 = dst.latitude;
+	        double lon2 = dst.longitude;
+
+
+	        double theta = lon1 - lon2;
+	        double dist = Math.sin(deg2rad(lat1)) * Math.sin(deg2rad(lat2)) + Math.cos(deg2rad(lat1)) * Math.cos(deg2rad(lat2)) * Math.cos(deg2rad(theta));
+	        dist = Math.acos(dist);
+	        dist = rad2deg(dist);
+	        dist = dist * 60 * 1.1515;
+	        if (unit == 'K') {
+	            dist = dist * 1.609344;
+	        } else if (unit == 'N') {
+	            dist = dist * 0.8684;
+	        } else if (unit == 'M') {
+	            dist = dist * 1.609344;
+	            dist = dist * 1000;
+	        }
+	        return (dist);
+	    }
+
+	    private double calcSpeed(LatLong src, LatLong dst) {
+
+	        try {
+
+	            if (src.positionTime == null)
+	                return 0;
+	            if (dst.positionTime == null)
+	                return 0;
+
+	            // distance to next
+	            double distanceM = src.distance * 1000;
+
+	            double durationms = (double) Math.abs(dst.positionTime.getTime() - src.positionTime.getTime());
+	            double durationSecs = durationms / 1000;
+	            double speedMeterPerSecond = (distanceM / durationSecs);
+	            double speedKmPerHour = speedMeterPerSecond * 3600;
+	            return speedKmPerHour;
+	        } catch (RuntimeException e) {
+	            return 0.0;
+	        }
+	    }
+
+
+	    private double deg2rad(double deg) {
+	        return (deg * Math.PI / 180.0);
+	    }
+
+	    private double rad2deg(double rad) {
+	        return (rad * 180.0 / Math.PI);
+	    }
 
 
 
