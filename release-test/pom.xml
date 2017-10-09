@@ -219,7 +219,7 @@
 							<tasks>
 								<!-- Get the regression-suite-selenium front-end -->
 								<get src="https://github.com/UnionVMS/UVMS-SeleniumTests/raw/swe-dev/Python-regression-suite-selenium.py" dest="target/Python-regression-suite-selenium.py" verbose="true" usetimestamp="true" />
-								<copy file="${project.basedir}/UnionVMSparameters.py" todir="${project.basedir}/target" />
+								<get src="https://github.com/UnionVMS/UVMS-SeleniumTests/raw/swe-dev/DockerUnionVMSparameters.py" dest="target/UnionVMSparameters.py" verbose="true" usetimestamp="true" />
 							</tasks>
 						</configuration>
 						<goals>
@@ -434,7 +434,7 @@
 							</goals>
 							<configuration>
 								<executable>python3</executable>
-								<workingDirectory>${project.basedir}</workingDirectory>
+								<workingDirectory>${project.basedir}/target/</workingDirectory>
 								<arguments>
 									<argument>Python-regression-suite-selenium.py</argument>
 								</arguments>
