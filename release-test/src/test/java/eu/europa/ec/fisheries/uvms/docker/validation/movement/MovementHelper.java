@@ -509,12 +509,13 @@ public class MovementHelper extends AbstractHelper {
 
 	            // distance to next
 	            double distanceM = src.distance * 1000;
+	            double dist = distance(src, dst);
 
 	            double durationms = (double) Math.abs(dst.positionTime.getTime() - src.positionTime.getTime());
 	            double durationSecs = durationms / 1000;
 	            double speedMeterPerSecond = (distanceM / durationSecs);
-	            double speedKmPerHour = speedMeterPerSecond * 3600;
-	            return speedKmPerHour;
+	            double speedMPerHour = speedMeterPerSecond * 3600;
+	            return speedMPerHour / 1000;
 	        } catch (RuntimeException e) {
 	            return 0.0;
 	        }
