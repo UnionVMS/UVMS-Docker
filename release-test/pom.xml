@@ -393,8 +393,8 @@
 								</dependsOn>
 								<volumes>
 									<bind>
-										<volume>${dockler.volume.app.logs}:/app/logs</volume>
-										<volume>${dockler.volume.server.logs}:/opt/jboss/wildfly/standalone/log</volume>
+										<volume>${docker.volume.app.logs}:/app/logs</volume>
+										<volume>${docker.volume.server.logs}:/opt/jboss/wildfly/standalone/log</volume>
 									</bind>
 								</volumes>
 								<log>
@@ -433,18 +433,18 @@
 								<goal>exec</goal>
 							</goals>
 							<configuration>
-								<executable>python3</executable>
-								<workingDirectory>${project.basedir}/target/</workingDirectory>
+								<executable>${python.runtime}</executable>
+								<workingDirectory>${project.basedir}</workingDirectory>
 								<arguments>
-									<argument>Python-regression-suite-selenium.py</argument>
+									<argument>target${file.separator}Python-regression-suite-selenium.py</argument>
 								</arguments>
+								<outputFile>target${file.separator}Python-regression-suite-selenium.log</outputFile>
 								<successCodes>
 									<successCode>0</successCode>
 									<successCode>1</successCode>
 									<successCode>2</successCode>
 								</successCodes>
 							</configuration>
-
 						</execution>
 					</executions>
 				</plugin>
@@ -560,8 +560,9 @@
 				</os>
 			</activation>
 			<properties>
-				<dockler.volume.app.logs>c:\app\logs</dockler.volume.app.logs>
-				<dockler.volume.server.logs>c:\opt\jboss\wildfly\standalone\log</dockler.volume.server.logs>
+				<python.runtime>python</python.runtime>
+				<docker.volume.app.logs>c:\app\logs</docker.volume.app.logs>
+				<docker.volume.server.logs>c:\opt\jboss\wildfly\standalone\log</docker.volume.server.logs>
 			</properties>
 		</profile>
 		<profile>
@@ -572,8 +573,9 @@
 				</os>
 			</activation>
 			<properties>
-				<dockler.volume.app.logs>/app/logs/</dockler.volume.app.logs>
-				<dockler.volume.server.logs>/opt/jboss/wildfly/standalone/log</dockler.volume.server.logs>
+				<python.runtime>python</python.runtime>
+				<docker.volume.app.logs>/app/logs/</docker.volume.app.logs>
+				<docker.volume.server.logs>/opt/jboss/wildfly/standalone/log</docker.volume.server.logs>
 			</properties>
 		</profile>
 		<profile>
@@ -584,8 +586,9 @@
 				</os>
 			</activation>
 			<properties>
-				<dockler.volume.app.logs>/app/logs/</dockler.volume.app.logs>
-				<dockler.volume.server.logs>/opt/jboss/wildfly/standalone/log</dockler.volume.server.logs>
+				<python.runtime>python3</python.runtime>
+				<docker.volume.app.logs>/app/logs/</docker.volume.app.logs>
+				<docker.volume.server.logs>/opt/jboss/wildfly/standalone/log</docker.volume.server.logs>
 			</properties>
 		</profile>
 	</profiles>
