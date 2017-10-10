@@ -52,3 +52,5 @@ Run on Windows
 newman run src\test\resources\QASmoke.postman_collection.json --environment src\test\resources\test_environment --color --reporters junit,cli,html
 
 newman run src\test\resources\SpatialIntegrationTest.postman_collection.json --environment src\test\resources\test_environment --color --reporters junit,cli,html  
+
+newman run src\test\resources\FluxPluginWebService.postman_collection.json  --environment src\test\resources\test_environment --color --reporters junit,cli,html

@@ -518,6 +518,35 @@
 									</successCodes>
 								</configuration>
 							</execution>
+							<execution>
+								<id>postman-test3</id>
+								<phase>integration-test</phase>
+								<goals>
+									<goal>exec</goal>
+								</goals>
+								<configuration>
+									<executable>newman</executable>
+									<workingDirectory>${project.basedir}</workingDirectory>
+									<arguments>
+										<argument>run</argument>
+										<argument>${project.basedir}${file.separator}src${file.separator}test${file.separator}resources${file.separator}FluxPluginWebService.postman_collection.json</argument>
+										<argument>--environment</argument>
+										<argument>${project.basedir}${file.separator}src${file.separator}test${file.separator}resources${file.separator}test_environment</argument>
+										<argument>--color</argument>
+										<argument>--reporters</argument>
+										<argument>junit,cli,html</argument>
+										<argument>--reporter-junit-export</argument>
+										<argument>${project.basedir}${file.separator}target${file.separator}failsafe-reports${file.separator}FluxPluginWebServiceTest.xml</argument>
+										<argument>--reporter-html-export</argument>
+										<argument>${project.basedir}${file.separator}target${file.separator}failsafe-reports${file.separator}FluxPluginWebServiceTest.html</argument>
+									</arguments>
+									<successCodes>
+										<successCode>0</successCode>
+										<successCode>1</successCode>
+										<successCode>2</successCode>
+									</successCodes>
+								</configuration>
+							</execution>							
 						</executions>
 					</plugin>
 				</plugins>
