@@ -369,7 +369,7 @@
 								</wait>
 								<log>
 									<enabled>true</enabled>
-									<color>red</color>
+									<color>yellow</color>
 								</log>
 								<hostname>activemq</hostname>
 							</run>
