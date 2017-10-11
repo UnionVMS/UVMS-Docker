@@ -19,6 +19,10 @@ import org.apache.http.client.fluent.Request;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
+import com.peertopark.java.geocalc.Coordinate;
+import com.peertopark.java.geocalc.DegreeCoordinate;
+import com.peertopark.java.geocalc.EarthCalc;
+import com.peertopark.java.geocalc.Point;
 import eu.europa.ec.fisheries.schema.mobileterminal.types.v1.MobileTerminalType;
 import eu.europa.ec.fisheries.schema.movement.asset.v1.AssetId;
 import eu.europa.ec.fisheries.schema.movement.asset.v1.AssetIdType;
@@ -435,7 +439,7 @@ public class MovementHelper extends AbstractHelper {
 	                continue;
 	            }
 
-	            double bearing = bearingInDegrees(previousPosition, currentPosition);
+	            double bearing = bearing(previousPosition, currentPosition);
 	            double distance = distance(previousPosition, currentPosition);
 	            route.get(i - 1).bearing = bearing;
 	            route.get(i - 1).distance= distance;
@@ -447,7 +451,7 @@ public class MovementHelper extends AbstractHelper {
 	            }
 	            i++;
 	        }
-	        double bearing = bearingInDegrees(previousPosition, currentPosition);
+	        double bearing = bearing(previousPosition, currentPosition);
 	        double distance = distance(previousPosition, currentPosition);
 	        route.get(i - 1).distance= distance;
 	        route.get(i - 1).bearing = bearing;
@@ -456,47 +460,37 @@ public class MovementHelper extends AbstractHelper {
 	        return route;
 
 	}
+	
+	private Double bearing(LatLong src, LatLong dst) {
 
+		Coordinate latFrom = new DegreeCoordinate(src.latitude);
+		Coordinate lngFrom = new DegreeCoordinate(src.longitude);
+		Point from = new Point(latFrom, lngFrom);
 
-	 private  double bearingInRadians(LatLong src, LatLong dst) {
-	        double srcLat = Math.toRadians(src.latitude);
-	        double dstLat = Math.toRadians(dst.latitude);
-	        double dLng = Math.toRadians(dst.longitude - src.longitude);
+		Coordinate latTo = new DegreeCoordinate(dst.latitude);
+		Coordinate lngTo = new DegreeCoordinate(dst.longitude);
+		Point to = new Point(latTo, lngTo);
 
-	        return Math.atan2(Math.sin(dLng) * Math.cos(dstLat),
-	                Math.cos(srcLat) * Math.sin(dstLat) -
-	                        Math.sin(srcLat) * Math.cos(dstLat) * Math.cos(dLng));
-	    }
+		double bearing = EarthCalc.getBearing(from, to); // in decimal degrees
+		return bearing;
+		
+	}
+	
+	private Double distance(LatLong src, LatLong dst) {
 
-	    private  double bearingInDegrees(LatLong src, LatLong dst) {
-	        return (Math.toDegrees((bearingInRadians(src, dst) + Math.PI) % Math.PI) + 180) % 360;
-	    }
+		Coordinate latFrom = new DegreeCoordinate(src.latitude);
+		Coordinate lngFrom = new DegreeCoordinate(src.longitude);
+		Point from = new Point(latFrom, lngFrom);
 
-	    private double distance(LatLong src, LatLong dst) {
+		Coordinate latTo = new DegreeCoordinate(dst.latitude);
+		Coordinate lngTo = new DegreeCoordinate(dst.longitude);
+		Point to = new Point(latTo, lngTo);
 
-	        // in kilometers
-	        char unit = 'K';
-	        double lat1 = src.latitude;
-	        double lon1 = src.longitude;
-	        double lat2 = dst.latitude;
-	        double lon2 = dst.longitude;
-
-
-	        double theta = lon1 - lon2;
-	        double dist = Math.sin(deg2rad(lat1)) * Math.sin(deg2rad(lat2)) + Math.cos(deg2rad(lat1)) * Math.cos(deg2rad(lat2)) * Math.cos(deg2rad(theta));
-	        dist = Math.acos(dist);
-	        dist = rad2deg(dist);
-	        dist = dist * 60 * 1.1515;
-	        if (unit == 'K') {
-	            dist = dist * 1.609344;
-	        } else if (unit == 'N') {
-	            dist = dist * 0.8684;
-	        } else if (unit == 'M') {
-	            dist = dist * 1.609344;
-	            dist = dist * 1000;
-	        }
-	        return (dist);
-	    }
+		double distanceInMeters = EarthCalc.getDistance(from, to);
+		return distanceInMeters;
+		
+	}
+	
 
 	    private double calcSpeed(LatLong src, LatLong dst) {
 
@@ -508,8 +502,7 @@ public class MovementHelper extends AbstractHelper {
 	                return 0;
 
 	            // distance to next
-	            double distanceM = src.distance * 1000;
-	            double dist = distance(src, dst);
+	            double distanceM = src.distance ;
 
 	            double durationms = (double) Math.abs(dst.positionTime.getTime() - src.positionTime.getTime());
 	            double durationSecs = durationms / 1000;
@@ -520,16 +513,6 @@ public class MovementHelper extends AbstractHelper {
 	            return 0.0;
 	        }
 	    }
-
-
-	    private double deg2rad(double deg) {
-	        return (deg * Math.PI / 180.0);
-	    }
-
-	    private double rad2deg(double rad) {
-	        return (rad * 180.0 / Math.PI);
-	    }
-
 
 
 }
