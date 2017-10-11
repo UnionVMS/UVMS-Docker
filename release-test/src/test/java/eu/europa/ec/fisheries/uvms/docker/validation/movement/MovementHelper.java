@@ -151,9 +151,9 @@ public class MovementHelper extends AbstractHelper {
 		while (true) {
 
 			if (latitude >= END_LATITUDE)
-				latitude = latitude - 0.003;
+				latitude = latitude - 0.03;
 			if (longitude >= END_LONGITUDE)
-				longitude = longitude - 0.003;
+				longitude = longitude - 0.03;
 			if (latitude < END_LATITUDE && longitude < END_LONGITUDE)
 				break;
 			rutt.add(new LatLong(latitude, longitude, getDate(ts += movementTimeDeltaInMillis)));
