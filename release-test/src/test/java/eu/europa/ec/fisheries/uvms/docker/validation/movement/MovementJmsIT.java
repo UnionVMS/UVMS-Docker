@@ -31,7 +31,7 @@ public class MovementJmsIT extends AbstractRestServiceTest {
 		Asset testAsset = AssetTestHelper.createTestAsset();
 		MobileTerminalType mobileTerminalType = MobileTerminalTestHelper.createMobileTerminalType();
 		MobileTerminalTestHelper.assignMobileTerminal(testAsset, mobileTerminalType);
-		List<LatLong> latLongList = movementHelper.createRuttCobhNewYork(ALL);
+		List<LatLong> latLongList = movementHelper.createRuttCobhNewYork(ALL, 0.1f);
 
 		final CreateMovementBatchRequest createMovementBatchRequest = movementHelper
 				.createMovementBatchRequest(testAsset, mobileTerminalType, latLongList);
@@ -111,7 +111,7 @@ public class MovementJmsIT extends AbstractRestServiceTest {
 		Asset testAsset = AssetTestHelper.createTestAsset();
 		MobileTerminalType mobileTerminalType = MobileTerminalTestHelper.createMobileTerminalType();
 		MobileTerminalTestHelper.assignMobileTerminal(testAsset, mobileTerminalType);
-		List<LatLong> route = movementHelper.createRuttCobhNewYork(-1);
+		List<LatLong> route = movementHelper.createRuttCobhNewYork(-1, 0.1f);
 
 		for (LatLong position : route) {
 			final CreateMovementRequest createMovementRequest = movementHelper.createMovementRequest(testAsset,
