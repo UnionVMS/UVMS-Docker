@@ -13,16 +13,17 @@ import javax.jms.Message;
 import javax.jms.TextMessage;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
+
+import com.peertopark.java.geocalc.Coordinate;
+import com.peertopark.java.geocalc.DegreeCoordinate;
+import com.peertopark.java.geocalc.EarthCalc;
+import com.peertopark.java.geocalc.Point;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.fluent.Request;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
-import com.peertopark.java.geocalc.Coordinate;
-import com.peertopark.java.geocalc.DegreeCoordinate;
-import com.peertopark.java.geocalc.EarthCalc;
-import com.peertopark.java.geocalc.Point;
 import eu.europa.ec.fisheries.schema.mobileterminal.types.v1.MobileTerminalType;
 import eu.europa.ec.fisheries.schema.movement.asset.v1.AssetId;
 import eu.europa.ec.fisheries.schema.movement.asset.v1.AssetIdType;
@@ -167,7 +168,8 @@ public class MovementHelper extends AbstractHelper {
 		}
 	}
 
-	public List<LatLong> createRuttCobhNewYork(int numberPositions) {
+	/* 0.1 ? */
+	public List<LatLong> createRuttCobhNewYork(int numberPositions, float distanceBetweenReports) {
 
 		int movementTimeDeltaInMillis = 30000;
 		List<LatLong> rutt = new ArrayList<>();
@@ -188,9 +190,9 @@ public class MovementHelper extends AbstractHelper {
 		while (true) {
 
 			if (latitude >= END_LATITUDE)
-				latitude = latitude - 0.01;
+				latitude = latitude - distanceBetweenReports;
 			if (longitude >= END_LONGITUDE)
-				longitude = longitude - 0.01;
+				longitude = longitude - distanceBetweenReports;
 			if (latitude < END_LATITUDE && longitude < END_LONGITUDE)
 				break;
 			rutt.add(new LatLong(latitude, longitude, getDate(ts += movementTimeDeltaInMillis)));
