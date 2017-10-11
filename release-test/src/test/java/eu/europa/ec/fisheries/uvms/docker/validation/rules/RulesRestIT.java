@@ -38,6 +38,7 @@ public class RulesRestIT extends AbstractRestServiceTest {
 	 * @throws Exception the exception
 	 */
 	@Test
+	@Ignore
 	public void initializeRulesTest() throws Exception {
 		final HttpResponse response = Request.Get(getBaseUrl() + "rules/rest/rules/reinitialize")
 				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken()).execute()
