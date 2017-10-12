@@ -42,7 +42,7 @@
 		<dependency>
 			<groupId>eu.europa.ec.fisheries.uvms.exchange</groupId>
 			<artifactId>exchange-model</artifactId>
-			<version>4.0.0</version>
+			<version>4.0.2</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
@@ -171,7 +171,7 @@
 									<artifactId>exchange-rest</artifactId>
 									<groupId>eu.europa.ec.fisheries.uvms.exchange</groupId>
 									<type>war</type>
-									<version>4.0.0</version>
+									<version>4.0.2</version>
 									<overWrite>false</overWrite>
 									<outputDirectory>${project.build.directory}/warclasses/</outputDirectory>
 									<includes>WEB-INF/classes/**/*.*</includes>
@@ -291,6 +291,10 @@
 								<get src="http://localhost:28080/activity/monitoring?format=pdf"
 									dest="target/activity_monitoring.pdf" verbose="true"
 									usetimestamp="true" />
+								<get src="http://localhost:28080/mdr/monitoring?format=pdf"
+									dest="target/mdr_monitoring.pdf" verbose="true"
+									usetimestamp="true" />
+									
 								<get username="admin" password="admin"
 									src="http://localhost:18161/admin/xml/subscribers.jsp" dest="target/activemq-subscribers.xml"
 									verbose="true" usetimestamp="true" />

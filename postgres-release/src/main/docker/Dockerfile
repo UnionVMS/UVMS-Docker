@@ -41,7 +41,7 @@ ARG SPATIAL_VERSION=1.0.4
 ARG REPORTING_VERSION=1.0.3
 ARG USM_VERSION=2.0.0
 ARG ACTIVITY_VERSION=0.5.14
-ARG MDR_VERSION=0.5.2
+ARG MDR_VERSION=1.0.1
 
 
 # Copy step is important, uvms/postgres runs a script that runs maven in /liquibase/MODULE for all but USM.
@@ -114,9 +114,9 @@ RUN unzip -q /liquibase/activity/activity-$ACTIVITY_VERSION.zip -d /liquibase/ac
 RUN cp -r /liquibase/activity/UVMS-ActivityModule-APP-activity-$ACTIVITY_VERSION/LIQUIBASE /liquibase/activity/
 
 # MDR
-ADD $GITHUB/UVMS-MDRCacheModule-DB/archive/mdr-db-$MDR_VERSION.zip /liquibase/mdr
-RUN unzip -q /liquibase/mdr/mdr-db-$MDR_VERSION -d /liquibase/mdr
-RUN cp -r /liquibase/mdr/UVMS-MDRCacheModule-DB-mdr-db-$MDR_VERSION/* /liquibase/mdr/
+ADD $GITHUB/UVMS-MDRCacheModule-APP/archive/mdr-$MDR_VERSION.zip /liquibase/mdr
+RUN unzip -q /liquibase/mdr/mdr-$MDR_VERSION -d /liquibase/mdr
+RUN cp -r /liquibase/mdr/UVMS-MDRCacheModule-APP-mdr-$MDR_VERSION/* /liquibase/mdr/
 
 
 RUN chown -R postgres:postgres /liquibase
