@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.StringReader;
 import java.io.StringWriter;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -13,7 +14,6 @@ import javax.jms.Message;
 import javax.jms.TextMessage;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
-
 import com.peertopark.java.geocalc.Coordinate;
 import com.peertopark.java.geocalc.DegreeCoordinate;
 import com.peertopark.java.geocalc.EarthCalc;
@@ -42,6 +42,7 @@ import eu.europa.ec.fisheries.schema.movement.v1.MovementTypeType;
 import eu.europa.ec.fisheries.uvms.docker.validation.common.AbstractHelper;
 import eu.europa.ec.fisheries.uvms.docker.validation.common.MessageHelper;
 import eu.europa.ec.fisheries.wsdl.asset.types.Asset;
+import io.jsonwebtoken.lang.Collections;
 
 public class MovementHelper extends AbstractHelper {
 
@@ -138,7 +139,7 @@ public class MovementHelper extends AbstractHelper {
 		List<LatLong> rutt = new ArrayList<>();
 		long ts = System.currentTimeMillis();
 
-		double divideramed = 10;
+		double divideramed = 50;
 		double randomFactorLat = rnd.nextDouble() / divideramed;
 		double randomFactorLong = rnd.nextDouble() / divideramed;
 
@@ -176,7 +177,7 @@ public class MovementHelper extends AbstractHelper {
 		long ts = System.currentTimeMillis();
 
 
-		double divideramed = 10;
+		double divideramed = 50;
 		double randomFactorLat = rnd.nextDouble() / divideramed;
 		double randomFactorLong = rnd.nextDouble() / divideramed;
 
@@ -235,7 +236,7 @@ public class MovementHelper extends AbstractHelper {
 	public List<LatLong> createRutt(int movementTimeDeltaInMillis, int numberPositions) {
 
 
-		double divideramed = 10;
+		double divideramed = 50;
 		double randomFactorLat = rnd.nextDouble() / divideramed;
 		double randomFactorLong = rnd.nextDouble() / divideramed;
 
@@ -429,40 +430,40 @@ public class MovementHelper extends AbstractHelper {
 
 	List<LatLong> calculateReportedDataForRoute(List<LatLong> route) {
 
-	       LatLong previousPosition = null;
-	        LatLong currentPosition = null;
-	        int i = 0;
-	        int n = route.size();
-	        while(i < n){
-	            currentPosition = route.get(i);
-	            if(i == 0){
-	                previousPosition = route.get(i);
-	                i++;
-	                continue;
-	            }
+		LatLong previousPosition = null;
+		LatLong currentPosition = null;
+		int i = 0;
+		int n = route.size();
+		while (i < n) {
+			currentPosition = route.get(i);
+			if (i == 0) {
+				previousPosition = route.get(i);
+				i++;
+				continue;
+			}
 
-	            double bearing = bearing(previousPosition, currentPosition);
-	            double distance = distance(previousPosition, currentPosition);
-	            route.get(i - 1).bearing = bearing;
-	            route.get(i - 1).distance= distance;
-	            double speed = calcSpeed(previousPosition, currentPosition);
-	            route.get(i - 1).speed= speed;
+			double bearing = bearing(previousPosition, currentPosition);
+			double distance = distance(previousPosition, currentPosition);
+			route.get(i - 1).bearing = bearing;
+			route.get(i - 1).distance = distance;
+			double speed = calcSpeed(previousPosition, currentPosition);
+			route.get(i - 1).speed = speed;
 
-	            if(i < n){
-	                previousPosition = currentPosition;
-	            }
-	            i++;
-	        }
-	        double bearing = bearing(previousPosition, currentPosition);
-	        double distance = distance(previousPosition, currentPosition);
-	        route.get(i - 1).distance= distance;
-	        route.get(i - 1).bearing = bearing;
-	        //double speed = calcSpeed(previousPosition, currentPosition);
-	        route.get(i - 1).speed= 0d;
-	        return route;
+			if (i < n) {
+				previousPosition = currentPosition;
+			}
+			i++;
+		}
+		double bearing = bearing(previousPosition, currentPosition);
+		double distance = distance(previousPosition, currentPosition);
+		route.get(i - 1).distance = distance;
+		route.get(i - 1).bearing = bearing;
+		// double speed = calcSpeed(previousPosition, currentPosition);
+		route.get(i - 1).speed = 0d;
+		return route;
 
 	}
-	
+
 	private Double bearing(LatLong src, LatLong dst) {
 
 		Coordinate latFrom = new DegreeCoordinate(src.latitude);
@@ -475,9 +476,9 @@ public class MovementHelper extends AbstractHelper {
 
 		double bearing = EarthCalc.getBearing(from, to); // in decimal degrees
 		return bearing;
-		
+
 	}
-	
+
 	private Double distance(LatLong src, LatLong dst) {
 
 		Coordinate latFrom = new DegreeCoordinate(src.latitude);
@@ -490,31 +491,84 @@ public class MovementHelper extends AbstractHelper {
 
 		double distanceInMeters = EarthCalc.getDistance(from, to);
 		return distanceInMeters;
-		
+
 	}
-	
 
-	    private double calcSpeed(LatLong src, LatLong dst) {
 
-	        try {
+	private double calcSpeed(LatLong src, LatLong dst) {
 
-	            if (src.positionTime == null)
-	                return 0;
-	            if (dst.positionTime == null)
-	                return 0;
+		try {
 
-	            // distance to next
-	            double distanceM = src.distance ;
+			if (src.positionTime == null)
+				return 0;
+			if (dst.positionTime == null)
+				return 0;
 
-	            double durationms = (double) Math.abs(dst.positionTime.getTime() - src.positionTime.getTime());
-	            double durationSecs = durationms / 1000;
-	            double speedMeterPerSecond = (distanceM / durationSecs);
-	            double speedMPerHour = speedMeterPerSecond * 3600;
-	            return speedMPerHour / 1000;
-	        } catch (RuntimeException e) {
-	            return 0.0;
-	        }
-	    }
+			// distance to next
+			double distanceM = src.distance;
+
+			double durationms = (double) Math.abs(dst.positionTime.getTime() - src.positionTime.getTime());
+			double durationSecs = durationms / 1000;
+			double speedMeterPerSecond = (distanceM / durationSecs);
+			double speedMPerHour = speedMeterPerSecond * 3600;
+			return speedMPerHour / 1000;
+		} catch (RuntimeException e) {
+			return 0.0;
+		}
+	}
+
+
+	public List<LatLong> createSmallFishingTourFromVarberg() {
+
+		// int numberPositions = 25;
+		int movementTimeDeltaInMillis = 30000;
+		List<LatLong> rutt = new ArrayList<>();
+		long ts = System.currentTimeMillis();
+
+		double divideramed = 50;
+		double randomFactorLat = rnd.nextDouble() / divideramed;
+		double randomFactorLong = rnd.nextDouble() / divideramed;
+
+		double latitude = 57.110 + randomFactorLat;
+		double longitude = 12.244 + randomFactorLong;
+		double HARBOUR_LATITUDE = latitude;
+		double HARBOUR_LONGITUDE = longitude;
+
+		// these will never be reached but still good to have to steer on
+		double END_LATITUDE = 56.408;
+		double END_LONGITUDE = 10.926;
+
+		// leave the harbour
+		for (int i = 0; i < 25; i++) {
+
+			if (latitude >= END_LATITUDE)
+				latitude = latitude - 0.004;
+			if (longitude >= END_LONGITUDE)
+				longitude = longitude - 0.004;
+			if (latitude < END_LATITUDE && longitude < END_LONGITUDE)
+				break;
+			rutt.add(new LatLong(latitude, longitude, getDate(ts += movementTimeDeltaInMillis)));
+		}
+		// do some fishing
+		for (int i = 0; i < 15; i++) {
+			latitude = latitude - 0.001;
+			longitude = longitude - 0.002;
+			rutt.add(new LatLong(latitude, longitude, getDate(ts += movementTimeDeltaInMillis)));
+		}
+		// go home
+		int n = rutt.size();
+		List<LatLong> ruttHome = new ArrayList<>();
+		for(int i = n - 1 ; i > 0 ; i--){
+			LatLong wrk = rutt.get(i);
+			ruttHome.add(new LatLong(wrk.latitude + 0.001, wrk.longitude, getDate(ts += movementTimeDeltaInMillis)));
+		}
+		
+		rutt.addAll(ruttHome);
+
+		rutt = calculateReportedDataForRoute(rutt);
+
+		return rutt;
+	}
 
 
 }
