@@ -249,7 +249,7 @@
 						<phase>pre-integration-test</phase>
 						<configuration>
 							<tasks>
-								<sleep seconds="210" />
+								<sleep seconds="180" />
 							</tasks>
 						</configuration>
 						<goals>
@@ -471,27 +471,24 @@
 			<build>
 				<plugins>
 					<plugin>
-						<groupId>org.codehaus.mojo</groupId>
-						<artifactId>exec-maven-plugin</artifactId>
-						<version>1.6.0</version>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-antrun-plugin</artifactId>
+						<version>1.8</version>
 						<executions>
 							<execution>
 								<id>python-build</id>
 								<phase>pre-integration-test</phase>
 								<goals>
-									<goal>exec</goal>
+									<goal>run</goal>
 								</goals>
 								<configuration>
-									<executable>${python.runtime}</executable>
-									<workingDirectory>${project.basedir}/target/</workingDirectory>
-									<arguments>
-										<argument>Python-regression-suite-selenium.py</argument>
-									</arguments>
-									<successCodes>
-										<successCode>0</successCode>
-										<successCode>1</successCode>
-										<successCode>2</successCode>
-									</successCodes>
+									<tasks>									
+										<exec dir="${project.basedir}/target/" osFamily="Unix" executable="${python.runtime}" timeout="5400000" >
+										 	<redirector output="Python-regression-suite-selenium.log" alwayslog="true"/> 
+											<arg value="-u"/>
+											<arg value="Python-regression-suite-selenium.py"/>											
+									  </exec>
+									</tasks>
 								</configuration>
 							</execution>
 						</executions>
