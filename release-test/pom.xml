@@ -483,11 +483,10 @@
 								</goals>
 								<configuration>
 									<executable>${python.runtime}</executable>
-									<workingDirectory>${project.basedir}</workingDirectory>
+									<workingDirectory>${project.basedir}/target/</workingDirectory>
 									<arguments>
-										<argument>target${file.separator}Python-regression-suite-selenium.py</argument>
+										<argument>Python-regression-suite-selenium.py</argument>
 									</arguments>
-									<outputFile>target${file.separator}Python-regression-suite-selenium.log</outputFile>
 									<successCodes>
 										<successCode>0</successCode>
 										<successCode>1</successCode>
