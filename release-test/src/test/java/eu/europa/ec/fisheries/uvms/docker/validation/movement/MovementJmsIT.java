@@ -153,6 +153,34 @@ public class MovementJmsIT extends AbstractRestServiceTest {
 		}
 
 	}
+	
+	
+	@Test
+	public void createSmallFishingTourFromVarberg() throws Exception {
+
+
+
+		Asset testAsset = AssetTestHelper.createTestAsset();
+		MobileTerminalType mobileTerminalType = MobileTerminalTestHelper.createMobileTerminalType();
+		MobileTerminalTestHelper.assignMobileTerminal(testAsset, mobileTerminalType);
+		List<LatLong> route = movementHelper.createSmallFishingTourFromVarberg();
+
+
+		List<CreateMovementResponse> fromAPI = new ArrayList<>();
+		for (LatLong position : route) {
+			final CreateMovementRequest createMovementRequest = movementHelper.createMovementRequest(testAsset,
+					mobileTerminalType, position);
+			CreateMovementResponse createMovementResponse = movementHelper.createMovement(testAsset, mobileTerminalType,
+					createMovementRequest);
+			assertNotNull(createMovementResponse);
+			assertNotNull(createMovementResponse.getMovement());
+			assertNotNull(createMovementResponse.getMovement().getPosition());
+			fromAPI.add(createMovementResponse);
+		}
+
+	}
+	
+	
 
 	/**
 	 * Check dead letter queue.
