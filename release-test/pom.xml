@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
 	<parent>
@@ -11,7 +10,7 @@
 	</parent>
 
 	<groupId>eu.europa.ec.fisheries.uvms.docker</groupId>
-	<version>3.14.0-SNAPSHOT</version>
+	<version>3.14.0</version>
 	<artifactId>uvms-release-test</artifactId>
 	<packaging>jar</packaging>
 	<name>uvms-release-test</name>
@@ -225,14 +224,8 @@
 						<configuration>
 							<tasks>
 								<!-- Get the regression-suite-selenium front-end -->
-								<get
-									src="https://github.com/UnionVMS/UVMS-SeleniumTests/raw/swe-dev/Python-regression-suite-selenium.py"
-									dest="target/Python-regression-suite-selenium.py" verbose="true"
-									usetimestamp="true" />
-								<get
-									src="https://github.com/UnionVMS/UVMS-SeleniumTests/raw/swe-dev/DockerUnionVMSparameters.py"
-									dest="target/UnionVMSparameters.py" verbose="true"
-									usetimestamp="true" />
+								<get src="https://github.com/UnionVMS/UVMS-SeleniumTests/raw/swe-dev/Python-regression-suite-selenium.py" dest="target/Python-regression-suite-selenium.py" verbose="true" usetimestamp="true" />
+								<get src="https://github.com/UnionVMS/UVMS-SeleniumTests/raw/swe-dev/DockerUnionVMSparameters.py" dest="target/UnionVMSparameters.py" verbose="true" usetimestamp="true" />
 							</tasks>
 						</configuration>
 						<goals>
@@ -256,52 +249,23 @@
 						<phase>post-integration-test</phase>
 						<configuration>
 							<tasks>
-								<get src="http://localhost:28080/audit/monitoring?format=pdf"
-									dest="target/audit_monitoring.pdf" verbose="true" usetimestamp="true" />
-								<get src="http://localhost:28080/config/monitoring?format=pdf"
-									dest="target/config_monitoring.pdf" verbose="true"
-									usetimestamp="true" />
-								<get src="http://localhost:28080/exchange/monitoring?format=pdf"
-									dest="target/exchange_monitoring.pdf" verbose="true"
-									usetimestamp="true" />
-								<get src="http://localhost:28080/spatial/monitoring?format=pdf"
-									dest="target/spatial_monitoring.pdf" verbose="true"
-									usetimestamp="true" />
-								<get src="http://localhost:28080/asset/monitoring?format=pdf"
-									dest="target/asset_monitoring.pdf" verbose="true" usetimestamp="true" />
-								<get
-									src="http://localhost:28080/mobileterminal/monitoring?format=pdf"
-									dest="target/mobileterminal_monitoring.pdf" verbose="true"
-									usetimestamp="true" />
-								<get src="http://localhost:28080/movement/monitoring?format=pdf"
-									dest="target/movement_monitoring.pdf" verbose="true"
-									usetimestamp="true" />
-								<get src="http://localhost:28080/rules/monitoring?format=pdf"
-									dest="target/rules_monitoring.pdf" verbose="true" usetimestamp="true" />
-								<get src="http://localhost:28080/reporting/monitoring?format=pdf"
-									dest="target/reporting_monitoring.pdf" verbose="true"
-									usetimestamp="true" />
-								<get src="http://localhost:28080/user/monitoring?format=pdf"
-									dest="target/user_monitoring.pdf" verbose="true" usetimestamp="true" />
-								<get src="http://localhost:28080/activity/monitoring?format=pdf"
-									dest="target/activity_monitoring.pdf" verbose="true"
-									usetimestamp="true" />
-								<get src="http://localhost:28080/mdr/monitoring?format=pdf"
-									dest="target/mdr_monitoring.pdf" verbose="true"
-									usetimestamp="true" />
+								<get src="http://localhost:28080/audit/monitoring?format=pdf" dest="target/audit_monitoring.pdf" verbose="true" usetimestamp="true" />
+								<get src="http://localhost:28080/config/monitoring?format=pdf" dest="target/config_monitoring.pdf" verbose="true" usetimestamp="true" />
+								<get src="http://localhost:28080/exchange/monitoring?format=pdf" dest="target/exchange_monitoring.pdf" verbose="true" usetimestamp="true" />
+								<get src="http://localhost:28080/spatial/monitoring?format=pdf" dest="target/spatial_monitoring.pdf" verbose="true" usetimestamp="true" />
+								<get src="http://localhost:28080/asset/monitoring?format=pdf" dest="target/asset_monitoring.pdf" verbose="true" usetimestamp="true" />
+								<get src="http://localhost:28080/mobileterminal/monitoring?format=pdf" dest="target/mobileterminal_monitoring.pdf" verbose="true" usetimestamp="true" />
+								<get src="http://localhost:28080/movement/monitoring?format=pdf" dest="target/movement_monitoring.pdf" verbose="true" usetimestamp="true" />
+								<get src="http://localhost:28080/rules/monitoring?format=pdf" dest="target/rules_monitoring.pdf" verbose="true" usetimestamp="true" />
+								<get src="http://localhost:28080/reporting/monitoring?format=pdf" dest="target/reporting_monitoring.pdf" verbose="true" usetimestamp="true" />
+								<get src="http://localhost:28080/user/monitoring?format=pdf" dest="target/user_monitoring.pdf" verbose="true" usetimestamp="true" />
+								<get src="http://localhost:28080/activity/monitoring?format=pdf" dest="target/activity_monitoring.pdf" verbose="true" usetimestamp="true" />
+								<get src="http://localhost:28080/mdr/monitoring?format=pdf" dest="target/mdr_monitoring.pdf" verbose="true" usetimestamp="true" />
 									
-								<get username="admin" password="admin"
-									src="http://localhost:18161/admin/xml/subscribers.jsp" dest="target/activemq-subscribers.xml"
-									verbose="true" usetimestamp="true" />
-								<get username="admin" password="admin"
-									src="http://localhost:18161/admin/xml/topics.jsp" dest="target/activemq-topics.xml"
-									verbose="true" usetimestamp="true" />
-								<get username="admin" password="admin"
-									src="http://localhost:18161/admin/xml/queues.jsp" dest="target/activemq-queues.xml"
-									verbose="true" usetimestamp="true" />
-								<get username="admin" password="admin"
-									src="http://localhost:18161/admin/connections.jsp" dest="target/activemq-connections.html"
-									verbose="true" usetimestamp="true" />
+								<get username="admin" password="admin" src="http://localhost:18161/admin/xml/subscribers.jsp" dest="target/activemq-subscribers.xml" verbose="true" usetimestamp="true" />
+								<get username="admin" password="admin" src="http://localhost:18161/admin/xml/topics.jsp" dest="target/activemq-topics.xml" verbose="true" usetimestamp="true" />
+								<get username="admin" password="admin" src="http://localhost:18161/admin/xml/queues.jsp" dest="target/activemq-queues.xml" verbose="true" usetimestamp="true" />
+								<get username="admin" password="admin" src="http://localhost:18161/admin/connections.jsp" dest="target/activemq-connections.html" verbose="true" usetimestamp="true" />
 							</tasks>
 						</configuration>
 						<goals>
@@ -478,10 +442,10 @@
 								</goals>
 								<configuration>
 									<tasks>									
-										<exec dir="${project.basedir}/target/" executable="${python.runtime}" >
-										 	<redirector output="target/Python-regression-suite-selenium.log" alwayslog="true"/> 
-											<arg value="-u"/>
-											<arg value="Python-regression-suite-selenium.py"/>											
+										<exec dir="${project.basedir}/target/" executable="${python.runtime}">
+										 	<redirector output="target/Python-regression-suite-selenium.log" alwayslog="true" /> 
+											<arg value="-u" />
+											<arg value="Python-regression-suite-selenium.py" />											
 									  </exec>
 									</tasks>
 								</configuration>
@@ -632,4 +596,8 @@
 			</properties>
 		</profile>
 	</profiles>
+
+  <scm>
+    <tag>uvms-docker-3.14.0</tag>
+  </scm>
 </project>
