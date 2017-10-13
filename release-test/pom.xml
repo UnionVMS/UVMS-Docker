@@ -483,8 +483,8 @@
 								</goals>
 								<configuration>
 									<tasks>									
-										<exec dir="${project.basedir}/target/" osFamily="Unix" executable="${python.runtime}" timeout="5400000" >
-										 	<redirector output="Python-regression-suite-selenium.log" alwayslog="true"/> 
+										<exec dir="${project.basedir}/target/" executable="${python.runtime}" >
+										 	<redirector output="target/Python-regression-suite-selenium.log" alwayslog="true"/> 
 											<arg value="-u"/>
 											<arg value="Python-regression-suite-selenium.py"/>											
 									  </exec>
