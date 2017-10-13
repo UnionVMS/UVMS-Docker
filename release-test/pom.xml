@@ -72,7 +72,7 @@
 		<dependency>
 			<groupId>eu.europa.ec.fisheries.uvms.reporting</groupId>
 			<artifactId>reporting-model</artifactId>
-			<version>1.0.8</version>
+			<version>1.0.3</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
