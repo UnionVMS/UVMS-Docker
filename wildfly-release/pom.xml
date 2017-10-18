@@ -204,7 +204,6 @@
 							<copyPom>false</copyPom>
 							<outputDirectory>${project.basedir}/target/dockerfile/deployments</outputDirectory>
 							<excludeTypes>pom</excludeTypes>
-
 						</configuration>
 					</execution>
 				</executions>

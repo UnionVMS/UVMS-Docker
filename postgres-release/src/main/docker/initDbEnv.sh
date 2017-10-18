@@ -8,29 +8,7 @@ mvn install:install-file -Dfile=/tmp/ojdbc6-11.2.0.4.jar -DgroupId=com.oracle  -
 cd /liquibase/usm/database/liquibase
 mvn liquibase:update -Ppostgres -Dliquibase.skip=false
 
-cd /liquibase/asset/LIQUIBASE
-mvn liquibase:update -Ppostgres -Dliquibase.skip=false
-
-cd /liquibase/audit/LIQUIBASE
-mvn liquibase:update -Ppostgres -Dliquibase.skip=false
-
-cd /liquibase/config/LIQUIBASE
-mvn liquibase:update -Ppostgres -Dliquibase.skip=false
-
-cd /liquibase/exchange/LIQUIBASE
-mvn liquibase:update -Ppostgres -Dliquibase.skip=false
-
-cd /liquibase/movement/LIQUIBASE
-mvn liquibase:update -Ppostgres -Dliquibase.skip=false
-
-cd /liquibase/mobterm/LIQUIBASE
-mvn liquibase:update -Ppostgres -Dliquibase.skip=false
-
-cd /liquibase/rules/LIQUIBASE
-mvn liquibase:update -Ppostgres -Dliquibase.skip=false
-
 cd /liquibase/spatial/LIQUIBASE
-
 mvn liquibase:update -Ppostgres -Ddb.url=jdbc:postgresql://localhost:5432/db71u -Dliquibase.skip=false
 
 cd /liquibase/reporting/LIQUIBASE

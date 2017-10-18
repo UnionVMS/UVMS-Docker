@@ -2,6 +2,7 @@ FROM uvms/postgres-base:${project.version}
 
 ENV GITHUB https://github.com/UnionVMS
 
+COPY sql /var/lib/postgresql/
 COPY initDbEnv.sh /var/lib/postgresql/
 COPY updateDb.sh /docker-entrypoint-initdb.d/
 
@@ -30,13 +31,6 @@ RUN mkdir -p /liquibase/config \
 
 RUN chown -R postgres:postgres /liquibase
 
-ARG ASSET_VERSION=4.0.0
-ARG CONFIG_VERSION=4.0.0
-ARG AUDIT_VERSION=4.0.0
-ARG EXCHANGE_VERSION=4.0.1
-ARG MOVEMENT_VERSION=4.0.0
-ARG MOBILE_TERMINAL_VERSION=4.0.0
-ARG RULES_VERSION=3.0.10
 ARG SPATIAL_VERSION=1.0.4
 ARG REPORTING_VERSION=1.0.3
 ARG USM_VERSION=2.0.0
@@ -47,43 +41,6 @@ ARG MDR_VERSION=1.0.1
 # Copy step is important, uvms/postgres runs a script that runs maven in /liquibase/MODULE for all but USM.
 # USM liquibase should be located in /liquibase/usm/database/liquibase/
 
-# Asset
-ADD $GITHUB/UVMS-AssetModule-APP/archive/asset-$ASSET_VERSION.zip /liquibase/asset
-RUN unzip -q /liquibase/asset/asset-$ASSET_VERSION.zip -d /liquibase/asset
-RUN cp -r /liquibase/asset/UVMS-AssetModule-APP-asset-$ASSET_VERSION/LIQUIBASE /liquibase/asset/
-
-# Config
-ADD $GITHUB/UVMS-ConfigModule-APP/archive/config-$CONFIG_VERSION.zip /liquibase/config
-RUN unzip -q /liquibase/config/config-$CONFIG_VERSION.zip -d /liquibase/config
-RUN cp -r /liquibase/config/UVMS-ConfigModule-APP-config-$CONFIG_VERSION/LIQUIBASE /liquibase/config/
-
-# Audit
-ADD $GITHUB/UVMS-AuditModule-APP/archive/audit-$AUDIT_VERSION.zip /liquibase/audit
-RUN unzip -q /liquibase/audit/audit-$AUDIT_VERSION.zip -d /liquibase/audit
-RUN cp -r /liquibase/audit/UVMS-AuditModule-APP-audit-$AUDIT_VERSION/LIQUIBASE /liquibase/audit/
-
-# Exchange
-ADD $GITHUB/UVMS-ExchangeModule-APP/archive/exchange-$EXCHANGE_VERSION.zip /liquibase/exchange
-RUN unzip -q /liquibase/exchange/exchange-$EXCHANGE_VERSION.zip -d /liquibase/exchange
-RUN cp -r /liquibase/exchange/UVMS-ExchangeModule-APP-exchange-$EXCHANGE_VERSION/LIQUIBASE /liquibase/exchange/
-
-# Movement  https://github.com/UnionVMS/
-ADD $GITHUB/UVMS-MovementModule-APP/archive/movement-$MOVEMENT_VERSION.zip /liquibase/movement
-RUN unzip -q /liquibase/movement/movement-$MOVEMENT_VERSION.zip -d /liquibase/movement
-RUN cp -r /liquibase/movement/UVMS-MovementModule-APP-movement-$MOVEMENT_VERSION/LIQUIBASE /liquibase/movement/
-
-# Mobile Terminal
-ADD $GITHUB/UVMS-MobileTerminalModule-APP/archive/mobileterminal-$MOBILE_TERMINAL_VERSION.zip /liquibase/mobterm
-RUN unzip -q /liquibase/mobterm/mobileterminal-$MOBILE_TERMINAL_VERSION.zip -d /liquibase/mobterm
-RUN cp -r /liquibase/mobterm/UVMS-MobileTerminalModule-APP-mobileterminal-$MOBILE_TERMINAL_VERSION/LIQUIBASE /liquibase/mobterm/
-
-# Rules
-ADD $GITHUB/UVMS-RulesModule-APP/archive/rules-$RULES_VERSION.zip /liquibase/rules
-RUN unzip -q /liquibase/rules/rules-$RULES_VERSION.zip -d /liquibase/rules
-RUN cp -r /liquibase/rules/UVMS-RulesModule-APP-rules-$RULES_VERSION/LIQUIBASE /liquibase/rules/
-#ADD $GITHUB/UVMS-RulesModule-APP/archive/58e0ba268c554a1a0cf35bac0c8a5d770458e5e8.zip /liquibase/rules
-#RUN unzip -q /liquibase/rules/58e0ba268c554a1a0cf35bac0c8a5d770458e5e8.zip -d /liquibase/rules
-#RUN cp -r /liquibase/rules/UVMS-RulesModule-APP-58e0ba268c554a1a0cf35bac0c8a5d770458e5e8/LIQUIBASE /liquibase/rules/
 
 # Spatial - Remeber to update this when spatial starts releasing on Github
 ADD https://github.com/UnionVMS/UVMS-SpatialModule-DB/archive/spatial-db-$SPATIAL_VERSION.zip /liquibase/spatial

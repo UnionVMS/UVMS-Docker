@@ -16,29 +16,7 @@ sed -i -e"s/^#work_mem = 4MB.*$/work_mem = 16MB/" /var/lib/postgresql/data/postg
 cd /liquibase/usm/database/liquibase
 mvn liquibase:update -Ddb.url=jdbc:postgresql://localhost:5432/db71u -Ddb.user=usm -Ddb.passwd=usm
 
-cd /liquibase/asset/LIQUIBASE
-mvn liquibase:update -Ppostgres
-
-cd /liquibase/audit/LIQUIBASE
-mvn liquibase:update -Ppostgres
-
-cd /liquibase/config/LIQUIBASE
-mvn liquibase:update -Ppostgres
-
-cd /liquibase/exchange/LIQUIBASE
-mvn liquibase:update -Ppostgres
-
-cd /liquibase/movement/LIQUIBASE
-mvn liquibase:update -Ppostgres
-
-cd /liquibase/mobterm/LIQUIBASE
-mvn liquibase:update -Ppostgres
-
-cd /liquibase/rules/LIQUIBASE
-mvn liquibase:update -Ppostgres
-
 cd /liquibase/spatial/LIQUIBASE
-
 mvn liquibase:update -Ppostgres,exec -Ddb.url=jdbc:postgresql://localhost:5432/db71u
 
 cd /liquibase/reporting/LIQUIBASE
@@ -53,5 +31,15 @@ mvn liquibase:update -Ppostgres,exec,testdata -Ddb.url=jdbc:postgresql://localho
 rm -rf /home/postgres/.m2/repository
 
 psql -U spatial -d db71u -c "update system_configurations set value = 'http://localhost:28080/geoserver/' where name='geo_server_url'"
+
+echo "Running module.sql to create tables and init data"
+psql -U asset -d db71u -a -f  /var/lib/postgresql/eu.europa.ec.fisheries.uvms.asset.liquibase-${unionvms.project.asset.module}.sql
+psql -U audit -d db71u -a -f  /var/lib/postgresql/eu.europa.ec.fisheries.uvms.audit.liquibase-${unionvms.project.audit.module}.sql
+psql -U config -d db71u -a -f  /var/lib/postgresql/eu.europa.ec.fisheries.uvms.config.liquibase-${unionvms.project.config.module}.sql
+psql -U exchange -d db71u -a -f  /var/lib/postgresql/eu.europa.ec.fisheries.uvms.exchange.liquibase-${unionvms.project.exchange.module}.sql
+psql -U mobterm -d db71u -a -f  /var/lib/postgresql/eu.europa.ec.fisheries.uvms.mobileterminal.liquibase-${unionvms.project.mobileterminal.module}.sql
+psql -U movement -d db71u -a -f  /var/lib/postgresql/eu.europa.ec.fisheries.uvms.movement.liquibase-${unionvms.project.movement.module}.sql
+psql -U rules -d db71u -a -f  /var/lib/postgresql/eu.europa.ec.fisheries.uvms.rules.liquibase-${unionvms.project.rules.module}.sql
+echo "Completed module.sql"
 
 echo "All uvms databases created"
