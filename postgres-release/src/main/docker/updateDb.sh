@@ -10,8 +10,8 @@ sed -i -e"s/^#effective_cache_size = 128MB.*$/effective_cache_size = 512MB/" /va
 sed -i -e"s/^#work_mem = 4MB.*$/work_mem = 16MB/" /var/lib/postgresql/data/postgresql.conf
 
 # Reload configuration
-psql -U postgres postgres -c "SELECT pg_reload_conf()"
-
+#psql -U postgres postgres -c "SELECT pg_reload_conf()"
+/etc/init.d/postgresql restart
 
 echo "Running module.sql to create tables and init data"
 echo "Running asset.sql to create tables and init data"

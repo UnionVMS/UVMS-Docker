@@ -1,4 +1,4 @@
-FROM mdillon/postgis:9.6-alpine
+FROM mdillon/postgis:9.6
 
 COPY setup.sql /docker-entrypoint-initdb.d/
 
