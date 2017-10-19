@@ -348,7 +348,7 @@
 								</ports>
 								<wait>
 									<log>All uvms databases created</log>
-									<time>240000</time>
+									<time>480000</time>
 									<kill>15000</kill>
 									<shutdown>15000</shutdown>
 								</wait>
