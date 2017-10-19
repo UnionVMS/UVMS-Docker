@@ -33,7 +33,7 @@ psql -U usm -d db71u --single-transaction -q -f /var/lib/postgresql/eu.europa.ec
 echo "Running spatial.sql to create tables and init data"
 psql -U spatial -d db71u --single-transaction -q -f /var/lib/postgresql/eu.europa.ec.fisheries.uvms.spatial.liquibase-1.0.5-SNAPSHOT.sql >/dev/null
 echo "Running mdr.sql to create tables and init data"
-psql -U mdr -d db71u -q  -a -f /var/lib/postgresql/eu.europa.ec.fisheries.uvms.mdr.liquibase-1.0.2-SNAPSHOT.sql >/dev/null
+psql -U mdr -d db71u --single-transaction -q -f /var/lib/postgresql/eu.europa.ec.fisheries.uvms.mdr.liquibase-1.0.2-SNAPSHOT.sql >/dev/null
 echo "Running activity.sql to create tables and init data"
 psql -U activity -d db71u --single-transaction -q -f /var/lib/postgresql/eu.europa.ec.fisheries.uvms.activity.liquibase-1.0.1-SNAPSHOT.sql >/dev/null
 echo "Completed module.sql"
