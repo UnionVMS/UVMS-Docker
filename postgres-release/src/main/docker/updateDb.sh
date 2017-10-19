@@ -29,15 +29,15 @@ psql -U movement -d db71u --single-transaction -q -f  /var/lib/postgresql/eu.eur
 echo "Running rules.sql to create tables and init data"
 psql -U rules -d db71u -a --single-transaction -q -f  /var/lib/postgresql/eu.europa.ec.fisheries.uvms.rules.liquibase-${unionvms.project.rules.module}.sql >/dev/null
 echo "Running usm.sql to create tables and init data"
-psql -U usm -d db71u --single-transaction -q -f /var/lib/postgresql/eu.europa.ec.fisheries.uvms.user.liquibase-2.0.3-SNAPSHOT.sql >/dev/null
+psql -U usm -d db71u --single-transaction -q -f /var/lib/postgresql/eu.europa.ec.fisheries.uvms.user.liquibase-${unionvms.project.user.module}.sql >/dev/null
 echo "Running spatial.sql to create tables and init data"
-psql -U spatial -d db71u --single-transaction -q -f /var/lib/postgresql/eu.europa.ec.fisheries.uvms.spatial.liquibase-1.0.5-SNAPSHOT.sql >/dev/null
+psql -U spatial -d db71u --single-transaction -q -f /var/lib/postgresql/eu.europa.ec.fisheries.uvms.spatial.liquibase-${unionvms.project.spatial.module}.sql >/dev/null
 echo "Running mdr.sql to create tables and init data"
-psql -U mdr -d db71u --single-transaction -q -f /var/lib/postgresql/eu.europa.ec.fisheries.uvms.mdr.liquibase-1.0.2-SNAPSHOT.sql >/dev/null
+psql -U mdr -d db71u --single-transaction -q -f /var/lib/postgresql/eu.europa.ec.fisheries.uvms.mdr.liquibase-${unionvms.project.mdr.module}.sql >/dev/null
 echo "Running activity.sql to create tables and init data"
-psql -U activity -d db71u --single-transaction -q -f /var/lib/postgresql/eu.europa.ec.fisheries.uvms.activity.liquibase-1.0.1-SNAPSHOT.sql >/dev/null
+psql -U activity -d db71u --single-transaction -q -f /var/lib/postgresql/eu.europa.ec.fisheries.uvms.activity.liquibase-${unionvms.project.activity.module}.sql >/dev/null
 echo "Running reporting.sql to create tables and init data"
-psql -U reporting -d db71u --single-transaction -q -f /var/lib/postgresql/eu.europa.ec.fisheries.uvms.reporting.liquibase-1.0.4-SNAPSHOT.sql >/dev/null
+psql -U reporting -d db71u --single-transaction -q -f /var/lib/postgresql/eu.europa.ec.fisheries.uvms.reporting.liquibase-${unionvms.project.reporting.module}.sql >/dev/null
 echo "Completed module.sql"
 
 
