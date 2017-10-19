@@ -36,6 +36,8 @@ echo "Running mdr.sql to create tables and init data"
 psql -U mdr -d db71u --single-transaction -q -f /var/lib/postgresql/eu.europa.ec.fisheries.uvms.mdr.liquibase-1.0.2-SNAPSHOT.sql >/dev/null
 echo "Running activity.sql to create tables and init data"
 psql -U activity -d db71u --single-transaction -q -f /var/lib/postgresql/eu.europa.ec.fisheries.uvms.activity.liquibase-1.0.1-SNAPSHOT.sql >/dev/null
+echo "Running reporting.sql to create tables and init data"
+psql -U reporting -d db71u --single-transaction -q -f /var/lib/postgresql/eu.europa.ec.fisheries.uvms.reporting.liquibase-1.0.4-SNAPSHOT.sql >/dev/null
 echo "Completed module.sql"
 
 
