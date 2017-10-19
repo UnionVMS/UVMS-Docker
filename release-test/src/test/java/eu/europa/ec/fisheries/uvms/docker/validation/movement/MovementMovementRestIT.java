@@ -72,7 +72,6 @@ public class MovementMovementRestIT extends AbstractRestServiceTest {
 	 * @throws Exception the exception
 	 */
 	@Test
-	@Ignore
 	public void getListByQueryNumberOfLatestReportTest() throws Exception {	
 		int numberPositions = 4;
 		Map<String, Object> dataMap = movementHelper.getListByQuery(createMovementQueryNumberOfLatestReports(numberPositions));
@@ -140,7 +139,6 @@ public class MovementMovementRestIT extends AbstractRestServiceTest {
 	 *             the exception
 	 */
 	@Test
-	@Ignore
 	public void getMinimalListByQueryNumberOfLatestReportTest() throws Exception {
 		int numberPositions = 4;
 		final HttpResponse response = Request.Post(getBaseUrl() + "movement/rest/movement/list/minimal")
@@ -177,6 +175,8 @@ public class MovementMovementRestIT extends AbstractRestServiceTest {
 		for (Entry<String, Integer> map : positionsPerShip.entrySet()) {
 			assertEquals("Ship do not contain 4 positions:" + map.getKey(),new Integer(numberPositions),map.getValue());
 		}
+		
+		assertTrue("Does not contain all ships",positionsPerShip.keySet().size()> 1);
 	}
 
 	/**

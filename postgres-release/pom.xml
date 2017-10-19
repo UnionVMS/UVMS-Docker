@@ -20,6 +20,14 @@
 		<unionvms.project.config.module>4.0.1-SNAPSHOT</unionvms.project.config.module>
 		<unionvms.project.audit.module>4.0.1-SNAPSHOT</unionvms.project.audit.module>
 		<unionvms.project.asset.module>4.0.1-SNAPSHOT</unionvms.project.asset.module>
+		
+		<unionvms.project.user.module>2.0.3-SNAPSHOT</unionvms.project.user.module>
+		<unionvms.project.activity.module>1.0.1-SNAPSHOT</unionvms.project.activity.module>
+		<unionvms.project.mdr.module>1.0.2-SNAPSHOT</unionvms.project.mdr.module>
+		<unionvms.project.reporting.module>1.0.4-SNAPSHOT</unionvms.project.reporting.module>
+		<unionvms.project.spatial.module>1.0.5-SNAPSHOT</unionvms.project.spatial.module>
+		
+		
 	</properties>
 	<dependencies>
 			<dependency>
@@ -27,42 +35,144 @@
 			<artifactId>liquibase</artifactId>
 			<type>sql</type>
 			<version>${unionvms.project.asset.module}</version>
+			<exclusions>
+				<exclusion>
+					<groupId>com.oracle</groupId>
+					<artifactId>ojdbc6</artifactId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 		<dependency>
 			<groupId>eu.europa.ec.fisheries.uvms.audit</groupId>
 			<artifactId>liquibase</artifactId>
 			<type>sql</type>
 			<version>${unionvms.project.audit.module}</version>
+			<exclusions>
+				<exclusion>
+					<groupId>com.oracle</groupId>
+					<artifactId>ojdbc6</artifactId>
+				</exclusion>
+			</exclusions>			
 		</dependency>
 		<dependency>
 			<groupId>eu.europa.ec.fisheries.uvms.config</groupId>
 			<artifactId>liquibase</artifactId>
 			<type>sql</type>
 			<version>${unionvms.project.config.module}</version>
+			<exclusions>
+				<exclusion>
+					<groupId>com.oracle</groupId>
+					<artifactId>ojdbc6</artifactId>
+				</exclusion>
+			</exclusions>			
 		</dependency>
 		<dependency>
 			<groupId>eu.europa.ec.fisheries.uvms.exchange</groupId>
 			<artifactId>liquibase</artifactId>
 			<type>sql</type>
 			<version>${unionvms.project.exchange.module}</version>
+			<exclusions>
+				<exclusion>
+					<groupId>com.oracle</groupId>
+					<artifactId>ojdbc6</artifactId>
+				</exclusion>
+			</exclusions>			
 		</dependency>
 		<dependency>
 			<groupId>eu.europa.ec.fisheries.uvms.mobileterminal</groupId>
 			<artifactId>liquibase</artifactId>
 			<type>sql</type>
 			<version>${unionvms.project.mobileterminal.module}</version>
+			<exclusions>
+				<exclusion>
+					<groupId>com.oracle</groupId>
+					<artifactId>ojdbc6</artifactId>
+				</exclusion>
+			</exclusions>			
 		</dependency>
 		<dependency>
 			<groupId>eu.europa.ec.fisheries.uvms.movement</groupId>
 			<artifactId>liquibase</artifactId>
 			<type>sql</type>
 			<version>${unionvms.project.movement.module}</version>
+			<exclusions>
+				<exclusion>
+					<groupId>com.oracle</groupId>
+					<artifactId>ojdbc6</artifactId>
+				</exclusion>
+			</exclusions>			
 		</dependency>
 		<dependency>
 			<groupId>eu.europa.ec.fisheries.uvms.rules</groupId>
 			<artifactId>liquibase</artifactId>
 			<type>sql</type>
 			<version>${unionvms.project.rules.module}</version>
+			<exclusions>
+				<exclusion>
+					<groupId>com.oracle</groupId>
+					<artifactId>ojdbc6</artifactId>
+				</exclusion>
+			</exclusions>			
+		</dependency>
+		<dependency>
+			<groupId>eu.europa.ec.fisheries.uvms.spatial</groupId>
+			<artifactId>liquibase</artifactId>
+			<type>sql</type>
+			<version>${unionvms.project.spatial.module}</version>
+			<exclusions>
+				<exclusion>
+					<groupId>com.oracle</groupId>
+					<artifactId>ojdbc6</artifactId>
+				</exclusion>
+			</exclusions>			
+		</dependency>
+		<dependency>
+			<groupId>eu.europa.ec.fisheries.uvms.activity</groupId>
+			<artifactId>liquibase</artifactId>
+			<type>sql</type>
+			<version>${unionvms.project.activity.module}</version>
+			<exclusions>
+				<exclusion>
+					<groupId>com.oracle</groupId>
+					<artifactId>ojdbc6</artifactId>
+				</exclusion>
+			</exclusions>			
+		</dependency>
+		<dependency>
+			<groupId>eu.europa.ec.fisheries.uvms.mdr</groupId>
+			<artifactId>liquibase</artifactId>
+			<type>sql</type>
+			<version>${unionvms.project.mdr.module}</version>
+			<exclusions>
+				<exclusion>
+					<groupId>com.oracle</groupId>
+					<artifactId>ojdbc6</artifactId>
+				</exclusion>
+			</exclusions>			
+		</dependency>
+		<dependency>
+			<groupId>eu.europa.ec.fisheries.uvms.reporting</groupId>
+			<artifactId>liquibase</artifactId>
+			<type>sql</type>
+			<version>${unionvms.project.reporting.module}</version>
+			<exclusions>
+				<exclusion>
+					<groupId>com.oracle</groupId>
+					<artifactId>ojdbc6</artifactId>
+				</exclusion>
+			</exclusions>			
+		</dependency>
+		<dependency>
+			<groupId>eu.europa.ec.fisheries.uvms.user</groupId>
+			<artifactId>liquibase</artifactId>
+			<type>sql</type>
+			<version>${unionvms.project.user.module}</version>
+			<exclusions>
+				<exclusion>
+					<groupId>com.oracle</groupId>
+					<artifactId>ojdbc6</artifactId>
+				</exclusion>
+			</exclusions>			
 		</dependency>
 	</dependencies>
 	<build>

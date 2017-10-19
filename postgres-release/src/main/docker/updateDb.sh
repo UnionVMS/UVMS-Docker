@@ -1,6 +1,4 @@
 #!bin/sh
-JAVA_HOME=/usr/lib/jvm/default-java
-export JAVA_HOME
 
 # Prepared transactions
 sed -i -e"s/^#max_prepared_transactions = 0.*$/max_prepared_transactions = 200/" /var/lib/postgresql/data/postgresql.conf
@@ -11,26 +9,9 @@ sed -i -e"s/^shared_buffers =.*$/shared_buffers = 512MB/" /var/lib/postgresql/da
 sed -i -e"s/^#effective_cache_size = 128MB.*$/effective_cache_size = 512MB/" /var/lib/postgresql/data/postgresql.conf
 sed -i -e"s/^#work_mem = 4MB.*$/work_mem = 16MB/" /var/lib/postgresql/data/postgresql.conf
 
-/etc/init.d/postgresql restart
+# Reload configuration
+psql -U postgres postgres -c "SELECT pg_reload_conf()"
 
-cd /liquibase/usm/database/liquibase
-mvn liquibase:update -Ddb.url=jdbc:postgresql://localhost:5432/db71u -Ddb.user=usm -Ddb.passwd=usm
-
-cd /liquibase/spatial/LIQUIBASE
-mvn liquibase:update -Ppostgres,exec -Ddb.url=jdbc:postgresql://localhost:5432/db71u
-
-cd /liquibase/reporting/LIQUIBASE
-mvn liquibase:update -Ppostgres,exec -Ddb.url=jdbc:postgresql://localhost:5432/db71u
-
-cd /liquibase/activity/LIQUIBASE
-mvn liquibase:update -Ppostgres,exec,testdata -Ddb.url=jdbc:postgresql://localhost:5432/db71u
-
-cd /liquibase/mdr/LIQUIBASE
-mvn liquibase:update -Ppostgres,exec,testdata -Ddb.url=jdbc:postgresql://localhost:5432/db71u
-
-rm -rf /home/postgres/.m2/repository
-
-psql -U spatial -d db71u -c "update system_configurations set value = 'http://localhost:28080/geoserver/' where name='geo_server_url'"
 
 echo "Running module.sql to create tables and init data"
 psql -U asset -d db71u -a -f  /var/lib/postgresql/eu.europa.ec.fisheries.uvms.asset.liquibase-${unionvms.project.asset.module}.sql
@@ -40,6 +21,18 @@ psql -U exchange -d db71u -a -f  /var/lib/postgresql/eu.europa.ec.fisheries.uvms
 psql -U mobterm -d db71u -a -f  /var/lib/postgresql/eu.europa.ec.fisheries.uvms.mobileterminal.liquibase-${unionvms.project.mobileterminal.module}.sql
 psql -U movement -d db71u -a -f  /var/lib/postgresql/eu.europa.ec.fisheries.uvms.movement.liquibase-${unionvms.project.movement.module}.sql
 psql -U rules -d db71u -a -f  /var/lib/postgresql/eu.europa.ec.fisheries.uvms.rules.liquibase-${unionvms.project.rules.module}.sql
+
+psql -U usm -d db71u -a -f /var/lib/postgresql/eu.europa.ec.fisheries.uvms.user.liquibase-2.0.3-SNAPSHOT.sql
+psql -U spatial -d db71u -a -f /var/lib/postgresql/eu.europa.ec.fisheries.uvms.spatial.liquibase-1.0.5-SNAPSHOT.sql
+psql -U mdr -d db71u -a -f /var/lib/postgresql/eu.europa.ec.fisheries.uvms.mdr.liquibase-1.0.2-SNAPSHOT.sql
+psql -U activity -d db71u -a -f /var/lib/postgresql/eu.europa.ec.fisheries.uvms.activity.liquibase-1.0.1-SNAPSHOT.sql
+
 echo "Completed module.sql"
+
+
+echo "Docker specific update"
+psql -U spatial -d db71u -c "update system_configurations set value = 'http://localhost:28080/geoserver/' where name='geo_server_url'"
+echo "Docker specific completed"
+
 
 echo "All uvms databases created"

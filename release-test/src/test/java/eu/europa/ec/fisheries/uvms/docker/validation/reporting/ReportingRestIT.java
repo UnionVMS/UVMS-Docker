@@ -402,7 +402,6 @@ public class ReportingRestIT extends AbstractRestServiceTest {
 	}
 
 	@Test
-	@Ignore
 	public void executeStandardTwoWeekReportWithIdForAllAssetFourLastPositionsKnownBugJira3215Test() throws Exception {
 		ReportDTO twoWeeksReport = createTwoWeeksLastFourPositionsReport("executeStandardTwoWeekReportWithIdForOneAssetFourLastPositionsTest", "TwoWeeksReports",ReportTypeEnum.STANDARD,VisibilityEnum.PRIVATE,null);
 		
@@ -441,12 +440,10 @@ public class ReportingRestIT extends AbstractRestServiceTest {
 			}
 		}
 		
-		assertNotEquals(AssetTestHelper.getAssetCountSweden(),Integer.valueOf(positionsPerShip.keySet().size()));
-		//Correct assertEquals(AssetTestHelper.getAssetCountSweden(),Integer.valueOf(positionsPerShip.keySet().size()));
+		assertEquals("Do not contain all ships",AssetTestHelper.getAssetCountSweden(),Integer.valueOf(positionsPerShip.keySet().size()));
 		
 		for (Entry<String, Integer> map : positionsPerShip.entrySet()) {
-			assertNotEquals("Ship do not contain 4 positions:" + map.getKey(),new Integer(4),map.getValue());
-			// Correct assertEquals("Ship do not contain 4 positions:" + map.getKey(),new Integer(4),map.getValue());			
+			assertEquals("Ship do not contain 4 positions:" + map.getKey(),new Integer(4),map.getValue());			
 		}
 		
 	}
