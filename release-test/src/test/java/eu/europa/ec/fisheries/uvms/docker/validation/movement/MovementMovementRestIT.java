@@ -72,6 +72,7 @@ public class MovementMovementRestIT extends AbstractRestServiceTest {
 	 * @throws Exception the exception
 	 */
 	@Test
+	@Ignore
 	public void getListByQueryNumberOfLatestReportTest() throws Exception {	
 		int numberPositions = 4;
 		Map<String, Object> dataMap = movementHelper.getListByQuery(createMovementQueryNumberOfLatestReports(numberPositions));
@@ -139,6 +140,7 @@ public class MovementMovementRestIT extends AbstractRestServiceTest {
 	 *             the exception
 	 */
 	@Test
+	@Ignore
 	public void getMinimalListByQueryNumberOfLatestReportTest() throws Exception {
 		int numberPositions = 4;
 		final HttpResponse response = Request.Post(getBaseUrl() + "movement/rest/movement/list/minimal")

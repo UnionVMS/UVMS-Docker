@@ -402,6 +402,7 @@ public class ReportingRestIT extends AbstractRestServiceTest {
 	}
 
 	@Test
+	@Ignore
 	public void executeStandardTwoWeekReportWithIdForAllAssetFourLastPositionsKnownBugJira3215Test() throws Exception {
 		ReportDTO twoWeeksReport = createTwoWeeksLastFourPositionsReport("executeStandardTwoWeekReportWithIdForOneAssetFourLastPositionsTest", "TwoWeeksReports",ReportTypeEnum.STANDARD,VisibilityEnum.PRIVATE,null);
 		
