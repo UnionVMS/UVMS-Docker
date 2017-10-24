@@ -1,5 +1,6 @@
 package eu.europa.ec.fisheries.uvms.docker.validation.plugins.flux;
 
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.Map;
@@ -23,8 +24,17 @@ import eu.europa.ec.fisheries.uvms.docker.validation.asset.AssetTestHelper;
 import eu.europa.ec.fisheries.uvms.docker.validation.mobileterminal.MobileTerminalTestHelper;
 import eu.europa.ec.fisheries.wsdl.asset.types.Asset;
 import un.unece.uncefact.data.standard.fluxvesselpositionmessage._4.FLUXVesselPositionMessage;
+import un.unece.uncefact.data.standard.reusableaggregatebusinessinformationentity._18.FLUXPartyType;
 import un.unece.uncefact.data.standard.reusableaggregatebusinessinformationentity._18.FLUXReportDocumentType;
+import un.unece.uncefact.data.standard.reusableaggregatebusinessinformationentity._18.VesselCountryType;
+import un.unece.uncefact.data.standard.reusableaggregatebusinessinformationentity._18.VesselGeographicalCoordinateType;
+import un.unece.uncefact.data.standard.reusableaggregatebusinessinformationentity._18.VesselPositionEventType;
 import un.unece.uncefact.data.standard.reusableaggregatebusinessinformationentity._18.VesselTransportMeansType;
+import un.unece.uncefact.data.standard.unqualifieddatatype._18.CodeType;
+import un.unece.uncefact.data.standard.unqualifieddatatype._18.DateTimeType;
+import un.unece.uncefact.data.standard.unqualifieddatatype._18.IDType;
+import un.unece.uncefact.data.standard.unqualifieddatatype._18.MeasureType;
+import un.unece.uncefact.data.standard.unqualifieddatatype._18.TextType;
 import xeu.bridge_connector.v1.RequestType;
 import xeu.bridge_connector.v1.ResponseType;
 import xeu.bridge_connector.wsdl.v1.BridgeConnectorPortType;
@@ -102,10 +112,14 @@ public class FluxMessageReceiverBeanTest extends Assert {
 	 * @throws Exception the exception
 	 */
 	@Test
-	public void postRequestTypeRequestSuccessTest() throws Exception {
+	public void postRequestTypeRequestSuccessTest() throws Exception {		
 		Asset testAsset = AssetTestHelper.createTestAsset();
 		MobileTerminalType mobileTerminalType = MobileTerminalTestHelper.createMobileTerminalType();
 		MobileTerminalTestHelper.assignMobileTerminal(testAsset, mobileTerminalType);
+
+		GregorianCalendar calendar = new GregorianCalendar();
+		calendar.setTime(new Date());
+
 		
 		BridgeConnectorPortType bridgeConnectorPortType = createBridgeConnector();
 		RequestType requestType = new RequestType();
@@ -113,21 +127,86 @@ public class FluxMessageReceiverBeanTest extends Assert {
 		FLUXVesselPositionMessage fLUXVesselPositionMessage = new FLUXVesselPositionMessage();
 		VesselTransportMeansType vesselTransportMeansType = new VesselTransportMeansType();
 		
+		IDType cfrId = new IDType();
+		cfrId.setSchemeID("CFR");
+		cfrId.setValue(testAsset.getCfr());
+		vesselTransportMeansType.getIDS().add(cfrId);
+
+		IDType ircsId = new IDType();
+		ircsId.setSchemeID("IRCS");
+		ircsId.setValue(testAsset.getIrcs());
+		vesselTransportMeansType.getIDS().add(ircsId);
+		
+//		IDType extMarkingId = new IDType();
+//		extMarkingId.setSchemeID("EXT_MARKING");
+//		extMarkingId.setValue(testAsset.getExternalMarking());
+//		vesselTransportMeansType.getIDS().add(extMarkingId);
+
+		VesselCountryType vesselCountry = new VesselCountryType();
+		IDType countryId = new IDType();
+		countryId.setValue("SWE");
+		vesselCountry.setID(countryId);
+		vesselTransportMeansType.setRegistrationVesselCountry(vesselCountry);
+		
+		
+		VesselPositionEventType vesselPositionEventType = new VesselPositionEventType();
+		
+		MeasureType measureType = new MeasureType();
+		measureType.setValue(new BigDecimal(282));
+		vesselPositionEventType.setCourseValueMeasure(measureType);
+		
+		DateTimeType posDateTime = new DateTimeType();
+		posDateTime.setDateTime(DatatypeFactory.newInstance().newXMLGregorianCalendar(calendar));
+		vesselPositionEventType.setObtainedOccurrenceDateTime(posDateTime);
+		
+		VesselGeographicalCoordinateType cordinates = new VesselGeographicalCoordinateType();
+		MeasureType longitude = new MeasureType();
+		longitude.setValue(new BigDecimal(21.5740000000));
+		cordinates.setLongitudeMeasure(longitude);
+		MeasureType latitude = new MeasureType();
+		latitude.setValue(new BigDecimal(59.6480000000));
+		cordinates.setLatitudeMeasure(latitude);
+		vesselPositionEventType.setSpecifiedVesselGeographicalCoordinate(cordinates);
+		
+		MeasureType speedValue = new MeasureType();
+		speedValue.setValue(new BigDecimal(7.8));
+		vesselPositionEventType.setSpeedValueMeasure(speedValue);
+		
+		CodeType typeCodeValue = new CodeType();
+		typeCodeValue.setValue("POS");
+		vesselPositionEventType.setTypeCode(typeCodeValue);
+		
+		vesselTransportMeansType.getSpecifiedVesselPositionEvents().add(vesselPositionEventType);
+		
 		fLUXVesselPositionMessage.setVesselTransportMeans(vesselTransportMeansType);
+		
 		FLUXReportDocumentType fluxReportDocumentType = new FLUXReportDocumentType();
+		DateTimeType dateTimeType = new DateTimeType();
+		dateTimeType.setDateTime(DatatypeFactory.newInstance().newXMLGregorianCalendar(calendar));
+		fluxReportDocumentType.setCreationDateTime(dateTimeType);
+		FLUXPartyType fLUXPartyType = new FLUXPartyType();
+		fLUXPartyType.getIDS().add(countryId);
+		fluxReportDocumentType.setOwnerFLUXParty(fLUXPartyType);
+		TextType textType = new TextType();
+		fluxReportDocumentType.setPurpose(textType);		
+		CodeType purposeCode = new CodeType();
+		purposeCode.setValue("9");
+		fluxReportDocumentType.setPurposeCode(purposeCode);		
+		IDType idType = new IDType();
+		fluxReportDocumentType.setReferencedID(idType);		
+		CodeType typeCode = new CodeType();
+		fluxReportDocumentType.setTypeCode(typeCode);		
 		fLUXVesselPositionMessage.setFLUXReportDocument(fluxReportDocumentType);
 
 		requestType.setAny(createAnyElement(fLUXVesselPositionMessage));
 
-		requestType.setAD("ad");
+		requestType.setAD("SWE");
 		requestType.setAR(true);
 		requestType.setDF("df");
 		requestType.setON("on");
 		requestType.setTO(1234);
-
-		GregorianCalendar calendar = new GregorianCalendar();
-		calendar.setTime(new Date());
 		requestType.setTODT(DatatypeFactory.newInstance().newXMLGregorianCalendar(calendar));
+
 
 		ResponseType responseType = bridgeConnectorPortType.post(requestType);
 		assertNotNull(responseType);
