@@ -58,7 +58,7 @@
 			"description": "",
 			"item": [
 				{
-					"name": "{{hostname}}:{{port}}/flux-service-3.0.1-SNAPSHOT/MovementService/FluxMessageReceiverBean?wsdl",
+					"name": "{{hostname}}:{{port}}/flux-service-3.0.1/MovementService/FluxMessageReceiverBean?wsdl",
 					"event": [
 						{
 							"listen": "test",
