@@ -1,8 +1,11 @@
 package eu.europa.ec.fisheries.uvms.docker.validation.plugins.flux;
 
 import java.math.BigDecimal;
+import java.math.BigInteger;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.List;
 import java.util.Map;
 
 import javax.xml.bind.JAXBContext;
@@ -14,14 +17,22 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.ws.BindingProvider;
 
+import org.apache.http.HttpResponse;
+import org.apache.http.client.fluent.Request;
 import org.junit.Assert;
 import org.junit.Test;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
 import eu.europa.ec.fisheries.schema.mobileterminal.types.v1.MobileTerminalType;
+import eu.europa.ec.fisheries.schema.movement.search.v1.ListCriteria;
+import eu.europa.ec.fisheries.schema.movement.search.v1.ListPagination;
+import eu.europa.ec.fisheries.schema.movement.search.v1.MovementQuery;
+import eu.europa.ec.fisheries.schema.movement.search.v1.SearchKey;
 import eu.europa.ec.fisheries.uvms.docker.validation.asset.AssetTestHelper;
+import eu.europa.ec.fisheries.uvms.docker.validation.common.AbstractRestServiceTest;
 import eu.europa.ec.fisheries.uvms.docker.validation.mobileterminal.MobileTerminalTestHelper;
+import eu.europa.ec.fisheries.uvms.docker.validation.movement.MovementHelper;
 import eu.europa.ec.fisheries.wsdl.asset.types.Asset;
 import un.unece.uncefact.data.standard.fluxvesselpositionmessage._4.FLUXVesselPositionMessage;
 import un.unece.uncefact.data.standard.reusableaggregatebusinessinformationentity._18.FLUXPartyType;
@@ -43,7 +54,9 @@ import xeu.bridge_connector.wsdl.v1.MovementService;
 /**
  * The Class FluxMessageReceiverBeanTest.
  */
-public class FluxMessageReceiverBeanTest extends Assert {
+public class FluxMessageReceiverBeanTest extends AbstractRestServiceTest {
+
+	private MovementHelper movementHelper = new MovementHelper();
 
 	private String exampleXml = "<soapenv:Envelope\r\n" + 
 			"    xmlns:soapenv=\\\"http://schemas.xmlsoap.org/soap/envelope/\\\"\r\n" + 
@@ -169,7 +182,7 @@ public class FluxMessageReceiverBeanTest extends Assert {
 		vesselPositionEventType.setSpecifiedVesselGeographicalCoordinate(cordinates);
 		
 		MeasureType speedValue = new MeasureType();
-		speedValue.setValue(new BigDecimal(7.8));
+		speedValue.setValue(new BigDecimal(7.5));
 		vesselPositionEventType.setSpeedValueMeasure(speedValue);
 		
 		CodeType typeCodeValue = new CodeType();
@@ -211,8 +224,21 @@ public class FluxMessageReceiverBeanTest extends Assert {
 		ResponseType responseType = bridgeConnectorPortType.post(requestType);
 		assertNotNull(responseType);
 		assertEquals("OK", responseType.getStatus());
+		
+		Thread.sleep(5000);
+		
+		List<String> connectIds = new ArrayList<>();
+		connectIds.add(mobileTerminalType.getConnectId());		
+		
+		final HttpResponse response = Request.Post(getBaseUrl() + "movement/rest/movement/latest")
+				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken())
+				.bodyByteArray(writeValueAsString(connectIds).getBytes()).execute().returnResponse();
+
+		List dataList = checkSuccessResponseReturnType(response, List.class);
+		//Add asssert when rules is fixed assertTrue(dataList.size() == 1);
 	}
 
+	
 	/**
 	 * Creates the bridge connector.
 	 *
