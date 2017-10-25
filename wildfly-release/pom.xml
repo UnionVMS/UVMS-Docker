@@ -17,7 +17,7 @@
 		<unionvms.project.mapfishprint.version>3.5</unionvms.project.mapfishprint.version>
 		<unionvms.project.geoserver.version>2.8.5.presweden1</unionvms.project.geoserver.version>
 		<unionvms.project.user.module>2.0.3</unionvms.project.user.module>
-		<unionvms.project.rules.module>3.0.11</unionvms.project.rules.module>
+		<unionvms.project.rules.module>3.0.13</unionvms.project.rules.module>
 		<unionvms.project.movement.module>4.0.2</unionvms.project.movement.module>
 		<unionvms.project.mobileterminal.module>4.0.1</unionvms.project.mobileterminal.module>
 		<unionvms.project.exchange.module>4.0.5</unionvms.project.exchange.module>
