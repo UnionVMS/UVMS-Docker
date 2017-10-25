@@ -225,7 +225,7 @@ public class FluxMessageReceiverBeanIT extends AbstractRestServiceTest {
 		assertNotNull(responseType);
 		assertEquals("OK", responseType.getStatus());
 		
-		Thread.sleep(5000);
+		Thread.sleep(7500);
 		
 		List<String> connectIds = new ArrayList<>();
 		connectIds.add(mobileTerminalType.getConnectId());		
@@ -235,7 +235,7 @@ public class FluxMessageReceiverBeanIT extends AbstractRestServiceTest {
 				.bodyByteArray(writeValueAsString(connectIds).getBytes()).execute().returnResponse();
 
 		List dataList = checkSuccessResponseReturnType(response, List.class);
-		assertTrue(dataList.size() == 1);
+		assertEquals("Expect one position in movement db",1,dataList.size());
 	}
 
 	
