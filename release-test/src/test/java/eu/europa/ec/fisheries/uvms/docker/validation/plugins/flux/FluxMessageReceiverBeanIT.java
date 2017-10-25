@@ -54,7 +54,7 @@ import xeu.bridge_connector.wsdl.v1.MovementService;
 /**
  * The Class FluxMessageReceiverBeanTest.
  */
-public class FluxMessageReceiverBeanTest extends AbstractRestServiceTest {
+public class FluxMessageReceiverBeanIT extends AbstractRestServiceTest {
 
 	private MovementHelper movementHelper = new MovementHelper();
 
@@ -235,7 +235,7 @@ public class FluxMessageReceiverBeanTest extends AbstractRestServiceTest {
 				.bodyByteArray(writeValueAsString(connectIds).getBytes()).execute().returnResponse();
 
 		List dataList = checkSuccessResponseReturnType(response, List.class);
-		//Add asssert when rules is fixed assertTrue(dataList.size() == 1);
+		assertTrue(dataList.size() == 1);
 	}
 
 	
