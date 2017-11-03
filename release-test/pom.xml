@@ -23,7 +23,7 @@
 		<dependency>
 			<artifactId>movement-model</artifactId>
 			<groupId>eu.europa.ec.fisheries.uvms.movement</groupId>
-			<version>4.0.2</version>
+			<version>4.0.3</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
@@ -35,7 +35,7 @@
 		<dependency>
 			<artifactId>mobileterminal-model</artifactId>
 			<groupId>eu.europa.ec.fisheries.uvms.mobileterminal</groupId>
-			<version>4.0.1</version>
+			<version>4.0.2</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
@@ -52,7 +52,7 @@
 		<dependency>
 			<groupId>eu.europa.ec.fisheries.uvms.asset</groupId>
 			<artifactId>asset-model</artifactId>
-			<version>4.0.1</version>
+			<version>4.0.2</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
@@ -64,13 +64,13 @@
 		<dependency>
 			<groupId>eu.europa.ec.fisheries.uvms.config</groupId>
 			<artifactId>config-model</artifactId>
-			<version>4.0.1</version>
+			<version>4.0.2</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>eu.europa.ec.fisheries.uvms.audit</groupId>
 			<artifactId>audit-model</artifactId>
-			<version>4.0.1</version>
+			<version>4.0.2</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
@@ -88,7 +88,7 @@
 		<dependency>
 			<groupId>eu.europa.ec.fisheries.uvms.reporting</groupId>
 			<artifactId>service</artifactId>
-			<version>1.0.9</version>
+			<version>1.0.11</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
@@ -191,7 +191,7 @@
 									<artifactId>movement-rest</artifactId>
 									<groupId>eu.europa.ec.fisheries.uvms.movement</groupId>
 									<type>war</type>
-									<version>4.0.2</version>
+									<version>4.0.3</version>
 									<overWrite>false</overWrite>
 									<outputDirectory>${project.build.directory}/warclasses/</outputDirectory>
 									<includes>WEB-INF/classes/**/*.*</includes>
@@ -200,7 +200,7 @@
 									<artifactId>exchange-rest</artifactId>
 									<groupId>eu.europa.ec.fisheries.uvms.exchange</groupId>
 									<type>war</type>
-									<version>4.0.3</version>
+									<version>4.0.6</version>
 									<overWrite>false</overWrite>
 									<outputDirectory>${project.build.directory}/warclasses/</outputDirectory>
 									<includes>WEB-INF/classes/**/*.*</includes>
