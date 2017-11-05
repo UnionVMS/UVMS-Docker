@@ -9,7 +9,7 @@
 	</parent>
 	<groupId>eu.europa.ec.fisheries.uvms.docker</groupId>
 	<artifactId>uvms-docker-postgres-base</artifactId>
-	<version>3.17.0-SNAPSHOT</version>
+	<version>3.17.0</version>
 	<packaging>pom</packaging>
 	<name>uvms-docker-postgres-base</name>
 	<build>
@@ -91,6 +91,6 @@
 		</profile>
 	</profiles>
 	<scm>
-		<tag>HEAD</tag>
+		<tag>uvms-docker-3.17.0</tag>
 	</scm>
 </project>
