@@ -1,0 +1,33 @@
+<assembly>
+    <id>allsql</id>
+    <formats>
+        <format>zip</format>
+    </formats>
+
+    <fileSets>
+        <fileSet>
+            <directory>target/dockerfile/sql/</directory>
+            <includes>
+                <include>*.sql</include>
+            </includes>
+            <outputDirectory></outputDirectory>
+        </fileSet>
+        <fileSet>
+            <directory>target/dockerfile/</directory>
+            <includes>
+                <include>createDb.sh</include>
+                <include>dropDb.sh</include>
+                <include>updateDbOnly.sh</include>
+                <include>drop-all.sql</include>                                   
+            </includes>
+            <outputDirectory></outputDirectory>
+        </fileSet>
+        <fileSet>
+            <directory>../postgres-base/src/main/docker/</directory>
+            <includes>
+                <include>setup.sql</include>
+            </includes>
+            <outputDirectory></outputDirectory>
+        </fileSet>
+    </fileSets>
+</assembly>
