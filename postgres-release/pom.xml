@@ -235,6 +235,7 @@
 									<filtering>true</filtering>
 									<includes>
 										<include>updateDb.sh</include>
+										<include>updateDbOnly.sh</include>										
 									</includes>
 								</resource>								
 							</resources>
