@@ -248,7 +248,7 @@
 					<version>3.1.0</version>
 					<configuration>
 						<descriptors>
-							<descriptor>src\main\assembly\assembly.xml</descriptor>
+							<descriptor>src/main/assembly/assembly.xml</descriptor>
 				        </descriptors>					
 						<finalName>${artifactId}</finalName>
 						<appendAssemblyId>false</appendAssemblyId>
