@@ -29,5 +29,12 @@
             </includes>
             <outputDirectory></outputDirectory>
         </fileSet>
+        <fileSet>
+            <directory>src/main/docker/</directory>
+            <includes>
+                <include>.pgpass</include>
+            </includes>
+            <outputDirectory></outputDirectory>
+        </fileSet>        
     </fileSets>
 </assembly>
