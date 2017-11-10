@@ -13,14 +13,14 @@
 	<packaging>pom</packaging>
 	<name>uvms-docker-postgres-release</name>
 	<properties>
-		<unionvms.project.rules.module>3.0.15</unionvms.project.rules.module>
-		<unionvms.project.movement.module>4.0.3</unionvms.project.movement.module>
-		<unionvms.project.mobileterminal.module>4.0.2</unionvms.project.mobileterminal.module>
+		<unionvms.project.rules.module>3.0.16</unionvms.project.rules.module>
+		<unionvms.project.movement.module>4.0.7</unionvms.project.movement.module>
+		<unionvms.project.mobileterminal.module>4.0.4</unionvms.project.mobileterminal.module>
 		<unionvms.project.exchange.module>4.0.6</unionvms.project.exchange.module>
-		<unionvms.project.config.module>4.0.2</unionvms.project.config.module>
-		<unionvms.project.audit.module>4.0.2</unionvms.project.audit.module>
-		<unionvms.project.asset.module>4.0.2</unionvms.project.asset.module>		
-		<unionvms.project.user.module>2.0.4</unionvms.project.user.module>
+		<unionvms.project.config.module>4.0.4</unionvms.project.config.module>
+		<unionvms.project.audit.module>4.0.4</unionvms.project.audit.module>
+		<unionvms.project.asset.module>4.0.4</unionvms.project.asset.module>		
+		<unionvms.project.user.module>2.0.5</unionvms.project.user.module>
 		<unionvms.project.activity.module>1.0.4</unionvms.project.activity.module>
 		<unionvms.project.mdr.module>1.0.4</unionvms.project.mdr.module>
 		<unionvms.project.reporting.module>1.0.4</unionvms.project.reporting.module>
