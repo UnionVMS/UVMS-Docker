@@ -1,0 +1,22 @@
+<assembly>
+    <id>alldeployments</id>
+    <formats>
+        <format>zip</format>
+    </formats>
+    <fileSets>
+        <fileSet>
+            <directory>target/dockerfile/deployments</directory>
+            <includes>
+                <include>**/*.*</include>
+            </includes>
+            <outputDirectory>deployments</outputDirectory>
+        </fileSet>
+        <fileSet>
+            <directory>target/dockerfile/FluxBridgeProperties</directory>
+            <includes>
+                <include>**/*.*</include>
+            </includes>
+            <outputDirectory>FluxBridgeProperties</outputDirectory>
+        </fileSet>        
+    </fileSets>
+</assembly>

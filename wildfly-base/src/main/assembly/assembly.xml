@@ -1,0 +1,15 @@
+<assembly>
+    <id>allconfig</id>
+    <formats>
+        <format>zip</format>
+    </formats>
+    <fileSets>
+        <fileSet>
+            <directory>target/dockerfile/</directory>
+            <includes>
+                <include>**/*.*</include>
+            </includes>
+            <outputDirectory></outputDirectory>
+        </fileSet>
+    </fileSets>
+</assembly>
