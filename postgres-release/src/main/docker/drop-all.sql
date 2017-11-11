@@ -1,4 +1,4 @@
-drop database db71t;
+drop database db71u;
 
 -- ASSET
 DROP USER IF EXISTS asset; 
