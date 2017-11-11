@@ -9,7 +9,7 @@
 	</parent>
 	<groupId>eu.europa.ec.fisheries.uvms.docker</groupId>
 	<artifactId>uvms-docker-wildfly-release</artifactId>
-	<version>3.19.0-SNAPSHOT</version>
+	<version>3.18.0</version>
 	<packaging>pom</packaging>
 	<name>uvms-docker-wildfly-release</name>
 	<properties>
@@ -465,6 +465,6 @@
 		</profile>
 	</profiles>
 	<scm>
-		<tag>HEAD</tag>
+		<tag>uvms-docker-3.18.0</tag>
 	</scm>
 </project>
