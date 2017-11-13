@@ -23,6 +23,7 @@ COPY dependencies/hibernate-core-${wildfly.hibernate.module.hibernate.version}.j
 COPY dependencies/hibernate-entitymanager-${wildfly.hibernate.module.hibernate.version}.jar $HIBERNATE_MODULE
 COPY dependencies/hibernate-envers-${wildfly.hibernate.module.hibernate.version}.jar $HIBERNATE_MODULE
 COPY dependencies/hibernate-infinispan-${wildfly.hibernate.module.hibernate.version}.jar $HIBERNATE_MODULE
+COPY dependencies/jts-${wildfly.hibernate.module.jts.version}.jar $HIBERNATE_MODULE
 
 # Standalone config
 COPY standalone.conf $JBOSS_HOME/bin/

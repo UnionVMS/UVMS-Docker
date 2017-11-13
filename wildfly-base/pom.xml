@@ -22,6 +22,11 @@
 	</properties>
 	<dependencies>
 		<dependency>
+			<groupId>com.vividsolutions</groupId>
+			<artifactId>jts</artifactId>
+			<version>${wildfly.hibernate.module.jts.version}</version>
+		</dependency>	
+		<dependency>
 			<groupId>org.hibernate</groupId>
 			<artifactId>hibernate-core</artifactId>
 			<version>${wildfly.hibernate.module.hibernate.version}</version>
