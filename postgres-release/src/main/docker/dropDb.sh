@@ -5,7 +5,7 @@ if [ $# -ne 2 ];
     exit 1
 fi
 
-sed -i 's/db71u/$1/g' < drop-all.sql > drop-all-db-$1.sql
+sed  s/db71u/$1/g < drop-all.sql > drop-all-db-$1.sql
 
 echo "Running drop-all.sql"
 psql --host=$2 -U postgres -q -f  drop-all-db-$1.sql >/dev/null
