@@ -1,6 +1,6 @@
 FROM njmittet/alpine-wildfly:8.2.1.Final
 
-ENV WILDFLY_VERSION=8.2.1.Final HIBERNATE_VERSION=4.3.11.Final HIBERNATE_SPATIAL_VERSION=4.3 JTS_VERSION=1.13 POSTGIS_VERSION=1.5.3 POSTGRES_VERSION=42.1.4.jre7 ACTIVEMQ_VERSION=5.14.5 TZ=CET
+ENV WILDFLY_VERSION=8.2.1.Final TZ=CET
 
 ENV NEXUS http://nexus.focus.fish/nexus/service/local/artifact/maven/content
 ENV HIBERNATE_MODULE $JBOSS_HOME/modules/system/layers/base/org/hibernate/main
@@ -8,23 +8,21 @@ ENV POSTGRES_MODULE $JBOSS_HOME/modules/org/postgresql/main
 ENV DEPLOYMENTS $JBOSS_HOME/standalone/deployments
 ENV PGPASSWORD=postgres
 
-# PostGis
-
-
-RUN curl -o $HIBERNATE_MODULE/hibernate-core-$HIBERNATE_VERSION.jar "http://central.maven.org/maven2/org/hibernate/hibernate-core/$HIBERNATE_VERSION/hibernate-core-$HIBERNATE_VERSION.jar" && \
-    curl -o $HIBERNATE_MODULE/hibernate-envers-$HIBERNATE_VERSION.jar "http://central.maven.org/maven2/org/hibernate/hibernate-envers/$HIBERNATE_VERSION/hibernate-envers-$HIBERNATE_VERSION.jar" && \
-    curl -o $HIBERNATE_MODULE/hibernate-entitymanager-$HIBERNATE_VERSION.jar "http://central.maven.org/maven2/org/hibernate/hibernate-entitymanager/$HIBERNATE_VERSION/hibernate-entitymanager-$HIBERNATE_VERSION.jar" && \
-    curl -o $HIBERNATE_MODULE/hibernate-infinispan-$HIBERNATE_VERSION.jar "http://central.maven.org/maven2/org/hibernate/hibernate-infinispan/$HIBERNATE_VERSION/hibernate-infinispan-$HIBERNATE_VERSION.jar" && \
-    curl -o $HIBERNATE_MODULE/hibernate-spatial-$HIBERNATE_SPATIAL_VERSION.jar "http://nexus.e-is.pro/nexus/content/groups/public/org/hibernate/hibernate-spatial/4.3/hibernate-spatial-4.3.jar" && \
-    curl -o $HIBERNATE_MODULE/jts-$JTS_VERSION.jar "http://central.maven.org/maven2/com/vividsolutions/jts/$JTS_VERSION/jts-$JTS_VERSION.jar" && \
-    mkdir -p $JBOSS_HOME/modules/org/postgresql/main && \
-    curl -o $POSTGRES_MODULE/postgis-jdbc-$POSTGIS_VERSION.jar "https://adams.cms.waikato.ac.nz/nexus/content/repositories/adams-thirdparty/org/postgis/postgis-jdbc/$POSTGIS_VERSION/postgis-jdbc-$POSTGIS_VERSION.jar" && \
-    curl -o $POSTGRES_MODULE/postgresql-$POSTGRES_VERSION.jar "http://central.maven.org/maven2/org/postgresql/postgresql/$POSTGRES_VERSION/postgresql-$POSTGRES_VERSION.jar" && \
-    curl -o $DEPLOYMENTS/activemq-rar.rar "https://repo1.maven.org/maven2/org/apache/activemq/activemq-rar/$ACTIVEMQ_VERSION/activemq-rar-$ACTIVEMQ_VERSION.rar" && \
+RUN mkdir -p $JBOSS_HOME/modules/org/postgresql/main && \
     mkdir -p /opt/jboss/wildfly/standalone/deployments/hibernatesearch/eu.europa.ec.fisheries.uvms.entity.model.AssetHistory
+    
+COPY dependencies/activemq-rar-${wildfly.activemq.rar.version}.rar $DEPLOYMENTS/activemq-rar.rar
 
 COPY postgres/module.xml $POSTGRES_MODULE
+COPY dependencies/postgresql-${wildfly.postgres.module.postgres.version}.jar $POSTGRES_MODULE 
+COPY dependencies/postgis-jdbc-${wildfly.postgres.module.postgis.version}.jar $POSTGRES_MODULE
+
 COPY hibernate/module.xml $HIBERNATE_MODULE
+COPY dependencies/hibernate-spatial-${wildfly.hibernate.module.spatial.version}.jar $HIBERNATE_MODULE
+COPY dependencies/hibernate-core-${wildfly.hibernate.module.hibernate.version}.jar $HIBERNATE_MODULE
+COPY dependencies/hibernate-entitymanager-${wildfly.hibernate.module.hibernate.version}.jar $HIBERNATE_MODULE
+COPY dependencies/hibernate-envers-${wildfly.hibernate.module.hibernate.version}.jar $HIBERNATE_MODULE
+COPY dependencies/hibernate-infinispan-${wildfly.hibernate.module.hibernate.version}.jar $HIBERNATE_MODULE
 
 # Standalone config
 COPY standalone.conf $JBOSS_HOME/bin/

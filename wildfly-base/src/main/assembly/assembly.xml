@@ -9,7 +9,31 @@
             <includes>
                 <include>**/*.*</include>
             </includes>
+            <excludes>
+            	<exclude>dependencies/*.*</exclude>
+            </excludes>
             <outputDirectory></outputDirectory>
         </fileSet>
+        <fileSet>
+            <directory>target/dockerfile/dependencies</directory>
+            <includes>
+                <include>hibernate*.*</include>
+            </includes>
+            <outputDirectory>hibernate</outputDirectory>
+        </fileSet>
+        <fileSet>
+            <directory>target/dockerfile/dependencies</directory>
+            <includes>
+                <include>post*.*</include>
+            </includes>
+            <outputDirectory>postgres</outputDirectory>
+        </fileSet>
+        <fileSet>
+            <directory>target/dockerfile/dependencies</directory>
+            <includes>
+                <include>activemq*.*</include>
+            </includes>
+            <outputDirectory>deployments</outputDirectory>
+        </fileSet>        
     </fileSets>
 </assembly>
