@@ -8,7 +8,6 @@
 		<version>3.19.0-SNAPSHOT</version>
 		<relativePath>../pom.xml</relativePath>
 	</parent>
-
 	<groupId>eu.europa.ec.fisheries.uvms.docker</groupId>
 	<version>3.19.0-SNAPSHOT</version>
 	<artifactId>uvms-foundation-test</artifactId>
@@ -23,98 +22,82 @@
 		<dependency>
 			<artifactId>movement-model</artifactId>
 			<groupId>eu.europa.ec.fisheries.uvms.movement</groupId>
-			<version>4.0.7</version>
-			<scope>test</scope>
+			<version>4.0.7</version>	
 		</dependency>
 		<dependency>
 			<groupId>org.apache.activemq</groupId>
 			<artifactId>activemq-client</artifactId>
-			<version>5.14.5</version>
-			<scope>test</scope>
+			<version>5.14.5</version>			
 		</dependency>
 		<dependency>
 			<artifactId>mobileterminal-model</artifactId>
 			<groupId>eu.europa.ec.fisheries.uvms.mobileterminal</groupId>
-			<version>4.0.4</version>
-			<scope>test</scope>
+			<version>4.0.4</version>	
 		</dependency>
 		<dependency>
 			<groupId>eu.europa.ec.fisheries.uvms.exchange</groupId>
 			<artifactId>exchange-model</artifactId>
-			<version>4.0.4</version>
-			<scope>test</scope>
+			<version>4.0.4</version>			
 		</dependency>		
 		<dependency>
 			<groupId>eu.europa.ec.fisheries.uvms.asset</groupId>
 			<artifactId>asset-model</artifactId>
 			<version>4.0.4</version>
-			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>eu.europa.ec.fisheries.uvms.user</groupId>
 			<artifactId>user-model</artifactId>
-			<version>2.0.5</version>
-			<scope>test</scope>
+			<version>2.0.5</version>			
 		</dependency>
 		<dependency>
 			<groupId>eu.europa.ec.fisheries.uvms.reporting</groupId>
 			<artifactId>service</artifactId>
-			<version>1.0.13</version>
-			<scope>test</scope>
+			<version>1.0.13</version>	
 		</dependency>		
 		<dependency>
 			<groupId>eu.europa.ec.fisheries.uvms.config</groupId>
 			<artifactId>config-model</artifactId>
-			<version>4.0.4</version>
-			<scope>test</scope>
+			<version>4.0.4</version>		
 		</dependency>
 		<dependency>
 			<groupId>eu.europa.ec.fisheries.uvms.audit</groupId>
 			<artifactId>audit-model</artifactId>
-			<version>4.0.4</version>
-			<scope>test</scope>
+			<version>4.0.4</version>			
 		</dependency>
 		<dependency>
 			<groupId>eu.europa.ec.fisheries.uvms.spatial</groupId>
 			<artifactId>spatial-model</artifactId>
-			<version>1.0.6</version>
-			<scope>test</scope>
+			<version>1.0.6</version>			
 		</dependency>
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
-			<version>4.12</version>
-			<scope>test</scope>
+			<version>4.12</version>		
 		</dependency>
 		<dependency>
 			<groupId>org.apache.httpcomponents</groupId>
 			<artifactId>fluent-hc</artifactId>
-			<version>4.5.3</version>
-			<scope>test</scope>
+			<version>4.5.3</version>		
 		</dependency>
 		<dependency>
 			<groupId>com.fasterxml.jackson.core</groupId>
 			<artifactId>jackson-databind</artifactId>
-			<version>2.8.8</version>
-			<scope>test</scope>
+			<version>2.8.8</version>			
 		</dependency>
 		<dependency>
 			<groupId>com.fasterxml.jackson.core</groupId>
 			<artifactId>jackson-annotations</artifactId>
-			<version>2.8.8</version>
-			<scope>test</scope>
+			<version>2.8.8</version>			
 		</dependency>
 		<dependency>
 			<groupId>org.databene</groupId>
 			<artifactId>contiperf</artifactId>
-			<version>2.4.4</version>
-			<scope>test</scope>
+			<version>2.4.4</version>			
 		</dependency>
 		<dependency>
 			<groupId>org.apache.cxf</groupId>
 			<artifactId>cxf-rt-rs-client</artifactId>
-			<version>3.1.13</version>
-			<scope>test</scope>
+			<version>3.1.13</version>		
 		</dependency>
 		 <dependency>
             <groupId>org.apache.cxf</groupId>
@@ -125,7 +108,6 @@
 			<groupId>com.peertopark.java</groupId>
 			<artifactId>geocalc</artifactId>
 			<version>1.1.0</version>
-			<scope>test</scope>
 		</dependency>
 	</dependencies>
 	<build>
