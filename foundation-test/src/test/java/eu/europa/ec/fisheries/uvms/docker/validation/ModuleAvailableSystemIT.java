@@ -25,18 +25,6 @@ import eu.europa.ec.fisheries.uvms.docker.validation.common.AbstractRest;
 public class ModuleAvailableSystemIT extends AbstractRest {
 
 	/**
-	 * Check union vms web access test.
-	 *
-	 * @throws Exception
-	 *             the exception
-	 */
-	@Test
-	public void checkUnionVmsWebAccessTest() throws Exception {
-		assertEquals(HttpStatus.SC_OK,
-				Request.Get(getBaseUrl() + "unionvms/").execute().returnResponse().getStatusLine().getStatusCode());
-	}
-
-	/**
 	 * Check user access test.
 	 *
 	 * @throws Exception
@@ -168,60 +156,6 @@ public class ModuleAvailableSystemIT extends AbstractRest {
 	}
 
 	/**
-	 * Check rules access test.
-	 *
-	 * @throws Exception
-	 *             the exception
-	 */
-	@Test
-	public void checkRulesAccessTest() throws Exception {
-		assertEquals(HttpStatus.SC_FORBIDDEN,
-				Request.Get(getBaseUrl() + "rules/").execute().returnResponse().getStatusLine().getStatusCode());
-		assertEquals(HttpStatus.SC_OK,
-				Request.Get(getBaseUrl() + "rules/monitoring").execute().returnResponse().getStatusLine().getStatusCode());		
-		assertEquals(HttpStatus.SC_FORBIDDEN,
-				Request.Get(getBaseUrl() + "rules/rest").execute().returnResponse().getStatusLine().getStatusCode());
-	}
-
-	/**
-	 * Check reporting access test.
-	 *
-	 * @throws Exception
-	 *             the exception
-	 */
-	@Test
-	public void checkReportingAccessTest() throws Exception {
-		assertEquals(HttpStatus.SC_FORBIDDEN,
-				Request.Get(getBaseUrl() + "reporting/").execute().returnResponse().getStatusLine().getStatusCode());
-		assertEquals(HttpStatus.SC_OK,
-				Request.Get(getBaseUrl() + "reporting/monitoring").execute().returnResponse().getStatusLine().getStatusCode());		
-	}
-	
-	/**
-	 * Check Activity access test.
-	 *
-	 * @throws Exception
-	 *             the exception
-	 */
-	@Test
-	public void checkActivityAccessTest() throws Exception {
-		assertEquals(HttpStatus.SC_FORBIDDEN,Request.Get(BASE_URL + "activity/").execute().returnResponse().getStatusLine().getStatusCode());
-		assertEquals(HttpStatus.SC_FORBIDDEN,Request.Get(BASE_URL + "activity/rest").execute().returnResponse().getStatusLine().getStatusCode());
-	}
-
-	/**
-	 * Check Mdr access test.
-	 *
-	 * @throws Exception
-	 *             the exception
-	 */
-	@Test
-	public void checkMdrAccessTest() throws Exception {
-		assertEquals(HttpStatus.SC_FORBIDDEN,Request.Get(BASE_URL + "mdr/").execute().returnResponse().getStatusLine().getStatusCode());
-		assertEquals(HttpStatus.SC_FORBIDDEN,Request.Get(BASE_URL + "mdr/rest").execute().returnResponse().getStatusLine().getStatusCode());
-	}
-
-	/**
 	 * Check mapfish print access test.
 	 *
 	 * @throws Exception the exception
@@ -232,14 +166,4 @@ public class ModuleAvailableSystemIT extends AbstractRest {
 				Request.Get(getBaseUrl() + "mapfish-print/").execute().returnResponse().getStatusLine().getStatusCode());
 	}
 
-	/**
-	 * Check geoserver access test.
-	 *
-	 * @throws Exception the exception
-	 */
-	@Test
-	public void checkGeoserverAccessTest() throws Exception {
-		assertEquals(HttpStatus.SC_OK,
-				Request.Get(getBaseUrl() + "geoserver/").execute().returnResponse().getStatusLine().getStatusCode());
-	}
 }

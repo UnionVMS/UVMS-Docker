@@ -51,7 +51,8 @@
 		<module>postgres-base</module>
 		<module>postgres-release</module>
 		<module>wildfly-base</module>
-		<module>wildfly-foundation</module>		
+		<module>wildfly-foundation</module>
+		<module>foundation-test</module>		
 		<module>wildfly-release</module>
 		<module>docker-compose</module>
 		<module>release-test</module>
