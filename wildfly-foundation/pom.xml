@@ -113,6 +113,13 @@
 			<version>${unionvms.project.user.module}</version>
 		</dependency>
 
+		<!-- plugin modules -->
+		<dependency>
+			<groupId>eu.europa.ec.fisheries.uvms.plugins.inmarsat</groupId>
+			<artifactId>twostage-module</artifactId>
+			<type>ear</type>
+			<version>${unionvms.project.plugins.twostage}</version>
+		</dependency>
 	</dependencies>
 	<build>
 		<pluginManagement>
@@ -260,6 +267,11 @@
 									<jar destfile="${project.basedir}/target/dockerfile/deployments/mapfish-print-${unionvms.project.mapfishprint.version}.war" update="true">
 										<zipfileset dir="${project.basedir}/target/dockerfile/jboss-deployment/web-app" includes="*.xml" prefix="WEB-INF" />
 									</jar>
+									
+									<jar destfile="${project.basedir}/target/dockerfile/deployments/twostage-module-${unionvms.project.plugins.twostage}.ear" update="true">
+										<zipfileset dir="${project.basedir}/target/dockerfile/jboss-deployment/plugins" includes="*.xml" prefix="META-INF" />
+									</jar>
+									
 								</then>
 								<else>
 								        <echo message="Ignore dependency order at startup, no ear/war:s is modified " />

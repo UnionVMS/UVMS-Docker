@@ -90,12 +90,6 @@
 			<version>${unionvms.project.plugins.flux}</version>
 		</dependency>
 		<dependency>
-			<groupId>eu.europa.ec.fisheries.uvms.plugins.inmarsat</groupId>
-			<artifactId>twostage-module</artifactId>
-			<type>ear</type>
-			<version>${unionvms.project.plugins.twostage}</version>
-		</dependency>
-		<dependency>
 			<groupId>eu.europa.ec.fisheries.uvms.plugins.iridium</groupId>
 			<artifactId>siriusone-module</artifactId>
 			<type>ear</type>
@@ -236,11 +230,7 @@
 									<jar destfile="${project.basedir}/target/dockerfile/deployments/flux-module-${unionvms.project.plugins.flux}.ear" update="true">
 										<zipfileset dir="${project.basedir}/target/dockerfile/jboss-deployment/plugins" includes="*.xml" prefix="META-INF" />
 									</jar>
-	
-									<jar destfile="${project.basedir}/target/dockerfile/deployments/twostage-module-${unionvms.project.plugins.twostage}.ear" update="true">
-										<zipfileset dir="${project.basedir}/target/dockerfile/jboss-deployment/plugins" includes="*.xml" prefix="META-INF" />
-									</jar>
-	
+		
 									<jar destfile="${project.basedir}/target/dockerfile/deployments/siriusone-module-${unionvms.project.plugins.siriusone}.ear" update="true">
 										<zipfileset dir="${project.basedir}/target/dockerfile/jboss-deployment/plugins" includes="*.xml" prefix="META-INF" />
 									</jar>

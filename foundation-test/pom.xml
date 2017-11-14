@@ -234,7 +234,7 @@
 						<phase>pre-integration-test</phase>
 						<configuration>
 							<tasks>
-								<sleep seconds="60" />
+								<sleep seconds="90" />
 							</tasks>
 						</configuration>
 						<goals>
@@ -376,7 +376,7 @@
 								</ports>
 								<wait>
 									<http>
-										<url>http://localhost:28080/exchange/monitoring</url>
+										<url>http://localhost:28080/mobileterminal/monitoring</url>
 										<method>GET</method>
 										<status>200</status>
 									</http>
