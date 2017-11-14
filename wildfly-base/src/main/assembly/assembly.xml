@@ -29,12 +29,12 @@
             </includes>
             <outputDirectory>postgres</outputDirectory>
         </fileSet>
-        <fileSet>
-            <directory>target/dockerfile/dependencies</directory>
-            <includes>
-                <include>activemq*.*</include>
-            </includes>
-            <outputDirectory>deployments</outputDirectory>
-        </fileSet>        
     </fileSets>
+    <files>
+		<file>
+		<source>target/content/uvms-docker-wildfly-base/deployments/activemq-rar-5.14.5.rar</source>
+		<outputDirectory>deployments</outputDirectory>
+		<destName>activemq-rar.rar</destName>
+		</file>
+	</files>    
 </assembly>
