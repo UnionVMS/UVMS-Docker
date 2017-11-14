@@ -18,6 +18,7 @@
             <directory>target/dockerfile/dependencies</directory>
             <includes>
                 <include>hibernate*.*</include>
+                <include>jts*.*</include>                
             </includes>
             <outputDirectory>hibernate</outputDirectory>
         </fileSet>
