@@ -2,10 +2,10 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
-		<groupId>fish.focus.maven</groupId>
-		<artifactId>focus-pom</artifactId>
-		<version>1.12</version>
-		<relativePath />
+		<groupId>eu.europa.ec.fisheries.uvms.docker</groupId>
+		<artifactId>uvms-docker</artifactId>
+		<version>3.19.0-SNAPSHOT</version>
+		<relativePath>../pom.xml</relativePath>
 	</parent>
 	<groupId>eu.europa.ec.fisheries.uvms.docker</groupId>
 	<artifactId>uvms-docker-postgres-release</artifactId>
@@ -13,18 +13,8 @@
 	<packaging>pom</packaging>
 	<name>uvms-docker-postgres-release</name>
 	<properties>
-		<unionvms.project.rules.module>3.0.16</unionvms.project.rules.module>
-		<unionvms.project.movement.module>4.0.7</unionvms.project.movement.module>
-		<unionvms.project.mobileterminal.module>4.0.4</unionvms.project.mobileterminal.module>
-		<unionvms.project.exchange.module>4.0.7</unionvms.project.exchange.module>
-		<unionvms.project.config.module>4.0.4</unionvms.project.config.module>
-		<unionvms.project.audit.module>4.0.4</unionvms.project.audit.module>
-		<unionvms.project.asset.module>4.0.4</unionvms.project.asset.module>		
-		<unionvms.project.user.module>2.0.5</unionvms.project.user.module>
-		<unionvms.project.activity.module>1.0.4</unionvms.project.activity.module>
-		<unionvms.project.mdr.module>1.0.5</unionvms.project.mdr.module>
-		<unionvms.project.reporting.module>1.0.4</unionvms.project.reporting.module>
-		<unionvms.project.spatial.module>1.0.5</unionvms.project.spatial.module>
+		<unionvms.project.reporting.db.module>1.0.4</unionvms.project.reporting.db.module>
+		<unionvms.project.spatial.db.module>1.0.5</unionvms.project.spatial.db.module>
 	</properties>
 	<dependencies>
 			<dependency>
@@ -115,7 +105,7 @@
 			<groupId>eu.europa.ec.fisheries.uvms.spatial</groupId>
 			<artifactId>liquibase</artifactId>
 			<type>sql</type>
-			<version>${unionvms.project.spatial.module}</version>
+			<version>${unionvms.project.spatial.db.module}</version>
 			<exclusions>
 				<exclusion>
 					<groupId>com.oracle</groupId>
@@ -151,7 +141,7 @@
 			<groupId>eu.europa.ec.fisheries.uvms.reporting</groupId>
 			<artifactId>liquibase</artifactId>
 			<type>sql</type>
-			<version>${unionvms.project.reporting.module}</version>
+			<version>${unionvms.project.reporting.db.module}</version>
 			<exclusions>
 				<exclusion>
 					<groupId>com.oracle</groupId>

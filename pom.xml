@@ -19,7 +19,28 @@
 		<project.scm.id>github</project.scm.id>
 	    <scm.connection>scm:git:https://github.com/UnionVMS/UVMS-Docker.git</scm.connection>
 	    <scm.url>scm:git:https://github.com/UnionVMS/UVMS-Docker.git</scm.url>
+		<unionvms.project.unionvms.web.version>3.0.12</unionvms.project.unionvms.web.version>
+		<unionvms.project.mapfishprint.version>3.5</unionvms.project.mapfishprint.version>
+		<unionvms.project.geoserver.version>2.8.5</unionvms.project.geoserver.version>
+		<unionvms.project.user.module>2.0.5</unionvms.project.user.module>
+		<unionvms.project.rules.module>3.0.16</unionvms.project.rules.module>
+		<unionvms.project.movement.module>4.0.7</unionvms.project.movement.module>
+		<unionvms.project.mobileterminal.module>4.0.4</unionvms.project.mobileterminal.module>
+		<unionvms.project.exchange.module>4.0.7</unionvms.project.exchange.module>
+		<unionvms.project.reporting.module>1.0.13</unionvms.project.reporting.module>
+		<unionvms.project.spatial.module>1.0.6</unionvms.project.spatial.module>
+		<unionvms.project.config.module>4.0.4</unionvms.project.config.module>
+		<unionvms.project.audit.module>4.0.4</unionvms.project.audit.module>
+		<unionvms.project.asset.module>4.0.4</unionvms.project.asset.module>
+		<unionvms.project.activity.module>1.0.4</unionvms.project.activity.module>
+		<unionvms.project.mdr.module>1.0.5</unionvms.project.mdr.module>
+		<unionvms.project.plugins.naf>3.0.3</unionvms.project.plugins.naf>
+		<unionvms.project.plugins.flux>3.0.1</unionvms.project.plugins.flux>
+		<unionvms.project.plugins.twostage>3.0.3</unionvms.project.plugins.twostage>
+		<unionvms.project.plugins.siriusone>3.0.4</unionvms.project.plugins.siriusone>
 	</properties>
+	
+	
     <scm>
         <connection>${scm.connection}</connection>
         <tag>HEAD</tag>
@@ -30,6 +51,7 @@
 		<module>postgres-base</module>
 		<module>postgres-release</module>
 		<module>wildfly-base</module>
+		<module>wildfly-foundation</module>		
 		<module>wildfly-release</module>
 		<module>docker-compose</module>
 		<module>release-test</module>

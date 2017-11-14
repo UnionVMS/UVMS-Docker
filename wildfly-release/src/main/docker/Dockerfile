@@ -1,4 +1,4 @@
-FROM uvms/wildfly-base:${project.version}
+FROM uvms/wildfly-foundation:${project.version}
 
 COPY deployments /opt/jboss/wildfly/standalone/deployments/
  
