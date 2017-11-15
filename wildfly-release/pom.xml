@@ -42,14 +42,6 @@
 			<version>${unionvms.project.unionvms.web.version}</version>
 		</dependency>
 
-		<dependency>
-			<groupId>eu.europa.ec.fisheries.uvms.geoserver.web</groupId>
-			<artifactId>gs-web-app</artifactId>
-			<classifier>postgres</classifier>
-			<type>war</type>
-			<version>${unionvms.project.geoserver.version}</version>
-		</dependency>
-
 		<!-- app modules -->
 		<dependency>
 			<groupId>eu.europa.ec.fisheries.uvms.rules</groupId>
@@ -235,9 +227,6 @@
 										<zipfileset dir="${project.basedir}/target/dockerfile/jboss-deployment/plugins" includes="*.xml" prefix="META-INF" />
 									</jar>
 	
-									<jar destfile="${project.basedir}/target/dockerfile/deployments/gs-web-app-${unionvms.project.geoserver.version}-postgres.war" update="true">
-										<zipfileset dir="${project.basedir}/target/dockerfile/jboss-deployment/web-app" includes="*.xml" prefix="WEB-INF" />
-									</jar>
 									<jar destfile="${project.basedir}/target/dockerfile/deployments/unionvms-web-${unionvms.project.unionvms.web.version}.war" update="true">
 										<zipfileset dir="${project.basedir}/target/dockerfile/jboss-deployment/web-app" includes="*.xml" prefix="WEB-INF" />
 									</jar>
@@ -246,8 +235,6 @@
 								        <echo message="Ignore dependency order at startup, no ear/war:s is modified " />
 								</else>
 							</if>
-								
-							<move file="${project.basedir}/target/dockerfile/deployments/gs-web-app-${unionvms.project.geoserver.version}-postgres.war" tofile="${project.basedir}/target/dockerfile/deployments/geoserver.war" />
 							
 							</tasks>
 						</configuration>

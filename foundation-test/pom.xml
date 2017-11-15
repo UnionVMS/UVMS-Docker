@@ -358,7 +358,7 @@
 								</ports>
 								<wait>
 									<http>
-										<url>http://localhost:28080/mobileterminal/monitoring</url>
+										<url>http://localhost:28080/geoserver/index.html</url>
 										<method>GET</method>
 										<status>200</status>
 									</http>
