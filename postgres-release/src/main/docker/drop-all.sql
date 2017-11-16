@@ -4,7 +4,7 @@ drop database db71u;
 DROP USER IF EXISTS asset; 
 
 -- AUDIT
-DROP USER IF EXISTS;  
+DROP USER IF EXISTS audit;  
 
 -- CONFIG
 DROP USER IF EXISTS config; 
