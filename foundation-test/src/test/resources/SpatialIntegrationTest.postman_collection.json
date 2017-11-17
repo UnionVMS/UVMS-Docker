@@ -613,7 +613,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"id\": 3453,\n  \"name\" : \"fkljfkfdj\",\n  \"srs\" : 3857,\n  \"extent\": \"ekfezmlklfezk\",\n  \"createdBy\": \"eeeeee\"\n}"
+							"raw": "{\n  \"name\" : \"fkljfkfdj\",\n  \"srs\" : \"3857\",\n  \"extent\": \"ekfezmlklfezk\",\n  \"createdBy\": \"eeeeee\"\n}"
 						},
 						"description": ""
 					},
