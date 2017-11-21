@@ -249,7 +249,7 @@ public class FluxMessageReceiverBeanIT extends AbstractRestServiceTest {
 
 		BindingProvider bp = (BindingProvider) bridgeConnectorPortType;
 		bp.getRequestContext().put(BindingProvider.ENDPOINT_ADDRESS_PROPERTY,
-				"http://localhost:28080/flux-service-3.0.1/MovementService/FluxMessageReceiverBean");
+				"http://localhost:28080/flux-service-3.0.3/MovementService/FluxMessageReceiverBean");
 		return bridgeConnectorPortType;
 	}
 
