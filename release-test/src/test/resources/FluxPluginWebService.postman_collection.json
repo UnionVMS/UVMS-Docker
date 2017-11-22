@@ -58,7 +58,7 @@
 			"description": "",
 			"item": [
 				{
-					"name": "{{hostname}}:{{port}}/flux-service-3.0.1/MovementService/FluxMessageReceiverBean?wsdl",
+					"name": "{{hostname}}:{{port}}/flux-service-3.0.3/MovementService/FluxMessageReceiverBean?wsdl",
 					"event": [
 						{
 							"listen": "test",
@@ -84,7 +84,7 @@
 							"raw": "<soapenv:Envelope xmlns:soapenv=\"http://schemas.xmlsoap.org/soap/envelope/\" xmlns:urn=\"urn:xeu:bridge-connector:v1\">\n   <soapenv:Header/>\n   <soapenv:Body>\n      <urn:Connector2BridgeRequest>\n         \t\n\t<rsm:FLUXVesselPositionMessage xmlns:rsm=\"urn:un:unece:uncefact:data:standard:FLUXVesselPositionMessage:4\" xmlns=\"urn:xeu:connector-bridge:v1\" xmlns:ram=\"urn:un:unece:uncefact:data:standard:ReusableAggregateBusinessInformationEntity:18\" xmlns:s=\"http://schemas.xmlsoap.org/soap/envelope/\" xmlns:udt=\"urn:un:unece:uncefact:data:standard:UnqualifiedDataType:18\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xsi:schemaLocation=\"urn:un:unece:uncefact:data:standard:FLUXVesselPositionMessage:4 FLUXVesselPositionMessage_4p0.xsd\"><rsm:FLUXReportDocument><ram:ID>19641756</ram:ID><ram:CreationDateTime><udt:DateTime>2017-02-05T19:50:00Z</udt:DateTime></ram:CreationDateTime><ram:PurposeCode>9</ram:PurposeCode><ram:OwnerFLUXParty><ram:ID>EST</ram:ID></ram:OwnerFLUXParty></rsm:FLUXReportDocument><rsm:VesselTransportMeans><ram:ID schemeID=\"CFR\">EST010101021</ram:ID><ram:ID schemeID=\"EXT_MARKING\">FIN-1114-U</ram:ID><ram:ID schemeID=\"IRCS\">OJPN</ram:ID><ram:RegistrationVesselCountry><ram:ID>EST</ram:ID></ram:RegistrationVesselCountry><ram:SpecifiedVesselPositionEvent><ram:ObtainedOccurrenceDateTime><udt:DateTime>2017-02-05T17:38:00Z</udt:DateTime></ram:ObtainedOccurrenceDateTime><ram:TypeCode>POS</ram:TypeCode><ram:SpeedValueMeasure>7.8</ram:SpeedValueMeasure><ram:CourseValueMeasure>282</ram:CourseValueMeasure><ram:SpecifiedVesselGeographicalCoordinate><ram:LatitudeMeasure>59.6480000000</ram:LatitudeMeasure><ram:LongitudeMeasure>21.5740000000</ram:LongitudeMeasure></ram:SpecifiedVesselGeographicalCoordinate></ram:SpecifiedVesselPositionEvent></rsm:VesselTransportMeans></rsm:FLUXVesselPositionMessage>\n      </urn:Connector2BridgeRequest>\n   </soapenv:Body>\n</soapenv:Envelope>"
 						},
 						"url": {
-							"raw": "{{hostname}}:{{port}}/flux-service-3.0.1/MovementService/FluxMessageReceiverBean?wsdl",
+							"raw": "{{hostname}}:{{port}}/flux-service-3.0.3/MovementService/FluxMessageReceiverBean?wsdl",
 							"host": [
 								"{{hostname}}"
 							],
