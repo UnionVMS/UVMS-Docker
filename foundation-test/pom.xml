@@ -473,44 +473,5 @@
 				</plugins>
 			</build>
 		</profile>
-		<profile>
-			<id>dev-windows</id>
-			<activation>
-				<os>
-					<family>windows</family>
-				</os>
-			</activation>
-			<properties>
-				<python.runtime>python</python.runtime>
-				<docker.volume.app.logs>c:\app\logs</docker.volume.app.logs>
-				<docker.volume.server.logs>c:\opt\jboss\wildfly\standalone\log</docker.volume.server.logs>
-			</properties>
-		</profile>
-		<profile>
-			<id>dev-mac</id>
-			<activation>
-				<os>
-					<family>mac</family>
-				</os>
-			</activation>
-			<properties>
-				<python.runtime>python</python.runtime>
-				<docker.volume.app.logs>/app/logs/</docker.volume.app.logs>
-				<docker.volume.server.logs>/opt/jboss/wildfly/standalone/log</docker.volume.server.logs>
-			</properties>
-		</profile>
-		<profile>
-			<id>dev-linux</id>
-			<activation>
-				<os>
-					<name>linux</name>
-				</os>
-			</activation>
-			<properties>
-				<python.runtime>python3</python.runtime>
-				<docker.volume.app.logs>/app/logs/</docker.volume.app.logs>
-				<docker.volume.server.logs>/opt/jboss/wildfly/standalone/log</docker.volume.server.logs>
-			</properties>
-		</profile>
 	</profiles>
 </project>

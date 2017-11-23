@@ -18,7 +18,7 @@
 		<wildfly.hibernate.module.jts.version>1.13</wildfly.hibernate.module.jts.version>		
 		<wildfly.postgres.module.postgis.version>1.5.3</wildfly.postgres.module.postgis.version>
 		<wildfly.postgres.module.postgres.version>42.1.4.jre7</wildfly.postgres.module.postgres.version>
-		<wildfly.activemq.rar.version>5.14.5</wildfly.activemq.rar.version>
+		<wildfly.activemq.rar.version>5.15.2</wildfly.activemq.rar.version>
 	</properties>
 	<dependencies>
 		<dependency>
@@ -233,10 +233,110 @@
 				<configuration>
 					<images>
 						<image>
+						<alias>activemq</alias>
+							<name>uvms/activemq:${project.version}</name>
+							<run>
+								<net>bridge</net>
+								<namingStrategy>none</namingStrategy>
+								<ports>
+									<port>18161:8161</port>
+									<port>61616:61616</port>
+								</ports>
+								<wait>
+									<tcp>
+										<host>127.0.0.1</host>
+										<ports>
+											<port>8161</port>
+										</ports>
+									</tcp>
+									<kill>15000</kill>
+									<shutdown>15000</shutdown>
+									<time>15000</time>
+								</wait>
+								<log>
+									<enabled>true</enabled>
+									<color>yellow</color>
+								</log>
+								<hostname>activemq</hostname>
+							</run>
+						</image>
+						<image>
+							<alias>postgres</alias>
+							<name>uvms/postgres-release:${project.version}</name>
+							<run>
+								<net>bridge</net>
+								<namingStrategy>none</namingStrategy>
+								<ports>
+									<port>25432:5432</port>
+								</ports>
+								<wait>
+									<log>All uvms databases created</log>
+									<time>480000</time>
+									<kill>15000</kill>
+									<shutdown>15000</shutdown>
+								</wait>
+								<dependsOn>
+									<container>activemq</container>
+								</dependsOn>
+								<links>
+									<link>activemq:activemq</link>
+								</links>
+								<log>
+									<enabled>true</enabled>
+									<color>green</color>
+								</log>
+								<hostname>postgres</hostname>
+							</run>
+						</image>					
+						<image>
 							<name>uvms/wildfly-base:${project.version}</name>
 							<build>
 								<dockerFileDir>${project.basedir}/target/dockerfile</dockerFileDir>
 							</build>
+							<run>
+								<net>bridge</net>
+								<namingStrategy>none</namingStrategy>
+								<links>
+									<link>postgres:postgres</link>
+									<link>activemq:activemq</link>
+								</links>
+								<ports>
+									<port>29990:9990</port>
+									<port>28787:8787</port>
+									<port>28080:8080</port>
+									<port>28443:8443</port>
+								</ports>
+								<wait>
+									<http>
+										<url>http://localhost:28080/</url>
+										<method>GET</method>
+										<status>200</status>
+									</http>
+									<time>900000</time>
+									<kill>15000</kill>
+									<shutdown>15000</shutdown>
+								</wait>
+								<cmd>
+									<shell>/opt/jboss/wildfly/bin/standalone.sh
+										-c standalone-full.xml -b 0.0.0.0 -bmanagement 0.0.0.0 --debug</shell>
+								</cmd>
+								<dependsOn>
+									<container>postgres</container>
+									<container>activemq</container>
+								</dependsOn>
+								<volumes>
+									<bind>
+										<volume>${docker.volume.app.logs}:/app/logs</volume>
+										<volume>${docker.volume.server.logs}:/opt/jboss/wildfly/standalone/log</volume>
+									</bind>
+								</volumes>
+								<log>
+									<enabled>true</enabled>
+									<color>blue</color>
+								</log>
+								<hostname>wildfly</hostname>
+							</run>
+							
 						</image>
 					</images>
 				</configuration>
