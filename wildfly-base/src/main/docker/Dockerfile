@@ -42,6 +42,8 @@ COPY dependencies/hibernate-entitymanager-${wildfly.hibernate.module.hibernate.v
 COPY dependencies/hibernate-envers-${wildfly.hibernate.module.hibernate.version}.jar $HIBERNATE_MODULE
 COPY dependencies/hibernate-infinispan-${wildfly.hibernate.module.hibernate.version}.jar $HIBERNATE_MODULE
 COPY dependencies/jts-${wildfly.hibernate.module.jts.version}.jar $HIBERNATE_MODULE
+COPY dependencies/jipijapa-hibernate4-3-${wildfly.hibernate.module.jipijapa.version}.jar $HIBERNATE_MODULE
+COPY dependencies/geolatte-geom-1.0.1.jar $HIBERNATE_MODULE
 
 # Standalone config
 COPY standalone.conf $JBOSS_HOME/bin/
