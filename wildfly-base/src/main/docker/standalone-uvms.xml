@@ -38,6 +38,7 @@
         <property name="javax.net.ssl.trustStorePassword" value="keypassword"/>
         <property name="db.dialect" value="postgres"/>
         <property name="hibernate.dialect" value="org.hibernate.dialect.PostgreSQLDialect"/>
+        <property name="hibernate.spatial.dialect" value="org.hibernate.spatial.dialect.postgis.PostgisDialect"/>        
 		<property name="jmxToMqBrokerPropFile" value="/opt/jboss/jboss-deployment/fluxBridge/bridge.properties"/>
 		<property name="mqBrokerToJmxPropFile" value="/opt/jboss/jboss-deployment/fluxBridge/bridge-queues.properties"/>
     </system-properties>
