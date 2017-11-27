@@ -28,7 +28,7 @@
 		<unionvms.project.mobileterminal.module>4.0.5</unionvms.project.mobileterminal.module>
 		<unionvms.project.exchange.module>4.0.8</unionvms.project.exchange.module>
 		<unionvms.project.reporting.module>1.0.14</unionvms.project.reporting.module>
-		<unionvms.project.spatial.module>1.0.7</unionvms.project.spatial.module>
+		<unionvms.project.spatial.module>1.0.8-SNAPSHOT</unionvms.project.spatial.module>
 		<unionvms.project.config.module>4.0.5</unionvms.project.config.module>
 		<unionvms.project.audit.module>4.0.5</unionvms.project.audit.module>
 		<unionvms.project.asset.module>4.0.5</unionvms.project.asset.module>
@@ -50,6 +50,7 @@
 		<module>amq</module>
 		<module>postgres-base</module>
 		<module>postgres-release</module>
+		<module>hibernate-spatial-4x-to-5x-wrapper</module>
 		<module>wildfly-base</module>
 		<module>wildfly-foundation</module>
 		<module>foundation-test</module>		

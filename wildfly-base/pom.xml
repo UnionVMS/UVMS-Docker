@@ -63,6 +63,11 @@
 			<version>${wildfly.hibernate.module.spatial.version}</version>
 		</dependency>
 		<dependency>
+			<groupId>eu.europa.ec.fisheries.uvms.docker</groupId>
+			<artifactId>hibernate-spatial-4x-to-5x-wrapper</artifactId>
+			<version>${project.version}</version>
+		</dependency>		
+		<dependency>
 			<groupId>org.postgresql</groupId>
 			<artifactId>postgresql</artifactId>
 			<version>${wildfly.postgres.module.postgres.version}</version>

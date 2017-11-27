@@ -39,6 +39,8 @@
     <system-properties>
         <property name="db.dialect" value="postgres"/>
         <property name="hibernate.dialect" value="org.hibernate.dialect.PostgreSQLDialect"/>
+        <!-- <property name="hibernate.spatial.dialect" value="org.hibernate.spatial.dialect.postgis.PostgisDialect"/>-->
+        <property name="hibernate.spatial.dialect" value="org.hibernate.spatial.dialect.postgis.Postgis43WrapperDialect"/>        
     </system-properties>
     
     

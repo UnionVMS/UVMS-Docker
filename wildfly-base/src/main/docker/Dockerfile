@@ -44,6 +44,7 @@ COPY dependencies/hibernate-infinispan-${wildfly.hibernate.module.hibernate.vers
 COPY dependencies/jts-${wildfly.hibernate.module.jts.version}.jar $HIBERNATE_MODULE
 COPY dependencies/jipijapa-hibernate4-3-${wildfly.hibernate.module.jipijapa.version}.jar $HIBERNATE_MODULE
 COPY dependencies/geolatte-geom-1.0.1.jar $HIBERNATE_MODULE
+COPY dependencies/hibernate-spatial-4x-to-5x-wrapper-${project.version}.jar $HIBERNATE_MODULE
 
 # Standalone config
 COPY standalone.conf $JBOSS_HOME/bin/
