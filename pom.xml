@@ -11,7 +11,7 @@
 
 	<groupId>eu.europa.ec.fisheries.uvms.docker</groupId>
 	<artifactId>uvms-docker</artifactId>
-	<version>3.20.0-SNAPSHOT</version>
+	<version>3.21.0.w11-SNAPSHOT</version>
 	<packaging>pom</packaging>
 	<name>uvms-docker</name>
 
@@ -24,16 +24,16 @@
 		<unionvms.project.geoserver.version>2.12.1</unionvms.project.geoserver.version>
 		<unionvms.project.user.module>2.0.7</unionvms.project.user.module>
 		<unionvms.project.rules.module>3.0.17</unionvms.project.rules.module>
-		<unionvms.project.movement.module>4.0.8</unionvms.project.movement.module>
-		<unionvms.project.mobileterminal.module>4.0.5</unionvms.project.mobileterminal.module>
-		<unionvms.project.exchange.module>4.0.8</unionvms.project.exchange.module>
-		<unionvms.project.reporting.module>1.0.14</unionvms.project.reporting.module>
+		<unionvms.project.movement.module>4.0.9-SNAPSHOT</unionvms.project.movement.module>
+		<unionvms.project.mobileterminal.module>4.0.6-SNAPSHOT</unionvms.project.mobileterminal.module>
+		<unionvms.project.exchange.module>4.0.9-SNAPSHOT</unionvms.project.exchange.module>
+		<unionvms.project.reporting.module>1.0.16-SNAPSHOT</unionvms.project.reporting.module>
 		<unionvms.project.spatial.module>1.0.8-SNAPSHOT</unionvms.project.spatial.module>
-		<unionvms.project.config.module>4.0.5</unionvms.project.config.module>
-		<unionvms.project.audit.module>4.0.5</unionvms.project.audit.module>
-		<unionvms.project.asset.module>4.0.5</unionvms.project.asset.module>
-		<unionvms.project.activity.module>1.0.5</unionvms.project.activity.module>
-		<unionvms.project.mdr.module>1.0.5</unionvms.project.mdr.module>
+		<unionvms.project.config.module>4.0.6-SNAPSHOT</unionvms.project.config.module>
+		<unionvms.project.audit.module>4.0.6-SNAPSHOT</unionvms.project.audit.module>
+		<unionvms.project.asset.module>4.0.6-SNAPSHOT</unionvms.project.asset.module>
+		<unionvms.project.activity.module>1.0.6-SNAPSHOT</unionvms.project.activity.module>
+		<unionvms.project.mdr.module>1.0.6-SNAPSHOT</unionvms.project.mdr.module>
 		<unionvms.project.plugins.naf>3.0.5</unionvms.project.plugins.naf>
 		<unionvms.project.plugins.flux>3.0.4</unionvms.project.plugins.flux>
 		<unionvms.project.plugins.twostage>3.0.3</unionvms.project.plugins.twostage>
