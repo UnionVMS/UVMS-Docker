@@ -8,5 +8,7 @@
 		<dependency name="movement-module-${unionvms.project.movement.module}.ear" />
 		<dependency name="asset-module-${unionvms.project.asset.module}.ear" />
 		<dependency name="mobileterminal-module-${unionvms.project.mobileterminal.module}.ear" />
+		<dependency name="geoserver.war"/>
+		<dependency name="mapfish-print.war"/>		
 	</jboss-deployment-dependencies>
 </jboss>
