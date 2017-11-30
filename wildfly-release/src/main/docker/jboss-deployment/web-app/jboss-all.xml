@@ -14,7 +14,7 @@
 		<dependency name="activity-module-postgres-${unionvms.project.activity.module}.ear" />
 		<dependency name="naf-module-${unionvms.project.plugins.naf}.ear" />
 		<dependency name="flux-module-${unionvms.project.plugins.flux}.ear" />
-		<dependency name="twostage-module-${unionvms.project.plugins.twostage}.ear" />
+		<dependency name="inmarsat-module-${unionvms.project.plugins.inmarsat}.ear" />
 		<dependency name="siriusone-module-${unionvms.project.plugins.siriusone}.ear" />
 	</jboss-deployment-dependencies>
 </jboss>

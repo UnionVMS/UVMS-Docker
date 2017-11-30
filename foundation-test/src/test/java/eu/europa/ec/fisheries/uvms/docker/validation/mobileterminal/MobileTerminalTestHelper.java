@@ -139,7 +139,7 @@ public final class MobileTerminalTestHelper extends AbstractHelper {
 
 		Plugin plugin = new Plugin();
 		plugin.setServiceName("eu.europa.ec.fisheries.uvms.plugins.inmarsat");
-		plugin.setLabelName("twostage");
+		plugin.setLabelName("Thrane&Thrane");
 		plugin.setSatelliteType("INMARSAT_C");
 		plugin.setInactive(false);
 

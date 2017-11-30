@@ -13,21 +13,27 @@ copy of the GNU General Public License along with the IFDM Suite. If not, see <h
 */
 package eu.europa.ec.fisheries.uvms.docker.validation.exchange;
 
+import java.io.IOException;
 import java.util.List;
 
 import org.apache.http.HttpResponse;
+import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.fluent.Request;
-import org.junit.Ignore;
+import org.junit.FixMethodOrder;
 import org.junit.Test;
+import org.junit.runners.MethodSorters;
+
+import com.fasterxml.jackson.core.JsonParseException;
+import com.fasterxml.jackson.databind.JsonMappingException;
 
 import eu.europa.ec.fisheries.uvms.docker.validation.common.AbstractRestServiceTest;
 
 /**
  * The Class ExchangeRegistryRestIT.
  */
+@FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class ExchangeRegistryRestIT extends AbstractRestServiceTest {
 
-	
 	
 	/**
 	 * Gets the list test.
@@ -50,9 +56,14 @@ public class ExchangeRegistryRestIT extends AbstractRestServiceTest {
 	 * @throws Exception the exception
 	 */
 	@Test
-	@Ignore
-	public void startServiceTest() throws Exception {
-		String serviceName = "eu.europa.ec.fisheries.uvms.plugins.sweagencyemail";
+	public void stopStartServiceTest() throws Exception {
+		stopInmarsatPlugin();
+		startInmarsatPlugin();
+	}
+
+	private void startInmarsatPlugin()
+			throws IOException, ClientProtocolException, JsonParseException, JsonMappingException {
+		String serviceName = "eu.europa.ec.fisheries.uvms.plugins.inmarsat";
 		
 		final HttpResponse response = Request.Put(getBaseUrl() + "exchange/rest/plugin/start/" + serviceName)
 				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken()).execute()
@@ -62,16 +73,9 @@ public class ExchangeRegistryRestIT extends AbstractRestServiceTest {
 		assertTrue(result);
 	}
 
-	/**
-	 * Stop service test.
-	 *
-	 * @throws Exception the exception
-	 */
-	@Test
-	@Ignore
-	public void stopServiceTest() throws Exception {
-		String serviceName = "eu.europa.ec.fisheries.uvms.plugins.sweagencyemail";
-		
+	private void stopInmarsatPlugin()
+			throws IOException, ClientProtocolException, JsonParseException, JsonMappingException {
+		String serviceName = "eu.europa.ec.fisheries.uvms.plugins.inmarsat";		
 		final HttpResponse response = Request.Put(getBaseUrl() + "exchange/rest/plugin/stop/" + serviceName)
 				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken()).execute()
 				.returnResponse();
