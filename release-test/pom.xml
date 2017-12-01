@@ -36,7 +36,7 @@
 		<dependency>
 			<groupId>eu.europa.ec.fisheries.uvms.reporting</groupId>
 			<artifactId>service</artifactId>
-			<version>1.0.13</version>
+			<version>${unionvms.project.reporting.module}</version>
 			<scope>test</scope>
 		</dependency>
 	</dependencies>

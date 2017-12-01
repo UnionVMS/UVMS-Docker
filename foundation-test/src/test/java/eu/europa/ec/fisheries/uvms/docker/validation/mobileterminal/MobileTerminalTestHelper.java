@@ -129,7 +129,7 @@ public final class MobileTerminalTestHelper extends AbstractHelper {
 		addChannelAttribute(comChannelType, "MEMBER_NUMBER", "100");
 		addChannelAttribute(comChannelType, "FREQUENCY_EXPECTED", "7200");
 		addChannelAttribute(comChannelType, "FREQUENCY_IN_PORT", "10800");
-		addChannelAttribute(comChannelType, "LES_DESCRIPTION", "twostage");
+		addChannelAttribute(comChannelType, "LES_DESCRIPTION", "Thrane&Thrane");
 		addChannelAttribute(comChannelType, "DNID", "1" + AssetTestHelper.generateARandomStringWithMaxLength(3));
 		addChannelAttribute(comChannelType, "INSTALLED_BY", "Mike Great");
 
@@ -139,7 +139,7 @@ public final class MobileTerminalTestHelper extends AbstractHelper {
 
 		Plugin plugin = new Plugin();
 		plugin.setServiceName("eu.europa.ec.fisheries.uvms.plugins.inmarsat");
-		plugin.setLabelName("twostage");
+		plugin.setLabelName("Thrane&Thrane");
 		plugin.setSatelliteType("INMARSAT_C");
 		plugin.setInactive(false);
 

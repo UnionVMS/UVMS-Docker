@@ -102,10 +102,10 @@
 
 		<!-- plugin modules -->
 		<dependency>
-			<groupId>eu.europa.ec.fisheries.uvms.plugins.inmarsat</groupId>
-			<artifactId>twostage-module</artifactId>
+			<groupId>eu.europa.ec.fisheries.uvms.plugins</groupId>
+			<artifactId>inmarsat-module</artifactId>
 			<type>ear</type>
-			<version>${unionvms.project.plugins.twostage}</version>
+			<version>${unionvms.project.plugins.inmarsat}</version>
 		</dependency>
 	</dependencies>
 	<build>
@@ -259,7 +259,7 @@
 										<zipfileset dir="${project.basedir}/target/dockerfile/jboss-deployment/web-app" includes="*.xml" prefix="WEB-INF" />
 									</jar>
 									
-									<jar destfile="${project.basedir}/target/dockerfile/deployments/twostage-module-${unionvms.project.plugins.twostage}.ear" update="true">
+									<jar destfile="${project.basedir}/target/dockerfile/deployments/inmarsat-module-${unionvms.project.plugins.inmarsat}.ear" update="true">
 										<zipfileset dir="${project.basedir}/target/dockerfile/jboss-deployment/plugins" includes="*.xml" prefix="META-INF" />
 									</jar>
 									
