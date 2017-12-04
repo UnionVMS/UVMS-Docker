@@ -5,11 +5,11 @@
 	<parent>
 		<groupId>eu.europa.ec.fisheries.uvms.docker</groupId>
 		<artifactId>uvms-docker</artifactId>
-		<version>3.21.0.w11-SNAPSHOT</version>
+		<version>3.22.0.w11-SNAPSHOT</version>
 		<relativePath>../pom.xml</relativePath>
 	</parent>
 	<groupId>eu.europa.ec.fisheries.uvms.docker</groupId>
-	<version>3.21.0.w11-SNAPSHOT</version>
+	<version>3.22.0.w11-SNAPSHOT</version>
 	<artifactId>uvms-foundation-test</artifactId>
 	<packaging>jar</packaging>
 	<name>uvms-foundation-test</name>
@@ -22,7 +22,7 @@
 		<dependency>
 			<artifactId>movement-model</artifactId>
 			<groupId>eu.europa.ec.fisheries.uvms.movement</groupId>
-			<version>4.0.7</version>	
+			<version>${unionvms.project.movement.module}</version>	
 		</dependency>
 		<dependency>
 			<groupId>org.apache.activemq</groupId>
@@ -32,42 +32,42 @@
 		<dependency>
 			<artifactId>mobileterminal-model</artifactId>
 			<groupId>eu.europa.ec.fisheries.uvms.mobileterminal</groupId>
-			<version>4.0.4</version>	
+			<version>${unionvms.project.mobileterminal.module}</version>	
 		</dependency>
 		<dependency>
 			<groupId>eu.europa.ec.fisheries.uvms.exchange</groupId>
 			<artifactId>exchange-model</artifactId>
-			<version>4.0.4</version>			
+			<version>4.0.6</version>			
 		</dependency>		
 		<dependency>
 			<groupId>eu.europa.ec.fisheries.uvms.asset</groupId>
 			<artifactId>asset-model</artifactId>
-			<version>4.0.4</version>
+			<version>${unionvms.project.asset.module}</version>
 		</dependency>
 		<dependency>
 			<groupId>eu.europa.ec.fisheries.uvms.user</groupId>
 			<artifactId>user-model</artifactId>
-			<version>2.0.5</version>			
+			<version>${unionvms.project.user.module}</version>			
 		</dependency>
 		<dependency>
 			<groupId>eu.europa.ec.fisheries.uvms.reporting</groupId>
 			<artifactId>service</artifactId>
-			<version>1.0.13</version>	
+			<version>${unionvms.project.reporting.module}</version>	
 		</dependency>		
 		<dependency>
 			<groupId>eu.europa.ec.fisheries.uvms.config</groupId>
 			<artifactId>config-model</artifactId>
-			<version>4.0.4</version>		
+			<version>${unionvms.project.config.module}</version>		
 		</dependency>
 		<dependency>
 			<groupId>eu.europa.ec.fisheries.uvms.audit</groupId>
 			<artifactId>audit-model</artifactId>
-			<version>4.0.4</version>			
+			<version>${unionvms.project.audit.module}</version>			
 		</dependency>
 		<dependency>
 			<groupId>eu.europa.ec.fisheries.uvms.spatial</groupId>
 			<artifactId>spatial-model</artifactId>
-			<version>1.0.7</version>			
+			<version>1.0.8</version>			
 		</dependency>
 		<dependency>
 			<groupId>junit</groupId>
@@ -77,7 +77,7 @@
 		<dependency>
 			<groupId>org.apache.httpcomponents</groupId>
 			<artifactId>fluent-hc</artifactId>
-			<version>4.5.3</version>		
+			<version>4.5.4</version>		
 		</dependency>
 		<dependency>
 			<groupId>com.fasterxml.jackson.core</groupId>
@@ -149,7 +149,7 @@
 									<artifactId>movement-rest</artifactId>
 									<groupId>eu.europa.ec.fisheries.uvms.movement</groupId>
 									<type>war</type>
-									<version>4.0.7</version>
+									<version>${unionvms.project.movement.module}</version>
 									<overWrite>false</overWrite>
 									<outputDirectory>${project.build.directory}/warclasses/</outputDirectory>
 									<includes>WEB-INF/classes/**/*.*</includes>
@@ -158,7 +158,7 @@
 									<artifactId>exchange-rest</artifactId>
 									<groupId>eu.europa.ec.fisheries.uvms.exchange</groupId>
 									<type>war</type>
-									<version>4.0.6</version>
+									<version>${unionvms.project.exchange.module}</version>
 									<overWrite>false</overWrite>
 									<outputDirectory>${project.build.directory}/warclasses/</outputDirectory>
 									<includes>WEB-INF/classes/**/*.*</includes>

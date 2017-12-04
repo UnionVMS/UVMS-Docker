@@ -32,7 +32,7 @@
         <resource-root path="hibernate-spatial-5.1.10.Final.jar"/>
 		<resource-root path="jts-1.13.jar"/>
 		<resource-root path="geolatte-geom-1.0.1.jar"/>
-		<resource-root path="hibernate-spatial-4x-to-5x-wrapper-3.21.0.w11-SNAPSHOT.jar"/>
+		<resource-root path="hibernate-spatial-4x-to-5x-wrapper-3.22.0.w11-SNAPSHOT.jar"/>
     </resources>
 
     <dependencies>
