@@ -215,6 +215,16 @@
 										<zipfileset dir="${project.basedir}/target/dockerfile/jboss-deployment/mdr" includes="*.xml" prefix="META-INF" />
 									</jar>
 	
+									<unzip src="${project.basedir}/target/dockerfile/deployments/mdr-module-${unionvms.project.mdr.module}.ear" dest="${project.basedir}/target/mdr-module-${unionvms.project.mdr.module}"/>
+
+									<delete file="${project.basedir}/target/dockerfile/deployments/mdr-module-${unionvms.project.mdr.module}.ear"/>
+
+									<jar destfile="${project.basedir}/target/dockerfile/deployments/mdr-module-${unionvms.project.mdr.module}.ear"
+									    basedir="${project.basedir}/target/mdr-module-${unionvms.project.mdr.module}/"
+									    includes="**/*"
+									    excludes="hibernate*,lucene*"
+									/>    
+	
 									<jar destfile="${project.basedir}/target/dockerfile/deployments/naf-module-${unionvms.project.plugins.naf}.ear" update="true">
 										<zipfileset dir="${project.basedir}/target/dockerfile/jboss-deployment/plugins" includes="*.xml" prefix="META-INF" />
 									</jar>

@@ -56,7 +56,7 @@
 		<module>foundation-test</module>		
 		<module>wildfly-release</module>
 		<module>docker-compose</module>
-		<!-- <module>release-test</module>-->
+		<module>release-test</module>
 	</modules>
 	
 	<profiles>
