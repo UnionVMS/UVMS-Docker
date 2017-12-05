@@ -289,7 +289,7 @@
 									</tcp>
 									<kill>15000</kill>
 									<shutdown>15000</shutdown>
-									<time>15000</time>
+									<time>45000</time>
 								</wait>
 								<log>
 									<enabled>true</enabled>
@@ -309,7 +309,7 @@
 								</ports>
 								<wait>
 									<log>All uvms databases created</log>
-									<time>480000</time>
+									<time>600000</time>
 									<kill>15000</kill>
 									<shutdown>15000</shutdown>
 								</wait>
@@ -348,7 +348,7 @@
 										<method>GET</method>
 										<status>200</status>
 									</http>
-									<time>1800000</time>
+									<time>900000</time>
 									<kill>15000</kill>
 									<shutdown>15000</shutdown>
 								</wait>
