@@ -8,6 +8,7 @@
 		<dependency name="movement-module-${unionvms.project.movement.module}.ear" />
 		<dependency name="asset-module-${unionvms.project.asset.module}.ear" />
 		<dependency name="mobileterminal-module-${unionvms.project.mobileterminal.module}.ear" />
+		<!-- 
 		<dependency name="rules-module-${unionvms.project.rules.module}.ear" />
 		<dependency name="reporting-module-${unionvms.project.reporting.module}.ear" />
 		<dependency name="mdr-module-${unionvms.project.mdr.module}.ear" />
@@ -16,5 +17,6 @@
 		<dependency name="flux-module-${unionvms.project.plugins.flux}.ear" />
 		<dependency name="inmarsat-module-${unionvms.project.plugins.inmarsat}.ear" />
 		<dependency name="siriusone-module-${unionvms.project.plugins.siriusone}.ear" />
+		-->
 	</jboss-deployment-dependencies>
 </jboss>
