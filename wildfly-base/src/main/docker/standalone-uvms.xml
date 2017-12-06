@@ -37,6 +37,7 @@
     </extensions>
     
     <system-properties>
+    	<property name="jboss.as.management.blocking.timeout" value="900"/>
         <property name="db.dialect" value="postgres"/>
         <property name="hibernate.dialect" value="org.hibernate.dialect.PostgreSQLDialect"/>
         <!-- <property name="hibernate.spatial.dialect" value="org.hibernate.spatial.dialect.postgis.PostgisDialect"/>-->
@@ -543,7 +544,7 @@
             </datasources>
         </subsystem>
         <subsystem xmlns="urn:jboss:domain:deployment-scanner:2.0">
-            <deployment-scanner path="deployments" relative-to="jboss.server.base.dir" scan-interval="5000" runtime-failure-causes-rollback="${jboss.deployment.scanner.rollback.on.failure:false}"/>
+            <deployment-scanner path="deployments" relative-to="jboss.server.base.dir" scan-interval="5000" deployment-timeout="900" runtime-failure-causes-rollback="${jboss.deployment.scanner.rollback.on.failure:false}"/>
         </subsystem>
         <subsystem xmlns="urn:jboss:domain:ee:4.0">
 	        <global-modules>
