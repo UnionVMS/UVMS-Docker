@@ -37,7 +37,7 @@
     </extensions>
     
     <system-properties>
-    	<property name="jboss.as.management.blocking.timeout" value="900"/>
+    	<property name="jboss.as.management.blocking.timeout" value="1200"/>
         <property name="db.dialect" value="postgres"/>
         <property name="hibernate.dialect" value="org.hibernate.dialect.PostgreSQLDialect"/>
         <!-- <property name="hibernate.spatial.dialect" value="org.hibernate.spatial.dialect.postgis.PostgisDialect"/>-->
@@ -211,7 +211,7 @@
                         <password>sa</password>
                     </security>
                 </datasource>
-                                <xa-datasource jndi-name="java:/jdbc/uvms_audit" pool-name="jdbc/uvms_audit" enabled="true" use-ccm="true" statistics-enabled="false">
+                <xa-datasource jndi-name="java:/jdbc/uvms_audit" pool-name="jdbc/uvms_audit" enabled="true" use-ccm="true" statistics-enabled="false">
                     <xa-datasource-property name="ServerName">postgres</xa-datasource-property>
     				<xa-datasource-property name="PortNumber">5432</xa-datasource-property>
     				<xa-datasource-property name="DatabaseName">db71u</xa-datasource-property>
@@ -223,6 +223,10 @@
 				        <max-pool-size>20</max-pool-size>
 				        <prefill>true</prefill>
 				    </xa-pool>
+				    <statement>
+				        <prepared-statement-cache-size>32</prepared-statement-cache-size>
+				        <track-statements>nowarn</track-statements>
+				    </statement>				    
 				    <validation>
 				        <valid-connection-checker
 				                class-name="org.jboss.jca.adapters.jdbc.extensions.postgres.PostgreSQLValidConnectionChecker"></valid-connection-checker>
@@ -246,6 +250,10 @@
 				        <max-pool-size>20</max-pool-size>
 				        <prefill>true</prefill>
 				    </xa-pool>
+				    <statement>
+				        <prepared-statement-cache-size>32</prepared-statement-cache-size>
+				        <track-statements>nowarn</track-statements>
+				    </statement>				    
 				    <validation>
 				        <valid-connection-checker
 				                class-name="org.jboss.jca.adapters.jdbc.extensions.postgres.PostgreSQLValidConnectionChecker"></valid-connection-checker>
@@ -269,6 +277,10 @@
 				        <max-pool-size>20</max-pool-size>
 				        <prefill>true</prefill>
 				    </xa-pool>
+				    <statement>
+				        <prepared-statement-cache-size>32</prepared-statement-cache-size>
+				        <track-statements>nowarn</track-statements>
+				    </statement>				    
 				    <validation>
 				        <valid-connection-checker
 				                class-name="org.jboss.jca.adapters.jdbc.extensions.postgres.PostgreSQLValidConnectionChecker"></valid-connection-checker>
@@ -292,6 +304,10 @@
 				        <max-pool-size>20</max-pool-size>
 				        <prefill>true</prefill>
 				    </xa-pool>
+				    <statement>
+				        <prepared-statement-cache-size>32</prepared-statement-cache-size>
+				        <track-statements>nowarn</track-statements>
+				    </statement>				    
 				    <validation>
 				        <valid-connection-checker
 				                class-name="org.jboss.jca.adapters.jdbc.extensions.postgres.PostgreSQLValidConnectionChecker"></valid-connection-checker>
@@ -315,6 +331,10 @@
 				        <max-pool-size>20</max-pool-size>
 				        <prefill>true</prefill>
 				    </xa-pool>
+				    <statement>
+				        <prepared-statement-cache-size>32</prepared-statement-cache-size>
+				        <track-statements>nowarn</track-statements>
+				    </statement>				    
 				    <validation>
 				        <valid-connection-checker
 				                class-name="org.jboss.jca.adapters.jdbc.extensions.postgres.PostgreSQLValidConnectionChecker"></valid-connection-checker>
@@ -338,6 +358,10 @@
 				        <max-pool-size>20</max-pool-size>
 				        <prefill>true</prefill>
 				    </xa-pool>
+				    <statement>
+				        <prepared-statement-cache-size>32</prepared-statement-cache-size>
+				        <track-statements>nowarn</track-statements>
+				    </statement>				    
 				    <validation>
 				        <valid-connection-checker
 				                class-name="org.jboss.jca.adapters.jdbc.extensions.postgres.PostgreSQLValidConnectionChecker"></valid-connection-checker>
@@ -361,6 +385,10 @@
 				        <max-pool-size>20</max-pool-size>
 				        <prefill>true</prefill>
 				    </xa-pool>
+				    <statement>
+				        <prepared-statement-cache-size>32</prepared-statement-cache-size>
+				        <track-statements>nowarn</track-statements>
+				    </statement>				    
 				    <validation>
 				        <valid-connection-checker
 				                class-name="org.jboss.jca.adapters.jdbc.extensions.postgres.PostgreSQLValidConnectionChecker"></valid-connection-checker>
@@ -384,6 +412,10 @@
 				        <max-pool-size>20</max-pool-size>
 				        <prefill>true</prefill>
 				    </xa-pool>
+				    <statement>
+				        <prepared-statement-cache-size>32</prepared-statement-cache-size>
+				        <track-statements>nowarn</track-statements>
+				    </statement>				    
 				    <validation>
 				        <valid-connection-checker
 				                class-name="org.jboss.jca.adapters.jdbc.extensions.postgres.PostgreSQLValidConnectionChecker"></valid-connection-checker>
@@ -407,6 +439,10 @@
 				        <max-pool-size>20</max-pool-size>
 				        <prefill>true</prefill>
 				    </xa-pool>
+				    <statement>
+				        <prepared-statement-cache-size>32</prepared-statement-cache-size>
+				        <track-statements>nowarn</track-statements>
+				    </statement>				    
 				    <validation>
 				        <valid-connection-checker
 				                class-name="org.jboss.jca.adapters.jdbc.extensions.postgres.PostgreSQLValidConnectionChecker"></valid-connection-checker>
@@ -422,7 +458,6 @@
                     <xa-datasource-property name="ServerName">postgres</xa-datasource-property>
     				<xa-datasource-property name="PortNumber">5432</xa-datasource-property>
     				<xa-datasource-property name="DatabaseName">db71u</xa-datasource-property>
-
                     <driver>postgresql</driver>
                     <xa-pool>
 				        <min-pool-size>2</min-pool-size>
@@ -430,6 +465,10 @@
 				        <max-pool-size>20</max-pool-size>
 				        <prefill>true</prefill>
 				    </xa-pool>
+				    <statement>
+				        <prepared-statement-cache-size>32</prepared-statement-cache-size>
+				        <track-statements>nowarn</track-statements>
+				    </statement>				    
 				    <validation>
 				        <valid-connection-checker
 				                class-name="org.jboss.jca.adapters.jdbc.extensions.postgres.PostgreSQLValidConnectionChecker"></valid-connection-checker>
@@ -453,6 +492,10 @@
                          <max-pool-size>20</max-pool-size>
                          <prefill>true</prefill>
                      </xa-pool>
+                     <statement>
+				        <prepared-statement-cache-size>32</prepared-statement-cache-size>
+				        <track-statements>nowarn</track-statements>
+				     </statement>                     
                      <validation>
                          <valid-connection-checker
                                  class-name="org.jboss.jca.adapters.jdbc.extensions.postgres.PostgreSQLValidConnectionChecker"></valid-connection-checker>
@@ -476,6 +519,10 @@
                          <max-pool-size>20</max-pool-size>
                          <prefill>true</prefill>
                      </xa-pool>
+                     <statement>
+				        <prepared-statement-cache-size>32</prepared-statement-cache-size>
+				        <track-statements>nowarn</track-statements>
+				     </statement>                     
                      <validation>
                          <valid-connection-checker
                                  class-name="org.jboss.jca.adapters.jdbc.extensions.postgres.PostgreSQLValidConnectionChecker"></valid-connection-checker>
@@ -499,6 +546,10 @@
                          <max-pool-size>20</max-pool-size>
                          <prefill>true</prefill>
                      </xa-pool>
+                     <statement>
+				        <prepared-statement-cache-size>32</prepared-statement-cache-size>
+				        <track-statements>nowarn</track-statements>
+				     </statement>                     
                      <validation>
                          <valid-connection-checker
                                  class-name="org.jboss.jca.adapters.jdbc.extensions.postgres.PostgreSQLValidConnectionChecker"></valid-connection-checker>
@@ -522,6 +573,10 @@
 				        <max-pool-size>20</max-pool-size>
 				        <prefill>true</prefill>
 				    </xa-pool>
+				    <statement>
+				        <prepared-statement-cache-size>32</prepared-statement-cache-size>
+				        <track-statements>nowarn</track-statements>
+				    </statement>
 				    <validation>
 				        <valid-connection-checker
 				                class-name="org.jboss.jca.adapters.jdbc.extensions.postgres.PostgreSQLValidConnectionChecker"></valid-connection-checker>
@@ -544,7 +599,7 @@
             </datasources>
         </subsystem>
         <subsystem xmlns="urn:jboss:domain:deployment-scanner:2.0">
-            <deployment-scanner path="deployments" relative-to="jboss.server.base.dir" scan-interval="5000" deployment-timeout="900" runtime-failure-causes-rollback="${jboss.deployment.scanner.rollback.on.failure:false}"/>
+            <deployment-scanner path="deployments" relative-to="jboss.server.base.dir" scan-interval="5000" deployment-timeout="1200" runtime-failure-causes-rollback="${jboss.deployment.scanner.rollback.on.failure:false}"/>
         </subsystem>
         <subsystem xmlns="urn:jboss:domain:ee:4.0">
 	        <global-modules>
