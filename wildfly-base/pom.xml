@@ -151,6 +151,7 @@
 									<filtering>false</filtering>
 									<excludes>
 										<exclude>Dockerfile</exclude>
+										<exclude>**/module.xml</exclude>
 									</excludes>
 								</resource>
 								<resource>
@@ -158,6 +159,7 @@
 									<filtering>true</filtering>
 									<includes>
 										<include>Dockerfile</include>
+										<include>**/module.xml</include>
 									</includes>
 								</resource>
 							</resources>
