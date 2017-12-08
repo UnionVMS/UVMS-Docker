@@ -4,12 +4,12 @@
 	<parent>
 		<groupId>eu.europa.ec.fisheries.uvms.docker</groupId>
 		<artifactId>uvms-docker</artifactId>
-		<version>3.22.0.w11-SNAPSHOT</version>
+		<version>3.22.0.w11</version>
 		<relativePath>../pom.xml</relativePath>
 	</parent>
 	<groupId>eu.europa.ec.fisheries.uvms.docker</groupId>
 	<artifactId>uvms-docker-wildfly-foundation</artifactId>
-	<version>3.22.0.w11-SNAPSHOT</version>
+	<version>3.22.0.w11</version>
 	<packaging>pom</packaging>
 	<name>uvms-docker-wildfly-foundation</name>
 	<repositories>
@@ -366,6 +366,6 @@
 		</profile>
 	</profiles>
 	<scm>
-		<tag>HEAD</tag>
+		<tag>uvms-docker-3.22.0.w11</tag>
 	</scm>
 </project>
