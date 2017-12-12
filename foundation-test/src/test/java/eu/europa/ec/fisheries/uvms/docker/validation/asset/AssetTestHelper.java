@@ -16,6 +16,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 
 import eu.europa.ec.fisheries.uvms.docker.validation.common.AbstractHelper;
+import eu.europa.ec.fisheries.wsdl.asset.group.AssetGroup;
 import eu.europa.ec.fisheries.wsdl.asset.types.Asset;
 import eu.europa.ec.fisheries.wsdl.asset.types.AssetId;
 import eu.europa.ec.fisheries.wsdl.asset.types.AssetIdType;
@@ -30,12 +31,12 @@ import eu.europa.ec.fisheries.wsdl.asset.types.ListAssetResponse;
 
 public class AssetTestHelper extends AbstractHelper {
 
-	/**
-	 *  Creates and returns a test Asset
-	 */
+	// ************************************************
+	//  AssetResource
+	// ************************************************
+	
 	public static Asset createTestAsset() throws IOException, ClientProtocolException, JsonProcessingException,
 			JsonParseException, JsonMappingException {
-
 		Asset asset = createDummyAsset(AssetIdType.GUID);
 		final HttpResponse response = Request.Post(getBaseUrl() + "asset/rest/asset")
 				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken())
@@ -50,21 +51,14 @@ public class AssetTestHelper extends AbstractHelper {
 				.returnResponse();
 		return checkSuccessResponseReturnObject(response, Asset.class);
 	}
-	
-	/**
-	 *  Saves a given Asset
-	 */
+
 	public static Asset createAsset(Asset asset) throws ClientProtocolException, JsonProcessingException, IOException {
 		final HttpResponse response = Request.Post(getBaseUrl() + "asset/rest/asset")
 				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken())
 				.bodyByteArray(writeValueAsString(asset).getBytes()).execute().returnResponse();
-		
 		return checkSuccessResponseReturnObject(response, Asset.class);
 	}
 
-	/**
-	 *  Update Asset
-	 */
 	public static Asset updateAsset(Asset asset) throws ClientProtocolException, JsonProcessingException, IOException {
 		final HttpResponse response = Request.Put(getBaseUrl() + "asset/rest/asset?comment=UpdatedAsset")
 				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken())
@@ -72,19 +66,13 @@ public class AssetTestHelper extends AbstractHelper {
 		return checkSuccessResponseReturnObject(response, Asset.class);
 	}
 	
-	/**
-	 *  Executes a query through REST
-	 */
 	public static ListAssetResponse assetListQuery(AssetListQuery query) throws ClientProtocolException, JsonProcessingException, IOException {
 		final HttpResponse response = Request.Post(getBaseUrl() + "asset/rest/asset/list")
 				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken())
 				.bodyByteArray(writeValueAsString(query).getBytes()).execute().returnResponse();
 		return checkSuccessResponseReturnObject(response, ListAssetResponse.class);
 	}
-	
-	/**
-	 *  Count results from given query
-	 */
+
 	public static Integer assetListQueryCount(AssetListQuery query) throws ClientProtocolException, JsonProcessingException, IOException {
 		final HttpResponse response = Request.Post(getBaseUrl() + "asset/rest/asset/listcount")
 				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken())
@@ -92,9 +80,10 @@ public class AssetTestHelper extends AbstractHelper {
 		return checkSuccessResponseReturnInt(response);
 	}
 
-	/**
-	 *  Get Asset histories for given asset guid
-	 */
+	// ************************************************
+	//  AssetHistoryResource
+	// ************************************************
+		
 	public static List<Asset> getAssetHistoryFromAssetGuid(String assetId) throws ClientProtocolException, IOException {
 		final HttpResponse response = Request.Get(getBaseUrl() + "asset/rest/history/asset?assetId=" + assetId + "&maxNbr=100")
 				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken()).execute()
@@ -102,15 +91,55 @@ public class AssetTestHelper extends AbstractHelper {
 		return checkSuccessResponseReturnList(response, Asset.class);
 	}
 	
-	/**
-	 *  Get Asset version from history guid
-	 */
 	public static Asset getAssetHistoryFromHistoryGuid(String historyId) throws ClientProtocolException, IOException {
 		final HttpResponse response = Request.Get(getBaseUrl() + "asset/rest/history/" + historyId)
 				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken()).execute()
 				.returnResponse();
 		return checkSuccessResponseReturnObject(response, Asset.class);
 	}
+	
+	// ************************************************
+	//  AssetGroupResource
+	// ************************************************
+		
+	public static AssetGroup createAssetGroup(AssetGroup assetGroup) throws ClientProtocolException, JsonProcessingException, IOException {
+		final HttpResponse response = Request.Post(getBaseUrl() + "asset/rest/group")
+				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken())
+				.bodyByteArray(writeValueAsString(assetGroup).getBytes()).execute().returnResponse();
+		return checkSuccessResponseReturnObject(response, AssetGroup.class);
+	}
+	
+	public static AssetGroup updateAssetGroup(AssetGroup assetGroup) throws ClientProtocolException, JsonProcessingException, IOException {
+		final HttpResponse response = Request.Put(getBaseUrl() + "asset/rest/group")
+				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken())
+				.bodyByteArray(writeValueAsString(assetGroup).getBytes()).execute().returnResponse();
+		return checkSuccessResponseReturnObject(response, AssetGroup.class);
+	}
+	
+	public static AssetGroup deleteAssetGroup(AssetGroup assetGroup) throws ClientProtocolException, IOException {
+		final HttpResponse response = Request.Delete(getBaseUrl() + "asset/rest/group/" + assetGroup.getGuid())
+				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken()).execute()
+				.returnResponse();
+		return checkSuccessResponseReturnObject(response, AssetGroup.class);
+	}
+	
+	public static AssetGroup getAssetGroupById(String assetGroupId) throws ClientProtocolException, IOException {
+		final HttpResponse response = Request.Get(getBaseUrl() + "asset/rest/group/" + assetGroupId)
+				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken()).execute()
+				.returnResponse();
+		return checkSuccessResponseReturnObject(response, AssetGroup.class);
+	}
+	
+	public static List<AssetGroup> getAssetGroupListByUser(String user) throws ClientProtocolException, IOException {
+		final HttpResponse response = Request.Get(getBaseUrl() + "asset/rest/group/list?user=vms_admin_com")
+				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken()).execute()
+				.returnResponse();
+		return checkSuccessResponseReturnList(response, AssetGroup.class);
+	}
+	
+	// ************************************************
+	//  Misc
+	// ************************************************
 	
 	public static Integer getAssetCountSweden() throws ClientProtocolException, JsonProcessingException, IOException {
 		AssetListQuery assetListQuery = getBasicAssetQuery();
@@ -189,7 +218,7 @@ public class AssetTestHelper extends AbstractHelper {
 	public static AssetListQuery getBasicAssetQuery() {
 		AssetListQuery assetListQuery = new AssetListQuery();
 		AssetListPagination assetListPagination = new AssetListPagination();
-		assetListPagination.setListSize(100);
+		assetListPagination.setListSize(1000);
 		assetListPagination.setPage(1);
 		assetListQuery.setPagination(assetListPagination);
 		AssetListCriteria assetListCriteria = new AssetListCriteria();
