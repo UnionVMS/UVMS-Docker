@@ -14,6 +14,7 @@ copy of the GNU General Public License along with the IFDM Suite. If not, see <h
 package eu.europa.ec.fisheries.uvms.docker.validation.asset;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -21,6 +22,8 @@ import org.apache.http.HttpResponse;
 import org.apache.http.client.fluent.Request;
 import org.junit.Test;
 
+import eu.europa.ec.fisheries.uvms.asset.model.constants.AuditOperationEnum;
+import eu.europa.ec.fisheries.uvms.commons.date.DateUtils;
 import eu.europa.ec.fisheries.uvms.docker.validation.common.AbstractRestServiceTest;
 import eu.europa.ec.fisheries.wsdl.asset.types.Asset;
 import eu.europa.ec.fisheries.wsdl.asset.types.AssetIdType;
@@ -156,6 +159,13 @@ public class AssetRestIT extends AbstractRestServiceTest {
 		AssetTestHelper.createTestAsset();
 	}
 
+	@Test
+	public void createAssetAuditLogCreatedTest() throws Exception {
+		Date fromDate = DateUtils.getNowDateUTC();
+		Asset asset = AssetTestHelper.createTestAsset();
+		AssetTestHelper.assertAssetAuditLogCreated(asset.getAssetId().getGuid(), AuditOperationEnum.CREATE, fromDate);
+	}
+	
 	/**
 	 * Update asset test.
 	 *
@@ -173,6 +183,17 @@ public class AssetRestIT extends AbstractRestServiceTest {
 		assertEquals(testAsset.getCfr(), updatedAsset.getCfr());
 		assertNotEquals(testAsset.getEventHistory().getEventId(), updatedAsset.getEventHistory().getEventId());
 	}
+	
+	@Test
+	public void updateAssetAuditLogCreatedTest() throws Exception {
+		Date fromDate = DateUtils.getNowDateUTC();
+		Asset testAsset = AssetTestHelper.createTestAsset();
+		String newName = testAsset.getName() + "Changed";
+		testAsset.setName(newName);
+		AssetTestHelper.updateAsset(testAsset);
+		
+		AssetTestHelper.assertAssetAuditLogCreated(testAsset.getAssetId().getGuid(), AuditOperationEnum.UPDATE, fromDate);
+	}
 
 	/**
 	 * Archive asset test.
@@ -182,13 +203,21 @@ public class AssetRestIT extends AbstractRestServiceTest {
 	 */
 	@Test
 	public void archiveAssetTest() throws Exception {
-
-		final HttpResponse response = Request.Put(getBaseUrl() + "asset/rest/asset/archive?comment=Archive")
-				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken())
-				.bodyByteArray(writeValueAsString(AssetTestHelper.createTestAsset()).getBytes()).execute().returnResponse();
-		Map<String, Object> dataMap = checkSuccessResponseReturnMap(response);
+		Asset testAsset = AssetTestHelper.createTestAsset();
+		testAsset.setActive(false);
+		AssetTestHelper.archiveAsset(testAsset);
 	}
 
+	@Test
+	public void archiveAssetAuditLogCreatedTest() throws Exception {
+		Date fromDate = DateUtils.getNowDateUTC();
+		Asset testAsset = AssetTestHelper.createTestAsset();
+		testAsset.setActive(false);
+		AssetTestHelper.archiveAsset(testAsset);
+		
+		AssetTestHelper.assertAssetAuditLogCreated(testAsset.getAssetId().getGuid(), AuditOperationEnum.ARCHIVE, fromDate);
+	}
+	
 	/**
 	 * Asset list group by flag state test.
 	 *

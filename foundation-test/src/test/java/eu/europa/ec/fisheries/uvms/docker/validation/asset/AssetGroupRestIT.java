@@ -13,6 +13,7 @@ copy of the GNU General Public License along with the IFDM Suite. If not, see <h
 */
 package eu.europa.ec.fisheries.uvms.docker.validation.asset;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -21,6 +22,8 @@ import org.apache.http.HttpResponse;
 import org.apache.http.client.fluent.Request;
 import org.junit.Test;
 
+import eu.europa.ec.fisheries.uvms.asset.model.constants.AuditOperationEnum;
+import eu.europa.ec.fisheries.uvms.commons.date.DateUtils;
 import eu.europa.ec.fisheries.uvms.docker.validation.common.AbstractRestServiceTest;
 import eu.europa.ec.fisheries.wsdl.asset.group.AssetGroup;
 import eu.europa.ec.fisheries.wsdl.asset.group.AssetGroupSearchField;
@@ -61,8 +64,8 @@ public class AssetGroupRestIT extends AbstractRestServiceTest {
 		// Create Group
 		assetGroup = AssetTestHelper.createAssetGroup(assetGroup);
 
-		assetGroup.getSearchFields().contains(assetGroupSearchField1);
-		assetGroup.getSearchFields().contains(assetGroupSearchField2);
+		assertTrue(assetGroup.getSearchFields().contains(assetGroupSearchField1));
+		assertTrue(assetGroup.getSearchFields().contains(assetGroupSearchField2));
 		
 		List<AssetGroup> assetGroups = AssetTestHelper.getAssetGroupListByUser(assetGroup.getUser());
 
@@ -100,6 +103,15 @@ public class AssetGroupRestIT extends AbstractRestServiceTest {
 		assertEquals(testAssetGroup.isDynamic(), createdAssetGroup.isDynamic());
 		assertEquals(testAssetGroup.isGlobal(), createdAssetGroup.isGlobal());
 	}
+	
+	@Test
+	public void createAssetGroupAuditLogCreatedTest() throws Exception {
+		Date fromDate = DateUtils.getNowDateUTC();
+		AssetGroup testAssetGroup = createBasicAssetGroup();
+		AssetGroup createdAssetGroup = AssetTestHelper.createAssetGroup(testAssetGroup);
+		
+		AssetTestHelper.assertAssetGroupAuditLogCreated(createdAssetGroup.getGuid(), AuditOperationEnum.CREATE, fromDate);
+	}
 
 
 	/**
@@ -116,6 +128,17 @@ public class AssetGroupRestIT extends AbstractRestServiceTest {
 		AssetGroup updatedAssetGroup = AssetTestHelper.updateAssetGroup(testAssetGroup);
 		
 		assertEquals(testAssetGroup.getName(), updatedAssetGroup.getName());
+	}
+	
+	@Test
+	public void updateAssetGroupAuditLogCreatedTest() throws Exception {
+		Date fromDate = DateUtils.getNowDateUTC();
+		AssetGroup testAssetGroup = createBasicAssetGroup();
+		testAssetGroup = AssetTestHelper.createAssetGroup(testAssetGroup);
+		testAssetGroup.setName("ChangedName" + UUID.randomUUID().toString());
+		AssetTestHelper.updateAssetGroup(testAssetGroup);
+
+		AssetTestHelper.assertAssetGroupAuditLogCreated(testAssetGroup.getGuid(), AuditOperationEnum.UPDATE, fromDate);
 	}
 
 	/**
@@ -140,6 +163,18 @@ public class AssetGroupRestIT extends AbstractRestServiceTest {
 		
 		List<AssetGroup> secondAssetGroupList = AssetTestHelper.getAssetGroupListByUser(testAssetGroup.getUser());
 		assertEquals(initialSize, secondAssetGroupList.size());
+	}
+	
+	@Test
+	public void deleteAssetGroupAuditLogCreatedTest() throws Exception {
+		Date fromDate = DateUtils.getNowDateUTC();
+		AssetGroup testAssetGroup = createBasicAssetGroup();
+		testAssetGroup = AssetTestHelper.createAssetGroup(testAssetGroup);
+
+		// Delete the AssetGroup
+		AssetTestHelper.deleteAssetGroup(testAssetGroup);
+		
+		AssetTestHelper.assertAssetGroupAuditLogCreated(testAssetGroup.getGuid(), AuditOperationEnum.ARCHIVE, fromDate);
 	}
 
 	private AssetGroup createBasicAssetGroup() {

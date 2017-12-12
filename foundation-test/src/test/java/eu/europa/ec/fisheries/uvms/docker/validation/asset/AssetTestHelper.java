@@ -2,8 +2,8 @@ package eu.europa.ec.fisheries.uvms.docker.validation.asset;
 
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.util.Date;
 import java.util.List;
-import java.util.Map;
 import java.util.Random;
 import java.util.UUID;
 
@@ -15,7 +15,15 @@ import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 
+import eu.europa.ec.fisheries.schema.audit.search.v1.AuditLogListQuery;
+import eu.europa.ec.fisheries.schema.audit.search.v1.ListCriteria;
+import eu.europa.ec.fisheries.schema.audit.search.v1.SearchKey;
+import eu.europa.ec.fisheries.schema.audit.v1.AuditLogType;
+import eu.europa.ec.fisheries.uvms.asset.model.constants.AuditObjectTypeEnum;
+import eu.europa.ec.fisheries.uvms.asset.model.constants.AuditOperationEnum;
+import eu.europa.ec.fisheries.uvms.commons.date.DateUtils;
 import eu.europa.ec.fisheries.uvms.docker.validation.common.AbstractHelper;
+import eu.europa.ec.fisheries.uvms.docker.validation.common.AuditHelper;
 import eu.europa.ec.fisheries.wsdl.asset.group.AssetGroup;
 import eu.europa.ec.fisheries.wsdl.asset.types.Asset;
 import eu.europa.ec.fisheries.wsdl.asset.types.AssetId;
@@ -61,6 +69,13 @@ public class AssetTestHelper extends AbstractHelper {
 
 	public static Asset updateAsset(Asset asset) throws ClientProtocolException, JsonProcessingException, IOException {
 		final HttpResponse response = Request.Put(getBaseUrl() + "asset/rest/asset?comment=UpdatedAsset")
+				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken())
+				.bodyByteArray(writeValueAsString(asset).getBytes()).execute().returnResponse();
+		return checkSuccessResponseReturnObject(response, Asset.class);
+	}
+	
+	public static Asset archiveAsset(Asset asset) throws ClientProtocolException, JsonProcessingException, IOException {
+		final HttpResponse response = Request.Put(getBaseUrl() + "asset/rest/asset/archive?comment=Archive")
 				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken())
 				.bodyByteArray(writeValueAsString(asset).getBytes()).execute().returnResponse();
 		return checkSuccessResponseReturnObject(response, Asset.class);
@@ -137,6 +152,50 @@ public class AssetTestHelper extends AbstractHelper {
 		return checkSuccessResponseReturnList(response, AssetGroup.class);
 	}
 	
+	// ************************************************
+	//  Audit logs
+	// ************************************************
+	
+	public static void assertAssetAuditLogCreated(String guid, AuditOperationEnum auditOperation, Date fromDate) throws Exception {
+		AuditLogListQuery auditLogListQuery = getAssetAuditLogListQuery(AuditObjectTypeEnum.ASSET);
+		assertAuditLog(guid, auditOperation, auditLogListQuery, fromDate);
+	}
+	
+	public static void assertAssetGroupAuditLogCreated(String guid, AuditOperationEnum auditOperation, Date fromDate) throws Exception {
+		AuditLogListQuery auditLogListQuery = getAssetAuditLogListQuery(AuditObjectTypeEnum.ASSET_GROUP);
+		assertAuditLog(guid, auditOperation, auditLogListQuery, fromDate);
+	}
+	
+	private static AuditLogListQuery getAssetAuditLogListQuery(AuditObjectTypeEnum auditObjectType) {
+		AuditLogListQuery auditLogListQuery = AuditHelper.getBasicAuditLogListQuery();
+		ListCriteria typeListCriteria = new ListCriteria();
+		typeListCriteria.setKey(SearchKey.TYPE);
+		typeListCriteria.setValue(auditObjectType.getValue());
+		auditLogListQuery.getAuditSearchCriteria().add(typeListCriteria);
+		return auditLogListQuery;
+	}
+	
+	private static void assertAuditLog(String guid, AuditOperationEnum auditOperation, AuditLogListQuery auditLogListQuery, Date fromDate) throws Exception {
+		ListCriteria typeListCriteria = new ListCriteria();
+		typeListCriteria.setKey(SearchKey.OPERATION);
+		typeListCriteria.setValue(auditOperation.getValue());
+		auditLogListQuery.getAuditSearchCriteria().add(typeListCriteria);
+
+		ListCriteria fromDateListCriteria = new ListCriteria();
+		fromDateListCriteria.setKey(SearchKey.FROM_DATE);
+		fromDateListCriteria.setValue(DateUtils.parseUTCDateToString(fromDate));
+		auditLogListQuery.getAuditSearchCriteria().add(fromDateListCriteria);
+		
+		List<AuditLogType> auditLogs = AuditHelper.getAuditLogs(auditLogListQuery);
+		boolean found = false;
+		for (AuditLogType auditLogType : auditLogs) {
+			if (auditLogType.getAffectedObject().equals(guid)) {
+				found = true;
+			}
+		}
+		assertTrue(found);
+	}
+
 	// ************************************************
 	//  Misc
 	// ************************************************
