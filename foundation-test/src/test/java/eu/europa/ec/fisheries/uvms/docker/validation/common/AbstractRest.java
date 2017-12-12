@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
 
 import org.apache.http.HttpResponse;
@@ -14,6 +15,7 @@ import org.junit.Assert;
 
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.type.MapType;
@@ -92,39 +94,57 @@ public abstract class AbstractRest extends Assert {
 
 	protected static final Map<String, Object> checkSuccessResponseReturnMap(final HttpResponse response)
 			throws IOException, JsonParseException, JsonMappingException, ClientProtocolException {
-				final Map<String, Object> data = checkSuccessResponseReturnDataMap(response);
-			
-				Map<String, Object> dataMap = (Map<String, Object>) data.get("data");
-				assertNotNull(dataMap);
-				return dataMap;
-			}
+		final Map<String, Object> data = checkSuccessResponseReturnDataMap(response);
+
+		Map<String, Object> dataMap = (Map<String, Object>) data.get("data");
+		assertNotNull(dataMap);
+		return dataMap;
+	}
 
 	private static Map<String, Object> checkSuccessResponseReturnDataMap(final HttpResponse response)
 			throws IOException, JsonParseException, JsonMappingException, ClientProtocolException {
-				assertEquals(HttpStatus.SC_OK, response.getStatusLine().getStatusCode());
-				final Map<String, Object> data = getJsonMap(response);
-				assertFalse(data.isEmpty());
-				assertNotNull(data.get("data"));
-				assertEquals("200", "" + data.get("code"));
-				return data;
-			}
+		assertEquals(HttpStatus.SC_OK, response.getStatusLine().getStatusCode());
+		final Map<String, Object> data = getJsonMap(response);
+		assertFalse(data.isEmpty());
+		assertNotNull(data.get("data"));
+		assertEquals("200", "" + data.get("code"));
+		return data;
+	}
 
 	protected final static Integer checkSuccessResponseReturnInt(final HttpResponse response)
 			throws IOException, JsonParseException, JsonMappingException, ClientProtocolException {
-				final Map<String, Object> data = checkSuccessResponseReturnDataMap(response);
-			
-				Integer dataValue = (Integer) data.get("data");
-				assertNotNull(dataValue);
-				return dataValue;
-			}
+		final Map<String, Object> data = checkSuccessResponseReturnDataMap(response);
 
-	protected final <T> T checkSuccessResponseReturnType(final HttpResponse response, Class<T> classCast)
+		Integer dataValue = (Integer) data.get("data");
+		assertNotNull(dataValue);
+		return dataValue;
+	}
+
+	protected static <T> T checkSuccessResponseReturnType(final HttpResponse response, Class<T> classCast)
 			throws IOException, JsonParseException, JsonMappingException, ClientProtocolException {
-				final Map<String, Object> data = checkSuccessResponseReturnDataMap(response);
-				T dataValue = (T) data.get("data");
-				assertNotNull(dataValue);
-				return dataValue;
-			}
+		final Map<String, Object> data = checkSuccessResponseReturnDataMap(response);
+		T dataValue = (T) data.get("data");
+		assertNotNull(dataValue);
+		return dataValue;
+	}
+	
+	protected static <T> T checkSuccessResponseReturnObject(final HttpResponse response, Class<T> classCast)
+			throws IOException, JsonParseException, JsonMappingException, ClientProtocolException {
+		final Map<String, Object> data = checkSuccessResponseReturnDataMap(response);
+		Map<String, Object> dataMap = (Map<String, Object>) data.get("data");
+		T dataValue = OBJECT_MAPPER.readValue(writeValueAsString(dataMap), classCast);
+		assertNotNull(dataValue);
+		return dataValue;
+	}
+	
+	protected static <T> List<T> checkSuccessResponseReturnList(final HttpResponse response, Class<T> classCast)
+			throws IOException, JsonParseException, JsonMappingException, ClientProtocolException {
+		final Map<String, Object> data = checkSuccessResponseReturnDataMap(response);
+		String valueAsString = writeValueAsString(data.get("data"));
+		List<T> dataValue = OBJECT_MAPPER.readValue(valueAsString, OBJECT_MAPPER.getTypeFactory().constructCollectionType(List.class, classCast));
+		assertNotNull(dataValue);
+		return dataValue;
+	}
 
 	/**
 	 * Write value as string.
@@ -181,9 +201,8 @@ public abstract class AbstractRest extends Assert {
 	 */
 	protected static final Map<String, Object> getJsonMap(final HttpResponse response)
 			throws IOException, JsonParseException, JsonMappingException, ClientProtocolException {
-				final ObjectMapper mapper = new ObjectMapper();
-				final MapType type = mapper.getTypeFactory().constructMapType(Map.class, String.class, Object.class);
-				final Map<String, Object> data = mapper.readValue(response.getEntity().getContent(), type);
+				final MapType type = OBJECT_MAPPER.getTypeFactory().constructMapType(Map.class, String.class, Object.class);
+				final Map<String, Object> data = OBJECT_MAPPER.readValue(response.getEntity().getContent(), type);
 				return data;
 			}
 

@@ -14,6 +14,7 @@ copy of the GNU General Public License along with the IFDM Suite. If not, see <h
 package eu.europa.ec.fisheries.uvms.docker.validation.asset;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 import org.apache.http.HttpResponse;
@@ -22,11 +23,11 @@ import org.junit.Test;
 
 import eu.europa.ec.fisheries.uvms.docker.validation.common.AbstractRestServiceTest;
 import eu.europa.ec.fisheries.wsdl.asset.types.Asset;
-import eu.europa.ec.fisheries.wsdl.asset.types.AssetListCriteria;
+import eu.europa.ec.fisheries.wsdl.asset.types.AssetIdType;
 import eu.europa.ec.fisheries.wsdl.asset.types.AssetListCriteriaPair;
-import eu.europa.ec.fisheries.wsdl.asset.types.AssetListPagination;
 import eu.europa.ec.fisheries.wsdl.asset.types.AssetListQuery;
 import eu.europa.ec.fisheries.wsdl.asset.types.ConfigSearchField;
+import eu.europa.ec.fisheries.wsdl.asset.types.ListAssetResponse;
 
 /**
  * The Class AssetRestIT.
@@ -42,45 +43,78 @@ public class AssetRestIT extends AbstractRestServiceTest {
 	 */
 	@Test
 	public void getAssetListTest() throws Exception {
-		AssetListQuery assetListQuery = new AssetListQuery();
-		AssetListPagination assetListPagination = new AssetListPagination();
-		assetListPagination.setListSize(100);
-		assetListPagination.setPage(1);
-		assetListQuery.setPagination(assetListPagination);
-		AssetListCriteria assetListCriteria = new AssetListCriteria();
-		assetListCriteria.setIsDynamic(true);
+		Asset asset = AssetTestHelper.createTestAsset();
+		
+		AssetListQuery assetListQuery = AssetTestHelper.getBasicAssetQuery();
 		AssetListCriteriaPair assetListCriteriaPair = new AssetListCriteriaPair();
 		assetListCriteriaPair.setKey(ConfigSearchField.FLAG_STATE);
-		assetListCriteriaPair.setValue("SWE");
-		assetListCriteria.getCriterias().add(assetListCriteriaPair);
-		assetListQuery.setAssetSearchCriteria(assetListCriteria);
-		final HttpResponse response = Request.Post(getBaseUrl() + "asset/rest/asset/list")
-				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken())
-				.bodyByteArray(writeValueAsString(assetListQuery).getBytes()).execute().returnResponse();
-		Map<String, Object> dataMap = checkSuccessResponseReturnMap(response);
+		assetListCriteriaPair.setValue(asset.getCountryCode());
+		assetListQuery.getAssetSearchCriteria().getCriterias().add(assetListCriteriaPair);
+		
+		ListAssetResponse assetListResponse = AssetTestHelper.assetListQuery(assetListQuery);
+		List<Asset> assets = assetListResponse.getAsset();
+		assertTrue(assets.contains(asset));
 	}
 
 	@Test
 	public void getAssetListItemCountTest() throws Exception {
-		AssetListQuery assetListQuery = new AssetListQuery();
-		AssetListPagination assetListPagination = new AssetListPagination();
-		assetListPagination.setListSize(100);
-		assetListPagination.setPage(1);
-		assetListQuery.setPagination(assetListPagination);
-		AssetListCriteria assetListCriteria = new AssetListCriteria();
-		assetListCriteria.setIsDynamic(true);
+		AssetListQuery assetListQuery = AssetTestHelper.getBasicAssetQuery();
 		AssetListCriteriaPair assetListCriteriaPair = new AssetListCriteriaPair();
 		assetListCriteriaPair.setKey(ConfigSearchField.FLAG_STATE);
 		assetListCriteriaPair.setValue("SWE");
-		assetListCriteria.getCriterias().add(assetListCriteriaPair);
-		assetListQuery.setAssetSearchCriteria(assetListCriteria);
-		final HttpResponse response = Request.Post(getBaseUrl() + "asset/rest/asset/listcount")
-				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken())
-				.bodyByteArray(writeValueAsString(assetListQuery).getBytes()).execute().returnResponse();
-		Integer dataValue = checkSuccessResponseReturnInt(response);
-		assertTrue(dataValue > 0);
+		assetListQuery.getAssetSearchCriteria().getCriterias().add(assetListCriteriaPair);
+		
+		Integer countBefore = AssetTestHelper.assetListQueryCount(assetListQuery);
+		
+		// Add new asset
+		Asset asset = AssetTestHelper.createDummyAsset(AssetIdType.GUID);
+		asset.setCountryCode("SWE");
+		AssetTestHelper.createAsset(asset);
+		
+		Integer countAfter = AssetTestHelper.assetListQueryCount(assetListQuery);
+		assertEquals(Integer.valueOf(countBefore + 1), countAfter);
+	}
+	
+	@Test
+	public void getAssetListUpdatedIRCSNotFoundTest() throws Exception {
+		Asset testAsset = AssetTestHelper.createTestAsset();
+		
+		AssetListQuery assetListQuery = AssetTestHelper.getBasicAssetQuery();
+		AssetListCriteriaPair assetListCriteriaPair = new AssetListCriteriaPair();
+		assetListCriteriaPair.setKey(ConfigSearchField.IRCS);
+		assetListCriteriaPair.setValue(testAsset.getIrcs());
+		assetListQuery.getAssetSearchCriteria().getCriterias().add(assetListCriteriaPair);
+		
+		ListAssetResponse assetList = AssetTestHelper.assetListQuery(assetListQuery);
+		List<Asset> assets = assetList.getAsset();
+		assertTrue(assets.contains(testAsset));
+		
+		testAsset.setIrcs(testAsset.getIrcs() + "NEW");
+		AssetTestHelper.updateAsset(testAsset);
+		
+		// Search with same query, the asset should not be found
+		assetList = AssetTestHelper.assetListQuery(assetListQuery);
+		assets = assetList.getAsset();
+		assertFalse(assets.contains(testAsset));
 	}
 
+	@Test
+	public void getAssetListWithLikeSearchValue() throws Exception {
+		Asset asset = AssetTestHelper.createDummyAsset(AssetIdType.GUID);
+		asset.setHomePort("MyHomePort");
+		asset = AssetTestHelper.createAsset(asset);
+		
+		AssetListQuery assetListQuery = AssetTestHelper.getBasicAssetQuery();
+		AssetListCriteriaPair assetListCriteriaPair = new AssetListCriteriaPair();
+		assetListCriteriaPair.setKey(ConfigSearchField.HOMEPORT);
+		assetListCriteriaPair.setValue("My*");
+		assetListQuery.getAssetSearchCriteria().getCriterias().add(assetListCriteriaPair);
+		
+		ListAssetResponse assetList = AssetTestHelper.assetListQuery(assetListQuery);
+		List<Asset> assets = assetList.getAsset();
+		assertTrue(assets.contains(asset));
+	}
+	
 	/**
 	 * Gets the note activity codes test.
 	 *
@@ -107,10 +141,8 @@ public class AssetRestIT extends AbstractRestServiceTest {
 	@Test
 	public void getAssetByIdTest() throws Exception {
 		Asset asset = AssetTestHelper.createTestAsset();
-		final HttpResponse response = Request.Get(getBaseUrl() + "asset/rest/asset/" + asset.getAssetId().getGuid())
-				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken()).execute()
-				.returnResponse();
-		Map<String, Object> dataMap = checkSuccessResponseReturnMap(response);
+		Asset assetByGuid = AssetTestHelper.getAssetByGuid(asset.getAssetId().getGuid());
+		assertEquals(asset, assetByGuid);
 	}
 
 	/**
@@ -133,11 +165,13 @@ public class AssetRestIT extends AbstractRestServiceTest {
 	@Test
 	public void updateAssetTest() throws Exception {
 		Asset testAsset = AssetTestHelper.createTestAsset();
-		testAsset.setName(testAsset.getName() + "Changed");
-		final HttpResponse response = Request.Put(getBaseUrl() + "asset/rest/asset?comment=ChangedName")
-				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken())
-				.bodyByteArray(writeValueAsString(testAsset).getBytes()).execute().returnResponse();
-		Map<String, Object> dataMap = checkSuccessResponseReturnMap(response);
+		String newName = testAsset.getName() + "Changed";
+		testAsset.setName(newName);
+		Asset updatedAsset = AssetTestHelper.updateAsset(testAsset);
+		assertEquals(newName, updatedAsset.getName());
+		assertEquals(testAsset.getAssetId().getGuid(), updatedAsset.getAssetId().getGuid());
+		assertEquals(testAsset.getCfr(), updatedAsset.getCfr());
+		assertNotEquals(testAsset.getEventHistory().getEventId(), updatedAsset.getEventHistory().getEventId());
 	}
 
 	/**
@@ -172,5 +206,4 @@ public class AssetRestIT extends AbstractRestServiceTest {
 				.bodyByteArray(writeValueAsString(assetIdList).getBytes()).execute().returnResponse();
 		Map<String, Object> dataMap = checkSuccessResponseReturnMap(response);
 	}
-
 }
