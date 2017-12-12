@@ -45,7 +45,7 @@ public class AssetGroupRestIT extends AbstractRestServiceTest {
 	 */
 	@Test
 	public void getAssetGroupListByUserTest() throws Exception {
-		AssetGroup assetGroup = createBasicAssetGroup();
+		AssetGroup assetGroup = AssetTestHelper.createBasicAssetGroup();
 		
 		Asset asset1 = AssetTestHelper.createTestAsset();
 		Asset asset2 = AssetTestHelper.createTestAsset();
@@ -81,7 +81,7 @@ public class AssetGroupRestIT extends AbstractRestServiceTest {
 	 */
 	@Test
 	public void getAssetByIdTest() throws Exception {
-		AssetGroup testAssetGroup = createBasicAssetGroup();
+		AssetGroup testAssetGroup = AssetTestHelper.createBasicAssetGroup();
 		testAssetGroup = AssetTestHelper.createAssetGroup(testAssetGroup);
 		
 		AssetGroup assetGroupById = AssetTestHelper.getAssetGroupById(testAssetGroup.getGuid());
@@ -95,7 +95,7 @@ public class AssetGroupRestIT extends AbstractRestServiceTest {
 	 */
 	@Test
 	public void createAssetGroupTest() throws Exception {
-		AssetGroup testAssetGroup = createBasicAssetGroup();
+		AssetGroup testAssetGroup = AssetTestHelper.createBasicAssetGroup();
 		AssetGroup createdAssetGroup = AssetTestHelper.createAssetGroup(testAssetGroup);
 
 		assertEquals(testAssetGroup.getName(), createdAssetGroup.getName());
@@ -107,7 +107,7 @@ public class AssetGroupRestIT extends AbstractRestServiceTest {
 	@Test
 	public void createAssetGroupAuditLogCreatedTest() throws Exception {
 		Date fromDate = DateUtils.getNowDateUTC();
-		AssetGroup testAssetGroup = createBasicAssetGroup();
+		AssetGroup testAssetGroup = AssetTestHelper.createBasicAssetGroup();
 		AssetGroup createdAssetGroup = AssetTestHelper.createAssetGroup(testAssetGroup);
 		
 		AssetTestHelper.assertAssetGroupAuditLogCreated(createdAssetGroup.getGuid(), AuditOperationEnum.CREATE, fromDate);
@@ -121,7 +121,7 @@ public class AssetGroupRestIT extends AbstractRestServiceTest {
 	 */
 	@Test
 	public void updateAssetGroupTest() throws Exception {
-		AssetGroup testAssetGroup = createBasicAssetGroup();
+		AssetGroup testAssetGroup = AssetTestHelper.createBasicAssetGroup();
 		testAssetGroup = AssetTestHelper.createAssetGroup(testAssetGroup);
 
 		testAssetGroup.setName("ChangedName" + UUID.randomUUID().toString());
@@ -133,7 +133,7 @@ public class AssetGroupRestIT extends AbstractRestServiceTest {
 	@Test
 	public void updateAssetGroupAuditLogCreatedTest() throws Exception {
 		Date fromDate = DateUtils.getNowDateUTC();
-		AssetGroup testAssetGroup = createBasicAssetGroup();
+		AssetGroup testAssetGroup = AssetTestHelper.createBasicAssetGroup();
 		testAssetGroup = AssetTestHelper.createAssetGroup(testAssetGroup);
 		testAssetGroup.setName("ChangedName" + UUID.randomUUID().toString());
 		AssetTestHelper.updateAssetGroup(testAssetGroup);
@@ -148,7 +148,7 @@ public class AssetGroupRestIT extends AbstractRestServiceTest {
 	 */
 	@Test
 	public void deleteAssetGroupTest() throws Exception {
-		AssetGroup testAssetGroup = createBasicAssetGroup();
+		AssetGroup testAssetGroup = AssetTestHelper.createBasicAssetGroup();
 		
 		List<AssetGroup> initialAssetGroupList = AssetTestHelper.getAssetGroupListByUser(testAssetGroup.getUser());
 		int initialSize = initialAssetGroupList.size();
@@ -168,21 +168,12 @@ public class AssetGroupRestIT extends AbstractRestServiceTest {
 	@Test
 	public void deleteAssetGroupAuditLogCreatedTest() throws Exception {
 		Date fromDate = DateUtils.getNowDateUTC();
-		AssetGroup testAssetGroup = createBasicAssetGroup();
+		AssetGroup testAssetGroup = AssetTestHelper.createBasicAssetGroup();
 		testAssetGroup = AssetTestHelper.createAssetGroup(testAssetGroup);
 
 		// Delete the AssetGroup
 		AssetTestHelper.deleteAssetGroup(testAssetGroup);
 		
 		AssetTestHelper.assertAssetGroupAuditLogCreated(testAssetGroup.getGuid(), AuditOperationEnum.ARCHIVE, fromDate);
-	}
-
-	private AssetGroup createBasicAssetGroup() {
-		AssetGroup assetGroup = new AssetGroup();
-		assetGroup.setDynamic(false);
-		assetGroup.setGlobal(false);
-		assetGroup.setUser("vms_admin_com");
-		assetGroup.setName("Name" + UUID.randomUUID().toString());
-		return assetGroup;
 	}
 }
