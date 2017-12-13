@@ -14,10 +14,7 @@ copy of the GNU General Public License along with the IFDM Suite. If not, see <h
 package eu.europa.ec.fisheries.uvms.docker.validation.asset;
 
 import java.util.List;
-import java.util.Map;
 
-import org.apache.http.HttpResponse;
-import org.apache.http.client.fluent.Request;
 import org.junit.Test;
 
 import eu.europa.ec.fisheries.uvms.docker.validation.common.AbstractRestServiceTest;
@@ -37,12 +34,41 @@ public class AssetHistoryRestIT extends AbstractRestServiceTest {
 	 *             the exception
 	 */
 	@Test
-	public void getAssetHistoryListByAssetIdTest() throws Exception {
+	public void getAssetHistoryListByAssetIdNumberOfHistoriesTest() throws Exception {
 		Asset asset = AssetTestHelper.createTestAsset();
-		final HttpResponse response = Request.Get(getBaseUrl() + "asset/rest/history/asset?assetId=" + asset.getAssetId().getGuid() + "&maxNbr=100")
-				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken()).execute()
-				.returnResponse();
-		List dataList = checkSuccessResponseReturnType(response,List.class);
+		List<Asset> assetHistories = AssetTestHelper.getAssetHistoryFromAssetGuid(asset.getAssetId().getGuid());
+		assertTrue(assetHistories.size() == 1);
+		
+		asset.setName(asset.getName() + "Updated");
+		asset = AssetTestHelper.updateAsset(asset);
+		assetHistories = AssetTestHelper.getAssetHistoryFromAssetGuid(asset.getAssetId().getGuid());
+		assertTrue(assetHistories.size() == 2);
+		
+		asset.setName(asset.getName() + "Updated2");
+		asset = AssetTestHelper.updateAsset(asset);
+		assetHistories = AssetTestHelper.getAssetHistoryFromAssetGuid(asset.getAssetId().getGuid());
+		assertTrue(assetHistories.size() == 3);
+	}
+	
+	@Test
+	public void getAssetHistoryListByAssetIdHistoriesIsRetainedTest() throws Exception {
+		// Create asset versions
+		Asset asset1 = AssetTestHelper.createTestAsset();
+		
+		Asset asset2 = AssetTestHelper.getAssetByGuid(asset1.getAssetId().getGuid());
+		asset2.setName(asset2.getName() + "1");
+		asset2 = AssetTestHelper.updateAsset(asset2);
+		
+		Asset asset3 = AssetTestHelper.getAssetByGuid(asset2.getAssetId().getGuid());
+		asset3.setName(asset3.getName() + "2");
+		asset3 = AssetTestHelper.updateAsset(asset3);
+		
+		List<Asset> assetHistories = AssetTestHelper.getAssetHistoryFromAssetGuid(asset3.getAssetId().getGuid());
+		assertTrue(assetHistories.size() == 3);
+		
+		assertTrue(assetHistories.contains(asset1));
+		assertTrue(assetHistories.contains(asset2));
+		assertTrue(assetHistories.contains(asset3));
 	}
 
 	/**
@@ -55,10 +81,31 @@ public class AssetHistoryRestIT extends AbstractRestServiceTest {
 	@Test
 	public void getAssetHistoryByAssetHistGuidTest() throws Exception {
 		Asset asset = AssetTestHelper.createTestAsset();		
-		final HttpResponse response = Request.Get(getBaseUrl() + "asset/rest/history/" + asset.getEventHistory().getEventId())
-				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken()).execute()
-				.returnResponse();
-		Map<String, Object> dataMap = checkSuccessResponseReturnMap(response);
+		Asset assetFromHistory = AssetTestHelper.getAssetHistoryFromHistoryGuid(asset.getEventHistory().getEventId());
+		assertEquals(asset, assetFromHistory);
+	}
+	
+	@Test
+	public void getAssetHistoryByAssetHistGuidHistortyIsRetained() throws Exception {
+		// Create asset versions
+		Asset asset1 = AssetTestHelper.createTestAsset();
+
+		Asset asset2 = AssetTestHelper.getAssetByGuid(asset1.getAssetId().getGuid());
+		asset2.setName(asset2.getName() + "1");
+		asset2 = AssetTestHelper.updateAsset(asset2);
+
+		Asset asset3 = AssetTestHelper.getAssetByGuid(asset2.getAssetId().getGuid());
+		asset3.setName(asset3.getName() + "2");
+		asset3 = AssetTestHelper.updateAsset(asset3);
+		
+		Asset assetHistory1 = AssetTestHelper.getAssetHistoryFromHistoryGuid(asset1.getEventHistory().getEventId());
+		assertEquals(asset1, assetHistory1);
+		
+		Asset assetHistory2 = AssetTestHelper.getAssetHistoryFromHistoryGuid(asset2.getEventHistory().getEventId());
+		assertEquals(asset2, assetHistory2);
+		
+		Asset assetHistory3 = AssetTestHelper.getAssetHistoryFromHistoryGuid(asset3.getEventHistory().getEventId());
+		assertEquals(asset3, assetHistory3);
 	}
 
 }
