@@ -73,7 +73,7 @@ public class AssetTestHelper extends AbstractHelper {
 				.bodyByteArray(writeValueAsString(asset).getBytes()).execute().returnResponse();
 		return checkSuccessResponseReturnObject(response, Asset.class);
 	}
-	
+
 	public static Asset archiveAsset(Asset asset) throws ClientProtocolException, JsonProcessingException, IOException {
 		final HttpResponse response = Request.Put(getBaseUrl() + "asset/rest/asset/archive?comment=Archive")
 				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken())

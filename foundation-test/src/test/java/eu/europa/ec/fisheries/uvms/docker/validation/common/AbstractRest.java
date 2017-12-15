@@ -7,6 +7,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
+import eu.europa.ec.fisheries.wsdl.asset.types.Asset;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
 import org.apache.http.client.ClientProtocolException;
@@ -156,7 +157,18 @@ public abstract class AbstractRest extends Assert {
 	 *             the json processing exception
 	 */
 	protected final static String writeValueAsString(final Object value) throws JsonProcessingException {
-		return OBJECT_MAPPER.writeValueAsString(value);
+		String ret = "";
+
+		try {
+			ret = OBJECT_MAPPER.writeValueAsString(value);
+		}
+		catch(RuntimeException e){
+
+			e.printStackTrace();
+		}
+
+
+		return ret;
 	}
 
 	protected static final String getDateAsString(int year4, int month, int day, int hour, int minute, int sec,

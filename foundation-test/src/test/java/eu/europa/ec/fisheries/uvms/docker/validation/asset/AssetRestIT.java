@@ -13,10 +13,7 @@ copy of the GNU General Public License along with the IFDM Suite. If not, see <h
 */
 package eu.europa.ec.fisheries.uvms.docker.validation.asset;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.fluent.Request;
@@ -166,24 +163,7 @@ public class AssetRestIT extends AbstractRestServiceTest {
 		AssetTestHelper.assertAssetAuditLogCreated(asset.getAssetId().getGuid(), AuditOperationEnum.CREATE, fromDate);
 	}
 	
-	/**
-	 * Update asset test.
-	 *
-	 * @throws Exception
-	 *             the exception
-	 */
-	@Test
-	public void updateAssetTest() throws Exception {
-		Asset testAsset = AssetTestHelper.createTestAsset();
-		String newName = testAsset.getName() + "Changed";
-		testAsset.setName(newName);
-		Asset updatedAsset = AssetTestHelper.updateAsset(testAsset);
-		assertEquals(newName, updatedAsset.getName());
-		assertEquals(testAsset.getAssetId().getGuid(), updatedAsset.getAssetId().getGuid());
-		assertEquals(testAsset.getCfr(), updatedAsset.getCfr());
-		assertNotEquals(testAsset.getEventHistory().getEventId(), updatedAsset.getEventHistory().getEventId());
-	}
-	
+
 	@Test
 	public void updateAssetAuditLogCreatedTest() throws Exception {
 		Date fromDate = DateUtils.getNowDateUTC();
@@ -235,4 +215,96 @@ public class AssetRestIT extends AbstractRestServiceTest {
 				.bodyByteArray(writeValueAsString(assetIdList).getBytes()).execute().returnResponse();
 		Map<String, Object> dataMap = checkSuccessResponseReturnMap(response);
 	}
+
+
+	@Test
+	public void getAssetListWithLikeSearchValue_ICCAT_AND_UVI_GFCM() throws Exception {
+		Asset asset = AssetTestHelper.createDummyAsset(AssetIdType.GUID);
+
+		String theValue = UUID.randomUUID().toString();
+		asset.setIccat(theValue);
+		asset.setUvi(theValue);
+		asset.setGfcm(theValue);
+
+		asset = AssetTestHelper.createAsset(asset);
+
+		AssetListQuery assetListQuery = AssetTestHelper.getBasicAssetQuery();
+		AssetListCriteriaPair assetListCriteriaPair_ICCAT = new AssetListCriteriaPair();
+		AssetListCriteriaPair assetListCriteriaPair_UVI = new AssetListCriteriaPair();
+		AssetListCriteriaPair assetListCriteriaPair_GFCM = new AssetListCriteriaPair();
+
+		assetListCriteriaPair_ICCAT.setKey(ConfigSearchField.ICCAT);
+		assetListCriteriaPair_ICCAT.setValue(theValue);
+		assetListQuery.getAssetSearchCriteria().getCriterias().add(assetListCriteriaPair_ICCAT);
+
+		assetListCriteriaPair_UVI.setKey(ConfigSearchField.UVI);
+		assetListCriteriaPair_UVI.setValue(theValue);
+		assetListQuery.getAssetSearchCriteria().getCriterias().add(assetListCriteriaPair_UVI);
+
+		assetListCriteriaPair_GFCM.setKey(ConfigSearchField.GFCM);
+		assetListCriteriaPair_GFCM.setValue(theValue);
+		assetListQuery.getAssetSearchCriteria().getCriterias().add(assetListCriteriaPair_GFCM);
+
+		ListAssetResponse assetList = AssetTestHelper.assetListQuery(assetListQuery);
+		List<Asset> assets = assetList.getAsset();
+		assertTrue(assets.contains(asset));
+	}
+
+	@Test
+	public void getAssetListWithLikeSearchValue_CHANGE_KEY_AND_FAIL() throws Exception {
+		Asset asset = AssetTestHelper.createTestAsset();
+		String guid = asset.getAssetId().getGuid();
+
+		String theValue = UUID.randomUUID().toString();
+		String newName = asset.getName() + "Changed";
+		asset.setName(newName);
+		asset.setIccat(theValue);
+		AssetTestHelper.updateAsset(asset);
+
+
+		AssetListQuery assetListQuery = AssetTestHelper.getBasicAssetQuery();
+		AssetListCriteriaPair assetListCriteriaPair_ICCAT = new AssetListCriteriaPair();
+		assetListCriteriaPair_ICCAT.setKey(ConfigSearchField.ICCAT);
+		assetListCriteriaPair_ICCAT.setValue(theValue);
+
+		AssetListCriteriaPair assetListCriteriaPair_UUID = new AssetListCriteriaPair();
+		assetListCriteriaPair_UUID.setKey(ConfigSearchField.GUID);
+		assetListCriteriaPair_UUID.setValue(guid);
+
+
+		assetListQuery.getAssetSearchCriteria().getCriterias().add(assetListCriteriaPair_ICCAT);
+		assetListQuery.getAssetSearchCriteria().getCriterias().add(assetListCriteriaPair_UUID);
+
+
+
+		ListAssetResponse listAssetResponse = AssetTestHelper.assetListQuery(assetListQuery);
+		List<Asset> fetchedAsssets = listAssetResponse.getAsset();
+		assertFalse(fetchedAsssets.contains(asset));
+	}
+
+
+	/**
+	 * Update asset test.
+	 *
+	 * @throws Exception
+	 *             the exception
+	 */
+	@Test
+	public void updateAssetTest() throws Exception {
+		Asset testAsset = AssetTestHelper.createTestAsset();
+		String newName = testAsset.getName() + "Changed";
+		testAsset.setName(newName);
+		Asset updatedAsset = AssetTestHelper.updateAsset(testAsset);
+		assertEquals(newName, updatedAsset.getName());
+		assertEquals(testAsset.getAssetId().getGuid(), updatedAsset.getAssetId().getGuid());
+		assertEquals(testAsset.getCfr(), updatedAsset.getCfr());
+		assertNotEquals(testAsset.getEventHistory().getEventId(), updatedAsset.getEventHistory().getEventId());
+	}
+
+
+
+
+
+
+
 }
