@@ -511,6 +511,29 @@
                          <password>sales</password>
                      </security>
                 </xa-datasource>
+                <xa-datasource jta="true" jndi-name="java:jboss/datasources/uvms_subscription" pool-name="uvms_subscription" enabled="true" use-ccm="true" statistics-enabled="false">
+                    <xa-datasource-property name="ServerName">postgres</xa-datasource-property>
+                    <xa-datasource-property name="PortNumber">5432</xa-datasource-property>
+                    <xa-datasource-property name="DatabaseName">db71u</xa-datasource-property>
+
+                    <driver>postgresql</driver>
+                    <xa-pool>
+                        <min-pool-size>2</min-pool-size>
+                        <initial-pool-size>2</initial-pool-size>
+                        <max-pool-size>20</max-pool-size>
+                        <prefill>true</prefill>
+                    </xa-pool>
+                    <validation>
+                        <valid-connection-checker
+                                class-name="org.jboss.jca.adapters.jdbc.extensions.postgres.PostgreSQLValidConnectionChecker"></valid-connection-checker>
+                        <exception-sorter
+                                class-name="org.jboss.jca.adapters.jdbc.extensions.postgres.PostgreSQLExceptionSorter"></exception-sorter>
+                    </validation>
+                    <security>
+                        <user-name>subscription</user-name>
+                        <password>subscription</password>
+                    </security>
+                </xa-datasource>
                 <xa-datasource jta="true" jndi-name="java:/jdbc/uvms_config" pool-name="jdbc/uvms_config" enabled="true" use-ccm="true" statistics-enabled="false">
                     <xa-datasource-property name="ServerName">postgres</xa-datasource-property>
     				<xa-datasource-property name="PortNumber">5432</xa-datasource-property>
@@ -870,6 +893,11 @@
                         <admin-object class-name="org.apache.activemq.command.ActiveMQQueue" jndi-name="java:/jms/queue/UVMSUpload" use-java-context="true" pool-name="UVMSUpload">
                             <config-property name="PhysicalName">
                                 UVMSUpload
+                            </config-property>
+                        </admin-object>
+                        <admin-object class-name="org.apache.activemq.command.ActiveMQQueue" jndi-name="java:/jms/queue/UVMSSubscriptionEvent" use-java-context="true" pool-name="UVMSSubscriptionEvent">
+                            <config-property name="PhysicalName">
+                                UVMSSubscriptionEvent
                             </config-property>
                         </admin-object>
                         <admin-object class-name="org.apache.activemq.command.ActiveMQQueue" jndi-name="java:/jms/queue/UVMSAssetEvent" use-java-context="true" pool-name="UVMSAssetEvent">
