@@ -11,6 +11,14 @@ GRANT CONNECT ON DATABASE db71u TO asset;
 GRANT SELECT, INSERT, UPDATE, DELETE ON ALL TABLES IN SCHEMA asset TO asset; 
 ALTER SCHEMA asset OWNER TO asset;
 
+-- SUBSCRIPTION
+CREATE USER subscription WITH PASSWORD 'subscription';
+CREATE SCHEMA AUTHORIZATION subscription;
+ALTER USER subscription SET search_path = subscription, public;
+GRANT CONNECT ON DATABASE db71u TO subscription;
+GRANT SELECT, INSERT, UPDATE, DELETE ON ALL TABLES IN SCHEMA subscription TO subscription;
+ALTER SCHEMA subscription OWNER TO subscription;
+
 -- AUDIT
 CREATE USER audit WITH PASSWORD 'audit';  
 CREATE SCHEMA AUTHORIZATION audit;  
