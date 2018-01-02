@@ -94,7 +94,7 @@ public final class MobileTerminalTestHelper extends AbstractHelper {
 
 		pollAttributes.add(endDate);
 		endDate.setKey(PollAttributeType.END_DATE);
-		endDate.setValue(getDateAsString(2017, Calendar.DECEMBER, 24, 11, 45, 7, 980));
+		endDate.setValue(getDateAsString(2027, Calendar.DECEMBER, 24, 11, 45, 7, 980));
 
 		pollRequestType.getMobileTerminals().add(pollMobileTerminal);
 
