@@ -18,7 +18,8 @@
             <directory>target/dockerfile/dependencies</directory>
             <includes>
                 <include>hibernate*.*</include>
-                <include>jts*.*</include>                
+                <include>jts*.*</include>
+                <include>geolatte-geom*.*</include>                
             </includes>
             <outputDirectory>hibernate</outputDirectory>
         </fileSet>
