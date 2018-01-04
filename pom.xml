@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
 	<parent>
@@ -17,8 +18,8 @@
 
 	<properties>
 		<project.scm.id>github</project.scm.id>
-	    <scm.connection>scm:git:https://github.com/UnionVMS/UVMS-Docker.git</scm.connection>
-	    <scm.url>scm:git:https://github.com/UnionVMS/UVMS-Docker.git</scm.url>
+		<scm.connection>scm:git:https://github.com/UnionVMS/UVMS-Docker.git</scm.connection>
+		<scm.url>scm:git:https://github.com/UnionVMS/UVMS-Docker.git</scm.url>
 		<unionvms.project.unionvms.web.version>3.0.14</unionvms.project.unionvms.web.version>
 		<unionvms.project.mapfishprint.version>3.5</unionvms.project.mapfishprint.version>
 		<unionvms.project.geoserver.version>2.12.1.2</unionvms.project.geoserver.version>
@@ -59,17 +60,20 @@
 							</execution>
 						</executions>
 						<configuration>
+							<excludeProperties>wildfly.hibernate.module.hibernate.version,wildfly.hibernate.module.spatial.version,wildfly.hibernate.module.jts.version,wildfly.postgres.module.postgis.version,wildfly.postgres.module.postgres.version,wildfly.activemq.rar.version</excludeProperties>
+							<includeProperties>unionvms.project.unionvms.web.version,unionvms.project.mapfishprint.version,unionvms.project.geoserver.version,unionvms.project.user.module,unionvms.project.rules.module,unionvms.project.movement.module,unionvms.project.mobileterminal.module,unionvms.project.exchange.module,unionvms.project.reporting.module,unionvms.project.spatial.module,unionvms.project.config.module,unionvms.project.audit.module,unionvms.project.asset.module,unionvms.project.activity.module,unionvms.project.mdr.module,unionvms.project.plugins.naf,unionvms.project.plugins.flux,unionvms.project.plugins.inmarsat,unionvms.project.plugins.siriusone</includeProperties>
+							<allowSnapshots>true</allowSnapshots>
 						</configuration>
 					</plugin>
 				</plugins>
 			</build>
 		</profile>
 	</profiles>
-	
-    <scm>
-        <connection>${scm.connection}</connection>
-        <tag>HEAD</tag>
-    </scm>
+
+	<scm>
+		<connection>${scm.connection}</connection>
+		<tag>HEAD</tag>
+	</scm>
 	<build>
 		<plugins>
 			<plugin>
@@ -95,7 +99,7 @@
 		<module>postgres-release</module>
 		<module>wildfly-base</module>
 		<module>wildfly-foundation</module>
-		<module>foundation-test</module>		
+		<module>foundation-test</module>
 		<module>wildfly-release</module>
 		<module>docker-compose</module>
 		<module>release-test</module>
