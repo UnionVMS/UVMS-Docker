@@ -187,6 +187,9 @@
 								<!-- Get the regression-suite-selenium front-end -->
 								<get src="https://github.com/UnionVMS/UVMS-SeleniumTests/raw/swe-dev/Python-regression-suite-selenium.py" dest="target/Python-regression-suite-selenium.py" verbose="true" usetimestamp="true" />
 								<get src="https://github.com/UnionVMS/UVMS-SeleniumTests/raw/swe-dev/DockerUnionVMSparameters.py" dest="target/UnionVMSparameters.py" verbose="true" usetimestamp="true" />
+								<get src="https://github.com/UnionVMS/UVMS-SeleniumTests/raw/swe-dev/asset4.csv" dest="target/asset4.csv" verbose="true" usetimestamp="true" />
+								<get src="https://github.com/UnionVMS/UVMS-SeleniumTests/raw/swe-dev/mobileterminal4.csv" dest="target/mobileterminal4.csv" verbose="true" usetimestamp="true" />
+								<get src="https://github.com/UnionVMS/UVMS-SeleniumTests/raw/swe-dev/trip4.csv" dest="target/trip4.csv" verbose="true" usetimestamp="true" />
 							</tasks>
 						</configuration>
 						<goals>
