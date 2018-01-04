@@ -17,7 +17,7 @@
 		<unionvms.project.spatial.db.module>1.0.5</unionvms.project.spatial.db.module>
 	</properties>
 	<dependencies>
-			<dependency>
+		<dependency>
 			<groupId>eu.europa.ec.fisheries.uvms.asset</groupId>
 			<artifactId>liquibase</artifactId>
 			<type>sql</type>
