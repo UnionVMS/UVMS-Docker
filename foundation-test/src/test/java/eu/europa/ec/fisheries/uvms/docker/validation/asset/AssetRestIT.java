@@ -55,6 +55,28 @@ public class AssetRestIT extends AbstractRestServiceTest {
 		List<Asset> assets = assetListResponse.getAsset();
 		assertTrue(assets.contains(asset));
 	}
+	
+	@Test
+	public void getAssetListMultipleAssetsGuidsTest() throws Exception {
+		Asset asset1 = AssetTestHelper.createTestAsset();
+		Asset asset2 = AssetTestHelper.createTestAsset();
+		
+		AssetListQuery assetListQuery = AssetTestHelper.getBasicAssetQuery();
+		AssetListCriteriaPair assetListCriteriaPair1 = new AssetListCriteriaPair();
+		assetListCriteriaPair1.setKey(ConfigSearchField.GUID);
+		assetListCriteriaPair1.setValue(asset1.getAssetId().getGuid());
+		assetListQuery.getAssetSearchCriteria().getCriterias().add(assetListCriteriaPair1);
+		AssetListCriteriaPair assetListCriteriaPair2 = new AssetListCriteriaPair();
+		assetListCriteriaPair2.setKey(ConfigSearchField.GUID);
+		assetListCriteriaPair2.setValue(asset2.getAssetId().getGuid());
+		assetListQuery.getAssetSearchCriteria().getCriterias().add(assetListCriteriaPair2);
+		
+		ListAssetResponse assetListResponse = AssetTestHelper.assetListQuery(assetListQuery);
+		List<Asset> assets = assetListResponse.getAsset();
+		assertEquals(2, assets.size());
+		assertTrue(assets.contains(asset1));
+		assertTrue(assets.contains(asset2));
+	}
 
 	@Test
 	public void getAssetListItemCountTest() throws Exception {
@@ -301,10 +323,78 @@ public class AssetRestIT extends AbstractRestServiceTest {
 		assertNotEquals(testAsset.getEventHistory().getEventId(), updatedAsset.getEventHistory().getEventId());
 	}
 
+	@Test
+	public void assetListQueryHistoryGuidTest() throws Exception {
+		// Create asset versions
+		Asset asset1 = AssetTestHelper.createTestAsset();
 
+		Asset asset2 = AssetTestHelper.getAssetByGuid(asset1.getAssetId().getGuid());
+		asset2.setName(asset2.getName() + "1");
+		asset2 = AssetTestHelper.updateAsset(asset2);
 
+		Asset asset3 = AssetTestHelper.getAssetByGuid(asset2.getAssetId().getGuid());
+		asset3.setName(asset3.getName() + "2");
+		asset3 = AssetTestHelper.updateAsset(asset3);
 
+		AssetListQuery assetListQuery1 = AssetTestHelper.getBasicAssetQuery();
+		AssetListCriteriaPair assetListCriteriaPair = new AssetListCriteriaPair();
+		assetListCriteriaPair.setKey(ConfigSearchField.HIST_GUID);
+		assetListCriteriaPair.setValue(asset1.getEventHistory().getEventId());
+		assetListQuery1.getAssetSearchCriteria().getCriterias().add(assetListCriteriaPair);
+		
+		ListAssetResponse assetHistory1 = AssetTestHelper.assetListQuery(assetListQuery1);
+		List<Asset> assets = assetHistory1.getAsset();
+		assertEquals(1, assets.size());
+		assertEquals(asset1, assets.get(0));
+		
+		
+		AssetListQuery assetListQuery2 = AssetTestHelper.getBasicAssetQuery();
+		AssetListCriteriaPair assetListCriteriaPair2 = new AssetListCriteriaPair();
+		assetListCriteriaPair2.setKey(ConfigSearchField.HIST_GUID);
+		assetListCriteriaPair2.setValue(asset2.getEventHistory().getEventId());
+		assetListQuery2.getAssetSearchCriteria().getCriterias().add(assetListCriteriaPair2);
+		
+		ListAssetResponse assetHistory2 = AssetTestHelper.assetListQuery(assetListQuery2);
+		List<Asset> assets2 = assetHistory2.getAsset();
+		assertEquals(1, assets2.size());
+		assertEquals(asset2, assets2.get(0));		
+		
+		
+		AssetListQuery assetListQuery3 = AssetTestHelper.getBasicAssetQuery();
+		AssetListCriteriaPair assetListCriteriaPair3 = new AssetListCriteriaPair();
+		assetListCriteriaPair3.setKey(ConfigSearchField.HIST_GUID);
+		assetListCriteriaPair3.setValue(asset3.getEventHistory().getEventId());
+		assetListQuery3.getAssetSearchCriteria().getCriterias().add(assetListCriteriaPair3);
+		
+		ListAssetResponse assetHistory3 = AssetTestHelper.assetListQuery(assetListQuery3);
+		List<Asset> assets3 = assetHistory3.getAsset();
+		assertEquals(1, assets3.size());
+		assertEquals(asset3, assets3.get(0));
+	}
+	
+	@Test
+	public void assetListQueryMultipleHistoryGuidTest() throws Exception {
+		// Create asset versions
+		Asset asset1 = AssetTestHelper.createTestAsset();
 
+		Asset asset2 = AssetTestHelper.getAssetByGuid(asset1.getAssetId().getGuid());
+		asset2.setName(asset2.getName() + "1");
+		asset2 = AssetTestHelper.updateAsset(asset2);
 
-
+		AssetListQuery assetListQuery = AssetTestHelper.getBasicAssetQuery();
+		AssetListCriteriaPair assetListCriteriaPair = new AssetListCriteriaPair();
+		assetListCriteriaPair.setKey(ConfigSearchField.HIST_GUID);
+		assetListCriteriaPair.setValue(asset1.getEventHistory().getEventId());
+		assetListQuery.getAssetSearchCriteria().getCriterias().add(assetListCriteriaPair);
+		AssetListCriteriaPair assetListCriteriaPair2 = new AssetListCriteriaPair();
+		assetListCriteriaPair2.setKey(ConfigSearchField.HIST_GUID);
+		assetListCriteriaPair2.setValue(asset2.getEventHistory().getEventId());
+		assetListQuery.getAssetSearchCriteria().getCriterias().add(assetListCriteriaPair2);
+		
+		ListAssetResponse assetHistory = AssetTestHelper.assetListQuery(assetListQuery);
+		List<Asset> assets = assetHistory.getAsset();
+		assertEquals(2, assets.size());
+		assertTrue(assets.contains(asset1));		
+		assertTrue(assets.contains(asset2));
+	}
 }
