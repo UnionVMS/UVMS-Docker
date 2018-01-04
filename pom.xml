@@ -39,7 +39,32 @@
 		<unionvms.project.plugins.inmarsat>3.0.5</unionvms.project.plugins.inmarsat>
 		<unionvms.project.plugins.siriusone>3.0.7</unionvms.project.plugins.siriusone>
 	</properties>
-	
+
+	<profiles>
+		<profile>
+			<id>use-latest-snapshots</id>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.codehaus.mojo</groupId>
+						<artifactId>versions-maven-plugin</artifactId>
+						<version>2.5</version>
+						<executions>
+							<execution>
+								<id>use-latest-snapshots</id>
+								<phase>validate</phase>
+								<goals>
+									<goal>update-properties</goal>
+								</goals>
+							</execution>
+						</executions>
+						<configuration>
+						</configuration>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+	</profiles>
 	
     <scm>
         <connection>${scm.connection}</connection>
