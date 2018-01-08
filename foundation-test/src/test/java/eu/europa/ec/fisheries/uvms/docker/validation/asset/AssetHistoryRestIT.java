@@ -13,8 +13,13 @@ copy of the GNU General Public License along with the IFDM Suite. If not, see <h
 */
 package eu.europa.ec.fisheries.uvms.docker.validation.asset;
 
+import java.util.Date;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
+import eu.europa.ec.fisheries.wsdl.asset.types.AssetHistoryId;
+import org.junit.Assert;
 import org.junit.Test;
 
 import eu.europa.ec.fisheries.uvms.docker.validation.common.AbstractRestServiceTest;
@@ -107,5 +112,103 @@ public class AssetHistoryRestIT extends AbstractRestServiceTest {
 		Asset assetHistory3 = AssetTestHelper.getAssetHistoryFromHistoryGuid(asset3.getEventHistory().getEventId());
 		assertEquals(asset3, assetHistory3);
 	}
+
+
+	@Test
+	public void getAssetFlagStateByAssetIdAndDate() throws Exception {
+
+		try {
+
+			Date eventDate = null;
+			AssetHistoryId history = null;
+
+			Date aNorDate = null;
+
+			// Create asset versions
+			Asset asset = AssetTestHelper.createTestAsset();
+			String assetGuid = asset.getAssetId().getGuid();
+			history = asset.getEventHistory();
+			eventDate = history.getEventDate();
+			Thread.sleep(1000);
+			Map<String,Object> flagState = AssetTestHelper.getFlagStateFromAssetGuidAndDate(assetGuid, eventDate.getTime());
+			String returnedCode = code(flagState);
+			Assert.assertEquals("SWE", returnedCode);
+
+			asset.setCountryCode("DNK");
+			AssetTestHelper.updateAsset(asset);
+			asset = AssetTestHelper.getAssetByGuid(assetGuid);
+			history = asset.getEventHistory();
+			eventDate = history.getEventDate();
+			flagState = AssetTestHelper.getFlagStateFromAssetGuidAndDate(assetGuid, eventDate.getTime());
+			returnedCode = code(flagState);
+			Assert.assertEquals("DNK", returnedCode);
+
+
+			asset.setCountryCode("NOR");
+			asset = AssetTestHelper.updateAsset(asset);
+			history = asset.getEventHistory();
+			eventDate = history.getEventDate();
+			aNorDate = history.getEventDate();
+			Thread.sleep(1000);
+			flagState = AssetTestHelper.getFlagStateFromAssetGuidAndDate(assetGuid, eventDate.getTime());
+			returnedCode = code(flagState);
+			Assert.assertEquals("NOR", returnedCode);
+
+			asset.setCountryCode("DNK");
+			asset = AssetTestHelper.updateAsset(asset);
+			history = asset.getEventHistory();
+			eventDate = history.getEventDate();
+			Thread.sleep(1000);
+			flagState = AssetTestHelper.getFlagStateFromAssetGuidAndDate(assetGuid, eventDate.getTime());
+			returnedCode = code(flagState);
+			Assert.assertEquals("DNK", returnedCode);
+
+			asset.setCountryCode("SWE");
+			asset = AssetTestHelper.updateAsset(asset);
+			history = asset.getEventHistory();
+			eventDate = history.getEventDate();
+			Thread.sleep(1000);
+			flagState = AssetTestHelper.getFlagStateFromAssetGuidAndDate(assetGuid, eventDate.getTime());
+			returnedCode = code(flagState);
+			Assert.assertEquals("SWE", returnedCode);
+
+
+			asset.setCountryCode("DNK");
+			asset = AssetTestHelper.updateAsset(asset);
+			history = asset.getEventHistory();
+			eventDate = history.getEventDate();
+			Thread.sleep(1000);
+			flagState = AssetTestHelper.getFlagStateFromAssetGuidAndDate(assetGuid, eventDate.getTime());
+			returnedCode = code(flagState);
+			Assert.assertEquals("DNK", returnedCode);
+
+
+
+			// here we test a saved norwegian date
+			flagState = AssetTestHelper.getFlagStateFromAssetGuidAndDate(assetGuid, aNorDate.getTime());
+			returnedCode = code(flagState);
+			Assert.assertEquals("NOR", returnedCode);
+
+
+
+
+		} catch(RuntimeException e){
+			System.out.println(e.toString());
+		}
+
+	}
+
+
+	private String code(Map<String, Object> map){
+
+		LinkedHashMap data = (LinkedHashMap) map.get("data");
+		return (String) data.get("code");
+
+
+	}
+
+
+
+
 
 }
