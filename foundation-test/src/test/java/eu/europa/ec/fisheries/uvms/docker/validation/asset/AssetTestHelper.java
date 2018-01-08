@@ -2,10 +2,7 @@ package eu.europa.ec.fisheries.uvms.docker.validation.asset;
 
 import java.io.IOException;
 import java.math.BigDecimal;
-import java.util.Date;
-import java.util.List;
-import java.util.Random;
-import java.util.UUID;
+import java.util.*;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.ClientProtocolException;
@@ -111,6 +108,14 @@ public class AssetTestHelper extends AbstractHelper {
 				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken()).execute()
 				.returnResponse();
 		return checkSuccessResponseReturnObject(response, Asset.class);
+	}
+
+
+	public static Map<String,Object> getFlagStateFromAssetGuidAndDate(String assetGuid, Long date) throws ClientProtocolException, IOException {
+		final HttpResponse response = Request.Get(getBaseUrl() + "asset/rest/history/assetflagstate?assetGuid=" + assetGuid + "&date=" + date)
+				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken()).execute()
+				.returnResponse();
+		return checkSuccessResponseReturnDataMap(response);
 	}
 	
 	// ************************************************

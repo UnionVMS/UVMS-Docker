@@ -102,7 +102,7 @@ public abstract class AbstractRest extends Assert {
 		return dataMap;
 	}
 
-	private static Map<String, Object> checkSuccessResponseReturnDataMap(final HttpResponse response)
+	public static Map<String, Object> checkSuccessResponseReturnDataMap(final HttpResponse response)
 			throws IOException, JsonParseException, JsonMappingException, ClientProtocolException {
 		assertEquals(HttpStatus.SC_OK, response.getStatusLine().getStatusCode());
 		final Map<String, Object> data = getJsonMap(response);
