@@ -190,6 +190,12 @@
 								<get src="https://github.com/UnionVMS/UVMS-SeleniumTests/raw/swe-dev/asset4.csv" dest="target/asset4.csv" verbose="true" usetimestamp="true" />
 								<get src="https://github.com/UnionVMS/UVMS-SeleniumTests/raw/swe-dev/mobileterminal4.csv" dest="target/mobileterminal4.csv" verbose="true" usetimestamp="true" />
 								<get src="https://github.com/UnionVMS/UVMS-SeleniumTests/raw/swe-dev/trip4.csv" dest="target/trip4.csv" verbose="true" usetimestamp="true" />
+								<get src="https://github.com/UnionVMS/UVMS-SeleniumTests/raw/swe-dev/asset5.csv" dest="target/asset5.csv" verbose="true" usetimestamp="true" />
+								<get src="https://github.com/UnionVMS/UVMS-SeleniumTests/raw/swe-dev/mobileterminal5.csv" dest="target/mobileterminal5.csv" verbose="true" usetimestamp="true" />
+								<get src="https://github.com/UnionVMS/UVMS-SeleniumTests/raw/swe-dev/trip5.csv" dest="target/trip5.csv" verbose="true" usetimestamp="true" />
+								<get src="https://github.com/UnionVMS/UVMS-SeleniumTests/raw/swe-dev/asset6.csv" dest="target/asset6.csv" verbose="true" usetimestamp="true" />
+								<get src="https://github.com/UnionVMS/UVMS-SeleniumTests/raw/swe-dev/mobileterminal6.csv" dest="target/mobileterminal6.csv" verbose="true" usetimestamp="true" />
+								<get src="https://github.com/UnionVMS/UVMS-SeleniumTests/raw/swe-dev/trip6.csv" dest="target/trip6.csv" verbose="true" usetimestamp="true" />								
 							</tasks>
 						</configuration>
 						<goals>
