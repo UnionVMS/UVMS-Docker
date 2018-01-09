@@ -19,6 +19,7 @@ import java.util.List;
 import java.util.Map;
 
 import eu.europa.ec.fisheries.wsdl.asset.types.AssetHistoryId;
+import eu.europa.ec.fisheries.wsdl.asset.types.AssetIdType;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -130,7 +131,7 @@ public class AssetHistoryRestIT extends AbstractRestServiceTest {
 			history = asset.getEventHistory();
 			eventDate = history.getEventDate();
 			Thread.sleep(1000);
-			Map<String,Object> flagState = AssetTestHelper.getFlagStateFromAssetGuidAndDate(assetGuid, eventDate.getTime());
+			Map<String,Object> flagState = AssetTestHelper.getFlagStateFromAssetGuidAndDate(assetGuid, eventDate);
 			String returnedCode = code(flagState);
 			Assert.assertEquals("SWE", returnedCode);
 
@@ -139,7 +140,7 @@ public class AssetHistoryRestIT extends AbstractRestServiceTest {
 			asset = AssetTestHelper.getAssetByGuid(assetGuid);
 			history = asset.getEventHistory();
 			eventDate = history.getEventDate();
-			flagState = AssetTestHelper.getFlagStateFromAssetGuidAndDate(assetGuid, eventDate.getTime());
+			flagState = AssetTestHelper.getFlagStateFromAssetGuidAndDate(assetGuid, eventDate);
 			returnedCode = code(flagState);
 			Assert.assertEquals("DNK", returnedCode);
 
@@ -150,7 +151,7 @@ public class AssetHistoryRestIT extends AbstractRestServiceTest {
 			eventDate = history.getEventDate();
 			aNorDate = history.getEventDate();
 			Thread.sleep(1000);
-			flagState = AssetTestHelper.getFlagStateFromAssetGuidAndDate(assetGuid, eventDate.getTime());
+			flagState = AssetTestHelper.getFlagStateFromAssetGuidAndDate(assetGuid, eventDate);
 			returnedCode = code(flagState);
 			Assert.assertEquals("NOR", returnedCode);
 
@@ -159,7 +160,7 @@ public class AssetHistoryRestIT extends AbstractRestServiceTest {
 			history = asset.getEventHistory();
 			eventDate = history.getEventDate();
 			Thread.sleep(1000);
-			flagState = AssetTestHelper.getFlagStateFromAssetGuidAndDate(assetGuid, eventDate.getTime());
+			flagState = AssetTestHelper.getFlagStateFromAssetGuidAndDate(assetGuid, eventDate);
 			returnedCode = code(flagState);
 			Assert.assertEquals("DNK", returnedCode);
 
@@ -168,35 +169,65 @@ public class AssetHistoryRestIT extends AbstractRestServiceTest {
 			history = asset.getEventHistory();
 			eventDate = history.getEventDate();
 			Thread.sleep(1000);
-			flagState = AssetTestHelper.getFlagStateFromAssetGuidAndDate(assetGuid, eventDate.getTime());
+			flagState = AssetTestHelper.getFlagStateFromAssetGuidAndDate(assetGuid, eventDate);
 			returnedCode = code(flagState);
 			Assert.assertEquals("SWE", returnedCode);
-
 
 			asset.setCountryCode("DNK");
 			asset = AssetTestHelper.updateAsset(asset);
 			history = asset.getEventHistory();
 			eventDate = history.getEventDate();
 			Thread.sleep(1000);
-			flagState = AssetTestHelper.getFlagStateFromAssetGuidAndDate(assetGuid, eventDate.getTime());
+			flagState = AssetTestHelper.getFlagStateFromAssetGuidAndDate(assetGuid, eventDate);
 			returnedCode = code(flagState);
 			Assert.assertEquals("DNK", returnedCode);
 
-
-
 			// here we test a saved norwegian date
-			flagState = AssetTestHelper.getFlagStateFromAssetGuidAndDate(assetGuid, aNorDate.getTime());
+			flagState = AssetTestHelper.getFlagStateFromAssetGuidAndDate(assetGuid, aNorDate);
 			returnedCode = code(flagState);
 			Assert.assertEquals("NOR", returnedCode);
-
-
-
 
 		} catch(RuntimeException e){
 			System.out.println(e.toString());
 		}
 
 	}
+
+
+	@Test
+	public void getAssetByCfrAndDate() throws Exception {
+
+		try {
+
+			Date eventDate = null;
+			AssetHistoryId history = null;
+
+
+			// Create asset
+			Asset asset = AssetTestHelper.createCfrTestAsset();
+			asset = AssetTestHelper.updateAsset(asset);
+
+
+			history = asset.getEventHistory();
+			eventDate = history.getEventDate();
+			Thread.sleep(1000);
+			AssetIdType assetIdType = AssetIdType.CFR;
+			String value = asset.getCfr();
+			String type = assetIdType.value();
+			Asset fetchedAsset  = AssetTestHelper.getAssetFromAssetIdAndDate(type, value, eventDate);
+
+
+			Assert.assertEquals(asset.getCfr(), fetchedAsset.getCfr());
+
+		} catch(RuntimeException e){
+			System.out.println(e.toString());
+		}
+
+	}
+
+
+
+
 
 
 	private String code(Map<String, Object> map){
