@@ -195,7 +195,7 @@ public class AssetHistoryRestIT extends AbstractRestServiceTest {
 
 
 	@Test
-	public void getAssetByCfrAndDate() throws Exception {
+	public void getAssetFromAssetIdAndDate() throws Exception {
 
 		try {
 
@@ -205,9 +205,7 @@ public class AssetHistoryRestIT extends AbstractRestServiceTest {
 
 			// Create asset
 			Asset asset = AssetTestHelper.createCfrTestAsset();
-			asset = AssetTestHelper.updateAsset(asset);
-
-
+//			asset = AssetTestHelper.updateAsset(asset);
 			history = asset.getEventHistory();
 			eventDate = history.getEventDate();
 			Thread.sleep(1000);
