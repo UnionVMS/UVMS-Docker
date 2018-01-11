@@ -20,6 +20,7 @@ import java.util.Map;
 
 import eu.europa.ec.fisheries.wsdl.asset.types.AssetHistoryId;
 import eu.europa.ec.fisheries.wsdl.asset.types.AssetIdType;
+import eu.europa.ec.fisheries.wsdl.asset.types.FlagStateType;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -131,8 +132,8 @@ public class AssetHistoryRestIT extends AbstractRestServiceTest {
 			history = asset.getEventHistory();
 			eventDate = history.getEventDate();
 			Thread.sleep(1000);
-			Map<String,Object> flagState = AssetTestHelper.getFlagStateFromAssetGuidAndDate(assetGuid, eventDate);
-			String returnedCode = code(flagState);
+			FlagStateType flagState = AssetTestHelper.getFlagStateFromAssetGuidAndDate(assetGuid, eventDate);
+			String returnedCode = flagState.getCode();
 			Assert.assertEquals("SWE", returnedCode);
 
 			asset.setCountryCode("DNK");
@@ -141,7 +142,7 @@ public class AssetHistoryRestIT extends AbstractRestServiceTest {
 			history = asset.getEventHistory();
 			eventDate = history.getEventDate();
 			flagState = AssetTestHelper.getFlagStateFromAssetGuidAndDate(assetGuid, eventDate);
-			returnedCode = code(flagState);
+			returnedCode = flagState.getCode();
 			Assert.assertEquals("DNK", returnedCode);
 
 
@@ -152,7 +153,7 @@ public class AssetHistoryRestIT extends AbstractRestServiceTest {
 			aNorDate = history.getEventDate();
 			Thread.sleep(1000);
 			flagState = AssetTestHelper.getFlagStateFromAssetGuidAndDate(assetGuid, eventDate);
-			returnedCode = code(flagState);
+			returnedCode = flagState.getCode();
 			Assert.assertEquals("NOR", returnedCode);
 
 			asset.setCountryCode("DNK");
@@ -161,7 +162,7 @@ public class AssetHistoryRestIT extends AbstractRestServiceTest {
 			eventDate = history.getEventDate();
 			Thread.sleep(1000);
 			flagState = AssetTestHelper.getFlagStateFromAssetGuidAndDate(assetGuid, eventDate);
-			returnedCode = code(flagState);
+			returnedCode = flagState.getCode();
 			Assert.assertEquals("DNK", returnedCode);
 
 			asset.setCountryCode("SWE");
@@ -170,7 +171,7 @@ public class AssetHistoryRestIT extends AbstractRestServiceTest {
 			eventDate = history.getEventDate();
 			Thread.sleep(1000);
 			flagState = AssetTestHelper.getFlagStateFromAssetGuidAndDate(assetGuid, eventDate);
-			returnedCode = code(flagState);
+			returnedCode = flagState.getCode();
 			Assert.assertEquals("SWE", returnedCode);
 
 			asset.setCountryCode("DNK");
@@ -179,12 +180,12 @@ public class AssetHistoryRestIT extends AbstractRestServiceTest {
 			eventDate = history.getEventDate();
 			Thread.sleep(1000);
 			flagState = AssetTestHelper.getFlagStateFromAssetGuidAndDate(assetGuid, eventDate);
-			returnedCode = code(flagState);
+			returnedCode = flagState.getCode();
 			Assert.assertEquals("DNK", returnedCode);
 
 			// here we test a saved norwegian date
 			flagState = AssetTestHelper.getFlagStateFromAssetGuidAndDate(assetGuid, aNorDate);
-			returnedCode = code(flagState);
+			returnedCode = flagState.getCode();
 			Assert.assertEquals("NOR", returnedCode);
 
 		} catch(RuntimeException e){
@@ -205,7 +206,6 @@ public class AssetHistoryRestIT extends AbstractRestServiceTest {
 
 			// Create asset
 			Asset asset = AssetTestHelper.createCfrTestAsset();
-//			asset = AssetTestHelper.updateAsset(asset);
 			history = asset.getEventHistory();
 			eventDate = history.getEventDate();
 			Thread.sleep(1000);

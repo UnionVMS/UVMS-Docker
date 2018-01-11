@@ -5,6 +5,7 @@ import java.math.BigDecimal;
 import java.net.URLEncoder;
 import java.util.*;
 
+import eu.europa.ec.fisheries.wsdl.asset.types.*;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.fluent.Request;
@@ -23,17 +24,6 @@ import eu.europa.ec.fisheries.uvms.commons.date.DateUtils;
 import eu.europa.ec.fisheries.uvms.docker.validation.common.AbstractHelper;
 import eu.europa.ec.fisheries.uvms.docker.validation.common.AuditHelper;
 import eu.europa.ec.fisheries.wsdl.asset.group.AssetGroup;
-import eu.europa.ec.fisheries.wsdl.asset.types.Asset;
-import eu.europa.ec.fisheries.wsdl.asset.types.AssetId;
-import eu.europa.ec.fisheries.wsdl.asset.types.AssetIdType;
-import eu.europa.ec.fisheries.wsdl.asset.types.AssetListCriteria;
-import eu.europa.ec.fisheries.wsdl.asset.types.AssetListCriteriaPair;
-import eu.europa.ec.fisheries.wsdl.asset.types.AssetListPagination;
-import eu.europa.ec.fisheries.wsdl.asset.types.AssetListQuery;
-import eu.europa.ec.fisheries.wsdl.asset.types.AssetProdOrgModel;
-import eu.europa.ec.fisheries.wsdl.asset.types.CarrierSource;
-import eu.europa.ec.fisheries.wsdl.asset.types.ConfigSearchField;
-import eu.europa.ec.fisheries.wsdl.asset.types.ListAssetResponse;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
@@ -125,14 +115,14 @@ public class AssetTestHelper extends AbstractHelper {
 	}
 
 
-	public static Map<String,Object> getFlagStateFromAssetGuidAndDate(String assetGuid, Date date) throws ClientProtocolException, IOException {
+	public static FlagStateType getFlagStateFromAssetGuidAndDate(String assetGuid, Date date) throws ClientProtocolException, IOException {
 
 		String dateStr = URLEncoder.encode(DateUtils.parseUTCDateToString(date), "UTF-8");
 
 		final HttpResponse response = Request.Get(getBaseUrl() + "asset/rest/history/assetflagstate?assetGuid=" + assetGuid + "&date=" + dateStr)
 				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken()).execute()
 				.returnResponse();
-		return checkSuccessResponseReturnDataMap(response);
+		return checkSuccessResponseReturnObject(response, FlagStateType.class);
 	}
 
 	public static Asset getAssetFromAssetIdAndDate(String type, String value, Date  date) throws ClientProtocolException, IOException {
