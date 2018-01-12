@@ -187,6 +187,15 @@
 								<!-- Get the regression-suite-selenium front-end -->
 								<get src="https://github.com/UnionVMS/UVMS-SeleniumTests/raw/swe-dev/Python-regression-suite-selenium.py" dest="target/Python-regression-suite-selenium.py" verbose="true" usetimestamp="true" />
 								<get src="https://github.com/UnionVMS/UVMS-SeleniumTests/raw/swe-dev/DockerUnionVMSparameters.py" dest="target/UnionVMSparameters.py" verbose="true" usetimestamp="true" />
+								<get src="https://github.com/UnionVMS/UVMS-SeleniumTests/raw/swe-dev/asset1.csv" dest="target/asset1.csv" verbose="true" usetimestamp="true" />
+								<get src="https://github.com/UnionVMS/UVMS-SeleniumTests/raw/swe-dev/mobileterminal1.csv" dest="target/mobileterminal1.csv" verbose="true" usetimestamp="true" />
+								<get src="https://github.com/UnionVMS/UVMS-SeleniumTests/raw/swe-dev/trip1.csv" dest="target/trip1.csv" verbose="true" usetimestamp="true" />
+								<get src="https://github.com/UnionVMS/UVMS-SeleniumTests/raw/swe-dev/asset2.csv" dest="target/asset2.csv" verbose="true" usetimestamp="true" />
+								<get src="https://github.com/UnionVMS/UVMS-SeleniumTests/raw/swe-dev/mobileterminal2.csv" dest="target/mobileterminal2.csv" verbose="true" usetimestamp="true" />
+								<get src="https://github.com/UnionVMS/UVMS-SeleniumTests/raw/swe-dev/trip2.csv" dest="target/trip2.csv" verbose="true" usetimestamp="true" />
+								<get src="https://github.com/UnionVMS/UVMS-SeleniumTests/raw/swe-dev/asset3.csv" dest="target/asset3.csv" verbose="true" usetimestamp="true" />
+								<get src="https://github.com/UnionVMS/UVMS-SeleniumTests/raw/swe-dev/mobileterminal3.csv" dest="target/mobileterminal3.csv" verbose="true" usetimestamp="true" />
+								<get src="https://github.com/UnionVMS/UVMS-SeleniumTests/raw/swe-dev/trip3.csv" dest="target/trip3.csv" verbose="true" usetimestamp="true" />
 								<get src="https://github.com/UnionVMS/UVMS-SeleniumTests/raw/swe-dev/asset4.csv" dest="target/asset4.csv" verbose="true" usetimestamp="true" />
 								<get src="https://github.com/UnionVMS/UVMS-SeleniumTests/raw/swe-dev/mobileterminal4.csv" dest="target/mobileterminal4.csv" verbose="true" usetimestamp="true" />
 								<get src="https://github.com/UnionVMS/UVMS-SeleniumTests/raw/swe-dev/trip4.csv" dest="target/trip4.csv" verbose="true" usetimestamp="true" />
@@ -195,10 +204,10 @@
 								<get src="https://github.com/UnionVMS/UVMS-SeleniumTests/raw/swe-dev/trip5.csv" dest="target/trip5.csv" verbose="true" usetimestamp="true" />
 								<get src="https://github.com/UnionVMS/UVMS-SeleniumTests/raw/swe-dev/asset6.csv" dest="target/asset6.csv" verbose="true" usetimestamp="true" />
 								<get src="https://github.com/UnionVMS/UVMS-SeleniumTests/raw/swe-dev/mobileterminal6.csv" dest="target/mobileterminal6.csv" verbose="true" usetimestamp="true" />
-								<get src="https://github.com/UnionVMS/UVMS-SeleniumTests/raw/swe-dev/trip6.csv" dest="target/trip6.csv" verbose="true" usetimestamp="true" />								
-								<get src="https://github.com/UnionVMS/UVMS-SeleniumTests/raw/swe-dev/asset6.csv" dest="target/asset7.csv" verbose="true" usetimestamp="true" />
-								<get src="https://github.com/UnionVMS/UVMS-SeleniumTests/raw/swe-dev/mobileterminal6.csv" dest="target/mobileterminal7.csv" verbose="true" usetimestamp="true" />
-								<get src="https://github.com/UnionVMS/UVMS-SeleniumTests/raw/swe-dev/trip6.csv" dest="target/trip7.csv" verbose="true" usetimestamp="true" />								
+								<get src="https://github.com/UnionVMS/UVMS-SeleniumTests/raw/swe-dev/trip6.csv" dest="target/trip6.csv" verbose="true" usetimestamp="true" />
+								<get src="https://github.com/UnionVMS/UVMS-SeleniumTests/raw/swe-dev/asset7.csv" dest="target/asset7.csv" verbose="true" usetimestamp="true" />
+								<get src="https://github.com/UnionVMS/UVMS-SeleniumTests/raw/swe-dev/mobileterminal7.csv" dest="target/mobileterminal7.csv" verbose="true" usetimestamp="true" />
+								<get src="https://github.com/UnionVMS/UVMS-SeleniumTests/raw/swe-dev/trip7.csv" dest="target/trip7.csv" verbose="true" usetimestamp="true" />
 							</tasks>
 						</configuration>
 						<goals>
