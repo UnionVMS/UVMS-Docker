@@ -208,6 +208,9 @@
 								<get src="https://github.com/UnionVMS/UVMS-SeleniumTests/raw/swe-dev/asset7.csv" dest="target/asset7.csv" verbose="true" usetimestamp="true" />
 								<get src="https://github.com/UnionVMS/UVMS-SeleniumTests/raw/swe-dev/mobileterminal7.csv" dest="target/mobileterminal7.csv" verbose="true" usetimestamp="true" />
 								<get src="https://github.com/UnionVMS/UVMS-SeleniumTests/raw/swe-dev/trip7.csv" dest="target/trip7.csv" verbose="true" usetimestamp="true" />
+								<get src="https://github.com/UnionVMS/UVMS-SeleniumTests/raw/swe-dev/asset8.csv" dest="target/asset8.csv" verbose="true" usetimestamp="true" />
+								<get src="https://github.com/UnionVMS/UVMS-SeleniumTests/raw/swe-dev/mobileterminal8.csv" dest="target/mobileterminal8.csv" verbose="true" usetimestamp="true" />
+								<get src="https://github.com/UnionVMS/UVMS-SeleniumTests/raw/swe-dev/trip8.csv" dest="target/trip8.csv" verbose="true" usetimestamp="true" />
 							</tasks>
 						</configuration>
 						<goals>
