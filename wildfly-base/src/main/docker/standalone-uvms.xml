@@ -945,6 +945,11 @@
                                 UVMSAsset
                             </config-property>
                         </admin-object>
+                        <admin-object class-name="org.apache.activemq.command.ActiveMQQueue" jndi-name="java:/jms/queue/UVMSSubscription" use-java-context="true" pool-name="UVMSSubscription">
+                            <config-property name="PhysicalName">
+                                UVMSSubscription
+                            </config-property>
+                        </admin-object>
                         <admin-object class-name="org.apache.activemq.command.ActiveMQQueue" jndi-name="java:/jms/queue/UVMSAudit" use-java-context="true" pool-name="UVMSAudit">
                             <config-property name="PhysicalName">
                                 UVMSAudit
