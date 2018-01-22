@@ -181,12 +181,13 @@
 				<executions>
 					<execution>
 						<id>downloadRegressionSuite</id>
-						<phase>test</phase>
+						<phase>clean</phase>
 						<configuration>
 							<tasks>
 								<!-- Get the regression-suite-selenium front-end -->
 								<get src="https://github.com/UnionVMS/UVMS-SeleniumTests/raw/swe-dev/Python-regression-suite-selenium.py" dest="target/Python-regression-suite-selenium.py" verbose="true" usetimestamp="true" />
 								<get src="https://github.com/UnionVMS/UVMS-SeleniumTests/raw/swe-dev/DockerUnionVMSparameters.py" dest="target/UnionVMSparameters.py" verbose="true" usetimestamp="true" />
+								
 								<get src="https://github.com/UnionVMS/UVMS-SeleniumTests/raw/swe-dev/asset1.csv" dest="target/asset1.csv" verbose="true" usetimestamp="true" />
 								<get src="https://github.com/UnionVMS/UVMS-SeleniumTests/raw/swe-dev/mobileterminal1.csv" dest="target/mobileterminal1.csv" verbose="true" usetimestamp="true" />
 								<get src="https://github.com/UnionVMS/UVMS-SeleniumTests/raw/swe-dev/trip1.csv" dest="target/trip1.csv" verbose="true" usetimestamp="true" />
