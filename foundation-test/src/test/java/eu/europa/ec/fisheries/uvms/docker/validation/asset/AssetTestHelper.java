@@ -2,8 +2,10 @@ package eu.europa.ec.fisheries.uvms.docker.validation.asset;
 
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.net.URLEncoder;
 import java.util.*;
 
+import eu.europa.ec.fisheries.wsdl.asset.types.*;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.fluent.Request;
@@ -22,34 +24,36 @@ import eu.europa.ec.fisheries.uvms.commons.date.DateUtils;
 import eu.europa.ec.fisheries.uvms.docker.validation.common.AbstractHelper;
 import eu.europa.ec.fisheries.uvms.docker.validation.common.AuditHelper;
 import eu.europa.ec.fisheries.wsdl.asset.group.AssetGroup;
-import eu.europa.ec.fisheries.wsdl.asset.types.Asset;
-import eu.europa.ec.fisheries.wsdl.asset.types.AssetId;
-import eu.europa.ec.fisheries.wsdl.asset.types.AssetIdType;
-import eu.europa.ec.fisheries.wsdl.asset.types.AssetListCriteria;
-import eu.europa.ec.fisheries.wsdl.asset.types.AssetListCriteriaPair;
-import eu.europa.ec.fisheries.wsdl.asset.types.AssetListPagination;
-import eu.europa.ec.fisheries.wsdl.asset.types.AssetListQuery;
-import eu.europa.ec.fisheries.wsdl.asset.types.AssetProdOrgModel;
-import eu.europa.ec.fisheries.wsdl.asset.types.CarrierSource;
-import eu.europa.ec.fisheries.wsdl.asset.types.ConfigSearchField;
-import eu.europa.ec.fisheries.wsdl.asset.types.ListAssetResponse;
+
+import javax.ws.rs.*;
+import javax.ws.rs.core.MediaType;
 
 public class AssetTestHelper extends AbstractHelper {
 
 	// ************************************************
 	//  AssetResource
 	// ************************************************
-	
+
 	public static Asset createTestAsset() throws IOException, ClientProtocolException, JsonProcessingException,
 			JsonParseException, JsonMappingException {
 		Asset asset = createDummyAsset(AssetIdType.GUID);
 		final HttpResponse response = Request.Post(getBaseUrl() + "asset/rest/asset")
 				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken())
 				.bodyByteArray(writeValueAsString(asset).getBytes()).execute().returnResponse();
-		
+
 		return checkSuccessResponseReturnObject(response, Asset.class);
 	}
-	
+
+	public static Asset createCfrTestAsset() throws IOException, ClientProtocolException, JsonProcessingException,
+			JsonParseException, JsonMappingException {
+		Asset asset = createDummyCFRAsset();
+		final HttpResponse response = Request.Post(getBaseUrl() + "asset/rest/asset")
+				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken())
+				.bodyByteArray(writeValueAsString(asset).getBytes()).execute().returnResponse();
+
+		return checkSuccessResponseReturnObject(response, Asset.class);
+	}
+
 	public static Asset getAssetByGuid(String assetGuid) throws ClientProtocolException, IOException {
 		final HttpResponse response = Request.Get(getBaseUrl() + "asset/rest/asset/" + assetGuid)
 				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken()).execute()
@@ -111,14 +115,25 @@ public class AssetTestHelper extends AbstractHelper {
 	}
 
 
-	public static Map<String,Object> getFlagStateFromAssetGuidAndDate(String assetGuid, Long date) throws ClientProtocolException, IOException {
-		final HttpResponse response = Request.Get(getBaseUrl() + "asset/rest/history/assetflagstate?assetGuid=" + assetGuid + "&date=" + date)
+	public static FlagStateType getFlagStateFromAssetGuidAndDate(String assetGuid, Date date) throws ClientProtocolException, IOException {
+
+		String dateStr = URLEncoder.encode(DateUtils.parseUTCDateToString(date), "UTF-8");
+
+		final HttpResponse response = Request.Get(getBaseUrl() + "asset/rest/history/assetflagstate?assetGuid=" + assetGuid + "&date=" + dateStr)
 				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken()).execute()
 				.returnResponse();
-		return checkSuccessResponseReturnDataMap(response);
+		return checkSuccessResponseReturnObject(response, FlagStateType.class);
 	}
-	
-	// ************************************************
+
+	public static Asset getAssetFromAssetIdAndDate(String type, String value, Date  date) throws ClientProtocolException, IOException {
+		String dateStr = URLEncoder.encode(DateUtils.parseUTCDateToString(date), "UTF-8");
+		final HttpResponse response = Request.Get(getBaseUrl() + "asset/rest/history/assetFromAssetIdAndDate?type=" + type + "&value="+ value +"&date=" + dateStr)
+				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken()).execute()
+				.returnResponse();
+		return checkSuccessResponseReturnObject(response, Asset.class);
+	}
+
+		// ************************************************
 	//  AssetGroupResource
 	// ************************************************
 		
@@ -216,15 +231,15 @@ public class AssetTestHelper extends AbstractHelper {
 				.bodyByteArray(writeValueAsString(assetListQuery).getBytes()).execute().returnResponse();
 		return checkSuccessResponseReturnInt(response);
 	}
-	
+
+	public static Asset createDummyCFRAsset() {
+		return createDummyAsset(AssetIdType.CFR);
+	}
+
+
 	public static Asset createDummyAsset(AssetIdType assetIdType) {
 		String ircs = "F" + generateARandomStringWithMaxLength(4);
-		return createDummyAsset(assetIdType, ircs);
-		
-	}
-	
-	public static Asset createDummyAsset(AssetIdType assetIdType, String ircs) {
-		
+
 		Asset asset = new Asset();
 		AssetId assetId = new AssetId();
 		assetId.setType(assetIdType);
@@ -234,6 +249,11 @@ public class AssetTestHelper extends AbstractHelper {
 			break;
 		case INTERNAL_ID:
 			assetId.setValue("INTERNALID_" + UUID.randomUUID().toString());
+			break;
+		case CFR:
+			String val = UUID.randomUUID().toString().substring(0,12);
+			assetId.setValue(val);
+			asset.setCfr(val);
 			break;
 		}
 
@@ -248,7 +268,6 @@ public class AssetTestHelper extends AbstractHelper {
 		asset.setHasIrcs("1");
 		asset.setIrcs(ircs);
 		asset.setExternalMarking("EXT3");
-		asset.setCfr("SWE0000" + ircs);
 
 		String imo = "0" + generateARandomStringWithMaxLength(6);
 		asset.setImo(imo);
