@@ -226,7 +226,8 @@
 								<get src="https://github.com/UnionVMS/UVMS-SeleniumTests/raw/swe-dev/tripreal3.csv" dest="target/tripreal3.csv" verbose="true" usetimestamp="true" />
 								<get src="https://github.com/UnionVMS/UVMS-SeleniumTests/raw/swe-dev/assetreal4.csv" dest="target/assetreal4.csv" verbose="true" usetimestamp="true" />
 								<get src="https://github.com/UnionVMS/UVMS-SeleniumTests/raw/swe-dev/mobileterminalreal4.csv" dest="target/mobileterminalreal4.csv" verbose="true" usetimestamp="true" />
-								<get src="https://github.com/UnionVMS/UVMS-SeleniumTests/raw/swe-dev/tripreal4.csv" dest="target/tripreal4.csv" verbose="true" usetimestamp="true" />
+								<get src="https://github.com/UnionVMS/UVMS-SeleniumTests/raw/swe-dev/tripreal4a.csv" dest="target/tripreal4a.csv" verbose="true" usetimestamp="true" />
+								<get src="https://github.com/UnionVMS/UVMS-SeleniumTests/raw/swe-dev/tripreal4b.csv" dest="target/tripreal4b.csv" verbose="true" usetimestamp="true" />
 								<get src="https://github.com/UnionVMS/UVMS-SeleniumTests/raw/swe-dev/assetreal5.csv" dest="target/assetreal5.csv" verbose="true" usetimestamp="true" />
 								<get src="https://github.com/UnionVMS/UVMS-SeleniumTests/raw/swe-dev/mobileterminalreal5.csv" dest="target/mobileterminalreal5.csv" verbose="true" usetimestamp="true" />
 								<get src="https://github.com/UnionVMS/UVMS-SeleniumTests/raw/swe-dev/tripreal5.csv" dest="target/tripreal5.csv" verbose="true" usetimestamp="true" />
