@@ -181,7 +181,7 @@
 				<executions>
 					<execution>
 						<id>downloadRegressionSuite</id>
-						<phase>clean</phase>
+						<phase>test</phase>
 						<configuration>
 							<tasks>
 								<!-- Get the regression-suite-selenium front-end -->
@@ -224,6 +224,15 @@
 								<get src="https://github.com/UnionVMS/UVMS-SeleniumTests/raw/swe-dev/assetreal3.csv" dest="target/assetreal3.csv" verbose="true" usetimestamp="true" />
 								<get src="https://github.com/UnionVMS/UVMS-SeleniumTests/raw/swe-dev/mobileterminalreal3.csv" dest="target/mobileterminalreal3.csv" verbose="true" usetimestamp="true" />
 								<get src="https://github.com/UnionVMS/UVMS-SeleniumTests/raw/swe-dev/tripreal3.csv" dest="target/tripreal3.csv" verbose="true" usetimestamp="true" />
+								<get src="https://github.com/UnionVMS/UVMS-SeleniumTests/raw/swe-dev/assetreal4.csv" dest="target/assetreal4.csv" verbose="true" usetimestamp="true" />
+								<get src="https://github.com/UnionVMS/UVMS-SeleniumTests/raw/swe-dev/mobileterminalreal4.csv" dest="target/mobileterminalreal4.csv" verbose="true" usetimestamp="true" />
+								<get src="https://github.com/UnionVMS/UVMS-SeleniumTests/raw/swe-dev/tripreal4.csv" dest="target/tripreal4.csv" verbose="true" usetimestamp="true" />
+								<get src="https://github.com/UnionVMS/UVMS-SeleniumTests/raw/swe-dev/assetreal5.csv" dest="target/assetreal5.csv" verbose="true" usetimestamp="true" />
+								<get src="https://github.com/UnionVMS/UVMS-SeleniumTests/raw/swe-dev/mobileterminalreal5.csv" dest="target/mobileterminalreal5.csv" verbose="true" usetimestamp="true" />
+								<get src="https://github.com/UnionVMS/UVMS-SeleniumTests/raw/swe-dev/tripreal5.csv" dest="target/tripreal5.csv" verbose="true" usetimestamp="true" />
+								<get src="https://github.com/UnionVMS/UVMS-SeleniumTests/raw/swe-dev/assetreal6.csv" dest="target/assetreal6.csv" verbose="true" usetimestamp="true" />
+								<get src="https://github.com/UnionVMS/UVMS-SeleniumTests/raw/swe-dev/mobileterminalreal6.csv" dest="target/mobileterminalreal6.csv" verbose="true" usetimestamp="true" />
+								<get src="https://github.com/UnionVMS/UVMS-SeleniumTests/raw/swe-dev/tripreal6.csv" dest="target/tripreal6.csv" verbose="true" usetimestamp="true" />
 							</tasks>
 						</configuration>
 						<goals>
