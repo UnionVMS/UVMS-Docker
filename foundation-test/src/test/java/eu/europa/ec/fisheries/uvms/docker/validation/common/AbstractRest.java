@@ -6,17 +6,13 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
-
-import eu.europa.ec.fisheries.wsdl.asset.types.Asset;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.fluent.Request;
 import org.junit.Assert;
-
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.type.MapType;
@@ -146,6 +142,14 @@ public abstract class AbstractRest extends Assert {
 		assertNotNull(dataValue);
 		return dataValue;
 	}
+	
+	protected static void checkErrorResponse(final HttpResponse response)
+            throws IOException, JsonParseException, JsonMappingException, ClientProtocolException {
+        assertEquals(HttpStatus.SC_OK, response.getStatusLine().getStatusCode());
+        final Map<String, Object> data = getJsonMap(response);
+        assertFalse(data.isEmpty());
+        assertEquals("500", "" + data.get("code"));
+    }
 
 	/**
 	 * Write value as string.
