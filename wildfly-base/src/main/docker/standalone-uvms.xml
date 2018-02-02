@@ -597,8 +597,8 @@
                 <stateless>
                     <bean-instance-pool-ref pool-name="slsb-strict-max-pool"/>
                 </stateless>
-                <stateful default-access-timeout="5000" cache-ref="simple" passivation-disabled-cache-ref="simple"/>
-                <singleton default-access-timeout="15000"/>
+                <stateful default-access-timeout="15000" cache-ref="simple" passivation-disabled-cache-ref="simple"/>
+                <singleton default-access-timeout="900000"/>
             </session-bean>
             <mdb>
                 <resource-adapter-ref resource-adapter-name="activemq-rar.rar"/>
