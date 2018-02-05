@@ -1,22 +1,18 @@
 package eu.europa.ec.fisheries.uvms.docker.validation.asset;
 
+import java.util.Date;
 import java.util.List;
 
 import javax.jms.TextMessage;
 
 import eu.europa.ec.fisheries.uvms.asset.model.mapper.AssetModuleRequestMapper;
 import eu.europa.ec.fisheries.uvms.asset.model.mapper.JAXBMarshaller;
+import eu.europa.ec.fisheries.uvms.commons.date.DateUtils;
 import eu.europa.ec.fisheries.uvms.docker.validation.common.MessageHelper;
 import eu.europa.ec.fisheries.wsdl.asset.group.AssetGroup;
 import eu.europa.ec.fisheries.wsdl.asset.group.ListAssetGroupResponse;
-import eu.europa.ec.fisheries.wsdl.asset.module.AssetModuleMethod;
-import eu.europa.ec.fisheries.wsdl.asset.module.GetAssetModuleRequest;
-import eu.europa.ec.fisheries.wsdl.asset.module.GetAssetModuleResponse;
-import eu.europa.ec.fisheries.wsdl.asset.module.PingResponse;
-import eu.europa.ec.fisheries.wsdl.asset.types.Asset;
-import eu.europa.ec.fisheries.wsdl.asset.types.AssetIdType;
-import eu.europa.ec.fisheries.wsdl.asset.types.AssetListQuery;
-import eu.europa.ec.fisheries.wsdl.asset.types.ListAssetResponse;
+import eu.europa.ec.fisheries.wsdl.asset.module.*;
+import eu.europa.ec.fisheries.wsdl.asset.types.*;
 
 public class AssetJMSHelper {
 
@@ -65,7 +61,18 @@ public class AssetJMSHelper {
 		PingResponse assetModuleResponse = JAXBMarshaller.unmarshallTextMessage(response, PingResponse.class);
 		return assetModuleResponse.getResponse();
 	}
-	
+
+
+	public static FlagStateType getFlagStateFromAssetGuidAndDate(String guid, Date date) throws Exception {
+		String msg = AssetModuleRequestMapper.createFlagStateRequest(guid, date);
+		TextMessage response = (TextMessage) MessageHelper.getMessageResponse(ASSET_QUEUE, msg);
+		FlagStateTypeResponse flagStateTypeResponse = JAXBMarshaller.unmarshallTextMessage(response, FlagStateTypeResponse.class);
+		return flagStateTypeResponse.getFlagStateType();
+	}
+
+
+
+
 //	public static void upsertAsset() {
 //	}
 //	

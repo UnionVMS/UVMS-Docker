@@ -29,7 +29,8 @@ public class AssetJMSIT {
 	
 	@Test
 	public void testGetAssetByCFR() throws Exception {
-		Asset asset = AssetTestHelper.createTestAsset();
+		Asset asset = AssetTestHelper.createDummyCFRAsset();
+		asset = AssetTestHelper.createAsset(asset);
 		Asset assetById = AssetJMSHelper.getAssetById(asset.getCfr(), AssetIdType.CFR);
 		setDecimalScaleAndNullNotes(assetById);
 		assertEquals(asset, assetById);
