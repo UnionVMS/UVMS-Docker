@@ -228,7 +228,7 @@ public class FluxMessageReceiverBeanIT extends AbstractRestServiceTest {
 		Thread.sleep(7500);
 		
 		List<String> connectIds = new ArrayList<>();
-		connectIds.add(mobileTerminalType.getConnectId());		
+		connectIds.add(testAsset.getEventHistory().getEventId());		
 		
 		final HttpResponse response = Request.Post(getBaseUrl() + "movement/rest/movement/latest")
 				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken())
