@@ -3,17 +3,16 @@ package eu.europa.ec.fisheries.uvms.docker.validation.asset;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.net.URLEncoder;
-import java.util.*;
-
-import eu.europa.ec.fisheries.wsdl.asset.types.*;
+import java.util.Date;
+import java.util.List;
+import java.util.Random;
+import java.util.UUID;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.fluent.Request;
-
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
-
 import eu.europa.ec.fisheries.schema.audit.search.v1.AuditLogListQuery;
 import eu.europa.ec.fisheries.schema.audit.search.v1.ListCriteria;
 import eu.europa.ec.fisheries.schema.audit.search.v1.SearchKey;
@@ -24,9 +23,18 @@ import eu.europa.ec.fisheries.uvms.commons.date.DateUtils;
 import eu.europa.ec.fisheries.uvms.docker.validation.common.AbstractHelper;
 import eu.europa.ec.fisheries.uvms.docker.validation.common.AuditHelper;
 import eu.europa.ec.fisheries.wsdl.asset.group.AssetGroup;
-
-import javax.ws.rs.*;
-import javax.ws.rs.core.MediaType;
+import eu.europa.ec.fisheries.wsdl.asset.types.Asset;
+import eu.europa.ec.fisheries.wsdl.asset.types.AssetId;
+import eu.europa.ec.fisheries.wsdl.asset.types.AssetIdType;
+import eu.europa.ec.fisheries.wsdl.asset.types.AssetListCriteria;
+import eu.europa.ec.fisheries.wsdl.asset.types.AssetListCriteriaPair;
+import eu.europa.ec.fisheries.wsdl.asset.types.AssetListPagination;
+import eu.europa.ec.fisheries.wsdl.asset.types.AssetListQuery;
+import eu.europa.ec.fisheries.wsdl.asset.types.AssetProdOrgModel;
+import eu.europa.ec.fisheries.wsdl.asset.types.CarrierSource;
+import eu.europa.ec.fisheries.wsdl.asset.types.ConfigSearchField;
+import eu.europa.ec.fisheries.wsdl.asset.types.FlagStateType;
+import eu.europa.ec.fisheries.wsdl.asset.types.ListAssetResponse;
 
 public class AssetTestHelper extends AbstractHelper {
 
@@ -36,7 +44,7 @@ public class AssetTestHelper extends AbstractHelper {
 
 	public static Asset createTestAsset() throws IOException, ClientProtocolException, JsonProcessingException,
 			JsonParseException, JsonMappingException {
-		Asset asset = createDummyAsset(AssetIdType.GUID);
+		Asset asset = createDummyAsset(AssetIdType.CFR);
 		final HttpResponse response = Request.Post(getBaseUrl() + "asset/rest/asset")
 				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken())
 				.bodyByteArray(writeValueAsString(asset).getBytes()).execute().returnResponse();
