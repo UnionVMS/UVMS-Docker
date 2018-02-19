@@ -99,6 +99,18 @@
 			<type>ear</type>
 			<version>${unionvms.project.user.module}</version>
 		</dependency>
+		<dependency>
+			<groupId>eu.europa.ec.fisheries.uvms.sales</groupId>
+			<artifactId>sales-module</artifactId>
+			<type>ear</type>
+			<version>${unionvms.project.sales.module}</version>
+		</dependency>
+		<dependency>
+			<groupId>eu.europa.ec.fisheries.uvms.sales</groupId>
+			<artifactId>sales-proxy-ecb-module</artifactId>
+			<type>ear</type>
+			<version>${unionvms.project.proxy.ecb}</version>
+		</dependency>
 
 		<!-- plugin modules -->
 		<dependency>
@@ -250,7 +262,14 @@
 									<jar destfile="${project.basedir}/target/dockerfile/deployments/mobileterminal-module-${unionvms.project.mobileterminal.module}.ear" update="true">
 										<zipfileset dir="${project.basedir}/target/dockerfile/jboss-deployment/mobile" includes="*.xml" prefix="META-INF" />
 									</jar>
-		
+
+									<jar destfile="${project.basedir}/target/dockerfile/deployments/sales-module-${unionvms.project.sales.module}.ear" update="true">
+										<zipfileset dir="${project.basedir}/target/dockerfile/jboss-deployment/sales" includes="*.xml" prefix="META-INF" />
+									</jar>
+									<jar destfile="${project.basedir}/target/dockerfile/deployments/sales-proxy-ecb-module-${unionvms.project.proxy.ecb}.ear" update="true">
+										<zipfileset dir="${project.basedir}/target/dockerfile/jboss-deployment/sales-ecb" includes="*.xml" prefix="META-INF" />
+									</jar>
+
 									<jar destfile="${project.basedir}/target/dockerfile/deployments/gs-web-app-${unionvms.project.geoserver.version}.war" update="true">
 										<zipfileset dir="${project.basedir}/target/dockerfile/jboss-deployment/web-app" includes="*.xml" prefix="WEB-INF" />
 									</jar>
