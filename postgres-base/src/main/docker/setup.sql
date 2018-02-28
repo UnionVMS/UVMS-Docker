@@ -114,3 +114,11 @@ ALTER USER sales SET search_path = sales, public;
 GRANT CONNECT ON DATABASE db71u TO sales;
 GRANT SELECT, INSERT, UPDATE, DELETE ON ALL TABLES IN SCHEMA sales TO sales;
 ALTER SCHEMA sales OWNER TO sales;
+
+-- SALES ECB
+CREATE USER salesecbproxy WITH PASSWORD 'salesecbproxy';
+CREATE SCHEMA AUTHORIZATION salesecbproxy;
+ALTER USER salesecbproxy SET search_path = salesecbproxy, public;
+GRANT CONNECT ON DATABASE db71u TO salesecbproxy;
+GRANT SELECT, INSERT, UPDATE, DELETE ON ALL TABLES IN SCHEMA salesecbproxy TO salesecbproxy;
+ALTER SCHEMA salesecbproxy OWNER TO salesecbproxy;
