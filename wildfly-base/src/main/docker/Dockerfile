@@ -2,7 +2,7 @@ FROM njmittet/alpine-openjdk:jdk8
 
 MAINTAINER Nils Jørgen Mittet <njmittet@gmail.com>
 
-ENV WILDFLY_VERSION 11.0.0.Final
+ENV WILDFLY_VERSION 12.0.0.Final
 ENV JBOSS_HOME /opt/jboss/wildfly
 
 USER root

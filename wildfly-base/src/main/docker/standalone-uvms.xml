@@ -1,6 +1,6 @@
 <?xml version='1.0' encoding='UTF-8'?>
 
-<server xmlns="urn:jboss:domain:5.0">
+<server xmlns="urn:jboss:domain:6.0">
     <extensions>
         <extension module="org.jboss.as.clustering.infinispan"/>
         <extension module="org.jboss.as.connector"/>
@@ -28,23 +28,23 @@
         <extension module="org.wildfly.extension.core-management"/>
         <extension module="org.wildfly.extension.elytron"/>
         <extension module="org.wildfly.extension.io"/>
-        
+
        <!--  <extension module="org.wildfly.extension.messaging-activemq"/>-->
         <extension module="org.wildfly.extension.request-controller"/>
         <extension module="org.wildfly.extension.security.manager"/>
         <extension module="org.wildfly.extension.undertow"/>
         <extension module="org.wildfly.iiop-openjdk"/>
     </extensions>
-    
+
     <system-properties>
     	<property name="jboss.as.management.blocking.timeout" value="1200"/>
         <property name="db.dialect" value="postgres"/>
         <property name="hibernate.dialect" value="org.hibernate.dialect.PostgreSQLDialect"/>
         <!-- <property name="hibernate.spatial.dialect" value="org.hibernate.spatial.dialect.postgis.PostgisDialect"/>-->
-        <property name="hibernate.spatial.dialect" value="org.hibernate.spatial.dialect.postgis.Postgis43WrapperDialect"/>        
+        <property name="hibernate.spatial.dialect" value="org.hibernate.spatial.dialect.postgis.Postgis43WrapperDialect"/>
     </system-properties>
-    
-    
+
+
     <management>
         <security-realms>
             <security-realm name="ManagementRealm">
@@ -101,7 +101,7 @@
         </access-control>
     </management>
     <profile>
-        <subsystem xmlns="urn:jboss:domain:logging:3.0">
+        <subsystem xmlns="urn:jboss:domain:logging:4.0">
             <console-handler name="CONSOLE">
                 <level name="INFO"/>
                 <formatter>
@@ -116,7 +116,7 @@
                 <suffix value=".yyyy-MM-dd"/>
                 <append value="true"/>
             </periodic-rotating-file-handler>
-            
+
                         <logger category="com.arjuna">
                 <level name="WARN"/>
             </logger>
@@ -128,7 +128,7 @@
             </logger>
             <logger category="org.jboss.as.config">
                 <level name="INFO"/>
-            </logger>            
+            </logger>
             <logger category="org.jboss.as.jpa">
                 <level name="WARN"/>
             </logger>
@@ -137,7 +137,7 @@
             </logger>
             <logger category="org.hibernate">
                 <level name="WARN"/>
-            </logger>  
+            </logger>
             <logger category="org.jboss.modules">
                 <level name="ERROR"/>
             </logger>
@@ -147,7 +147,7 @@
             <logger category="org.jboss.as.server.deployment">
                 <level name="ERROR"/>
             </logger>
-            
+
             <logger category="sun.rmi">
                 <level name="WARN"/>
             </logger>
@@ -157,7 +157,7 @@
             <logger category="jacorb.config">
                 <level name="ERROR"/>
             </logger>
-            
+
             <logger category="org.geoserver">
                 <level name="WARN"/>
             </logger>
@@ -166,14 +166,14 @@
             </logger>
             <logger category="org.vfny">
                 <level name="WARN"/>
-            </logger>            
+            </logger>
             <logger category="org.geotools">
                 <level name="WARN"/>
-            </logger>            
+            </logger>
             <logger category="org.springframework">
                 <level name="WARN"/>
             </logger>
-            
+
             <root-logger>
                 <level name="INFO"/>
                 <handlers>
@@ -226,7 +226,7 @@
 				    <statement>
 				        <prepared-statement-cache-size>32</prepared-statement-cache-size>
 				        <track-statements>nowarn</track-statements>
-				    </statement>				    
+				    </statement>
 				    <validation>
 				        <valid-connection-checker
 				                class-name="org.jboss.jca.adapters.jdbc.extensions.postgres.PostgreSQLValidConnectionChecker"></valid-connection-checker>
@@ -253,7 +253,7 @@
 				    <statement>
 				        <prepared-statement-cache-size>32</prepared-statement-cache-size>
 				        <track-statements>nowarn</track-statements>
-				    </statement>				    
+				    </statement>
 				    <validation>
 				        <valid-connection-checker
 				                class-name="org.jboss.jca.adapters.jdbc.extensions.postgres.PostgreSQLValidConnectionChecker"></valid-connection-checker>
@@ -280,7 +280,7 @@
 				    <statement>
 				        <prepared-statement-cache-size>32</prepared-statement-cache-size>
 				        <track-statements>nowarn</track-statements>
-				    </statement>				    
+				    </statement>
 				    <validation>
 				        <valid-connection-checker
 				                class-name="org.jboss.jca.adapters.jdbc.extensions.postgres.PostgreSQLValidConnectionChecker"></valid-connection-checker>
@@ -307,7 +307,7 @@
 				    <statement>
 				        <prepared-statement-cache-size>32</prepared-statement-cache-size>
 				        <track-statements>nowarn</track-statements>
-				    </statement>				    
+				    </statement>
 				    <validation>
 				        <valid-connection-checker
 				                class-name="org.jboss.jca.adapters.jdbc.extensions.postgres.PostgreSQLValidConnectionChecker"></valid-connection-checker>
@@ -334,7 +334,7 @@
 				    <statement>
 				        <prepared-statement-cache-size>32</prepared-statement-cache-size>
 				        <track-statements>nowarn</track-statements>
-				    </statement>				    
+				    </statement>
 				    <validation>
 				        <valid-connection-checker
 				                class-name="org.jboss.jca.adapters.jdbc.extensions.postgres.PostgreSQLValidConnectionChecker"></valid-connection-checker>
@@ -361,7 +361,7 @@
 				    <statement>
 				        <prepared-statement-cache-size>32</prepared-statement-cache-size>
 				        <track-statements>nowarn</track-statements>
-				    </statement>				    
+				    </statement>
 				    <validation>
 				        <valid-connection-checker
 				                class-name="org.jboss.jca.adapters.jdbc.extensions.postgres.PostgreSQLValidConnectionChecker"></valid-connection-checker>
@@ -388,7 +388,7 @@
 				    <statement>
 				        <prepared-statement-cache-size>32</prepared-statement-cache-size>
 				        <track-statements>nowarn</track-statements>
-				    </statement>				    
+				    </statement>
 				    <validation>
 				        <valid-connection-checker
 				                class-name="org.jboss.jca.adapters.jdbc.extensions.postgres.PostgreSQLValidConnectionChecker"></valid-connection-checker>
@@ -415,7 +415,7 @@
 				    <statement>
 				        <prepared-statement-cache-size>32</prepared-statement-cache-size>
 				        <track-statements>nowarn</track-statements>
-				    </statement>				    
+				    </statement>
 				    <validation>
 				        <valid-connection-checker
 				                class-name="org.jboss.jca.adapters.jdbc.extensions.postgres.PostgreSQLValidConnectionChecker"></valid-connection-checker>
@@ -442,7 +442,7 @@
 				    <statement>
 				        <prepared-statement-cache-size>32</prepared-statement-cache-size>
 				        <track-statements>nowarn</track-statements>
-				    </statement>				    
+				    </statement>
 				    <validation>
 				        <valid-connection-checker
 				                class-name="org.jboss.jca.adapters.jdbc.extensions.postgres.PostgreSQLValidConnectionChecker"></valid-connection-checker>
@@ -468,7 +468,7 @@
 				    <statement>
 				        <prepared-statement-cache-size>32</prepared-statement-cache-size>
 				        <track-statements>nowarn</track-statements>
-				    </statement>				    
+				    </statement>
 				    <validation>
 				        <valid-connection-checker
 				                class-name="org.jboss.jca.adapters.jdbc.extensions.postgres.PostgreSQLValidConnectionChecker"></valid-connection-checker>
@@ -495,7 +495,7 @@
                      <statement>
 				        <prepared-statement-cache-size>32</prepared-statement-cache-size>
 				        <track-statements>nowarn</track-statements>
-				     </statement>                     
+				     </statement>
                      <validation>
                          <valid-connection-checker
                                  class-name="org.jboss.jca.adapters.jdbc.extensions.postgres.PostgreSQLValidConnectionChecker"></valid-connection-checker>
@@ -522,7 +522,7 @@
                      <statement>
 				        <prepared-statement-cache-size>32</prepared-statement-cache-size>
 				        <track-statements>nowarn</track-statements>
-				     </statement>                     
+				     </statement>
                      <validation>
                          <valid-connection-checker
                                  class-name="org.jboss.jca.adapters.jdbc.extensions.postgres.PostgreSQLValidConnectionChecker"></valid-connection-checker>
@@ -549,7 +549,7 @@
                      <statement>
 				        <prepared-statement-cache-size>32</prepared-statement-cache-size>
 				        <track-statements>nowarn</track-statements>
-				     </statement>                     
+				     </statement>
                      <validation>
                          <valid-connection-checker
                                  class-name="org.jboss.jca.adapters.jdbc.extensions.postgres.PostgreSQLValidConnectionChecker"></valid-connection-checker>
@@ -605,7 +605,7 @@
 	        <global-modules>
 	        	<module name="javax.jms.api" slot="main"/>
 	    	</global-modules>
-    	
+
             <spec-descriptor-property-replacement>false</spec-descriptor-property-replacement>
             <concurrent>
                 <context-services>
@@ -622,7 +622,7 @@
                     <managed-scheduled-executor-service name="uvmsExecutorService" jndi-name="java:/UvmsExecutorService" hung-task-threshold="50000" core-threads="4" keepalive-time="5000" reject-policy="RETRY_ABORT"/>
                     <managed-scheduled-executor-service name="uvmsConfigPingExecutorService" jndi-name="java:/uvmsConfigPingExecutorService" hung-task-threshold="50000" core-threads="4" keepalive-time="5000" reject-policy="RETRY_ABORT"/>
                     <managed-scheduled-executor-service name="UvmsMobileTerminalExecutorService" jndi-name="java:/UvmsMobileTerminalExecutorService" hung-task-threshold="50000" core-threads="4" keepalive-time="5000" reject-policy="RETRY_ABORT"/>
-                    <managed-scheduled-executor-service name="UvmsVesselCacheProxyExecutorService" jndi-name="java:/UvmsVesselCacheProxyExecutorService" hung-task-threshold="50000" core-threads="4" keepalive-time="5000" reject-policy="RETRY_ABORT"/>                    
+                    <managed-scheduled-executor-service name="UvmsVesselCacheProxyExecutorService" jndi-name="java:/UvmsVesselCacheProxyExecutorService" hung-task-threshold="50000" core-threads="4" keepalive-time="5000" reject-policy="RETRY_ABORT"/>
                 </managed-scheduled-executor-services>
             </concurrent>
             <default-bindings context-service="java:jboss/ee/concurrency/context/default" datasource="java:jboss/datasources/ExampleDS" jms-connection-factory="java:jboss/DefaultJMSConnectionFactory" managed-executor-service="java:jboss/ee/concurrency/executor/default" managed-scheduled-executor-service="java:jboss/ee/concurrency/scheduler/default" managed-thread-factory="java:jboss/ee/concurrency/factory/default"/>
@@ -781,7 +781,7 @@
             <worker name="default"/>
             <buffer-pool name="default"/>
         </subsystem>
-        <subsystem xmlns="urn:jboss:domain:infinispan:4.0">
+        <subsystem xmlns="urn:jboss:domain:infinispan:5.0">
             <cache-container name="server" default-cache="default" module="org.wildfly.clustering.server">
                 <local-cache name="default">
                     <transaction mode="BATCH"/>
@@ -801,14 +801,14 @@
                     <file-store passivation="true" purge="false"/>
                 </local-cache>
             </cache-container>
-            <cache-container name="hibernate" module="org.hibernate.infinispan">
+            <cache-container name="hibernate" module="org.infinispan.hibernate-cache">
                 <local-cache name="entity">
                     <transaction mode="NON_XA"/>
-                    <eviction strategy="LRU" max-entries="10000"/>
+                    <object-memory size="10000"/>
                     <expiration max-idle="100000"/>
                 </local-cache>
                 <local-cache name="local-query">
-                    <eviction strategy="LRU" max-entries="10000"/>
+                    <object-memory size="10000"/>
                     <expiration max-idle="100000"/>
                 </local-cache>
                 <local-cache name="timestamps"/>
@@ -856,7 +856,7 @@
             </mail-session>
         </subsystem>
         <!--
-        <subsystem xmlns="urn:jboss:domain:messaging-activemq:2.0">
+        <subsystem xmlns="urn:jboss:domain:messaging-activemq:3.0">
             <server name="default">
                 <security-setting name="#">
                     <role name="guest" send="true" consume="true" create-non-durable-queue="true" delete-non-durable-queue="true"/>
@@ -1151,7 +1151,7 @@
 							<config-property name="PhysicalName">
 								UVMSFAPluginEvent
 							</config-property>
-						</admin-object>                       
+						</admin-object>
                     </admin-objects>
                 </resource-adapter>
             </resource-adapters>
@@ -1206,7 +1206,7 @@
             <recovery-environment socket-binding="txn-recovery-environment" status-socket-binding="txn-status-manager"/>
             <object-store path="tx-object-store" relative-to="jboss.server.data.dir"/>
         </subsystem>
-        <subsystem xmlns="urn:jboss:domain:undertow:4.0">
+        <subsystem xmlns="urn:jboss:domain:undertow:5.0">
             <buffer-cache name="default"/>
             <server name="default-server">
                 <http-listener name="default" socket-binding="http" redirect-socket="https" enable-http2="true"/>
