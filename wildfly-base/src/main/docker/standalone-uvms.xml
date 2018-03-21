@@ -37,6 +37,7 @@
     </extensions>
 
     <system-properties>
+        <property name="ee8.preview.mode" value="true"/>
     	<property name="jboss.as.management.blocking.timeout" value="1200"/>
         <property name="db.dialect" value="postgres"/>
         <property name="hibernate.dialect" value="org.hibernate.dialect.PostgreSQLDialect"/>
