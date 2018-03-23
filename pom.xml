@@ -207,6 +207,18 @@
 				</exclusions>
 			</dependency>
 			<dependency>
+				<groupId>eu.europa.ec.fisheries.uvms.subscription</groupId>
+				<artifactId>liquibase</artifactId>
+				<type>sql</type>
+				<version>${unionvms.project.subscription.module}</version>
+				<exclusions>
+					<exclusion>
+						<groupId>com.oracle</groupId>
+						<artifactId>ojdbc6</artifactId>
+					</exclusion>
+				</exclusions>
+			</dependency>
+			<dependency>
 				<groupId>eu.europa.ec.fisheries.uvms.activity</groupId>
 				<artifactId>liquibase</artifactId>
 				<type>sql</type>
@@ -394,7 +406,6 @@
 				<type>ear</type>
 				<version>${unionvms.project.plugins.siriusone}</version>
 			</dependency>
-
 		</dependencies>
 
 	</dependencyManagement>
@@ -405,10 +416,10 @@
 		<module>postgres-release</module>
 		<module>wildfly-base</module>
 		<module>wildfly-foundation</module>
-		<!--<module>foundation-test</module>-->
+		<module>foundation-test</module>
 		<module>wildfly-release</module>
 		<module>docker-compose</module>
-		<!--<module>release-test</module>-->
+		<module>release-test</module>
 		<module>unionvms-wildfly-dist</module>
 	</modules>
 </project>

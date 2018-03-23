@@ -10,5 +10,6 @@
 		<dependency name="mobileterminal-module-${unionvms.project.mobileterminal.module}.ear" />
 		<dependency name="mdr-module-${unionvms.project.mdr.module}.ear" />
 		<dependency name="activity-module-postgres-${unionvms.project.activity.module}.ear" />
+		<dependency name="rules-module-${unionvms.project.rules.module}.ear" />
 	</jboss-deployment-dependencies>
 </jboss>

@@ -25,7 +25,6 @@ import org.junit.Before;
  */
 public abstract class AbstractRestServiceTest extends AbstractRest {
 
-
     protected HashMap authenticateMap = new HashMap();
 
     @Before

@@ -25,7 +25,7 @@ public abstract class AbstractRest extends Assert {
 	private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
 
 	/** The Constant BASE_URL. */
-	protected static final String BASE_URL = "http://localhost:28080/";
+	protected static final String BASE_URL = "http://localhost:28080/unionvms/";
 
 	/** The valid jwt token. */
 	private static String validJwtToken;
