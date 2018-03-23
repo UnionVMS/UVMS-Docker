@@ -95,6 +95,11 @@
             <version>${unionvms.project.plugins.siriusone}</version>
         </dependency>
 
+        <dependency>
+            <groupId>com.mashape.unirest</groupId>
+            <artifactId>unirest-java</artifactId>
+        </dependency>
+
     </dependencies>
     <build>
         <pluginManagement>
