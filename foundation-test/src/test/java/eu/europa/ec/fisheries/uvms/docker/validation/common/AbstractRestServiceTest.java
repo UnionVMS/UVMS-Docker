@@ -18,18 +18,18 @@ import java.util.HashMap;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mashape.unirest.http.Unirest;
 import lombok.SneakyThrows;
-import org.junit.Before;
+import org.junit.BeforeClass;
 
 /**
  * The Class AbstractRestServiceTest.
  */
 public abstract class AbstractRestServiceTest extends AbstractRest {
 
-    protected HashMap authenticateMap = new HashMap();
+    protected static HashMap authenticateMap = new HashMap();
 
-    @Before
+    @BeforeClass
     @SneakyThrows
-    public void init(){
+    public static void init(){
 
         com.mashape.unirest.http.HttpResponse<String> stringHttpResponse =
                 Unirest.post("http://localhost:28080/unionvms/usm-administration/rest/authenticate")

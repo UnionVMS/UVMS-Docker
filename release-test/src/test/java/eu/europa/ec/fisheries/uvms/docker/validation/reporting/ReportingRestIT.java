@@ -14,7 +14,6 @@ copy of the GNU General Public License along with the IFDM Suite. If not, see <h
 package eu.europa.ec.fisheries.uvms.docker.validation.reporting;
 
 import java.io.IOException;
-import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
@@ -22,18 +21,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import org.apache.http.HttpResponse;
-import org.apache.http.HttpStatus;
-import org.apache.http.client.ClientProtocolException;
-import org.apache.http.client.fluent.Request;
-import org.junit.BeforeClass;
-import org.junit.Ignore;
-import org.junit.Test;
-
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
-
 import eu.europa.ec.fisheries.schema.mobileterminal.types.v1.MobileTerminalType;
 import eu.europa.ec.fisheries.schema.movement.module.v1.CreateMovementRequest;
 import eu.europa.ec.fisheries.schema.movement.module.v1.CreateMovementResponse;
@@ -55,6 +45,13 @@ import eu.europa.ec.fisheries.uvms.reporting.service.entities.Selector;
 import eu.europa.ec.fisheries.uvms.reporting.service.enums.ReportTypeEnum;
 import eu.europa.ec.fisheries.uvms.reporting.service.enums.VelocityType;
 import eu.europa.ec.fisheries.wsdl.asset.types.Asset;
+import org.apache.http.HttpResponse;
+import org.apache.http.HttpStatus;
+import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.fluent.Request;
+import org.junit.BeforeClass;
+import org.junit.Ignore;
+import org.junit.Test;
 
 /**
  * The Class ReportingRestIT.
@@ -104,7 +101,7 @@ public class ReportingRestIT extends AbstractRestServiceTest {
 	public void listReportsTest() throws Exception {
 		final HttpResponse response = Request.Get(getBaseUrl() + "reporting/rest/report/list")
 				.setHeader("Content-Type", "application/json").setHeader("scopeName", "All Reports")
-				.setHeader("roleName", "AdminAll").setHeader("Authorization", getValidJwtToken()).execute()
+				.setHeader("roleName", "AdminAll").setHeader("Authorization", String.valueOf(authenticateMap.get("jwtoken"))).execute()
 				.returnResponse();
 		List dataMap = checkSuccessResponseReturnType(response, List.class);
 		assertNotNull(dataMap);
@@ -120,7 +117,7 @@ public class ReportingRestIT extends AbstractRestServiceTest {
 	public void listLastExecutedReportsTest() throws Exception {
 		final HttpResponse response = Request.Get(getBaseUrl() + "reporting/rest/report/list/lastexecuted/10")
 				.setHeader("Content-Type", "application/json").setHeader("scopeName", "All Reports")
-				.setHeader("roleName", "AdminAll").setHeader("Authorization", getValidJwtToken()).execute()
+				.setHeader("roleName", "AdminAll").setHeader("Authorization", String.valueOf(authenticateMap.get("jwtoken"))).execute()
 				.returnResponse();
 		List dataMap = checkSuccessResponseReturnType(response, List.class);
 		assertNotNull(dataMap);
@@ -139,7 +136,7 @@ public class ReportingRestIT extends AbstractRestServiceTest {
 
 		final HttpResponse response = Request.Get(getBaseUrl() + "reporting/rest/report/" + reportId)
 				.setHeader("Content-Type", "application/json").setHeader("scopeName", "All Reports")
-				.setHeader("roleName", "AdminAll").setHeader("Authorization", getValidJwtToken()).execute()
+				.setHeader("roleName", "AdminAll").setHeader("Authorization", String.valueOf(authenticateMap.get("jwtoken"))).execute()
 				.returnResponse();
 		Map<String, Object> dataMap = checkSuccessResponseReturnMap(response);
 		assertNotNull(dataMap);
@@ -302,7 +299,7 @@ public class ReportingRestIT extends AbstractRestServiceTest {
 
 		final HttpResponse response = Request.Put(getBaseUrl() + "reporting/rest/report/" + twoWeeksReport.getId())
 				.setHeader("Content-Type", "application/json").setHeader("scopeName", "All Reports")
-				.setHeader("roleName", "AdminAll").setHeader("Authorization", getValidJwtToken())
+				.setHeader("roleName", "AdminAll").setHeader("Authorization", String.valueOf(authenticateMap.get("jwtoken")))
 				.bodyByteArray(writeValueAsString(twoWeeksReport).getBytes()).execute().returnResponse();
 		assertEquals(HttpStatus.SC_OK, response.getStatusLine().getStatusCode());
 	}
@@ -322,7 +319,7 @@ public class ReportingRestIT extends AbstractRestServiceTest {
 				.Put(getBaseUrl() + "reporting/rest/report/share/" + twoWeeksReport.getId() + "/"
 						+ VisibilityEnum.PUBLIC)
 				.setHeader("Content-Type", "application/json").setHeader("scopeName", "All Reports")
-				.setHeader("roleName", "AdminAll").setHeader("Authorization", getValidJwtToken()).execute()
+				.setHeader("roleName", "AdminAll").setHeader("Authorization", String.valueOf(authenticateMap.get("jwtoken"))).execute()
 				.returnResponse();
 		assertEquals(HttpStatus.SC_OK, response.getStatusLine().getStatusCode());
 	}
@@ -352,7 +349,7 @@ public class ReportingRestIT extends AbstractRestServiceTest {
 		final HttpResponse response = Request
 				.Post(getBaseUrl() + "reporting/rest/report/execute/" + twoWeeksReport.getId())
 				.setHeader("Content-Type", "application/json").setHeader("scopeName", "All Reports")
-				.setHeader("roleName", "AdminAll").setHeader("Authorization", getValidJwtToken())
+				.setHeader("roleName", "AdminAll").setHeader("Authorization", String.valueOf(authenticateMap.get("jwtoken")))
 				.bodyByteArray(writeValueAsString(displayFormat).getBytes()).execute().returnResponse();
 		Map<String, Object> dataMap = checkSuccessResponseReturnMap(response);
 		assertNotNull(dataMap);
@@ -386,7 +383,7 @@ public class ReportingRestIT extends AbstractRestServiceTest {
 		final HttpResponse response = Request
 				.Post(getBaseUrl() + "reporting/rest/report/execute/" + twoWeeksReport.getId())
 				.setHeader("Content-Type", "application/json").setHeader("scopeName", "All Reports")
-				.setHeader("roleName", "AdminAll").setHeader("Authorization", getValidJwtToken())
+				.setHeader("roleName", "AdminAll").setHeader("Authorization", String.valueOf(authenticateMap.get("jwtoken")))
 				.bodyByteArray(writeValueAsString(displayFormat).getBytes()).execute().returnResponse();
 		Map<String, Object> dataMap = checkSuccessResponseReturnMap(response);
 		assertNotNull(dataMap);
@@ -422,7 +419,7 @@ public class ReportingRestIT extends AbstractRestServiceTest {
 		final HttpResponse response = Request
 				.Post(getBaseUrl() + "reporting/rest/report/execute/" + twoWeeksReport.getId())
 				.setHeader("Content-Type", "application/json").setHeader("scopeName", "All Reports")
-				.setHeader("roleName", "AdminAll").setHeader("Authorization", getValidJwtToken())
+				.setHeader("roleName", "AdminAll").setHeader("Authorization", String.valueOf(authenticateMap.get("jwtoken")))
 				.bodyByteArray(writeValueAsString(displayFormat).getBytes()).execute().returnResponse();
 		Map<String, Object> dataMap = checkSuccessResponseReturnMap(response);
 		assertNotNull(dataMap);
@@ -476,7 +473,7 @@ public class ReportingRestIT extends AbstractRestServiceTest {
 		final HttpResponse response = Request
 				.Post(getBaseUrl() + "reporting/rest/report/execute/" + twoWeeksReport.getId())
 				.setHeader("Content-Type", "application/json").setHeader("scopeName", "All Reports")
-				.setHeader("roleName", "AdminAll").setHeader("Authorization", getValidJwtToken())
+				.setHeader("roleName", "AdminAll").setHeader("Authorization", String.valueOf(authenticateMap.get("jwtoken")))
 				.bodyByteArray(writeValueAsString(displayFormat).getBytes()).execute().returnResponse();
 		Map<String, Object> dataMap = checkSuccessResponseReturnMap(response);
 		Map<String, Object> movementDataMap = (Map<String, Object>) dataMap.get("movements");
