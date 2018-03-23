@@ -31,12 +31,7 @@ public abstract class AbstractRest extends Assert {
 	private static String validJwtToken;
 
 	protected static final String getBaseUrl() {
-		String property = System.getProperty(DOCKER_RELEASE_TEST_BASE_URL_PROPERTY);
-		if (property != null) {
-			return property;
-		} else {
-			return BASE_URL;
-		}		
+		return BASE_URL;
 	}	
 	
 
