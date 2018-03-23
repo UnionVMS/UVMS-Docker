@@ -85,7 +85,7 @@ public abstract class AbstractRest extends Assert {
 
 
 	protected static final Map<String, Object> checkSuccessResponseReturnMap(final HttpResponse response)
-			throws IOException, JsonParseException, JsonMappingException, ClientProtocolException {
+			throws IOException {
 		final Map<String, Object> data = checkSuccessResponseReturnDataMap(response);
 
 		Map<String, Object> dataMap = (Map<String, Object>) data.get("data");
@@ -94,7 +94,7 @@ public abstract class AbstractRest extends Assert {
 	}
 
 	public static Map<String, Object> checkSuccessResponseReturnDataMap(final HttpResponse response)
-			throws IOException, JsonParseException, JsonMappingException, ClientProtocolException {
+			throws IOException {
 		assertEquals(HttpStatus.SC_OK, response.getStatusLine().getStatusCode());
 		final Map<String, Object> data = getJsonMap(response);
 		assertFalse(data.isEmpty());
@@ -104,7 +104,7 @@ public abstract class AbstractRest extends Assert {
 	}
 
 	protected final static Integer checkSuccessResponseReturnInt(final HttpResponse response)
-			throws IOException, JsonParseException, JsonMappingException, ClientProtocolException {
+			throws IOException {
 		final Map<String, Object> data = checkSuccessResponseReturnDataMap(response);
 
 		Integer dataValue = (Integer) data.get("data");
@@ -113,7 +113,7 @@ public abstract class AbstractRest extends Assert {
 	}
 
 	protected static <T> T checkSuccessResponseReturnType(final HttpResponse response, Class<T> classCast)
-			throws IOException, JsonParseException, JsonMappingException, ClientProtocolException {
+			throws IOException {
 		final Map<String, Object> data = checkSuccessResponseReturnDataMap(response);
 		T dataValue = (T) data.get("data");
 		assertNotNull(dataValue);
@@ -121,7 +121,7 @@ public abstract class AbstractRest extends Assert {
 	}
 	
 	protected static <T> T checkSuccessResponseReturnObject(final HttpResponse response, Class<T> classCast)
-			throws IOException, JsonParseException, JsonMappingException, ClientProtocolException {
+			throws IOException {
 		final Map<String, Object> data = checkSuccessResponseReturnDataMap(response);
 		Map<String, Object> dataMap = (Map<String, Object>) data.get("data");
 		T dataValue = OBJECT_MAPPER.readValue(writeValueAsString(dataMap), classCast);
@@ -130,7 +130,7 @@ public abstract class AbstractRest extends Assert {
 	}
 	
 	protected static <T> List<T> checkSuccessResponseReturnList(final HttpResponse response, Class<T> classCast)
-			throws IOException, JsonParseException, JsonMappingException, ClientProtocolException {
+			throws IOException {
 		final Map<String, Object> data = checkSuccessResponseReturnDataMap(response);
 		String valueAsString = writeValueAsString(data.get("data"));
 		List<T> dataValue = OBJECT_MAPPER.readValue(valueAsString, OBJECT_MAPPER.getTypeFactory().constructCollectionType(List.class, classCast));
@@ -139,7 +139,7 @@ public abstract class AbstractRest extends Assert {
 	}
 	
 	protected static void checkErrorResponse(final HttpResponse response)
-            throws IOException, JsonParseException, JsonMappingException, ClientProtocolException {
+            throws IOException {
         assertEquals(HttpStatus.SC_OK, response.getStatusLine().getStatusCode());
         final Map<String, Object> data = getJsonMap(response);
         assertFalse(data.isEmpty());
@@ -211,7 +211,7 @@ public abstract class AbstractRest extends Assert {
 	 *             the client protocol exception
 	 */
 	protected static final Map<String, Object> getJsonMap(final HttpResponse response)
-			throws IOException, JsonParseException, JsonMappingException, ClientProtocolException {
+			throws IOException {
 				final MapType type = OBJECT_MAPPER.getTypeFactory().constructMapType(Map.class, String.class, Object.class);
 				final Map<String, Object> data = OBJECT_MAPPER.readValue(response.getEntity().getContent(), type);
 				return data;
