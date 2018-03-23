@@ -81,12 +81,14 @@
 			<type>ear</type>
 			<version>${unionvms.project.plugins.flux}</version>
 		</dependency>
+
 		<dependency>
 			<groupId>eu.europa.ec.fisheries.uvms.plugins.iridium</groupId>
 			<artifactId>siriusone-module</artifactId>
 			<type>ear</type>
 			<version>${unionvms.project.plugins.siriusone}</version>
 		</dependency>
+		
 	</dependencies>
 	<build>
 		<pluginManagement>
