@@ -226,7 +226,7 @@ public class MovementMovementRestIT extends AbstractRestServiceTest {
 		
 		connectIds.add(connectId);
 		
-		// give it some time to execute before retrieving
+		// give it some time to execute before retrieving TODO: Remove the functionality and this horrible test
 		Thread.sleep(10000);
 		
 		
@@ -257,7 +257,10 @@ public class MovementMovementRestIT extends AbstractRestServiceTest {
 		LatLong latLong = new LatLong(16.9, 32.6333333, new Date(System.currentTimeMillis()));
 		CreateMovementRequest createMovementRequest = movementHelper.createMovementRequest(testAsset, mobileTerminalType, latLong);		
 		CreateMovementResponse createMovementResponse = movementHelper.createMovement(testAsset, mobileTerminalType, createMovementRequest);
-		
+
+		// give it some time to execute before retrieving. TODO: Remove the functionality and this horrible test
+		Thread.sleep(10000);
+
 		final HttpResponse response = Request.Get(getBaseUrl() + "movement/rest/movement/latest/100")
 				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken()).execute()
 				.returnResponse();
