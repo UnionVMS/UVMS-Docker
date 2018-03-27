@@ -1,0 +1,81 @@
+{
+  "id": "c3f27d64-6ee0-06bf-3e93-1705535d464b",
+  "name": "Linux QA",
+  "values": [
+    {
+      "key": "port",
+      "value": "28080",
+      "enabled": true,
+      "type": "text"
+    },
+    {
+      "key": "hostname",
+      "value": "dgmare-uvms.aris-brx.lan",
+      "enabled": true,
+      "type": "text"
+    },
+    {
+      "key": "areaExitId",
+      "value": "16",
+      "enabled": true,
+      "type": "text"
+    },
+    {
+      "key": "areaEntryId",
+      "value": "1",
+      "enabled": true,
+      "type": "text"
+    },
+    {
+      "key": "discardId",
+      "value": "9",
+      "enabled": true,
+      "type": "text"
+    },
+    {
+      "key": "transhipmentId",
+      "value": "54",
+      "enabled": true,
+      "type": "text"
+    },
+    {
+      "key": "departureId",
+      "value": "87",
+      "enabled": true,
+      "type": "text"
+    },
+    {
+      "key": "arrivalId",
+      "value": "5",
+      "enabled": true,
+      "type": "text"
+    },
+    {
+      "key": "fishingoperationId",
+      "value": "49",
+      "enabled": true,
+      "type": "text"
+    },
+    {
+      "key": "landingId",
+      "value": "12",
+      "enabled": true,
+      "type": "text"
+    },
+    {
+      "key": "token",
+      "value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJqdGkiOiJ1c20vYXV0aGVudGljYXRpb24iLCJpc3MiOiJ1c20iLCJzdWIiOiJhdXRoZW50aWNhdGlvbiIsImlhdCI6MTUyMjA2NDY4MiwiZXhwIjoxNTIyMDY2NDgyLCJ1c2VyTmFtZSI6InJlcF9wb3dlciJ9.B2h6mva1TPXDwr7Flcaew97exZ-z6yI89pgtHuRxhc8",
+      "enabled": true,
+      "type": "text"
+    },
+    {
+      "key": "comPath",
+      "value": "unionvms",
+      "enabled": true,
+      "type": "text"
+    }
+  ],
+  "_postman_variable_scope": "environment",
+  "_postman_exported_at": "2018-03-26T12:24:11.685Z",
+  "_postman_exported_using": "Postman/6.0.10"
+}
