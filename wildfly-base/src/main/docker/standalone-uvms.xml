@@ -488,24 +488,49 @@
                          <password>mdr</password>
                      </security>
                  </xa-datasource>
-                <datasource jta="true" jndi-name="java:/jdbc/uvms_sales" pool-name="jdbc/uvms_sales" enabled="true" use-ccm="true">
-                    <connection-url>jdbc:postgresql://postgres/db71u?defaultSchema=sales</connection-url>
-                    <driver-class>org.postgresql.Driver</driver-class>
+                <xa-datasource jndi-name="java:/jdbc/uvms_salesecbproxy" pool-name="jdbc/uvms_salesecbproxy" enabled="true" use-ccm="true" statistics-enabled="false">
+                    <xa-datasource-property name="ServerName">postgres</xa-datasource-property>
+                    <xa-datasource-property name="PortNumber">5432</xa-datasource-property>
+                    <xa-datasource-property name="DatabaseName">db71u</xa-datasource-property>
+                    
                     <driver>postgresql</driver>
-                    <security>
-                        <user-name>sales</user-name>
-                        <password>sales</password>
-                    </security>
-                </datasource>
-                <datasource jta="true" jndi-name="java:/jdbc/uvms_salesecbproxy" pool-name="uvms_salesecbproxy" enabled="true" use-ccm="true">
-                    <connection-url>jdbc:postgresql://postgres/db71u?defaultSchema=salesecbproxy</connection-url>
-                    <driver-class>org.postgresql.Driver</driver-class>
-                    <driver>postgresql</driver>
+                    <xa-pool>
+                        <min-pool-size>1</min-pool-size>
+                        <initial-pool-size>1</initial-pool-size>
+                        <max-pool-size>5</max-pool-size>
+                        <prefill>true</prefill>
+                    </xa-pool>
                     <security>
                         <user-name>salesecbproxy</user-name>
                         <password>salesecbproxy</password>
                     </security>
-                </datasource>
+                    <validation>
+                        <valid-connection-checker class-name="org.jboss.jca.adapters.jdbc.extensions.postgres.PostgreSQLValidConnectionChecker"/>
+                        <exception-sorter class-name="org.jboss.jca.adapters.jdbc.extensions.postgres.PostgreSQLExceptionSorter"/>
+                    </validation>
+                </xa-datasource>
+
+                <xa-datasource jndi-name="java:/jdbc/uvms_sales" pool-name="jdbc/uvms_sales" enabled="true" use-ccm="true" statistics-enabled="false">
+                    <xa-datasource-property name="ServerName">postgres</xa-datasource-property>
+                    <xa-datasource-property name="PortNumber">5432</xa-datasource-property>
+                    <xa-datasource-property name="DatabaseName">db71u</xa-datasource-property>
+                    
+                    <driver>postgresql</driver>
+                    <xa-pool>
+                        <min-pool-size>1</min-pool-size>
+                        <initial-pool-size>1</initial-pool-size>
+                        <max-pool-size>5</max-pool-size>
+                        <prefill>true</prefill>
+                    </xa-pool>
+                    <security>
+                        <user-name>sales</user-name>
+                        <password>sales</password>
+                    </security>
+                    <validation>
+                        <valid-connection-checker class-name="org.jboss.jca.adapters.jdbc.extensions.postgres.PostgreSQLValidConnectionChecker"/>
+                        <exception-sorter class-name="org.jboss.jca.adapters.jdbc.extensions.postgres.PostgreSQLExceptionSorter"/>
+                    </validation>
+                </xa-datasource>
                 <xa-datasource jta="true" jndi-name="java:jboss/datasources/uvms_subscription" pool-name="uvms_subscription" enabled="true" use-ccm="true" statistics-enabled="false">
                     <xa-datasource-property name="ServerName">postgres</xa-datasource-property>
                     <xa-datasource-property name="PortNumber">5432</xa-datasource-property>
