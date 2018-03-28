@@ -251,7 +251,7 @@
 						<phase>pre-integration-test</phase>
 						<configuration>
 							<tasks>
-								<sleep seconds="240" />
+								<sleep seconds="480" />
 							</tasks>
 						</configuration>
 						<goals>
