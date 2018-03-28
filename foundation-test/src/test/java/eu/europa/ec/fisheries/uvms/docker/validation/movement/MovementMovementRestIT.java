@@ -46,6 +46,7 @@ import eu.europa.ec.fisheries.wsdl.asset.types.Asset;
  * The Class MovementMovementRestIT.
  */
 
+@Ignore
 public class MovementMovementRestIT extends AbstractRestServiceTest {
 	
 	/** The movement helper. */
