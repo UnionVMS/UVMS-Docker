@@ -1,0 +1,221 @@
+{
+	"info": {
+		"name": "ExchangeServices",
+		"_postman_id": "26053639-8bbb-193a-d3b0-b0b1cd4d66dc",
+		"description": "",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "authenticate copy",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"var data = JSON.parse(responseBody);",
+							"",
+							"tests[\"authenticated is true\"] = data.authenticated === true;",
+							"",
+							"postman.setEnvironmentVariable(\"token\", data.jwtoken);",
+							"",
+							"tests[\"environment token is \" + environment.token] = environment.token === data.jwtoken;",
+							"",
+							"var jsonData = JSON.parse(responseBody);"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n   \"userName\": \"rep_power\",\n   \"password\": \"abcd-1234\"\n}"
+				},
+				"url": "{{hostname}}:{{port}}/{{comPath}}/usm-administration/rest/authenticate"
+			},
+			"response": []
+		},
+		{
+			"name": "ExchangeListMessages",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "6661001a-0f82-430c-9d80-67de98d9260b",
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							"",
+							"try {",
+							"\tresp = JSON.parse(responseBody);",
+							"\ttests[\"response code is 200\"] = resp.code === 200;",
+							"\tresults = resp.data.logList;",
+							"",
+							"    \tconsole.log(results.length);",
+							"\t",
+							"\tfor(i = 0; i < results.length; i++) {",
+							"\t    console.log(results[i]);",
+							"\t    console.log(results[i].relatedLogData);",
+							"\t    tests[\"result \" + i + \" has related doc data\"] = !(results[i].relatedLogData === null);",
+							"    }",
+							"\t",
+							"\tfor(i = 0; i < results.length; i++) {",
+							"\t   if(results[i].logData.type == \"FA_REPORT\" && results[i].status == \"FAILED\"){",
+							"\t       postman.setGlobalVariable('exchange_message_guid', results[i].id);",
+							"\t   } ",
+							"\t}",
+							"\t",
+							"\t",
+							"\t",
+							"\t",
+							"} catch (e) {",
+							"\ttests[\"Response in JSON format\"] = false;",
+							"}"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "roleName",
+						"value": "rep_power_role"
+					},
+					{
+						"key": "scopeName",
+						"value": "EC"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "authorization",
+						"value": "{{token}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"pagination\" : {\n        \"page\" : 1,\n        \"listSize\" : 1000\n    },\n    \"exchangeSearchCriteria\" : {\n        \"isDynamic\" : false,\n        \"criterias\" : []\n    }\n}"
+				},
+				"url": "{{hostname}}:{{port}}/{{comPath}}/exchange/rest/exchange/list"
+			},
+			"response": []
+		},
+		{
+			"name": "GetRawXMLMessage",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "5e7fc66b-c789-426e-91a3-bb54c74bc978",
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							"",
+							"try {",
+							"\tresp = JSON.parse(responseBody);",
+							"\ttests[\"response code is 200\"] = resp.code === 200;",
+							"\t",
+							"\ttests[\"message present\"] = resp.data.length>10;",
+							"\t",
+							"\t",
+							"\t",
+							"} catch (e) {",
+							"\ttests[\"Response in JSON format\"] = false;",
+							"}"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "roleName",
+						"value": "rep_power_role"
+					},
+					{
+						"key": "scopeName",
+						"value": "EC"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "authorization",
+						"value": "{{token}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": "{{hostname}}:{{port}}/{{comPath}}/exchange/rest/exchange/message/{{exchange_message_guid}}"
+			},
+			"response": []
+		},
+		{
+			"name": "GetValidationResult",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "08a67226-b060-47a6-8a6a-0ff17dfbc1c4",
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							"",
+							"try {",
+							"\tresp = JSON.parse(responseBody);",
+							"\ttests[\"response code is 200\"] = resp.code === 200;",
+							"    ",
+							"    tests[\"has failures\"] = resp.data.validationList.length>0;",
+							"    ",
+							"} catch (e) {",
+							"\ttests[\"Response in JSON format\"] = false;",
+							"}"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "roleName",
+						"value": "rep_power_role"
+					},
+					{
+						"key": "scopeName",
+						"value": "EC"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "authorization",
+						"value": "{{token}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": "{{hostname}}:{{port}}/{{comPath}}/exchange/rest/exchange/validation/{{exchange_message_guid}}"
+			},
+			"response": []
+		}
+	]
+}
