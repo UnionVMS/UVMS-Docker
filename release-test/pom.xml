@@ -461,7 +461,6 @@
 											<arg value="-u" />
 											<arg value="-m" />
 											<arg value="unittest" />
-											<arg value="-v" />
 											<arg value="Python-regression-suite-selenium.UnionVMSTestCase" />											
 									  </exec>
 									</tasks>
