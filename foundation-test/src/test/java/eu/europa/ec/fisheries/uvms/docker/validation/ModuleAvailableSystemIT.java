@@ -163,7 +163,7 @@ public class ModuleAvailableSystemIT extends AbstractRest {
 	@Test
 	public void checkMapfishPrintAccessTest() throws Exception {
 		assertEquals(HttpStatus.SC_FORBIDDEN,
-				Request.Get(getBaseUrl() + "mapfish-print/").execute().returnResponse().getStatusLine().getStatusCode());
+				Request.Get("http://localhost:28080/" + "mapfish-print/").execute().returnResponse().getStatusLine().getStatusCode());
 	}
 
 }
