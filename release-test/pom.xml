@@ -460,7 +460,10 @@
 										<exec dir="${project.basedir}/target/" executable="${python.runtime}">
 										 	<redirector output="target/Python-regression-suite-selenium.log" alwayslog="true" /> 
 											<arg value="-u" />
-											<arg value="Python-regression-suite-selenium.py" />											
+											<arg value="-m" />
+											<arg value="unittest" />
+											<arg value="-v" />
+											<arg value="Python-regression-suite-selenium.UnionVMSTestCase" />											
 									  </exec>
 									</tasks>
 								</configuration>
