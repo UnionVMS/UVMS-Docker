@@ -1,48 +1,10 @@
 {
 	"info": {
+		"_postman_id": "38f8ede4-ce93-43b7-837c-99c0b8d873b2",
 		"name": "ExchangeServices",
-		"_postman_id": "26053639-8bbb-193a-d3b0-b0b1cd4d66dc",
-		"description": "",
-		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
 	"item": [
-		{
-			"name": "authenticate copy",
-			"event": [
-				{
-					"listen": "test",
-					"script": {
-						"type": "text/javascript",
-						"exec": [
-							"var data = JSON.parse(responseBody);",
-							"",
-							"tests[\"authenticated is true\"] = data.authenticated === true;",
-							"",
-							"postman.setEnvironmentVariable(\"token\", data.jwtoken);",
-							"",
-							"tests[\"environment token is \" + environment.token] = environment.token === data.jwtoken;",
-							"",
-							"var jsonData = JSON.parse(responseBody);"
-						]
-					}
-				}
-			],
-			"request": {
-				"method": "POST",
-				"header": [
-					{
-						"key": "Content-Type",
-						"value": "application/json"
-					}
-				],
-				"body": {
-					"mode": "raw",
-					"raw": "{\n   \"userName\": \"rep_power\",\n   \"password\": \"abcd-1234\"\n}"
-				},
-				"url": "{{hostname}}:{{port}}/{{comPath}}/usm-administration/rest/authenticate"
-			},
-			"response": []
-		},
 		{
 			"name": "ExchangeListMessages",
 			"event": [
@@ -107,7 +69,19 @@
 					"mode": "raw",
 					"raw": "{\n    \"pagination\" : {\n        \"page\" : 1,\n        \"listSize\" : 1000\n    },\n    \"exchangeSearchCriteria\" : {\n        \"isDynamic\" : false,\n        \"criterias\" : []\n    }\n}"
 				},
-				"url": "{{hostname}}:{{port}}/{{comPath}}/exchange/rest/exchange/list"
+				"url": {
+					"raw": "{{hostname}}/{{context}}/exchange/rest/exchange/list",
+					"host": [
+						"{{hostname}}"
+					],
+					"path": [
+						"{{context}}",
+						"exchange",
+						"rest",
+						"exchange",
+						"list"
+					]
+				}
 			},
 			"response": []
 		},
@@ -161,7 +135,20 @@
 					"mode": "raw",
 					"raw": ""
 				},
-				"url": "{{hostname}}:{{port}}/{{comPath}}/exchange/rest/exchange/message/{{exchange_message_guid}}"
+				"url": {
+					"raw": "{{hostname}}/{{context}}/exchange/rest/exchange/message/{{exchange_message_guid}}",
+					"host": [
+						"{{hostname}}"
+					],
+					"path": [
+						"{{context}}",
+						"exchange",
+						"rest",
+						"exchange",
+						"message",
+						"{{exchange_message_guid}}"
+					]
+				}
 			},
 			"response": []
 		},
@@ -213,9 +200,60 @@
 					"mode": "raw",
 					"raw": ""
 				},
-				"url": "{{hostname}}:{{port}}/{{comPath}}/exchange/rest/exchange/validation/{{exchange_message_guid}}"
+				"url": {
+					"raw": "{{hostname}}/{{context}}/exchange/rest/exchange/validation/{{exchange_message_guid}}",
+					"host": [
+						"{{hostname}}"
+					],
+					"path": [
+						"{{context}}",
+						"exchange",
+						"rest",
+						"exchange",
+						"validation",
+						"{{exchange_message_guid}}"
+					]
+				}
 			},
 			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"id": "2d40a76d-b73e-4280-bca1-af539261036d",
+				"type": "text/javascript",
+				"exec": [
+					"var urlString = pm.environment.get(\"hostname\") + \"/\" + pm.environment.get(\"context\") + \"/usm-administration/rest/authenticate\";",
+					"",
+					"pm.sendRequest({",
+					"   url: urlString,",
+					"   method: 'POST',",
+					"   header: 'Content-Type:application/json',",
+					"   body: {",
+					"       mode: 'raw',",
+					"       raw: JSON.stringify({",
+					"  \"userName\": \"rep_power\",",
+					"  \"password\": \"abcd-1234\"",
+					"})",
+					"   }",
+					"}, function (err, res) {",
+					"   postman.setEnvironmentVariable(\"token\", res.json().jwtoken);",
+					"   console.log(postman.getEnvironmentVariable(\"token\"));",
+					"});"
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"id": "ab757ee2-aef5-49cc-a0a4-11b49f9cb92d",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
 		}
 	]
 }
