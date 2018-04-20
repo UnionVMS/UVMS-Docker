@@ -1,13 +1,13 @@
 {
 	"info": {
-		"name": "ActivityQATests",
-		"_postman_id": "52ad5e8d-0235-35e0-a09e-17f1291ae92d",
-		"description": "",
-		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
+		"_postman_id": "2689729e-e957-4464-bece-124128611d4e",
+		"name": "ActivityQATests copy",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
 	"item": [
 		{
 			"name": "01 User Rights Cleanup",
+			"description": null,
 			"item": [
 				{
 					"name": "authenticate usm_admin",
@@ -42,7 +42,18 @@
 							"mode": "raw",
 							"raw": "{\n   \"userName\": \"usm_admin\",\n   \"password\": \"password\"\n}"
 						},
-						"url": "{{hostname}}:{{port}}/{{comPath}}/usm-administration/rest/authenticate"
+						"url": {
+							"raw": "{{hostname}}/{{context}}/usm-administration/rest/authenticate",
+							"host": [
+								"{{hostname}}"
+							],
+							"path": [
+								"{{context}}",
+								"usm-administration",
+								"rest",
+								"authenticate"
+							]
+						}
 					},
 					"response": []
 				},
@@ -110,7 +121,18 @@
 							"mode": "raw",
 							"raw": "{\n   \"userName\": \"rep_share\",\n   \"password\": \"abcd-1234\"\n}"
 						},
-						"url": "{{hostname}}:{{port}}/{{comPath}}/usm-administration/rest/roles"
+						"url": {
+							"raw": "{{hostname}}/{{context}}/usm-administration/rest/roles",
+							"host": [
+								"{{hostname}}"
+							],
+							"path": [
+								"{{context}}",
+								"usm-administration",
+								"rest",
+								"roles"
+							]
+						}
 					},
 					"response": []
 				},
@@ -181,7 +203,18 @@
 							"mode": "raw",
 							"raw": "{\n   \"userName\": \"rep_share\",\n   \"password\": \"abcd-1234\"\n}"
 						},
-						"url": "{{hostname}}:{{port}}/{{comPath}}/usm-administration/rest/scopes"
+						"url": {
+							"raw": "{{hostname}}/{{context}}/usm-administration/rest/scopes",
+							"host": [
+								"{{hostname}}"
+							],
+							"path": [
+								"{{context}}",
+								"usm-administration",
+								"rest",
+								"scopes"
+							]
+						}
 					},
 					"response": []
 				},
@@ -235,7 +268,18 @@
 							"mode": "raw",
 							"raw": "{\r\n\t\"updateDatasets\": true,\r\n\t\"status\": \"E\",\r\n\t\"name\": \"EC\",\r\n\t\"activeFrom\": \"{{EC_ACTIVE_FROM}}\",\r\n\t\"activeTo\": \"{{EC_ACTIVE_TO}}\",\r\n\t\"scopeId\": {{EC_SCOPE_ID}},\r\n\t\"dataSets\": [34, 18, 29, 33, 14, 47, 50, 41, 38, 8, 26, 30, 52, 48, 51, 3, 46, 7, 42, 100007, 9, 36, 35, 45, 37, 100002, 6, 28, 11, 16, 22, 39, 17, 15, 10, 27, 0, 13, 100008, 32, 20, 19, 31, 44, 43, 25, 49, 4, 24, 5, 1, 2, 23, 40, 100009, 12, 21, 100005, 100011, 100006, 100001, 100010, 100013, 100004, 100000, 100003, 100014, 100012]\r\n}"
 						},
-						"url": "{{hostname}}:{{port}}/{{comPath}}/usm-administration/rest/scopes"
+						"url": {
+							"raw": "{{hostname}}/{{context}}/usm-administration/rest/scopes",
+							"host": [
+								"{{hostname}}"
+							],
+							"path": [
+								"{{context}}",
+								"usm-administration",
+								"rest",
+								"scopes"
+							]
+						}
 					},
 					"response": []
 				},
@@ -292,7 +336,18 @@
 							"mode": "raw",
 							"raw": "{\r\n\t\"updateDatasets\": true,\r\n\t\"status\": \"E\",\r\n\t\"name\": \"EC\",\r\n\t\"activeFrom\": \"{{EC_ACTIVE_FROM}}\",\r\n\t\"activeTo\": \"{{EC_ACTIVE_TO}}\",\r\n\t\"scopeId\": {{EC_SCOPE_ID}},\r\n\t\"dataSets\": [34, 18, 29, 33, 14, 47, 50, 41, 38, 8, 26, 30, 52, 48, 51, 3, 46, 7, 42, 100007, 9, 36, 35, 45, 37, 100002, 6, 28, 11, 16, 22, 39, 17, 15, 10, 27, 0, 13, 100008, 32, 20, 19, 31, 44, 43, 25, 49, 4, 24, 5, 1, 2, 23, 40, 100009, 12, 21, 100005, 100011, 100006, 100001, 100010, 100013, 100004, 100000, 100003, 100014, 100012]\r\n}"
 						},
-						"url": "{{hostname}}:{{port}}/{{comPath}}/usm-administration/rest/scopes"
+						"url": {
+							"raw": "{{hostname}}/{{context}}/usm-administration/rest/scopes",
+							"host": [
+								"{{hostname}}"
+							],
+							"path": [
+								"{{context}}",
+								"usm-administration",
+								"rest",
+								"scopes"
+							]
+						}
 					},
 					"response": []
 				}
@@ -300,44 +355,8 @@
 		},
 		{
 			"name": "02 Search Fishing Activities",
+			"description": null,
 			"item": [
-				{
-					"name": "authenticate",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"var data = JSON.parse(responseBody);",
-									"",
-									"tests[\"authenticated is true\"] = data.authenticated === true;",
-									"",
-									"postman.setEnvironmentVariable(\"token\", data.jwtoken);",
-									"",
-									"tests[\"environment token is \" + environment.token] = environment.token === data.jwtoken;",
-									"",
-									"var jsonData = JSON.parse(responseBody);"
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "Content-Type",
-								"value": "application/json"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n   \"userName\": \"rep_power\",\n   \"password\": \"abcd-1234\"\n}"
-						},
-						"url": "{{hostname}}:{{port}}/{{comPath}}/usm-administration/rest/authenticate"
-					},
-					"response": []
-				},
 				{
 					"name": "Search FA Report Type Notification",
 					"event": [
@@ -410,7 +429,19 @@
 							"mode": "raw",
 							"raw": "{\r\n    \"pagination\": {\r\n        \"offset\": 0,\r\n        \"pageSize\": 25\r\n    },\r\n    \"sorting\": {\r\n        \"sortBy\": \"ACTIVITY_TYPE\",\r\n        \"reversed\": true\r\n    },\r\n    \"searchCriteriaMap\": {\r\n        \"REPORT_TYPE\": \"NOTIFICATION\"\r\n    },\r\n    \"searchCriteriaMapMultipleValues\": {\r\n        \"PURPOSE\": [\"1\", \"3\", \"5\", \"9\"]\r\n    }\r\n}"
 						},
-						"url": "{{hostname}}:{{port}}/{{comPath}}/activity/rest/fa/list"
+						"url": {
+							"raw": "{{hostname}}/{{context}}/activity/rest/fa/list",
+							"host": [
+								"{{hostname}}"
+							],
+							"path": [
+								"{{context}}",
+								"activity",
+								"rest",
+								"fa",
+								"list"
+							]
+						}
 					},
 					"response": []
 				},
@@ -481,7 +512,19 @@
 							"mode": "raw",
 							"raw": "{\r\n    \"pagination\": {\r\n        \"offset\": 0,\r\n        \"pageSize\": 25\r\n    },\r\n    \"sorting\": {\r\n        \"sortBy\": \"ACTIVITY_TYPE\",\r\n        \"reversed\": true\r\n    },\r\n    \"searchCriteriaMap\": {\r\n        \"REPORT_TYPE\": \"DECLARATION\"\r\n    },\r\n    \"searchCriteriaMapMultipleValues\": {\r\n        \"PURPOSE\": [\"1\", \"3\", \"5\", \"9\"]\r\n    }\r\n}"
 						},
-						"url": "{{hostname}}:{{port}}/{{comPath}}/activity/rest/fa/list"
+						"url": {
+							"raw": "{{hostname}}/{{context}}/activity/rest/fa/list",
+							"host": [
+								"{{hostname}}"
+							],
+							"path": [
+								"{{context}}",
+								"activity",
+								"rest",
+								"fa",
+								"list"
+							]
+						}
 					},
 					"response": []
 				},
@@ -552,7 +595,19 @@
 							"mode": "raw",
 							"raw": "{  \r\n   \"pagination\":{  \r\n      \"offset\":0,\r\n      \"pageSize\":25\r\n   },\r\n   \"sorting\":{  \r\n      \"sortBy\":\"ACTIVITY_TYPE\",\r\n      \"reversed\":true\r\n   },\r\n   \"searchCriteriaMap\":{  \r\n      \"ACTIVITY_TYPE\":\"DEPARTURE\"\r\n   },\r\n   \"searchCriteriaMapMultipleValues\":{  \r\n      \"PURPOSE\":[  \r\n         \"1\",\r\n         \"3\",\r\n         \"5\",\r\n         \"9\"\r\n      ]\r\n   }\r\n}"
 						},
-						"url": "{{hostname}}:{{port}}/{{comPath}}/activity/rest/fa/list"
+						"url": {
+							"raw": "{{hostname}}/{{context}}/activity/rest/fa/list",
+							"host": [
+								"{{hostname}}"
+							],
+							"path": [
+								"{{context}}",
+								"activity",
+								"rest",
+								"fa",
+								"list"
+							]
+						}
 					},
 					"response": []
 				},
@@ -623,7 +678,19 @@
 							"mode": "raw",
 							"raw": "{  \r\n   \"pagination\":{  \r\n      \"offset\":0,\r\n      \"pageSize\":25\r\n   },\r\n   \"sorting\":{  \r\n      \"sortBy\":\"ACTIVITY_TYPE\",\r\n      \"reversed\":true\r\n   },\r\n   \"searchCriteriaMap\":{  \r\n      \"ACTIVITY_TYPE\":\"ARRIVAL\"\r\n   },\r\n   \"searchCriteriaMapMultipleValues\":{  \r\n      \"PURPOSE\":[  \r\n         \"1\",\r\n         \"3\",\r\n         \"5\",\r\n         \"9\"\r\n      ]\r\n   }\r\n}"
 						},
-						"url": "{{hostname}}:{{port}}/{{comPath}}/activity/rest/fa/list"
+						"url": {
+							"raw": "{{hostname}}/{{context}}/activity/rest/fa/list",
+							"host": [
+								"{{hostname}}"
+							],
+							"path": [
+								"{{context}}",
+								"activity",
+								"rest",
+								"fa",
+								"list"
+							]
+						}
 					},
 					"response": []
 				},
@@ -694,7 +761,19 @@
 							"mode": "raw",
 							"raw": "{  \r\n   \"pagination\":{  \r\n      \"offset\":0,\r\n      \"pageSize\":25\r\n   },\r\n   \"sorting\":{  \r\n      \"sortBy\":\"ACTIVITY_TYPE\",\r\n      \"reversed\":true\r\n   },\r\n   \"searchCriteriaMap\":{  \r\n      \"ACTIVITY_TYPE\":\"AREA_ENTRY\"\r\n   },\r\n   \"searchCriteriaMapMultipleValues\":{  \r\n      \"PURPOSE\":[  \r\n         \"1\",\r\n         \"3\",\r\n         \"5\",\r\n         \"9\"\r\n      ]\r\n   }\r\n}"
 						},
-						"url": "{{hostname}}:{{port}}/{{comPath}}/activity/rest/fa/list"
+						"url": {
+							"raw": "{{hostname}}/{{context}}/activity/rest/fa/list",
+							"host": [
+								"{{hostname}}"
+							],
+							"path": [
+								"{{context}}",
+								"activity",
+								"rest",
+								"fa",
+								"list"
+							]
+						}
 					},
 					"response": []
 				},
@@ -765,7 +844,19 @@
 							"mode": "raw",
 							"raw": "{  \r\n   \"pagination\":{  \r\n      \"offset\":0,\r\n      \"pageSize\":25\r\n   },\r\n   \"sorting\":{  \r\n      \"sortBy\":\"ACTIVITY_TYPE\",\r\n      \"reversed\":true\r\n   },\r\n   \"searchCriteriaMap\":{  \r\n      \"ACTIVITY_TYPE\":\"AREA_EXIT\"\r\n   },\r\n   \"searchCriteriaMapMultipleValues\":{  \r\n      \"PURPOSE\":[  \r\n         \"1\",\r\n         \"3\",\r\n         \"5\",\r\n         \"9\"\r\n      ]\r\n   }\r\n}"
 						},
-						"url": "{{hostname}}:{{port}}/{{comPath}}/activity/rest/fa/list"
+						"url": {
+							"raw": "{{hostname}}/{{context}}/activity/rest/fa/list",
+							"host": [
+								"{{hostname}}"
+							],
+							"path": [
+								"{{context}}",
+								"activity",
+								"rest",
+								"fa",
+								"list"
+							]
+						}
 					},
 					"response": []
 				},
@@ -835,7 +926,19 @@
 							"mode": "raw",
 							"raw": "{  \r\n   \"pagination\":{  \r\n      \"offset\":0,\r\n      \"pageSize\":25\r\n   },\r\n   \"sorting\":{  \r\n      \"sortBy\":\"ACTIVITY_TYPE\",\r\n      \"reversed\":true\r\n   },\r\n   \"searchCriteriaMap\":{  \r\n      \"ACTIVITY_TYPE\":\"FISHING_OPERATION\"\r\n   },\r\n   \"searchCriteriaMapMultipleValues\":{  \r\n      \"PURPOSE\":[  \r\n         \"1\",\r\n         \"3\",\r\n         \"5\",\r\n         \"9\"\r\n      ]\r\n   }\r\n}"
 						},
-						"url": "{{hostname}}:{{port}}/{{comPath}}/activity/rest/fa/list"
+						"url": {
+							"raw": "{{hostname}}/{{context}}/activity/rest/fa/list",
+							"host": [
+								"{{hostname}}"
+							],
+							"path": [
+								"{{context}}",
+								"activity",
+								"rest",
+								"fa",
+								"list"
+							]
+						}
 					},
 					"response": []
 				},
@@ -905,7 +1008,19 @@
 							"mode": "raw",
 							"raw": "{\n\t\"pagination\": {\n\t\t\"offset\": 0,\n\t\t\"pageSize\": 25\n\t},\n\t\"sorting\": {},\n\t\"searchCriteriaMap\": {\n\t\t\"ACTIVITY_TYPE\": \"LANDING\"\n\t},\n\t\"searchCriteriaMapMultipleValues\": {\n\t\t\"PURPOSE\": [\n\t\t\t\"9\",\n\t\t\t\"1\",\n\t\t\t\"5\",\n\t\t\t\"3\"\n\t\t]\n\t}\n}"
 						},
-						"url": "{{hostname}}:{{port}}/{{comPath}}/activity/rest/fa/list"
+						"url": {
+							"raw": "{{hostname}}/{{context}}/activity/rest/fa/list",
+							"host": [
+								"{{hostname}}"
+							],
+							"path": [
+								"{{context}}",
+								"activity",
+								"rest",
+								"fa",
+								"list"
+							]
+						}
 					},
 					"response": []
 				},
@@ -976,7 +1091,19 @@
 							"mode": "raw",
 							"raw": "{  \r\n   \"pagination\":{  \r\n      \"offset\":0,\r\n      \"pageSize\":25\r\n   },\r\n   \"sorting\":{  \r\n      \"sortBy\":\"ACTIVITY_TYPE\",\r\n      \"reversed\":true\r\n   },\r\n   \"searchCriteriaMap\":{  \r\n      \"ACTIVITY_TYPE\":\"DISCARD\"\r\n   },\r\n   \"searchCriteriaMapMultipleValues\":{  \r\n      \"PURPOSE\":[  \r\n         \"1\",\r\n         \"3\",\r\n         \"5\",\r\n         \"9\"\r\n      ]\r\n   }\r\n}"
 						},
-						"url": "{{hostname}}:{{port}}/{{comPath}}/activity/rest/fa/list"
+						"url": {
+							"raw": "{{hostname}}/{{context}}/activity/rest/fa/list",
+							"host": [
+								"{{hostname}}"
+							],
+							"path": [
+								"{{context}}",
+								"activity",
+								"rest",
+								"fa",
+								"list"
+							]
+						}
 					},
 					"response": []
 				},
@@ -1047,7 +1174,19 @@
 							"mode": "raw",
 							"raw": "{\n\t\"pagination\": {\n\t\t\"offset\": 0,\n\t\t\"pageSize\": 25\n\t},\n\t\"sorting\": {},\n\t\"searchCriteriaMap\": {\n\t\t\"ACTIVITY_TYPE\": \"TRANSHIPMENT\"\n\t},\n\t\"searchCriteriaMapMultipleValues\": {\n\t\t\"PURPOSE\": [\n\t\t\t\"9\",\n\t\t\t\"1\",\n\t\t\t\"5\",\n\t\t\t\"3\"\n\t\t]\n\t}\n}"
 						},
-						"url": "{{hostname}}:{{port}}/{{comPath}}/activity/rest/fa/list"
+						"url": {
+							"raw": "{{hostname}}/{{context}}/activity/rest/fa/list",
+							"host": [
+								"{{hostname}}"
+							],
+							"path": [
+								"{{context}}",
+								"activity",
+								"rest",
+								"fa",
+								"list"
+							]
+						}
 					},
 					"response": []
 				},
@@ -1119,7 +1258,19 @@
 							"mode": "raw",
 							"raw": "{  \r\n   \"pagination\":{  \r\n      \"offset\":1,\r\n      \"pageSize\":25\r\n   },\r\n   \"sorting\":{  \r\n      \"sortBy\":\"ACTIVITY_TYPE\",\r\n      \"reversed\":true\r\n   },\r\n   \"searchCriteriaMap\":{  \r\n      \"ACTIVITY_TYPE\":\"RELOCATION\"\r\n   },\r\n   \"searchCriteriaMapMultipleValues\":{  \r\n      \"PURPOSE\":[  \r\n         \"1\",\r\n         \"3\",\r\n         \"5\",\r\n         \"9\"\r\n      ]\r\n   }\r\n}"
 						},
-						"url": "{{hostname}}:{{port}}/{{comPath}}/activity/rest/fa/list"
+						"url": {
+							"raw": "{{hostname}}/{{context}}/activity/rest/fa/list",
+							"host": [
+								"{{hostname}}"
+							],
+							"path": [
+								"{{context}}",
+								"activity",
+								"rest",
+								"fa",
+								"list"
+							]
+						}
 					},
 					"response": []
 				},
@@ -1191,7 +1342,19 @@
 							"mode": "raw",
 							"raw": "{  \r\n   \"pagination\":{  \r\n      \"offset\":1,\r\n      \"pageSize\":25\r\n   },\r\n   \"sorting\":{  \r\n      \"sortBy\":\"ACTIVITY_TYPE\",\r\n      \"reversed\":true\r\n   },\r\n   \"searchCriteriaMap\":{  \r\n      \"ACTIVITY_TYPE\":\"JOINED_FISHING_OPERATION\"\r\n   },\r\n   \"searchCriteriaMapMultipleValues\":{  \r\n      \"PURPOSE\":[  \r\n         \"1\",\r\n         \"3\",\r\n         \"5\",\r\n         \"9\"\r\n      ]\r\n   }\r\n}"
 						},
-						"url": "{{hostname}}:{{port}}/{{comPath}}/activity/rest/fa/list"
+						"url": {
+							"raw": "{{hostname}}/{{context}}/activity/rest/fa/list",
+							"host": [
+								"{{hostname}}"
+							],
+							"path": [
+								"{{context}}",
+								"activity",
+								"rest",
+								"fa",
+								"list"
+							]
+						}
 					},
 					"response": []
 				},
@@ -1262,7 +1425,19 @@
 							"mode": "raw",
 							"raw": "{  \r\n   \"pagination\":{  \r\n      \"offset\":1,\r\n      \"pageSize\":25\r\n   },\r\n   \"sorting\":{  \r\n      \"sortBy\":\"ACTIVITY_TYPE\",\r\n      \"reversed\":true\r\n   },\r\n   \"searchCriteriaMap\":{  \r\n      \"FROM\":\"MLT\"\r\n   },\r\n   \"searchCriteriaMapMultipleValues\":{  \r\n      \"PURPOSE\":[  \r\n         \"1\",\r\n         \"3\",\r\n         \"5\",\r\n         \"9\"\r\n      ]\r\n   }\r\n}"
 						},
-						"url": "{{hostname}}:{{port}}/{{comPath}}/activity/rest/fa/list"
+						"url": {
+							"raw": "{{hostname}}/{{context}}/activity/rest/fa/list",
+							"host": [
+								"{{hostname}}"
+							],
+							"path": [
+								"{{context}}",
+								"activity",
+								"rest",
+								"fa",
+								"list"
+							]
+						}
 					},
 					"response": []
 				},
@@ -1334,7 +1509,19 @@
 							"mode": "raw",
 							"raw": "{  \r\n   \"pagination\":{  \r\n      \"offset\":1,\r\n      \"pageSize\":25\r\n   },\r\n   \"sorting\":{  \r\n      \"sortBy\":\"ACTIVITY_TYPE\",\r\n      \"reversed\":true\r\n   },\r\n   \"searchCriteriaMap\":{  \r\n      \"VESSEL\":\"MADONNA DI POMPEI\"\r\n   },\r\n   \"searchCriteriaMapMultipleValues\":{  \r\n      \"PURPOSE\":[  \r\n         \"1\",\r\n         \"3\",\r\n         \"5\",\r\n         \"9\"\r\n      ]\r\n   }\r\n}"
 						},
-						"url": "{{hostname}}:{{port}}/{{comPath}}/activity/rest/fa/list"
+						"url": {
+							"raw": "{{hostname}}/{{context}}/activity/rest/fa/list",
+							"host": [
+								"{{hostname}}"
+							],
+							"path": [
+								"{{context}}",
+								"activity",
+								"rest",
+								"fa",
+								"list"
+							]
+						}
 					},
 					"response": []
 				},
@@ -1407,7 +1594,19 @@
 							"mode": "raw",
 							"raw": "{  \r\n   \"pagination\":{  \r\n      \"offset\":1,\r\n      \"pageSize\":25\r\n   },\r\n   \"sorting\":{  \r\n      \"sortBy\":\"ACTIVITY_TYPE\",\r\n      \"reversed\":true\r\n   },\r\n   \"searchCriteriaMap\":{  \r\n      \"SPECIES\":\"YFT\"\r\n   },\r\n   \"searchCriteriaMapMultipleValues\":{  \r\n      \"PURPOSE\":[  \r\n         \"1\",\r\n         \"3\",\r\n         \"5\",\r\n         \"9\"\r\n      ]\r\n   }\r\n}"
 						},
-						"url": "{{hostname}}:{{port}}/{{comPath}}/activity/rest/fa/list"
+						"url": {
+							"raw": "{{hostname}}/{{context}}/activity/rest/fa/list",
+							"host": [
+								"{{hostname}}"
+							],
+							"path": [
+								"{{context}}",
+								"activity",
+								"rest",
+								"fa",
+								"list"
+							]
+						}
 					},
 					"response": []
 				},
@@ -1479,7 +1678,19 @@
 							"mode": "raw",
 							"raw": "{\n\t\"pagination\": {\n\t\t\"offset\": 0,\n\t\t\"pageSize\": 25\n\t},\n\t\"sorting\": {},\n\t\"searchCriteriaMap\": {\n\t\t\"ACTIVITY_TYPE\": \"TRANSHIPMENT\",\n\t\t\"PORT\": \"SCPOV\"\n\t},\n\t\"searchCriteriaMapMultipleValues\": {\n\t\t\"PURPOSE\": [\n\t\t\t\"9\",\n\t\t\t\"1\",\n\t\t\t\"5\",\n\t\t\t\"3\"\n\t\t]\n\t}\n}"
 						},
-						"url": "{{hostname}}:{{port}}/{{comPath}}/activity/rest/fa/list"
+						"url": {
+							"raw": "{{hostname}}/{{context}}/activity/rest/fa/list",
+							"host": [
+								"{{hostname}}"
+							],
+							"path": [
+								"{{context}}",
+								"activity",
+								"rest",
+								"fa",
+								"list"
+							]
+						}
 					},
 					"response": []
 				},
@@ -1551,7 +1762,19 @@
 							"mode": "raw",
 							"raw": "{  \r\n   \"pagination\":{  \r\n      \"offset\":0,\r\n      \"pageSize\":25\r\n   },\r\n   \"sorting\":{  \r\n      \"sortBy\":\"ACTIVITY_TYPE\",\r\n      \"reversed\":true\r\n   },\r\n   \"searchCriteriaMap\":{  \r\n      \"GEAR\":\"PS\"\r\n   },\r\n   \"searchCriteriaMapMultipleValues\":{  \r\n      \"PURPOSE\":[  \r\n         \"1\",\r\n         \"3\",\r\n         \"5\",\r\n         \"9\"\r\n      ]\r\n   }\r\n}"
 						},
-						"url": "{{hostname}}:{{port}}/{{comPath}}/activity/rest/fa/list"
+						"url": {
+							"raw": "{{hostname}}/{{context}}/activity/rest/fa/list",
+							"host": [
+								"{{hostname}}"
+							],
+							"path": [
+								"{{context}}",
+								"activity",
+								"rest",
+								"fa",
+								"list"
+							]
+						}
 					},
 					"response": []
 				},
@@ -1623,7 +1846,19 @@
 							"mode": "raw",
 							"raw": "{  \r\n   \"pagination\":{  \r\n      \"offset\":0,\r\n      \"pageSize\":25\r\n   },\r\n   \"sorting\":{  \r\n      \"sortBy\":\"ACTIVITY_TYPE\",\r\n      \"reversed\":true\r\n   },\r\n   \"searchCriteriaMap\":{  \r\n      \"GEAR\":\"T\"\r\n   },\r\n   \"searchCriteriaMapMultipleValues\":{  \r\n      \"PURPOSE\":[  \r\n         \"1\",\r\n         \"3\",\r\n         \"5\",\r\n         \"9\"\r\n      ]\r\n   }\r\n}"
 						},
-						"url": "{{hostname}}:{{port}}/{{comPath}}/activity/rest/fa/list"
+						"url": {
+							"raw": "{{hostname}}/{{context}}/activity/rest/fa/list",
+							"host": [
+								"{{hostname}}"
+							],
+							"path": [
+								"{{context}}",
+								"activity",
+								"rest",
+								"fa",
+								"list"
+							]
+						}
 					},
 					"response": []
 				},
@@ -1695,7 +1930,19 @@
 							"mode": "raw",
 							"raw": "{  \r\n   \"pagination\":{  \r\n      \"offset\":0,\r\n      \"pageSize\":25\r\n   },\r\n   \"sorting\":{  \r\n      \"sortBy\":\"ACTIVITY_TYPE\",\r\n      \"reversed\":true\r\n   },\r\n   \"searchCriteriaMap\":{  \r\n      \"GEAR\":\"S\"\r\n   },\r\n   \"searchCriteriaMapMultipleValues\":{  \r\n      \"PURPOSE\":[  \r\n         \"1\",\r\n         \"3\",\r\n         \"5\",\r\n         \"9\"\r\n      ]\r\n   }\r\n}"
 						},
-						"url": "{{hostname}}:{{port}}/{{comPath}}/activity/rest/fa/list"
+						"url": {
+							"raw": "{{hostname}}/{{context}}/activity/rest/fa/list",
+							"host": [
+								"{{hostname}}"
+							],
+							"path": [
+								"{{context}}",
+								"activity",
+								"rest",
+								"fa",
+								"list"
+							]
+						}
 					},
 					"response": []
 				},
@@ -1767,7 +2014,19 @@
 							"mode": "raw",
 							"raw": "{  \r\n   \"pagination\":{  \r\n      \"offset\":0,\r\n      \"pageSize\":25\r\n   },\r\n   \"sorting\":{  \r\n      \"sortBy\":\"ACTIVITY_TYPE\",\r\n      \"reversed\":true\r\n   },\r\n   \"searchCriteriaMap\":{  \r\n      \"GEAR\":\"M\"\r\n   },\r\n   \"searchCriteriaMapMultipleValues\":{  \r\n      \"PURPOSE\":[  \r\n         \"1\",\r\n         \"3\",\r\n         \"5\",\r\n         \"9\"\r\n      ]\r\n   }\r\n}"
 						},
-						"url": "{{hostname}}:{{port}}/{{comPath}}/activity/rest/fa/list"
+						"url": {
+							"raw": "{{hostname}}/{{context}}/activity/rest/fa/list",
+							"host": [
+								"{{hostname}}"
+							],
+							"path": [
+								"{{context}}",
+								"activity",
+								"rest",
+								"fa",
+								"list"
+							]
+						}
 					},
 					"response": []
 				},
@@ -1843,7 +2102,19 @@
 							"mode": "raw",
 							"raw": "{  \r\n   \"pagination\":{  \r\n      \"offset\":0,\r\n      \"pageSize\":25\r\n   },\r\n   \"sorting\":{  \r\n      \"sortBy\":\"ACTIVITY_TYPE\",\r\n      \"reversed\":true\r\n   },\r\n   \"searchCriteriaMap\":{  \r\n      \"PERIOD_START\":\"2017-01-01T12:45:56\",\r\n      \"PERIOD_END\":\"2017-01-31T12:50:56\"\r\n   },\r\n   \"searchCriteriaMapMultipleValues\":{  \r\n      \"PURPOSE\":[  \r\n         \"1\",\r\n         \"3\",\r\n         \"5\",\r\n         \"9\"\r\n      ]\r\n   }\r\n}"
 						},
-						"url": "{{hostname}}:{{port}}/{{comPath}}/activity/rest/fa/list"
+						"url": {
+							"raw": "{{hostname}}/{{context}}/activity/rest/fa/list",
+							"host": [
+								"{{hostname}}"
+							],
+							"path": [
+								"{{context}}",
+								"activity",
+								"rest",
+								"fa",
+								"list"
+							]
+						}
 					},
 					"response": []
 				},
@@ -1913,7 +2184,19 @@
 							"mode": "raw",
 							"raw": "{  \r\n   \"pagination\":{  \r\n      \"offset\":0,\r\n      \"pageSize\":25\r\n   },\r\n   \"sorting\":{  \r\n      \"sortBy\":\"ACTIVITY_TYPE\",\r\n      \"reversed\":true\r\n   },\r\n   \"searchCriteriaMap\":{  \r\n      \"SOURCE\":\"FLUX\"\r\n   },\r\n   \"searchCriteriaMapMultipleValues\":{  \r\n      \"PURPOSE\":[  \r\n         \"1\",\r\n         \"3\",\r\n         \"5\",\r\n         \"9\"\r\n      ]\r\n   }\r\n}"
 						},
-						"url": "{{hostname}}:{{port}}/{{comPath}}/activity/rest/fa/list"
+						"url": {
+							"raw": "{{hostname}}/{{context}}/activity/rest/fa/list",
+							"host": [
+								"{{hostname}}"
+							],
+							"path": [
+								"{{context}}",
+								"activity",
+								"rest",
+								"fa",
+								"list"
+							]
+						}
 					},
 					"response": []
 				},
@@ -1983,7 +2266,19 @@
 							"mode": "raw",
 							"raw": "{\r\n    \"pagination\": {\r\n        \"offset\": 0,\r\n        \"pageSize\": 25\r\n    },\r\n    \"sorting\": {\r\n        \"sortBy\": \"ACTIVITY_TYPE\",\r\n        \"reversed\": true\r\n    },\r\n    \"searchCriteriaMap\": {},\r\n    \"searchCriteriaMapMultipleValues\": {\r\n        \"PURPOSE\": [\"9\"]\r\n    }\r\n}"
 						},
-						"url": "{{hostname}}:{{port}}/{{comPath}}/activity/rest/fa/list"
+						"url": {
+							"raw": "{{hostname}}/{{context}}/activity/rest/fa/list",
+							"host": [
+								"{{hostname}}"
+							],
+							"path": [
+								"{{context}}",
+								"activity",
+								"rest",
+								"fa",
+								"list"
+							]
+						}
 					},
 					"response": []
 				},
@@ -2054,7 +2349,19 @@
 							"mode": "raw",
 							"raw": "{\r\n    \"pagination\": {\r\n        \"offset\": 0,\r\n        \"pageSize\": 25\r\n    },\r\n    \"sorting\": {\r\n        \"sortBy\": \"ACTIVITY_TYPE\",\r\n        \"reversed\": true\r\n    },\r\n    \"searchCriteriaMap\": {},\r\n    \"searchCriteriaMapMultipleValues\": {\r\n        \"PURPOSE\": [\"1\"]\r\n    }\r\n}"
 						},
-						"url": "{{hostname}}:{{port}}/{{comPath}}/activity/rest/fa/list"
+						"url": {
+							"raw": "{{hostname}}/{{context}}/activity/rest/fa/list",
+							"host": [
+								"{{hostname}}"
+							],
+							"path": [
+								"{{context}}",
+								"activity",
+								"rest",
+								"fa",
+								"list"
+							]
+						}
 					},
 					"response": []
 				},
@@ -2124,7 +2431,19 @@
 							"mode": "raw",
 							"raw": "{\r\n    \"pagination\": {\r\n        \"offset\": 0,\r\n        \"pageSize\": 25\r\n    },\r\n    \"sorting\": {\r\n        \"sortBy\": \"ACTIVITY_TYPE\",\r\n        \"reversed\": true\r\n    },\r\n    \"searchCriteriaMap\": {},\r\n    \"searchCriteriaMapMultipleValues\": {\r\n        \"PURPOSE\": [\"5\"]\r\n    }\r\n}"
 						},
-						"url": "{{hostname}}:{{port}}/{{comPath}}/activity/rest/fa/list"
+						"url": {
+							"raw": "{{hostname}}/{{context}}/activity/rest/fa/list",
+							"host": [
+								"{{hostname}}"
+							],
+							"path": [
+								"{{context}}",
+								"activity",
+								"rest",
+								"fa",
+								"list"
+							]
+						}
 					},
 					"response": []
 				},
@@ -2195,7 +2514,19 @@
 							"mode": "raw",
 							"raw": "{\r\n    \"pagination\": {\r\n        \"offset\": 0,\r\n        \"pageSize\": 25\r\n    },\r\n    \"sorting\": {\r\n        \"sortBy\": \"ACTIVITY_TYPE\",\r\n        \"reversed\": true\r\n    },\r\n    \"searchCriteriaMap\": {},\r\n    \"searchCriteriaMapMultipleValues\": {\r\n        \"PURPOSE\": [\"3\"]\r\n    }\r\n}"
 						},
-						"url": "{{hostname}}:{{port}}/{{comPath}}/activity/rest/fa/list"
+						"url": {
+							"raw": "{{hostname}}/{{context}}/activity/rest/fa/list",
+							"host": [
+								"{{hostname}}"
+							],
+							"path": [
+								"{{context}}",
+								"activity",
+								"rest",
+								"fa",
+								"list"
+							]
+						}
 					},
 					"response": []
 				},
@@ -2275,7 +2606,19 @@
 							"mode": "raw",
 							"raw": "{\n\t\"pagination\": {\n\t\t\"offset\": 0,\n\t\t\"pageSize\": 25\n\t},\n\t\"sorting\": {},\n\t\"searchCriteriaMap\": {\n\t\t\"ACTIVITY_TYPE\": \"TRANSHIPMENT\",\n\t\t\"PORT\": \"SCPOV\",\n\t\t\"QUANTITY_MIN\": 10,\n\t\t\"QUANTITY_MAX\": 1000\n\t},\n\t\"searchCriteriaMapMultipleValues\": {\n\t\t\"PURPOSE\": [\n\t\t\t\"9\",\n\t\t\t\"1\",\n\t\t\t\"5\",\n\t\t\t\"3\"\n\t\t]\n\t}\n}"
 						},
-						"url": "{{hostname}}:{{port}}/{{comPath}}/activity/rest/fa/list"
+						"url": {
+							"raw": "{{hostname}}/{{context}}/activity/rest/fa/list",
+							"host": [
+								"{{hostname}}"
+							],
+							"path": [
+								"{{context}}",
+								"activity",
+								"rest",
+								"fa",
+								"list"
+							]
+						}
 					},
 					"response": []
 				},
@@ -2347,7 +2690,19 @@
 							"mode": "raw",
 							"raw": "{\r\n    \"pagination\": {\r\n        \"offset\": 0,\r\n        \"pageSize\": 25\r\n    },\r\n    \"sorting\": {\r\n        \"sortBy\": \"ACTIVITY_TYPE\",\r\n        \"reversed\": true\r\n    },\r\n    \"searchCriteriaMap\": {\r\n        \"OWNER\": \"a\"\r\n    },\r\n    \"searchCriteriaMapMultipleValues\": {\r\n        \"PURPOSE\": [\"1\", \"3\", \"5\", \"9\"]\r\n    }\r\n}"
 						},
-						"url": "{{hostname}}:{{port}}/{{comPath}}/activity/rest/fa/list"
+						"url": {
+							"raw": "{{hostname}}/{{context}}/activity/rest/fa/list",
+							"host": [
+								"{{hostname}}"
+							],
+							"path": [
+								"{{context}}",
+								"activity",
+								"rest",
+								"fa",
+								"list"
+							]
+						}
 					},
 					"response": []
 				},
@@ -2421,7 +2776,19 @@
 							"mode": "raw",
 							"raw": "{\r\n    \"pagination\": {\r\n        \"offset\": 0,\r\n        \"pageSize\": 25\r\n    },\r\n    \"sorting\": {\r\n        \"sortBy\": \"ACTIVITY_TYPE\",\r\n        \"reversed\": true\r\n    },\r\n    \"searchCriteriaMap\": {\r\n        \"MASTER\": \"Master D\"\r\n    },\r\n    \"searchCriteriaMapMultipleValues\": {\r\n        \"PURPOSE\": [\"1\", \"3\", \"5\", \"9\"]\r\n    }\r\n}"
 						},
-						"url": "{{hostname}}:{{port}}/{{comPath}}/activity/rest/fa/list"
+						"url": {
+							"raw": "{{hostname}}/{{context}}/activity/rest/fa/list",
+							"host": [
+								"{{hostname}}"
+							],
+							"path": [
+								"{{context}}",
+								"activity",
+								"rest",
+								"fa",
+								"list"
+							]
+						}
 					},
 					"response": []
 				},
@@ -2493,52 +2860,66 @@
 							"mode": "raw",
 							"raw": "{\r\n    \"pagination\": {\r\n        \"offset\": 0,\r\n        \"pageSize\": 25\r\n    },\r\n    \"sorting\": {\r\n        \"sortBy\": \"ACTIVITY_TYPE\",\r\n        \"reversed\": true\r\n    },\r\n    \"searchCriteriaMap\": {\r\n        \"AREAS\": \"51.6\"\r\n    },\r\n    \"searchCriteriaMapMultipleValues\": {\r\n        \"PURPOSE\": [\"1\", \"3\", \"5\", \"9\"]\r\n    }\r\n}"
 						},
-						"url": "{{hostname}}:{{port}}/{{comPath}}/activity/rest/fa/list"
+						"url": {
+							"raw": "{{hostname}}/{{context}}/activity/rest/fa/list",
+							"host": [
+								"{{hostname}}"
+							],
+							"path": [
+								"{{context}}",
+								"activity",
+								"rest",
+								"fa",
+								"list"
+							]
+						}
 					},
 					"response": []
+				}
+			],
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "60bdacdc-0744-4995-8435-06e0e88c36a0",
+						"type": "text/javascript",
+						"exec": [
+							"var urlString = pm.environment.get(\"hostname\") + \"/\" + pm.environment.get(\"context\") + \"/usm-administration/rest/authenticate\";",
+							"",
+							"pm.sendRequest({",
+							"   url: urlString,",
+							"   method: 'POST',",
+							"   header: 'Content-Type:application/json',",
+							"   body: {",
+							"       mode: 'raw',",
+							"       raw: JSON.stringify({",
+							"  \"userName\": \"rep_power\",",
+							"  \"password\": \"abcd-1234\"",
+							"})",
+							"   }",
+							"}, function (err, res) {",
+							"   postman.setEnvironmentVariable(\"token\", res.json().jwtoken);",
+							"   console.log(postman.getEnvironmentVariable(\"token\"));",
+							"});"
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"id": "d0495de9-e2f1-4430-9108-6dfa81c0ec58",
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
 				}
 			]
 		},
 		{
 			"name": "03 Fishing Activity Screens",
+			"description": null,
 			"item": [
-				{
-					"name": "authenticate rep_power",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"var data = JSON.parse(responseBody);",
-									"",
-									"tests[\"authenticated is true\"] = data.authenticated === true;",
-									"",
-									"postman.setEnvironmentVariable(\"token\", data.jwtoken);",
-									"",
-									"tests[\"environment token is \" + environment.token] = environment.token === data.jwtoken;",
-									"",
-									"var jsonData = JSON.parse(responseBody);"
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "Content-Type",
-								"value": "application/json"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n   \"userName\": \"rep_power\",\n   \"password\": \"abcd-1234\"\n}"
-						},
-						"url": "{{hostname}}:{{port}}/{{comPath}}/usm-administration/rest/authenticate"
-					},
-					"response": []
-				},
 				{
 					"name": "Search FA Area Exit",
 					"event": [
@@ -2609,7 +2990,19 @@
 							"mode": "raw",
 							"raw": "{  \r\n   \"pagination\":{  \r\n      \"offset\":0,\r\n      \"pageSize\":25\r\n   },\r\n   \"sorting\":{  \r\n      \"sortBy\":\"ACTIVITY_TYPE\",\r\n      \"reversed\":true\r\n   },\r\n   \"searchCriteriaMap\":{  \r\n      \"ACTIVITY_TYPE\":\"AREA_EXIT\"\r\n   },\r\n   \"searchCriteriaMapMultipleValues\":{  \r\n      \"PURPOSE\":[  \r\n         \"1\",\r\n         \"3\",\r\n         \"5\",\r\n         \"9\"\r\n      ]\r\n   }\r\n}"
 						},
-						"url": "{{hostname}}:{{port}}/{{comPath}}/activity/rest/fa/list"
+						"url": {
+							"raw": "{{hostname}}/{{context}}/activity/rest/fa/list",
+							"host": [
+								"{{hostname}}"
+							],
+							"path": [
+								"{{context}}",
+								"activity",
+								"rest",
+								"fa",
+								"list"
+							]
+						}
 					},
 					"response": []
 				},
@@ -2695,7 +3088,20 @@
 							"mode": "raw",
 							"raw": "{\"activityId\":{{areaExitId}}}"
 						},
-						"url": "{{hostname}}:{{port}}/{{comPath}}/activity/rest/fa/views/areaExit"
+						"url": {
+							"raw": "{{hostname}}/{{context}}/activity/rest/fa/views/areaExit",
+							"host": [
+								"{{hostname}}"
+							],
+							"path": [
+								"{{context}}",
+								"activity",
+								"rest",
+								"fa",
+								"views",
+								"areaExit"
+							]
+						}
 					},
 					"response": []
 				},
@@ -2767,7 +3173,19 @@
 							"mode": "raw",
 							"raw": "{  \r\n   \"pagination\":{  \r\n      \"offset\":0,\r\n      \"pageSize\":25\r\n   },\r\n   \"sorting\":{  \r\n      \"sortBy\":\"ACTIVITY_TYPE\",\r\n      \"reversed\":true\r\n   },\r\n   \"searchCriteriaMap\":{  \r\n      \"ACTIVITY_TYPE\":\"AREA_ENTRY\"\r\n   },\r\n   \"searchCriteriaMapMultipleValues\":{  \r\n      \"PURPOSE\":[  \r\n         \"1\",\r\n         \"3\",\r\n         \"5\",\r\n         \"9\"\r\n      ]\r\n   }\r\n}"
 						},
-						"url": "{{hostname}}:{{port}}/{{comPath}}/activity/rest/fa/list"
+						"url": {
+							"raw": "{{hostname}}/{{context}}/activity/rest/fa/list",
+							"host": [
+								"{{hostname}}"
+							],
+							"path": [
+								"{{context}}",
+								"activity",
+								"rest",
+								"fa",
+								"list"
+							]
+						}
 					},
 					"response": []
 				},
@@ -2853,7 +3271,20 @@
 							"mode": "raw",
 							"raw": "{\"activityId\":{{areaEntryId}}}"
 						},
-						"url": "{{hostname}}:{{port}}/{{comPath}}/activity/rest/fa/views/areaEntry"
+						"url": {
+							"raw": "{{hostname}}/{{context}}/activity/rest/fa/views/areaEntry",
+							"host": [
+								"{{hostname}}"
+							],
+							"path": [
+								"{{context}}",
+								"activity",
+								"rest",
+								"fa",
+								"views",
+								"areaEntry"
+							]
+						}
 					},
 					"response": []
 				},
@@ -2925,7 +3356,19 @@
 							"mode": "raw",
 							"raw": "{\n\t\"pagination\": {\n\t\t\"offset\": 0,\n\t\t\"pageSize\": 25\n\t},\n\t\"sorting\": {\n\t\t\"sortBy\": \"ACTIVITY_TYPE\",\n\t\t\"reversed\": true\n\t},\n\t\"searchCriteriaMap\": {\n\t\t\"ACTIVITY_TYPE\": \"DISCARD\"\n\t},\n\t\"searchCriteriaMapMultipleValues\": {\n\t\t\"PURPOSE\": [\n\t\t\t\"9\",\n\t\t\t\"1\",\n\t\t\t\"5\",\n\t\t\t\"3\"\n\t\t]\n\t}\n}"
 						},
-						"url": "{{hostname}}:{{port}}/{{comPath}}/activity/rest/fa/list"
+						"url": {
+							"raw": "{{hostname}}/{{context}}/activity/rest/fa/list",
+							"host": [
+								"{{hostname}}"
+							],
+							"path": [
+								"{{context}}",
+								"activity",
+								"rest",
+								"fa",
+								"list"
+							]
+						}
 					},
 					"response": []
 				},
@@ -3013,7 +3456,20 @@
 							"mode": "raw",
 							"raw": "{\"activityId\":{{discardId}}}"
 						},
-						"url": "{{hostname}}:{{port}}/{{comPath}}/activity/rest/fa/views/discard"
+						"url": {
+							"raw": "{{hostname}}/{{context}}/activity/rest/fa/views/discard",
+							"host": [
+								"{{hostname}}"
+							],
+							"path": [
+								"{{context}}",
+								"activity",
+								"rest",
+								"fa",
+								"views",
+								"discard"
+							]
+						}
 					},
 					"response": []
 				},
@@ -3085,7 +3541,19 @@
 							"mode": "raw",
 							"raw": "{\n\t\"pagination\": {\n\t\t\"offset\": 0,\n\t\t\"pageSize\": 25\n\t},\n\t\"sorting\": {},\n\t\"searchCriteriaMap\": {\n\t\t\"ACTIVITY_TYPE\": \"TRANSHIPMENT\"\n\t},\n\t\"searchCriteriaMapMultipleValues\": {\n\t\t\"PURPOSE\": [\n\t\t\t\"9\",\n\t\t\t\"1\",\n\t\t\t\"5\",\n\t\t\t\"3\"\n\t\t]\n\t}\n}"
 						},
-						"url": "{{hostname}}:{{port}}/{{comPath}}/activity/rest/fa/list"
+						"url": {
+							"raw": "{{hostname}}/{{context}}/activity/rest/fa/list",
+							"host": [
+								"{{hostname}}"
+							],
+							"path": [
+								"{{context}}",
+								"activity",
+								"rest",
+								"fa",
+								"list"
+							]
+						}
 					},
 					"response": []
 				},
@@ -3172,7 +3640,20 @@
 							"mode": "raw",
 							"raw": "{\"activityId\":{{transhipmentId}}}"
 						},
-						"url": "{{hostname}}:{{port}}/{{comPath}}/activity/rest/fa/views/discard"
+						"url": {
+							"raw": "{{hostname}}/{{context}}/activity/rest/fa/views/discard",
+							"host": [
+								"{{hostname}}"
+							],
+							"path": [
+								"{{context}}",
+								"activity",
+								"rest",
+								"fa",
+								"views",
+								"discard"
+							]
+						}
 					},
 					"response": []
 				},
@@ -3244,7 +3725,19 @@
 							"mode": "raw",
 							"raw": "{  \r\n   \"pagination\":{  \r\n      \"offset\":0,\r\n      \"pageSize\":25\r\n   },\r\n   \"sorting\":{  \r\n      \"sortBy\":\"ACTIVITY_TYPE\",\r\n      \"reversed\":true\r\n   },\r\n   \"searchCriteriaMap\":{  \r\n      \"ACTIVITY_TYPE\":\"DEPARTURE\"\r\n   },\r\n   \"searchCriteriaMapMultipleValues\":{  \r\n      \"PURPOSE\":[  \r\n         \"1\",\r\n         \"3\",\r\n         \"5\",\r\n         \"9\"\r\n      ]\r\n   }\r\n}"
 						},
-						"url": "{{hostname}}:{{port}}/{{comPath}}/activity/rest/fa/list"
+						"url": {
+							"raw": "{{hostname}}/{{context}}/activity/rest/fa/list",
+							"host": [
+								"{{hostname}}"
+							],
+							"path": [
+								"{{context}}",
+								"activity",
+								"rest",
+								"fa",
+								"list"
+							]
+						}
 					},
 					"response": []
 				},
@@ -3331,7 +3824,20 @@
 							"mode": "raw",
 							"raw": "{\"activityId\":{{departureId}}}"
 						},
-						"url": "{{hostname}}:{{port}}/{{comPath}}/activity/rest/fa/views/departure"
+						"url": {
+							"raw": "{{hostname}}/{{context}}/activity/rest/fa/views/departure",
+							"host": [
+								"{{hostname}}"
+							],
+							"path": [
+								"{{context}}",
+								"activity",
+								"rest",
+								"fa",
+								"views",
+								"departure"
+							]
+						}
 					},
 					"response": []
 				},
@@ -3403,7 +3909,19 @@
 							"mode": "raw",
 							"raw": "{  \r\n   \"pagination\":{  \r\n      \"offset\":0,\r\n      \"pageSize\":25\r\n   },\r\n   \"sorting\":{  \r\n      \"sortBy\":\"ACTIVITY_TYPE\",\r\n      \"reversed\":true\r\n   },\r\n   \"searchCriteriaMap\":{  \r\n      \"ACTIVITY_TYPE\":\"ARRIVAL\"\r\n   },\r\n   \"searchCriteriaMapMultipleValues\":{  \r\n      \"PURPOSE\":[  \r\n         \"1\",\r\n         \"3\",\r\n         \"5\",\r\n         \"9\"\r\n      ]\r\n   }\r\n}"
 						},
-						"url": "{{hostname}}:{{port}}/{{comPath}}/activity/rest/fa/list"
+						"url": {
+							"raw": "{{hostname}}/{{context}}/activity/rest/fa/list",
+							"host": [
+								"{{hostname}}"
+							],
+							"path": [
+								"{{context}}",
+								"activity",
+								"rest",
+								"fa",
+								"list"
+							]
+						}
 					},
 					"response": []
 				},
@@ -3490,7 +4008,20 @@
 							"mode": "raw",
 							"raw": "{\"activityId\":{{arrivalId}}}"
 						},
-						"url": "{{hostname}}:{{port}}/{{comPath}}/activity/rest/fa/views/notification"
+						"url": {
+							"raw": "{{hostname}}/{{context}}/activity/rest/fa/views/notification",
+							"host": [
+								"{{hostname}}"
+							],
+							"path": [
+								"{{context}}",
+								"activity",
+								"rest",
+								"fa",
+								"views",
+								"notification"
+							]
+						}
 					},
 					"response": []
 				},
@@ -3562,7 +4093,19 @@
 							"mode": "raw",
 							"raw": "{\n\t\"pagination\": {\n\t\t\"offset\": 0,\n\t\t\"pageSize\": 25\n\t},\n\t\"sorting\": {},\n\t\"searchCriteriaMap\": {\n\t\t\"ACTIVITY_TYPE\": \"FISHING_OPERATION\"\n\t},\n\t\"searchCriteriaMapMultipleValues\": {\n\t\t\"PURPOSE\": [\n\t\t\t\"9\",\n\t\t\t\"1\",\n\t\t\t\"5\",\n\t\t\t\"3\"\n\t\t]\n\t}\n}"
 						},
-						"url": "{{hostname}}:{{port}}/{{comPath}}/activity/rest/fa/list"
+						"url": {
+							"raw": "{{hostname}}/{{context}}/activity/rest/fa/list",
+							"host": [
+								"{{hostname}}"
+							],
+							"path": [
+								"{{context}}",
+								"activity",
+								"rest",
+								"fa",
+								"list"
+							]
+						}
 					},
 					"response": []
 				},
@@ -3649,7 +4192,20 @@
 							"mode": "raw",
 							"raw": "{\"activityId\":{{fishingoperationId}}}"
 						},
-						"url": "{{hostname}}:{{port}}/{{comPath}}/activity/rest/fa/views/fishingoperation"
+						"url": {
+							"raw": "{{hostname}}/{{context}}/activity/rest/fa/views/fishingoperation",
+							"host": [
+								"{{hostname}}"
+							],
+							"path": [
+								"{{context}}",
+								"activity",
+								"rest",
+								"fa",
+								"views",
+								"fishingoperation"
+							]
+						}
 					},
 					"response": []
 				},
@@ -3721,7 +4277,19 @@
 							"mode": "raw",
 							"raw": "{\n\t\"pagination\": {\n\t\t\"offset\": 0,\n\t\t\"pageSize\": 25\n\t},\n\t\"sorting\": {},\n\t\"searchCriteriaMap\": {\n\t\t\"ACTIVITY_TYPE\": \"LANDING\"\n\t},\n\t\"searchCriteriaMapMultipleValues\": {\n\t\t\"PURPOSE\": [\n\t\t\t\"9\",\n\t\t\t\"1\",\n\t\t\t\"5\",\n\t\t\t\"3\"\n\t\t]\n\t}\n}"
 						},
-						"url": "{{hostname}}:{{port}}/{{comPath}}/activity/rest/fa/list"
+						"url": {
+							"raw": "{{hostname}}/{{context}}/activity/rest/fa/list",
+							"host": [
+								"{{hostname}}"
+							],
+							"path": [
+								"{{context}}",
+								"activity",
+								"rest",
+								"fa",
+								"list"
+							]
+						}
 					},
 					"response": []
 				},
@@ -3808,52 +4376,67 @@
 							"mode": "raw",
 							"raw": "{\"activityId\":{{landingId}}}"
 						},
-						"url": "{{hostname}}:{{port}}/{{comPath}}/activity/rest/fa/views/landing"
+						"url": {
+							"raw": "{{hostname}}/{{context}}/activity/rest/fa/views/landing",
+							"host": [
+								"{{hostname}}"
+							],
+							"path": [
+								"{{context}}",
+								"activity",
+								"rest",
+								"fa",
+								"views",
+								"landing"
+							]
+						}
 					},
 					"response": []
+				}
+			],
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "10fb8b60-7dae-40c4-9570-24fdbe2582db",
+						"type": "text/javascript",
+						"exec": [
+							"var urlString = pm.environment.get(\"hostname\") + \"/\" + pm.environment.get(\"context\") + \"/usm-administration/rest/authenticate\";",
+							"",
+							"pm.sendRequest({",
+							"   url: urlString,",
+							"   method: 'POST',",
+							"   header: 'Content-Type:application/json',",
+							"   body: {",
+							"       mode: 'raw',",
+							"       raw: JSON.stringify({",
+							"  \"userName\": \"rep_power\",",
+							"  \"password\": \"abcd-1234\"",
+							"})",
+							"   }",
+							"}, function (err, res) {",
+							"   postman.setEnvironmentVariable(\"token\", res.json().jwtoken);",
+							"   console.log(postman.getEnvironmentVariable(\"token\"));",
+							"});"
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"id": "1ca96f5e-32f1-49ac-9d1d-14673aaa570e",
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
 				}
 			]
 		},
 		{
 			"name": "04 Catch Threshold",
+			"description": null,
 			"item": [
-				{
-					"name": "authenticate",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"var data = JSON.parse(responseBody);",
-									"",
-									"tests[\"authenticated is true\"] = data.authenticated === true;",
-									"",
-									"postman.setEnvironmentVariable(\"token\", data.jwtoken);",
-									"",
-									"tests[\"environment token is \" + environment.token] = environment.token === data.jwtoken;",
-									"",
-									"var jsonData = JSON.parse(responseBody);"
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "Content-Type",
-								"value": "application/json"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n   \"userName\": \"rep_power\",\n   \"password\": \"abcd-1234\"\n}"
-						},
-						"url": "{{hostname}}:{{port}}/{{comPath}}/usm-administration/rest/authenticate"
-					},
-					"response": []
-				},
 				{
 					"name": "Set Threshold",
 					"event": [
@@ -3894,7 +4477,19 @@
 							"mode": "raw",
 							"raw": "{  \r\n   \"fishingActivityConfig\":{  \r\n      \"summaryReport\":{  \r\n         \"values\":[  \r\n            \"FAReportType\",\r\n            \"activityType\",\r\n            \"occurrence\",\r\n            \"purposeCode\",\r\n            \"dataSource\",\r\n            \"fromName\",\r\n            \"startDate\",\r\n            \"endDate\",\r\n            \"cfr\",\r\n            \"ircs\",\r\n            \"extMark\",\r\n            \"uvi\",\r\n            \"iccat\",\r\n            \"gfcm\",\r\n            \"areas\",\r\n            \"port\",\r\n            \"fishingGear\",\r\n            \"speciesCode\",\r\n            \"quantity\"\r\n         ],\r\n         \"order\":[  \r\n            \"FAReportType\",\r\n            \"activityType\",\r\n            \"occurrence\",\r\n            \"purposeCode\",\r\n            \"dataSource\",\r\n            \"fromName\",\r\n            \"startDate\",\r\n            \"endDate\",\r\n            \"cfr\",\r\n            \"ircs\",\r\n            \"extMark\",\r\n            \"uvi\",\r\n            \"iccat\",\r\n            \"gfcm\",\r\n            \"areas\",\r\n            \"port\",\r\n            \"fishingGear\",\r\n            \"speciesCode\",\r\n            \"quantity\"\r\n         ]\r\n      }\r\n   },\r\n   \"catchThresholds\":{  \r\n      \"critical\":20,\r\n      \"warning\":10\r\n   }\r\n}"
 						},
-						"url": "{{hostname}}:{{port}}/{{comPath}}/activity/rest/config/admin"
+						"url": {
+							"raw": "{{hostname}}/{{context}}/activity/rest/config/admin",
+							"host": [
+								"{{hostname}}"
+							],
+							"path": [
+								"{{context}}",
+								"activity",
+								"rest",
+								"config",
+								"admin"
+							]
+						}
 					},
 					"response": []
 				},
@@ -3939,52 +4534,66 @@
 							"mode": "raw",
 							"raw": "{  \r\n   \"fishingActivityConfig\":{  \r\n      \"summaryReport\":{  \r\n         \"values\":[  \r\n            \"FAReportType\",\r\n            \"activityType\",\r\n            \"occurrence\",\r\n            \"purposeCode\",\r\n            \"dataSource\",\r\n            \"fromName\",\r\n            \"startDate\",\r\n            \"endDate\",\r\n            \"cfr\",\r\n            \"ircs\",\r\n            \"extMark\",\r\n            \"uvi\",\r\n            \"iccat\",\r\n            \"gfcm\",\r\n            \"areas\",\r\n            \"port\",\r\n            \"fishingGear\",\r\n            \"speciesCode\",\r\n            \"quantity\"\r\n         ],\r\n         \"order\":[  \r\n            \"FAReportType\",\r\n            \"activityType\",\r\n            \"occurrence\",\r\n            \"purposeCode\",\r\n            \"dataSource\",\r\n            \"fromName\",\r\n            \"startDate\",\r\n            \"endDate\",\r\n            \"cfr\",\r\n            \"ircs\",\r\n            \"extMark\",\r\n            \"uvi\",\r\n            \"iccat\",\r\n            \"gfcm\",\r\n            \"areas\",\r\n            \"port\",\r\n            \"fishingGear\",\r\n            \"speciesCode\",\r\n            \"quantity\"\r\n         ]\r\n      }\r\n   },\r\n   \"catchThresholds\":{  \r\n      \"critical\":20,\r\n      \"warning\":10\r\n   }\r\n}"
 						},
-						"url": "{{hostname}}:{{port}}/{{comPath}}/activity/rest/config/admin"
+						"url": {
+							"raw": "{{hostname}}/{{context}}/activity/rest/config/admin",
+							"host": [
+								"{{hostname}}"
+							],
+							"path": [
+								"{{context}}",
+								"activity",
+								"rest",
+								"config",
+								"admin"
+							]
+						}
 					},
 					"response": []
+				}
+			],
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "9f241a70-3a61-40f9-86e4-ac91bd573cc5",
+						"type": "text/javascript",
+						"exec": [
+							"var urlString = pm.environment.get(\"hostname\") + \"/\" + pm.environment.get(\"context\") + \"/usm-administration/rest/authenticate\";",
+							"",
+							"pm.sendRequest({",
+							"   url: urlString,",
+							"   method: 'POST',",
+							"   header: 'Content-Type:application/json',",
+							"   body: {",
+							"       mode: 'raw',",
+							"       raw: JSON.stringify({",
+							"  \"userName\": \"rep_power\",",
+							"  \"password\": \"abcd-1234\"",
+							"})",
+							"   }",
+							"}, function (err, res) {",
+							"   postman.setEnvironmentVariable(\"token\", res.json().jwtoken);",
+							"   console.log(postman.getEnvironmentVariable(\"token\"));",
+							"});"
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"id": "1f2fcf4c-493b-4025-8b96-73ff1380f484",
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
 				}
 			]
 		},
 		{
 			"name": "05 Fishing Trip",
+			"description": null,
 			"item": [
-				{
-					"name": "authenticate",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"var data = JSON.parse(responseBody);",
-									"",
-									"tests[\"authenticated is true\"] = data.authenticated === true;",
-									"",
-									"postman.setEnvironmentVariable(\"token\", data.jwtoken);",
-									"",
-									"tests[\"environment token is \" + environment.token] = environment.token === data.jwtoken;",
-									"",
-									"var jsonData = JSON.parse(responseBody);"
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "Content-Type",
-								"value": "application/json"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n   \"userName\": \"rep_power\",\n   \"password\": \"abcd-1234\"\n}"
-						},
-						"url": "{{hostname}}:{{port}}/{{comPath}}/usm-administration/rest/authenticate"
-					},
-					"response": []
-				},
 				{
 					"name": "Search all FA Trips",
 					"event": [
@@ -4068,7 +4677,19 @@
 							"mode": "raw",
 							"raw": "{  \r\n   \"pagination\":{  \r\n   },\r\n   \"sorting\":{  \r\n   },\r\n   \"searchCriteriaMap\":{  \r\n\r\n   },\r\n   \"searchCriteriaMapMultipleValues\":{  \r\n      \"PURPOSE\":[  \r\n         \"9\",\r\n         \"1\",\r\n         \"5\",\r\n         \"3\"\r\n      ]\r\n   }\r\n}"
 						},
-						"url": "{{hostname}}:{{port}}/{{comPath}}/activity/rest/fa/listTrips"
+						"url": {
+							"raw": "{{hostname}}/{{context}}/activity/rest/fa/listTrips",
+							"host": [
+								"{{hostname}}"
+							],
+							"path": [
+								"{{context}}",
+								"activity",
+								"rest",
+								"fa",
+								"listTrips"
+							]
+						}
 					},
 					"response": []
 				},
@@ -4131,7 +4752,19 @@
 							"mode": "raw",
 							"raw": "{\"pagination\":{\"offset\":0,\"pageSize\":20},\n\"sorting\":{},\n\"searchCriteriaMap\":{\n       \"TRIP_ID\" : \"{{firstTripId}}\"\n    },\n\"searchCriteriaMapMultipleValues\":{\"PURPOSE\":[\"9\",\"1\",\"5\",\"3\"]}\n}"
 						},
-						"url": "{{hostname}}:{{port}}/{{comPath}}/activity/rest/fa/listTrips"
+						"url": {
+							"raw": "{{hostname}}/{{context}}/activity/rest/fa/listTrips",
+							"host": [
+								"{{hostname}}"
+							],
+							"path": [
+								"{{context}}",
+								"activity",
+								"rest",
+								"fa",
+								"listTrips"
+							]
+						}
 					},
 					"response": []
 				},
@@ -4194,7 +4827,19 @@
 							"mode": "raw",
 							"raw": "{\"pagination\":{\"offset\":0,\"pageSize\":20},\n\"sorting\":{},\n\"searchCriteriaMap\":{\n        \"ACTIVITY_TYPE\": \"{{tripActivity}}\"\n    },\n\"searchCriteriaMapMultipleValues\":{\"PURPOSE\":[\"9\",\"1\",\"5\",\"3\"]}\n}"
 						},
-						"url": "{{hostname}}:{{port}}/{{comPath}}/activity/rest/fa/listTrips"
+						"url": {
+							"raw": "{{hostname}}/{{context}}/activity/rest/fa/listTrips",
+							"host": [
+								"{{hostname}}"
+							],
+							"path": [
+								"{{context}}",
+								"activity",
+								"rest",
+								"fa",
+								"listTrips"
+							]
+						}
 					},
 					"response": []
 				},
@@ -4257,7 +4902,19 @@
 							"mode": "raw",
 							"raw": "{\"pagination\":{\"offset\":0,\"pageSize\":20},\n\"sorting\":{},\n\"searchCriteriaMap\":{\n        \"OWNER\": \"{{tripFlagState}}\"\n    },\n\"searchCriteriaMapMultipleValues\":{\"PURPOSE\":[\"9\",\"1\",\"5\",\"3\"]}\n}"
 						},
-						"url": "{{hostname}}:{{port}}/{{comPath}}/activity/rest/fa/listTrips"
+						"url": {
+							"raw": "{{hostname}}/{{context}}/activity/rest/fa/listTrips",
+							"host": [
+								"{{hostname}}"
+							],
+							"path": [
+								"{{context}}",
+								"activity",
+								"rest",
+								"fa",
+								"listTrips"
+							]
+						}
 					},
 					"response": []
 				},
@@ -4320,7 +4977,19 @@
 							"mode": "raw",
 							"raw": "{\"pagination\":{\"offset\":0,\"pageSize\":20},\n\"sorting\":{},\n\"searchCriteriaMap\":{\n        \"PERIOD_START\": \"{{tripStartDate}}\"\n    },\n\"searchCriteriaMapMultipleValues\":{\"PURPOSE\":[\"9\",\"1\",\"5\",\"3\"]}\n}"
 						},
-						"url": "{{hostname}}:{{port}}/{{comPath}}/activity/rest/fa/listTrips"
+						"url": {
+							"raw": "{{hostname}}/{{context}}/activity/rest/fa/listTrips",
+							"host": [
+								"{{hostname}}"
+							],
+							"path": [
+								"{{context}}",
+								"activity",
+								"rest",
+								"fa",
+								"listTrips"
+							]
+						}
 					},
 					"response": []
 				},
@@ -4383,52 +5052,66 @@
 							"mode": "raw",
 							"raw": "{\"pagination\":{\"offset\":0,\"pageSize\":20},\n\"sorting\":{},\n\"searchCriteriaMap\":{\n        \"PERIOD_END\": \"{{tripEndDate}}\"\n    },\n\"searchCriteriaMapMultipleValues\":{\"PURPOSE\":[\"9\",\"1\",\"5\",\"3\"]}\n}"
 						},
-						"url": "{{hostname}}:{{port}}/{{comPath}}/activity/rest/fa/listTrips"
+						"url": {
+							"raw": "{{hostname}}/{{context}}/activity/rest/fa/listTrips",
+							"host": [
+								"{{hostname}}"
+							],
+							"path": [
+								"{{context}}",
+								"activity",
+								"rest",
+								"fa",
+								"listTrips"
+							]
+						}
 					},
 					"response": []
+				}
+			],
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "a2b4ec62-a4a7-4831-88fd-b725e18fe497",
+						"type": "text/javascript",
+						"exec": [
+							"var urlString = pm.environment.get(\"hostname\") + \"/\" + pm.environment.get(\"context\") + \"/usm-administration/rest/authenticate\";",
+							"",
+							"pm.sendRequest({",
+							"   url: urlString,",
+							"   method: 'POST',",
+							"   header: 'Content-Type:application/json',",
+							"   body: {",
+							"       mode: 'raw',",
+							"       raw: JSON.stringify({",
+							"  \"userName\": \"rep_power\",",
+							"  \"password\": \"abcd-1234\"",
+							"})",
+							"   }",
+							"}, function (err, res) {",
+							"   postman.setEnvironmentVariable(\"token\", res.json().jwtoken);",
+							"   console.log(postman.getEnvironmentVariable(\"token\"));",
+							"});"
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"id": "3a085946-3e00-4087-84b3-421f11c28975",
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
 				}
 			]
 		},
 		{
 			"name": "05 Exchange Filter Tests",
+			"description": null,
 			"item": [
-				{
-					"name": "authenticate",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"var data = JSON.parse(responseBody);",
-									"",
-									"tests[\"authenticated is true\"] = data.authenticated === true;",
-									"",
-									"postman.setEnvironmentVariable(\"token\", data.jwtoken);",
-									"",
-									"tests[\"environment token is \" + environment.token] = environment.token === data.jwtoken;",
-									"",
-									"var jsonData = JSON.parse(responseBody);"
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "Content-Type",
-								"value": "application/json"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n   \"userName\": \"rep_power\",\n   \"password\": \"abcd-1234\"\n}"
-						},
-						"url": "{{hostname}}:{{port}}/{{comPath}}/usm-administration/rest/authenticate"
-					},
-					"response": []
-				},
 				{
 					"name": "Search Status SUCCESSFUL",
 					"event": [
@@ -4489,7 +5172,19 @@
 							"mode": "raw",
 							"raw": "{\"exchangeSearchCriteria\":\n    {\"criterias\":\n        [\n        {\n            \"key\":\"MESSAGE_DIRECTION\",\n            \"value\":\"ALL\"\n            \n        },\n        {\n            \"key\":\"STATUS\",\n            \"value\":\"SUCCESSFUL\"\n            \n        }\n        \n        ],\n        \n        \"isDynamic\":false\n        \n    },\n    \"pagination\":\n    {\n        \"page\":1,\n        \"listSize\":20\n        \n    }\n}"
 						},
-						"url": "{{hostname}}:{{port}}/{{comPath}}/exchange/rest/exchange/list"
+						"url": {
+							"raw": "{{hostname}}/{{context}}/exchange/rest/exchange/list",
+							"host": [
+								"{{hostname}}"
+							],
+							"path": [
+								"{{context}}",
+								"exchange",
+								"rest",
+								"exchange",
+								"list"
+							]
+						}
 					},
 					"response": []
 				},
@@ -4553,7 +5248,19 @@
 							"mode": "raw",
 							"raw": "{\"exchangeSearchCriteria\":\n    {\"criterias\":\n        [\n        {\n            \"key\":\"MESSAGE_DIRECTION\",\n            \"value\":\"ALL\"\n            \n        },\n        {\n            \"key\":\"STATUS\",\n            \"value\":\"FAILED\"\n            \n        }\n        \n        ],\n        \n        \"isDynamic\":false\n        \n    },\n    \"pagination\":\n    {\n        \"page\":1,\n        \"listSize\":20\n        \n    }\n}"
 						},
-						"url": "{{hostname}}:{{port}}/{{comPath}}/exchange/rest/exchange/list"
+						"url": {
+							"raw": "{{hostname}}/{{context}}/exchange/rest/exchange/list",
+							"host": [
+								"{{hostname}}"
+							],
+							"path": [
+								"{{context}}",
+								"exchange",
+								"rest",
+								"exchange",
+								"list"
+							]
+						}
 					},
 					"response": []
 				},
@@ -4617,7 +5324,19 @@
 							"mode": "raw",
 							"raw": "{\"exchangeSearchCriteria\":\n    {\"criterias\":\n        [\n        {\n            \"key\":\"MESSAGE_DIRECTION\",\n            \"value\":\"ALL\"\n            \n        },\n        {\n            \"key\":\"SOURCE\",\n            \"value\":\"MANUAL\"\n            \n        }\n        \n        ],\n        \n        \"isDynamic\":false\n        \n    },\n    \"pagination\":\n    {\n        \"page\":1,\n        \"listSize\":20\n        \n    }\n}"
 						},
-						"url": "{{hostname}}:{{port}}/{{comPath}}/exchange/rest/exchange/list"
+						"url": {
+							"raw": "{{hostname}}/{{context}}/exchange/rest/exchange/list",
+							"host": [
+								"{{hostname}}"
+							],
+							"path": [
+								"{{context}}",
+								"exchange",
+								"rest",
+								"exchange",
+								"list"
+							]
+						}
 					},
 					"response": []
 				},
@@ -4681,7 +5400,19 @@
 							"mode": "raw",
 							"raw": "{\"exchangeSearchCriteria\":\n    {\"criterias\":\n        [\n        {\n            \"key\":\"MESSAGE_DIRECTION\",\n            \"value\":\"ALL\"\n            \n        },\n        {\n            \"key\":\"TYPE\",\n            \"value\":\"MOVEMENT\"\n            \n        }\n        \n        ],\n        \n        \"isDynamic\":false\n        \n    },\n    \"pagination\":\n    {\n        \"page\":1,\n        \"listSize\":20\n        \n    }\n}"
 						},
-						"url": "{{hostname}}:{{port}}/{{comPath}}/exchange/rest/exchange/list"
+						"url": {
+							"raw": "{{hostname}}/{{context}}/exchange/rest/exchange/list",
+							"host": [
+								"{{hostname}}"
+							],
+							"path": [
+								"{{context}}",
+								"exchange",
+								"rest",
+								"exchange",
+								"list"
+							]
+						}
 					},
 					"response": []
 				},
@@ -4745,7 +5476,19 @@
 							"mode": "raw",
 							"raw": "{\"exchangeSearchCriteria\":\n    {\"criterias\":\n        [\n        {\n            \"key\":\"MESSAGE_DIRECTION\",\n            \"value\":\"ALL\"\n            \n        },\n        {\n            \"key\":\"TYPE\",\n            \"value\":\"FA_REPORT\"\n            \n        }\n        \n        ],\n        \n        \"isDynamic\":false\n        \n    },\n    \"pagination\":\n    {\n        \"page\":1,\n        \"listSize\":20\n        \n    }\n}"
 						},
-						"url": "{{hostname}}:{{port}}/{{comPath}}/exchange/rest/exchange/list"
+						"url": {
+							"raw": "{{hostname}}/{{context}}/exchange/rest/exchange/list",
+							"host": [
+								"{{hostname}}"
+							],
+							"path": [
+								"{{context}}",
+								"exchange",
+								"rest",
+								"exchange",
+								"list"
+							]
+						}
 					},
 					"response": []
 				},
@@ -4809,9 +5552,59 @@
 							"mode": "raw",
 							"raw": "{\"exchangeSearchCriteria\":\n    {\"criterias\":\n        [\n        {\n            \"key\":\"MESSAGE_DIRECTION\",\n            \"value\":\"ALL\"\n            \n        },\n        {\n            \"key\":\"TYPE\",\n            \"value\":\"FA_RESPONSE\"\n            \n        }\n        \n        ],\n        \n        \"isDynamic\":false\n        \n    },\n    \"pagination\":\n    {\n        \"page\":1,\n        \"listSize\":20\n        \n    }\n}"
 						},
-						"url": "{{hostname}}:{{port}}/{{comPath}}/exchange/rest/exchange/list"
+						"url": {
+							"raw": "{{hostname}}/{{context}}/exchange/rest/exchange/list",
+							"host": [
+								"{{hostname}}"
+							],
+							"path": [
+								"{{context}}",
+								"exchange",
+								"rest",
+								"exchange",
+								"list"
+							]
+						}
 					},
 					"response": []
+				}
+			],
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "eb65ab19-2187-45e1-8f51-8fad4b1b10f7",
+						"type": "text/javascript",
+						"exec": [
+							"var urlString = pm.environment.get(\"hostname\") + \"/\" + pm.environment.get(\"context\") + \"/usm-administration/rest/authenticate\";",
+							"",
+							"pm.sendRequest({",
+							"   url: urlString,",
+							"   method: 'POST',",
+							"   header: 'Content-Type:application/json',",
+							"   body: {",
+							"       mode: 'raw',",
+							"       raw: JSON.stringify({",
+							"  \"userName\": \"rep_power\",",
+							"  \"password\": \"abcd-1234\"",
+							"})",
+							"   }",
+							"}, function (err, res) {",
+							"   postman.setEnvironmentVariable(\"token\", res.json().jwtoken);",
+							"   console.log(postman.getEnvironmentVariable(\"token\"));",
+							"});"
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"id": "a9232e84-0b7e-42e6-92ab-16c7edf88bc3",
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
 				}
 			]
 		}
