@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "c12a19f8-c031-4b9f-9ed1-a90cef746deb",
+		"_postman_id": "57ff4d18-1f6e-4b9a-8528-46e95ed83fce",
 		"name": "QA Smoke",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -888,12 +888,12 @@
 							"raw": "    {\n  \"name\": \"Last Positions\",\n  \"desc\": \"{{$guid}}\",\n  \"visibility\": \"private\",\n  \"withMap\": true,\n  \"filterExpression\": {\n    \"common\": {\n      \"startDate\": \"2015-07-26T08:30:18\",\n      \"endDate\": \"2015-07-31T08:30:18\",\n      \"positionSelector\": \"last\",\n      \"positionTypeSelector\": \"positions\",\n      \"xValue\": 50\n    },\n    \"assets\": [],\n    \"vms\": {},\n    \"areas\": []\n  },\n  \"mapConfiguration\": {}\n}\n"
 						},
 						"url": {
-							"raw": "{{hostname}}:{{port}}/reporting/rest/report/?projection=DETAILED",
+							"raw": "{{hostname}}/{{context}}/reporting/rest/report/?projection=DETAILED",
 							"host": [
 								"{{hostname}}"
 							],
-							"port": "{{port}}",
 							"path": [
+								"{{context}}",
 								"reporting",
 								"rest",
 								"report",
@@ -953,12 +953,12 @@
 							"raw": "    {\n  \"name\": \"Last Positions\",\n  \"desc\": \"{{$guid}}\",\n  \"visibility\": \"private\",\n  \"withMap\": true,\n  \"filterExpression\": {\n    \"common\": {\n      \"startDate\": \"2015-07-26T08:30:18\",\n      \"endDate\": \"2015-07-31T08:30:18\",\n      \"positionSelector\": \"last\",\n      \"positionTypeSelector\": \"positions\",\n      \"xValue\": 50\n    },\n    \"assets\": [],\n    \"vms\": {},\n    \"areas\": []\n  },\n  \"mapConfiguration\": {}\n}\n"
 						},
 						"url": {
-							"raw": "{{hostname}}:{{port}}/reporting/rest/report/?projection=DETAILED",
+							"raw": "{{hostname}}/{{context}}/reporting/rest/report/?projection=DETAILED",
 							"host": [
 								"{{hostname}}"
 							],
-							"port": "{{port}}",
 							"path": [
+								"{{context}}",
 								"reporting",
 								"rest",
 								"report",
@@ -980,11 +980,10 @@
 						{
 							"listen": "test",
 							"script": {
+								"id": "0ba52121-c042-47fd-9f99-7012407178cd",
 								"type": "text/javascript",
 								"exec": [
-									"var jsonObject = xml2Json(responseBody);",
 									"",
-									"tests[\"Error message is Unable to get user context and/or user features.\"] = jsonObject.html.body === \"Unable to get user context and/or user features.\";",
 									"",
 									"tests[\"Status code is 401 - Unauthorized\"] = responseCode.code === 401;"
 								]
@@ -1012,12 +1011,12 @@
 							"raw": "    {\n  \"name\": \"Last Positions\",\n  \"desc\": \"{{$guid}}\",\n  \"visibility\": \"private\",\n  \"withMap\": true,\n  \"filterExpression\": {\n    \"common\": {\n      \"startDate\": \"2015-07-26T08:30:18\",\n      \"endDate\": \"2015-07-31T08:30:18\",\n      \"positionSelector\": \"last\",\n      \"positionTypeSelector\": \"positions\",\n      \"xValue\": 50\n    },\n    \"assets\": [],\n    \"vms\": {},\n    \"areas\": []\n  },\n  \"mapConfiguration\": {}\n}\n"
 						},
 						"url": {
-							"raw": "{{hostname}}:{{port}}/reporting/rest/report/?projection=DETAILED",
+							"raw": "{{hostname}}/{{context}}/reporting/rest/report/?projection=DETAILED",
 							"host": [
 								"{{hostname}}"
 							],
-							"port": "{{port}}",
 							"path": [
+								"{{context}}",
 								"reporting",
 								"rest",
 								"report",
@@ -1075,12 +1074,12 @@
 							"raw": "    {\n  \"name\": \"Public visibility\",\n  \"desc\": \"{{$guid}}\",\n  \"visibility\": \"private\",\n  \"withMap\": true,\n  \"filterExpression\": {\n    \"common\": {\n      \"startDate\": \"2015-07-26T08:30:18\",\n      \"endDate\": \"2015-07-31T08:30:18\",\n      \"positionSelector\": \"last\",\n      \"positionTypeSelector\": \"positions\",\n      \"xValue\": 50\n    },\n    \"assets\": [],\n    \"vms\": {},\n    \"areas\": []\n  },\n  \"mapConfiguration\": {}\n}\n"
 						},
 						"url": {
-							"raw": "{{hostname}}:{{port}}/reporting/rest/report/?projection=DETAILED",
+							"raw": "{{hostname}}/{{context}}/reporting/rest/report/?projection=DETAILED",
 							"host": [
 								"{{hostname}}"
 							],
-							"port": "{{port}}",
 							"path": [
+								"{{context}}",
 								"reporting",
 								"rest",
 								"report",
@@ -1209,14 +1208,12 @@
 						{
 							"listen": "test",
 							"script": {
+								"id": "845514e8-0eeb-4d4f-923b-3edb9ac6efe5",
 								"type": "text/javascript",
 								"exec": [
 									"tests[\"Status code is 500\"] = responseCode.code === 500;",
 									"",
-									"tests[\"Response is: No report found with id\"] = responseBody.has(\"No report found with id\");",
-									"",
-									"var jsonData = JSON.parse(responseBody);",
-									"tests[\"Response contains 500 code\"] = jsonData.code === 500;"
+									""
 								]
 							}
 						}
