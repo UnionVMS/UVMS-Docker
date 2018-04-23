@@ -2898,8 +2898,14 @@
 							"})",
 							"   }",
 							"}, function (err, res) {",
-							"   postman.setEnvironmentVariable(\"token\", res.json().jwtoken);",
-							"   console.log(postman.getEnvironmentVariable(\"token\"));",
+							"   var theToken = res.json().jwtoken;",
+							"   if (theToken !== null){",
+							"       postman.setEnvironmentVariable(\"token\", res.json().jwtoken);",
+							"       setTimeout(function(){}, 500);",
+							"   }",
+							"   else {",
+							"     throw new Error('Unable to authenticate');",
+							"   }",
 							"});"
 						]
 					}
@@ -4415,8 +4421,14 @@
 							"})",
 							"   }",
 							"}, function (err, res) {",
-							"   postman.setEnvironmentVariable(\"token\", res.json().jwtoken);",
-							"   console.log(postman.getEnvironmentVariable(\"token\"));",
+							"   var theToken = res.json().jwtoken;",
+							"   if (theToken !== null){",
+							"       postman.setEnvironmentVariable(\"token\", res.json().jwtoken);",
+							"       setTimeout(function(){}, 500);",
+							"   }",
+							"   else {",
+							"     throw new Error('Unable to authenticate');",
+							"   }",
 							"});"
 						]
 					}
@@ -4572,8 +4584,14 @@
 							"})",
 							"   }",
 							"}, function (err, res) {",
-							"   postman.setEnvironmentVariable(\"token\", res.json().jwtoken);",
-							"   console.log(postman.getEnvironmentVariable(\"token\"));",
+							"   var theToken = res.json().jwtoken;",
+							"   if (theToken !== null){",
+							"       postman.setEnvironmentVariable(\"token\", res.json().jwtoken);",
+							"       setTimeout(function(){}, 500);",
+							"   }",
+							"   else {",
+							"     throw new Error('Unable to authenticate');",
+							"   }",
 							"});"
 						]
 					}
@@ -5090,8 +5108,14 @@
 							"})",
 							"   }",
 							"}, function (err, res) {",
-							"   postman.setEnvironmentVariable(\"token\", res.json().jwtoken);",
-							"   console.log(postman.getEnvironmentVariable(\"token\"));",
+							"   var theToken = res.json().jwtoken;",
+							"   if (theToken !== null){",
+							"       postman.setEnvironmentVariable(\"token\", res.json().jwtoken);",
+							"       setTimeout(function(){}, 500);",
+							"   }",
+							"   else {",
+							"     throw new Error('Unable to authenticate');",
+							"   }",
 							"});"
 						]
 					}
@@ -5590,8 +5614,14 @@
 							"})",
 							"   }",
 							"}, function (err, res) {",
-							"   postman.setEnvironmentVariable(\"token\", res.json().jwtoken);",
-							"   console.log(postman.getEnvironmentVariable(\"token\"));",
+							"   var theToken = res.json().jwtoken;",
+							"   if (theToken !== null){",
+							"       postman.setEnvironmentVariable(\"token\", res.json().jwtoken);",
+							"       setTimeout(function(){}, 500);",
+							"   }",
+							"   else {",
+							"     throw new Error('Unable to authenticate');",
+							"   }",
 							"});"
 						]
 					}
