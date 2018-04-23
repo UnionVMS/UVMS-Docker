@@ -158,16 +158,16 @@
 				{
 					"listen": "test",
 					"script": {
-						"id": "08a67226-b060-47a6-8a6a-0ff17dfbc1c4",
+						"id": "86b93f56-f7a1-4746-b728-b5e55abcd72e",
 						"type": "text/javascript",
 						"exec": [
 							"tests[\"Status code is 200\"] = responseCode.code === 200;",
 							"",
 							"try {",
 							"\tresp = JSON.parse(responseBody);",
-							"\ttests[\"response code is 200\"] = resp.code === 200;",
+							"\ttests[\"has failures\"] = resp.data.validationList === null;",
+							"\ttests[\"response code is 200\"] = resp.code == 200;",
 							"    ",
-							"    tests[\"has failures\"] = resp.data.validationList.length>0;",
 							"    ",
 							"} catch (e) {",
 							"\ttests[\"Response in JSON format\"] = false;",
@@ -239,8 +239,14 @@
 					"})",
 					"   }",
 					"}, function (err, res) {",
-					"   postman.setEnvironmentVariable(\"token\", res.json().jwtoken);",
-					"   console.log(postman.getEnvironmentVariable(\"token\"));",
+					"   var theToken = res.json().jwtoken;",
+					"   if (theToken !== null){",
+					"       postman.setEnvironmentVariable(\"token\", res.json().jwtoken);",
+					"       setTimeout(function(){}, 500);",
+					"   }",
+					"   else {",
+					"     throw new Error('Unable to authenticate');",
+					"   }",
 					"});"
 				]
 			}
