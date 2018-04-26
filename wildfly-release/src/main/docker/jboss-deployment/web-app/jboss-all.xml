@@ -16,5 +16,6 @@
 		<dependency name="flux-module-${unionvms.project.plugins.flux}.ear" />
 		<dependency name="inmarsat-module-${unionvms.project.plugins.inmarsat}.ear" />
 		<dependency name="siriusone-module-${unionvms.project.plugins.siriusone}.ear" />
+		<dependency name="geoserver.war" />
 	</jboss-deployment-dependencies>
 </jboss>
