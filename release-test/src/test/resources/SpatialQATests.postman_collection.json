@@ -1,13 +1,13 @@
 {
 	"info": {
+		"_postman_id": "a005cc10-d256-4e0d-83e0-c9f5a7bc12ef",
 		"name": "Spatial",
-		"_postman_id": "4b856501-e86a-2565-3c93-c021f96558f7",
-		"description": "",
-		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
 	"item": [
 		{
 			"name": "01 Area-Datasets",
+			"description": null,
 			"item": [
 				{
 					"name": "01 authenticate usm_admin",
@@ -42,7 +42,18 @@
 							"mode": "raw",
 							"raw": "{\n   \"userName\": \"usm_admin\",\n   \"password\": \"password\"\n}"
 						},
-						"url": "{{hostname}}:{{port}}/{{comPath}}/usm-administration/rest/authenticate"
+						"url": {
+							"raw": "{{hostname}}/{{context}}/usm-administration/rest/authenticate",
+							"host": [
+								"{{hostname}}"
+							],
+							"path": [
+								"{{context}}",
+								"usm-administration",
+								"rest",
+								"authenticate"
+							]
+						}
 					},
 					"response": []
 				},
@@ -98,7 +109,18 @@
 							"mode": "raw",
 							"raw": "{\n   \"userName\": \"rep_share\",\n   \"password\": \"abcd-1234\"\n}"
 						},
-						"url": "{{hostname}}:{{port}}/{{comPath}}/usm-administration/rest/roles"
+						"url": {
+							"raw": "{{hostname}}/{{context}}/usm-administration/rest/roles",
+							"host": [
+								"{{hostname}}"
+							],
+							"path": [
+								"{{context}}",
+								"usm-administration",
+								"rest",
+								"roles"
+							]
+						}
 					},
 					"response": []
 				},
@@ -149,7 +171,19 @@
 							"mode": "raw",
 							"raw": "{\n   \"userName\": \"rep_share\",\n   \"password\": \"abcd-1234\"\n}"
 						},
-						"url": "{{hostname}}:{{port}}/{{comPath}}/usm-administration/rest/applications/features"
+						"url": {
+							"raw": "{{hostname}}/{{context}}/usm-administration/rest/applications/features",
+							"host": [
+								"{{hostname}}"
+							],
+							"path": [
+								"{{context}}",
+								"usm-administration",
+								"rest",
+								"applications",
+								"features"
+							]
+						}
 					},
 					"response": []
 				},
@@ -192,7 +226,18 @@
 							"mode": "raw",
 							"raw": "{\r\n\t\"features\": [{{features}}],\r\n\t\"roleId\": {{rep_power_role_id}},\r\n\t\"status\": \"E\",\r\n\t\"name\": \"rep_power_role\"\r\n}"
 						},
-						"url": "{{hostname}}:{{port}}/{{comPath}}/usm-administration/rest/roles"
+						"url": {
+							"raw": "{{hostname}}/{{context}}/usm-administration/rest/roles",
+							"host": [
+								"{{hostname}}"
+							],
+							"path": [
+								"{{context}}",
+								"usm-administration",
+								"rest",
+								"roles"
+							]
+						}
 					},
 					"response": []
 				},
@@ -235,7 +280,18 @@
 							"mode": "raw",
 							"raw": "{\r\n\t\"features\": [{{features}}],\r\n\t\"roleId\": {{rep_share_role_id}},\r\n\t\"status\": \"E\",\r\n\t\"name\": \"rep_share_role\"\r\n}"
 						},
-						"url": "{{hostname}}:{{port}}/{{comPath}}/usm-administration/rest/roles"
+						"url": {
+							"raw": "{{hostname}}/{{context}}/usm-administration/rest/roles",
+							"host": [
+								"{{hostname}}"
+							],
+							"path": [
+								"{{context}}",
+								"usm-administration",
+								"rest",
+								"roles"
+							]
+						}
 					},
 					"response": []
 				},
@@ -285,7 +341,19 @@
 							"mode": "raw",
 							"raw": "{\n   \"userName\": \"rep_share\",\n   \"password\": \"abcd-1234\"\n}"
 						},
-						"url": "{{hostname}}:{{port}}/{{comPath}}/usm-administration/rest/scopes/datasets"
+						"url": {
+							"raw": "{{hostname}}/{{context}}/usm-administration/rest/scopes/datasets",
+							"host": [
+								"{{hostname}}"
+							],
+							"path": [
+								"{{context}}",
+								"usm-administration",
+								"rest",
+								"scopes",
+								"datasets"
+							]
+						}
 					},
 					"response": []
 				},
@@ -322,7 +390,18 @@
 							"mode": "raw",
 							"raw": "{\n   \"userName\": \"rep_power\",\n   \"password\": \"abcd-1234\"\n}"
 						},
-						"url": "{{hostname}}:{{port}}/{{comPath}}/usm-administration/rest/authenticate"
+						"url": {
+							"raw": "{{hostname}}/{{context}}/usm-administration/rest/authenticate",
+							"host": [
+								"{{hostname}}"
+							],
+							"path": [
+								"{{context}}",
+								"usm-administration",
+								"rest",
+								"authenticate"
+							]
+						}
 					},
 					"response": []
 				},
@@ -383,7 +462,18 @@
 							"mode": "raw",
 							"raw": "{\r\n\t\"type\": \"Feature\",\r\n\t\"geometry\": {\r\n\t\t\"type\": \"MultiPolygon\",\r\n\t\t\"coordinates\": [[[[-3.341753524316978, 68.12616370194141], [-37.28693406080001, 74.49036928060866], [-3.341753524316978, 74.908058702499], [-3.341753524316978, 68.12616370194141]]]]\r\n\t},\r\n\t\"properties\": {\r\n\t\t\"name\": \"Name-{{myRnd}}\",\r\n\t\t\"description\": \"Description {{myRnd}}\",\r\n\t\t\"subType\": \"Group{{myRnd}}\",\r\n\t\t\"startDate\": \"2017-04-20T08:55:17\",\r\n\t\t\"endDate\": \"2017-04-29T08:55:17\",\r\n\t\t\"scopeSelection\": [\"DG_MARE\"],\r\n\t\t\"datasetName\": \"dataset{{myRnd}}\"\r\n\t}\r\n}"
 						},
-						"url": "{{hostname}}:{{port}}/{{comPath}}/spatial/rest/userarea"
+						"url": {
+							"raw": "{{hostname}}/{{context}}/spatial/rest/userarea",
+							"host": [
+								"{{hostname}}"
+							],
+							"path": [
+								"{{context}}",
+								"spatial",
+								"rest",
+								"userarea"
+							]
+						}
 					},
 					"response": []
 				},
@@ -447,7 +537,19 @@
 							"mode": "raw",
 							"raw": "{\n\t\"id\":{{userAreaId}},\n\t\"isGeom\":false\n}"
 						},
-						"url": "{{hostname}}:{{port}}/{{comPath}}/spatial/rest/userarea/details"
+						"url": {
+							"raw": "{{hostname}}/{{context}}/spatial/rest/userarea/details",
+							"host": [
+								"{{hostname}}"
+							],
+							"path": [
+								"{{context}}",
+								"spatial",
+								"rest",
+								"userarea",
+								"details"
+							]
+						}
 					},
 					"response": []
 				},
@@ -484,7 +586,18 @@
 							"mode": "raw",
 							"raw": "{\n   \"userName\": \"usm_admin\",\n   \"password\": \"password\"\n}"
 						},
-						"url": "{{hostname}}:{{port}}/{{comPath}}/usm-administration/rest/authenticate"
+						"url": {
+							"raw": "{{hostname}}/{{context}}/usm-administration/rest/authenticate",
+							"host": [
+								"{{hostname}}"
+							],
+							"path": [
+								"{{context}}",
+								"usm-administration",
+								"rest",
+								"authenticate"
+							]
+						}
 					},
 					"response": []
 				},
@@ -546,7 +659,19 @@
 							"mode": "raw",
 							"raw": "{\n   \"userName\": \"rep_share\",\n   \"password\": \"abcd-1234\"\n}"
 						},
-						"url": "{{hostname}}:{{port}}/{{comPath}}/usm-administration/rest/scopes/datasets"
+						"url": {
+							"raw": "{{hostname}}/{{context}}/usm-administration/rest/scopes/datasets",
+							"host": [
+								"{{hostname}}"
+							],
+							"path": [
+								"{{context}}",
+								"usm-administration",
+								"rest",
+								"scopes",
+								"datasets"
+							]
+						}
 					},
 					"response": []
 				},
@@ -583,7 +708,18 @@
 							"mode": "raw",
 							"raw": "{\n   \"userName\": \"rep_power\",\n   \"password\": \"abcd-1234\"\n}"
 						},
-						"url": "{{hostname}}:{{port}}/{{comPath}}/usm-administration/rest/authenticate"
+						"url": {
+							"raw": "{{hostname}}/{{context}}/usm-administration/rest/authenticate",
+							"host": [
+								"{{hostname}}"
+							],
+							"path": [
+								"{{context}}",
+								"usm-administration",
+								"rest",
+								"authenticate"
+							]
+						}
 					},
 					"response": []
 				},
@@ -641,7 +777,18 @@
 							"mode": "raw",
 							"raw": "{\r\n\t\"type\": \"Feature\",\r\n\t\"geometry\": {\r\n\t\t\"type\": \"MultiPolygon\",\r\n\t\t\"coordinates\": [[[[-3.3418, 68.12619999999998], [-37.2869, 74.4904], [-3.3418, 74.90809999999999], [-3.3418, 68.12619999999998]]]]\r\n\t},\r\n\t\"properties\": {\r\n\t\t\"name\": \"Name-47751\",\r\n\t\t\"description\": \"Description 47751\",\r\n\t\t\"subType\": \"GROUP47751\",\r\n\t\t\"startDate\": \"2017-04-20T08:55:17\",\r\n\t\t\"endDate\"\r\n\t\t: \"2017-04-29T08:55:17\",\r\n\t\t\"scopeSelection\": [\"DG_MARE\"],\r\n\t\t\"datasetName\": \"newDataset{{myRnd}}\",\r\n\t\t\"id\": \"{{userAreaId}}\"\r\n\t}\r\n}"
 						},
-						"url": "{{hostname}}:{{port}}/{{comPath}}/spatial/rest/userarea"
+						"url": {
+							"raw": "{{hostname}}/{{context}}/spatial/rest/userarea",
+							"host": [
+								"{{hostname}}"
+							],
+							"path": [
+								"{{context}}",
+								"spatial",
+								"rest",
+								"userarea"
+							]
+						}
 					},
 					"response": []
 				},
@@ -691,7 +838,19 @@
 							"mode": "raw",
 							"raw": "{\n\t\"id\":{{userAreaId}},\n\t\"isGeom\":false\n}"
 						},
-						"url": "{{hostname}}:{{port}}/{{comPath}}/spatial/rest/userarea/details"
+						"url": {
+							"raw": "{{hostname}}/{{context}}/spatial/rest/userarea/details",
+							"host": [
+								"{{hostname}}"
+							],
+							"path": [
+								"{{context}}",
+								"spatial",
+								"rest",
+								"userarea",
+								"details"
+							]
+						}
 					},
 					"response": []
 				},
@@ -728,7 +887,18 @@
 							"mode": "raw",
 							"raw": "{\n   \"userName\": \"usm_admin\",\n   \"password\": \"password\"\n}"
 						},
-						"url": "{{hostname}}:{{port}}/{{comPath}}/usm-administration/rest/authenticate"
+						"url": {
+							"raw": "{{hostname}}/{{context}}/usm-administration/rest/authenticate",
+							"host": [
+								"{{hostname}}"
+							],
+							"path": [
+								"{{context}}",
+								"usm-administration",
+								"rest",
+								"authenticate"
+							]
+						}
 					},
 					"response": []
 				},
@@ -790,7 +960,19 @@
 							"mode": "raw",
 							"raw": "{\n   \"userName\": \"rep_share\",\n   \"password\": \"abcd-1234\"\n}"
 						},
-						"url": "{{hostname}}:{{port}}/{{comPath}}/usm-administration/rest/scopes/datasets"
+						"url": {
+							"raw": "{{hostname}}/{{context}}/usm-administration/rest/scopes/datasets",
+							"host": [
+								"{{hostname}}"
+							],
+							"path": [
+								"{{context}}",
+								"usm-administration",
+								"rest",
+								"scopes",
+								"datasets"
+							]
+						}
 					},
 					"response": []
 				}
@@ -798,6 +980,7 @@
 		},
 		{
 			"name": "02 Area-Visibility - ChangeUserChangeScope",
+			"description": null,
 			"item": [
 				{
 					"name": "02 authenticate rep_power",
@@ -832,7 +1015,18 @@
 							"mode": "raw",
 							"raw": "{\n   \"userName\": \"rep_power\",\n   \"password\": \"abcd-1234\"\n}"
 						},
-						"url": "{{hostname}}:{{port}}/{{comPath}}/usm-administration/rest/authenticate"
+						"url": {
+							"raw": "{{hostname}}/{{context}}/usm-administration/rest/authenticate",
+							"host": [
+								"{{hostname}}"
+							],
+							"path": [
+								"{{context}}",
+								"usm-administration",
+								"rest",
+								"authenticate"
+							]
+						}
 					},
 					"response": []
 				},
@@ -893,7 +1087,18 @@
 							"mode": "raw",
 							"raw": "{\r\n\t\"type\": \"Feature\",\r\n\t\"geometry\": {\r\n\t\t\"type\": \"MultiPolygon\",\r\n\t\t\"coordinates\": [[[[-3.341753524316978, 68.12616370194141], [-37.28693406080001, 74.49036928060866], [-3.341753524316978, 74.908058702499], [-3.341753524316978, 68.12616370194141]]]]\r\n\t},\r\n\t\"properties\": {\r\n\t\t\"name\": \"Name-{{myRnd}}\",\r\n\t\t\"description\": \"Description {{myRnd}}\",\r\n\t\t\"subType\": \"Group{{myRnd}}\",\r\n\t\t\"startDate\": \"2017-04-20T08:55:17\",\r\n\t\t\"endDate\": \"2017-04-29T08:55:17\",\r\n\t\t\"scopeSelection\": [\"EC\"],\r\n\t\t\"datasetName\": \"dataset{{myRnd}}\"\r\n\t}\r\n}"
 						},
-						"url": "{{hostname}}:{{port}}/{{comPath}}/spatial/rest/userarea"
+						"url": {
+							"raw": "{{hostname}}/{{context}}/spatial/rest/userarea",
+							"host": [
+								"{{hostname}}"
+							],
+							"path": [
+								"{{context}}",
+								"spatial",
+								"rest",
+								"userarea"
+							]
+						}
 					},
 					"response": []
 				},
@@ -947,7 +1152,19 @@
 							"mode": "raw",
 							"raw": "{\n\t\"id\":{{UAID_EC}},\n\t\"isGeom\":false\n}"
 						},
-						"url": "{{hostname}}:{{port}}/{{comPath}}/spatial/rest/userarea/details"
+						"url": {
+							"raw": "{{hostname}}/{{context}}/spatial/rest/userarea/details",
+							"host": [
+								"{{hostname}}"
+							],
+							"path": [
+								"{{context}}",
+								"spatial",
+								"rest",
+								"userarea",
+								"details"
+							]
+						}
 					},
 					"response": []
 				},
@@ -1008,7 +1225,18 @@
 							"mode": "raw",
 							"raw": "{\r\n\t\"type\": \"Feature\",\r\n\t\"geometry\": {\r\n\t\t\"type\": \"MultiPolygon\",\r\n\t\t\"coordinates\": [[[[-3.341753524316978, 68.12616370194141], [-37.28693406080001, 74.49036928060866], [-3.341753524316978, 74.908058702499], [-3.341753524316978, 68.12616370194141]]]]\r\n\t},\r\n\t\"properties\": {\r\n\t\t\"name\": \"Name-{{myRnd}}\",\r\n\t\t\"description\": \"Description {{myRnd}}\",\r\n\t\t\"subType\": \"Group{{myRnd}}\",\r\n\t\t\"startDate\": \"2017-04-20T08:55:17\",\r\n\t\t\"endDate\": \"2017-04-29T08:55:17\",\r\n\t\t\"scopeSelection\": [],\r\n\t\t\"datasetName\": \"dataset{{myRnd}}\"\r\n\t}\r\n}"
 						},
-						"url": "{{hostname}}:{{port}}/{{comPath}}/spatial/rest/userarea"
+						"url": {
+							"raw": "{{hostname}}/{{context}}/spatial/rest/userarea",
+							"host": [
+								"{{hostname}}"
+							],
+							"path": [
+								"{{context}}",
+								"spatial",
+								"rest",
+								"userarea"
+							]
+						}
 					},
 					"response": []
 				},
@@ -1061,7 +1289,19 @@
 							"mode": "raw",
 							"raw": "{\n\t\"id\":{{UAID_Private}},\n\t\"isGeom\":false\n}"
 						},
-						"url": "{{hostname}}:{{port}}/{{comPath}}/spatial/rest/userarea/details"
+						"url": {
+							"raw": "{{hostname}}/{{context}}/spatial/rest/userarea/details",
+							"host": [
+								"{{hostname}}"
+							],
+							"path": [
+								"{{context}}",
+								"spatial",
+								"rest",
+								"userarea",
+								"details"
+							]
+						}
 					},
 					"response": []
 				},
@@ -1122,7 +1362,18 @@
 							"mode": "raw",
 							"raw": "{\r\n\t\"type\": \"Feature\",\r\n\t\"geometry\": {\r\n\t\t\"type\": \"MultiPolygon\",\r\n\t\t\"coordinates\": [[[[-3.341753524316978, 68.12616370194141], [-37.28693406080001, 74.49036928060866], [-3.341753524316978, 74.908058702499], [-3.341753524316978, 68.12616370194141]]]]\r\n\t},\r\n\t\"properties\": {\r\n\t\t\"name\": \"Name-{{myRnd}}\",\r\n\t\t\"description\": \"Description {{myRnd}}\",\r\n\t\t\"subType\": \"Group{{myRnd}}\",\r\n\t\t\"startDate\": \"2017-04-20T08:55:17\",\r\n\t\t\"endDate\": \"2017-04-29T08:55:17\",\r\n\t\t\"scopeSelection\": [\"EC\", \"DG_MARE\"],\r\n\t\t\"datasetName\": \"dataset{{myRnd}}\"\r\n\t}\r\n}"
 						},
-						"url": "{{hostname}}:{{port}}/{{comPath}}/spatial/rest/userarea"
+						"url": {
+							"raw": "{{hostname}}/{{context}}/spatial/rest/userarea",
+							"host": [
+								"{{hostname}}"
+							],
+							"path": [
+								"{{context}}",
+								"spatial",
+								"rest",
+								"userarea"
+							]
+						}
 					},
 					"response": []
 				},
@@ -1175,7 +1426,19 @@
 							"mode": "raw",
 							"raw": "{\n\t\"id\":{{UAID_MULTIPLE}},\n\t\"isGeom\":false\n}"
 						},
-						"url": "{{hostname}}:{{port}}/{{comPath}}/spatial/rest/userarea/details"
+						"url": {
+							"raw": "{{hostname}}/{{context}}/spatial/rest/userarea/details",
+							"host": [
+								"{{hostname}}"
+							],
+							"path": [
+								"{{context}}",
+								"spatial",
+								"rest",
+								"userarea",
+								"details"
+							]
+						}
 					},
 					"response": []
 				},
@@ -1236,7 +1499,18 @@
 							"mode": "raw",
 							"raw": "{\r\n\t\"type\": \"Feature\",\r\n\t\"geometry\": {\r\n\t\t\"type\": \"MultiPolygon\",\r\n\t\t\"coordinates\": [[[[-3.341753524316978, 68.12616370194141], [-37.28693406080001, 74.49036928060866], [-3.341753524316978, 74.908058702499], [-3.341753524316978, 68.12616370194141]]]]\r\n\t},\r\n\t\"properties\": {\r\n\t\t\"name\": \"Name-{{myRnd}}\",\r\n\t\t\"description\": \"Description {{myRnd}}\",\r\n\t\t\"subType\": \"Group{{myRnd}}\",\r\n\t\t\"startDate\": \"2017-04-20T08:55:17\",\r\n\t\t\"endDate\": \"2017-04-29T08:55:17\",\r\n\t\t\"scopeSelection\": [\"INVALIDSCOPE\", \"FRA\"],\r\n\t\t\"datasetName\": \"dataset{{myRnd}}\"\r\n\t}\r\n}"
 						},
-						"url": "{{hostname}}:{{port}}/{{comPath}}/spatial/rest/userarea"
+						"url": {
+							"raw": "{{hostname}}/{{context}}/spatial/rest/userarea",
+							"host": [
+								"{{hostname}}"
+							],
+							"path": [
+								"{{context}}",
+								"spatial",
+								"rest",
+								"userarea"
+							]
+						}
 					},
 					"response": []
 				},
@@ -1291,7 +1565,19 @@
 							"mode": "raw",
 							"raw": "{\n\t\"id\":{{UAID_INVALIDSCOPE}},\n\t\"isGeom\":false\n}"
 						},
-						"url": "{{hostname}}:{{port}}/{{comPath}}/spatial/rest/userarea/details"
+						"url": {
+							"raw": "{{hostname}}/{{context}}/spatial/rest/userarea/details",
+							"host": [
+								"{{hostname}}"
+							],
+							"path": [
+								"{{context}}",
+								"spatial",
+								"rest",
+								"userarea",
+								"details"
+							]
+						}
 					},
 					"response": []
 				},
@@ -1328,7 +1614,18 @@
 							"mode": "raw",
 							"raw": "{\n   \"userName\": \"rep_share\",\n   \"password\": \"abcd-1234\"\n}"
 						},
-						"url": "{{hostname}}:{{port}}/{{comPath}}/usm-administration/rest/authenticate"
+						"url": {
+							"raw": "{{hostname}}/{{context}}/usm-administration/rest/authenticate",
+							"host": [
+								"{{hostname}}"
+							],
+							"path": [
+								"{{context}}",
+								"usm-administration",
+								"rest",
+								"authenticate"
+							]
+						}
 					},
 					"response": []
 				},
@@ -1381,7 +1678,19 @@
 							"mode": "raw",
 							"raw": "{\n\t\"id\":{{UAID_EC}},\n\t\"isGeom\":false\n}"
 						},
-						"url": "{{hostname}}:{{port}}/{{comPath}}/spatial/rest/userarea/details"
+						"url": {
+							"raw": "{{hostname}}/{{context}}/spatial/rest/userarea/details",
+							"host": [
+								"{{hostname}}"
+							],
+							"path": [
+								"{{context}}",
+								"spatial",
+								"rest",
+								"userarea",
+								"details"
+							]
+						}
 					},
 					"response": []
 				},
@@ -1438,7 +1747,19 @@
 							"mode": "raw",
 							"raw": "{\n\t\"id\":{{UAID_Private}},\n\t\"isGeom\":false\n}"
 						},
-						"url": "{{hostname}}:{{port}}/{{comPath}}/spatial/rest/userarea/details"
+						"url": {
+							"raw": "{{hostname}}/{{context}}/spatial/rest/userarea/details",
+							"host": [
+								"{{hostname}}"
+							],
+							"path": [
+								"{{context}}",
+								"spatial",
+								"rest",
+								"userarea",
+								"details"
+							]
+						}
 					},
 					"response": []
 				},
@@ -1491,7 +1812,19 @@
 							"mode": "raw",
 							"raw": "{\n\t\"id\":{{UAID_MULTIPLE}},\n\t\"isGeom\":false\n}"
 						},
-						"url": "{{hostname}}:{{port}}/{{comPath}}/spatial/rest/userarea/details"
+						"url": {
+							"raw": "{{hostname}}/{{context}}/spatial/rest/userarea/details",
+							"host": [
+								"{{hostname}}"
+							],
+							"path": [
+								"{{context}}",
+								"spatial",
+								"rest",
+								"userarea",
+								"details"
+							]
+						}
 					},
 					"response": []
 				},
@@ -1547,7 +1880,19 @@
 							"mode": "raw",
 							"raw": "{\n\t\"id\":{{UAID_INVALIDSCOPE}},\n\t\"isGeom\":false\n}"
 						},
-						"url": "{{hostname}}:{{port}}/{{comPath}}/spatial/rest/userarea/details"
+						"url": {
+							"raw": "{{hostname}}/{{context}}/spatial/rest/userarea/details",
+							"host": [
+								"{{hostname}}"
+							],
+							"path": [
+								"{{context}}",
+								"spatial",
+								"rest",
+								"userarea",
+								"details"
+							]
+						}
 					},
 					"response": []
 				},
@@ -1621,7 +1966,19 @@
 							"mode": "raw",
 							"raw": ""
 						},
-						"url": "{{hostname}}:{{port}}/{{comPath}}/spatial/rest/userarea/list"
+						"url": {
+							"raw": "{{hostname}}/{{context}}/spatial/rest/userarea/list",
+							"host": [
+								"{{hostname}}"
+							],
+							"path": [
+								"{{context}}",
+								"spatial",
+								"rest",
+								"userarea",
+								"list"
+							]
+						}
 					},
 					"response": []
 				},
@@ -1686,7 +2043,19 @@
 							"mode": "raw",
 							"raw": ""
 						},
-						"url": "{{hostname}}:{{port}}/{{comPath}}/spatial/rest/userarea/types"
+						"url": {
+							"raw": "{{hostname}}/{{context}}/spatial/rest/userarea/types",
+							"host": [
+								"{{hostname}}"
+							],
+							"path": [
+								"{{context}}",
+								"spatial",
+								"rest",
+								"userarea",
+								"types"
+							]
+						}
 					},
 					"response": []
 				},
@@ -1749,7 +2118,20 @@
 							"mode": "raw",
 							"raw": ""
 						},
-						"url": "{{hostname}}:{{port}}/{{comPath}}/spatial/rest/userarea/list/{{UAGROUP_EC}}"
+						"url": {
+							"raw": "{{hostname}}/{{context}}/spatial/rest/userarea/list/{{UAGROUP_EC}}",
+							"host": [
+								"{{hostname}}"
+							],
+							"path": [
+								"{{context}}",
+								"spatial",
+								"rest",
+								"userarea",
+								"list",
+								"{{UAGROUP_EC}}"
+							]
+						}
 					},
 					"response": []
 				},
@@ -1805,7 +2187,20 @@
 							"mode": "raw",
 							"raw": ""
 						},
-						"url": "{{hostname}}:{{port}}/{{comPath}}/spatial/rest/userarea/list/{{UAGROUP_Private}}"
+						"url": {
+							"raw": "{{hostname}}/{{context}}/spatial/rest/userarea/list/{{UAGROUP_Private}}",
+							"host": [
+								"{{hostname}}"
+							],
+							"path": [
+								"{{context}}",
+								"spatial",
+								"rest",
+								"userarea",
+								"list",
+								"{{UAGROUP_Private}}"
+							]
+						}
 					},
 					"response": []
 				},
@@ -1862,7 +2257,20 @@
 							"mode": "raw",
 							"raw": ""
 						},
-						"url": "{{hostname}}:{{port}}/{{comPath}}/spatial/rest/userarea/list/{{UAGROUP_MULTIPLE}}"
+						"url": {
+							"raw": "{{hostname}}/{{context}}/spatial/rest/userarea/list/{{UAGROUP_MULTIPLE}}",
+							"host": [
+								"{{hostname}}"
+							],
+							"path": [
+								"{{context}}",
+								"spatial",
+								"rest",
+								"userarea",
+								"list",
+								"{{UAGROUP_MULTIPLE}}"
+							]
+						}
 					},
 					"response": []
 				},
@@ -1918,7 +2326,20 @@
 							"mode": "raw",
 							"raw": ""
 						},
-						"url": "{{hostname}}:{{port}}/{{comPath}}/spatial/rest/userarea/list/{{UAGROUP_INVALIDSCOPE}}"
+						"url": {
+							"raw": "{{hostname}}/{{context}}/spatial/rest/userarea/list/{{UAGROUP_INVALIDSCOPE}}",
+							"host": [
+								"{{hostname}}"
+							],
+							"path": [
+								"{{context}}",
+								"spatial",
+								"rest",
+								"userarea",
+								"list",
+								"{{UAGROUP_INVALIDSCOPE}}"
+							]
+						}
 					},
 					"response": []
 				},
@@ -1991,7 +2412,19 @@
 							"mode": "raw",
 							"raw": ""
 						},
-						"url": "{{hostname}}:{{port}}/{{comPath}}/spatial/rest/userarea/layers"
+						"url": {
+							"raw": "{{hostname}}/{{context}}/spatial/rest/userarea/layers",
+							"host": [
+								"{{hostname}}"
+							],
+							"path": [
+								"{{context}}",
+								"spatial",
+								"rest",
+								"userarea",
+								"layers"
+							]
+						}
 					},
 					"response": []
 				},
@@ -2056,7 +2489,19 @@
 							"mode": "raw",
 							"raw": "{\"filter\":\"name\"}"
 						},
-						"url": "{{hostname}}:{{port}}/{{comPath}}/spatial/rest/userarea/byfilter"
+						"url": {
+							"raw": "{{hostname}}/{{context}}/spatial/rest/userarea/byfilter",
+							"host": [
+								"{{hostname}}"
+							],
+							"path": [
+								"{{context}}",
+								"spatial",
+								"rest",
+								"userarea",
+								"byfilter"
+							]
+						}
 					},
 					"response": []
 				},
@@ -2121,7 +2566,19 @@
 							"mode": "raw",
 							"raw": "{\n\t\"areaType\":\"USERAREA\",\n\t\"isGeom\":false,\n\t\"longitude\":-988742.9570800774,\n\t\"latitude\":11696861.913622377,\n\t\"crs\":\"3857\"\n}"
 						},
-						"url": "{{hostname}}:{{port}}/{{comPath}}/spatial/rest/area/details"
+						"url": {
+							"raw": "{{hostname}}/{{context}}/spatial/rest/area/details",
+							"host": [
+								"{{hostname}}"
+							],
+							"path": [
+								"{{context}}",
+								"spatial",
+								"rest",
+								"area",
+								"details"
+							]
+						}
 					},
 					"response": []
 				},
@@ -2172,7 +2629,18 @@
 							"mode": "raw",
 							"raw": "{\r\n\t\"type\": \"Feature\",\r\n\t\"geometry\": {\r\n\t\t\"type\": \"MultiPolygon\",\r\n\t\t\"coordinates\": [[[[-3.3418, 68.12619999999998], [-37.2869, 74.4904], [-3.3418, 74.90809999999999], [-3.3418, 68.12619999999998]]]]\r\n\t},\r\n\t\"properties\": {\r\n\t\t\"name\": \"Name-47751\",\r\n\t\t\"description\": \"Description 47751\",\r\n\t\t\"subType\": \"GROUP47751\",\r\n\t\t\"startDate\": \"2017-04-20T08:55:17\",\r\n\t\t\"endDate\"\r\n\t\t: \"2017-04-29T08:55:17\",\r\n\t\t\"scopeSelection\": [\"DG_MARE\"],\r\n\t\t\"datasetName\": \"newDataset{{myRnd}}\",\r\n\t\t\"id\": \"{{UAID_EC}}\"\r\n\t}\r\n}"
 						},
-						"url": "{{hostname}}:{{port}}/{{comPath}}/spatial/rest/userarea"
+						"url": {
+							"raw": "{{hostname}}/{{context}}/spatial/rest/userarea",
+							"host": [
+								"{{hostname}}"
+							],
+							"path": [
+								"{{context}}",
+								"spatial",
+								"rest",
+								"userarea"
+							]
+						}
 					},
 					"response": []
 				},
@@ -2222,7 +2690,18 @@
 							"mode": "raw",
 							"raw": "{\r\n\t\"type\": \"Feature\",\r\n\t\"geometry\": {\r\n\t\t\"type\": \"MultiPolygon\",\r\n\t\t\"coordinates\": [[[[-3.3418, 68.12619999999998], [-37.2869, 74.4904], [-3.3418, 74.90809999999999], [-3.3418, 68.12619999999998]]]]\r\n\t},\r\n\t\"properties\": {\r\n\t\t\"name\": \"Name-47751\",\r\n\t\t\"description\": \"Description 47751\",\r\n\t\t\"subType\": \"GROUP47751\",\r\n\t\t\"startDate\": \"2017-04-20T08:55:17\",\r\n\t\t\"endDate\"\r\n\t\t: \"2017-04-29T08:55:17\",\r\n\t\t\"scopeSelection\": [\"DG_MARE\"],\r\n\t\t\"datasetName\": \"newDataset{{myRnd}}\",\r\n\t\t\"id\": \"{{UAID_Private}}\"\r\n\t}\r\n}"
 						},
-						"url": "{{hostname}}:{{port}}/{{comPath}}/spatial/rest/userarea"
+						"url": {
+							"raw": "{{hostname}}/{{context}}/spatial/rest/userarea",
+							"host": [
+								"{{hostname}}"
+							],
+							"path": [
+								"{{context}}",
+								"spatial",
+								"rest",
+								"userarea"
+							]
+						}
 					},
 					"response": []
 				},
@@ -2272,7 +2751,18 @@
 							"mode": "raw",
 							"raw": "{\r\n\t\"type\": \"Feature\",\r\n\t\"geometry\": {\r\n\t\t\"type\": \"MultiPolygon\",\r\n\t\t\"coordinates\": [[[[-3.3418, 68.12619999999998], [-37.2869, 74.4904], [-3.3418, 74.90809999999999], [-3.3418, 68.12619999999998]]]]\r\n\t},\r\n\t\"properties\": {\r\n\t\t\"name\": \"Name-47751\",\r\n\t\t\"description\": \"Description 47751\",\r\n\t\t\"subType\": \"GROUP47751\",\r\n\t\t\"startDate\": \"2017-04-20T08:55:17\",\r\n\t\t\"endDate\"\r\n\t\t: \"2017-04-29T08:55:17\",\r\n\t\t\"scopeSelection\": [\"DG_MARE\"],\r\n\t\t\"datasetName\": \"newDataset{{myRnd}}\",\r\n\t\t\"id\": \"{{UAID_MULTIPLE}}\"\r\n\t}\r\n}"
 						},
-						"url": "{{hostname}}:{{port}}/{{comPath}}/spatial/rest/userarea"
+						"url": {
+							"raw": "{{hostname}}/{{context}}/spatial/rest/userarea",
+							"host": [
+								"{{hostname}}"
+							],
+							"path": [
+								"{{context}}",
+								"spatial",
+								"rest",
+								"userarea"
+							]
+						}
 					},
 					"response": []
 				},
@@ -2322,7 +2812,18 @@
 							"mode": "raw",
 							"raw": "{\r\n\t\"type\": \"Feature\",\r\n\t\"geometry\": {\r\n\t\t\"type\": \"MultiPolygon\",\r\n\t\t\"coordinates\": [[[[-3.3418, 68.12619999999998], [-37.2869, 74.4904], [-3.3418, 74.90809999999999], [-3.3418, 68.12619999999998]]]]\r\n\t},\r\n\t\"properties\": {\r\n\t\t\"name\": \"Name-47751\",\r\n\t\t\"description\": \"Description 47751\",\r\n\t\t\"subType\": \"GROUP47751\",\r\n\t\t\"startDate\": \"2017-04-20T08:55:17\",\r\n\t\t\"endDate\"\r\n\t\t: \"2017-04-29T08:55:17\",\r\n\t\t\"scopeSelection\": [\"DG_MARE\"],\r\n\t\t\"datasetName\": \"newDataset{{myRnd}}\",\r\n\t\t\"id\": \"{{UAID_INVALIDSCOPE}}\"\r\n\t}\r\n}"
 						},
-						"url": "{{hostname}}:{{port}}/{{comPath}}/spatial/rest/userarea"
+						"url": {
+							"raw": "{{hostname}}/{{context}}/spatial/rest/userarea",
+							"host": [
+								"{{hostname}}"
+							],
+							"path": [
+								"{{context}}",
+								"spatial",
+								"rest",
+								"userarea"
+							]
+						}
 					},
 					"response": []
 				},
@@ -2363,7 +2864,19 @@
 							"mode": "raw",
 							"raw": ""
 						},
-						"url": "{{hostname}}:{{port}}/{{comPath}}/spatial/rest/userarea/{{UAID_EC}}"
+						"url": {
+							"raw": "{{hostname}}/{{context}}/spatial/rest/userarea/{{UAID_EC}}",
+							"host": [
+								"{{hostname}}"
+							],
+							"path": [
+								"{{context}}",
+								"spatial",
+								"rest",
+								"userarea",
+								"{{UAID_EC}}"
+							]
+						}
 					},
 					"response": []
 				},
@@ -2404,7 +2917,19 @@
 							"mode": "raw",
 							"raw": ""
 						},
-						"url": "{{hostname}}:{{port}}/{{comPath}}/spatial/rest/userarea/{{UAID_Private}}"
+						"url": {
+							"raw": "{{hostname}}/{{context}}/spatial/rest/userarea/{{UAID_Private}}",
+							"host": [
+								"{{hostname}}"
+							],
+							"path": [
+								"{{context}}",
+								"spatial",
+								"rest",
+								"userarea",
+								"{{UAID_Private}}"
+							]
+						}
 					},
 					"response": []
 				},
@@ -2445,7 +2970,19 @@
 							"mode": "raw",
 							"raw": ""
 						},
-						"url": "{{hostname}}:{{port}}/{{comPath}}/spatial/rest/userarea/{{UAID_MULTIPLE}}"
+						"url": {
+							"raw": "{{hostname}}/{{context}}/spatial/rest/userarea/{{UAID_MULTIPLE}}",
+							"host": [
+								"{{hostname}}"
+							],
+							"path": [
+								"{{context}}",
+								"spatial",
+								"rest",
+								"userarea",
+								"{{UAID_MULTIPLE}}"
+							]
+						}
 					},
 					"response": []
 				},
@@ -2486,7 +3023,19 @@
 							"mode": "raw",
 							"raw": ""
 						},
-						"url": "{{hostname}}:{{port}}/{{comPath}}/spatial/rest/userarea/{{UAID_INVALIDSCOPE}}"
+						"url": {
+							"raw": "{{hostname}}/{{context}}/spatial/rest/userarea/{{UAID_INVALIDSCOPE}}",
+							"host": [
+								"{{hostname}}"
+							],
+							"path": [
+								"{{context}}",
+								"spatial",
+								"rest",
+								"userarea",
+								"{{UAID_INVALIDSCOPE}}"
+							]
+						}
 					},
 					"response": []
 				}
@@ -2494,6 +3043,7 @@
 		},
 		{
 			"name": "03 Area-Visibility - ChangeUserSameScope",
+			"description": null,
 			"item": [
 				{
 					"name": "03 authenticate rep_power",
@@ -2528,7 +3078,18 @@
 							"mode": "raw",
 							"raw": "{\n   \"userName\": \"rep_power\",\n   \"password\": \"abcd-1234\"\n}"
 						},
-						"url": "{{hostname}}:{{port}}/{{comPath}}/usm-administration/rest/authenticate"
+						"url": {
+							"raw": "{{hostname}}/{{context}}/usm-administration/rest/authenticate",
+							"host": [
+								"{{hostname}}"
+							],
+							"path": [
+								"{{context}}",
+								"usm-administration",
+								"rest",
+								"authenticate"
+							]
+						}
 					},
 					"response": []
 				},
@@ -2589,7 +3150,18 @@
 							"mode": "raw",
 							"raw": "{\r\n\t\"type\": \"Feature\",\r\n\t\"geometry\": {\r\n\t\t\"type\": \"MultiPolygon\",\r\n\t\t\"coordinates\": [[[[-3.341753524316978, 68.12616370194141], [-37.28693406080001, 74.49036928060866], [-3.341753524316978, 74.908058702499], [-3.341753524316978, 68.12616370194141]]]]\r\n\t},\r\n\t\"properties\": {\r\n\t\t\"name\": \"Name-{{myRnd}}\",\r\n\t\t\"description\": \"Description {{myRnd}}\",\r\n\t\t\"subType\": \"Group{{myRnd}}\",\r\n\t\t\"startDate\": \"2017-04-20T08:55:17\",\r\n\t\t\"endDate\": \"2017-04-29T08:55:17\",\r\n\t\t\"scopeSelection\": [\"EC\"],\r\n\t\t\"datasetName\": \"dataset{{myRnd}}\"\r\n\t}\r\n}"
 						},
-						"url": "{{hostname}}:{{port}}/{{comPath}}/spatial/rest/userarea"
+						"url": {
+							"raw": "{{hostname}}/{{context}}/spatial/rest/userarea",
+							"host": [
+								"{{hostname}}"
+							],
+							"path": [
+								"{{context}}",
+								"spatial",
+								"rest",
+								"userarea"
+							]
+						}
 					},
 					"response": []
 				},
@@ -2643,7 +3215,19 @@
 							"mode": "raw",
 							"raw": "{\n\t\"id\":{{UAID_EC}},\n\t\"isGeom\":false\n}"
 						},
-						"url": "{{hostname}}:{{port}}/{{comPath}}/spatial/rest/userarea/details"
+						"url": {
+							"raw": "{{hostname}}/{{context}}/spatial/rest/userarea/details",
+							"host": [
+								"{{hostname}}"
+							],
+							"path": [
+								"{{context}}",
+								"spatial",
+								"rest",
+								"userarea",
+								"details"
+							]
+						}
 					},
 					"response": []
 				},
@@ -2704,7 +3288,18 @@
 							"mode": "raw",
 							"raw": "{\r\n\t\"type\": \"Feature\",\r\n\t\"geometry\": {\r\n\t\t\"type\": \"MultiPolygon\",\r\n\t\t\"coordinates\": [[[[-3.341753524316978, 68.12616370194141], [-37.28693406080001, 74.49036928060866], [-3.341753524316978, 74.908058702499], [-3.341753524316978, 68.12616370194141]]]]\r\n\t},\r\n\t\"properties\": {\r\n\t\t\"name\": \"Name-{{myRnd}}\",\r\n\t\t\"description\": \"Description {{myRnd}}\",\r\n\t\t\"subType\": \"Group{{myRnd}}\",\r\n\t\t\"startDate\": \"2017-04-20T08:55:17\",\r\n\t\t\"endDate\": \"2017-04-29T08:55:17\",\r\n\t\t\"scopeSelection\": [],\r\n\t\t\"datasetName\": \"dataset{{myRnd}}\"\r\n\t}\r\n}"
 						},
-						"url": "{{hostname}}:{{port}}/{{comPath}}/spatial/rest/userarea"
+						"url": {
+							"raw": "{{hostname}}/{{context}}/spatial/rest/userarea",
+							"host": [
+								"{{hostname}}"
+							],
+							"path": [
+								"{{context}}",
+								"spatial",
+								"rest",
+								"userarea"
+							]
+						}
 					},
 					"response": []
 				},
@@ -2757,7 +3352,19 @@
 							"mode": "raw",
 							"raw": "{\n\t\"id\":{{UAID_Private}},\n\t\"isGeom\":false\n}"
 						},
-						"url": "{{hostname}}:{{port}}/{{comPath}}/spatial/rest/userarea/details"
+						"url": {
+							"raw": "{{hostname}}/{{context}}/spatial/rest/userarea/details",
+							"host": [
+								"{{hostname}}"
+							],
+							"path": [
+								"{{context}}",
+								"spatial",
+								"rest",
+								"userarea",
+								"details"
+							]
+						}
 					},
 					"response": []
 				},
@@ -2818,7 +3425,18 @@
 							"mode": "raw",
 							"raw": "{\r\n\t\"type\": \"Feature\",\r\n\t\"geometry\": {\r\n\t\t\"type\": \"MultiPolygon\",\r\n\t\t\"coordinates\": [[[[-3.341753524316978, 68.12616370194141], [-37.28693406080001, 74.49036928060866], [-3.341753524316978, 74.908058702499], [-3.341753524316978, 68.12616370194141]]]]\r\n\t},\r\n\t\"properties\": {\r\n\t\t\"name\": \"Name-{{myRnd}}\",\r\n\t\t\"description\": \"Description {{myRnd}}\",\r\n\t\t\"subType\": \"Group{{myRnd}}\",\r\n\t\t\"startDate\": \"2017-04-20T08:55:17\",\r\n\t\t\"endDate\": \"2017-04-29T08:55:17\",\r\n\t\t\"scopeSelection\": [\"EC\", \"DG_MARE\"],\r\n\t\t\"datasetName\": \"dataset{{myRnd}}\"\r\n\t}\r\n}"
 						},
-						"url": "{{hostname}}:{{port}}/{{comPath}}/spatial/rest/userarea"
+						"url": {
+							"raw": "{{hostname}}/{{context}}/spatial/rest/userarea",
+							"host": [
+								"{{hostname}}"
+							],
+							"path": [
+								"{{context}}",
+								"spatial",
+								"rest",
+								"userarea"
+							]
+						}
 					},
 					"response": []
 				},
@@ -2871,7 +3489,19 @@
 							"mode": "raw",
 							"raw": "{\n\t\"id\":{{UAID_MULTIPLE}},\n\t\"isGeom\":false\n}"
 						},
-						"url": "{{hostname}}:{{port}}/{{comPath}}/spatial/rest/userarea/details"
+						"url": {
+							"raw": "{{hostname}}/{{context}}/spatial/rest/userarea/details",
+							"host": [
+								"{{hostname}}"
+							],
+							"path": [
+								"{{context}}",
+								"spatial",
+								"rest",
+								"userarea",
+								"details"
+							]
+						}
 					},
 					"response": []
 				},
@@ -2932,7 +3562,18 @@
 							"mode": "raw",
 							"raw": "{\r\n\t\"type\": \"Feature\",\r\n\t\"geometry\": {\r\n\t\t\"type\": \"MultiPolygon\",\r\n\t\t\"coordinates\": [[[[-3.341753524316978, 68.12616370194141], [-37.28693406080001, 74.49036928060866], [-3.341753524316978, 74.908058702499], [-3.341753524316978, 68.12616370194141]]]]\r\n\t},\r\n\t\"properties\": {\r\n\t\t\"name\": \"Name-{{myRnd}}\",\r\n\t\t\"description\": \"Description {{myRnd}}\",\r\n\t\t\"subType\": \"Group{{myRnd}}\",\r\n\t\t\"startDate\": \"2017-04-20T08:55:17\",\r\n\t\t\"endDate\": \"2017-04-29T08:55:17\",\r\n\t\t\"scopeSelection\": [\"INVALIDSCOPE\", \"FRA\"],\r\n\t\t\"datasetName\": \"dataset{{myRnd}}\"\r\n\t}\r\n}"
 						},
-						"url": "{{hostname}}:{{port}}/{{comPath}}/spatial/rest/userarea"
+						"url": {
+							"raw": "{{hostname}}/{{context}}/spatial/rest/userarea",
+							"host": [
+								"{{hostname}}"
+							],
+							"path": [
+								"{{context}}",
+								"spatial",
+								"rest",
+								"userarea"
+							]
+						}
 					},
 					"response": []
 				},
@@ -2987,7 +3628,19 @@
 							"mode": "raw",
 							"raw": "{\n\t\"id\":{{UAID_INVALIDSCOPE}},\n\t\"isGeom\":false\n}"
 						},
-						"url": "{{hostname}}:{{port}}/{{comPath}}/spatial/rest/userarea/details"
+						"url": {
+							"raw": "{{hostname}}/{{context}}/spatial/rest/userarea/details",
+							"host": [
+								"{{hostname}}"
+							],
+							"path": [
+								"{{context}}",
+								"spatial",
+								"rest",
+								"userarea",
+								"details"
+							]
+						}
 					},
 					"response": []
 				},
@@ -3024,7 +3677,18 @@
 							"mode": "raw",
 							"raw": "{\n   \"userName\": \"rep_share\",\n   \"password\": \"abcd-1234\"\n}"
 						},
-						"url": "{{hostname}}:{{port}}/{{comPath}}/usm-administration/rest/authenticate"
+						"url": {
+							"raw": "{{hostname}}/{{context}}/usm-administration/rest/authenticate",
+							"host": [
+								"{{hostname}}"
+							],
+							"path": [
+								"{{context}}",
+								"usm-administration",
+								"rest",
+								"authenticate"
+							]
+						}
 					},
 					"response": []
 				},
@@ -3075,7 +3739,19 @@
 							"mode": "raw",
 							"raw": "{\n\t\"id\":{{UAID_EC}},\n\t\"isGeom\":false\n}"
 						},
-						"url": "{{hostname}}:{{port}}/{{comPath}}/spatial/rest/userarea/details"
+						"url": {
+							"raw": "{{hostname}}/{{context}}/spatial/rest/userarea/details",
+							"host": [
+								"{{hostname}}"
+							],
+							"path": [
+								"{{context}}",
+								"spatial",
+								"rest",
+								"userarea",
+								"details"
+							]
+						}
 					},
 					"response": []
 				},
@@ -3121,7 +3797,19 @@
 							"mode": "raw",
 							"raw": "{\n\t\"id\":{{UAID_Private}},\n\t\"isGeom\":false\n}"
 						},
-						"url": "{{hostname}}:{{port}}/{{comPath}}/spatial/rest/userarea/details"
+						"url": {
+							"raw": "{{hostname}}/{{context}}/spatial/rest/userarea/details",
+							"host": [
+								"{{hostname}}"
+							],
+							"path": [
+								"{{context}}",
+								"spatial",
+								"rest",
+								"userarea",
+								"details"
+							]
+						}
 					},
 					"response": []
 				},
@@ -3171,7 +3859,19 @@
 							"mode": "raw",
 							"raw": "{\n\t\"id\":{{UAID_MULTIPLE}},\n\t\"isGeom\":false\n}"
 						},
-						"url": "{{hostname}}:{{port}}/{{comPath}}/spatial/rest/userarea/details"
+						"url": {
+							"raw": "{{hostname}}/{{context}}/spatial/rest/userarea/details",
+							"host": [
+								"{{hostname}}"
+							],
+							"path": [
+								"{{context}}",
+								"spatial",
+								"rest",
+								"userarea",
+								"details"
+							]
+						}
 					},
 					"response": []
 				},
@@ -3217,7 +3917,19 @@
 							"mode": "raw",
 							"raw": "{\n\t\"id\":{{UAID_INVALIDSCOPE}},\n\t\"isGeom\":false\n}"
 						},
-						"url": "{{hostname}}:{{port}}/{{comPath}}/spatial/rest/userarea/details"
+						"url": {
+							"raw": "{{hostname}}/{{context}}/spatial/rest/userarea/details",
+							"host": [
+								"{{hostname}}"
+							],
+							"path": [
+								"{{context}}",
+								"spatial",
+								"rest",
+								"userarea",
+								"details"
+							]
+						}
 					},
 					"response": []
 				},
@@ -3290,7 +4002,19 @@
 							"mode": "raw",
 							"raw": ""
 						},
-						"url": "{{hostname}}:{{port}}/{{comPath}}/spatial/rest/userarea/list"
+						"url": {
+							"raw": "{{hostname}}/{{context}}/spatial/rest/userarea/list",
+							"host": [
+								"{{hostname}}"
+							],
+							"path": [
+								"{{context}}",
+								"spatial",
+								"rest",
+								"userarea",
+								"list"
+							]
+						}
 					},
 					"response": []
 				},
@@ -3355,7 +4079,19 @@
 							"mode": "raw",
 							"raw": ""
 						},
-						"url": "{{hostname}}:{{port}}/{{comPath}}/spatial/rest/userarea/types"
+						"url": {
+							"raw": "{{hostname}}/{{context}}/spatial/rest/userarea/types",
+							"host": [
+								"{{hostname}}"
+							],
+							"path": [
+								"{{context}}",
+								"spatial",
+								"rest",
+								"userarea",
+								"types"
+							]
+						}
 					},
 					"response": []
 				},
@@ -3412,7 +4148,20 @@
 							"mode": "raw",
 							"raw": ""
 						},
-						"url": "{{hostname}}:{{port}}/{{comPath}}/spatial/rest/userarea/list/{{UAGROUP_EC}}"
+						"url": {
+							"raw": "{{hostname}}/{{context}}/spatial/rest/userarea/list/{{UAGROUP_EC}}",
+							"host": [
+								"{{hostname}}"
+							],
+							"path": [
+								"{{context}}",
+								"spatial",
+								"rest",
+								"userarea",
+								"list",
+								"{{UAGROUP_EC}}"
+							]
+						}
 					},
 					"response": []
 				},
@@ -3468,7 +4217,20 @@
 							"mode": "raw",
 							"raw": ""
 						},
-						"url": "{{hostname}}:{{port}}/{{comPath}}/spatial/rest/userarea/list/{{UAGROUP_Private}}"
+						"url": {
+							"raw": "{{hostname}}/{{context}}/spatial/rest/userarea/list/{{UAGROUP_Private}}",
+							"host": [
+								"{{hostname}}"
+							],
+							"path": [
+								"{{context}}",
+								"spatial",
+								"rest",
+								"userarea",
+								"list",
+								"{{UAGROUP_Private}}"
+							]
+						}
 					},
 					"response": []
 				},
@@ -3525,7 +4287,20 @@
 							"mode": "raw",
 							"raw": ""
 						},
-						"url": "{{hostname}}:{{port}}/{{comPath}}/spatial/rest/userarea/list/{{UAGROUP_MULTIPLE}}"
+						"url": {
+							"raw": "{{hostname}}/{{context}}/spatial/rest/userarea/list/{{UAGROUP_MULTIPLE}}",
+							"host": [
+								"{{hostname}}"
+							],
+							"path": [
+								"{{context}}",
+								"spatial",
+								"rest",
+								"userarea",
+								"list",
+								"{{UAGROUP_MULTIPLE}}"
+							]
+						}
 					},
 					"response": []
 				},
@@ -3581,7 +4356,20 @@
 							"mode": "raw",
 							"raw": ""
 						},
-						"url": "{{hostname}}:{{port}}/{{comPath}}/spatial/rest/userarea/list/{{UAGROUP_INVALIDSCOPE}}"
+						"url": {
+							"raw": "{{hostname}}/{{context}}/spatial/rest/userarea/list/{{UAGROUP_INVALIDSCOPE}}",
+							"host": [
+								"{{hostname}}"
+							],
+							"path": [
+								"{{context}}",
+								"spatial",
+								"rest",
+								"userarea",
+								"list",
+								"{{UAGROUP_INVALIDSCOPE}}"
+							]
+						}
 					},
 					"response": []
 				},
@@ -3654,7 +4442,19 @@
 							"mode": "raw",
 							"raw": ""
 						},
-						"url": "{{hostname}}:{{port}}/{{comPath}}/spatial/rest/userarea/layers"
+						"url": {
+							"raw": "{{hostname}}/{{context}}/spatial/rest/userarea/layers",
+							"host": [
+								"{{hostname}}"
+							],
+							"path": [
+								"{{context}}",
+								"spatial",
+								"rest",
+								"userarea",
+								"layers"
+							]
+						}
 					},
 					"response": []
 				},
@@ -3719,7 +4519,19 @@
 							"mode": "raw",
 							"raw": "{\"filter\":\"name\"}"
 						},
-						"url": "{{hostname}}:{{port}}/{{comPath}}/spatial/rest/userarea/byfilter"
+						"url": {
+							"raw": "{{hostname}}/{{context}}/spatial/rest/userarea/byfilter",
+							"host": [
+								"{{hostname}}"
+							],
+							"path": [
+								"{{context}}",
+								"spatial",
+								"rest",
+								"userarea",
+								"byfilter"
+							]
+						}
 					},
 					"response": []
 				},
@@ -3784,7 +4596,19 @@
 							"mode": "raw",
 							"raw": "{\n\t\"areaType\":\"USERAREA\",\n\t\"isGeom\":false,\n\t\"longitude\":-988742.9570800774,\n\t\"latitude\":11696861.913622377,\n\t\"crs\":\"3857\"\n}"
 						},
-						"url": "{{hostname}}:{{port}}/{{comPath}}/spatial/rest/area/details"
+						"url": {
+							"raw": "{{hostname}}/{{context}}/spatial/rest/area/details",
+							"host": [
+								"{{hostname}}"
+							],
+							"path": [
+								"{{context}}",
+								"spatial",
+								"rest",
+								"area",
+								"details"
+							]
+						}
 					},
 					"response": []
 				},
@@ -3834,7 +4658,18 @@
 							"mode": "raw",
 							"raw": "{\r\n\t\"type\": \"Feature\",\r\n\t\"geometry\": {\r\n\t\t\"type\": \"MultiPolygon\",\r\n\t\t\"coordinates\": [[[[-3.3418, 68.12619999999998], [-37.2869, 74.4904], [-3.3418, 74.90809999999999], [-3.3418, 68.12619999999998]]]]\r\n\t},\r\n\t\"properties\": {\r\n\t\t\"name\": \"Name-47751\",\r\n\t\t\"description\": \"Description 47751\",\r\n\t\t\"subType\": \"GROUP47751\",\r\n\t\t\"startDate\": \"2017-04-20T08:55:17\",\r\n\t\t\"endDate\"\r\n\t\t: \"2017-04-29T08:55:17\",\r\n\t\t\"scopeSelection\": [\"DG_MARE\"],\r\n\t\t\"datasetName\": \"newDataset{{myRnd}}\",\r\n\t\t\"id\": \"{{UAID_EC}}\"\r\n\t}\r\n}"
 						},
-						"url": "{{hostname}}:{{port}}/{{comPath}}/spatial/rest/userarea"
+						"url": {
+							"raw": "{{hostname}}/{{context}}/spatial/rest/userarea",
+							"host": [
+								"{{hostname}}"
+							],
+							"path": [
+								"{{context}}",
+								"spatial",
+								"rest",
+								"userarea"
+							]
+						}
 					},
 					"response": []
 				},
@@ -3884,7 +4719,18 @@
 							"mode": "raw",
 							"raw": "{\r\n\t\"type\": \"Feature\",\r\n\t\"geometry\": {\r\n\t\t\"type\": \"MultiPolygon\",\r\n\t\t\"coordinates\": [[[[-3.3418, 68.12619999999998], [-37.2869, 74.4904], [-3.3418, 74.90809999999999], [-3.3418, 68.12619999999998]]]]\r\n\t},\r\n\t\"properties\": {\r\n\t\t\"name\": \"Name-47751\",\r\n\t\t\"description\": \"Description 47751\",\r\n\t\t\"subType\": \"GROUP47751\",\r\n\t\t\"startDate\": \"2017-04-20T08:55:17\",\r\n\t\t\"endDate\"\r\n\t\t: \"2017-04-29T08:55:17\",\r\n\t\t\"scopeSelection\": [\"DG_MARE\"],\r\n\t\t\"datasetName\": \"newDataset{{myRnd}}\",\r\n\t\t\"id\": \"{{UAID_Private}}\"\r\n\t}\r\n}"
 						},
-						"url": "{{hostname}}:{{port}}/{{comPath}}/spatial/rest/userarea"
+						"url": {
+							"raw": "{{hostname}}/{{context}}/spatial/rest/userarea",
+							"host": [
+								"{{hostname}}"
+							],
+							"path": [
+								"{{context}}",
+								"spatial",
+								"rest",
+								"userarea"
+							]
+						}
 					},
 					"response": []
 				},
@@ -3934,7 +4780,18 @@
 							"mode": "raw",
 							"raw": "{\r\n\t\"type\": \"Feature\",\r\n\t\"geometry\": {\r\n\t\t\"type\": \"MultiPolygon\",\r\n\t\t\"coordinates\": [[[[-3.3418, 68.12619999999998], [-37.2869, 74.4904], [-3.3418, 74.90809999999999], [-3.3418, 68.12619999999998]]]]\r\n\t},\r\n\t\"properties\": {\r\n\t\t\"name\": \"Name-47751\",\r\n\t\t\"description\": \"Description 47751\",\r\n\t\t\"subType\": \"GROUP47751\",\r\n\t\t\"startDate\": \"2017-04-20T08:55:17\",\r\n\t\t\"endDate\"\r\n\t\t: \"2017-04-29T08:55:17\",\r\n\t\t\"scopeSelection\": [\"DG_MARE\"],\r\n\t\t\"datasetName\": \"newDataset{{myRnd}}\",\r\n\t\t\"id\": \"{{UAID_MULTIPLE}}\"\r\n\t}\r\n}"
 						},
-						"url": "{{hostname}}:{{port}}/{{comPath}}/spatial/rest/userarea"
+						"url": {
+							"raw": "{{hostname}}/{{context}}/spatial/rest/userarea",
+							"host": [
+								"{{hostname}}"
+							],
+							"path": [
+								"{{context}}",
+								"spatial",
+								"rest",
+								"userarea"
+							]
+						}
 					},
 					"response": []
 				},
@@ -3984,7 +4841,18 @@
 							"mode": "raw",
 							"raw": "{\r\n\t\"type\": \"Feature\",\r\n\t\"geometry\": {\r\n\t\t\"type\": \"MultiPolygon\",\r\n\t\t\"coordinates\": [[[[-3.3418, 68.12619999999998], [-37.2869, 74.4904], [-3.3418, 74.90809999999999], [-3.3418, 68.12619999999998]]]]\r\n\t},\r\n\t\"properties\": {\r\n\t\t\"name\": \"Name-47751\",\r\n\t\t\"description\": \"Description 47751\",\r\n\t\t\"subType\": \"GROUP47751\",\r\n\t\t\"startDate\": \"2017-04-20T08:55:17\",\r\n\t\t\"endDate\"\r\n\t\t: \"2017-04-29T08:55:17\",\r\n\t\t\"scopeSelection\": [\"DG_MARE\"],\r\n\t\t\"datasetName\": \"newDataset{{myRnd}}\",\r\n\t\t\"id\": \"{{UAID_INVALIDSCOPE}}\"\r\n\t}\r\n}"
 						},
-						"url": "{{hostname}}:{{port}}/{{comPath}}/spatial/rest/userarea"
+						"url": {
+							"raw": "{{hostname}}/{{context}}/spatial/rest/userarea",
+							"host": [
+								"{{hostname}}"
+							],
+							"path": [
+								"{{context}}",
+								"spatial",
+								"rest",
+								"userarea"
+							]
+						}
 					},
 					"response": []
 				},
@@ -4025,7 +4893,19 @@
 							"mode": "raw",
 							"raw": ""
 						},
-						"url": "{{hostname}}:{{port}}/{{comPath}}/spatial/rest/userarea/{{UAID_EC}}"
+						"url": {
+							"raw": "{{hostname}}/{{context}}/spatial/rest/userarea/{{UAID_EC}}",
+							"host": [
+								"{{hostname}}"
+							],
+							"path": [
+								"{{context}}",
+								"spatial",
+								"rest",
+								"userarea",
+								"{{UAID_EC}}"
+							]
+						}
 					},
 					"response": []
 				},
@@ -4066,7 +4946,19 @@
 							"mode": "raw",
 							"raw": ""
 						},
-						"url": "{{hostname}}:{{port}}/{{comPath}}/spatial/rest/userarea/{{UAID_Private}}"
+						"url": {
+							"raw": "{{hostname}}/{{context}}/spatial/rest/userarea/{{UAID_Private}}",
+							"host": [
+								"{{hostname}}"
+							],
+							"path": [
+								"{{context}}",
+								"spatial",
+								"rest",
+								"userarea",
+								"{{UAID_Private}}"
+							]
+						}
 					},
 					"response": []
 				},
@@ -4107,7 +4999,19 @@
 							"mode": "raw",
 							"raw": ""
 						},
-						"url": "{{hostname}}:{{port}}/{{comPath}}/spatial/rest/userarea/{{UAID_MULTIPLE}}"
+						"url": {
+							"raw": "{{hostname}}/{{context}}/spatial/rest/userarea/{{UAID_MULTIPLE}}",
+							"host": [
+								"{{hostname}}"
+							],
+							"path": [
+								"{{context}}",
+								"spatial",
+								"rest",
+								"userarea",
+								"{{UAID_MULTIPLE}}"
+							]
+						}
 					},
 					"response": []
 				},
@@ -4148,7 +5052,19 @@
 							"mode": "raw",
 							"raw": ""
 						},
-						"url": "{{hostname}}:{{port}}/{{comPath}}/spatial/rest/userarea/{{UAID_INVALIDSCOPE}}"
+						"url": {
+							"raw": "{{hostname}}/{{context}}/spatial/rest/userarea/{{UAID_INVALIDSCOPE}}",
+							"host": [
+								"{{hostname}}"
+							],
+							"path": [
+								"{{context}}",
+								"spatial",
+								"rest",
+								"userarea",
+								"{{UAID_INVALIDSCOPE}}"
+							]
+						}
 					},
 					"response": []
 				}
@@ -4156,6 +5072,7 @@
 		},
 		{
 			"name": "04 Area-Visibility - SameUserChangeScope",
+			"description": null,
 			"item": [
 				{
 					"name": "04 authenticate rep_power",
@@ -4190,7 +5107,18 @@
 							"mode": "raw",
 							"raw": "{\n   \"userName\": \"rep_power\",\n   \"password\": \"abcd-1234\"\n}"
 						},
-						"url": "{{hostname}}:{{port}}/{{comPath}}/usm-administration/rest/authenticate"
+						"url": {
+							"raw": "{{hostname}}/{{context}}/usm-administration/rest/authenticate",
+							"host": [
+								"{{hostname}}"
+							],
+							"path": [
+								"{{context}}",
+								"usm-administration",
+								"rest",
+								"authenticate"
+							]
+						}
 					},
 					"response": []
 				},
@@ -4251,7 +5179,18 @@
 							"mode": "raw",
 							"raw": "{\r\n\t\"type\": \"Feature\",\r\n\t\"geometry\": {\r\n\t\t\"type\": \"MultiPolygon\",\r\n\t\t\"coordinates\": [[[[-3.341753524316978, 68.12616370194141], [-37.28693406080001, 74.49036928060866], [-3.341753524316978, 74.908058702499], [-3.341753524316978, 68.12616370194141]]]]\r\n\t},\r\n\t\"properties\": {\r\n\t\t\"name\": \"Name-{{myRnd}}\",\r\n\t\t\"description\": \"Description {{myRnd}}\",\r\n\t\t\"subType\": \"Group{{myRnd}}\",\r\n\t\t\"startDate\": \"2017-04-20T08:55:17\",\r\n\t\t\"endDate\": \"2017-04-29T08:55:17\",\r\n\t\t\"scopeSelection\": [\"EC\"],\r\n\t\t\"datasetName\": \"dataset{{myRnd}}\"\r\n\t}\r\n}"
 						},
-						"url": "{{hostname}}:{{port}}/{{comPath}}/spatial/rest/userarea"
+						"url": {
+							"raw": "{{hostname}}/{{context}}/spatial/rest/userarea",
+							"host": [
+								"{{hostname}}"
+							],
+							"path": [
+								"{{context}}",
+								"spatial",
+								"rest",
+								"userarea"
+							]
+						}
 					},
 					"response": []
 				},
@@ -4299,7 +5238,19 @@
 							"mode": "raw",
 							"raw": "{\n\t\"id\":{{UAID_EC}},\n\t\"isGeom\":false\n}"
 						},
-						"url": "{{hostname}}:{{port}}/{{comPath}}/spatial/rest/userarea/details"
+						"url": {
+							"raw": "{{hostname}}/{{context}}/spatial/rest/userarea/details",
+							"host": [
+								"{{hostname}}"
+							],
+							"path": [
+								"{{context}}",
+								"spatial",
+								"rest",
+								"userarea",
+								"details"
+							]
+						}
 					},
 					"response": []
 				},
@@ -4360,7 +5311,18 @@
 							"mode": "raw",
 							"raw": "{\r\n\t\"type\": \"Feature\",\r\n\t\"geometry\": {\r\n\t\t\"type\": \"MultiPolygon\",\r\n\t\t\"coordinates\": [[[[-3.341753524316978, 68.12616370194141], [-37.28693406080001, 74.49036928060866], [-3.341753524316978, 74.908058702499], [-3.341753524316978, 68.12616370194141]]]]\r\n\t},\r\n\t\"properties\": {\r\n\t\t\"name\": \"Name-{{myRnd}}\",\r\n\t\t\"description\": \"Description {{myRnd}}\",\r\n\t\t\"subType\": \"Group{{myRnd}}\",\r\n\t\t\"startDate\": \"2017-04-20T08:55:17\",\r\n\t\t\"endDate\": \"2017-04-29T08:55:17\",\r\n\t\t\"scopeSelection\": [],\r\n\t\t\"datasetName\": \"dataset{{myRnd}}\"\r\n\t}\r\n}"
 						},
-						"url": "{{hostname}}:{{port}}/{{comPath}}/spatial/rest/userarea"
+						"url": {
+							"raw": "{{hostname}}/{{context}}/spatial/rest/userarea",
+							"host": [
+								"{{hostname}}"
+							],
+							"path": [
+								"{{context}}",
+								"spatial",
+								"rest",
+								"userarea"
+							]
+						}
 					},
 					"response": []
 				},
@@ -4413,7 +5375,19 @@
 							"mode": "raw",
 							"raw": "{\n\t\"id\":{{UAID_Private}},\n\t\"isGeom\":false\n}"
 						},
-						"url": "{{hostname}}:{{port}}/{{comPath}}/spatial/rest/userarea/details"
+						"url": {
+							"raw": "{{hostname}}/{{context}}/spatial/rest/userarea/details",
+							"host": [
+								"{{hostname}}"
+							],
+							"path": [
+								"{{context}}",
+								"spatial",
+								"rest",
+								"userarea",
+								"details"
+							]
+						}
 					},
 					"response": []
 				},
@@ -4474,7 +5448,18 @@
 							"mode": "raw",
 							"raw": "{\r\n\t\"type\": \"Feature\",\r\n\t\"geometry\": {\r\n\t\t\"type\": \"MultiPolygon\",\r\n\t\t\"coordinates\": [[[[-3.341753524316978, 68.12616370194141], [-37.28693406080001, 74.49036928060866], [-3.341753524316978, 74.908058702499], [-3.341753524316978, 68.12616370194141]]]]\r\n\t},\r\n\t\"properties\": {\r\n\t\t\"name\": \"Name-{{myRnd}}\",\r\n\t\t\"description\": \"Description {{myRnd}}\",\r\n\t\t\"subType\": \"Group{{myRnd}}\",\r\n\t\t\"startDate\": \"2017-04-20T08:55:17\",\r\n\t\t\"endDate\": \"2017-04-29T08:55:17\",\r\n\t\t\"scopeSelection\": [\"EC\", \"DG_MARE\"],\r\n\t\t\"datasetName\": \"dataset{{myRnd}}\"\r\n\t}\r\n}"
 						},
-						"url": "{{hostname}}:{{port}}/{{comPath}}/spatial/rest/userarea"
+						"url": {
+							"raw": "{{hostname}}/{{context}}/spatial/rest/userarea",
+							"host": [
+								"{{hostname}}"
+							],
+							"path": [
+								"{{context}}",
+								"spatial",
+								"rest",
+								"userarea"
+							]
+						}
 					},
 					"response": []
 				},
@@ -4527,7 +5512,19 @@
 							"mode": "raw",
 							"raw": "{\n\t\"id\":{{UAID_MULTIPLE}},\n\t\"isGeom\":false\n}"
 						},
-						"url": "{{hostname}}:{{port}}/{{comPath}}/spatial/rest/userarea/details"
+						"url": {
+							"raw": "{{hostname}}/{{context}}/spatial/rest/userarea/details",
+							"host": [
+								"{{hostname}}"
+							],
+							"path": [
+								"{{context}}",
+								"spatial",
+								"rest",
+								"userarea",
+								"details"
+							]
+						}
 					},
 					"response": []
 				},
@@ -4590,7 +5587,18 @@
 							"mode": "raw",
 							"raw": "{\r\n\t\"type\": \"Feature\",\r\n\t\"geometry\": {\r\n\t\t\"type\": \"MultiPolygon\",\r\n\t\t\"coordinates\": [[[[-3.341753524316978, 68.12616370194141], [-37.28693406080001, 74.49036928060866], [-3.341753524316978, 74.908058702499], [-3.341753524316978, 68.12616370194141]]]]\r\n\t},\r\n\t\"properties\": {\r\n\t\t\"name\": \"Name-{{myRnd}}\",\r\n\t\t\"description\": \"Description {{myRnd}}\",\r\n\t\t\"subType\": \"Group{{myRnd}}\",\r\n\t\t\"startDate\": \"2017-04-20T08:55:17\",\r\n\t\t\"endDate\": \"2017-04-29T08:55:17\",\r\n\t\t\"scopeSelection\": [\"INVALIDSCOPE\", \"FRA\"],\r\n\t\t\"datasetName\": \"dataset{{myRnd}}\"\r\n\t}\r\n}"
 						},
-						"url": "{{hostname}}:{{port}}/{{comPath}}/spatial/rest/userarea"
+						"url": {
+							"raw": "{{hostname}}/{{context}}/spatial/rest/userarea",
+							"host": [
+								"{{hostname}}"
+							],
+							"path": [
+								"{{context}}",
+								"spatial",
+								"rest",
+								"userarea"
+							]
+						}
 					},
 					"response": []
 				},
@@ -4641,7 +5649,19 @@
 							"mode": "raw",
 							"raw": "{\n\t\"id\":{{UAID_INVALIDSCOPE}},\n\t\"isGeom\":false\n}"
 						},
-						"url": "{{hostname}}:{{port}}/{{comPath}}/spatial/rest/userarea/details"
+						"url": {
+							"raw": "{{hostname}}/{{context}}/spatial/rest/userarea/details",
+							"host": [
+								"{{hostname}}"
+							],
+							"path": [
+								"{{context}}",
+								"spatial",
+								"rest",
+								"userarea",
+								"details"
+							]
+						}
 					},
 					"response": []
 				},
@@ -4690,7 +5710,19 @@
 							"mode": "raw",
 							"raw": "{\n\t\"id\":{{UAID_EC}},\n\t\"isGeom\":false\n}"
 						},
-						"url": "{{hostname}}:{{port}}/{{comPath}}/spatial/rest/userarea/details"
+						"url": {
+							"raw": "{{hostname}}/{{context}}/spatial/rest/userarea/details",
+							"host": [
+								"{{hostname}}"
+							],
+							"path": [
+								"{{context}}",
+								"spatial",
+								"rest",
+								"userarea",
+								"details"
+							]
+						}
 					},
 					"response": []
 				},
@@ -4739,7 +5771,19 @@
 							"mode": "raw",
 							"raw": "{\n\t\"id\":{{UAID_Private}},\n\t\"isGeom\":false\n}"
 						},
-						"url": "{{hostname}}:{{port}}/{{comPath}}/spatial/rest/userarea/details"
+						"url": {
+							"raw": "{{hostname}}/{{context}}/spatial/rest/userarea/details",
+							"host": [
+								"{{hostname}}"
+							],
+							"path": [
+								"{{context}}",
+								"spatial",
+								"rest",
+								"userarea",
+								"details"
+							]
+						}
 					},
 					"response": []
 				},
@@ -4789,7 +5833,19 @@
 							"mode": "raw",
 							"raw": "{\n\t\"id\":{{UAID_MULTIPLE}},\n\t\"isGeom\":false\n}"
 						},
-						"url": "{{hostname}}:{{port}}/{{comPath}}/spatial/rest/userarea/details"
+						"url": {
+							"raw": "{{hostname}}/{{context}}/spatial/rest/userarea/details",
+							"host": [
+								"{{hostname}}"
+							],
+							"path": [
+								"{{context}}",
+								"spatial",
+								"rest",
+								"userarea",
+								"details"
+							]
+						}
 					},
 					"response": []
 				},
@@ -4838,7 +5894,19 @@
 							"mode": "raw",
 							"raw": "{\n\t\"id\":{{UAID_INVALIDSCOPE}},\n\t\"isGeom\":false\n}"
 						},
-						"url": "{{hostname}}:{{port}}/{{comPath}}/spatial/rest/userarea/details"
+						"url": {
+							"raw": "{{hostname}}/{{context}}/spatial/rest/userarea/details",
+							"host": [
+								"{{hostname}}"
+							],
+							"path": [
+								"{{context}}",
+								"spatial",
+								"rest",
+								"userarea",
+								"details"
+							]
+						}
 					},
 					"response": []
 				},
@@ -4912,7 +5980,19 @@
 							"mode": "raw",
 							"raw": ""
 						},
-						"url": "{{hostname}}:{{port}}/{{comPath}}/spatial/rest/userarea/list"
+						"url": {
+							"raw": "{{hostname}}/{{context}}/spatial/rest/userarea/list",
+							"host": [
+								"{{hostname}}"
+							],
+							"path": [
+								"{{context}}",
+								"spatial",
+								"rest",
+								"userarea",
+								"list"
+							]
+						}
 					},
 					"response": []
 				},
@@ -4978,7 +6058,19 @@
 							"mode": "raw",
 							"raw": ""
 						},
-						"url": "{{hostname}}:{{port}}/{{comPath}}/spatial/rest/userarea/types"
+						"url": {
+							"raw": "{{hostname}}/{{context}}/spatial/rest/userarea/types",
+							"host": [
+								"{{hostname}}"
+							],
+							"path": [
+								"{{context}}",
+								"spatial",
+								"rest",
+								"userarea",
+								"types"
+							]
+						}
 					},
 					"response": []
 				},
@@ -5034,7 +6126,20 @@
 							"mode": "raw",
 							"raw": ""
 						},
-						"url": "{{hostname}}:{{port}}/{{comPath}}/spatial/rest/userarea/list/{{UAGROUP_EC}}"
+						"url": {
+							"raw": "{{hostname}}/{{context}}/spatial/rest/userarea/list/{{UAGROUP_EC}}",
+							"host": [
+								"{{hostname}}"
+							],
+							"path": [
+								"{{context}}",
+								"spatial",
+								"rest",
+								"userarea",
+								"list",
+								"{{UAGROUP_EC}}"
+							]
+						}
 					},
 					"response": []
 				},
@@ -5090,7 +6195,20 @@
 							"mode": "raw",
 							"raw": ""
 						},
-						"url": "{{hostname}}:{{port}}/{{comPath}}/spatial/rest/userarea/list/{{UAGROUP_Private}}"
+						"url": {
+							"raw": "{{hostname}}/{{context}}/spatial/rest/userarea/list/{{UAGROUP_Private}}",
+							"host": [
+								"{{hostname}}"
+							],
+							"path": [
+								"{{context}}",
+								"spatial",
+								"rest",
+								"userarea",
+								"list",
+								"{{UAGROUP_Private}}"
+							]
+						}
 					},
 					"response": []
 				},
@@ -5147,7 +6265,20 @@
 							"mode": "raw",
 							"raw": ""
 						},
-						"url": "{{hostname}}:{{port}}/{{comPath}}/spatial/rest/userarea/list/{{UAGROUP_MULTIPLE}}"
+						"url": {
+							"raw": "{{hostname}}/{{context}}/spatial/rest/userarea/list/{{UAGROUP_MULTIPLE}}",
+							"host": [
+								"{{hostname}}"
+							],
+							"path": [
+								"{{context}}",
+								"spatial",
+								"rest",
+								"userarea",
+								"list",
+								"{{UAGROUP_MULTIPLE}}"
+							]
+						}
 					},
 					"response": []
 				},
@@ -5203,7 +6334,20 @@
 							"mode": "raw",
 							"raw": ""
 						},
-						"url": "{{hostname}}:{{port}}/{{comPath}}/spatial/rest/userarea/list/{{UAGROUP_INVALIDSCOPE}}"
+						"url": {
+							"raw": "{{hostname}}/{{context}}/spatial/rest/userarea/list/{{UAGROUP_INVALIDSCOPE}}",
+							"host": [
+								"{{hostname}}"
+							],
+							"path": [
+								"{{context}}",
+								"spatial",
+								"rest",
+								"userarea",
+								"list",
+								"{{UAGROUP_INVALIDSCOPE}}"
+							]
+						}
 					},
 					"response": []
 				},
@@ -5277,7 +6421,19 @@
 							"mode": "raw",
 							"raw": ""
 						},
-						"url": "{{hostname}}:{{port}}/{{comPath}}/spatial/rest/userarea/layers"
+						"url": {
+							"raw": "{{hostname}}/{{context}}/spatial/rest/userarea/layers",
+							"host": [
+								"{{hostname}}"
+							],
+							"path": [
+								"{{context}}",
+								"spatial",
+								"rest",
+								"userarea",
+								"layers"
+							]
+						}
 					},
 					"response": []
 				},
@@ -5343,7 +6499,19 @@
 							"mode": "raw",
 							"raw": "{\"filter\":\"name\"}"
 						},
-						"url": "{{hostname}}:{{port}}/{{comPath}}/spatial/rest/userarea/byfilter"
+						"url": {
+							"raw": "{{hostname}}/{{context}}/spatial/rest/userarea/byfilter",
+							"host": [
+								"{{hostname}}"
+							],
+							"path": [
+								"{{context}}",
+								"spatial",
+								"rest",
+								"userarea",
+								"byfilter"
+							]
+						}
 					},
 					"response": []
 				},
@@ -5409,7 +6577,19 @@
 							"mode": "raw",
 							"raw": "{\n\t\"areaType\":\"USERAREA\",\n\t\"isGeom\":false,\n\t\"longitude\":-988742.9570800774,\n\t\"latitude\":11696861.913622377,\n\t\"crs\":\"3857\"\n}"
 						},
-						"url": "{{hostname}}:{{port}}/{{comPath}}/spatial/rest/area/details"
+						"url": {
+							"raw": "{{hostname}}/{{context}}/spatial/rest/area/details",
+							"host": [
+								"{{hostname}}"
+							],
+							"path": [
+								"{{context}}",
+								"spatial",
+								"rest",
+								"area",
+								"details"
+							]
+						}
 					},
 					"response": []
 				},
@@ -5469,7 +6649,18 @@
 							"mode": "raw",
 							"raw": "{\r\n\t\"type\": \"Feature\",\r\n\t\"geometry\": {\r\n\t\t\"type\": \"MultiPolygon\",\r\n\t\t\"coordinates\": [[[[-3.3418, 68.12619999999998], [-37.2869, 74.4904], [-3.3418, 74.90809999999999], [-3.3418, 68.12619999999998]]]]\r\n\t},\r\n\t\"properties\": {\r\n\t\t\"name\": \"Name-47751\",\r\n\t\t\"description\": \"Description 47751\",\r\n\t\t\"subType\": \"GROUP47751\",\r\n\t\t\"startDate\": \"2017-04-20T08:55:17\",\r\n\t\t\"endDate\"\r\n\t\t: \"2017-04-29T08:55:17\",\r\n\t\t\"scopeSelection\": [\"DG_MARE\"],\r\n\t\t\"datasetName\": \"newDataset{{myRnd}}\",\r\n\t\t\"id\": \"{{UAID_EC}}\"\r\n\t}\r\n}"
 						},
-						"url": "{{hostname}}:{{port}}/{{comPath}}/spatial/rest/userarea"
+						"url": {
+							"raw": "{{hostname}}/{{context}}/spatial/rest/userarea",
+							"host": [
+								"{{hostname}}"
+							],
+							"path": [
+								"{{context}}",
+								"spatial",
+								"rest",
+								"userarea"
+							]
+						}
 					},
 					"response": []
 				},
@@ -5529,7 +6720,18 @@
 							"mode": "raw",
 							"raw": "{\r\n\t\"type\": \"Feature\",\r\n\t\"geometry\": {\r\n\t\t\"type\": \"MultiPolygon\",\r\n\t\t\"coordinates\": [[[[-3.3418, 68.12619999999998], [-37.2869, 74.4904], [-3.3418, 74.90809999999999], [-3.3418, 68.12619999999998]]]]\r\n\t},\r\n\t\"properties\": {\r\n\t\t\"name\": \"Name-47751\",\r\n\t\t\"description\": \"Description 47751\",\r\n\t\t\"subType\": \"GROUP47751\",\r\n\t\t\"startDate\": \"2017-04-20T08:55:17\",\r\n\t\t\"endDate\"\r\n\t\t: \"2017-04-29T08:55:17\",\r\n\t\t\"scopeSelection\": [\"DG_MARE\"],\r\n\t\t\"datasetName\": \"newDataset{{myRnd}}\",\r\n\t\t\"id\": \"{{UAID_Private}}\"\r\n\t}\r\n}"
 						},
-						"url": "{{hostname}}:{{port}}/{{comPath}}/spatial/rest/userarea"
+						"url": {
+							"raw": "{{hostname}}/{{context}}/spatial/rest/userarea",
+							"host": [
+								"{{hostname}}"
+							],
+							"path": [
+								"{{context}}",
+								"spatial",
+								"rest",
+								"userarea"
+							]
+						}
 					},
 					"response": []
 				},
@@ -5587,7 +6789,18 @@
 							"mode": "raw",
 							"raw": "{\r\n\t\"type\": \"Feature\",\r\n\t\"geometry\": {\r\n\t\t\"type\": \"MultiPolygon\",\r\n\t\t\"coordinates\": [[[[-3.3418, 68.12619999999998], [-37.2869, 74.4904], [-3.3418, 74.90809999999999], [-3.3418, 68.12619999999998]]]]\r\n\t},\r\n\t\"properties\": {\r\n\t\t\"name\": \"Name-47751\",\r\n\t\t\"description\": \"Description 47751\",\r\n\t\t\"subType\": \"GROUP47751\",\r\n\t\t\"startDate\": \"2017-04-20T08:55:17\",\r\n\t\t\"endDate\"\r\n\t\t: \"2017-04-29T08:55:17\",\r\n\t\t\"scopeSelection\": [\"DG_MARE\"],\r\n\t\t\"datasetName\": \"newDataset{{myRnd}}\",\r\n\t\t\"id\": \"{{UAID_MULTIPLE}}\"\r\n\t}\r\n}"
 						},
-						"url": "{{hostname}}:{{port}}/{{comPath}}/spatial/rest/userarea"
+						"url": {
+							"raw": "{{hostname}}/{{context}}/spatial/rest/userarea",
+							"host": [
+								"{{hostname}}"
+							],
+							"path": [
+								"{{context}}",
+								"spatial",
+								"rest",
+								"userarea"
+							]
+						}
 					},
 					"response": []
 				},
@@ -5647,7 +6860,18 @@
 							"mode": "raw",
 							"raw": "{\r\n\t\"type\": \"Feature\",\r\n\t\"geometry\": {\r\n\t\t\"type\": \"MultiPolygon\",\r\n\t\t\"coordinates\": [[[[-3.3418, 68.12619999999998], [-37.2869, 74.4904], [-3.3418, 74.90809999999999], [-3.3418, 68.12619999999998]]]]\r\n\t},\r\n\t\"properties\": {\r\n\t\t\"name\": \"Name-47751\",\r\n\t\t\"description\": \"Description 47751\",\r\n\t\t\"subType\": \"GROUP47751\",\r\n\t\t\"startDate\": \"2017-04-20T08:55:17\",\r\n\t\t\"endDate\"\r\n\t\t: \"2017-04-29T08:55:17\",\r\n\t\t\"scopeSelection\": [\"DG_MARE\"],\r\n\t\t\"datasetName\": \"newDataset{{myRnd}}\",\r\n\t\t\"id\": \"{{UAID_INVALIDSCOPE}}\"\r\n\t}\r\n}"
 						},
-						"url": "{{hostname}}:{{port}}/{{comPath}}/spatial/rest/userarea"
+						"url": {
+							"raw": "{{hostname}}/{{context}}/spatial/rest/userarea",
+							"host": [
+								"{{hostname}}"
+							],
+							"path": [
+								"{{context}}",
+								"spatial",
+								"rest",
+								"userarea"
+							]
+						}
 					},
 					"response": []
 				},
@@ -5696,7 +6920,19 @@
 							"mode": "raw",
 							"raw": ""
 						},
-						"url": "{{hostname}}:{{port}}/{{comPath}}/spatial/rest/userarea/{{UAID_EC}}"
+						"url": {
+							"raw": "{{hostname}}/{{context}}/spatial/rest/userarea/{{UAID_EC}}",
+							"host": [
+								"{{hostname}}"
+							],
+							"path": [
+								"{{context}}",
+								"spatial",
+								"rest",
+								"userarea",
+								"{{UAID_EC}}"
+							]
+						}
 					},
 					"response": []
 				},
@@ -5745,7 +6981,19 @@
 							"mode": "raw",
 							"raw": ""
 						},
-						"url": "{{hostname}}:{{port}}/{{comPath}}/spatial/rest/userarea/{{UAID_Private}}"
+						"url": {
+							"raw": "{{hostname}}/{{context}}/spatial/rest/userarea/{{UAID_Private}}",
+							"host": [
+								"{{hostname}}"
+							],
+							"path": [
+								"{{context}}",
+								"spatial",
+								"rest",
+								"userarea",
+								"{{UAID_Private}}"
+							]
+						}
 					},
 					"response": []
 				},
@@ -5794,7 +7042,19 @@
 							"mode": "raw",
 							"raw": ""
 						},
-						"url": "{{hostname}}:{{port}}/{{comPath}}/spatial/rest/userarea/{{UAID_MULTIPLE}}"
+						"url": {
+							"raw": "{{hostname}}/{{context}}/spatial/rest/userarea/{{UAID_MULTIPLE}}",
+							"host": [
+								"{{hostname}}"
+							],
+							"path": [
+								"{{context}}",
+								"spatial",
+								"rest",
+								"userarea",
+								"{{UAID_MULTIPLE}}"
+							]
+						}
 					},
 					"response": []
 				},
@@ -5843,7 +7103,19 @@
 							"mode": "raw",
 							"raw": ""
 						},
-						"url": "{{hostname}}:{{port}}/{{comPath}}/spatial/rest/userarea/{{UAID_INVALIDSCOPE}}"
+						"url": {
+							"raw": "{{hostname}}/{{context}}/spatial/rest/userarea/{{UAID_INVALIDSCOPE}}",
+							"host": [
+								"{{hostname}}"
+							],
+							"path": [
+								"{{context}}",
+								"spatial",
+								"rest",
+								"userarea",
+								"{{UAID_INVALIDSCOPE}}"
+							]
+						}
 					},
 					"response": []
 				}
@@ -5851,6 +7123,7 @@
 		},
 		{
 			"name": "05 Area-Visibility - SameUserSameScope",
+			"description": null,
 			"item": [
 				{
 					"name": "05 authenticate rep_power",
@@ -5885,7 +7158,18 @@
 							"mode": "raw",
 							"raw": "{\n   \"userName\": \"rep_power\",\n   \"password\": \"abcd-1234\"\n}"
 						},
-						"url": "{{hostname}}:{{port}}/{{comPath}}/usm-administration/rest/authenticate"
+						"url": {
+							"raw": "{{hostname}}/{{context}}/usm-administration/rest/authenticate",
+							"host": [
+								"{{hostname}}"
+							],
+							"path": [
+								"{{context}}",
+								"usm-administration",
+								"rest",
+								"authenticate"
+							]
+						}
 					},
 					"response": []
 				},
@@ -5946,7 +7230,18 @@
 							"mode": "raw",
 							"raw": "{\r\n\t\"type\": \"Feature\",\r\n\t\"geometry\": {\r\n\t\t\"type\": \"MultiPolygon\",\r\n\t\t\"coordinates\": [[[[-3.341753524316978, 68.12616370194141], [-37.28693406080001, 74.49036928060866], [-3.341753524316978, 74.908058702499], [-3.341753524316978, 68.12616370194141]]]]\r\n\t},\r\n\t\"properties\": {\r\n\t\t\"name\": \"Name-{{myRnd}}\",\r\n\t\t\"description\": \"Description {{myRnd}}\",\r\n\t\t\"subType\": \"Group{{myRnd}}\",\r\n\t\t\"startDate\": \"2017-04-20T08:55:17\",\r\n\t\t\"endDate\": \"2017-04-29T08:55:17\",\r\n\t\t\"scopeSelection\": [\"EC\"],\r\n\t\t\"datasetName\": \"dataset{{myRnd}}\"\r\n\t}\r\n}"
 						},
-						"url": "{{hostname}}:{{port}}/{{comPath}}/spatial/rest/userarea"
+						"url": {
+							"raw": "{{hostname}}/{{context}}/spatial/rest/userarea",
+							"host": [
+								"{{hostname}}"
+							],
+							"path": [
+								"{{context}}",
+								"spatial",
+								"rest",
+								"userarea"
+							]
+						}
 					},
 					"response": []
 				},
@@ -6000,7 +7295,19 @@
 							"mode": "raw",
 							"raw": "{\n\t\"id\":{{UAID_EC}},\n\t\"isGeom\":false\n}"
 						},
-						"url": "{{hostname}}:{{port}}/{{comPath}}/spatial/rest/userarea/details"
+						"url": {
+							"raw": "{{hostname}}/{{context}}/spatial/rest/userarea/details",
+							"host": [
+								"{{hostname}}"
+							],
+							"path": [
+								"{{context}}",
+								"spatial",
+								"rest",
+								"userarea",
+								"details"
+							]
+						}
 					},
 					"response": []
 				},
@@ -6061,7 +7368,18 @@
 							"mode": "raw",
 							"raw": "{\r\n\t\"type\": \"Feature\",\r\n\t\"geometry\": {\r\n\t\t\"type\": \"MultiPolygon\",\r\n\t\t\"coordinates\": [[[[-3.341753524316978, 68.12616370194141], [-37.28693406080001, 74.49036928060866], [-3.341753524316978, 74.908058702499], [-3.341753524316978, 68.12616370194141]]]]\r\n\t},\r\n\t\"properties\": {\r\n\t\t\"name\": \"Name-{{myRnd}}\",\r\n\t\t\"description\": \"Description {{myRnd}}\",\r\n\t\t\"subType\": \"Group{{myRnd}}\",\r\n\t\t\"startDate\": \"2017-04-20T08:55:17\",\r\n\t\t\"endDate\": \"2017-04-29T08:55:17\",\r\n\t\t\"scopeSelection\": [],\r\n\t\t\"datasetName\": \"dataset{{myRnd}}\"\r\n\t}\r\n}"
 						},
-						"url": "{{hostname}}:{{port}}/{{comPath}}/spatial/rest/userarea"
+						"url": {
+							"raw": "{{hostname}}/{{context}}/spatial/rest/userarea",
+							"host": [
+								"{{hostname}}"
+							],
+							"path": [
+								"{{context}}",
+								"spatial",
+								"rest",
+								"userarea"
+							]
+						}
 					},
 					"response": []
 				},
@@ -6114,7 +7432,19 @@
 							"mode": "raw",
 							"raw": "{\n\t\"id\":{{UAID_Private}},\n\t\"isGeom\":false\n}"
 						},
-						"url": "{{hostname}}:{{port}}/{{comPath}}/spatial/rest/userarea/details"
+						"url": {
+							"raw": "{{hostname}}/{{context}}/spatial/rest/userarea/details",
+							"host": [
+								"{{hostname}}"
+							],
+							"path": [
+								"{{context}}",
+								"spatial",
+								"rest",
+								"userarea",
+								"details"
+							]
+						}
 					},
 					"response": []
 				},
@@ -6175,7 +7505,18 @@
 							"mode": "raw",
 							"raw": "{\r\n\t\"type\": \"Feature\",\r\n\t\"geometry\": {\r\n\t\t\"type\": \"MultiPolygon\",\r\n\t\t\"coordinates\": [[[[-3.341753524316978, 68.12616370194141], [-37.28693406080001, 74.49036928060866], [-3.341753524316978, 74.908058702499], [-3.341753524316978, 68.12616370194141]]]]\r\n\t},\r\n\t\"properties\": {\r\n\t\t\"name\": \"Name-{{myRnd}}\",\r\n\t\t\"description\": \"Description {{myRnd}}\",\r\n\t\t\"subType\": \"Group{{myRnd}}\",\r\n\t\t\"startDate\": \"2017-04-20T08:55:17\",\r\n\t\t\"endDate\": \"2017-04-29T08:55:17\",\r\n\t\t\"scopeSelection\": [\"EC\", \"DG_MARE\"],\r\n\t\t\"datasetName\": \"dataset{{myRnd}}\"\r\n\t}\r\n}"
 						},
-						"url": "{{hostname}}:{{port}}/{{comPath}}/spatial/rest/userarea"
+						"url": {
+							"raw": "{{hostname}}/{{context}}/spatial/rest/userarea",
+							"host": [
+								"{{hostname}}"
+							],
+							"path": [
+								"{{context}}",
+								"spatial",
+								"rest",
+								"userarea"
+							]
+						}
 					},
 					"response": []
 				},
@@ -6228,7 +7569,19 @@
 							"mode": "raw",
 							"raw": "{\n\t\"id\":{{UAID_MULTIPLE}},\n\t\"isGeom\":false\n}"
 						},
-						"url": "{{hostname}}:{{port}}/{{comPath}}/spatial/rest/userarea/details"
+						"url": {
+							"raw": "{{hostname}}/{{context}}/spatial/rest/userarea/details",
+							"host": [
+								"{{hostname}}"
+							],
+							"path": [
+								"{{context}}",
+								"spatial",
+								"rest",
+								"userarea",
+								"details"
+							]
+						}
 					},
 					"response": []
 				},
@@ -6289,7 +7642,18 @@
 							"mode": "raw",
 							"raw": "{\r\n\t\"type\": \"Feature\",\r\n\t\"geometry\": {\r\n\t\t\"type\": \"MultiPolygon\",\r\n\t\t\"coordinates\": [[[[-3.341753524316978, 68.12616370194141], [-37.28693406080001, 74.49036928060866], [-3.341753524316978, 74.908058702499], [-3.341753524316978, 68.12616370194141]]]]\r\n\t},\r\n\t\"properties\": {\r\n\t\t\"name\": \"Name-{{myRnd}}\",\r\n\t\t\"description\": \"Description {{myRnd}}\",\r\n\t\t\"subType\": \"Group{{myRnd}}\",\r\n\t\t\"startDate\": \"2017-04-20T08:55:17\",\r\n\t\t\"endDate\": \"2017-04-29T08:55:17\",\r\n\t\t\"scopeSelection\": [\"INVALIDSCOPE\", \"FRA\"],\r\n\t\t\"datasetName\": \"dataset{{myRnd}}\"\r\n\t}\r\n}"
 						},
-						"url": "{{hostname}}:{{port}}/{{comPath}}/spatial/rest/userarea"
+						"url": {
+							"raw": "{{hostname}}/{{context}}/spatial/rest/userarea",
+							"host": [
+								"{{hostname}}"
+							],
+							"path": [
+								"{{context}}",
+								"spatial",
+								"rest",
+								"userarea"
+							]
+						}
 					},
 					"response": []
 				},
@@ -6340,7 +7704,19 @@
 							"mode": "raw",
 							"raw": "{\n\t\"id\":{{UAID_INVALIDSCOPE}},\n\t\"isGeom\":false\n}"
 						},
-						"url": "{{hostname}}:{{port}}/{{comPath}}/spatial/rest/userarea/details"
+						"url": {
+							"raw": "{{hostname}}/{{context}}/spatial/rest/userarea/details",
+							"host": [
+								"{{hostname}}"
+							],
+							"path": [
+								"{{context}}",
+								"spatial",
+								"rest",
+								"userarea",
+								"details"
+							]
+						}
 					},
 					"response": []
 				},
@@ -6413,7 +7789,19 @@
 							"mode": "raw",
 							"raw": ""
 						},
-						"url": "{{hostname}}:{{port}}/{{comPath}}/spatial/rest/userarea/list"
+						"url": {
+							"raw": "{{hostname}}/{{context}}/spatial/rest/userarea/list",
+							"host": [
+								"{{hostname}}"
+							],
+							"path": [
+								"{{context}}",
+								"spatial",
+								"rest",
+								"userarea",
+								"list"
+							]
+						}
 					},
 					"response": []
 				},
@@ -6478,7 +7866,19 @@
 							"mode": "raw",
 							"raw": ""
 						},
-						"url": "{{hostname}}:{{port}}/{{comPath}}/spatial/rest/userarea/types"
+						"url": {
+							"raw": "{{hostname}}/{{context}}/spatial/rest/userarea/types",
+							"host": [
+								"{{hostname}}"
+							],
+							"path": [
+								"{{context}}",
+								"spatial",
+								"rest",
+								"userarea",
+								"types"
+							]
+						}
 					},
 					"response": []
 				},
@@ -6535,7 +7935,20 @@
 							"mode": "raw",
 							"raw": ""
 						},
-						"url": "{{hostname}}:{{port}}/{{comPath}}/spatial/rest/userarea/list/{{UAGROUP_EC}}"
+						"url": {
+							"raw": "{{hostname}}/{{context}}/spatial/rest/userarea/list/{{UAGROUP_EC}}",
+							"host": [
+								"{{hostname}}"
+							],
+							"path": [
+								"{{context}}",
+								"spatial",
+								"rest",
+								"userarea",
+								"list",
+								"{{UAGROUP_EC}}"
+							]
+						}
 					},
 					"response": []
 				},
@@ -6592,7 +8005,20 @@
 							"mode": "raw",
 							"raw": ""
 						},
-						"url": "{{hostname}}:{{port}}/{{comPath}}/spatial/rest/userarea/list/{{UAGROUP_Private}}"
+						"url": {
+							"raw": "{{hostname}}/{{context}}/spatial/rest/userarea/list/{{UAGROUP_Private}}",
+							"host": [
+								"{{hostname}}"
+							],
+							"path": [
+								"{{context}}",
+								"spatial",
+								"rest",
+								"userarea",
+								"list",
+								"{{UAGROUP_Private}}"
+							]
+						}
 					},
 					"response": []
 				},
@@ -6649,7 +8075,20 @@
 							"mode": "raw",
 							"raw": ""
 						},
-						"url": "{{hostname}}:{{port}}/{{comPath}}/spatial/rest/userarea/list/{{UAGROUP_MULTIPLE}}"
+						"url": {
+							"raw": "{{hostname}}/{{context}}/spatial/rest/userarea/list/{{UAGROUP_MULTIPLE}}",
+							"host": [
+								"{{hostname}}"
+							],
+							"path": [
+								"{{context}}",
+								"spatial",
+								"rest",
+								"userarea",
+								"list",
+								"{{UAGROUP_MULTIPLE}}"
+							]
+						}
 					},
 					"response": []
 				},
@@ -6707,7 +8146,20 @@
 							"mode": "raw",
 							"raw": ""
 						},
-						"url": "{{hostname}}:{{port}}/{{comPath}}/spatial/rest/userarea/list/{{UAGROUP_INVALIDSCOPE}}"
+						"url": {
+							"raw": "{{hostname}}/{{context}}/spatial/rest/userarea/list/{{UAGROUP_INVALIDSCOPE}}",
+							"host": [
+								"{{hostname}}"
+							],
+							"path": [
+								"{{context}}",
+								"spatial",
+								"rest",
+								"userarea",
+								"list",
+								"{{UAGROUP_INVALIDSCOPE}}"
+							]
+						}
 					},
 					"response": []
 				},
@@ -6780,7 +8232,19 @@
 							"mode": "raw",
 							"raw": ""
 						},
-						"url": "{{hostname}}:{{port}}/{{comPath}}/spatial/rest/userarea/layers"
+						"url": {
+							"raw": "{{hostname}}/{{context}}/spatial/rest/userarea/layers",
+							"host": [
+								"{{hostname}}"
+							],
+							"path": [
+								"{{context}}",
+								"spatial",
+								"rest",
+								"userarea",
+								"layers"
+							]
+						}
 					},
 					"response": []
 				},
@@ -6845,7 +8309,19 @@
 							"mode": "raw",
 							"raw": "{\"filter\":\"name\"}"
 						},
-						"url": "{{hostname}}:{{port}}/{{comPath}}/spatial/rest/userarea/byfilter"
+						"url": {
+							"raw": "{{hostname}}/{{context}}/spatial/rest/userarea/byfilter",
+							"host": [
+								"{{hostname}}"
+							],
+							"path": [
+								"{{context}}",
+								"spatial",
+								"rest",
+								"userarea",
+								"byfilter"
+							]
+						}
 					},
 					"response": []
 				},
@@ -6910,7 +8386,19 @@
 							"mode": "raw",
 							"raw": "{\n\t\"areaType\":\"USERAREA\",\n\t\"isGeom\":false,\n\t\"longitude\":-988742.9570800774,\n\t\"latitude\":11696861.913622377,\n\t\"crs\":\"3857\"\n}"
 						},
-						"url": "{{hostname}}:{{port}}/{{comPath}}/spatial/rest/area/details"
+						"url": {
+							"raw": "{{hostname}}/{{context}}/spatial/rest/area/details",
+							"host": [
+								"{{hostname}}"
+							],
+							"path": [
+								"{{context}}",
+								"spatial",
+								"rest",
+								"area",
+								"details"
+							]
+						}
 					},
 					"response": []
 				},
@@ -6968,7 +8456,18 @@
 							"mode": "raw",
 							"raw": "{\r\n\t\"type\": \"Feature\",\r\n\t\"geometry\": {\r\n\t\t\"type\": \"MultiPolygon\",\r\n\t\t\"coordinates\": [[[[-3.3418, 68.12619999999998], [-37.2869, 74.4904], [-3.3418, 74.90809999999999], [-3.3418, 68.12619999999998]]]]\r\n\t},\r\n\t\"properties\": {\r\n\t\t\"name\": \"Name-47751\",\r\n\t\t\"description\": \"Description 47751\",\r\n\t\t\"subType\": \"GROUP47751\",\r\n\t\t\"startDate\": \"2017-04-20T08:55:17\",\r\n\t\t\"endDate\"\r\n\t\t: \"2017-04-29T08:55:17\",\r\n\t\t\"scopeSelection\": [\"DG_MARE\"],\r\n\t\t\"datasetName\": \"newDataset{{myRnd}}\",\r\n\t\t\"id\": \"{{UAID_EC}}\"\r\n\t}\r\n}"
 						},
-						"url": "{{hostname}}:{{port}}/{{comPath}}/spatial/rest/userarea"
+						"url": {
+							"raw": "{{hostname}}/{{context}}/spatial/rest/userarea",
+							"host": [
+								"{{hostname}}"
+							],
+							"path": [
+								"{{context}}",
+								"spatial",
+								"rest",
+								"userarea"
+							]
+						}
 					},
 					"response": []
 				},
@@ -7026,7 +8525,18 @@
 							"mode": "raw",
 							"raw": "{\r\n\t\"type\": \"Feature\",\r\n\t\"geometry\": {\r\n\t\t\"type\": \"MultiPolygon\",\r\n\t\t\"coordinates\": [[[[-3.3418, 68.12619999999998], [-37.2869, 74.4904], [-3.3418, 74.90809999999999], [-3.3418, 68.12619999999998]]]]\r\n\t},\r\n\t\"properties\": {\r\n\t\t\"name\": \"Name-47751\",\r\n\t\t\"description\": \"Description 47751\",\r\n\t\t\"subType\": \"GROUP47751\",\r\n\t\t\"startDate\": \"2017-04-20T08:55:17\",\r\n\t\t\"endDate\"\r\n\t\t: \"2017-04-29T08:55:17\",\r\n\t\t\"scopeSelection\": [\"DG_MARE\"],\r\n\t\t\"datasetName\": \"newDataset{{myRnd}}\",\r\n\t\t\"id\": \"{{UAID_Private}}\"\r\n\t}\r\n}"
 						},
-						"url": "{{hostname}}:{{port}}/{{comPath}}/spatial/rest/userarea"
+						"url": {
+							"raw": "{{hostname}}/{{context}}/spatial/rest/userarea",
+							"host": [
+								"{{hostname}}"
+							],
+							"path": [
+								"{{context}}",
+								"spatial",
+								"rest",
+								"userarea"
+							]
+						}
 					},
 					"response": []
 				},
@@ -7084,7 +8594,18 @@
 							"mode": "raw",
 							"raw": "{\r\n\t\"type\": \"Feature\",\r\n\t\"geometry\": {\r\n\t\t\"type\": \"MultiPolygon\",\r\n\t\t\"coordinates\": [[[[-3.3418, 68.12619999999998], [-37.2869, 74.4904], [-3.3418, 74.90809999999999], [-3.3418, 68.12619999999998]]]]\r\n\t},\r\n\t\"properties\": {\r\n\t\t\"name\": \"Name-47751\",\r\n\t\t\"description\": \"Description 47751\",\r\n\t\t\"subType\": \"GROUP47751\",\r\n\t\t\"startDate\": \"2017-04-20T08:55:17\",\r\n\t\t\"endDate\"\r\n\t\t: \"2017-04-29T08:55:17\",\r\n\t\t\"scopeSelection\": [\"DG_MARE\"],\r\n\t\t\"datasetName\": \"newDataset{{myRnd}}\",\r\n\t\t\"id\": \"{{UAID_MULTIPLE}}\"\r\n\t}\r\n}"
 						},
-						"url": "{{hostname}}:{{port}}/{{comPath}}/spatial/rest/userarea"
+						"url": {
+							"raw": "{{hostname}}/{{context}}/spatial/rest/userarea",
+							"host": [
+								"{{hostname}}"
+							],
+							"path": [
+								"{{context}}",
+								"spatial",
+								"rest",
+								"userarea"
+							]
+						}
 					},
 					"response": []
 				},
@@ -7142,7 +8663,18 @@
 							"mode": "raw",
 							"raw": "{\r\n\t\"type\": \"Feature\",\r\n\t\"geometry\": {\r\n\t\t\"type\": \"MultiPolygon\",\r\n\t\t\"coordinates\": [[[[-3.3418, 68.12619999999998], [-37.2869, 74.4904], [-3.3418, 74.90809999999999], [-3.3418, 68.12619999999998]]]]\r\n\t},\r\n\t\"properties\": {\r\n\t\t\"name\": \"Name-47751\",\r\n\t\t\"description\": \"Description 47751\",\r\n\t\t\"subType\": \"GROUP47751\",\r\n\t\t\"startDate\": \"2017-04-20T08:55:17\",\r\n\t\t\"endDate\"\r\n\t\t: \"2017-04-29T08:55:17\",\r\n\t\t\"scopeSelection\": [\"DG_MARE\"],\r\n\t\t\"datasetName\": \"newDataset{{myRnd}}\",\r\n\t\t\"id\": \"{{UAID_INVALIDSCOPE}}\"\r\n\t}\r\n}"
 						},
-						"url": "{{hostname}}:{{port}}/{{comPath}}/spatial/rest/userarea"
+						"url": {
+							"raw": "{{hostname}}/{{context}}/spatial/rest/userarea",
+							"host": [
+								"{{hostname}}"
+							],
+							"path": [
+								"{{context}}",
+								"spatial",
+								"rest",
+								"userarea"
+							]
+						}
 					},
 					"response": []
 				},
@@ -7191,7 +8723,19 @@
 							"mode": "raw",
 							"raw": ""
 						},
-						"url": "{{hostname}}:{{port}}/{{comPath}}/spatial/rest/userarea/{{UAID_EC}}"
+						"url": {
+							"raw": "{{hostname}}/{{context}}/spatial/rest/userarea/{{UAID_EC}}",
+							"host": [
+								"{{hostname}}"
+							],
+							"path": [
+								"{{context}}",
+								"spatial",
+								"rest",
+								"userarea",
+								"{{UAID_EC}}"
+							]
+						}
 					},
 					"response": []
 				},
@@ -7240,7 +8784,19 @@
 							"mode": "raw",
 							"raw": ""
 						},
-						"url": "{{hostname}}:{{port}}/{{comPath}}/spatial/rest/userarea/{{UAID_Private}}"
+						"url": {
+							"raw": "{{hostname}}/{{context}}/spatial/rest/userarea/{{UAID_Private}}",
+							"host": [
+								"{{hostname}}"
+							],
+							"path": [
+								"{{context}}",
+								"spatial",
+								"rest",
+								"userarea",
+								"{{UAID_Private}}"
+							]
+						}
 					},
 					"response": []
 				},
@@ -7289,7 +8845,19 @@
 							"mode": "raw",
 							"raw": ""
 						},
-						"url": "{{hostname}}:{{port}}/{{comPath}}/spatial/rest/userarea/{{UAID_MULTIPLE}}"
+						"url": {
+							"raw": "{{hostname}}/{{context}}/spatial/rest/userarea/{{UAID_MULTIPLE}}",
+							"host": [
+								"{{hostname}}"
+							],
+							"path": [
+								"{{context}}",
+								"spatial",
+								"rest",
+								"userarea",
+								"{{UAID_MULTIPLE}}"
+							]
+						}
 					},
 					"response": []
 				},
@@ -7338,7 +8906,19 @@
 							"mode": "raw",
 							"raw": ""
 						},
-						"url": "{{hostname}}:{{port}}/{{comPath}}/spatial/rest/userarea/{{UAID_INVALIDSCOPE}}"
+						"url": {
+							"raw": "{{hostname}}/{{context}}/spatial/rest/userarea/{{UAID_INVALIDSCOPE}}",
+							"host": [
+								"{{hostname}}"
+							],
+							"path": [
+								"{{context}}",
+								"spatial",
+								"rest",
+								"userarea",
+								"{{UAID_INVALIDSCOPE}}"
+							]
+						}
 					},
 					"response": []
 				}
@@ -7346,6 +8926,7 @@
 		},
 		{
 			"name": "06 User Rights Cleanup",
+			"description": null,
 			"item": [
 				{
 					"name": "authenticate usm_admin",
@@ -7380,7 +8961,18 @@
 							"mode": "raw",
 							"raw": "{\n   \"userName\": \"usm_admin\",\n   \"password\": \"password\"\n}"
 						},
-						"url": "{{hostname}}:{{port}}/{{comPath}}/usm-administration/rest/authenticate"
+						"url": {
+							"raw": "{{hostname}}/{{context}}/usm-administration/rest/authenticate",
+							"host": [
+								"{{hostname}}"
+							],
+							"path": [
+								"{{context}}",
+								"usm-administration",
+								"rest",
+								"authenticate"
+							]
+						}
 					},
 					"response": []
 				},
@@ -7448,7 +9040,18 @@
 							"mode": "raw",
 							"raw": "{\n   \"userName\": \"rep_share\",\n   \"password\": \"abcd-1234\"\n}"
 						},
-						"url": "{{hostname}}:{{port}}/{{comPath}}/usm-administration/rest/roles"
+						"url": {
+							"raw": "{{hostname}}/{{context}}/usm-administration/rest/roles",
+							"host": [
+								"{{hostname}}"
+							],
+							"path": [
+								"{{context}}",
+								"usm-administration",
+								"rest",
+								"roles"
+							]
+						}
 					},
 					"response": []
 				},
@@ -7519,7 +9122,18 @@
 							"mode": "raw",
 							"raw": "{\n   \"userName\": \"rep_share\",\n   \"password\": \"abcd-1234\"\n}"
 						},
-						"url": "{{hostname}}:{{port}}/{{comPath}}/usm-administration/rest/scopes"
+						"url": {
+							"raw": "{{hostname}}/{{context}}/usm-administration/rest/scopes",
+							"host": [
+								"{{hostname}}"
+							],
+							"path": [
+								"{{context}}",
+								"usm-administration",
+								"rest",
+								"scopes"
+							]
+						}
 					},
 					"response": []
 				},
@@ -7573,7 +9187,18 @@
 							"mode": "raw",
 							"raw": "{\r\n\t\"updateDatasets\": true,\r\n\t\"status\": \"E\",\r\n\t\"name\": \"EC\",\r\n\t\"activeFrom\": \"{{EC_ACTIVE_FROM}}\",\r\n\t\"activeTo\": \"{{EC_ACTIVE_TO}}\",\r\n\t\"scopeId\": {{EC_SCOPE_ID}},\r\n\t\"dataSets\": [34, 18, 29, 33, 14, 47, 50, 41, 38, 8, 26, 30, 52, 48, 51, 3, 46, 7, 42, 100007, 9, 36, 35, 45, 37, 100002, 6, 28, 11, 16, 22, 39, 17, 15, 10, 27, 0, 13, 100008, 32, 20, 19, 31, 44, 43, 25, 49, 4, 24, 5, 1, 2, 23, 40, 100009, 12, 21, 100005, 100011, 100006, 100001, 100010, 100013, 100004, 100000, 100003, 100014, 100012]\r\n}"
 						},
-						"url": "{{hostname}}:{{port}}/{{comPath}}/usm-administration/rest/scopes"
+						"url": {
+							"raw": "{{hostname}}/{{context}}/usm-administration/rest/scopes",
+							"host": [
+								"{{hostname}}"
+							],
+							"path": [
+								"{{context}}",
+								"usm-administration",
+								"rest",
+								"scopes"
+							]
+						}
 					},
 					"response": []
 				},
@@ -7630,7 +9255,18 @@
 							"mode": "raw",
 							"raw": "{\r\n\t\"updateDatasets\": true,\r\n\t\"status\": \"E\",\r\n\t\"name\": \"EC\",\r\n\t\"activeFrom\": \"{{EC_ACTIVE_FROM}}\",\r\n\t\"activeTo\": \"{{EC_ACTIVE_TO}}\",\r\n\t\"scopeId\": {{EC_SCOPE_ID}},\r\n\t\"dataSets\": [34, 18, 29, 33, 14, 47, 50, 41, 38, 8, 26, 30, 52, 48, 51, 3, 46, 7, 42, 100007, 9, 36, 35, 45, 37, 100002, 6, 28, 11, 16, 22, 39, 17, 15, 10, 27, 0, 13, 100008, 32, 20, 19, 31, 44, 43, 25, 49, 4, 24, 5, 1, 2, 23, 40, 100009, 12, 21, 100005, 100011, 100006, 100001, 100010, 100013, 100004, 100000, 100003, 100014, 100012]\r\n}"
 						},
-						"url": "{{hostname}}:{{port}}/{{comPath}}/usm-administration/rest/scopes"
+						"url": {
+							"raw": "{{hostname}}/{{context}}/usm-administration/rest/scopes",
+							"host": [
+								"{{hostname}}"
+							],
+							"path": [
+								"{{context}}",
+								"usm-administration",
+								"rest",
+								"scopes"
+							]
+						}
 					},
 					"response": []
 				}
