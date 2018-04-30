@@ -349,10 +349,16 @@
 									<port>25432:5432</port>
 								</ports>
 								<wait>
-									<log>All uvms databases created</log>
+									<log>(?s)All uvms databases created.*database system is ready to accept connections</log>
 									<time>480000</time>
 									<kill>15000</kill>
 									<shutdown>15000</shutdown>
+									<exec>
+										<postStart>
+											psql -U mobterm -d db71u 
+											-c INSERT\ INTO\ mobterm.plugin\ (id,name,service_name)\ VALUES\ ('4','TEST','eu.europa.ec.fisheries.uvms.plugins.inmarsat')
+										</postStart>
+									</exec>
 								</wait>
 								<dependsOn>
 									<container>activemq</container>
