@@ -356,7 +356,7 @@
 									<exec>
 										<postStart>
 											psql -U mobterm -d db71u 
-											-c INSERT\ INTO\ mobterm.plugin\ (id,name,service_name)\ VALUES\ ('4','TEST','eu.europa.ec.fisheries.uvms.plugins.inmarsat')
+											-c INSERT\ INTO\ mobterm.plugin\ (id,name,service_name,satellite_type)\ VALUES\ ('4','TEST','eu.europa.ec.fisheries.uvms.plugins.inmarsat','INMARSAT_C')
 										</postStart>
 									</exec>
 								</wait>
