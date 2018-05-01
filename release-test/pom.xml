@@ -355,8 +355,9 @@
 									<shutdown>15000</shutdown>
 									<exec>
 										<postStart>
-											psql -U mobterm -d db71u 
+											psql -U postgres -d db71u 
 											-c INSERT\ INTO\ mobterm.plugin\ (id,name,service_name,satellite_type)\ VALUES\ ('4','TEST','eu.europa.ec.fisheries.uvms.plugins.inmarsat','INMARSAT_C')
+											-c INSERT\ INTO\ exchange.service\ (serv_id,serv_serviceclassname,serv_name,serv_type,serv_status,serv_updattim,serv_upuser)\ VALUES\ ('2','eu.europa.ec.fisheries.uvms.plugins.inmarsat','TEST','SATELLITE_RECEIVER','STARTED',NOW(),'TEST')
 										</postStart>
 									</exec>
 								</wait>
