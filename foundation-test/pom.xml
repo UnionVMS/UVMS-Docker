@@ -217,18 +217,6 @@
 				<version>1.8</version>
 				<executions>
 					<execution>
-						<id>delayDockerStartup</id>
-						<phase>pre-integration-test</phase>
-						<configuration>
-							<tasks>
-								<sleep seconds="240" />
-							</tasks>
-						</configuration>
-						<goals>
-							<goal>run</goal>
-						</goals>
-					</execution>
-					<execution>
 						<id>downloadMonitoringMetrics</id>
 						<phase>post-integration-test</phase>
 						<configuration>
@@ -327,10 +315,17 @@
 									<port>25432:5432</port>
 								</ports>
 								<wait>
-									<log>All uvms databases created</log>
+									<log>(?s)All uvms databases created.*database system is ready to accept connections</log>
 									<time>480000</time>
 									<kill>15000</kill>
 									<shutdown>15000</shutdown>
+									<exec>
+										<postStart>
+											psql -U postgres -d db71u 
+											-c INSERT\ INTO\ mobterm.plugin\ (id,name,service_name,satellite_type)\ VALUES\ ('4','TEST','eu.europa.ec.fisheries.uvms.plugins.inmarsat','INMARSAT_C')
+											-c INSERT\ INTO\ exchange.service\ (serv_id,serv_serviceclassname,serv_name,serv_type,serv_status,serv_updattim,serv_upuser)\ VALUES\ ('2','eu.europa.ec.fisheries.uvms.plugins.inmarsat','TEST','SATELLITE_RECEIVER','STARTED',NOW(),'TEST')
+										</postStart>
+									</exec>
 								</wait>
 								<dependsOn>
 									<container>activemq</container>
