@@ -46,7 +46,7 @@ import eu.europa.ec.fisheries.wsdl.asset.types.Asset;
  * The Class MovementMovementRestIT.
  */
 
-@Ignore
+
 public class MovementMovementRestIT extends AbstractRestServiceTest {
 	
 	/** The movement helper. */
@@ -74,7 +74,7 @@ public class MovementMovementRestIT extends AbstractRestServiceTest {
 	 */
 	@Test
 	@Ignore
-	public void getListByQueryNumberOfLatestReportTest() throws Exception {	
+	public void getListByQueryNumberOfLatestReportTest() throws Exception {
 		int numberPositions = 4;
 		Map<String, Object> dataMap = movementHelper.getListByQuery(createMovementQueryNumberOfLatestReports(numberPositions));
 				

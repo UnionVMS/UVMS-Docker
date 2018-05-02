@@ -86,7 +86,7 @@ public class AssetHistoryRestIT extends AbstractRestServiceTest {
 	 *             the exception
 	 */
 	@Test
-    @Ignore //FIXME timeout on jenkins
+    //@Ignore //FIXME timeout on jenkins
 	public void getAssetHistoryByAssetHistGuidTest() throws Exception {
 		Asset asset = AssetTestHelper.createTestAsset();		
 		Asset assetFromHistory = AssetTestHelper.getAssetHistoryFromHistoryGuid(asset.getEventHistory().getEventId());

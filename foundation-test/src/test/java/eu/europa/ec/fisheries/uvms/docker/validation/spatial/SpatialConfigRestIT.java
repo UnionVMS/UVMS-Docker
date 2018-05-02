@@ -17,6 +17,9 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
+import eu.europa.ec.fisheries.uvms.asset.remote.dto.ConfigurationDto;
+import eu.europa.ec.fisheries.wsdl.asset.config.Config;
+import eu.europa.ec.fisheries.wsdl.asset.config.ConfigField;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
 import org.apache.http.client.fluent.Request;
@@ -113,7 +116,13 @@ public class SpatialConfigRestIT extends AbstractRestServiceTest {
 
 		ConfigResourceDto dto = new ConfigResourceDto();
 		dto.setTimeStamp(new Date().toString());
-		String theDto = mapper.writeValueAsString(dto);
+
+		ConfigurationDto configurationDto = new ConfigurationDto();
+		Config cfg = new Config();
+		cfg.setField(ConfigField.ALL);
+		configurationDto.addConfig(cfg);
+
+		String json = mapper.writeValueAsString(configurationDto);
 
 		// @formatter:off
 		final HttpResponse response = Request.Post(getBaseUrl() + "spatial/rest/fromreport" )
@@ -121,7 +130,7 @@ public class SpatialConfigRestIT extends AbstractRestServiceTest {
 				.setHeader("Authorization", token)
 				.setHeader(AuthConstants.HTTP_HEADER_SCOPE_NAME, scopeName)
 				.setHeader(AuthConstants.HTTP_HEADER_ROLE_NAME, roleName)
-				.bodyByteArray(theDto.getBytes())
+				.bodyByteArray(json.getBytes())
 				.execute()
 				.returnResponse();
 		// @formatter:on
