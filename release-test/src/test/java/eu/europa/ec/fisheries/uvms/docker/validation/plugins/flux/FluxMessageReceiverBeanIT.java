@@ -117,7 +117,6 @@ public class FluxMessageReceiverBeanIT extends AbstractRestServiceTest {
 	 * @throws Exception the exception
 	 */
 	@Test
-	@Ignore
 	public void postRequestTypeRequestSuccessTest() throws Exception {		
 		Asset testAsset = AssetTestHelper.createTestAsset();
 		MobileTerminalType mobileTerminalType = MobileTerminalTestHelper.createMobileTerminalType();
@@ -199,7 +198,8 @@ public class FluxMessageReceiverBeanIT extends AbstractRestServiceTest {
 		purposeCode.setValue("9");
 		fluxReportDocumentType.setPurposeCode(purposeCode);		
 		IDType idType = new IDType();
-		fluxReportDocumentType.setReferencedID(idType);		
+		fluxReportDocumentType.setReferencedID(idType);
+		fluxReportDocumentType.getIDS().add(idType);
 		CodeType typeCode = new CodeType();
 		fluxReportDocumentType.setTypeCode(typeCode);		
 		fLUXVesselPositionMessage.setFLUXReportDocument(fluxReportDocumentType);
@@ -242,7 +242,7 @@ public class FluxMessageReceiverBeanIT extends AbstractRestServiceTest {
 
 		BindingProvider bp = (BindingProvider) bridgeConnectorPortType;
 		bp.getRequestContext().put(BindingProvider.ENDPOINT_ADDRESS_PROPERTY,
-				"http://localhost:28080/flux-service/MovementService/FluxMessageReceiverBean");
+				getBaseUrl() + "flux-service/MovementService/FluxMessageReceiverBean");
 		return bridgeConnectorPortType;
 	}
 
