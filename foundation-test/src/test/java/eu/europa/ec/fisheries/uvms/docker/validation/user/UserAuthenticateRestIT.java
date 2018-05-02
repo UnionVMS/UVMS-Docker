@@ -106,7 +106,7 @@ public class UserAuthenticateRestIT extends AbstractRestServiceTest {
 	}
 
 	@Test
-	//@Ignore
+	@Ignore
 	public void challengeAuth() throws Exception {
 
 		// until the backend jdbc code is corrected this test is
