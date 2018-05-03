@@ -59,26 +59,23 @@ public class FluxActivityJMSTestIT {
 
     private static PrintStream logger = System.out;
 
+    //these test where just fine as they where, dont know why they had @ignore
     @Test
-    @Ignore
     public void sendReport(){
         sendMessageOnQueue(REPORT, FAPLUGIN_EVENT_QUEUE);
     }
 
     @Test
-    @Ignore
     public void sendResponse(){
         sendMessageOnQueue(RESPONSE, FAPLUGIN_EVENT_QUEUE);
     }
 
     @Test
-    @Ignore
     public void sendQuery(){
         sendMessageOnQueue(QUERY, FAPLUGIN_EVENT_QUEUE);
     }
 
     @Test
-    @Ignore
     public void sendMdrReturnMessage(){
         sendMessageOnQueue(MDR_RETURN_MSG, MDRPLUGIN_EVENT_QUEUE);
     }

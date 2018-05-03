@@ -15,10 +15,7 @@ package eu.europa.ec.fisheries.uvms.docker.validation.reporting;
 
 import java.io.IOException;
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.Map.Entry;
 
 import com.fasterxml.jackson.core.JsonParseException;
@@ -357,12 +354,14 @@ public class ReportingRestIT extends AbstractRestServiceTest {
 		assertNotNull(movementDataMap);
 		List<Map<String,Object>> movementPropertyDataMap = (List<Map<String,Object>>) movementDataMap.get("features");
 		assertNotNull(movementPropertyDataMap);
-	
+
+		//This part is never run since movementPropertyDataMap is empty, mostly due tu a bug in reporting. For mor info: https://jira.havochvatten.se/jira/browse/UV-124
 		for (Map map : movementPropertyDataMap) {
 			assertEquals(testAsset.getCfr(), ((Map) map.get("properties")).get("cfr"));
 		}
 	}
 
+	//The test can not work due tu a bug in reporting. For more information see: https://jira.havochvatten.se/jira/browse/UV-124
 	@Test
 	@Ignore
 	public void executeStandardTwoWeekReportWithIdForOneAssetFourLastPositionsTest() throws Exception {
@@ -374,6 +373,7 @@ public class ReportingRestIT extends AbstractRestServiceTest {
 		HashMap<String, Object> additionalProperties = new HashMap<>();
 		HashMap<String, Object> valueMap = new HashMap<>();
 		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+		dateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));  //added so that the system understands that it is supposed to handle time in utc value instead of local
 		String timeStampValue = dateFormat.format(new Date());
 		valueMap.put("timestamp", timeStampValue);
 		additionalProperties.put("additionalProperties", valueMap);
@@ -399,6 +399,7 @@ public class ReportingRestIT extends AbstractRestServiceTest {
 		}
 	}
 
+    //The test can not work due tu a bug in reporting. For more information see: https://jira.havochvatten.se/jira/browse/UV-124
 	@Test
 	@Ignore
 	public void executeStandardTwoWeekReportWithIdForAllAssetFourLastPositionsKnownBugJira3215Test() throws Exception {
