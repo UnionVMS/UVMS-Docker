@@ -231,7 +231,7 @@ public class FluxMessageReceiverBeanIT extends AbstractRestServiceTest {
 		assertEquals("Expect one position in movement db",1,dataList.size());
 	}
 
-	
+
 	/**
 	 * Creates the bridge connector.
 	 *
@@ -242,9 +242,10 @@ public class FluxMessageReceiverBeanIT extends AbstractRestServiceTest {
 
 		BindingProvider bp = (BindingProvider) bridgeConnectorPortType;
 		bp.getRequestContext().put(BindingProvider.ENDPOINT_ADDRESS_PROPERTY,
-				"http://localhost:28080/flux-service/MovementService/FluxMessageReceiverBean");
+				getBaseUrl() + "flux-service/MovementService/FluxMessageReceiverBean");
 		return bridgeConnectorPortType;
 	}
+
 
 	/**
 	 * Creates the any element.
