@@ -1,20 +1,16 @@
 package eu.europa.ec.fisheries.uvms.docker.validation.mobileterminal;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
-
 import org.apache.http.HttpResponse;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.fluent.Request;
-
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
-
 import eu.europa.ec.fisheries.schema.mobileterminal.polltypes.v1.PollAttribute;
 import eu.europa.ec.fisheries.schema.mobileterminal.polltypes.v1.PollAttributeType;
 import eu.europa.ec.fisheries.schema.mobileterminal.polltypes.v1.PollMobileTerminal;
@@ -25,7 +21,6 @@ import eu.europa.ec.fisheries.schema.mobileterminal.types.v1.ComChannelCapabilit
 import eu.europa.ec.fisheries.schema.mobileterminal.types.v1.ComChannelType;
 import eu.europa.ec.fisheries.schema.mobileterminal.types.v1.MobileTerminalAssignQuery;
 import eu.europa.ec.fisheries.schema.mobileterminal.types.v1.MobileTerminalAttribute;
-import eu.europa.ec.fisheries.schema.mobileterminal.types.v1.MobileTerminalId;
 import eu.europa.ec.fisheries.schema.mobileterminal.types.v1.MobileTerminalSource;
 import eu.europa.ec.fisheries.schema.mobileterminal.types.v1.MobileTerminalType;
 import eu.europa.ec.fisheries.schema.mobileterminal.types.v1.Plugin;
@@ -149,26 +144,7 @@ public final class MobileTerminalTestHelper extends AbstractHelper {
 				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken())
 				.bodyByteArray(writeValueAsString(mobileTerminalRequest).getBytes()).execute().returnResponse();
 
-		Map<String, Object> dataMap = checkSuccessResponseReturnMap(response);
-
-		Map<String, Object> assetMap = (Map<String, Object>) dataMap.get("mobileTerminalId");
-		assertNotNull(assetMap);
-		String mobileTerminalGuid = (String) assetMap.get("guid");
-		assertNotNull(mobileTerminalGuid);
-
-		ArrayList channelsList = (ArrayList) dataMap.get("channels");
-		assertNotNull(channelsList);
-		Map<String, Object> channelMap = (Map<String, Object>) channelsList.get(0);
-		assertNotNull(channelMap);
-		String channelGuid = (String) channelMap.get("guid");
-		comChannelType.setGuid(channelGuid);
-
-		mobileTerminalRequest.setId((Integer) dataMap.get("id"));
-
-		MobileTerminalId mobileTerminalId = new MobileTerminalId();
-		mobileTerminalId.setGuid(mobileTerminalGuid);
-		mobileTerminalRequest.setMobileTerminalId(mobileTerminalId);
-		return mobileTerminalRequest;
+		return checkSuccessResponseReturnObject(response, MobileTerminalType.class);
 	}
 
 	private static void addChannelCapability(ComChannelType comChannelType, String type, boolean value) {

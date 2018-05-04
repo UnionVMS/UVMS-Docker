@@ -121,7 +121,7 @@
 				<plugin>
 					<groupId>io.fabric8</groupId>
 					<artifactId>docker-maven-plugin</artifactId>
-					<version>0.23.0</version>
+					<version>0.25.0</version>
 				</plugin>
 			</plugins>
 		</pluginManagement>
@@ -216,18 +216,6 @@
 				<artifactId>maven-antrun-plugin</artifactId>
 				<version>1.8</version>
 				<executions>
-					<execution>
-						<id>delayDockerStartup</id>
-						<phase>pre-integration-test</phase>
-						<configuration>
-							<tasks>
-								<sleep seconds="240" />
-							</tasks>
-						</configuration>
-						<goals>
-							<goal>run</goal>
-						</goals>
-					</execution>
 					<execution>
 						<id>downloadMonitoringMetrics</id>
 						<phase>post-integration-test</phase>

@@ -46,7 +46,7 @@ import eu.europa.ec.fisheries.wsdl.asset.types.Asset;
  * The Class MovementMovementRestIT.
  */
 
-@Ignore
+
 public class MovementMovementRestIT extends AbstractRestServiceTest {
 	
 	/** The movement helper. */
@@ -66,50 +66,7 @@ public class MovementMovementRestIT extends AbstractRestServiceTest {
 		assertNotNull(dataMap);
 	}
 
-	/**
-	 * Gets the list by query number of latest report test.
-	 *
-	 * @return the list by query number of latest report test
-	 * @throws Exception the exception
-	 */
-	@Test
-	@Ignore
-	public void getListByQueryNumberOfLatestReportTest() throws Exception {	
-		int numberPositions = 4;
-		Map<String, Object> dataMap = movementHelper.getListByQuery(createMovementQueryNumberOfLatestReports(numberPositions));
-				
-		validateNumberMovementPosisitionsPerShip(numberPositions, dataMap);		
-	}
-
-	/**
-	 * Creates the movement query number of latest reports.
-	 *
-	 * @param numberPositions the number positions
-	 * @return the movement query
-	 */
-	private MovementQuery createMovementQueryNumberOfLatestReports(int numberPositions) {
-
-		MovementQuery movementQuery = new MovementQuery();
-		movementQuery.setExcludeFirstAndLastSegment(false);
-		ListPagination listPagination = new ListPagination();
-		listPagination.setListSize(BigInteger.valueOf(1000000));
-		listPagination.setPage(BigInteger.valueOf(1));
-		movementQuery.setPagination(listPagination);
-		
-		
-		ListCriteria listCriteria = new ListCriteria();
-		listCriteria.setKey(SearchKey.NR_OF_LATEST_REPORTS);
-		listCriteria.setValue("" + numberPositions);
-		movementQuery.getMovementSearchCriteria().add(listCriteria);
-
-		RangeCriteria rangeCriteria = new RangeCriteria();
-		rangeCriteria.setKey(RangeKeyType.DATE);
-		rangeCriteria.setFrom("2017-09-25 15:33:14 +0200");
-		rangeCriteria.setTo("2019-10-09 15:33:14 +0200");
-		movementQuery.getMovementRangeSearchCriteria().add(rangeCriteria);
-		
-		return movementQuery;
-	}
+	//Two tests (and an unused helper function) removed since they assumed that some specific data where already in the database. Since the DB is empty, the test would never pass.
 
 	
 	/**
@@ -133,26 +90,7 @@ public class MovementMovementRestIT extends AbstractRestServiceTest {
 		return movementQuery;
 	}
 
-	/**
-	 * Gets the minimal list by query test.
-	 *
-	 * @return the minimal list by query test
-	 * @throws Exception
-	 *             the exception
-	 */
-	@Test
-	@Ignore
-	public void getMinimalListByQueryNumberOfLatestReportTest() throws Exception {
-		int numberPositions = 4;
-		final HttpResponse response = Request.Post(getBaseUrl() + "movement/rest/movement/list/minimal")
-				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken())
-				.bodyByteArray(writeValueAsString(createMovementQueryNumberOfLatestReports(numberPositions)).getBytes()).execute().returnResponse();
 
-		Map<String, Object> dataMap = checkSuccessResponseReturnMap(response);
-					
-		validateNumberMovementPosisitionsPerShip(numberPositions, dataMap);		
-
-	}
 
 	/**
 	 * Validate number movement posisitions per ship.
