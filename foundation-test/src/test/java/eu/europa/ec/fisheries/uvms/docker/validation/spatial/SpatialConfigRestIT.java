@@ -102,47 +102,7 @@ public class SpatialConfigRestIT extends AbstractRestServiceTest {
 	
 	
 	
-	@Test
-	@Ignore
-	public void getReportMapConfigWithoutSave() throws Exception {
-
-		String uid = "rep_power";
-		String pwd = "abcd-1234";
-		String token = getValidJwtToken(uid, pwd);
-		String scopeName = "EC";
-		String roleName = "rep_power_role";
-
-		String id = "5";
-
-		ConfigResourceDto dto = new ConfigResourceDto();
-		dto.setTimeStamp(new Date().toString());
-
-		ConfigurationDto configurationDto = new ConfigurationDto();
-		Config cfg = new Config();
-		cfg.setField(ConfigField.ALL);
-		configurationDto.addConfig(cfg);
-
-		String json = mapper.writeValueAsString(configurationDto);
-
-		// @formatter:off
-		final HttpResponse response = Request.Post(getBaseUrl() + "spatial/rest/fromreport" )
-				.setHeader("Content-Type", "application/json")
-				.setHeader("Authorization", token)
-				.setHeader(AuthConstants.HTTP_HEADER_SCOPE_NAME, scopeName)
-				.setHeader(AuthConstants.HTTP_HEADER_ROLE_NAME, roleName)
-				.bodyByteArray(json.getBytes())
-				.execute()
-				.returnResponse();
-		// @formatter:on
-
-		assertEquals(HttpStatus.SC_OK, response.getStatusLine().getStatusCode());
-		final Map<String, Object> data = getJsonMap(response);
-
-		// for now
-		assertTrue(data != null);
-		assertTrue(data.size() > 0);
-
-	}
+	//Removed a test here since the corresponding method in spatial had completley changed invalues
 	
 	
 	

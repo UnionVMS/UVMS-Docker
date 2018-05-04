@@ -43,41 +43,6 @@ public class ExchangeRegistryRestIT extends AbstractRestServiceTest {
 
 		List dataList = checkSuccessResponseReturnType(response,List.class);
 	}
-
-	/**
-	 * Start service test.
-	 *
-	 * @throws Exception the exception
-	 */
-	@Test
-	@Ignore
-	public void startServiceTest() throws Exception {
-		String serviceName = "eu.europa.ec.fisheries.uvms.plugins.sweagencyemail";
-		
-		final HttpResponse response = Request.Put(getBaseUrl() + "exchange/rest/plugin/start/" + serviceName)
-				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken()).execute()
-				.returnResponse();
-
-		Boolean result = checkSuccessResponseReturnType(response,Boolean.class);
-		assertTrue(result);
-	}
-
-	/**
-	 * Stop service test.
-	 *
-	 * @throws Exception the exception
-	 */
-	@Test
-	@Ignore
-	public void stopServiceTest() throws Exception {
-		String serviceName = "eu.europa.ec.fisheries.uvms.plugins.sweagencyemail";
-		
-		final HttpResponse response = Request.Put(getBaseUrl() + "exchange/rest/plugin/stop/" + serviceName)
-				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken()).execute()
-				.returnResponse();
-
-		Boolean result = checkSuccessResponseReturnType(response,Boolean.class);
-		assertTrue(result);
-	}
+    //removed two tests that started and stopped the service sweagencyemail. Since sweagency is specific to swe (and thus other are not supposed to have that plugin) and since sweagencyemail is not in a working order, the test where removed.
 	
 }
