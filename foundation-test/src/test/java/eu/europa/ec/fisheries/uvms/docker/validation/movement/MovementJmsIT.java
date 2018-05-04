@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import eu.europa.ec.fisheries.schema.movement.common.v1.SimpleResponse;
+import org.junit.Assert;
 import org.junit.Test;
 
 import eu.europa.ec.fisheries.schema.mobileterminal.types.v1.MobileTerminalType;
@@ -31,12 +33,21 @@ public class MovementJmsIT extends AbstractRestServiceTest {
 		Asset testAsset = AssetTestHelper.createTestAsset();
 		MobileTerminalType mobileTerminalType = MobileTerminalTestHelper.createMobileTerminalType();
 		MobileTerminalTestHelper.assignMobileTerminal(testAsset, mobileTerminalType);
-		List<LatLong> latLongList = movementHelper.createRuttCobhNewYork(ALL, 0.4f);
+		List<LatLong> latLongList = movementHelper.createRuttCobhNewYork(50, 0.4f);
 
 		final CreateMovementBatchRequest createMovementBatchRequest = movementHelper
 				.createMovementBatchRequest(testAsset, mobileTerminalType, latLongList);
 		CreateMovementBatchResponse createMovementResponse = movementHelper.createMovementBatch(testAsset,
 				mobileTerminalType, createMovementBatchRequest);
+
+
+		Assert.assertNotNull(createMovementResponse);
+		SimpleResponse simpleResponse = createMovementResponse.getResponse();
+		String val = simpleResponse.value();
+		Assert.assertEquals("OK", val);
+
+
+
 	}
 
 	/**
