@@ -454,6 +454,7 @@ public class ReportingRestIT extends AbstractRestServiceTest {
 	 *
 	 * @throws Exception the exception
 	 */
+    //The test can not work due tu a bug in reporting. For more information see: https://jira.havochvatten.se/jira/browse/UV-124
 	@Test
 	@Ignore
 	public void executeSummaryTwoWeekReportTest() throws Exception {

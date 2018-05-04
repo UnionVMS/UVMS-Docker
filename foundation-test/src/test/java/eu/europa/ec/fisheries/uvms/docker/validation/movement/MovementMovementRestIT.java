@@ -105,7 +105,7 @@ public class MovementMovementRestIT extends AbstractRestServiceTest {
 		RangeCriteria rangeCriteria = new RangeCriteria();
 		rangeCriteria.setKey(RangeKeyType.DATE);
 		rangeCriteria.setFrom("2017-09-25 15:33:14 +0200");
-		rangeCriteria.setTo("2017-10-09 15:33:14 +0200");
+		rangeCriteria.setTo("2019-10-09 15:33:14 +0200");
 		movementQuery.getMovementRangeSearchCriteria().add(rangeCriteria);
 		
 		return movementQuery;
