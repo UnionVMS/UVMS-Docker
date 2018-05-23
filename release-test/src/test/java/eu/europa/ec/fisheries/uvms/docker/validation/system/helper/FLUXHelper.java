@@ -1,0 +1,176 @@
+/*
+﻿Developed with the contribution of the European Commission - Directorate General for Maritime Affairs and Fisheries
+© European Union, 2015-2016.
+
+This file is part of the Integrated Fisheries Data Management (IFDM) Suite. The IFDM Suite is free software: you can
+redistribute it and/or modify it under the terms of the GNU General Public License as published by the
+Free Software Foundation, either version 3 of the License, or any later version. The IFDM Suite is distributed in
+the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more details. You should have received a
+copy of the GNU General Public License along with the IFDM Suite. If not, see <http://www.gnu.org/licenses/>.
+ */
+package eu.europa.ec.fisheries.uvms.docker.validation.system.helper;
+
+import java.math.BigDecimal;
+import java.util.GregorianCalendar;
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBException;
+import javax.xml.bind.Marshaller;
+import javax.xml.datatype.DatatypeConfigurationException;
+import javax.xml.datatype.DatatypeFactory;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.ws.BindingProvider;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import eu.europa.ec.fisheries.uvms.docker.validation.common.AbstractHelper;
+import eu.europa.ec.fisheries.uvms.docker.validation.movement.LatLong;
+import eu.europa.ec.fisheries.wsdl.asset.types.Asset;
+import un.unece.uncefact.data.standard.fluxvesselpositionmessage._4.FLUXVesselPositionMessage;
+import un.unece.uncefact.data.standard.reusableaggregatebusinessinformationentity._18.FLUXPartyType;
+import un.unece.uncefact.data.standard.reusableaggregatebusinessinformationentity._18.FLUXReportDocumentType;
+import un.unece.uncefact.data.standard.reusableaggregatebusinessinformationentity._18.VesselCountryType;
+import un.unece.uncefact.data.standard.reusableaggregatebusinessinformationentity._18.VesselGeographicalCoordinateType;
+import un.unece.uncefact.data.standard.reusableaggregatebusinessinformationentity._18.VesselPositionEventType;
+import un.unece.uncefact.data.standard.reusableaggregatebusinessinformationentity._18.VesselTransportMeansType;
+import un.unece.uncefact.data.standard.unqualifieddatatype._18.CodeType;
+import un.unece.uncefact.data.standard.unqualifieddatatype._18.DateTimeType;
+import un.unece.uncefact.data.standard.unqualifieddatatype._18.IDType;
+import un.unece.uncefact.data.standard.unqualifieddatatype._18.MeasureType;
+import un.unece.uncefact.data.standard.unqualifieddatatype._18.TextType;
+import xeu.bridge_connector.v1.RequestType;
+import xeu.bridge_connector.v1.ResponseType;
+import xeu.bridge_connector.wsdl.v1.BridgeConnectorPortType;
+import xeu.bridge_connector.wsdl.v1.MovementService;
+
+public class FLUXHelper extends AbstractHelper {
+
+    public static void sendPositionToFluxPlugin(Asset asset, LatLong position) throws Exception {
+        RequestType vesselReport = createVesselReport(asset, position);
+        sendVesselReportToFluxPlugin(vesselReport);
+    }
+    
+    public static void sendVesselReportToFluxPlugin(RequestType requestType) {
+        BridgeConnectorPortType bridgeConnectorPortType = createBridgeConnector();
+        ResponseType responseType = bridgeConnectorPortType.post(requestType);
+        assertNotNull(responseType);
+        assertEquals("OK", responseType.getStatus());
+    }
+
+    public static RequestType createVesselReport(Asset testAsset, LatLong latLong) throws DatatypeConfigurationException, JAXBException, ParserConfigurationException {
+        RequestType requestType = new RequestType();
+
+        FLUXVesselPositionMessage fLUXVesselPositionMessage = new FLUXVesselPositionMessage();
+        VesselTransportMeansType vesselTransportMeansType = new VesselTransportMeansType();
+        
+        IDType cfrId = new IDType();
+        cfrId.setSchemeID("CFR");
+        cfrId.setValue(testAsset.getCfr());
+        vesselTransportMeansType.getIDS().add(cfrId);
+
+        IDType ircsId = new IDType();
+        ircsId.setSchemeID("IRCS");
+        ircsId.setValue(testAsset.getIrcs());
+        vesselTransportMeansType.getIDS().add(ircsId);
+        
+//      IDType extMarkingId = new IDType();
+//      extMarkingId.setSchemeID("EXT_MARKING");
+//      extMarkingId.setValue(testAsset.getExternalMarking());
+//      vesselTransportMeansType.getIDS().add(extMarkingId);
+
+        VesselCountryType vesselCountry = new VesselCountryType();
+        IDType countryId = new IDType();
+        countryId.setValue(testAsset.getCountryCode());
+        vesselCountry.setID(countryId);
+        vesselTransportMeansType.setRegistrationVesselCountry(vesselCountry);
+        
+        
+        VesselPositionEventType vesselPositionEventType = new VesselPositionEventType();
+        
+        MeasureType measureType = new MeasureType();
+        measureType.setValue(new BigDecimal(latLong.bearing));
+        vesselPositionEventType.setCourseValueMeasure(measureType);
+        
+        GregorianCalendar calendar = new GregorianCalendar();
+        calendar.setTime(latLong.positionTime);
+        
+        DateTimeType posDateTime = new DateTimeType();
+        posDateTime.setDateTime(DatatypeFactory.newInstance().newXMLGregorianCalendar(calendar));
+        vesselPositionEventType.setObtainedOccurrenceDateTime(posDateTime);
+        
+        VesselGeographicalCoordinateType cordinates = new VesselGeographicalCoordinateType();
+        MeasureType longitude = new MeasureType();
+        longitude.setValue(new BigDecimal(latLong.longitude));
+        cordinates.setLongitudeMeasure(longitude);
+        MeasureType latitude = new MeasureType();
+        latitude.setValue(new BigDecimal(latLong.latitude));
+        cordinates.setLatitudeMeasure(latitude);
+        vesselPositionEventType.setSpecifiedVesselGeographicalCoordinate(cordinates);
+        
+        MeasureType speedValue = new MeasureType();
+        speedValue.setValue(new BigDecimal(latLong.speed));
+        vesselPositionEventType.setSpeedValueMeasure(speedValue);
+        
+        CodeType typeCodeValue = new CodeType();
+        typeCodeValue.setValue("POS");
+        vesselPositionEventType.setTypeCode(typeCodeValue);
+        
+        vesselTransportMeansType.getSpecifiedVesselPositionEvents().add(vesselPositionEventType);
+        
+        fLUXVesselPositionMessage.setVesselTransportMeans(vesselTransportMeansType);
+        
+        FLUXReportDocumentType fluxReportDocumentType = new FLUXReportDocumentType();
+        DateTimeType dateTimeType = new DateTimeType();
+        dateTimeType.setDateTime(DatatypeFactory.newInstance().newXMLGregorianCalendar(calendar));
+        fluxReportDocumentType.setCreationDateTime(dateTimeType);
+        FLUXPartyType fLUXPartyType = new FLUXPartyType();
+        fLUXPartyType.getIDS().add(countryId);
+        fluxReportDocumentType.setOwnerFLUXParty(fLUXPartyType);
+        TextType textType = new TextType();
+        fluxReportDocumentType.setPurpose(textType);        
+        CodeType purposeCode = new CodeType();
+        purposeCode.setValue("9");
+        fluxReportDocumentType.setPurposeCode(purposeCode);     
+        IDType idType = new IDType();
+        fluxReportDocumentType.setReferencedID(idType);
+        fluxReportDocumentType.getIDS().add(idType);
+        CodeType typeCode = new CodeType();
+        fluxReportDocumentType.setTypeCode(typeCode);       
+        fLUXVesselPositionMessage.setFLUXReportDocument(fluxReportDocumentType);
+
+        requestType.setAny(createAnyElement(fLUXVesselPositionMessage));
+
+        requestType.setAD("SWE");
+        requestType.setAR(true);
+        requestType.setDF("df");
+        requestType.setON("on");
+        requestType.setTO(1234);
+        requestType.setTODT(DatatypeFactory.newInstance().newXMLGregorianCalendar(calendar));
+        
+        return requestType;
+    }
+    
+    private static Element createAnyElement(FLUXVesselPositionMessage fLUXVesselPositionMessage)
+            throws JAXBException, ParserConfigurationException {
+        JAXBContext jaxbContext = JAXBContext.newInstance(FLUXVesselPositionMessage.class);
+        DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+        DocumentBuilder db = dbf.newDocumentBuilder();
+        Document document = db.newDocument();
+        Marshaller marshaller = jaxbContext.createMarshaller();
+        marshaller.marshal(fLUXVesselPositionMessage, document);
+
+        Element documentElement = document.getDocumentElement();
+        return documentElement;
+    }
+    
+    private static BridgeConnectorPortType createBridgeConnector() {
+        BridgeConnectorPortType bridgeConnectorPortType = new MovementService().getBridgeConnectorPortType();
+
+        BindingProvider bp = (BindingProvider) bridgeConnectorPortType;
+        bp.getRequestContext().put(BindingProvider.ENDPOINT_ADDRESS_PROPERTY,
+                getBaseUrl() + "flux-service/MovementService/FluxMessageReceiverBean");
+        return bridgeConnectorPortType;
+    }
+    
+}
