@@ -217,8 +217,9 @@ public class FluxMessageReceiverBeanIT extends AbstractRestServiceTest {
 		ResponseType responseType = bridgeConnectorPortType.post(requestType);
 		assertNotNull(responseType);
 		assertEquals("OK", responseType.getStatus());
-		
-		Thread.sleep(7500);
+
+		// Oh dear
+		Thread.sleep(15000);
 		
 		List<String> connectIds = new ArrayList<>();
 		connectIds.add(testAsset.getEventHistory().getEventId());		
