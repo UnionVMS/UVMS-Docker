@@ -39,7 +39,7 @@ public class CustomRuleHelper extends AbstractRestServiceTest {
         customRule.setActive(true);
         customRule.setArchived(false);
 
-        // If flagstate = SWE
+        // Flag state
         CustomRuleSegmentType flagStateRule = new CustomRuleSegmentType();
         flagStateRule.setStartOperator("(");
         flagStateRule.setCriteria(CriteriaType.ASSET);
@@ -51,7 +51,7 @@ public class CustomRuleHelper extends AbstractRestServiceTest {
         flagStateRule.setOrder("0");
         customRule.getDefinitions().add(flagStateRule);
 
-        // then send to FLUX DNK
+        // Send to FLUX
         CustomRuleActionType action = new CustomRuleActionType();
         action.setAction(ActionType.SEND_TO_FLUX);
         action.setValue(endpoint);
@@ -75,7 +75,7 @@ public class CustomRuleHelper extends AbstractRestServiceTest {
         customRule.setActive(true);
         customRule.setArchived(false);
 
-        // If flagstate = SWE
+        // Flag state
         CustomRuleSegmentType flagStateRule = new CustomRuleSegmentType();
         flagStateRule.setStartOperator("(");
         flagStateRule.setCriteria(CriteriaType.ASSET);
@@ -87,7 +87,7 @@ public class CustomRuleHelper extends AbstractRestServiceTest {
         flagStateRule.setOrder("0");
         customRule.getDefinitions().add(flagStateRule);
 
-        // and area = DNK
+        // Area
         CustomRuleSegmentType areaRule = new CustomRuleSegmentType();
         areaRule.setStartOperator("(");
         areaRule.setCriteria(CriteriaType.AREA);
@@ -99,7 +99,7 @@ public class CustomRuleHelper extends AbstractRestServiceTest {
         areaRule.setOrder("1");
         customRule.getDefinitions().add(areaRule);
 
-        // then send to FLUX DNK
+        // Send to FLUX
         CustomRuleActionType action = new CustomRuleActionType();
         action.setAction(ActionType.SEND_TO_FLUX);
         action.setValue(endpoint);
