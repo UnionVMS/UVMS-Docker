@@ -39,7 +39,7 @@ import eu.europa.ec.fisheries.uvms.docker.validation.system.helper.FLUXHelper;
 import eu.europa.ec.fisheries.uvms.exchange.model.mapper.JAXBMarshaller;
 import eu.europa.ec.fisheries.wsdl.asset.types.Asset;
 
-public class VMSSystemPerformanceTest extends AbstractRestServiceTest {
+public class VMSSystemPerformanceIT extends AbstractRestServiceTest {
 
     private static final String SELECTOR = "ServiceName='eu.europa.ec.fisheries.uvms.plugins.flux'";
     private static final long TIMEOUT = 10000;
