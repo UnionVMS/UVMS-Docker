@@ -246,7 +246,7 @@ public class AssetTestHelper extends AbstractHelper {
 
 
 	public static Asset createDummyAsset(AssetIdType assetIdType) {
-		String ircs = "F" + generateARandomStringWithMaxLength(4);
+		String ircs = "F" + generateARandomStringWithMaxLength(7);
 
 		Asset asset = new Asset();
 		AssetId assetId = new AssetId();
