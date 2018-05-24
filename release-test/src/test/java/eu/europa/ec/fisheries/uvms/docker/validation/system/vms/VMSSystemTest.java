@@ -19,12 +19,17 @@ import org.junit.Test;
 import eu.europa.ec.fisheries.schema.exchange.movement.v1.MovementType;
 import eu.europa.ec.fisheries.schema.exchange.plugin.v1.SetReportRequest;
 import eu.europa.ec.fisheries.schema.mobileterminal.types.v1.MobileTerminalType;
+import eu.europa.ec.fisheries.schema.rules.customrule.v1.ActionType;
+import eu.europa.ec.fisheries.schema.rules.customrule.v1.ConditionType;
+import eu.europa.ec.fisheries.schema.rules.customrule.v1.CriteriaType;
 import eu.europa.ec.fisheries.schema.rules.customrule.v1.CustomRuleType;
+import eu.europa.ec.fisheries.schema.rules.customrule.v1.SubCriteriaType;
 import eu.europa.ec.fisheries.uvms.docker.validation.asset.AssetTestHelper;
 import eu.europa.ec.fisheries.uvms.docker.validation.common.AbstractRestServiceTest;
 import eu.europa.ec.fisheries.uvms.docker.validation.common.MessageHelper;
 import eu.europa.ec.fisheries.uvms.docker.validation.mobileterminal.MobileTerminalTestHelper;
 import eu.europa.ec.fisheries.uvms.docker.validation.movement.LatLong;
+import eu.europa.ec.fisheries.uvms.docker.validation.system.helper.CustomRuleBuilder;
 import eu.europa.ec.fisheries.uvms.docker.validation.system.helper.CustomRuleHelper;
 import eu.europa.ec.fisheries.uvms.docker.validation.system.helper.FLUXHelper;
 import eu.europa.ec.fisheries.uvms.exchange.model.mapper.JAXBMarshaller;
@@ -45,9 +50,16 @@ public class VMSSystemTest extends AbstractRestServiceTest {
         MobileTerminalTestHelper.assignMobileTerminal(asset, mobileTerminalType);
         
         String fluxEndpoint = "DNK";
+
+        CustomRuleType flagStateRule = CustomRuleBuilder.getBuilder()
+                .setName("Flag state => FLUX DNK")
+                .rule(CriteriaType.ASSET, SubCriteriaType.FLAG_STATE, 
+                        ConditionType.EQ, asset.getCountryCode())
+                .action(ActionType.SEND_TO_FLUX, fluxEndpoint)
+                .build();
         
-        CustomRuleType customRule = CustomRuleHelper.sendAllFSToFLUXEndpoint(asset.getCountryCode(), fluxEndpoint);
-        assertNotNull(customRule);
+        CustomRuleType createdCustomRule = CustomRuleHelper.createCustomRule(flagStateRule);
+        assertNotNull(createdCustomRule);
         
         LatLong position = new LatLong(11d, 56d, new Date());
         
@@ -56,7 +68,7 @@ public class VMSSystemTest extends AbstractRestServiceTest {
         TextMessage message = (TextMessage) MessageHelper.listenOnEventBus(SELECTOR, TIMEOUT);
         assertThat(message, is(notNullValue()));
         
-        CustomRuleHelper.assertRuleTriggered(customRule, timestamp);
+        CustomRuleHelper.assertRuleTriggered(createdCustomRule, timestamp);
         
         SetReportRequest setReportRequest = JAXBMarshaller.unmarshallTextMessage(message, SetReportRequest.class);
         
@@ -68,7 +80,7 @@ public class VMSSystemTest extends AbstractRestServiceTest {
         assertThat(movement.getPosition().getLatitude(), is(position.latitude));
         assertThat(movement.getPosition().getLongitude(), is(position.longitude));
         
-        CustomRuleHelper.removeCustomRule(customRule.getGuid());
+        CustomRuleHelper.removeCustomRule(createdCustomRule.getGuid());
     }
     
     @Test
@@ -83,8 +95,16 @@ public class VMSSystemTest extends AbstractRestServiceTest {
         String areaCode = "DNK";
         String fluxEndpoint = "DNK";
         
-        CustomRuleType customRule = CustomRuleHelper.sendAllFSInAreaToFLUXEndpoint(asset.getCountryCode(), areaCode, fluxEndpoint);
-        assertNotNull(customRule);
+        CustomRuleType flagStateAndAreaRule = CustomRuleBuilder.getBuilder()
+                .setName("Flag state && Area => FLUX DNK")
+                .rule(CriteriaType.ASSET, SubCriteriaType.FLAG_STATE, 
+                        ConditionType.EQ, asset.getCountryCode())
+                .and(CriteriaType.AREA, SubCriteriaType.AREA_CODE, 
+                        ConditionType.EQ, areaCode)
+                .action(ActionType.SEND_TO_FLUX, fluxEndpoint)
+                .build();
+        CustomRuleType createdCustomRule = CustomRuleHelper.createCustomRule(flagStateAndAreaRule);
+        assertNotNull(createdCustomRule);
         
         LatLong position = new LatLong(56d, 10.5, new Date());
         
@@ -93,7 +113,7 @@ public class VMSSystemTest extends AbstractRestServiceTest {
         TextMessage message = (TextMessage) MessageHelper.listenOnEventBus(SELECTOR, TIMEOUT);
         assertThat(message, is(notNullValue()));
         
-        CustomRuleHelper.assertRuleTriggered(customRule, timestamp);
+        CustomRuleHelper.assertRuleTriggered(createdCustomRule, timestamp);
         
         SetReportRequest setReportRequest = JAXBMarshaller.unmarshallTextMessage(message, SetReportRequest.class);
         
@@ -105,6 +125,6 @@ public class VMSSystemTest extends AbstractRestServiceTest {
         assertThat(movement.getPosition().getLatitude(), is(position.latitude));
         assertThat(movement.getPosition().getLongitude(), is(position.longitude));
         
-        CustomRuleHelper.removeCustomRule(customRule.getGuid());
+        CustomRuleHelper.removeCustomRule(createdCustomRule.getGuid());
     }
 }

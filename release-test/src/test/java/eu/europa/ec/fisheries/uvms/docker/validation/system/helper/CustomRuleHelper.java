@@ -11,102 +11,19 @@ copy of the GNU General Public License along with the IFDM Suite. If not, see <h
  */
 package eu.europa.ec.fisheries.uvms.docker.validation.system.helper;
 
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import org.apache.http.HttpResponse;
+import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.fluent.Request;
-import eu.europa.ec.fisheries.schema.rules.customrule.v1.ActionType;
-import eu.europa.ec.fisheries.schema.rules.customrule.v1.AvailabilityType;
-import eu.europa.ec.fisheries.schema.rules.customrule.v1.ConditionType;
-import eu.europa.ec.fisheries.schema.rules.customrule.v1.CriteriaType;
-import eu.europa.ec.fisheries.schema.rules.customrule.v1.CustomRuleActionType;
-import eu.europa.ec.fisheries.schema.rules.customrule.v1.CustomRuleSegmentType;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import eu.europa.ec.fisheries.schema.rules.customrule.v1.CustomRuleType;
-import eu.europa.ec.fisheries.schema.rules.customrule.v1.LogicOperatorType;
-import eu.europa.ec.fisheries.schema.rules.customrule.v1.SubCriteriaType;
 import eu.europa.ec.fisheries.uvms.docker.validation.common.AbstractRestServiceTest;
 
 public class CustomRuleHelper extends AbstractRestServiceTest {
 
-    private static final String userName = "vms_admin_com";
-    
-    public static CustomRuleType sendAllFSToFLUXEndpoint(String flagState, String endpoint) throws Exception {
-        CustomRuleType customRule = new CustomRuleType();
-
-        customRule.setName("Flag " + flagState + " => Send to " + endpoint + " (" + System.currentTimeMillis() + ")");
-        customRule.setAvailability(AvailabilityType.PRIVATE);
-        customRule.setUpdatedBy(userName);
-        customRule.setActive(true);
-        customRule.setArchived(false);
-
-        // Flag state
-        CustomRuleSegmentType flagStateRule = new CustomRuleSegmentType();
-        flagStateRule.setStartOperator("(");
-        flagStateRule.setCriteria(CriteriaType.ASSET);
-        flagStateRule.setSubCriteria(SubCriteriaType.FLAG_STATE);
-        flagStateRule.setCondition(ConditionType.EQ);
-        flagStateRule.setValue(flagState);
-        flagStateRule.setEndOperator(")");
-        flagStateRule.setLogicBoolOperator(LogicOperatorType.NONE);
-        flagStateRule.setOrder("0");
-        customRule.getDefinitions().add(flagStateRule);
-
-        // Send to FLUX
-        CustomRuleActionType action = new CustomRuleActionType();
-        action.setAction(ActionType.SEND_TO_FLUX);
-        action.setValue(endpoint);
-        action.setOrder("0");
-
-        customRule.getActions().add(action);
-
-        final HttpResponse response = Request.Post(getBaseUrl() + "rules/rest/customrules")
-                .setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken())
-                .bodyByteArray(writeValueAsString(customRule).getBytes()).execute().returnResponse();
-
-        return checkSuccessResponseReturnObject(response, CustomRuleType.class);
-    }
-    
-    public static CustomRuleType sendAllFSInAreaToFLUXEndpoint(String flagState, String areaCode, String endpoint) throws Exception {
-        CustomRuleType customRule = new CustomRuleType();
-
-        customRule.setName("Flag SWE && area DNK => Send to DNK" + " (" + System.currentTimeMillis() + ")");
-        customRule.setAvailability(AvailabilityType.PRIVATE);
-        customRule.setUpdatedBy(userName);
-        customRule.setActive(true);
-        customRule.setArchived(false);
-
-        // Flag state
-        CustomRuleSegmentType flagStateRule = new CustomRuleSegmentType();
-        flagStateRule.setStartOperator("(");
-        flagStateRule.setCriteria(CriteriaType.ASSET);
-        flagStateRule.setSubCriteria(SubCriteriaType.FLAG_STATE);
-        flagStateRule.setCondition(ConditionType.EQ);
-        flagStateRule.setValue(flagState);
-        flagStateRule.setEndOperator(")");
-        flagStateRule.setLogicBoolOperator(LogicOperatorType.AND);
-        flagStateRule.setOrder("0");
-        customRule.getDefinitions().add(flagStateRule);
-
-        // Area
-        CustomRuleSegmentType areaRule = new CustomRuleSegmentType();
-        areaRule.setStartOperator("(");
-        areaRule.setCriteria(CriteriaType.AREA);
-        areaRule.setSubCriteria(SubCriteriaType.AREA_CODE);
-        areaRule.setCondition(ConditionType.EQ);
-        areaRule.setValue(areaCode);
-        areaRule.setEndOperator(")");
-        areaRule.setLogicBoolOperator(LogicOperatorType.NONE);
-        areaRule.setOrder("1");
-        customRule.getDefinitions().add(areaRule);
-
-        // Send to FLUX
-        CustomRuleActionType action = new CustomRuleActionType();
-        action.setAction(ActionType.SEND_TO_FLUX);
-        action.setValue(endpoint);
-        action.setOrder("0");
-
-        customRule.getActions().add(action);
-
+    public static CustomRuleType createCustomRule(CustomRuleType customRule) throws ClientProtocolException, JsonProcessingException, IOException {
         final HttpResponse response = Request.Post(getBaseUrl() + "rules/rest/customrules")
                 .setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken())
                 .bodyByteArray(writeValueAsString(customRule).getBytes()).execute().returnResponse();
