@@ -46,8 +46,4 @@ echo "Docker specific update"
 psql -U spatial -d db71u -c "update system_configurations set value = 'http://localhost:28080/geoserver/' where name='geo_server_url'"
 echo "Docker specific completed"
 
-echo "Inserting test data"
-psql -U exchange -d db71u -q -c "INSERT INTO exchange.service (serv_id,serv_serviceclassname,serv_name,serv_type,serv_status,serv_updattim,serv_upuser) VALUES ('2','eu.europa.ec.fisheries.uvms.plugins.inmarsat','TEST','SATELLITE_RECEIVER','STARTED',NOW(),'TEST')"
-psql -U mobterm -d db71u -q -c "INSERT INTO mobterm.plugin (id,name,service_name,satellite_type) VALUES ('4','TEST','eu.europa.ec.fisheries.uvms.plugins.inmarsat','INMARSAT_C')"
-
 echo "All uvms databases created"
