@@ -14,7 +14,7 @@ import javax.jms.Queue;
 import javax.jms.QueueBrowser;
 import javax.jms.Session;
 import javax.jms.TextMessage;
-
+import javax.jms.Topic;
 import org.apache.activemq.ActiveMQConnectionFactory;
 
 public final class MessageHelper {
@@ -133,4 +133,16 @@ public final class MessageHelper {
 		return false;
 	}
 
+    public static Message listenOnEventBus(String selector, Long timeoutInMillis) throws Exception {
+        Connection connection = connectionFactory.createConnection();
+        try {
+            connection.start();
+            Session session = connection.createSession(false, Session.AUTO_ACKNOWLEDGE);
+            Topic eventBus = session.createTopic("EventBus");
+            return session.createConsumer(eventBus, selector).receive(timeoutInMillis);
+        } finally {
+            connection.close();
+        }
+	}
+	
 }
