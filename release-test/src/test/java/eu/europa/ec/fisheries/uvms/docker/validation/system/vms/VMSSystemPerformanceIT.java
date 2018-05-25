@@ -51,7 +51,7 @@ public class VMSSystemPerformanceIT extends AbstractRestServiceTest {
     
     @Test
     @PerfTest(threads = 1)
-    @Required(max = 30000)
+    @Required(max = 45000)
     public void createPositionAndTriggerRulePerformanceTest() throws Exception {
 
         Asset asset = AssetTestHelper.createTestAsset();
