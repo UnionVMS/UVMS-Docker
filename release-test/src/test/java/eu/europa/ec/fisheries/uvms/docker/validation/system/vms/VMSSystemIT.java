@@ -13,6 +13,7 @@ package eu.europa.ec.fisheries.uvms.docker.validation.system.vms;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.notNullValue;
+import java.util.Calendar;
 import java.util.Date;
 import javax.jms.TextMessage;
 import org.junit.Test;
@@ -41,8 +42,7 @@ public class VMSSystemIT extends AbstractRestServiceTest {
     private static final long TIMEOUT = 10000;
 
     @Test
-    public void sendFSToFLUXDNKTest() throws Exception {
-
+    public void sendFlagStateToFLUXDNKTest() throws Exception {
         Date timestamp = new Date();
         
         Asset asset = AssetTestHelper.createTestAsset();
@@ -84,8 +84,7 @@ public class VMSSystemIT extends AbstractRestServiceTest {
     }
     
     @Test
-    public void sendFSAndDNKAreaToFLUXDNKTest() throws Exception {
-
+    public void sendFlagStateAndAreaDNKToFLUXDNKTest() throws Exception {
         Date timestamp = new Date();
         
         Asset asset = AssetTestHelper.createTestAsset();
@@ -126,5 +125,162 @@ public class VMSSystemIT extends AbstractRestServiceTest {
         assertThat(movement.getPosition().getLongitude(), is(position.longitude));
         
         CustomRuleHelper.removeCustomRule(createdCustomRule.getGuid());
+    }
+    
+    @Test
+    public void sendFlagStateToFLUXDNKWithRuleIntervalTest() throws Exception {
+        Date timestamp = new Date();
+        
+        Asset asset = AssetTestHelper.createTestAsset();
+        MobileTerminalType mobileTerminalType = MobileTerminalTestHelper.createMobileTerminalType();
+        MobileTerminalTestHelper.assignMobileTerminal(asset, mobileTerminalType);
+        
+        String fluxEndpoint = "DNK";
+
+        Calendar calendarStart = Calendar.getInstance();
+        calendarStart.add(Calendar.HOUR, -1);
+        Date ruleIntervalStart = calendarStart.getTime();
+        
+        Calendar calendarEnd = Calendar.getInstance();
+        calendarEnd.add(Calendar.HOUR, 1);
+        Date ruleIntervalEnd = calendarEnd.getTime();
+        
+        CustomRuleType flagStateRuleWithInterval = CustomRuleBuilder.getBuilder()
+                .setName("Flag state => FLUX DNK")
+                .rule(CriteriaType.ASSET, SubCriteriaType.FLAG_STATE, 
+                        ConditionType.EQ, asset.getCountryCode())
+                .interval(ruleIntervalStart, ruleIntervalEnd)
+                .action(ActionType.SEND_TO_FLUX, fluxEndpoint)
+                .build();
+        
+        CustomRuleType createdCustomRule = CustomRuleHelper.createCustomRule(flagStateRuleWithInterval);
+        assertNotNull(createdCustomRule);
+        
+        LatLong position = new LatLong(11d, 56d, new Date());
+        
+        FLUXHelper.sendPositionToFluxPlugin(asset, position);
+        
+        TextMessage message = (TextMessage) MessageHelper.listenOnEventBus(SELECTOR, TIMEOUT);
+        assertThat(message, is(notNullValue()));
+        
+        CustomRuleHelper.assertRuleTriggered(createdCustomRule, timestamp);
+        
+        SetReportRequest setReportRequest = JAXBMarshaller.unmarshallTextMessage(message, SetReportRequest.class);
+        
+        assertThat(setReportRequest.getReport().getRecipient(), is(fluxEndpoint));
+        
+        MovementType movement = setReportRequest.getReport().getMovement();
+        assertThat(movement.getAssetName(), is(asset.getName()));
+        assertThat(movement.getIrcs(), is(asset.getIrcs()));
+        assertThat(movement.getPosition().getLatitude(), is(position.latitude));
+        assertThat(movement.getPosition().getLongitude(), is(position.longitude));
+        
+        CustomRuleHelper.removeCustomRule(createdCustomRule.getGuid());
+    }
+    
+    @Test
+    public void sendFlagStateToFLUXDNKWithPastValidRuleIntervalTest() throws Exception {
+        Date timestamp = new Date();
+        
+        Asset asset = AssetTestHelper.createTestAsset();
+        MobileTerminalType mobileTerminalType = MobileTerminalTestHelper.createMobileTerminalType();
+        MobileTerminalTestHelper.assignMobileTerminal(asset, mobileTerminalType);
+        
+        String fluxEndpoint = "DNK";
+
+        Calendar calendarStart = Calendar.getInstance();
+        calendarStart.add(Calendar.HOUR, -2);
+        Date ruleIntervalStart = calendarStart.getTime();
+        
+        Calendar calendarEnd = Calendar.getInstance();
+        calendarEnd.add(Calendar.HOUR, -1);
+        Date ruleIntervalEnd = calendarEnd.getTime();
+        
+        CustomRuleType flagStateRuleWithInterval = CustomRuleBuilder.getBuilder()
+                .setName("Flag state => FLUX DNK")
+                .rule(CriteriaType.ASSET, SubCriteriaType.FLAG_STATE, 
+                        ConditionType.EQ, asset.getCountryCode())
+                .interval(ruleIntervalStart, ruleIntervalEnd)
+                .action(ActionType.SEND_TO_FLUX, fluxEndpoint)
+                .build();
+        
+        CustomRuleType createdCustomRuleWithInterval = CustomRuleHelper.createCustomRule(flagStateRuleWithInterval);
+        assertNotNull(createdCustomRuleWithInterval);
+        
+        CustomRuleType flagStateRuleWithoutInterval = CustomRuleBuilder.getBuilder()
+                .setName("Flag state => FLUX DNK")
+                .rule(CriteriaType.ASSET, SubCriteriaType.FLAG_STATE, 
+                        ConditionType.EQ, asset.getCountryCode())
+                .action(ActionType.SEND_TO_FLUX, fluxEndpoint)
+                .build();
+        
+        CustomRuleType createdCustomRuleWithoutInterval = CustomRuleHelper.createCustomRule(flagStateRuleWithoutInterval);
+        assertNotNull(createdCustomRuleWithoutInterval);
+        
+        LatLong position = new LatLong(11d, 56d, new Date());
+        
+        FLUXHelper.sendPositionToFluxPlugin(asset, position);
+        
+        TextMessage message = (TextMessage) MessageHelper.listenOnEventBus(SELECTOR, TIMEOUT);
+        assertThat(message, is(notNullValue()));
+        
+        CustomRuleHelper.assertRuleNotTriggered(createdCustomRuleWithInterval);
+        CustomRuleHelper.assertRuleTriggered(createdCustomRuleWithoutInterval, timestamp);
+        
+        CustomRuleHelper.removeCustomRule(createdCustomRuleWithInterval.getGuid());
+        CustomRuleHelper.removeCustomRule(createdCustomRuleWithoutInterval.getGuid());
+    }
+    
+    @Test
+    public void sendFlagStateToFLUXDNKWithFutureValidRuleIntervalTest() throws Exception {
+        Date timestamp = new Date();
+        
+        Asset asset = AssetTestHelper.createTestAsset();
+        MobileTerminalType mobileTerminalType = MobileTerminalTestHelper.createMobileTerminalType();
+        MobileTerminalTestHelper.assignMobileTerminal(asset, mobileTerminalType);
+        
+        String fluxEndpoint = "DNK";
+
+        Calendar calendarStart = Calendar.getInstance();
+        calendarStart.add(Calendar.HOUR, 1);
+        Date ruleIntervalStart = calendarStart.getTime();
+        
+        Calendar calendarEnd = Calendar.getInstance();
+        calendarEnd.add(Calendar.HOUR, 2);
+        Date ruleIntervalEnd = calendarEnd.getTime();
+        
+        CustomRuleType flagStateRuleWithInterval = CustomRuleBuilder.getBuilder()
+                .setName("Flag state => FLUX DNK")
+                .rule(CriteriaType.ASSET, SubCriteriaType.FLAG_STATE, 
+                        ConditionType.EQ, asset.getCountryCode())
+                .interval(ruleIntervalStart, ruleIntervalEnd)
+                .action(ActionType.SEND_TO_FLUX, fluxEndpoint)
+                .build();
+        
+        CustomRuleType createdCustomRuleWithInterval = CustomRuleHelper.createCustomRule(flagStateRuleWithInterval);
+        assertNotNull(createdCustomRuleWithInterval);
+        
+        CustomRuleType flagStateRuleWithoutInterval = CustomRuleBuilder.getBuilder()
+                .setName("Flag state => FLUX DNK")
+                .rule(CriteriaType.ASSET, SubCriteriaType.FLAG_STATE, 
+                        ConditionType.EQ, asset.getCountryCode())
+                .action(ActionType.SEND_TO_FLUX, fluxEndpoint)
+                .build();
+        
+        CustomRuleType createdCustomRuleWithoutInterval = CustomRuleHelper.createCustomRule(flagStateRuleWithoutInterval);
+        assertNotNull(createdCustomRuleWithoutInterval);
+        
+        LatLong position = new LatLong(11d, 56d, new Date());
+        
+        FLUXHelper.sendPositionToFluxPlugin(asset, position);
+        
+        TextMessage message = (TextMessage) MessageHelper.listenOnEventBus(SELECTOR, TIMEOUT);
+        assertThat(message, is(notNullValue()));
+        
+        CustomRuleHelper.assertRuleNotTriggered(createdCustomRuleWithInterval);
+        CustomRuleHelper.assertRuleTriggered(createdCustomRuleWithoutInterval, timestamp);
+        
+        CustomRuleHelper.removeCustomRule(createdCustomRuleWithInterval.getGuid());
+        CustomRuleHelper.removeCustomRule(createdCustomRuleWithoutInterval.getGuid());
     }
 }
