@@ -11,12 +11,15 @@ copy of the GNU General Public License along with the IFDM Suite. If not, see <h
  */
 package eu.europa.ec.fisheries.uvms.docker.validation.system.helper;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import eu.europa.ec.fisheries.schema.rules.customrule.v1.ActionType;
 import eu.europa.ec.fisheries.schema.rules.customrule.v1.AvailabilityType;
 import eu.europa.ec.fisheries.schema.rules.customrule.v1.ConditionType;
 import eu.europa.ec.fisheries.schema.rules.customrule.v1.CriteriaType;
 import eu.europa.ec.fisheries.schema.rules.customrule.v1.CustomRuleActionType;
+import eu.europa.ec.fisheries.schema.rules.customrule.v1.CustomRuleIntervalType;
 import eu.europa.ec.fisheries.schema.rules.customrule.v1.CustomRuleSegmentType;
 import eu.europa.ec.fisheries.schema.rules.customrule.v1.CustomRuleType;
 import eu.europa.ec.fisheries.schema.rules.customrule.v1.LogicOperatorType;
@@ -45,7 +48,7 @@ public class CustomRuleBuilder {
     }
     
     public CustomRuleBuilder setName(String name) {
-        customRule.setName(name + System.currentTimeMillis());
+        customRule.setName(name + " " + System.currentTimeMillis());
         return this;
     }
     
@@ -90,6 +93,15 @@ public class CustomRuleBuilder {
             previousSegment.setLogicBoolOperator(LogicOperatorType.OR);
         }
         return rule(criteriaType, subCriteriaType, conditionType, value);
+    }
+    
+    public CustomRuleBuilder interval(Date start, Date end) {
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss X");
+        CustomRuleIntervalType customRuleIntervalType = new CustomRuleIntervalType();
+        customRuleIntervalType.setStart(formatter.format(start));
+        customRuleIntervalType.setEnd(formatter.format(end));
+        customRule.getTimeIntervals().add(customRuleIntervalType);
+        return this;
     }
     
     public CustomRuleBuilder action(ActionType actionType, String value) {

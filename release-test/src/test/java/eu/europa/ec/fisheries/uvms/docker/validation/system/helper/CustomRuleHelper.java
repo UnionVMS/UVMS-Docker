@@ -11,6 +11,8 @@ copy of the GNU General Public License along with the IFDM Suite. If not, see <h
  */
 package eu.europa.ec.fisheries.uvms.docker.validation.system.helper;
 
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.nullValue;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -19,9 +21,9 @@ import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.fluent.Request;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import eu.europa.ec.fisheries.schema.rules.customrule.v1.CustomRuleType;
-import eu.europa.ec.fisheries.uvms.docker.validation.common.AbstractRestServiceTest;
+import eu.europa.ec.fisheries.uvms.docker.validation.common.AbstractHelper;
 
-public class CustomRuleHelper extends AbstractRestServiceTest {
+public class CustomRuleHelper extends AbstractHelper {
 
     public static CustomRuleType createCustomRule(CustomRuleType customRule) throws ClientProtocolException, JsonProcessingException, IOException {
         final HttpResponse response = Request.Post(getBaseUrl() + "rules/rest/customrules")
@@ -49,6 +51,16 @@ public class CustomRuleHelper extends AbstractRestServiceTest {
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss X");
         Date lastTriggered = formatter.parse(fetchedCustomRule.getLastTriggered());
         
-        assertTrue(lastTriggered.getTime() > dateFrom.getTime());
+        assertTrue(lastTriggered.getTime() >= dateFrom.getTime());
+    }
+    
+    public static void assertRuleNotTriggered(CustomRuleType rule) throws Exception {
+        HttpResponse response = Request.Get(getBaseUrl() + "rules/rest/customrules/" + rule.getGuid())
+                .setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken()).execute()
+                .returnResponse();
+
+        CustomRuleType fetchedCustomRule = checkSuccessResponseReturnObject(response, CustomRuleType.class);
+        
+        assertThat(fetchedCustomRule.getLastTriggered(), is(nullValue()));
     }
 }
