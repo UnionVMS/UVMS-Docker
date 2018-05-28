@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>eu.europa.ec.fisheries.uvms.docker</groupId>
 		<artifactId>uvms-docker</artifactId>
-		<version>3.25.0.w11-SNAPSHOT</version>
+		<version>3.25.0.w12-SNAPSHOT</version>
 		<relativePath>../pom.xml</relativePath>
 	</parent>
 
@@ -36,7 +36,7 @@
 		<dependency>
 			<groupId>eu.europa.ec.fisheries.uvms.reporting</groupId>
 			<artifactId>service</artifactId>
-			<version>1.0.13</version>
+			<version>${unionvms.project.reporting.module}</version>
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
@@ -46,7 +46,7 @@
 				<plugin>
 					<groupId>io.fabric8</groupId>
 					<artifactId>docker-maven-plugin</artifactId>
-					<version>0.23.0</version>
+					<version>0.25.0</version>
 				</plugin>
 			</plugins>
 		</pluginManagement>
@@ -187,18 +187,59 @@
 								<!-- Get the regression-suite-selenium front-end -->
 								<get src="https://github.com/UnionVMS/UVMS-SeleniumTests/raw/swe-dev/Python-regression-suite-selenium.py" dest="target/Python-regression-suite-selenium.py" verbose="true" usetimestamp="true" />
 								<get src="https://github.com/UnionVMS/UVMS-SeleniumTests/raw/swe-dev/DockerUnionVMSparameters.py" dest="target/UnionVMSparameters.py" verbose="true" usetimestamp="true" />
-							</tasks>
-						</configuration>
-						<goals>
-							<goal>run</goal>
-						</goals>
-					</execution>
-					<execution>
-						<id>delayDockerStartup</id>
-						<phase>pre-integration-test</phase>
-						<configuration>
-							<tasks>
-								<sleep seconds="240" />
+
+								<get src="https://github.com/UnionVMS/UVMS-SeleniumTests/raw/swe-dev/asset1.csv" dest="target/asset1.csv" verbose="true" usetimestamp="true" />
+								<get src="https://github.com/UnionVMS/UVMS-SeleniumTests/raw/swe-dev/mobileterminal1.csv" dest="target/mobileterminal1.csv" verbose="true" usetimestamp="true" />
+								<get src="https://github.com/UnionVMS/UVMS-SeleniumTests/raw/swe-dev/trip1.csv" dest="target/trip1.csv" verbose="true" usetimestamp="true" />
+								<get src="https://github.com/UnionVMS/UVMS-SeleniumTests/raw/swe-dev/asset2.csv" dest="target/asset2.csv" verbose="true" usetimestamp="true" />
+								<get src="https://github.com/UnionVMS/UVMS-SeleniumTests/raw/swe-dev/mobileterminal2.csv" dest="target/mobileterminal2.csv" verbose="true" usetimestamp="true" />
+								<get src="https://github.com/UnionVMS/UVMS-SeleniumTests/raw/swe-dev/trip2.csv" dest="target/trip2.csv" verbose="true" usetimestamp="true" />
+								<get src="https://github.com/UnionVMS/UVMS-SeleniumTests/raw/swe-dev/asset3.csv" dest="target/asset3.csv" verbose="true" usetimestamp="true" />
+								<get src="https://github.com/UnionVMS/UVMS-SeleniumTests/raw/swe-dev/mobileterminal3.csv" dest="target/mobileterminal3.csv" verbose="true" usetimestamp="true" />
+								<get src="https://github.com/UnionVMS/UVMS-SeleniumTests/raw/swe-dev/trip3.csv" dest="target/trip3.csv" verbose="true" usetimestamp="true" />
+								<get src="https://github.com/UnionVMS/UVMS-SeleniumTests/raw/swe-dev/asset4.csv" dest="target/asset4.csv" verbose="true" usetimestamp="true" />
+								<get src="https://github.com/UnionVMS/UVMS-SeleniumTests/raw/swe-dev/mobileterminal4.csv" dest="target/mobileterminal4.csv" verbose="true" usetimestamp="true" />
+								<get src="https://github.com/UnionVMS/UVMS-SeleniumTests/raw/swe-dev/trip4.csv" dest="target/trip4.csv" verbose="true" usetimestamp="true" />
+								<get src="https://github.com/UnionVMS/UVMS-SeleniumTests/raw/swe-dev/asset5.csv" dest="target/asset5.csv" verbose="true" usetimestamp="true" />
+								<get src="https://github.com/UnionVMS/UVMS-SeleniumTests/raw/swe-dev/mobileterminal5.csv" dest="target/mobileterminal5.csv" verbose="true" usetimestamp="true" />
+								<get src="https://github.com/UnionVMS/UVMS-SeleniumTests/raw/swe-dev/trip5.csv" dest="target/trip5.csv" verbose="true" usetimestamp="true" />
+								<get src="https://github.com/UnionVMS/UVMS-SeleniumTests/raw/swe-dev/asset6.csv" dest="target/asset6.csv" verbose="true" usetimestamp="true" />
+								<get src="https://github.com/UnionVMS/UVMS-SeleniumTests/raw/swe-dev/mobileterminal6.csv" dest="target/mobileterminal6.csv" verbose="true" usetimestamp="true" />
+								<get src="https://github.com/UnionVMS/UVMS-SeleniumTests/raw/swe-dev/trip6.csv" dest="target/trip6.csv" verbose="true" usetimestamp="true" />
+								<get src="https://github.com/UnionVMS/UVMS-SeleniumTests/raw/swe-dev/asset7.csv" dest="target/asset7.csv" verbose="true" usetimestamp="true" />
+								<get src="https://github.com/UnionVMS/UVMS-SeleniumTests/raw/swe-dev/mobileterminal7.csv" dest="target/mobileterminal7.csv" verbose="true" usetimestamp="true" />
+								<get src="https://github.com/UnionVMS/UVMS-SeleniumTests/raw/swe-dev/trip7.csv" dest="target/trip7.csv" verbose="true" usetimestamp="true" />
+								<get src="https://github.com/UnionVMS/UVMS-SeleniumTests/raw/swe-dev/asset8.csv" dest="target/asset8.csv" verbose="true" usetimestamp="true" />
+								<get src="https://github.com/UnionVMS/UVMS-SeleniumTests/raw/swe-dev/mobileterminal8.csv" dest="target/mobileterminal8.csv" verbose="true" usetimestamp="true" />
+								<get src="https://github.com/UnionVMS/UVMS-SeleniumTests/raw/swe-dev/trip8.csv" dest="target/trip8.csv" verbose="true" usetimestamp="true" />
+								<get src="https://github.com/UnionVMS/UVMS-SeleniumTests/raw/swe-dev/asset9.csv" dest="target/asset9.csv" verbose="true" usetimestamp="true" />
+								<get src="https://github.com/UnionVMS/UVMS-SeleniumTests/raw/swe-dev/mobileterminal9.csv" dest="target/mobileterminal9.csv" verbose="true" usetimestamp="true" />
+								<get src="https://github.com/UnionVMS/UVMS-SeleniumTests/raw/swe-dev/trip9.csv" dest="target/trip9.csv" verbose="true" usetimestamp="true" />
+								<get src="https://github.com/UnionVMS/UVMS-SeleniumTests/raw/swe-dev/assetreal1.csv" dest="target/assetreal1.csv" verbose="true" usetimestamp="true" />
+								<get src="https://github.com/UnionVMS/UVMS-SeleniumTests/raw/swe-dev/mobileterminalreal1.csv" dest="target/mobileterminalreal1.csv" verbose="true" usetimestamp="true" />
+								<get src="https://github.com/UnionVMS/UVMS-SeleniumTests/raw/swe-dev/tripreal1.csv" dest="target/tripreal1.csv" verbose="true" usetimestamp="true" />
+								<get src="https://github.com/UnionVMS/UVMS-SeleniumTests/raw/swe-dev/assetreal2.csv" dest="target/assetreal2.csv" verbose="true" usetimestamp="true" />
+								<get src="https://github.com/UnionVMS/UVMS-SeleniumTests/raw/swe-dev/mobileterminalreal2.csv" dest="target/mobileterminalreal2.csv" verbose="true" usetimestamp="true" />
+								<get src="https://github.com/UnionVMS/UVMS-SeleniumTests/raw/swe-dev/tripreal2.csv" dest="target/tripreal2.csv" verbose="true" usetimestamp="true" />
+								<get src="https://github.com/UnionVMS/UVMS-SeleniumTests/raw/swe-dev/assetreal3.csv" dest="target/assetreal3.csv" verbose="true" usetimestamp="true" />
+								<get src="https://github.com/UnionVMS/UVMS-SeleniumTests/raw/swe-dev/mobileterminalreal3.csv" dest="target/mobileterminalreal3.csv" verbose="true" usetimestamp="true" />
+								<get src="https://github.com/UnionVMS/UVMS-SeleniumTests/raw/swe-dev/tripreal3.csv" dest="target/tripreal3.csv" verbose="true" usetimestamp="true" />
+								<get src="https://github.com/UnionVMS/UVMS-SeleniumTests/raw/swe-dev/assetreal4.csv" dest="target/assetreal4.csv" verbose="true" usetimestamp="true" />
+								<get src="https://github.com/UnionVMS/UVMS-SeleniumTests/raw/swe-dev/mobileterminalreal4.csv" dest="target/mobileterminalreal4.csv" verbose="true" usetimestamp="true" />
+								<get src="https://github.com/UnionVMS/UVMS-SeleniumTests/raw/swe-dev/tripreal4a.csv" dest="target/tripreal4a.csv" verbose="true" usetimestamp="true" />
+								<get src="https://github.com/UnionVMS/UVMS-SeleniumTests/raw/swe-dev/tripreal4b.csv" dest="target/tripreal4b.csv" verbose="true" usetimestamp="true" />
+								<get src="https://github.com/UnionVMS/UVMS-SeleniumTests/raw/swe-dev/assetreal5.csv" dest="target/assetreal5.csv" verbose="true" usetimestamp="true" />
+								<get src="https://github.com/UnionVMS/UVMS-SeleniumTests/raw/swe-dev/mobileterminalreal5.csv" dest="target/mobileterminalreal5.csv" verbose="true" usetimestamp="true" />
+								<get src="https://github.com/UnionVMS/UVMS-SeleniumTests/raw/swe-dev/tripreal5.csv" dest="target/tripreal5.csv" verbose="true" usetimestamp="true" />
+								<get src="https://github.com/UnionVMS/UVMS-SeleniumTests/raw/swe-dev/assetreal6.csv" dest="target/assetreal6.csv" verbose="true" usetimestamp="true" />
+								<get src="https://github.com/UnionVMS/UVMS-SeleniumTests/raw/swe-dev/mobileterminalreal6.csv" dest="target/mobileterminalreal6.csv" verbose="true" usetimestamp="true" />
+								<get src="https://github.com/UnionVMS/UVMS-SeleniumTests/raw/swe-dev/tripreal6.csv" dest="target/tripreal6.csv" verbose="true" usetimestamp="true" />
+								<get src="https://github.com/UnionVMS/UVMS-SeleniumTests/raw/swe-dev/assetreal7.csv" dest="target/assetreal7.csv" verbose="true" usetimestamp="true" />
+								<get src="https://github.com/UnionVMS/UVMS-SeleniumTests/raw/swe-dev/mobileterminalreal7.csv" dest="target/mobileterminalreal7.csv" verbose="true" usetimestamp="true" />
+								<get src="https://github.com/UnionVMS/UVMS-SeleniumTests/raw/swe-dev/tripreal7.csv" dest="target/tripreal7.csv" verbose="true" usetimestamp="true" />
+								<get src="https://github.com/UnionVMS/UVMS-SeleniumTests/raw/swe-dev/assetreal8.csv" dest="target/assetreal8.csv" verbose="true" usetimestamp="true" />
+								<get src="https://github.com/UnionVMS/UVMS-SeleniumTests/raw/swe-dev/mobileterminalreal8.csv" dest="target/mobileterminalreal8.csv" verbose="true" usetimestamp="true" />
+								<get src="https://github.com/UnionVMS/UVMS-SeleniumTests/raw/swe-dev/tripreal8.csv" dest="target/tripreal8.csv" verbose="true" usetimestamp="true" />
 							</tasks>
 						</configuration>
 						<goals>
@@ -210,18 +251,18 @@
 						<phase>post-integration-test</phase>
 						<configuration>
 							<tasks>
-								<get src="http://localhost:28080/audit/monitoring?format=pdf" dest="target/audit_monitoring.pdf" verbose="true" usetimestamp="true" />
-								<get src="http://localhost:28080/config/monitoring?format=pdf" dest="target/config_monitoring.pdf" verbose="true" usetimestamp="true" />
-								<get src="http://localhost:28080/exchange/monitoring?format=pdf" dest="target/exchange_monitoring.pdf" verbose="true" usetimestamp="true" />
-								<get src="http://localhost:28080/spatial/monitoring?format=pdf" dest="target/spatial_monitoring.pdf" verbose="true" usetimestamp="true" />
-								<get src="http://localhost:28080/asset/monitoring?format=pdf" dest="target/asset_monitoring.pdf" verbose="true" usetimestamp="true" />
-								<get src="http://localhost:28080/mobileterminal/monitoring?format=pdf" dest="target/mobileterminal_monitoring.pdf" verbose="true" usetimestamp="true" />
-								<get src="http://localhost:28080/movement/monitoring?format=pdf" dest="target/movement_monitoring.pdf" verbose="true" usetimestamp="true" />
-								<get src="http://localhost:28080/rules/monitoring?format=pdf" dest="target/rules_monitoring.pdf" verbose="true" usetimestamp="true" />
-								<get src="http://localhost:28080/reporting/monitoring?format=pdf" dest="target/reporting_monitoring.pdf" verbose="true" usetimestamp="true" />
-								<get src="http://localhost:28080/user/monitoring?format=pdf" dest="target/user_monitoring.pdf" verbose="true" usetimestamp="true" />
-								<get src="http://localhost:28080/activity/monitoring?format=pdf" dest="target/activity_monitoring.pdf" verbose="true" usetimestamp="true" />
-								<get src="http://localhost:28080/mdr/monitoring?format=pdf" dest="target/mdr_monitoring.pdf" verbose="true" usetimestamp="true" />
+								<get src="http://localhost:28080/unionvms/audit/monitoring?format=pdf" dest="target/audit_monitoring.pdf" verbose="true" usetimestamp="true" />
+								<get src="http://localhost:28080/unionvms/config/monitoring?format=pdf" dest="target/config_monitoring.pdf" verbose="true" usetimestamp="true" />
+								<get src="http://localhost:28080/unionvms/exchange/monitoring?format=pdf" dest="target/exchange_monitoring.pdf" verbose="true" usetimestamp="true" />
+								<get src="http://localhost:28080/unionvms/spatial/monitoring?format=pdf" dest="target/spatial_monitoring.pdf" verbose="true" usetimestamp="true" />
+								<get src="http://localhost:28080/unionvms/asset/monitoring?format=pdf" dest="target/asset_monitoring.pdf" verbose="true" usetimestamp="true" />
+								<get src="http://localhost:28080/unionvms/mobileterminal/monitoring?format=pdf" dest="target/mobileterminal_monitoring.pdf" verbose="true" usetimestamp="true" />
+								<get src="http://localhost:28080/unionvms/movement/monitoring?format=pdf" dest="target/movement_monitoring.pdf" verbose="true" usetimestamp="true" />
+								<get src="http://localhost:28080/unionvms/rules/monitoring?format=pdf" dest="target/rules_monitoring.pdf" verbose="true" usetimestamp="true" />
+								<get src="http://localhost:28080/unionvms/reporting/monitoring?format=pdf" dest="target/reporting_monitoring.pdf" verbose="true" usetimestamp="true" />
+								<get src="http://localhost:28080/unionvms/user/monitoring?format=pdf" dest="target/user_monitoring.pdf" verbose="true" usetimestamp="true" />
+								<get src="http://localhost:28080/unionvms/activity/monitoring?format=pdf" dest="target/activity_monitoring.pdf" verbose="true" usetimestamp="true" />
+								<get src="http://localhost:28080/unionvms/mdr/monitoring?format=pdf" dest="target/mdr_monitoring.pdf" verbose="true" usetimestamp="true" />
 									
 								<get username="admin" password="admin" src="http://localhost:18161/admin/xml/subscribers.jsp" dest="target/activemq-subscribers.xml" verbose="true" usetimestamp="true" />
 								<get username="admin" password="admin" src="http://localhost:18161/admin/xml/topics.jsp" dest="target/activemq-topics.xml" verbose="true" usetimestamp="true" />
@@ -348,7 +389,8 @@
 										<method>GET</method>
 										<status>200</status>
 									</http>
-									<time>900000</time>
+									<time>1320000</time>
+									<!--time>900000</time-->
 									<kill>15000</kill>
 									<shutdown>15000</shutdown>
 								</wait>
@@ -406,7 +448,10 @@
 										<exec dir="${project.basedir}/target/" executable="${python.runtime}">
 										 	<redirector output="target/Python-regression-suite-selenium.log" alwayslog="true" /> 
 											<arg value="-u" />
-											<arg value="Python-regression-suite-selenium.py" />											
+											<arg value="-m" />
+											<arg value="unittest" />
+											<arg value="-v" />
+											<arg value="Python-regression-suite-selenium.UnionVMSTestCase" />
 									  </exec>
 									</tasks>
 								</configuration>

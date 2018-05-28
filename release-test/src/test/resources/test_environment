@@ -151,6 +151,12 @@
       "type": "text",
       "value": "app/upload/spatial/1999885073905989718",
       "enabled": true
+    },
+	{
+      "key": "comPath",
+      "value": "unionvms",
+      "enabled": true,
+      "type": "text"
     }
   ],
   "timestamp": 1473935874977,

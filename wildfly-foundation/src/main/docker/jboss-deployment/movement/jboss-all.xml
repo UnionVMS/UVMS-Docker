@@ -2,8 +2,5 @@
 	<jboss-deployment-dependencies xmlns="urn:jboss:deployment-dependencies:1.0">
 		<dependency name="user-module-${unionvms.project.user.module}.ear" />
 		<dependency name="config-module-${unionvms.project.config.module}.ear" />
-		<dependency name="exchange-module-${unionvms.project.exchange.module}.ear" />
-		<dependency name="audit-module-${unionvms.project.audit.module}.ear" />
-		<dependency name="spatial-module-${unionvms.project.spatial.module}.ear" />
 	</jboss-deployment-dependencies>
 </jboss>

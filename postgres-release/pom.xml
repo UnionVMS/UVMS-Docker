@@ -12,12 +12,8 @@
 	<version>3.25.0.w12-SNAPSHOT</version>
 	<packaging>pom</packaging>
 	<name>uvms-docker-postgres-release</name>
-	<properties>
-		<unionvms.project.reporting.db.module>1.0.4</unionvms.project.reporting.db.module>
-		<unionvms.project.spatial.db.module>1.0.5</unionvms.project.spatial.db.module>
-	</properties>
 	<dependencies>
-			<dependency>
+		<dependency>
 			<groupId>eu.europa.ec.fisheries.uvms.asset</groupId>
 			<artifactId>liquibase</artifactId>
 			<type>sql</type>
@@ -159,7 +155,19 @@
 					<groupId>com.oracle</groupId>
 					<artifactId>ojdbc6</artifactId>
 				</exclusion>
-			</exclusions>			
+			</exclusions>
+		</dependency>
+		<dependency>
+			<groupId>eu.europa.ec.fisheries.uvms.subscription</groupId>
+			<artifactId>liquibase</artifactId>
+			<type>sql</type>
+			<version>${unionvms.project.subscription.module}</version>
+			<exclusions>
+				<exclusion>
+					<groupId>com.oracle</groupId>
+					<artifactId>ojdbc6</artifactId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 	</dependencies>
 	<build>
@@ -168,7 +176,7 @@
 				<plugin>
 					<groupId>io.fabric8</groupId>
 					<artifactId>docker-maven-plugin</artifactId>
-					<version>0.23.0</version>
+					<version>0.25.0</version>
 				</plugin>
 			</plugins>
 		</pluginManagement>

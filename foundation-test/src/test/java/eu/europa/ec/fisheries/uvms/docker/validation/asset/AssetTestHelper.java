@@ -2,21 +2,28 @@ package eu.europa.ec.fisheries.uvms.docker.validation.asset;
 
 import java.io.IOException;
 import java.math.BigDecimal;
-import java.util.Map;
+import java.net.URLEncoder;
+import java.util.Date;
+import java.util.List;
 import java.util.Random;
 import java.util.UUID;
-
 import org.apache.http.HttpResponse;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.fluent.Request;
-
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
-
+import eu.europa.ec.fisheries.schema.audit.search.v1.AuditLogListQuery;
+import eu.europa.ec.fisheries.schema.audit.search.v1.ListCriteria;
+import eu.europa.ec.fisheries.schema.audit.search.v1.SearchKey;
+import eu.europa.ec.fisheries.schema.audit.v1.AuditLogType;
+import eu.europa.ec.fisheries.uvms.asset.model.constants.AuditObjectTypeEnum;
+import eu.europa.ec.fisheries.uvms.asset.model.constants.AuditOperationEnum;
+import eu.europa.ec.fisheries.uvms.commons.date.DateUtils;
 import eu.europa.ec.fisheries.uvms.docker.validation.common.AbstractHelper;
+import eu.europa.ec.fisheries.uvms.docker.validation.common.AuditHelper;
+import eu.europa.ec.fisheries.wsdl.asset.group.AssetGroup;
 import eu.europa.ec.fisheries.wsdl.asset.types.Asset;
-import eu.europa.ec.fisheries.wsdl.asset.types.AssetHistoryId;
 import eu.europa.ec.fisheries.wsdl.asset.types.AssetId;
 import eu.europa.ec.fisheries.wsdl.asset.types.AssetIdType;
 import eu.europa.ec.fisheries.wsdl.asset.types.AssetListCriteria;
@@ -26,66 +33,220 @@ import eu.europa.ec.fisheries.wsdl.asset.types.AssetListQuery;
 import eu.europa.ec.fisheries.wsdl.asset.types.AssetProdOrgModel;
 import eu.europa.ec.fisheries.wsdl.asset.types.CarrierSource;
 import eu.europa.ec.fisheries.wsdl.asset.types.ConfigSearchField;
-import eu.europa.ec.fisheries.wsdl.asset.types.EventCode;
+import eu.europa.ec.fisheries.wsdl.asset.types.FlagStateType;
+import eu.europa.ec.fisheries.wsdl.asset.types.ListAssetResponse;
 
 public class AssetTestHelper extends AbstractHelper {
 
+	// ************************************************
+	//  AssetResource
+	// ************************************************
+
 	public static Asset createTestAsset() throws IOException, ClientProtocolException, JsonProcessingException,
 			JsonParseException, JsonMappingException {
-
-		Asset asset = helper_createAsset(AssetIdType.GUID);
+		Asset asset = createDummyAsset(AssetIdType.CFR);
 		final HttpResponse response = Request.Post(getBaseUrl() + "asset/rest/asset")
 				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken())
 				.bodyByteArray(writeValueAsString(asset).getBytes()).execute().returnResponse();
-		Map<String, Object> dataMap = checkSuccessResponseReturnMap(response);
 
-		Map<String, Object> assetMap = (Map<String, Object>) dataMap.get("assetId");
-		assertNotNull(assetMap);
-		String assetGuid = (String) assetMap.get("value");
-		assertNotNull(assetGuid);
-
-		Map<String, Object> eventHistoryMap = (Map<String, Object>) dataMap.get("eventHistory");
-		assertNotNull(eventHistoryMap);
-		String eventId = (String) eventHistoryMap.get("eventId");
-		assertNotNull(eventId);
-		String eventCode = (String) eventHistoryMap.get("eventCode");
-		assertNotNull(eventCode);
-
-		AssetHistoryId assetHistoryId = new AssetHistoryId();
-		assetHistoryId.setEventId(eventId);
-		assetHistoryId.setEventCode(EventCode.fromValue(eventCode));
-		asset.setEventHistory(assetHistoryId);
-
-		asset.setName(asset.getName());
-		AssetId assetId = new AssetId();
-		assetId.setGuid(assetGuid);
-		assetId.setValue(assetGuid);
-		assetId.setType(AssetIdType.GUID);
-		asset.setAssetId(assetId);
-		return asset;
+		return checkSuccessResponseReturnObject(response, Asset.class);
 	}
 
+	public static Asset createCfrTestAsset() throws IOException, ClientProtocolException, JsonProcessingException,
+			JsonParseException, JsonMappingException {
+		Asset asset = createDummyCFRAsset();
+		final HttpResponse response = Request.Post(getBaseUrl() + "asset/rest/asset")
+				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken())
+				.bodyByteArray(writeValueAsString(asset).getBytes()).execute().returnResponse();
+
+		return checkSuccessResponseReturnObject(response, Asset.class);
+	}
+
+	public static Asset getAssetByGuid(String assetGuid) throws ClientProtocolException, IOException {
+		final HttpResponse response = Request.Get(getBaseUrl() + "asset/rest/asset/" + assetGuid)
+				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken()).execute()
+				.returnResponse();
+		return checkSuccessResponseReturnObject(response, Asset.class);
+	}
+
+	public static Asset createAsset(Asset asset) throws ClientProtocolException, JsonProcessingException, IOException {
+		final HttpResponse response = Request.Post(getBaseUrl() + "asset/rest/asset")
+				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken())
+				.bodyByteArray(writeValueAsString(asset).getBytes()).execute().returnResponse();
+		return checkSuccessResponseReturnObject(response, Asset.class);
+	}
+
+	public static Asset updateAsset(Asset asset) throws ClientProtocolException, JsonProcessingException, IOException {
+		final HttpResponse response = Request.Put(getBaseUrl() + "asset/rest/asset?comment=UpdatedAsset")
+				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken())
+				.bodyByteArray(writeValueAsString(asset).getBytes()).execute().returnResponse();
+		return checkSuccessResponseReturnObject(response, Asset.class);
+	}
+
+	public static Asset archiveAsset(Asset asset) throws ClientProtocolException, JsonProcessingException, IOException {
+		final HttpResponse response = Request.Put(getBaseUrl() + "asset/rest/asset/archive?comment=Archive")
+				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken())
+				.bodyByteArray(writeValueAsString(asset).getBytes()).execute().returnResponse();
+		return checkSuccessResponseReturnObject(response, Asset.class);
+	}
+	
+	public static ListAssetResponse assetListQuery(AssetListQuery query) throws ClientProtocolException, JsonProcessingException, IOException {
+		final HttpResponse response = Request.Post(getBaseUrl() + "asset/rest/asset/list")
+				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken())
+				.bodyByteArray(writeValueAsString(query).getBytes()).execute().returnResponse();
+		return checkSuccessResponseReturnObject(response, ListAssetResponse.class);
+	}
+
+	public static Integer assetListQueryCount(AssetListQuery query) throws ClientProtocolException, JsonProcessingException, IOException {
+		final HttpResponse response = Request.Post(getBaseUrl() + "asset/rest/asset/listcount")
+				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken())
+				.bodyByteArray(writeValueAsString(query).getBytes()).execute().returnResponse();
+		return checkSuccessResponseReturnInt(response);
+	}
+
+	// ************************************************
+	//  AssetHistoryResource
+	// ************************************************
+		
+	public static List<Asset> getAssetHistoryFromAssetGuid(String assetId) throws ClientProtocolException, IOException {
+		final HttpResponse response = Request.Get(getBaseUrl() + "asset/rest/history/asset?assetId=" + assetId + "&maxNbr=100")
+				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken()).execute()
+				.returnResponse();
+		return checkSuccessResponseReturnList(response, Asset.class);
+	}
+	
+	public static Asset getAssetHistoryFromHistoryGuid(String historyId) throws ClientProtocolException, IOException {
+		final HttpResponse response = Request.Get(getBaseUrl() + "asset/rest/history/" + historyId)
+				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken()).execute()
+				.returnResponse();
+		return checkSuccessResponseReturnObject(response, Asset.class);
+	}
+
+
+	public static FlagStateType getFlagStateFromAssetGuidAndDate(String assetGuid, Date date) throws ClientProtocolException, IOException {
+
+		String dateStr = URLEncoder.encode(DateUtils.parseUTCDateToString(date), "UTF-8");
+
+		final HttpResponse response = Request.Get(getBaseUrl() + "asset/rest/history/assetflagstate?assetGuid=" + assetGuid + "&date=" + dateStr)
+				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken()).execute()
+				.returnResponse();
+		return checkSuccessResponseReturnObject(response, FlagStateType.class);
+	}
+
+	public static Asset getAssetFromAssetIdAndDate(String type, String value, Date  date) throws ClientProtocolException, IOException {
+		String dateStr = URLEncoder.encode(DateUtils.parseUTCDateToString(date), "UTF-8");
+		final HttpResponse response = Request.Get(getBaseUrl() + "asset/rest/history/assetFromAssetIdAndDate?type=" + type + "&value="+ value +"&date=" + dateStr)
+				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken()).execute()
+				.returnResponse();
+		return checkSuccessResponseReturnObject(response, Asset.class);
+	}
+
+		// ************************************************
+	//  AssetGroupResource
+	// ************************************************
+		
+	public static AssetGroup createAssetGroup(AssetGroup assetGroup) throws ClientProtocolException, JsonProcessingException, IOException {
+		final HttpResponse response = Request.Post(getBaseUrl() + "asset/rest/group")
+				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken())
+				.bodyByteArray(writeValueAsString(assetGroup).getBytes()).execute().returnResponse();
+		return checkSuccessResponseReturnObject(response, AssetGroup.class);
+	}
+	
+	public static AssetGroup updateAssetGroup(AssetGroup assetGroup) throws ClientProtocolException, JsonProcessingException, IOException {
+		final HttpResponse response = Request.Put(getBaseUrl() + "asset/rest/group")
+				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken())
+				.bodyByteArray(writeValueAsString(assetGroup).getBytes()).execute().returnResponse();
+		return checkSuccessResponseReturnObject(response, AssetGroup.class);
+	}
+	
+	public static AssetGroup deleteAssetGroup(AssetGroup assetGroup) throws ClientProtocolException, IOException {
+		final HttpResponse response = Request.Delete(getBaseUrl() + "asset/rest/group/" + assetGroup.getGuid())
+				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken()).execute()
+				.returnResponse();
+		return checkSuccessResponseReturnObject(response, AssetGroup.class);
+	}
+	
+	public static AssetGroup getAssetGroupById(String assetGroupId) throws ClientProtocolException, IOException {
+		final HttpResponse response = Request.Get(getBaseUrl() + "asset/rest/group/" + assetGroupId)
+				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken()).execute()
+				.returnResponse();
+		return checkSuccessResponseReturnObject(response, AssetGroup.class);
+	}
+	
+	public static List<AssetGroup> getAssetGroupListByUser(String user) throws ClientProtocolException, IOException {
+		final HttpResponse response = Request.Get(getBaseUrl() + "asset/rest/group/list?user=vms_admin_com")
+				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken()).execute()
+				.returnResponse();
+		return checkSuccessResponseReturnList(response, AssetGroup.class);
+	}
+	
+	// ************************************************
+	//  Audit logs
+	// ************************************************
+	
+	public static void assertAssetAuditLogCreated(String guid, AuditOperationEnum auditOperation, Date fromDate) throws Exception {
+		AuditLogListQuery auditLogListQuery = getAssetAuditLogListQuery(AuditObjectTypeEnum.ASSET);
+		assertAuditLog(guid, auditOperation, auditLogListQuery, fromDate);
+	}
+	
+	public static void assertAssetGroupAuditLogCreated(String guid, AuditOperationEnum auditOperation, Date fromDate) throws Exception {
+		AuditLogListQuery auditLogListQuery = getAssetAuditLogListQuery(AuditObjectTypeEnum.ASSET_GROUP);
+		assertAuditLog(guid, auditOperation, auditLogListQuery, fromDate);
+	}
+	
+	private static AuditLogListQuery getAssetAuditLogListQuery(AuditObjectTypeEnum auditObjectType) {
+		AuditLogListQuery auditLogListQuery = AuditHelper.getBasicAuditLogListQuery();
+		ListCriteria typeListCriteria = new ListCriteria();
+		typeListCriteria.setKey(SearchKey.TYPE);
+		typeListCriteria.setValue(auditObjectType.getValue());
+		auditLogListQuery.getAuditSearchCriteria().add(typeListCriteria);
+		return auditLogListQuery;
+	}
+	
+	private static void assertAuditLog(String guid, AuditOperationEnum auditOperation, AuditLogListQuery auditLogListQuery, Date fromDate) throws Exception {
+		ListCriteria typeListCriteria = new ListCriteria();
+		typeListCriteria.setKey(SearchKey.OPERATION);
+		typeListCriteria.setValue(auditOperation.getValue());
+		auditLogListQuery.getAuditSearchCriteria().add(typeListCriteria);
+
+		ListCriteria fromDateListCriteria = new ListCriteria();
+		fromDateListCriteria.setKey(SearchKey.FROM_DATE);
+		fromDateListCriteria.setValue(DateUtils.parseUTCDateToString(fromDate));
+		auditLogListQuery.getAuditSearchCriteria().add(fromDateListCriteria);
+		
+		List<AuditLogType> auditLogs = AuditHelper.getAuditLogs(auditLogListQuery);
+		boolean found = false;
+		for (AuditLogType auditLogType : auditLogs) {
+			if (auditLogType.getAffectedObject().equals(guid)) {
+				found = true;
+			}
+		}
+		assertTrue(found);
+	}
+
+	// ************************************************
+	//  Misc
+	// ************************************************
+	
 	public static Integer getAssetCountSweden() throws ClientProtocolException, JsonProcessingException, IOException {
-		AssetListQuery assetListQuery = new AssetListQuery();
-		AssetListPagination assetListPagination = new AssetListPagination();
-		assetListPagination.setListSize(100);
-		assetListPagination.setPage(1);
-		assetListQuery.setPagination(assetListPagination);
-		AssetListCriteria assetListCriteria = new AssetListCriteria();
-		assetListCriteria.setIsDynamic(true);
+		AssetListQuery assetListQuery = getBasicAssetQuery();
 		AssetListCriteriaPair assetListCriteriaPair = new AssetListCriteriaPair();
 		assetListCriteriaPair.setKey(ConfigSearchField.FLAG_STATE);
 		assetListCriteriaPair.setValue("SWE");
-		assetListCriteria.getCriterias().add(assetListCriteriaPair);
-		assetListQuery.setAssetSearchCriteria(assetListCriteria);
+		assetListQuery.getAssetSearchCriteria().getCriterias().add(assetListCriteriaPair);
 		final HttpResponse response = Request.Post(getBaseUrl() + "asset/rest/asset/listcount")
 				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken())
 				.bodyByteArray(writeValueAsString(assetListQuery).getBytes()).execute().returnResponse();
 		return checkSuccessResponseReturnInt(response);
-
 	}
-	
-	public static Asset helper_createAsset(AssetIdType assetIdType, String ircs) {
+
+	public static Asset createDummyCFRAsset() {
+		return createDummyAsset(AssetIdType.CFR);
+	}
+
+
+	public static Asset createDummyAsset(AssetIdType assetIdType) {
+		String ircs = "F" + generateARandomStringWithMaxLength(7);
 
 		Asset asset = new Asset();
 		AssetId assetId = new AssetId();
@@ -96,6 +257,11 @@ public class AssetTestHelper extends AbstractHelper {
 			break;
 		case INTERNAL_ID:
 			assetId.setValue("INTERNALID_" + UUID.randomUUID().toString());
+			break;
+		case CFR:
+			String val = UUID.randomUUID().toString().substring(0,12);
+			assetId.setValue(val);
+			asset.setCfr(val);
 			break;
 		}
 
@@ -108,13 +274,8 @@ public class AssetTestHelper extends AbstractHelper {
 		asset.setCountryCode("SWE");
 		asset.setGearType("DERMERSAL");
 		asset.setHasIrcs("1");
-
 		asset.setIrcs(ircs);
 		asset.setExternalMarking("EXT3");
-
-		String cfr = "CF" + UUID.randomUUID().toString();
-
-		asset.setCfr("SWE0000" + ircs);
 
 		String imo = "0" + generateARandomStringWithMaxLength(6);
 		asset.setImo(imo);
@@ -123,14 +284,14 @@ public class AssetTestHelper extends AbstractHelper {
 		asset.setHasLicense(true);
 		asset.setLicenseType("MOCK-license-DB");
 		asset.setHomePort("TEST_GOT");
-		asset.setLengthOverAll(new BigDecimal(15l));
-		asset.setLengthBetweenPerpendiculars(new BigDecimal(3l));
-		asset.setGrossTonnage(new BigDecimal(200));
+		asset.setLengthOverAll(new BigDecimal(15.0).setScale(1));
+		asset.setLengthBetweenPerpendiculars(new BigDecimal(3.0).setScale(1));
+		asset.setGrossTonnage(new BigDecimal(200.0).setScale(1));
 
 		asset.setGrossTonnageUnit("OSLO");
-		asset.setSafetyGrossTonnage(new BigDecimal(80));
-		asset.setPowerMain(new BigDecimal(10));
-		asset.setPowerAux(new BigDecimal(10));
+		asset.setSafetyGrossTonnage(new BigDecimal(80.0).setScale(1));
+		asset.setPowerMain(new BigDecimal(10.0).setScale(1));
+		asset.setPowerAux(new BigDecimal(10.0).setScale(1));
 
 		AssetProdOrgModel assetProdOrgModel = new AssetProdOrgModel();
 		assetProdOrgModel.setName("NAME" + generateARandomStringWithMaxLength(10));
@@ -138,17 +299,23 @@ public class AssetTestHelper extends AbstractHelper {
 		assetProdOrgModel.setAddress("ADDRESS" + generateARandomStringWithMaxLength(10));
 		assetProdOrgModel.setCode("CODE" + generateARandomStringWithMaxLength(10));
 		assetProdOrgModel.setPhone("070" + generateARandomStringWithMaxLength(10));
+		asset.setProducer(assetProdOrgModel);
 		asset.getContact();
 		asset.getNotes();
 
 		return asset;
-
 	}
-
-	public static Asset helper_createAsset(AssetIdType assetIdType) {
-		String ircs = "F" + generateARandomStringWithMaxLength(4);
-		return helper_createAsset(assetIdType, ircs);
-
+	
+	public static AssetListQuery getBasicAssetQuery() {
+		AssetListQuery assetListQuery = new AssetListQuery();
+		AssetListPagination assetListPagination = new AssetListPagination();
+		assetListPagination.setListSize(1000);
+		assetListPagination.setPage(1);
+		assetListQuery.setPagination(assetListPagination);
+		AssetListCriteria assetListCriteria = new AssetListCriteria();
+		assetListCriteria.setIsDynamic(true);
+		assetListQuery.setAssetSearchCriteria(assetListCriteria);
+		return assetListQuery;
 	}
 
 	public static String generateARandomStringWithMaxLength(int len) {
@@ -159,5 +326,13 @@ public class AssetTestHelper extends AbstractHelper {
 		}
 		return ret;
 	}
-
+	
+	public static AssetGroup createBasicAssetGroup() {
+		AssetGroup assetGroup = new AssetGroup();
+		assetGroup.setDynamic(false);
+		assetGroup.setGlobal(false);
+		assetGroup.setUser("vms_admin_com");
+		assetGroup.setName("Name" + UUID.randomUUID().toString());
+		return assetGroup;
+	}
 }

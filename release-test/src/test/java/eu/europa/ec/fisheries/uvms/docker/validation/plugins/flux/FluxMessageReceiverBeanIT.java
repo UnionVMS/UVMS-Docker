@@ -1,13 +1,5 @@
 package eu.europa.ec.fisheries.uvms.docker.validation.plugins.flux;
 
-import java.math.BigDecimal;
-import java.math.BigInteger;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.GregorianCalendar;
-import java.util.List;
-import java.util.Map;
-
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
@@ -16,24 +8,24 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.ws.BindingProvider;
-
-import org.apache.http.HttpResponse;
-import org.apache.http.client.fluent.Request;
-import org.junit.Assert;
-import org.junit.Test;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
+import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.GregorianCalendar;
+import java.util.List;
 
 import eu.europa.ec.fisheries.schema.mobileterminal.types.v1.MobileTerminalType;
-import eu.europa.ec.fisheries.schema.movement.search.v1.ListCriteria;
-import eu.europa.ec.fisheries.schema.movement.search.v1.ListPagination;
-import eu.europa.ec.fisheries.schema.movement.search.v1.MovementQuery;
-import eu.europa.ec.fisheries.schema.movement.search.v1.SearchKey;
 import eu.europa.ec.fisheries.uvms.docker.validation.asset.AssetTestHelper;
 import eu.europa.ec.fisheries.uvms.docker.validation.common.AbstractRestServiceTest;
 import eu.europa.ec.fisheries.uvms.docker.validation.mobileterminal.MobileTerminalTestHelper;
 import eu.europa.ec.fisheries.uvms.docker.validation.movement.MovementHelper;
 import eu.europa.ec.fisheries.wsdl.asset.types.Asset;
+import org.apache.http.HttpResponse;
+import org.apache.http.client.fluent.Request;
+import org.junit.Ignore;
+import org.junit.Test;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
 import un.unece.uncefact.data.standard.fluxvesselpositionmessage._4.FLUXVesselPositionMessage;
 import un.unece.uncefact.data.standard.reusableaggregatebusinessinformationentity._18.FLUXPartyType;
 import un.unece.uncefact.data.standard.reusableaggregatebusinessinformationentity._18.FLUXReportDocumentType;
@@ -206,7 +198,8 @@ public class FluxMessageReceiverBeanIT extends AbstractRestServiceTest {
 		purposeCode.setValue("9");
 		fluxReportDocumentType.setPurposeCode(purposeCode);		
 		IDType idType = new IDType();
-		fluxReportDocumentType.setReferencedID(idType);		
+		fluxReportDocumentType.setReferencedID(idType);
+		fluxReportDocumentType.getIDS().add(idType);
 		CodeType typeCode = new CodeType();
 		fluxReportDocumentType.setTypeCode(typeCode);		
 		fLUXVesselPositionMessage.setFLUXReportDocument(fluxReportDocumentType);
@@ -224,11 +217,12 @@ public class FluxMessageReceiverBeanIT extends AbstractRestServiceTest {
 		ResponseType responseType = bridgeConnectorPortType.post(requestType);
 		assertNotNull(responseType);
 		assertEquals("OK", responseType.getStatus());
-		
-		Thread.sleep(7500);
+
+		// Oh dear
+		Thread.sleep(15000);
 		
 		List<String> connectIds = new ArrayList<>();
-		connectIds.add(mobileTerminalType.getConnectId());		
+		connectIds.add(testAsset.getEventHistory().getEventId());		
 		
 		final HttpResponse response = Request.Post(getBaseUrl() + "movement/rest/movement/latest")
 				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken())
@@ -238,7 +232,7 @@ public class FluxMessageReceiverBeanIT extends AbstractRestServiceTest {
 		assertEquals("Expect one position in movement db",1,dataList.size());
 	}
 
-	
+
 	/**
 	 * Creates the bridge connector.
 	 *
@@ -249,9 +243,10 @@ public class FluxMessageReceiverBeanIT extends AbstractRestServiceTest {
 
 		BindingProvider bp = (BindingProvider) bridgeConnectorPortType;
 		bp.getRequestContext().put(BindingProvider.ENDPOINT_ADDRESS_PROPERTY,
-				"http://localhost:28080/flux-service/MovementService/FluxMessageReceiverBean");
+				getBaseUrl() + "flux-service/MovementService/FluxMessageReceiverBean");
 		return bridgeConnectorPortType;
 	}
+
 
 	/**
 	 * Creates the any element.

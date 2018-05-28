@@ -33,7 +33,7 @@ public class ModuleAvailableSystemIT extends AbstractRest {
 	@Test
 	public void checkUnionVmsWebAccessTest() throws Exception {
 		assertEquals(HttpStatus.SC_OK,
-				Request.Get(getBaseUrl() + "unionvms/").execute().returnResponse().getStatusLine().getStatusCode());
+				Request.Get(getBaseUrl()).execute().returnResponse().getStatusLine().getStatusCode());
 	}
 
 	/**
@@ -229,7 +229,7 @@ public class ModuleAvailableSystemIT extends AbstractRest {
 	@Test
 	public void checkMapfishPrintAccessTest() throws Exception {
 		assertEquals(HttpStatus.SC_FORBIDDEN,
-				Request.Get(getBaseUrl() + "mapfish-print/").execute().returnResponse().getStatusLine().getStatusCode());
+				Request.Get("http://localhost:28080/" + "mapfish-print/").execute().returnResponse().getStatusLine().getStatusCode());
 	}
 
 	/**
@@ -240,6 +240,6 @@ public class ModuleAvailableSystemIT extends AbstractRest {
 	@Test
 	public void checkGeoserverAccessTest() throws Exception {
 		assertEquals(HttpStatus.SC_OK,
-				Request.Get(getBaseUrl() + "geoserver/").execute().returnResponse().getStatusLine().getStatusCode());
+				Request.Get("http://localhost:28080/geoserver/").execute().returnResponse().getStatusLine().getStatusCode());
 	}
 }

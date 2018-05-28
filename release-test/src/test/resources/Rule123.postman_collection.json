@@ -1,0 +1,172 @@
+{
+	"info": {
+		"name": "Rule123",
+		"_postman_id": "18228aa2-f520-4ae2-b498-87a3ea750557",
+		"description": "",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "authenticate rep_power",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "bae49008-6891-4dbf-889a-76ada6d15cfa",
+						"type": "text/javascript",
+						"exec": [
+							"var data = JSON.parse(responseBody);",
+							"",
+							"// tests[\"authenticated is true\"] = data.authenticated === true;",
+							"",
+							"postman.setEnvironmentVariable(\"token\", data.jwtoken);",
+							"",
+							"// tests[\"environment token is \" + environment.token] = environment.token === data.jwtoken;",
+							"",
+							"var jsonData = JSON.parse(responseBody);"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n   \"userName\": \"rep_power\",\n   \"password\": \"abcd-1234\"\n}"
+				},
+				"url": "{{hostname}}:{{port}}/{{comPath}}/usm-administration/rest/authenticate",
+				"description": null
+			},
+			"response": []
+		},
+		{
+			"name": "FA-L02-00-0123",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "64b222fe-c914-4e4b-90cb-b74356a91551",
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							"",
+							"// try{",
+							"var errOrWarn = \"WAR\";",
+							"var ruleID = \"FA-L02-00-0123\";",
+							"var ruleLevelCode = \"L02\";",
+							"",
+							"var toFail = globals.rulesFail;",
+							"",
+							"var jsonBody = xml2Json(responseBody);",
+							"var bodyContainsRule = responseBody.indexOf(ruleID);",
+							"",
+							"// console.log(responseBody.indexOf(ruleID));",
+							"// console.log(bodyContainsRule);",
+							"// console.log(toFail);",
+							"",
+							"tests[\"Rule TEST\"] = (bodyContainsRule * toFail >0 )",
+							"",
+							"",
+							"try {",
+							"\tvar failuresArr = jsonBody['ns3:FLUXResponseMessage'][\"ns3:FLUXResponseDocument\"]['RelatedValidationResultDocument']['RelatedValidationQualityAnalysis'];",
+							"} catch (e) {",
+							"\ttests['ERROR - Could not get failuresArr'] = false;",
+							"}",
+							"",
+							"var bodyFailureRule;",
+							"for (var i = 0; i < failuresArr.length; i++) {",
+							"\tif (failuresArr[i].ID === ruleID) {",
+							"\t\tbodyFailureRule = failuresArr[i];",
+							"\t}",
+							"}",
+							"",
+							"if (bodyContainsRule >0) {",
+							"\ttests[\"Proper level displayed\"] = (bodyFailureRule.LevelCode === ruleLevelCode);",
+							"\ttests[\"Proper type code displayed\"] = (bodyFailureRule.TypeCode === errOrWarn);",
+							"}",
+							"",
+							"// } catch(e){tests['ERROR RESPONSE FORMAT'] = false; }",
+							""
+						]
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "fb9f98e2-b130-45ff-b6f2-669df66eb2ac",
+						"type": "text/javascript",
+						"exec": [
+							"var stub = '<ram:ApplicableGearCharacteristic><ram:TypeCode listID=\"FA_GEAR_CHARACTERISTIC\">%s%</ram:TypeCode><ram:Value>0</ram:Value></ram:ApplicableGearCharacteristic>'",
+							"",
+							"var resultString = \"\";",
+							"var keys = [\"ME\",\"GM\",\"HE\",\"NL\",\"GN\",\"NI\",\"NN\",\"QG\",\"MT\",\"GD\"]",
+							"",
+							"// var data = {\"FishingGear\" : \"OTB\",",
+							"// \"ME\" : \"ME\" ,",
+							"// \"GM\" : \"GM\" ,",
+							"// \"HE\" : \"HE\" ,",
+							"// \"NL\" : \"NL\" ,",
+							"// \"GN\" : \"GN\" ,",
+							"// \"NI\" : \"NI\" ,",
+							"// \"NN\"\t: \"NN\" ,",
+							"// \"QG\" : \"QG\" ,",
+							"// \"MT\" : \"MT\" ,",
+							"// \"GD\" : \"GD\" ,",
+							"// \"Fail\" : -1};",
+							"",
+							"",
+							"",
+							"for(i=0; i<keys.length;i++){",
+							"    if(data[keys[i]]){",
+							"        resultString += stub.replace('%s%', keys[i])+\"\\n\";",
+							"    }",
+							"}",
+							"",
+							"postman.setGlobalVariable(\"rules.ApplicableGearCharacteristic\", resultString);",
+							"postman.setGlobalVariable(\"rulesFail\", data.Fail);",
+							"postman.setGlobalVariable(\"FishingGear\", data.FishingGear);",
+							"",
+							""
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "roleName",
+						"value": "rep_power_role",
+						"disabled": true
+					},
+					{
+						"key": "scopeName",
+						"value": "EC",
+						"disabled": true
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/xml"
+					},
+					{
+						"key": "authorization",
+						"value": "{{token}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<rsm:FLUXFAReportMessage xmlns:ram=\"urn:un:unece:uncefact:data:standard:ReusableAggregateBusinessInformationEntity:20\" xmlns:udt=\"urn:un:unece:uncefact:data:standard:UnqualifiedDataType:20\" xsi:schemaLocation=\"urn:un:unece:uncefact:data:standard:FLUXFAReportMessage:3 xsd/FLUXFAReportMessage_3p1/FLUXFAReportMessage_3p1.xsd\" xmlns:rsm=\"urn:un:unece:uncefact:data:standard:FLUXFAReportMessage:3\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\">\n\t<rsm:FAReportDocument>\n\t\t<ram:SpecifiedFishingActivity>\n\t\t\t<!--**********************************************-->\n\t\t\t<ram:SpecifiedFishingGear>\n\t\t\t\t<ram:TypeCode listID=\"GEAR_TYPE\">{{FishingGear}}</ram:TypeCode>\n\t\t\t\t\n\t\t\t\t<ram:RoleCode listID=\"FA_GEAR_ROLE\">DEPLOYED</ram:RoleCode>\n\t\t\t\t{{rules.ApplicableGearCharacteristic}}\n\t\t\t</ram:SpecifiedFishingGear>\n\t\t\t<!--**********************************************-->\n\t\t\t<ram:TypeCode listID=\"FLUX_FA_TYPE\">FISHING_OPERATION</ram:TypeCode>\n\t\t\t<ram:OccurrenceDateTime>\n\t\t\t\t<udt:DateTime>2016-06-26T08:40:00Z</udt:DateTime>\n\t\t\t</ram:OccurrenceDateTime>\n\t\t\t<ram:OperationsQuantity unitCode=\"C62\">1</ram:OperationsQuantity>\n\t\t\t<ram:SpecifiedFACatch>\n\t\t\t\t<ram:SpeciesCode listID=\"FAO_SPECIES\">YFT</ram:SpeciesCode>\n\t\t\t\t<ram:WeightMeasure unitCode=\"KGM\">77000</ram:WeightMeasure>\n\t\t\t\t<ram:TypeCode listID=\"FA_CATCH_TYPE\">ONBOARD</ram:TypeCode>\n\t\t\t\t<ram:SpecifiedSizeDistribution>\n\t\t\t\t\t<ram:ClassCode listID=\"FISH_SIZE_CLASS\">LSC</ram:ClassCode>\n\t\t\t\t</ram:SpecifiedSizeDistribution>\n\t\t\t</ram:SpecifiedFACatch>\n\t\t\t<ram:RelatedFLUXLocation>\n\t\t\t\t<ram:TypeCode listID=\"FLUX_LOCATION_TYPE\">AREA</ram:TypeCode>\n\t\t\t\t<ram:ID schemeID=\"TERRITORY\">SYC</ram:ID>\n\t\t\t</ram:RelatedFLUXLocation>\n\t\t\t<ram:RelatedFLUXLocation>\n\t\t\t\t<ram:TypeCode listID=\"FLUX_LOCATION_TYPE\">AREA</ram:TypeCode>\n\t\t\t\t<ram:ID schemeID=\"FAO_AREA\">51.5</ram:ID>\n\t\t\t</ram:RelatedFLUXLocation>\n\t\t\n\t\t\t<ram:SpecifiedFishingTrip>\n\t\t\t\t<ram:ID schemeID=\"EU_TRIP_ID\">MLT-TRP-20160630000001</ram:ID>\n\t\t\t</ram:SpecifiedFishingTrip>\n\t\t</ram:SpecifiedFishingActivity>\n\t\t<ram:TypeCode listID=\"FLUX_FA_REPORT_TYPE\">DECLARATION</ram:TypeCode>\n\t\t<ram:RelatedReportID schemeID=\"EU-ERS3.1_ON\">MLT20160630000001</ram:RelatedReportID>\n\t\t<ram:RelatedReportID schemeID=\"EU-ERS3.1_ON-QUE\">SYC20160630000002</ram:RelatedReportID>\n\t\t<ram:RelatedReportID schemeID=\"EU-ERS3.1_RN\">MLT20160630000001</ram:RelatedReportID>\n\t\t<ram:AcceptanceDateTime>\n\t\t\t<udt:DateTime>2016-07-30T05:22:00Z</udt:DateTime>\n\t\t</ram:AcceptanceDateTime>\n\t\t<ram:RelatedFLUXReportDocument>\n\t\t\t<ram:ID schemeID=\"UUID\">0A74A532-66E2-47D2-A713-2543847EB82F</ram:ID>\n\t\t\t<ram:CreationDateTime>\n\t\t\t\t<udt:DateTime>2016-07-30T05:23:00Z</udt:DateTime>\n\t\t\t</ram:CreationDateTime>\n\t\t\t<ram:PurposeCode listID=\"FLUX_GP_PURPOSE\">9</ram:PurposeCode>\n\t\t\t<ram:OwnerFLUXParty>\n\t\t\t\t<ram:ID schemeID=\"FLUX_GP_PARTY\">MLT</ram:ID>\n\t\t\t</ram:OwnerFLUXParty>\n\t\t</ram:RelatedFLUXReportDocument>\n\t\t<ram:SpecifiedVesselTransportMeans>\n\t\t\t<ram:ID schemeID=\"CFR\">MLT000000005</ram:ID>\n\t\t\t<ram:ID schemeID=\"IRCS\">9H7793</ram:ID>\n\t\t\t<ram:ID schemeID=\"EXT_MARK\">MFA31</ram:ID>\n\t\t\t<ram:Name>MADONNA DI POMPEI</ram:Name>\n\t\t\t<ram:RegistrationVesselCountry>\n\t\t\t\t<ram:ID schemeID=\"TERRITORY\">MLT</ram:ID>\n\t\t\t</ram:RegistrationVesselCountry>\n\t\t\t<ram:SpecifiedContactParty>\n\t\t\t\t<ram:RoleCode listID=\"FLUX_CONTACT_ROLE\">MASTER</ram:RoleCode>\n\t\t\t\t<ram:SpecifiedStructuredAddress>\n\t\t\t\t\t<ram:StreetName>MARSAXLOKK (KAVALLERIZZA)</ram:StreetName>\n\t\t\t\t\t<ram:CountryID schemeID=\"TERRITORY\">MLT</ram:CountryID>\n\t\t\t\t</ram:SpecifiedStructuredAddress>\n\t\t\t\t<ram:SpecifiedContactPerson>\n\t\t\t\t\t<ram:Alias>Miguel Nunes</ram:Alias>\n\t\t\t\t</ram:SpecifiedContactPerson>\n\t\t\t</ram:SpecifiedContactParty>\n\t\t</ram:SpecifiedVesselTransportMeans>\n\t</rsm:FAReportDocument>\n</rsm:FLUXFAReportMessage>\n\n"
+				},
+				"url": "{{hostname}}:{{port}}/{{comPath}}/unionvms/rules/rest/rules/evaluate/fluxfareportmessage",
+				"description": null
+			},
+			"response": []
+		}
+	]
+}

@@ -17,6 +17,9 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
+import eu.europa.ec.fisheries.uvms.asset.remote.dto.ConfigurationDto;
+import eu.europa.ec.fisheries.wsdl.asset.config.Config;
+import eu.europa.ec.fisheries.wsdl.asset.config.ConfigField;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
 import org.apache.http.client.fluent.Request;
@@ -99,41 +102,7 @@ public class SpatialConfigRestIT extends AbstractRestServiceTest {
 	
 	
 	
-	@Test
-	@Ignore
-	public void getReportMapConfigWithoutSave() throws Exception {
-
-		String uid = "rep_power";
-		String pwd = "abcd-1234";
-		String token = getValidJwtToken(uid, pwd);
-		String scopeName = "EC";
-		String roleName = "rep_power_role";
-
-		String id = "5";
-
-		ConfigResourceDto dto = new ConfigResourceDto();
-		dto.setTimeStamp(new Date().toString());
-		String theDto = mapper.writeValueAsString(dto);
-
-		// @formatter:off
-		final HttpResponse response = Request.Post(getBaseUrl() + "spatial/rest/fromreport" )
-				.setHeader("Content-Type", "application/json")
-				.setHeader("Authorization", token)
-				.setHeader(AuthConstants.HTTP_HEADER_SCOPE_NAME, scopeName)
-				.setHeader(AuthConstants.HTTP_HEADER_ROLE_NAME, roleName)
-				.bodyByteArray(theDto.getBytes())
-				.execute()
-				.returnResponse();
-		// @formatter:on
-
-		assertEquals(HttpStatus.SC_OK, response.getStatusLine().getStatusCode());
-		final Map<String, Object> data = getJsonMap(response);
-
-		// for now
-		assertTrue(data != null);
-		assertTrue(data.size() > 0);
-
-	}
+	//Removed a test here since the corresponding method in spatial had completley changed invalues
 	
 	
 	

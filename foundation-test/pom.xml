@@ -22,7 +22,7 @@
 		<dependency>
 			<artifactId>movement-model</artifactId>
 			<groupId>eu.europa.ec.fisheries.uvms.movement</groupId>
-			<version>${unionvms.project.movement.module}</version>	
+			<version>${unionvms.project.movement.module}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.apache.activemq</groupId>
@@ -32,12 +32,12 @@
 		<dependency>
 			<artifactId>mobileterminal-model</artifactId>
 			<groupId>eu.europa.ec.fisheries.uvms.mobileterminal</groupId>
-			<version>${unionvms.project.mobileterminal.module}</version>	
+			<version>${unionvms.project.mobileterminal.module}</version>
 		</dependency>
 		<dependency>
 			<groupId>eu.europa.ec.fisheries.uvms.exchange</groupId>
 			<artifactId>exchange-model</artifactId>
-			<version>4.0.6</version>			
+			<version>4.0.6</version>
 		</dependency>		
 		<dependency>
 			<groupId>eu.europa.ec.fisheries.uvms.asset</groupId>
@@ -47,27 +47,27 @@
 		<dependency>
 			<groupId>eu.europa.ec.fisheries.uvms.user</groupId>
 			<artifactId>user-model</artifactId>
-			<version>${unionvms.project.user.module}</version>			
+			<version>${unionvms.project.user.module}</version>
 		</dependency>
 		<dependency>
 			<groupId>eu.europa.ec.fisheries.uvms.reporting</groupId>
 			<artifactId>service</artifactId>
-			<version>${unionvms.project.reporting.module}</version>	
+			<version>${unionvms.project.reporting.module}</version>
 		</dependency>		
 		<dependency>
 			<groupId>eu.europa.ec.fisheries.uvms.config</groupId>
 			<artifactId>config-model</artifactId>
-			<version>${unionvms.project.config.module}</version>		
+			<version>${unionvms.project.config.module}</version>
 		</dependency>
 		<dependency>
 			<groupId>eu.europa.ec.fisheries.uvms.audit</groupId>
 			<artifactId>audit-model</artifactId>
-			<version>${unionvms.project.audit.module}</version>			
+			<version>${unionvms.project.audit.module}</version>
 		</dependency>
 		<dependency>
 			<groupId>eu.europa.ec.fisheries.uvms.spatial</groupId>
 			<artifactId>spatial-model</artifactId>
-			<version>1.0.8</version>			
+			<version>1.0.8</version>
 		</dependency>
 		<dependency>
 			<groupId>junit</groupId>
@@ -77,7 +77,7 @@
 		<dependency>
 			<groupId>org.apache.httpcomponents</groupId>
 			<artifactId>fluent-hc</artifactId>
-			<version>4.5.4</version>		
+			<version>4.5.4</version>
 		</dependency>
 		<dependency>
 			<groupId>com.fasterxml.jackson.core</groupId>
@@ -109,14 +109,19 @@
 			<artifactId>geocalc</artifactId>
 			<version>1.1.0</version>
 		</dependency>
-	</dependencies>
+        <dependency>
+            <groupId>com.mashape.unirest</groupId>
+            <artifactId>unirest-java</artifactId>
+			<version>1.4.9</version>
+        </dependency>
+    </dependencies>
 	<build>
 		<pluginManagement>
 			<plugins>
 				<plugin>
 					<groupId>io.fabric8</groupId>
 					<artifactId>docker-maven-plugin</artifactId>
-					<version>0.23.0</version>
+					<version>0.25.0</version>
 				</plugin>
 			</plugins>
 		</pluginManagement>
@@ -212,30 +217,18 @@
 				<version>1.8</version>
 				<executions>
 					<execution>
-						<id>delayDockerStartup</id>
-						<phase>pre-integration-test</phase>
-						<configuration>
-							<tasks>
-								<sleep seconds="240" />
-							</tasks>
-						</configuration>
-						<goals>
-							<goal>run</goal>
-						</goals>
-					</execution>
-					<execution>
 						<id>downloadMonitoringMetrics</id>
 						<phase>post-integration-test</phase>
 						<configuration>
 							<tasks>
-								<get src="http://localhost:28080/audit/monitoring?format=pdf" dest="target/audit_monitoring.pdf" verbose="true" usetimestamp="true" />
-								<get src="http://localhost:28080/config/monitoring?format=pdf" dest="target/config_monitoring.pdf" verbose="true" usetimestamp="true" />
-								<get src="http://localhost:28080/exchange/monitoring?format=pdf" dest="target/exchange_monitoring.pdf" verbose="true" usetimestamp="true" />
-								<get src="http://localhost:28080/spatial/monitoring?format=pdf" dest="target/spatial_monitoring.pdf" verbose="true" usetimestamp="true" />
-								<get src="http://localhost:28080/asset/monitoring?format=pdf" dest="target/asset_monitoring.pdf" verbose="true" usetimestamp="true" />
-								<get src="http://localhost:28080/mobileterminal/monitoring?format=pdf" dest="target/mobileterminal_monitoring.pdf" verbose="true" usetimestamp="true" />
-								<get src="http://localhost:28080/movement/monitoring?format=pdf" dest="target/movement_monitoring.pdf" verbose="true" usetimestamp="true" />
-								<get src="http://localhost:28080/user/monitoring?format=pdf" dest="target/user_monitoring.pdf" verbose="true" usetimestamp="true" />
+								<get src="http://localhost:28080/unionvms/audit/monitoring?format=pdf" dest="target/audit_monitoring.pdf" verbose="true" usetimestamp="true" />
+								<get src="http://localhost:28080/unionvms/config/monitoring?format=pdf" dest="target/config_monitoring.pdf" verbose="true" usetimestamp="true" />
+								<get src="http://localhost:28080/unionvms/exchange/monitoring?format=pdf" dest="target/exchange_monitoring.pdf" verbose="true" usetimestamp="true" />
+								<get src="http://localhost:28080/unionvms/spatial/monitoring?format=pdf" dest="target/spatial_monitoring.pdf" verbose="true" usetimestamp="true" />
+								<get src="http://localhost:28080/unionvms/asset/monitoring?format=pdf" dest="target/asset_monitoring.pdf" verbose="true" usetimestamp="true" />
+								<get src="http://localhost:28080/unionvms/mobileterminal/monitoring?format=pdf" dest="target/mobileterminal_monitoring.pdf" verbose="true" usetimestamp="true" />
+								<get src="http://localhost:28080/unionvms/movement/monitoring?format=pdf" dest="target/movement_monitoring.pdf" verbose="true" usetimestamp="true" />
+								<get src="http://localhost:28080/unionvms/user/monitoring?format=pdf" dest="target/user_monitoring.pdf" verbose="true" usetimestamp="true" />
 									
 								<get username="admin" password="admin" src="http://localhost:18161/admin/xml/subscribers.jsp" dest="target/activemq-subscribers.xml" verbose="true" usetimestamp="true" />
 								<get username="admin" password="admin" src="http://localhost:18161/admin/xml/topics.jsp" dest="target/activemq-topics.xml" verbose="true" usetimestamp="true" />

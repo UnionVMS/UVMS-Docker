@@ -4,14 +4,13 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
-
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.fluent.Request;
 import org.junit.Assert;
-
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
@@ -26,18 +25,13 @@ public abstract class AbstractRest extends Assert {
 	private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
 
 	/** The Constant BASE_URL. */
-	protected static final String BASE_URL = "http://localhost:28080/";
+	protected static final String BASE_URL = "http://localhost:28080/unionvms/";
 
 	/** The valid jwt token. */
 	private static String validJwtToken;
 
 	protected static final String getBaseUrl() {
-		String property = System.getProperty(DOCKER_RELEASE_TEST_BASE_URL_PROPERTY);
-		if (property != null) {
-			return property;
-		} else {
-			return BASE_URL;
-		}		
+		return BASE_URL;
 	}	
 	
 
@@ -91,40 +85,66 @@ public abstract class AbstractRest extends Assert {
 
 
 	protected static final Map<String, Object> checkSuccessResponseReturnMap(final HttpResponse response)
-			throws IOException, JsonParseException, JsonMappingException, ClientProtocolException {
-				final Map<String, Object> data = checkSuccessResponseReturnDataMap(response);
-			
-				Map<String, Object> dataMap = (Map<String, Object>) data.get("data");
-				assertNotNull(dataMap);
-				return dataMap;
-			}
+			throws IOException {
+		final Map<String, Object> data = checkSuccessResponseReturnDataMap(response);
 
-	private static Map<String, Object> checkSuccessResponseReturnDataMap(final HttpResponse response)
-			throws IOException, JsonParseException, JsonMappingException, ClientProtocolException {
-				assertEquals(HttpStatus.SC_OK, response.getStatusLine().getStatusCode());
-				final Map<String, Object> data = getJsonMap(response);
-				assertFalse(data.isEmpty());
-				assertNotNull(data.get("data"));
-				assertEquals("200", "" + data.get("code"));
-				return data;
-			}
+		Map<String, Object> dataMap = (Map<String, Object>) data.get("data");
+		assertNotNull(dataMap);
+		return dataMap;
+	}
+
+	public static Map<String, Object> checkSuccessResponseReturnDataMap(final HttpResponse response)
+			throws IOException {
+		assertEquals(HttpStatus.SC_OK, response.getStatusLine().getStatusCode());
+		final Map<String, Object> data = getJsonMap(response);
+		assertFalse(data.isEmpty());
+		assertNotNull(data.get("data"));
+		assertEquals("200", "" + data.get("code"));
+		return data;
+	}
 
 	protected final static Integer checkSuccessResponseReturnInt(final HttpResponse response)
-			throws IOException, JsonParseException, JsonMappingException, ClientProtocolException {
-				final Map<String, Object> data = checkSuccessResponseReturnDataMap(response);
-			
-				Integer dataValue = (Integer) data.get("data");
-				assertNotNull(dataValue);
-				return dataValue;
-			}
+			throws IOException {
+		final Map<String, Object> data = checkSuccessResponseReturnDataMap(response);
 
-	protected final <T> T checkSuccessResponseReturnType(final HttpResponse response, Class<T> classCast)
-			throws IOException, JsonParseException, JsonMappingException, ClientProtocolException {
-				final Map<String, Object> data = checkSuccessResponseReturnDataMap(response);
-				T dataValue = (T) data.get("data");
-				assertNotNull(dataValue);
-				return dataValue;
-			}
+		Integer dataValue = (Integer) data.get("data");
+		assertNotNull(dataValue);
+		return dataValue;
+	}
+
+	protected static <T> T checkSuccessResponseReturnType(final HttpResponse response, Class<T> classCast)
+			throws IOException {
+		final Map<String, Object> data = checkSuccessResponseReturnDataMap(response);
+		T dataValue = (T) data.get("data");
+		assertNotNull(dataValue);
+		return dataValue;
+	}
+	
+	protected static <T> T checkSuccessResponseReturnObject(final HttpResponse response, Class<T> classCast)
+			throws IOException {
+		final Map<String, Object> data = checkSuccessResponseReturnDataMap(response);
+		Map<String, Object> dataMap = (Map<String, Object>) data.get("data");
+		T dataValue = OBJECT_MAPPER.readValue(writeValueAsString(dataMap), classCast);
+		assertNotNull(dataValue);
+		return dataValue;
+	}
+	
+	protected static <T> List<T> checkSuccessResponseReturnList(final HttpResponse response, Class<T> classCast)
+			throws IOException {
+		final Map<String, Object> data = checkSuccessResponseReturnDataMap(response);
+		String valueAsString = writeValueAsString(data.get("data"));
+		List<T> dataValue = OBJECT_MAPPER.readValue(valueAsString, OBJECT_MAPPER.getTypeFactory().constructCollectionType(List.class, classCast));
+		assertNotNull(dataValue);
+		return dataValue;
+	}
+	
+	protected static void checkErrorResponse(final HttpResponse response)
+            throws IOException {
+        assertEquals(HttpStatus.SC_OK, response.getStatusLine().getStatusCode());
+        final Map<String, Object> data = getJsonMap(response);
+        assertFalse(data.isEmpty());
+        assertEquals("500", "" + data.get("code"));
+    }
 
 	/**
 	 * Write value as string.
@@ -136,7 +156,18 @@ public abstract class AbstractRest extends Assert {
 	 *             the json processing exception
 	 */
 	protected final static String writeValueAsString(final Object value) throws JsonProcessingException {
-		return OBJECT_MAPPER.writeValueAsString(value);
+		String ret = "";
+
+		try {
+			ret = OBJECT_MAPPER.writeValueAsString(value);
+		}
+		catch(RuntimeException e){
+
+			e.printStackTrace();
+		}
+
+
+		return ret;
 	}
 
 	protected static final String getDateAsString(int year4, int month, int day, int hour, int minute, int sec,
@@ -180,10 +211,9 @@ public abstract class AbstractRest extends Assert {
 	 *             the client protocol exception
 	 */
 	protected static final Map<String, Object> getJsonMap(final HttpResponse response)
-			throws IOException, JsonParseException, JsonMappingException, ClientProtocolException {
-				final ObjectMapper mapper = new ObjectMapper();
-				final MapType type = mapper.getTypeFactory().constructMapType(Map.class, String.class, Object.class);
-				final Map<String, Object> data = mapper.readValue(response.getEntity().getContent(), type);
+			throws IOException {
+				final MapType type = OBJECT_MAPPER.getTypeFactory().constructMapType(Map.class, String.class, Object.class);
+				final Map<String, Object> data = OBJECT_MAPPER.readValue(response.getEntity().getContent(), type);
 				return data;
 			}
 

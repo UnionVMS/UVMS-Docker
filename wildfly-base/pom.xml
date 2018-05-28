@@ -16,7 +16,7 @@
 		<wildfly.hibernate.module.hibernate.version>5.1.10.Final</wildfly.hibernate.module.hibernate.version>
 		<wildfly.hibernate.module.spatial.version>5.1.10.Final</wildfly.hibernate.module.spatial.version>
 		<wildfly.hibernate.module.jts.version>1.13</wildfly.hibernate.module.jts.version>
-		<wildfly.hibernate.module.jipijapa.version>1.0.1.Final</wildfly.hibernate.module.jipijapa.version>				
+		<wildfly.hibernate.module.jipijapa.version>1.0.1.Final</wildfly.hibernate.module.jipijapa.version>
 		<wildfly.postgres.module.postgis.version>1.5.3</wildfly.postgres.module.postgis.version>
 		<wildfly.postgres.module.postgres.version>42.1.4.jre7</wildfly.postgres.module.postgres.version>
 		<wildfly.activemq.rar.version>5.15.2</wildfly.activemq.rar.version>
@@ -26,12 +26,12 @@
 			<groupId>org.geolatte</groupId>
 			<artifactId>geolatte-geom</artifactId>
 			<version>1.0.1</version>
-		</dependency>	
+		</dependency>
 		<dependency>
 		    <groupId>org.jipijapa</groupId>
 		    <artifactId>jipijapa-hibernate4-3</artifactId>
 		    <version>${wildfly.hibernate.module.jipijapa.version}</version>
-		</dependency>		
+		</dependency>
 		<dependency>
 			<groupId>com.vividsolutions</groupId>
 			<artifactId>jts</artifactId>
@@ -66,7 +66,7 @@
 			<groupId>eu.europa.ec.fisheries.uvms.docker</groupId>
 			<artifactId>hibernate-spatial-4x-to-5x-wrapper</artifactId>
 			<version>${project.version}</version>
-		</dependency>		
+		</dependency>
 		<dependency>
 			<groupId>org.postgresql</groupId>
 			<artifactId>postgresql</artifactId>
@@ -90,7 +90,7 @@
 				<plugin>
 					<groupId>io.fabric8</groupId>
 					<artifactId>docker-maven-plugin</artifactId>
-					<version>0.23.0</version>
+					<version>0.25.0</version>
 				</plugin>
 			</plugins>
 		</pluginManagement>
@@ -305,7 +305,7 @@
 								</log>
 								<hostname>postgres</hostname>
 							</run>
-						</image>					
+						</image>
 						<image>
 							<name>uvms/wildfly-base:${project.version}</name>
 							<build>
@@ -354,7 +354,7 @@
 								</log>
 								<hostname>wildfly</hostname>
 							</run>
-							
+
 						</image>
 					</images>
 				</configuration>

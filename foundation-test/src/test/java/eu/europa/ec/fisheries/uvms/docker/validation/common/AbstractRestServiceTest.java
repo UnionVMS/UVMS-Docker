@@ -13,12 +13,35 @@ copy of the GNU General Public License along with the IFDM Suite. If not, see <h
 */
 package eu.europa.ec.fisheries.uvms.docker.validation.common;
 
+import java.util.HashMap;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.mashape.unirest.http.Unirest;
+import lombok.SneakyThrows;
+import org.junit.BeforeClass;
+
 /**
  * The Class AbstractRestServiceTest.
  */
 public abstract class AbstractRestServiceTest extends AbstractRest {
 
+    protected static HashMap authenticateMap = new HashMap();
 
+    @BeforeClass
+    @SneakyThrows
+    public static void init(){
+
+        com.mashape.unirest.http.HttpResponse<String> stringHttpResponse =
+                Unirest.post("http://localhost:28080/unionvms/usm-administration/rest/authenticate")
+                        .header("Content-Type", "application/json")
+                        .header("Cache-Control", "no-cache")
+                        .header("Postman-Token", "7b47305b-d8a2-4e2c-aa36-28ab8250670e")
+                        .body("{\n   \"userName\": \"rep_power\",\n   \"password\": \"abcd-1234\"\n}")
+                        .asString();
+
+        authenticateMap = new ObjectMapper().readValue(stringHttpResponse.getBody(), HashMap.class);
+
+    }
 
 
 }
