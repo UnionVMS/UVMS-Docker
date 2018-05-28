@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
 	<parent>
@@ -12,7 +11,7 @@
 
 	<groupId>eu.europa.ec.fisheries.uvms.docker</groupId>
 	<artifactId>uvms-docker</artifactId>
-	<version>3.25.0-SNAPSHOT</version>
+	<version>3.25.1-SNAPSHOT</version>
 	<packaging>pom</packaging>
 	<name>uvms-docker</name>
 
@@ -20,17 +19,18 @@
 		<project.scm.id>github</project.scm.id>
 		<scm.connection>scm:git:https://github.com/UnionVMS/UVMS-Docker.git</scm.connection>
 		<scm.url>scm:git:https://github.com/UnionVMS/UVMS-Docker.git</scm.url>
-		<unionvms.project.unionvms.web.version>3.0.19</unionvms.project.unionvms.web.version>
+        <focus-pom.java.version>1.8</focus-pom.java.version>
+        <unionvms.project.unionvms.web.version>3.0.21</unionvms.project.unionvms.web.version>
 		<unionvms.project.mapfishprint.version>3.5</unionvms.project.mapfishprint.version>
 		<unionvms.project.geoserver.version>2.12.1.2</unionvms.project.geoserver.version>
 		<unionvms.project.reporting.db.module>1.0.4</unionvms.project.reporting.db.module>
 		<unionvms.project.spatial.db.module>1.0.5</unionvms.project.spatial.db.module>
 		<unionvms.project.user.module>2.0.9</unionvms.project.user.module>
-		<unionvms.project.rules.module>3.0.30</unionvms.project.rules.module>
+		<unionvms.project.rules.module>3.0.31</unionvms.project.rules.module>
 		<unionvms.project.movement.module>4.0.13</unionvms.project.movement.module>
 		<unionvms.project.mobileterminal.module>4.0.9</unionvms.project.mobileterminal.module>
 		<unionvms.project.exchange.module>4.0.20</unionvms.project.exchange.module>
-		<unionvms.project.reporting.module>1.1.3</unionvms.project.reporting.module>
+		<unionvms.project.reporting.module>1.1.4</unionvms.project.reporting.module>
 		<unionvms.project.spatial.module>1.1.6</unionvms.project.spatial.module>
 		<unionvms.project.subscription.module>1.3</unionvms.project.subscription.module>
 		<unionvms.project.config.module>4.0.9</unionvms.project.config.module>

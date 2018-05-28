@@ -111,7 +111,7 @@ public class AssetRestIT extends AbstractRestServiceTest {
 		List<Asset> assets = assetList.getAsset();
 		assertTrue(assets.contains(testAsset));
 		
-		testAsset.setIrcs(testAsset.getIrcs() + "NEW");
+		testAsset.setIrcs("I" + AssetTestHelper.generateARandomStringWithMaxLength(7));
 		AssetTestHelper.updateAsset(testAsset);
 		
 		// Search with same query, the asset should not be found
