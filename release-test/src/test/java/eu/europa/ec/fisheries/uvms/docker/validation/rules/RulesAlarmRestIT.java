@@ -43,7 +43,7 @@ public class RulesAlarmRestIT extends AbstractRestServiceTest {
 	 */
 	@Test
 	public void getNumberOfOpenAlarmReportsTest() throws Exception {
-		final HttpResponse response = Request.Get(getBaseUrl() + "rules/rest/alarms/countopen")
+		final HttpResponse response = Request.Get(getBaseUrl() + "movement-rules/rest/alarms/countopen")
 				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken()).execute().returnResponse();
 		Integer openReportsNumber = checkSuccessResponseReturnType(response,Integer.class);
 		assertNotNull(openReportsNumber);
@@ -70,7 +70,7 @@ public class RulesAlarmRestIT extends AbstractRestServiceTest {
 		alc.setValue("dummyguid");
 		alarmQuery.getAlarmSearchCriteria().add(alc);
 
-		final HttpResponse response = Request.Post(getBaseUrl() + "rules/rest/alarms/list")
+		final HttpResponse response = Request.Post(getBaseUrl() + "movement-rules/rest/alarms/list")
 				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken()).bodyByteArray(writeValueAsString(alarmQuery).getBytes()).execute().returnResponse();
 		Map<String, Object> dataMap = checkSuccessResponseReturnMap(response);
 	}
@@ -85,9 +85,9 @@ public class RulesAlarmRestIT extends AbstractRestServiceTest {
 	@Test
 	public void updateAlarmStatusTest() throws Exception {
 		AlarmReportType alarmReportType = new AlarmReportType();
-		final HttpResponse response = Request.Put(getBaseUrl() + "rules/rest/alarms")
+		final HttpResponse response = Request.Put(getBaseUrl() + "movement-rules/rest/alarms")
 				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken()).bodyByteArray(writeValueAsString(alarmReportType).getBytes()).execute().returnResponse();
-		assertEquals(HttpStatus.SC_INTERNAL_SERVER_ERROR, response.getStatusLine().getStatusCode());
+		checkErrorResponse(response);
 	}
 
 	
@@ -100,9 +100,9 @@ public class RulesAlarmRestIT extends AbstractRestServiceTest {
 	//Gets an alarm report by guid, sadly we dont have any AR in the DB, so this is an automatic 500. You could argue that it should be a not found or something like that but that is not how it is right now
 	@Test
 	public void getAlarmReportByGuidTest() throws Exception {
-		final HttpResponse response = Request.Get(getBaseUrl() + "rules/rest/alarms/guid")
+		final HttpResponse response = Request.Get(getBaseUrl() + "movement-rules/rest/alarms/guid")
 				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken()).execute().returnResponse();
-		assertEquals(HttpStatus.SC_INTERNAL_SERVER_ERROR, response.getStatusLine().getStatusCode());
+		checkErrorResponse(response);
 	}
 
 	
@@ -114,9 +114,9 @@ public class RulesAlarmRestIT extends AbstractRestServiceTest {
 	//Call to reprocess alarms, sadly we dont have any alarm reports to reprocess so 500......
 	@Test
 	public void reprocessAlarmTest() throws Exception {
-		final HttpResponse response = Request.Post(getBaseUrl() + "rules/rest/alarms/reprocess")
+		final HttpResponse response = Request.Post(getBaseUrl() + "movement-rules/rest/alarms/reprocess")
 				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken()).bodyByteArray(writeValueAsString(new ArrayList<String>()).getBytes()).execute().returnResponse();
-		assertEquals(HttpStatus.SC_INTERNAL_SERVER_ERROR, response.getStatusLine().getStatusCode());
+		checkErrorResponse(response);
 	}
 	
 }

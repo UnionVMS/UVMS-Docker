@@ -176,11 +176,11 @@ public class ModuleAvailableSystemIT extends AbstractRest {
 	@Test
 	public void checkRulesAccessTest() throws Exception {
 		assertEquals(HttpStatus.SC_FORBIDDEN,
-				Request.Get(getBaseUrl() + "rules/").execute().returnResponse().getStatusLine().getStatusCode());
+				Request.Get(getBaseUrl() + "movement-rules/").execute().returnResponse().getStatusLine().getStatusCode());
 		assertEquals(HttpStatus.SC_OK,
-				Request.Get(getBaseUrl() + "rules/monitoring").execute().returnResponse().getStatusLine().getStatusCode());		
+				Request.Get(getBaseUrl() + "movement-rules/monitoring").execute().returnResponse().getStatusLine().getStatusCode());		
 		assertEquals(HttpStatus.SC_FORBIDDEN,
-				Request.Get(getBaseUrl() + "rules/rest").execute().returnResponse().getStatusLine().getStatusCode());
+				Request.Get(getBaseUrl() + "movement-rules/rest").execute().returnResponse().getStatusLine().getStatusCode());
 	}
 
 	/**

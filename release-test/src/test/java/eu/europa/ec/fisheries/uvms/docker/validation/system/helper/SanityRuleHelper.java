@@ -24,21 +24,21 @@ import eu.europa.ec.fisheries.uvms.docker.validation.common.AbstractHelper;
 public class SanityRuleHelper extends AbstractHelper {
 
     public static List<SanityRuleType> getAllSanityRules() throws ClientProtocolException, IOException {
-        final HttpResponse response = Request.Get(getBaseUrl() + "rules/rest/sanityrules/listAll")
+        final HttpResponse response = Request.Get(getBaseUrl() + "movement-rules/rest/sanityrules/listAll")
                 .setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken())
                 .execute().returnResponse();
         return checkSuccessResponseReturnList(response, SanityRuleType.class);
     }
     
     public static int countOpenAlarms() throws ClientProtocolException, IOException {
-        final HttpResponse response = Request.Get(getBaseUrl() + "rules/rest/alarms/countopen")
+        final HttpResponse response = Request.Get(getBaseUrl() + "movement-rules/rest/alarms/countopen")
                 .setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken())
                 .execute().returnResponse();
         return checkSuccessResponseReturnInt(response);
     }
     
     public static void pollAlarmReportCreated() throws ClientProtocolException, IOException {
-        final HttpResponse response = Request.Get(getBaseUrl() + "rules/activity/alarm")
+        final HttpResponse response = Request.Get(getBaseUrl() + "movement-rules/activity/alarm")
                 .setHeader("Content-Type", "application/json")
                 .execute().returnResponse();
         

@@ -26,7 +26,7 @@ import eu.europa.ec.fisheries.uvms.docker.validation.common.AbstractHelper;
 public class CustomRuleHelper extends AbstractHelper {
 
     public static CustomRuleType createCustomRule(CustomRuleType customRule) throws ClientProtocolException, JsonProcessingException, IOException {
-        final HttpResponse response = Request.Post(getBaseUrl() + "rules/rest/customrules")
+        final HttpResponse response = Request.Post(getBaseUrl() + "movement-rules/rest/customrules")
                 .setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken())
                 .bodyByteArray(writeValueAsString(customRule).getBytes()).execute().returnResponse();
 
@@ -34,7 +34,7 @@ public class CustomRuleHelper extends AbstractHelper {
     }
     
     public static void removeCustomRule(String guid) throws Exception {
-        HttpResponse response = Request.Delete(getBaseUrl() + "rules/rest/customrules/" + guid)
+        HttpResponse response = Request.Delete(getBaseUrl() + "movement-rules/rest/customrules/" + guid)
                 .setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken())
                 .execute().returnResponse();
         
@@ -42,7 +42,7 @@ public class CustomRuleHelper extends AbstractHelper {
     }
 
     public static void assertRuleTriggered(CustomRuleType rule, Date dateFrom) throws Exception {
-        HttpResponse response = Request.Get(getBaseUrl() + "rules/rest/customrules/" + rule.getGuid())
+        HttpResponse response = Request.Get(getBaseUrl() + "movement-rules/rest/customrules/" + rule.getGuid())
                 .setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken()).execute()
                 .returnResponse();
 
@@ -50,12 +50,12 @@ public class CustomRuleHelper extends AbstractHelper {
         
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss X");
         Date lastTriggered = formatter.parse(fetchedCustomRule.getLastTriggered());
-        
+        assertNotNull(lastTriggered);
         assertTrue(lastTriggered.getTime() >= dateFrom.getTime());
     }
     
     public static void assertRuleNotTriggered(CustomRuleType rule) throws Exception {
-        HttpResponse response = Request.Get(getBaseUrl() + "rules/rest/customrules/" + rule.getGuid())
+        HttpResponse response = Request.Get(getBaseUrl() + "movement-rules/rest/customrules/" + rule.getGuid())
                 .setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken()).execute()
                 .returnResponse();
 

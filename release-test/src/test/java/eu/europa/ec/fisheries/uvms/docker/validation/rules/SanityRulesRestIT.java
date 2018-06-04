@@ -35,7 +35,7 @@ public class SanityRulesRestIT extends AbstractRestServiceTest {
 	 */
 	@Test
 	public void getSanityRulesTest() throws Exception {
-		final HttpResponse response = Request.Get(getBaseUrl() + "rules/rest/sanityrules/listAll")
+		final HttpResponse response = Request.Get(getBaseUrl() + "movement-rules/rest/sanityrules/listAll")
 				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken()).execute()
 				.returnResponse();
 		List dataList = checkSuccessResponseReturnType(response,List.class);

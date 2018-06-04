@@ -36,7 +36,7 @@ public class RulesConfigRestIT extends AbstractRestServiceTest {
 	 */
 	@Test
 	public void getConfigTest() throws Exception {
-		final HttpResponse response = Request.Get(getBaseUrl() + "rules/rest/config")
+		final HttpResponse response = Request.Get(getBaseUrl() + "movement-rules/rest/config")
 				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken()).execute().returnResponse();
 		Map<String, Object> dataMap = checkSuccessResponseReturnMap(response);
 	}
@@ -50,7 +50,7 @@ public class RulesConfigRestIT extends AbstractRestServiceTest {
 	 */
 	@Test
 	public void getAlarmStatusesTest() throws Exception {
-		final HttpResponse response = Request.Get(getBaseUrl() + "rules/rest/config/alarmstatus")
+		final HttpResponse response = Request.Get(getBaseUrl() + "movement-rules/rest/config/alarmstatus")
 				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken()).execute().returnResponse();
 		List dataList = checkSuccessResponseReturnType(response,List.class);
 	}
@@ -63,7 +63,7 @@ public class RulesConfigRestIT extends AbstractRestServiceTest {
 	 */
 	@Test
 	public void getTicketStatusesTest() throws Exception {
-		final HttpResponse response = Request.Get(getBaseUrl() + "rules/rest/config/ticketstatus")
+		final HttpResponse response = Request.Get(getBaseUrl() + "movement-rules/rest/config/ticketstatus")
 				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken()).execute().returnResponse();
 		List dataList = checkSuccessResponseReturnType(response,List.class);
 	}

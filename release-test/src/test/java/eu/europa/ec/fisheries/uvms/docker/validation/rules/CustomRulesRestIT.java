@@ -47,7 +47,7 @@ public class CustomRulesRestIT extends AbstractRestServiceTest {
 	@Test
 	public void createCustomRuleTest() throws Exception {
 		CustomRuleType customRuleType = new CustomRuleType();
-		final HttpResponse response = Request.Post(getBaseUrl() + "rules/rest/customrules/")
+		final HttpResponse response = Request.Post(getBaseUrl() + "movement-rules/rest/customrules/")
 				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken())
 				.bodyByteArray(writeValueAsString(customRuleType).getBytes()).execute().returnResponse();
 		assertEquals(HttpStatus.SC_OK, response.getStatusLine().getStatusCode());
@@ -67,7 +67,7 @@ public class CustomRulesRestIT extends AbstractRestServiceTest {
 	@Test
 	public void getCustomRulesByUser() throws Exception {
 		CustomRuleQuery CustomRuleQuery = new CustomRuleQuery();
-		final HttpResponse response = Request.Get(getBaseUrl() + "rules/rest/customrules/listAll/userName")
+		final HttpResponse response = Request.Get(getBaseUrl() + "movement-rules/rest/customrules/listAll/userName")
 				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken()).execute()
 				.returnResponse();
 		//Map<String, Object> dataMap = checkSuccessResponseReturnMap(response);
@@ -93,7 +93,7 @@ public class CustomRulesRestIT extends AbstractRestServiceTest {
 		crlc.setValue("dummyguid");
 		CustomRuleQuery.getCustomRuleSearchCriteria().add(crlc);
 		CustomRuleQuery.setDynamic(true);
-		final HttpResponse response = Request.Post(getBaseUrl() + "rules/rest/customrules/listByQuery")
+		final HttpResponse response = Request.Post(getBaseUrl() + "movement-rules/rest/customrules/listByQuery")
 				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken())
 				.bodyByteArray(writeValueAsString(CustomRuleQuery).getBytes()).execute().returnResponse();
 		Map<String, Object> dataMap = checkSuccessResponseReturnMap(response);
@@ -109,13 +109,12 @@ public class CustomRulesRestIT extends AbstractRestServiceTest {
 	//This query is going to return a server error (500) since we dont have a custom rule with the guid "guid" (heck we dont have any custom rules whatsoever......)
 	@Test
 	public void getCustomRuleByGuidTest() throws Exception {
-		final HttpResponse response = Request.Get(getBaseUrl() + "rules/rest/customrules/guid")
+		final HttpResponse response = Request.Get(getBaseUrl() + "movement-rules/rest/customrules/guid")
 				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken()).execute()
 				.returnResponse();
 		//internal server error aka 500
-		assertEquals(HttpStatus.SC_INTERNAL_SERVER_ERROR, response.getStatusLine().getStatusCode());
-
-
+		String responseCode = returnErrorResponse(response);
+		assertEquals("521", responseCode);
 	}
 
 	/**
@@ -126,11 +125,12 @@ public class CustomRulesRestIT extends AbstractRestServiceTest {
 	//this one is trying to delete a rule that does not exist, causing the server to respond with 500
 	@Test
 	public void deleteCustomRuleTest() throws Exception {
-		final HttpResponse response = Request.Delete(getBaseUrl() + "rules/rest/customrules/guid")
+		final HttpResponse response = Request.Delete(getBaseUrl() + "movement-rules/rest/customrules/guid")
 				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken()).execute()
 				.returnResponse();
 		//internal server error aka 500
-		assertEquals(HttpStatus.SC_INTERNAL_SERVER_ERROR, response.getStatusLine().getStatusCode());
+		String responseCode = returnErrorResponse(response);
+        assertEquals("521", responseCode);
 	}
 
 	/**
@@ -142,10 +142,10 @@ public class CustomRulesRestIT extends AbstractRestServiceTest {
 	@Test
 	public void updateSubscriptionTest() throws Exception {
 		UpdateSubscriptionType updateSubscriptionType = new UpdateSubscriptionType();
-		final HttpResponse response = Request.Post(getBaseUrl() + "rules/rest/customrules/subscription")
+		final HttpResponse response = Request.Post(getBaseUrl() + "movement-rules/rest/customrules/subscription")
 				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken())
 				.bodyByteArray(writeValueAsString(updateSubscriptionType).getBytes()).execute().returnResponse();
-		assertEquals(HttpStatus.SC_INTERNAL_SERVER_ERROR, response.getStatusLine().getStatusCode());
+		checkErrorResponse(response);
 	}
 
 	/**
@@ -157,10 +157,9 @@ public class CustomRulesRestIT extends AbstractRestServiceTest {
 	@Test
 	public void updateTest() throws Exception {
 		CustomRuleType customRuleType = new CustomRuleType();
-		final HttpResponse response = Request.Put(getBaseUrl() + "rules/rest/customrules/")
+		final HttpResponse response = Request.Put(getBaseUrl() + "movement-rules/rest/customrules/")
 				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken())
 				.bodyByteArray(writeValueAsString(customRuleType).getBytes()).execute().returnResponse();
-		assertEquals(HttpStatus.SC_INTERNAL_SERVER_ERROR, response.getStatusLine().getStatusCode());
+		checkErrorResponse(response);
 	}
-
 }

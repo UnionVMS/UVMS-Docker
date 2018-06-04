@@ -64,12 +64,12 @@ public class CustomRuleBuilder {
 
     public CustomRuleBuilder rule(CriteriaType criteriaType, SubCriteriaType subCriteriaType, ConditionType conditionType, String value) {
         CustomRuleSegmentType segment = new CustomRuleSegmentType();
-        segment.setStartOperator("");
+        segment.setStartOperator("(");
         segment.setCriteria(criteriaType);
         segment.setSubCriteria(subCriteriaType);
         segment.setCondition(conditionType);
         segment.setValue(value);
-        segment.setEndOperator("");
+        segment.setEndOperator(")");
         segment.setLogicBoolOperator(LogicOperatorType.NONE);
         segment.setOrder(String.valueOf(segmentOrder));
         segmentOrder++;

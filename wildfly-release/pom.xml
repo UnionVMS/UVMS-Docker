@@ -44,8 +44,8 @@
 
         <!-- app modules -->
         <dependency>
-            <groupId>eu.europa.ec.fisheries.uvms.rules</groupId>
-            <artifactId>rules-module</artifactId>
+            <groupId>eu.europa.ec.fisheries.uvms.movement-rules</groupId>
+            <artifactId>movement-rules-module</artifactId>
             <type>ear</type>
             <version>${unionvms.project.rules.module}</version>
         </dependency>
@@ -210,7 +210,7 @@
                                             <zipfileset dir="${project.basedir}/target/dockerfile/jboss-deployment/reporting" includes="*.xml" prefix="META-INF" />
                                         </jar>
 
-                                        <jar destfile="${project.basedir}/target/dockerfile/deployments/rules-module-${unionvms.project.rules.module}.ear" update="true">
+                                        <jar destfile="${project.basedir}/target/dockerfile/deployments/movement-rules-module-${unionvms.project.rules.module}.ear" update="true">
                                             <zipfileset dir="${project.basedir}/target/dockerfile/jboss-deployment/rules" includes="*.xml" prefix="META-INF" />
                                         </jar>
 

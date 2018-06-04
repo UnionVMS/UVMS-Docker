@@ -58,7 +58,7 @@ public class RulesTicketRestIT extends AbstractRestServiceTest {
 		ticketListCriteria.setKey(TicketSearchKey.STATUS);
 		ticketListCriteria.setValue("Open");
 		ticketQuery.getTicketSearchCriteria().add(ticketListCriteria);
-		final HttpResponse response = Request.Post(getBaseUrl() + "rules/rest/tickets/list/" + URLEncoder.encode("vms_admin_com"))
+		final HttpResponse response = Request.Post(getBaseUrl() + "movement-rules/rest/tickets/list/" + URLEncoder.encode("vms_admin_com"))
 				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken())
 				.bodyByteArray(writeValueAsString(ticketQuery).getBytes()).execute().returnResponse();
 		Map<String, Object> dataMap = checkSuccessResponseReturnMap(response);
@@ -75,7 +75,7 @@ public class RulesTicketRestIT extends AbstractRestServiceTest {
 	public void getTicketsByMovementsTest() throws Exception {
 	    ArrayList<String> list = new ArrayList<String>();
 	    list.add("dummyguid");
-		final HttpResponse response = Request.Post(getBaseUrl() + "rules/rest/tickets/listByMovements")
+		final HttpResponse response = Request.Post(getBaseUrl() + "movement-rules/rest/tickets/listByMovements")
 				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken())
 				.bodyByteArray(writeValueAsString(list).getBytes()).execute().returnResponse();
         Map<String, Object> dataMap = checkSuccessResponseReturnMap(response);
@@ -91,7 +91,7 @@ public class RulesTicketRestIT extends AbstractRestServiceTest {
 	public void countTicketsByMovementsTest() throws Exception {
         ArrayList<String> list = new ArrayList<String>();
         list.add("dummyguid");
-		final HttpResponse response = Request.Post(getBaseUrl() + "rules/rest/tickets/countByMovements")
+		final HttpResponse response = Request.Post(getBaseUrl() + "movement-rules/rest/tickets/countByMovements")
 				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken())
 				.bodyByteArray(writeValueAsString(list).getBytes()).execute().returnResponse();
 		checkSuccessResponseReturnInt(response);
@@ -121,10 +121,10 @@ public class RulesTicketRestIT extends AbstractRestServiceTest {
 		ticketType.setUpdated(new Date().toString());
 		ticketType.setUpdatedBy("dummy updater");
 
-		final HttpResponse response = Request.Put(getBaseUrl() + "rules/rest/tickets/status")
+		final HttpResponse response = Request.Put(getBaseUrl() + "movement-rules/rest/tickets/status")
 				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken())
 				.bodyByteArray(writeValueAsString(ticketType).getBytes()).execute().returnResponse();
-        assertEquals(HttpStatus.SC_INTERNAL_SERVER_ERROR, response.getStatusLine().getStatusCode());
+		checkErrorResponse(response);
 	}
 
 	/**
@@ -145,7 +145,7 @@ public class RulesTicketRestIT extends AbstractRestServiceTest {
         ticketListCriteria.setKey(TicketSearchKey.STATUS);
         ticketListCriteria.setValue("Open");
         ticketQuery.getTicketSearchCriteria().add(ticketListCriteria);
-		final HttpResponse response = Request.Post(getBaseUrl() + "rules/rest/tickets/status/loggedInUser/OPEN")
+		final HttpResponse response = Request.Post(getBaseUrl() + "movement-rules/rest/tickets/status/loggedInUser/OPEN")
 				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken())
 				.bodyByteArray(writeValueAsString(ticketQuery).getBytes()).execute().returnResponse();
 		checkSuccessResponseReturnList(response,ArrayList.class);
@@ -160,10 +160,10 @@ public class RulesTicketRestIT extends AbstractRestServiceTest {
 	//no tickets so this one is going to return a 500
 	@Test
 	public void getTicketByGuidTest() throws Exception {
-		final HttpResponse response = Request.Get(getBaseUrl() + "rules/rest/tickets/guid")
+		final HttpResponse response = Request.Get(getBaseUrl() + "movement-rules/rest/tickets/guid")
 				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken()).execute()
 				.returnResponse();
-        assertEquals(HttpStatus.SC_INTERNAL_SERVER_ERROR, response.getStatusLine().getStatusCode());
+		checkErrorResponse(response);
 	}
 
 	/**
@@ -174,7 +174,7 @@ public class RulesTicketRestIT extends AbstractRestServiceTest {
 	 */
 	@Test
 	public void getNumberOfOpenTicketReportsTest() throws Exception {
-		final HttpResponse response = Request.Get(getBaseUrl() + "rules/rest/tickets/countopen/" +URLEncoder.encode("vms_admin_com"))
+		final HttpResponse response = Request.Get(getBaseUrl() + "movement-rules/rest/tickets/countopen/" +URLEncoder.encode("vms_admin_com"))
 				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken()).execute()
 				.returnResponse();
 		Integer numberOpenTickets = checkSuccessResponseReturnType(response,Integer.class);
@@ -188,7 +188,7 @@ public class RulesTicketRestIT extends AbstractRestServiceTest {
 	 */
 	@Test
 	public void getNumberOfAssetsNotSendingTest() throws Exception {
-		final HttpResponse response = Request.Get(getBaseUrl() + "rules/rest/tickets/countAssetsNotSending")
+		final HttpResponse response = Request.Get(getBaseUrl() + "movement-rules/rest/tickets/countAssetsNotSending")
 				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken()).execute()
 				.returnResponse();
 		Integer numberAssetsNotSending = checkSuccessResponseReturnType(response,Integer.class);

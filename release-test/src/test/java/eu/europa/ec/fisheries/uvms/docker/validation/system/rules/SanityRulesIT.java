@@ -15,7 +15,6 @@ import static org.hamcrest.CoreMatchers.is;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
-import org.junit.Ignore;
 import org.junit.Test;
 import eu.europa.ec.fisheries.schema.rules.customrule.v1.SanityRuleType;
 import eu.europa.ec.fisheries.uvms.docker.validation.asset.AssetTestHelper;
@@ -29,7 +28,6 @@ import eu.europa.ec.fisheries.wsdl.asset.types.AssetIdType;
 import un.unece.uncefact.data.standard.fluxvesselpositionmessage._4.FLUXVesselPositionMessage;
 import xeu.bridge_connector.v1.RequestType;
 
-@Ignore // Sanity rules are not working in Rules 3.0.31
 public class SanityRulesIT extends AbstractRestServiceTest {
     
     @Test
