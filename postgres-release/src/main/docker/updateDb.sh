@@ -41,7 +41,7 @@ psql -U reporting -d db71u --single-transaction -q -f /var/lib/postgresql/eu.eur
 echo "Running subscription.sql to create tables and init data"
 psql -U subscription -d db71u --single-transaction -q -f /var/lib/postgresql/eu.europa.ec.fisheries.uvms.subscription.liquibase-${unionvms.project.subscription.module}.sql >/dev/null
 echo "Running sales.sql to create tables and init data"
-psql -U subscription -d db71u --single-transaction -q -f /var/lib/postgresql/eu.europa.ec.fisheries.uvms.sales.liquibase-${unionvms.project.sales.module}.sql >/dev/null
+psql -U sales -d db71u --single-transaction -q -f /var/lib/postgresql/eu.europa.ec.fisheries.uvms.sales.liquibase-${unionvms.project.sales.module}.sql >/dev/null
 echo "Completed module.sql"
 
 echo "Docker specific update"

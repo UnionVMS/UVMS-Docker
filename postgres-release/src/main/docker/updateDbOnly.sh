@@ -33,5 +33,5 @@ psql -U reporting -d $1 --host=$2 --single-transaction -q -f eu.europa.ec.fisher
 echo "Running subscription.sql to create tables and init data"
 psql -U subscription -d $1 --host=$2 --single-transaction -q -f eu.europa.ec.fisheries.uvms.subscription.liquibase-${unionvms.project.subscription.module}.sql >/dev/null
 echo "Running sales.sql to create tables and init data"
-psql -U subscription -d $1 --host=$2 --single-transaction -q -f eu.europa.ec.fisheries.uvms.sales.liquibase-${unionvms.project.sales.module}.sql >/dev/null
+psql -U sales -d $1 --host=$2 --single-transaction -q -f eu.europa.ec.fisheries.uvms.sales.liquibase-${unionvms.project.sales.module}.sql >/dev/null
 echo "Completed module.sql"
