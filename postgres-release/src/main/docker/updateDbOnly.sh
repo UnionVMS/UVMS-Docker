@@ -30,6 +30,8 @@ echo "Running activity.sql to create tables and init data"
 psql -U activity -d $1 --host=$2 --single-transaction -q -f eu.europa.ec.fisheries.uvms.activity.liquibase-${unionvms.project.activity.module}.sql >/dev/null
 echo "Running reporting.sql to create tables and init data"
 psql -U reporting -d $1 --host=$2 --single-transaction -q -f eu.europa.ec.fisheries.uvms.reporting.liquibase-${unionvms.project.reporting.db.module}.sql >/dev/null
-echo "Completed module.sql"
+echo "Running subscription.sql to create tables and init data"
 psql -U subscription -d $1 --host=$2 --single-transaction -q -f eu.europa.ec.fisheries.uvms.subscription.liquibase-${unionvms.project.subscription.module}.sql >/dev/null
-echo "Completed subscription module.sql"
+echo "Running sales.sql to create tables and init data"
+psql -U subscription -d $1 --host=$2 --single-transaction -q -f eu.europa.ec.fisheries.uvms.sales.liquibase-${unionvms.project.sales.module}.sql >/dev/null
+echo "Completed module.sql"
