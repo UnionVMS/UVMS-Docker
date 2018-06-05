@@ -12,6 +12,7 @@
 		<dependency name="reporting-module-${unionvms.project.reporting.module}.ear" />
 		<dependency name="mdr-module-${unionvms.project.mdr.module}.ear" />
 		<dependency name="activity-module-postgres-${unionvms.project.activity.module}.ear" />
+		<dependency name="sales-module-${unionvms.project.sales.module}.ear" />
 		<dependency name="naf-module-${unionvms.project.plugins.naf}.ear" />
 		<dependency name="flux-module-${unionvms.project.plugins.flux}.ear" />
 		<dependency name="inmarsat-module-${unionvms.project.plugins.inmarsat}.ear" />
