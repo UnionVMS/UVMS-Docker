@@ -18,6 +18,7 @@ import java.util.ArrayList;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
 import org.apache.http.client.fluent.Request;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import eu.europa.ec.fisheries.uvms.docker.validation.common.AbstractRestServiceTest;
@@ -30,6 +31,7 @@ import eu.europa.ec.fisheries.uvms.reporting.service.dto.rules.AlarmMovementList
 
 public class AlarmRestIT extends AbstractRestServiceTest {
 
+    @Ignore
 	@Test
 	public void getAlarmsTest() throws Exception {
 		AlarmMovementList alarmMovementList = new AlarmMovementList();

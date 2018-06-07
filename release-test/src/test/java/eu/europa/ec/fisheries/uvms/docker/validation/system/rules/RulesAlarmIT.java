@@ -17,6 +17,7 @@ import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
+import java.util.TimeZone;
 import javax.jms.Message;
 import javax.jms.TextMessage;
 import org.junit.BeforeClass;
@@ -432,7 +433,6 @@ public class RulesAlarmIT extends AbstractRestServiceTest {
         CustomRuleHelper.removeCustomRule(createdIrcsRule.getGuid());
     }
     
-    @Ignore
     @Test
     public void sendEmailIfIrcsDisjunctionMatchesTest() throws Exception {
         Date timestamp = new Date();
@@ -690,7 +690,8 @@ public class RulesAlarmIT extends AbstractRestServiceTest {
 
         Asset asset = AssetTestHelper.createTestAsset();
         
-        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss X");
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss Z");
+        formatter.setTimeZone(TimeZone.getTimeZone("UTC"));
         
         String email = System.currentTimeMillis() + "@mail.com";
         CustomRuleType customRule = CustomRuleBuilder.getBuilder()

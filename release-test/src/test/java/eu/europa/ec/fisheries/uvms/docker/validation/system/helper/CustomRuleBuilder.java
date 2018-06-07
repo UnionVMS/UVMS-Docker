@@ -14,6 +14,7 @@ package eu.europa.ec.fisheries.uvms.docker.validation.system.helper;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.TimeZone;
 import eu.europa.ec.fisheries.schema.rules.customrule.v1.ActionType;
 import eu.europa.ec.fisheries.schema.rules.customrule.v1.AvailabilityType;
 import eu.europa.ec.fisheries.schema.rules.customrule.v1.ConditionType;
@@ -64,12 +65,12 @@ public class CustomRuleBuilder {
 
     public CustomRuleBuilder rule(CriteriaType criteriaType, SubCriteriaType subCriteriaType, ConditionType conditionType, String value) {
         CustomRuleSegmentType segment = new CustomRuleSegmentType();
-        segment.setStartOperator("(");
+        segment.setStartOperator("");
         segment.setCriteria(criteriaType);
         segment.setSubCriteria(subCriteriaType);
         segment.setCondition(conditionType);
         segment.setValue(value);
-        segment.setEndOperator(")");
+        segment.setEndOperator("");
         segment.setLogicBoolOperator(LogicOperatorType.NONE);
         segment.setOrder(String.valueOf(segmentOrder));
         segmentOrder++;
@@ -96,7 +97,8 @@ public class CustomRuleBuilder {
     }
     
     public CustomRuleBuilder interval(Date start, Date end) {
-        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss X");
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss Z");
+        formatter.setTimeZone(TimeZone.getTimeZone("UTC"));
         CustomRuleIntervalType customRuleIntervalType = new CustomRuleIntervalType();
         customRuleIntervalType.setStart(formatter.format(start));
         customRuleIntervalType.setEnd(formatter.format(end));
