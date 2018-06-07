@@ -488,7 +488,7 @@
                          <password>mdr</password>
                      </security>
                  </xa-datasource>
-                 <xa-datasource jta="true" jndi-name="java:jboss/datasources/uvms_sales" pool-name="uvms_sales" enabled="true" use-ccm="true" statistics-enabled="false">
+                 <xa-datasource jta="true" jndi-name="java:/jdbc/uvms_sales" pool-name="jdbc/uvms_sales" enabled="true" use-ccm="true" statistics-enabled="false">
                      <xa-datasource-property name="ServerName">postgres</xa-datasource-property>
                      <xa-datasource-property name="PortNumber">5432</xa-datasource-property>
                      <xa-datasource-property name="DatabaseName">db71u</xa-datasource-property>
