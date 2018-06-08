@@ -21,7 +21,6 @@ import java.util.TimeZone;
 import javax.jms.Message;
 import javax.jms.TextMessage;
 import org.junit.BeforeClass;
-import org.junit.Ignore;
 import org.junit.Test;
 import eu.europa.ec.fisheries.schema.exchange.module.v1.GetServiceListResponse;
 import eu.europa.ec.fisheries.schema.exchange.plugin.types.v1.PluginType;

@@ -16,6 +16,7 @@ import static org.hamcrest.CoreMatchers.nullValue;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.TimeZone;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.fluent.Request;
@@ -48,7 +49,8 @@ public class CustomRuleHelper extends AbstractHelper {
 
         CustomRuleType fetchedCustomRule = checkSuccessResponseReturnObject(response, CustomRuleType.class);
         
-        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss X");
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss Z");
+        formatter.setTimeZone(TimeZone.getTimeZone("UTC"));
         Date lastTriggered = formatter.parse(fetchedCustomRule.getLastTriggered());
         assertNotNull(lastTriggered);
         assertTrue(lastTriggered.getTime() >= dateFrom.getTime());
