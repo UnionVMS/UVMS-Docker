@@ -350,6 +350,29 @@
                         <password>rules</password>
                     </security>
                 </xa-datasource>
+                <xa-datasource jta="true" jndi-name="java:/jdbc/uvms_movementrules" pool-name="jdbc/uvms_movementrules" enabled="true" use-ccm="true" statistics-enabled="false">
+                    <xa-datasource-property name="ServerName">postgres</xa-datasource-property>
+    				<xa-datasource-property name="PortNumber">5432</xa-datasource-property>
+    				<xa-datasource-property name="DatabaseName">db71u</xa-datasource-property>
+
+                    <driver>postgresql</driver>
+                    <xa-pool>
+				        <min-pool-size>2</min-pool-size>
+				        <initial-pool-size>2</initial-pool-size>
+				        <max-pool-size>20</max-pool-size>
+				        <prefill>true</prefill>
+				    </xa-pool>
+				    <validation>
+				        <valid-connection-checker
+				                class-name="org.jboss.jca.adapters.jdbc.extensions.postgres.PostgreSQLValidConnectionChecker"></valid-connection-checker>
+				        <exception-sorter
+				                class-name="org.jboss.jca.adapters.jdbc.extensions.postgres.PostgreSQLExceptionSorter"></exception-sorter>
+				    </validation>
+                    <security>
+                        <user-name>movementrules</user-name>
+                        <password>movementrules</password>
+                    </security>
+                </xa-datasource>
                 <xa-datasource jta="true" jndi-name="java:jboss/datasources/uvms_usm" pool-name="uvms_usm" enabled="true" use-ccm="true" statistics-enabled="false">
                     <xa-datasource-property name="ServerName">postgres</xa-datasource-property>
     				<xa-datasource-property name="PortNumber">5432</xa-datasource-property>
@@ -830,6 +853,11 @@
                                 UVMSRulesEvent
                             </config-property>
                         </admin-object>
+                        <admin-object class-name="org.apache.activemq.command.ActiveMQQueue" jndi-name="java:/jms/queue/UVMSMovementRulesEvent" use-java-context="true" pool-name="UVMSMovementRulesEvent">
+                            <config-property name="PhysicalName">
+                                UVMSMovementRulesEvent
+                            </config-property>
+                        </admin-object>
                         <admin-object class-name="org.apache.activemq.command.ActiveMQQueue" jndi-name="java:/jms/queue/UVMSUser" use-java-context="true" pool-name="UVMSUser">
                             <config-property name="PhysicalName">
                                 UVMSUser
@@ -873,6 +901,11 @@
                         <admin-object class-name="org.apache.activemq.command.ActiveMQQueue" jndi-name="java:/jms/queue/UVMSRules" use-java-context="true" pool-name="UVMSRules">
                             <config-property name="PhysicalName">
                                 UVMSRules
+                            </config-property>
+                        </admin-object>
+                        <admin-object class-name="org.apache.activemq.command.ActiveMQQueue" jndi-name="java:/jms/queue/UVMSMovementRules" use-java-context="true" pool-name="UVMSMovementRules">
+                            <config-property name="PhysicalName">
+                                UVMSMovementRules
                             </config-property>
                         </admin-object>
                         <admin-object class-name="org.apache.activemq.command.ActiveMQQueue" jndi-name="java:/jms/queue/UVMSUserEvent" use-java-context="true" pool-name="UVMSUserEvent">

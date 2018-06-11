@@ -75,6 +75,14 @@ GRANT CONNECT ON DATABASE db71u TO rules;
 GRANT SELECT, INSERT, UPDATE, DELETE ON ALL TABLES IN SCHEMA rules TO rules; 
 ALTER SCHEMA rules OWNER TO rules; 
 
+-- MovementRules
+CREATE USER movementrules WITH PASSWORD 'movementrules'; 
+CREATE SCHEMA AUTHORIZATION movementrules; 
+ALTER USER movementrules SET search_path = movementrules, public; 
+GRANT CONNECT ON DATABASE db71u TO movementrules; 
+GRANT SELECT, INSERT, UPDATE, DELETE ON ALL TABLES IN SCHEMA movementrules TO movementrules; 
+ALTER SCHEMA movementrules OWNER TO movementrules; 
+
 -- Spatial
 CREATE USER spatial WITH PASSWORD 'spatial'; 
 CREATE SCHEMA AUTHORIZATION spatial; 
