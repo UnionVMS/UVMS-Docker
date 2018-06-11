@@ -2,5 +2,6 @@
 	<jboss-deployment-dependencies xmlns="urn:jboss:deployment-dependencies:1.0">
 		<dependency name="user-module-${unionvms.project.user.module}.ear" />
 		<dependency name="config-module-${unionvms.project.config.module}.ear" />
+		<dependency name="mdr-module-${unionvms.project.mdr.module}.ear" />
 	</jboss-deployment-dependencies>
 </jboss>
