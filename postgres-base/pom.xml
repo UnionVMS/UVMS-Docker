@@ -7,9 +7,7 @@
 		<version>3.25.1-SNAPSHOT</version>
 		<relativePath>../pom.xml</relativePath>
 	</parent>
-	<groupId>eu.europa.ec.fisheries.uvms.docker</groupId>
 	<artifactId>uvms-docker-postgres-base</artifactId>
-	<version>3.25.1-SNAPSHOT</version>
 	<packaging>pom</packaging>
 	<name>uvms-docker-postgres-base</name>
 	<build>
