@@ -11,7 +11,7 @@
 
 	<groupId>eu.europa.ec.fisheries.uvms.docker</groupId>
 	<artifactId>uvms-docker</artifactId>
-	<version>3.25.1-SNAPSHOT</version>
+	<version>3.25.2-SNAPSHOT</version>
 	<packaging>pom</packaging>
 	<name>uvms-docker</name>
 
@@ -26,7 +26,8 @@
 		<unionvms.project.reporting.db.module>1.0.4</unionvms.project.reporting.db.module>
 		<unionvms.project.spatial.db.module>1.0.5</unionvms.project.spatial.db.module>
 		<unionvms.project.user.module>2.0.9</unionvms.project.user.module>
-		<unionvms.project.rules.module>0.9-SNAPSHOT</unionvms.project.rules.module>
+		<unionvms.project.rules.module>3.0.31</unionvms.project.rules.module>
+		<unionvms.project.movementrules.module>0.9.1</unionvms.project.movementrules.module>
 		<unionvms.project.movement.module>4.0.13</unionvms.project.movement.module>
 		<unionvms.project.mobileterminal.module>4.0.9</unionvms.project.mobileterminal.module>
 		<unionvms.project.exchange.module>4.0.22-SNAPSHOT</unionvms.project.exchange.module>
@@ -67,7 +68,7 @@
 						<configuration>
 							<excludeProperties>wildfly.hibernate.module.hibernate.version,wildfly.hibernate.module.spatial.version,wildfly.hibernate.module.jts.version,wildfly.postgres.module.postgis.version,wildfly.postgres.module.postgres.version,wildfly.activemq.rar.version</excludeProperties>
 							<includeProperties>
-								unionvms.project.spatial.db.module,unionvms.project.reporting.db.module,unionvms.project.unionvms.web.version,unionvms.project.mapfishprint.version,unionvms.project.geoserver.version,unionvms.project.user.module,unionvms.project.rules.module,unionvms.project.movement.module,unionvms.project.mobileterminal.module,unionvms.project.exchange.module,unionvms.project.reporting.module,unionvms.project.subscription.module,unionvms.project.spatial.module,unionvms.project.config.module,unionvms.project.audit.module,unionvms.project.asset.module,unionvms.project.activity.module,unionvms.project.mdr.module,unionvms.project.plugins.naf,unionvms.project.plugins.flux,unionvms.project.plugins.inmarsat,unionvms.project.plugins.siriusone</includeProperties>
+								unionvms.project.spatial.db.module,unionvms.project.reporting.db.module,unionvms.project.unionvms.web.version,unionvms.project.mapfishprint.version,unionvms.project.geoserver.version,unionvms.project.user.module,unionvms.project.rules.module,unionvms.project.movementrules.module,unionvms.project.movement.module,unionvms.project.mobileterminal.module,unionvms.project.exchange.module,unionvms.project.reporting.module,unionvms.project.subscription.module,unionvms.project.spatial.module,unionvms.project.config.module,unionvms.project.audit.module,unionvms.project.asset.module,unionvms.project.activity.module,unionvms.project.mdr.module,unionvms.project.plugins.naf,unionvms.project.plugins.flux,unionvms.project.plugins.inmarsat,unionvms.project.plugins.siriusone</includeProperties>
 							<allowSnapshots>true</allowSnapshots>
 						</configuration>
 					</plugin>
@@ -165,6 +166,18 @@
 				<artifactId>liquibase</artifactId>
 				<type>sql</type>
 				<version>${unionvms.project.movement.module}</version>
+				<exclusions>
+					<exclusion>
+						<groupId>com.oracle</groupId>
+						<artifactId>ojdbc6</artifactId>
+					</exclusion>
+				</exclusions>
+			</dependency>
+			<dependency>
+				<groupId>eu.europa.ec.fisheries.uvms.movement-rules</groupId>
+				<artifactId>liquibase</artifactId>
+				<type>sql</type>
+				<version>${unionvms.project.movementrules.module}</version>
 				<exclusions>
 					<exclusion>
 						<groupId>com.oracle</groupId>
@@ -382,6 +395,12 @@
 				<artifactId>movement-rules-module</artifactId>
 				<type>ear</type>
 				<version>${unionvms.project.rules.module}</version>
+			</dependency>
+			<dependency>
+				<groupId>eu.europa.ec.fisheries.uvms.movement-rules</groupId>
+				<artifactId>movement-rules-module</artifactId>
+				<type>ear</type>
+				<version>${unionvms.project.movementrules.module}</version>
 			</dependency>
 			<dependency>
 				<groupId>eu.europa.ec.fisheries.uvms.activity</groupId>
