@@ -17,7 +17,7 @@
 		<wildfly.hibernate.module.spatial.version>4.3</wildfly.hibernate.module.spatial.version>
 		<wildfly.hibernate.module.jts.version>1.13</wildfly.hibernate.module.jts.version>		
 		<wildfly.postgres.module.postgis.version>1.5.3</wildfly.postgres.module.postgis.version>
-		<wildfly.postgres.module.postgres.version>42.1.4.jre7</wildfly.postgres.module.postgres.version>
+		<wildfly.postgres.module.postgres.version>42.2.2</wildfly.postgres.module.postgres.version>
 		<wildfly.activemq.rar.version>5.14.5</wildfly.activemq.rar.version>
 	</properties>
 	<dependencies>
