@@ -27,7 +27,7 @@
 		<dependency>
 			<groupId>org.apache.activemq</groupId>
 			<artifactId>activemq-client</artifactId>
-			<version>5.14.5</version>			
+			<version>5.15.4</version>			
 		</dependency>
 		<dependency>
 			<artifactId>mobileterminal-model</artifactId>
