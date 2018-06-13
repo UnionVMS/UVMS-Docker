@@ -691,7 +691,7 @@ public class RulesAlarmIT extends AbstractRestServiceTest {
 
         Asset asset = AssetTestHelper.createTestAsset();
         
-        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss X");
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss Z");
         
         String email = System.currentTimeMillis() + "@mail.com";
         CustomRuleType customRule = CustomRuleBuilder.getBuilder()

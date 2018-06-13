@@ -213,7 +213,7 @@ public class MovementHelper extends AbstractHelper {
 
 		int movementTimeDeltaInMillis = 30000;
 		List<LatLong> rutt = new ArrayList<>();
-		long ts = System.currentTimeMillis();
+		long ts = System.currentTimeMillis() - movementTimeDeltaInMillis * numberPositions;
 
 		while (true) {
 
