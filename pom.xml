@@ -26,7 +26,7 @@
 		<unionvms.project.reporting.db.module>1.0.4</unionvms.project.reporting.db.module>
 		<unionvms.project.spatial.db.module>1.0.5</unionvms.project.spatial.db.module>
 		<unionvms.project.user.module>2.0.10</unionvms.project.user.module>
-		<unionvms.project.rules.module>3.0.33</unionvms.project.rules.module>
+		<unionvms.project.rules.module>3.0.34-SNAPSHOT</unionvms.project.rules.module>
 		<unionvms.project.movementrules.module>0.9.1</unionvms.project.movementrules.module>
 		<unionvms.project.movement.module>4.0.14</unionvms.project.movement.module>
 		<unionvms.project.mobileterminal.module>4.0.10</unionvms.project.mobileterminal.module>
