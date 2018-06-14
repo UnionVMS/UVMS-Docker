@@ -432,7 +432,7 @@ public class RulesAlarmIT extends AbstractRestServiceTest {
         CustomRuleHelper.removeCustomRule(createdIrcsRule.getGuid());
     }
     
-    
+    @Ignore // enable when rules > 3.0.33
     @Test
     public void sendEmailIfIrcsDisjunctionMatchesTest() throws Exception {
         Date timestamp = new Date();
@@ -481,6 +481,7 @@ public class RulesAlarmIT extends AbstractRestServiceTest {
         CustomRuleHelper.removeCustomRule(createdCustomRule.getGuid());
     }
     
+    @Ignore // enable when rules > 3.0.33
     @Test
     public void sendEmailIfIrcsCfrConjunctionMatchesTest() throws Exception {
         Date timestamp = new Date();
@@ -514,7 +515,7 @@ public class RulesAlarmIT extends AbstractRestServiceTest {
         CustomRuleHelper.removeCustomRule(createdCustomRule.getGuid());
     }
     
-    @Ignore
+    @Ignore // enable when rules > 3.0.33
     @Test
     public void doNotTriggerRuleIfIrcsCfrConjunctionNotMatchesTest() throws Exception {
         Date timestamp = new Date();
