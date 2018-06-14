@@ -30,7 +30,6 @@ import un.unece.uncefact.data.standard.fluxresponsemessage._6.FLUXResponseMessag
  * The Class RulesRestIT.
  */
 
-@Ignore
 public class RulesRestIT extends AbstractRestServiceTest {
 
 	/**
@@ -41,7 +40,7 @@ public class RulesRestIT extends AbstractRestServiceTest {
 	//Changed the expected value to be what the system actually responds with on success
 	@Test
 	public void initializeRulesTest() throws Exception {
-		final HttpResponse response = Request.Get(getBaseUrl() + "movement-rules/rest/rules/reinitialize")
+		final HttpResponse response = Request.Get(getBaseUrl() + "rules/rest/rules/reinitialize")
 				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken()).execute()
 				.returnResponse();
 		String responseMessage = IOUtils.toString(response.getEntity().getContent(), "UTF-8");
@@ -57,7 +56,7 @@ public class RulesRestIT extends AbstractRestServiceTest {
 	@Ignore
 	public void evaluateFLUXFAReportMessageTest() throws Exception {
 		FLUXFAReportMessage fluxfaReportMessage = new FLUXFAReportMessage();
-		final HttpResponse response = Request.Post(getBaseUrl() + "movement-rules/rest/rules/evaluate/fluxfareportmessage")
+		final HttpResponse response = Request.Post(getBaseUrl() + "rules/rest/rules/evaluate/fluxfareportmessage")
 				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken())
 				.bodyByteArray(writeValueAsString(fluxfaReportMessage).getBytes()).execute().returnResponse();
 		Map<String, Object> dataMap = checkSuccessResponseReturnMap(response);
@@ -72,7 +71,7 @@ public class RulesRestIT extends AbstractRestServiceTest {
 	@Ignore
 	public void evaluateFLUXFAQueryMessageMessageTest() throws Exception {
 		FLUXFAQueryMessage fluxfaQueryMessage = new FLUXFAQueryMessage();
-		final HttpResponse response = Request.Post(getBaseUrl() + "movement-rules/rest/rules/evaluate/fluxfaquerymessage")
+		final HttpResponse response = Request.Post(getBaseUrl() + "rules/rest/rules/evaluate/fluxfaquerymessage")
 				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken())
 				.bodyByteArray(writeValueAsString(fluxfaQueryMessage).getBytes()).execute().returnResponse();
 		Map<String, Object> dataMap = checkSuccessResponseReturnMap(response);
@@ -87,7 +86,7 @@ public class RulesRestIT extends AbstractRestServiceTest {
 	@Ignore
 	public void evaluateFLUXResponseMessageTest() throws Exception {
 		FLUXResponseMessage fluxResponseMessage = new FLUXResponseMessage();
-		final HttpResponse response = Request.Post(getBaseUrl() + "movement-rules/rest/rules/evaluate/fluxfaResponsemessage")
+		final HttpResponse response = Request.Post(getBaseUrl() + "rules/rest/rules/evaluate/fluxfaResponsemessage")
 				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken())
 				.bodyByteArray(writeValueAsString(fluxResponseMessage).getBytes()).execute().returnResponse();
 		Map<String, Object> dataMap = checkSuccessResponseReturnMap(response);

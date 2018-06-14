@@ -31,7 +31,6 @@ import eu.europa.ec.fisheries.uvms.reporting.service.dto.rules.AlarmMovementList
 
 public class AlarmRestIT extends AbstractRestServiceTest {
 
-    @Ignore
 	@Test
 	public void getAlarmsTest() throws Exception {
 		AlarmMovementList alarmMovementList = new AlarmMovementList();

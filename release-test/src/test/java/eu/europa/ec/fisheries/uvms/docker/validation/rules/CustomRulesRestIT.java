@@ -114,7 +114,7 @@ public class CustomRulesRestIT extends AbstractRestServiceTest {
 				.returnResponse();
 		//internal server error aka 500
 		String responseCode = returnErrorResponse(response);
-		assertEquals("521", responseCode);
+		assertEquals("500", responseCode);
 	}
 
 	/**
@@ -130,7 +130,7 @@ public class CustomRulesRestIT extends AbstractRestServiceTest {
 				.returnResponse();
 		//internal server error aka 500
 		String responseCode = returnErrorResponse(response);
-        assertEquals("521", responseCode);
+        assertEquals("500", responseCode);
 	}
 
 	/**
@@ -160,6 +160,7 @@ public class CustomRulesRestIT extends AbstractRestServiceTest {
 		final HttpResponse response = Request.Put(getBaseUrl() + "movement-rules/rest/customrules/")
 				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken())
 				.bodyByteArray(writeValueAsString(customRuleType).getBytes()).execute().returnResponse();
-		checkErrorResponse(response);
+		String responseCode = returnErrorResponse(response);
+        assertEquals("511", responseCode);
 	}
 }
