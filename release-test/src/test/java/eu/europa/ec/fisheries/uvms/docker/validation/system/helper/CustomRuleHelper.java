@@ -49,7 +49,7 @@ public class CustomRuleHelper extends AbstractHelper {
 
         CustomRuleType fetchedCustomRule = checkSuccessResponseReturnObject(response, CustomRuleType.class);
         
-        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss X");
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss Z");
         Date lastTriggered = formatter.parse(fetchedCustomRule.getLastTriggered());
         
         assertTrue(lastTriggered.getTime() >= dateFrom.getTime());

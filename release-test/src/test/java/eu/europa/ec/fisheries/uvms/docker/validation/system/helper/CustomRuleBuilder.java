@@ -96,7 +96,7 @@ public class CustomRuleBuilder {
     }
     
     public CustomRuleBuilder interval(Date start, Date end) {
-        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss X");
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss Z");
         CustomRuleIntervalType customRuleIntervalType = new CustomRuleIntervalType();
         customRuleIntervalType.setStart(formatter.format(start));
         customRuleIntervalType.setEnd(formatter.format(end));

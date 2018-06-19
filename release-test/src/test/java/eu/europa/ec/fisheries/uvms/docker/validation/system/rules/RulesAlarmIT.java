@@ -432,7 +432,6 @@ public class RulesAlarmIT extends AbstractRestServiceTest {
         CustomRuleHelper.removeCustomRule(createdIrcsRule.getGuid());
     }
     
-    
     @Test
     public void sendEmailIfIrcsDisjunctionMatchesTest() throws Exception {
         Date timestamp = new Date();
@@ -514,7 +513,6 @@ public class RulesAlarmIT extends AbstractRestServiceTest {
         CustomRuleHelper.removeCustomRule(createdCustomRule.getGuid());
     }
     
-    @Ignore
     @Test
     public void doNotTriggerRuleIfIrcsCfrConjunctionNotMatchesTest() throws Exception {
         Date timestamp = new Date();
@@ -691,7 +689,7 @@ public class RulesAlarmIT extends AbstractRestServiceTest {
 
         Asset asset = AssetTestHelper.createTestAsset();
         
-        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss X");
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss Z");
         
         String email = System.currentTimeMillis() + "@mail.com";
         CustomRuleType customRule = CustomRuleBuilder.getBuilder()

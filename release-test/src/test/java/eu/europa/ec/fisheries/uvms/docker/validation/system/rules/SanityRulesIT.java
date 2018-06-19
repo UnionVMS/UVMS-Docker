@@ -29,7 +29,6 @@ import eu.europa.ec.fisheries.wsdl.asset.types.AssetIdType;
 import un.unece.uncefact.data.standard.fluxvesselpositionmessage._4.FLUXVesselPositionMessage;
 import xeu.bridge_connector.v1.RequestType;
 
-@Ignore // Sanity rules are not working in Rules 3.0.31
 public class SanityRulesIT extends AbstractRestServiceTest {
     
     @Test
