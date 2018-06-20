@@ -73,6 +73,12 @@
             <type>ear</type>
             <version>${unionvms.project.reporting.module}</version>
         </dependency>
+        <dependency>
+            <groupId>eu.europa.ec.fisheries.uvms.movement-rules</groupId>
+            <artifactId>movement-rules</artifactId>
+            <type>ear</type>
+            <version>${unionvms.project.movementrules.module}</version>
+        </dependency>
 
         <!-- plugin modules -->
         <dependency>

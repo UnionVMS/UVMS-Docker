@@ -111,7 +111,7 @@ public class MovementHelper extends AbstractHelper {
 
 			MovementBaseType movementBaseType = new MovementBaseType();
 			movementBaseType.setAssetId(assetId);
-			movementBaseType.setConnectId(mobileTerminalType.getConnectId());
+			movementBaseType.setConnectId(testAsset.getEventHistory().getEventId());
 			movementBaseType.setActivity(movementActivityType);
 
 			MovementPoint movementPoint = new MovementPoint();
