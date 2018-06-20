@@ -36,6 +36,7 @@ import eu.europa.ec.fisheries.schema.movement.search.v1.MovementQuery;
 import eu.europa.ec.fisheries.schema.movement.search.v1.RangeCriteria;
 import eu.europa.ec.fisheries.schema.movement.search.v1.RangeKeyType;
 import eu.europa.ec.fisheries.schema.movement.search.v1.SearchKey;
+import eu.europa.ec.fisheries.schema.movement.v1.MovementType;
 import eu.europa.ec.fisheries.uvms.docker.validation.asset.AssetTestHelper;
 import eu.europa.ec.fisheries.uvms.docker.validation.common.AbstractRestServiceTest;
 import eu.europa.ec.fisheries.uvms.docker.validation.mobileterminal.MobileTerminalTestHelper;
@@ -62,7 +63,7 @@ public class MovementMovementRestIT extends AbstractRestServiceTest {
 	 */
 	@Test
 	public void getListByQueryTest() throws Exception {		
-		Map<String, Object> dataMap = movementHelper.getListByQuery(createMovementQuery());
+	    List<MovementType> dataMap = movementHelper.getListByQuery(createMovementQuery());
 		assertNotNull(dataMap);
 	}
 

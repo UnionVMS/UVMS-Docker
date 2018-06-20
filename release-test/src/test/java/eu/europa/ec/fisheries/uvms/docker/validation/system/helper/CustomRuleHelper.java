@@ -12,6 +12,7 @@ copy of the GNU General Public License along with the IFDM Suite. If not, see <h
 package eu.europa.ec.fisheries.uvms.docker.validation.system.helper;
 
 import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.hamcrest.CoreMatchers.nullValue;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
@@ -64,5 +65,13 @@ public class CustomRuleHelper extends AbstractHelper {
         CustomRuleType fetchedCustomRule = checkSuccessResponseReturnObject(response, CustomRuleType.class);
         
         assertThat(fetchedCustomRule.getLastTriggered(), is(nullValue()));
+    }
+    
+    public static void pollTicketCreated() throws ClientProtocolException, IOException {
+        final HttpResponse response = Request.Get(getBaseUrl() + "rules/activity/ticket")
+                .setHeader("Content-Type", "application/json")
+                .execute().returnResponse();
+        
+        assertThat(response.getStatusLine().getStatusCode(), is(200));
     }
 }

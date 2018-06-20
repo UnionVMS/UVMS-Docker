@@ -1,5 +1,7 @@
 package eu.europa.ec.fisheries.uvms.docker.validation.movement;
 
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.notNullValue;
 import java.io.IOException;
 import java.io.StringReader;
 import java.io.StringWriter;
@@ -24,6 +26,8 @@ import org.apache.http.client.fluent.Request;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import eu.europa.ec.fisheries.schema.mobileterminal.types.v1.MobileTerminalType;
 import eu.europa.ec.fisheries.schema.movement.asset.v1.AssetId;
 import eu.europa.ec.fisheries.schema.movement.asset.v1.AssetIdType;
@@ -34,10 +38,12 @@ import eu.europa.ec.fisheries.schema.movement.module.v1.CreateMovementRequest;
 import eu.europa.ec.fisheries.schema.movement.module.v1.CreateMovementResponse;
 import eu.europa.ec.fisheries.schema.movement.module.v1.MovementModuleMethod;
 import eu.europa.ec.fisheries.schema.movement.search.v1.MovementQuery;
+import eu.europa.ec.fisheries.schema.movement.source.v1.GetMovementListByQueryResponse;
 import eu.europa.ec.fisheries.schema.movement.v1.MovementActivityType;
 import eu.europa.ec.fisheries.schema.movement.v1.MovementActivityTypeType;
 import eu.europa.ec.fisheries.schema.movement.v1.MovementBaseType;
 import eu.europa.ec.fisheries.schema.movement.v1.MovementPoint;
+import eu.europa.ec.fisheries.schema.movement.v1.MovementType;
 import eu.europa.ec.fisheries.schema.movement.v1.MovementTypeType;
 import eu.europa.ec.fisheries.uvms.docker.validation.common.AbstractHelper;
 import eu.europa.ec.fisheries.uvms.docker.validation.common.MessageHelper;
@@ -399,14 +405,14 @@ public class MovementHelper extends AbstractHelper {
 		return unMarshallCreateMovementResponse(messageResponse);
 	}
 
-	public Map<String, Object> getListByQuery(MovementQuery movementQuery) throws Exception {
+	public static List<MovementType> getListByQuery(MovementQuery movementQuery) throws Exception {
 
 		final HttpResponse response = Request.Post(getBaseUrl() + "movement/rest/movement/list")
 				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken())
 				.bodyByteArray(writeValueAsString(movementQuery).getBytes()).execute().returnResponse();
 
-		Map<String, Object> dataMap = checkSuccessResponseReturnMap(response);
-		return dataMap;
+		GetMovementListByQueryResponse movementList = checkSuccessResponseReturnObject(response, GetMovementListByQueryResponse.class);
+		return movementList.getMovement();
 	}
 
 	public Map<String, Object> getMinimalListByQuery(MovementQuery movementQuery) throws Exception {
@@ -570,6 +576,13 @@ public class MovementHelper extends AbstractHelper {
 
 		return rutt;
 	}
-
-
+	
+	public static void pollMovementCreated() throws ClientProtocolException, IOException {
+        final HttpResponse response = Request.Get(getBaseUrl() + "movement/activity/movement")
+                .setHeader("Content-Type", "application/json")
+                .execute().returnResponse();
+        
+        assertThat(response.getStatusLine().getStatusCode(), is(200));
+    }
+	
 }

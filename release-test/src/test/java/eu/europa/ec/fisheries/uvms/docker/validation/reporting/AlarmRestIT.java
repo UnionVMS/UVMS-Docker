@@ -13,17 +13,41 @@ copy of the GNU General Public License along with the IFDM Suite. If not, see <h
 */
 package eu.europa.ec.fisheries.uvms.docker.validation.reporting;
 
+import static org.hamcrest.CoreMatchers.is;
+import java.math.BigInteger;
 import java.util.ArrayList;
-
+import java.util.Arrays;
+import java.util.Date;
+import java.util.List;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
 import org.apache.http.client.fluent.Request;
 import org.junit.Ignore;
 import org.junit.Test;
-
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
+import eu.europa.ec.fisheries.schema.movement.search.v1.ListCriteria;
+import eu.europa.ec.fisheries.schema.movement.search.v1.ListPagination;
+import eu.europa.ec.fisheries.schema.movement.search.v1.MovementQuery;
+import eu.europa.ec.fisheries.schema.movement.search.v1.SearchKey;
+import eu.europa.ec.fisheries.schema.movement.v1.MovementType;
+import eu.europa.ec.fisheries.schema.rules.customrule.v1.AvailabilityType;
+import eu.europa.ec.fisheries.schema.rules.customrule.v1.ConditionType;
+import eu.europa.ec.fisheries.schema.rules.customrule.v1.CriteriaType;
+import eu.europa.ec.fisheries.schema.rules.customrule.v1.CustomRuleType;
+import eu.europa.ec.fisheries.schema.rules.customrule.v1.SubCriteriaType;
+import eu.europa.ec.fisheries.uvms.docker.validation.asset.AssetTestHelper;
 import eu.europa.ec.fisheries.uvms.docker.validation.common.AbstractRestServiceTest;
+import eu.europa.ec.fisheries.uvms.docker.validation.movement.LatLong;
+import eu.europa.ec.fisheries.uvms.docker.validation.movement.MovementHelper;
+import eu.europa.ec.fisheries.uvms.docker.validation.system.helper.CustomRuleBuilder;
+import eu.europa.ec.fisheries.uvms.docker.validation.system.helper.CustomRuleHelper;
+import eu.europa.ec.fisheries.uvms.docker.validation.system.helper.NAFHelper;
+import eu.europa.ec.fisheries.uvms.reporting.service.dto.MovementDTO;
 import eu.europa.ec.fisheries.uvms.reporting.service.dto.rules.AlarmMovement;
 import eu.europa.ec.fisheries.uvms.reporting.service.dto.rules.AlarmMovementList;
+import eu.europa.ec.fisheries.wsdl.asset.types.Asset;
 
 /**
  * The Class AlarmRestIT.
@@ -48,5 +72,59 @@ public class AlarmRestIT extends AbstractRestServiceTest {
 				.bodyByteArray(writeValueAsString(alarmMovementList).getBytes()).execute().returnResponse();
 		assertEquals(HttpStatus.SC_OK, response.getStatusLine().getStatusCode());
 	}
+	
+	@Test
+    public void getTicketForMovementTest() throws Exception {
+	    // Create ticket
+	    Asset asset = AssetTestHelper.createTestAsset();
+	    CustomRuleType customRule = CustomRuleBuilder.getBuilder()
+	        .rule(CriteriaType.ASSET, SubCriteriaType.FLAG_STATE, 
+	                ConditionType.EQ, asset.getCountryCode())
+	        .setAvailability(AvailabilityType.GLOBAL)
+	        .build();
+	    CustomRuleType createdCustomRule = CustomRuleHelper.createCustomRule(customRule);
+	    NAFHelper.sendPositionToNAFPlugin(new LatLong(1, 1, new Date()), asset);
+
+	    MovementHelper.pollMovementCreated();
+	    CustomRuleHelper.pollTicketCreated();
+	    // TODO find an alternative to Thread.sleep
+	    Thread.sleep(10000);
+	    
+	    // Get movement guid
+	    MovementQuery query = new MovementQuery();
+	    ListPagination pagination = new ListPagination();
+	    pagination.setListSize(BigInteger.TEN);
+	    pagination.setPage(BigInteger.ONE);
+        query.setPagination(pagination);
+        ListCriteria criteria = new ListCriteria();
+        criteria.setKey(SearchKey.CONNECT_ID);
+        criteria.setValue(asset.getEventHistory().getEventId());
+        query.getMovementSearchCriteria().add(criteria);
+        List<MovementType> movements = MovementHelper.getListByQuery(query);
+        assertThat(movements.size(), is(1));
+	    	    
+        // Query reporting
+        AlarmMovementList alarmMovementList = new AlarmMovementList();
+        ArrayList<AlarmMovement> alarmMovementListContent = new ArrayList<AlarmMovement>();
+        AlarmMovement alarmMovement = new AlarmMovement();
+        alarmMovement.setMovementId(movements.get(0).getGuid());
+        alarmMovement.setxCoordinate("1");
+        alarmMovement.setyCoordinate("1");
+        alarmMovementListContent.add(alarmMovement);    
+        alarmMovementList.setAlarmMovementList(alarmMovementListContent);
+
+        final HttpResponse response = Request.Post(getBaseUrl() + "reporting/rest/alarms")
+                .setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken())
+                .bodyByteArray(writeValueAsString(alarmMovementList).getBytes()).execute().returnResponse();
+        assertEquals(HttpStatus.SC_OK, response.getStatusLine().getStatusCode());
+
+        ObjectNode value = new ObjectMapper().readValue(response.getEntity().getContent(), ObjectNode.class);
+        JsonNode data = value.get("data");
+        JsonNode alarms = data.get("alarms");
+        JsonNode features = alarms.get("features");
+        assertThat(features.size(), is(1));
+        
+        CustomRuleHelper.removeCustomRule(createdCustomRule.getGuid());
+    }
 
 }
