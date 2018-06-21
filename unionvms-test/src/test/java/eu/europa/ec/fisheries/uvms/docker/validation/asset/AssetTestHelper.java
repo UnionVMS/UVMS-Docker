@@ -247,23 +247,27 @@ public class AssetTestHelper extends AbstractHelper {
 
 	public static Asset createDummyAsset(AssetIdType assetIdType) {
 		String ircs = "F" + generateARandomStringWithMaxLength(7);
+		String cfr = UUID.randomUUID().toString().substring(0, 12);
 
 		Asset asset = new Asset();
 		AssetId assetId = new AssetId();
 		assetId.setType(assetIdType);
-		switch (assetIdType) {
-		case GUID:
-			assetId.setGuid(UUID.randomUUID().toString());
-			break;
-		case INTERNAL_ID:
-			assetId.setValue("INTERNALID_" + UUID.randomUUID().toString());
-			break;
-		case CFR:
-			String val = UUID.randomUUID().toString().substring(0,12);
-			assetId.setValue(val);
-			asset.setCfr(val);
-			break;
-		}
+        switch (assetIdType) {
+            case GUID:
+                assetId.setGuid(UUID.randomUUID().toString());
+                break;
+            case INTERNAL_ID:
+                assetId.setValue("INTERNALID_" + UUID.randomUUID().toString());
+                break;
+            case CFR:
+                assetId.setValue(cfr);
+                break;
+            case IRCS:
+                assetId.setValue(ircs);
+                break;
+            default:
+                break;
+        }
 
 		asset.setActive(true);
 		asset.setAssetId(assetId);
@@ -274,6 +278,7 @@ public class AssetTestHelper extends AbstractHelper {
 		asset.setCountryCode("SWE");
 		asset.setGearType("DERMERSAL");
 		asset.setHasIrcs("1");
+		asset.setCfr(cfr);
 		asset.setIrcs(ircs);
 		asset.setExternalMarking("EXT3");
 
