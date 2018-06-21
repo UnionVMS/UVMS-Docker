@@ -47,6 +47,7 @@
 		<unionvms.project.plugins.mdr>1.0.2</unionvms.project.plugins.mdr>
 	</properties>
 
+
 	<scm>
 		<connection>${scm.connection}</connection>
 		<tag>HEAD</tag>
@@ -136,6 +137,18 @@
 				<artifactId>liquibase</artifactId>
 				<type>sql</type>
 				<version>${unionvms.project.movement.module}</version>
+				<exclusions>
+					<exclusion>
+						<groupId>com.oracle</groupId>
+						<artifactId>ojdbc6</artifactId>
+					</exclusion>
+				</exclusions>
+			</dependency>
+			<dependency>
+				<groupId>eu.europa.ec.fisheries.uvms.movement-rules</groupId>
+				<artifactId>liquibase</artifactId>
+				<type>sql</type>
+				<version>${unionvms.project.movementrules.module}</version>
 				<exclusions>
 					<exclusion>
 						<groupId>com.oracle</groupId>
@@ -353,6 +366,12 @@
 				<artifactId>rules-module</artifactId>
 				<type>ear</type>
 				<version>${unionvms.project.rules.module}</version>
+			</dependency>
+			<dependency>
+				<groupId>eu.europa.ec.fisheries.uvms.movement-rules</groupId>
+				<artifactId>movement-rules-module</artifactId>
+				<type>ear</type>
+				<version>${unionvms.project.movementrules.module}</version>
 			</dependency>
 			<dependency>
 				<groupId>eu.europa.ec.fisheries.uvms.activity</groupId>

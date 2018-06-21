@@ -24,6 +24,9 @@ DROP USER IF EXISTS reporting;
 -- Rules
 DROP USER IF EXISTS rules; 
 
+-- MovementRules
+DROP USER IF EXISTS movementrules; 
+
 -- Spatial
 DROP USER IF EXISTS spatial; 
 

@@ -59,9 +59,27 @@ public class FLUXHelper extends AbstractHelper {
     }
 
     public static RequestType createVesselReport(Asset testAsset, LatLong latLong) throws DatatypeConfigurationException, JAXBException, ParserConfigurationException {
+        FLUXVesselPositionMessage fluxVesselPositionMessage = createFluxMessage(testAsset, latLong);
+        return createVesselReport(fluxVesselPositionMessage);
+    }
+    
+    public static RequestType createVesselReport(FLUXVesselPositionMessage fluxVesselPositionMessage) throws DatatypeConfigurationException, JAXBException, ParserConfigurationException {
+        GregorianCalendar calendar = new GregorianCalendar();
+        
         RequestType requestType = new RequestType();
-
-        FLUXVesselPositionMessage fLUXVesselPositionMessage = new FLUXVesselPositionMessage();
+        requestType.setAny(createAnyElement(fluxVesselPositionMessage));
+        requestType.setAD("SWE");
+        requestType.setAR(true);
+        requestType.setDF("df");
+        requestType.setON("on");
+        requestType.setTO(1234);
+        requestType.setTODT(DatatypeFactory.newInstance().newXMLGregorianCalendar(calendar));
+        
+        return requestType;
+    }
+    
+    public static FLUXVesselPositionMessage createFluxMessage(Asset testAsset, LatLong latLong) throws DatatypeConfigurationException {
+        FLUXVesselPositionMessage fluxVesselPositionMessage = new FLUXVesselPositionMessage();
         VesselTransportMeansType vesselTransportMeansType = new VesselTransportMeansType();
         
         IDType cfrId = new IDType();
@@ -118,7 +136,7 @@ public class FLUXHelper extends AbstractHelper {
         
         vesselTransportMeansType.getSpecifiedVesselPositionEvents().add(vesselPositionEventType);
         
-        fLUXVesselPositionMessage.setVesselTransportMeans(vesselTransportMeansType);
+        fluxVesselPositionMessage.setVesselTransportMeans(vesselTransportMeansType);
         
         FLUXReportDocumentType fluxReportDocumentType = new FLUXReportDocumentType();
         DateTimeType dateTimeType = new DateTimeType();
@@ -137,18 +155,8 @@ public class FLUXHelper extends AbstractHelper {
         fluxReportDocumentType.getIDS().add(idType);
         CodeType typeCode = new CodeType();
         fluxReportDocumentType.setTypeCode(typeCode);       
-        fLUXVesselPositionMessage.setFLUXReportDocument(fluxReportDocumentType);
-
-        requestType.setAny(createAnyElement(fLUXVesselPositionMessage));
-
-        requestType.setAD("SWE");
-        requestType.setAR(true);
-        requestType.setDF("df");
-        requestType.setON("on");
-        requestType.setTO(1234);
-        requestType.setTODT(DatatypeFactory.newInstance().newXMLGregorianCalendar(calendar));
-        
-        return requestType;
+        fluxVesselPositionMessage.setFLUXReportDocument(fluxReportDocumentType);
+        return fluxVesselPositionMessage;
     }
     
     private static Element createAnyElement(FLUXVesselPositionMessage fLUXVesselPositionMessage)
