@@ -6,6 +6,7 @@
 		<dependency name="audit-module-${unionvms.project.audit.module}.ear" />
 		<dependency name="spatial-module-${unionvms.project.spatial.module}.ear" />
 		<dependency name="movement-module-${unionvms.project.movement.module}.ear" />
+		<dependency name="movement-rules-module-${unionvms.project.movementrules.module}.ear" />
 		<dependency name="asset-module-${unionvms.project.asset.module}.ear" />
 		<dependency name="inmarsat-module-${unionvms.project.plugins.inmarsat}.ear" />
 		<dependency name="mobileterminal-module-${unionvms.project.mobileterminal.module}.ear" />
