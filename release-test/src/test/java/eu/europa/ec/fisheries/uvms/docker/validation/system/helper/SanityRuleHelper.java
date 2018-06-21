@@ -18,7 +18,7 @@ import java.util.List;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.fluent.Request;
-import eu.europa.ec.fisheries.schema.rules.customrule.v1.SanityRuleType;
+import eu.europa.ec.fisheries.schema.movementrules.customrule.v1.SanityRuleType;
 import eu.europa.ec.fisheries.uvms.docker.validation.common.AbstractHelper;
 
 public class SanityRuleHelper extends AbstractHelper {

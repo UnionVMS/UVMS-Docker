@@ -21,6 +21,11 @@
 			<type>test-jar</type>
 			<version>3.25.2-SNAPSHOT</version>
 			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>eu.europa.ec.fisheries.uvms.movement-rules</groupId>
+			<artifactId>movement-rules-model</artifactId>
+			<version>${unionvms.project.movementrules.module}</version>	
 		</dependency>	
 		<dependency>
             <groupId>eu.europa.ec.fisheries.uvms.service.client.flux</groupId>

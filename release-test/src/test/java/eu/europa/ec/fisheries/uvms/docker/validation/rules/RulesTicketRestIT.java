@@ -25,12 +25,12 @@ import org.apache.http.client.fluent.Request;
 import org.junit.Ignore;
 import org.junit.Test;
 
-import eu.europa.ec.fisheries.schema.rules.search.v1.ListPagination;
-import eu.europa.ec.fisheries.schema.rules.search.v1.TicketListCriteria;
-import eu.europa.ec.fisheries.schema.rules.search.v1.TicketQuery;
-import eu.europa.ec.fisheries.schema.rules.search.v1.TicketSearchKey;
-import eu.europa.ec.fisheries.schema.rules.ticket.v1.TicketStatusType;
-import eu.europa.ec.fisheries.schema.rules.ticket.v1.TicketType;
+import eu.europa.ec.fisheries.schema.movementrules.search.v1.ListPagination;
+import eu.europa.ec.fisheries.schema.movementrules.search.v1.TicketListCriteria;
+import eu.europa.ec.fisheries.schema.movementrules.search.v1.TicketQuery;
+import eu.europa.ec.fisheries.schema.movementrules.search.v1.TicketSearchKey;
+import eu.europa.ec.fisheries.schema.movementrules.ticket.v1.TicketStatusType;
+import eu.europa.ec.fisheries.schema.movementrules.ticket.v1.TicketType;
 import eu.europa.ec.fisheries.uvms.docker.validation.common.AbstractRestServiceTest;
 
 import static eu.europa.ec.fisheries.uvms.rest.security.UnionVMSModule.Movement;

@@ -16,17 +16,17 @@ package eu.europa.ec.fisheries.uvms.docker.validation.rules;
 import java.util.ArrayList;
 import java.util.Map;
 
-import eu.europa.ec.fisheries.schema.rules.search.v1.AlarmListCriteria;
-import eu.europa.ec.fisheries.schema.rules.search.v1.AlarmSearchKey;
-import eu.europa.ec.fisheries.schema.rules.search.v1.ListPagination;
+import eu.europa.ec.fisheries.schema.movementrules.search.v1.AlarmListCriteria;
+import eu.europa.ec.fisheries.schema.movementrules.search.v1.AlarmSearchKey;
+import eu.europa.ec.fisheries.schema.movementrules.search.v1.ListPagination;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
 import org.apache.http.client.fluent.Request;
 import org.junit.Ignore;
 import org.junit.Test;
 
-import eu.europa.ec.fisheries.schema.rules.alarm.v1.AlarmReportType;
-import eu.europa.ec.fisheries.schema.rules.search.v1.AlarmQuery;
+import eu.europa.ec.fisheries.schema.movementrules.alarm.v1.AlarmReportType;
+import eu.europa.ec.fisheries.schema.movementrules.search.v1.AlarmQuery;
 import eu.europa.ec.fisheries.uvms.docker.validation.common.AbstractRestServiceTest;
 
 /**

@@ -16,7 +16,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import org.junit.Test;
-import eu.europa.ec.fisheries.schema.rules.customrule.v1.SanityRuleType;
+import eu.europa.ec.fisheries.schema.movementrules.customrule.v1.SanityRuleType;
 import eu.europa.ec.fisheries.uvms.docker.validation.asset.AssetTestHelper;
 import eu.europa.ec.fisheries.uvms.docker.validation.common.AbstractRestServiceTest;
 import eu.europa.ec.fisheries.uvms.docker.validation.movement.LatLong;

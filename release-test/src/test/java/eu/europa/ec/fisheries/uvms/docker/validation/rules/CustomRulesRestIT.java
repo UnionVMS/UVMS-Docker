@@ -16,18 +16,18 @@ package eu.europa.ec.fisheries.uvms.docker.validation.rules;
 import java.util.List;
 import java.util.Map;
 
-import eu.europa.ec.fisheries.schema.rules.search.v1.CustomRuleListCriteria;
-import eu.europa.ec.fisheries.schema.rules.search.v1.CustomRuleSearchKey;
-import eu.europa.ec.fisheries.schema.rules.search.v1.ListPagination;
+import eu.europa.ec.fisheries.schema.movementrules.search.v1.CustomRuleListCriteria;
+import eu.europa.ec.fisheries.schema.movementrules.search.v1.CustomRuleSearchKey;
+import eu.europa.ec.fisheries.schema.movementrules.search.v1.ListPagination;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
 import org.apache.http.client.fluent.Request;
 import org.junit.Ignore;
 import org.junit.Test;
 
-import eu.europa.ec.fisheries.schema.rules.customrule.v1.CustomRuleType;
-import eu.europa.ec.fisheries.schema.rules.customrule.v1.UpdateSubscriptionType;
-import eu.europa.ec.fisheries.schema.rules.search.v1.CustomRuleQuery;
+import eu.europa.ec.fisheries.schema.movementrules.customrule.v1.CustomRuleType;
+import eu.europa.ec.fisheries.schema.movementrules.customrule.v1.UpdateSubscriptionType;
+import eu.europa.ec.fisheries.schema.movementrules.search.v1.CustomRuleQuery;
 import eu.europa.ec.fisheries.uvms.docker.validation.common.AbstractRestServiceTest;
 
 /**
