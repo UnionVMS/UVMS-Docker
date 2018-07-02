@@ -145,6 +145,14 @@ public abstract class AbstractRest extends Assert {
         assertFalse(data.isEmpty());
         assertEquals("500", "" + data.get("code"));
     }
+	
+	protected static String returnErrorResponse(final HttpResponse response)
+            throws IOException {
+        assertEquals(HttpStatus.SC_OK, response.getStatusLine().getStatusCode());
+        final Map<String, Object> data = getJsonMap(response);
+        assertFalse(data.isEmpty());
+        return "" + data.get("code");
+    }
 
 	/**
 	 * Write value as string.

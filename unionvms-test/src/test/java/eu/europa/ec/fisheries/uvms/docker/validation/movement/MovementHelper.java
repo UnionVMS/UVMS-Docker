@@ -117,7 +117,7 @@ public class MovementHelper extends AbstractHelper {
 
 			MovementBaseType movementBaseType = new MovementBaseType();
 			movementBaseType.setAssetId(assetId);
-			movementBaseType.setConnectId(testAsset.getEventHistory().getEventId());
+			movementBaseType.setConnectId(mobileTerminalType.getConnectId());
 			movementBaseType.setActivity(movementActivityType);
 
 			MovementPoint movementPoint = new MovementPoint();
@@ -219,7 +219,8 @@ public class MovementHelper extends AbstractHelper {
 
 		int movementTimeDeltaInMillis = 30000;
 		List<LatLong> rutt = new ArrayList<>();
-		long ts = System.currentTimeMillis();
+		// Avoid future dates
+		long ts = System.currentTimeMillis() - movementTimeDeltaInMillis * numberPositions;
 
 		while (true) {
 

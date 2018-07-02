@@ -11,17 +11,18 @@ copy of the GNU General Public License along with the IFDM Suite. If not, see <h
  */
 package eu.europa.ec.fisheries.uvms.docker.validation.system.helper;
 
+import eu.europa.ec.fisheries.uvms.docker.validation.common.AbstractHelper;
+import eu.europa.ec.fisheries.uvms.docker.validation.movement.LatLong;
+import eu.europa.ec.fisheries.wsdl.asset.types.Asset;
+import org.apache.http.HttpResponse;
+import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.fluent.Request;
+
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
-import org.apache.http.HttpResponse;
-import org.apache.http.client.ClientProtocolException;
-import org.apache.http.client.fluent.Request;
-import eu.europa.ec.fisheries.uvms.docker.validation.common.AbstractHelper;
-import eu.europa.ec.fisheries.uvms.docker.validation.movement.LatLong;
-import eu.europa.ec.fisheries.wsdl.asset.types.Asset;
 
 public class NAFHelper extends AbstractHelper {
 

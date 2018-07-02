@@ -11,23 +11,9 @@ copy of the GNU General Public License along with the IFDM Suite. If not, see <h
  */
 package eu.europa.ec.fisheries.uvms.docker.validation.system.vms;
 
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.CoreMatchers.notNullValue;
-import java.util.List;
-import javax.jms.TextMessage;
-import org.databene.contiperf.PerfTest;
-import org.databene.contiperf.Required;
-import org.databene.contiperf.junit.ContiPerfRule;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.Ignore;
 import eu.europa.ec.fisheries.schema.exchange.plugin.v1.SetReportRequest;
 import eu.europa.ec.fisheries.schema.mobileterminal.types.v1.MobileTerminalType;
-import eu.europa.ec.fisheries.schema.movementrules.customrule.v1.ActionType;
-import eu.europa.ec.fisheries.schema.movementrules.customrule.v1.ConditionType;
-import eu.europa.ec.fisheries.schema.movementrules.customrule.v1.CriteriaType;
-import eu.europa.ec.fisheries.schema.movementrules.customrule.v1.CustomRuleType;
-import eu.europa.ec.fisheries.schema.movementrules.customrule.v1.SubCriteriaType;
+import eu.europa.ec.fisheries.schema.movementrules.customrule.v1.*;
 import eu.europa.ec.fisheries.uvms.docker.validation.asset.AssetTestHelper;
 import eu.europa.ec.fisheries.uvms.docker.validation.common.AbstractRestServiceTest;
 import eu.europa.ec.fisheries.uvms.docker.validation.common.MessageHelper;
@@ -39,8 +25,18 @@ import eu.europa.ec.fisheries.uvms.docker.validation.system.helper.CustomRuleHel
 import eu.europa.ec.fisheries.uvms.docker.validation.system.helper.FLUXHelper;
 import eu.europa.ec.fisheries.uvms.exchange.model.mapper.JAXBMarshaller;
 import eu.europa.ec.fisheries.wsdl.asset.types.Asset;
+import org.databene.contiperf.PerfTest;
+import org.databene.contiperf.Required;
+import org.databene.contiperf.junit.ContiPerfRule;
+import org.junit.Rule;
+import org.junit.Test;
 
-@Ignore
+import javax.jms.TextMessage;
+import java.util.List;
+
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.notNullValue;
+
 public class VMSSystemPerformanceIT extends AbstractRestServiceTest {
 
     private static final String SELECTOR = "ServiceName='eu.europa.ec.fisheries.uvms.plugins.flux'";

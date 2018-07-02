@@ -11,18 +11,6 @@ copy of the GNU General Public License along with the IFDM Suite. If not, see <h
  */
 package eu.europa.ec.fisheries.uvms.docker.validation.system.rules;
 
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.CoreMatchers.notNullValue;
-import java.text.SimpleDateFormat;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.TimeZone;
-import java.util.List;
-import javax.jms.Message;
-import javax.jms.TextMessage;
-import org.junit.BeforeClass;
-import org.junit.Ignore;
-import org.junit.Test;
 import eu.europa.ec.fisheries.schema.exchange.module.v1.GetServiceListResponse;
 import eu.europa.ec.fisheries.schema.exchange.plugin.types.v1.PluginType;
 import eu.europa.ec.fisheries.schema.exchange.plugin.v1.SetCommandRequest;
@@ -30,11 +18,7 @@ import eu.europa.ec.fisheries.schema.exchange.service.v1.CapabilityListType;
 import eu.europa.ec.fisheries.schema.exchange.service.v1.ServiceResponseType;
 import eu.europa.ec.fisheries.schema.exchange.service.v1.ServiceType;
 import eu.europa.ec.fisheries.schema.exchange.service.v1.SettingListType;
-import eu.europa.ec.fisheries.schema.movementrules.customrule.v1.ActionType;
-import eu.europa.ec.fisheries.schema.movementrules.customrule.v1.ConditionType;
-import eu.europa.ec.fisheries.schema.movementrules.customrule.v1.CriteriaType;
-import eu.europa.ec.fisheries.schema.movementrules.customrule.v1.CustomRuleType;
-import eu.europa.ec.fisheries.schema.movementrules.customrule.v1.SubCriteriaType;
+import eu.europa.ec.fisheries.schema.movementrules.customrule.v1.*;
 import eu.europa.ec.fisheries.uvms.commons.message.api.MessageConstants;
 import eu.europa.ec.fisheries.uvms.docker.validation.asset.AssetTestHelper;
 import eu.europa.ec.fisheries.uvms.docker.validation.common.AbstractRestServiceTest;
@@ -47,8 +31,21 @@ import eu.europa.ec.fisheries.uvms.exchange.model.constant.ExchangeModelConstant
 import eu.europa.ec.fisheries.uvms.exchange.model.mapper.ExchangeModuleRequestMapper;
 import eu.europa.ec.fisheries.uvms.exchange.model.mapper.JAXBMarshaller;
 import eu.europa.ec.fisheries.wsdl.asset.types.Asset;
+import org.junit.BeforeClass;
+import org.junit.Test;
 
-@Ignore
+import javax.jms.Message;
+import javax.jms.TextMessage;
+import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.util.Arrays;
+import java.util.Date;
+import java.util.List;
+import java.util.TimeZone;
+
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.notNullValue;
+
 public class RulesAlarmIT extends AbstractRestServiceTest {
 
     private static final long TIMEOUT = 10000;
@@ -80,7 +77,7 @@ public class RulesAlarmIT extends AbstractRestServiceTest {
     
     @Test
     public void sendEmailIfReportedSpeedIsGreaterThan10knotsTest() throws Exception {
-        Date timestamp = new Date();
+        LocalDateTime timestamp = LocalDateTime.now();
         
         Asset asset = AssetTestHelper.createTestAsset();
         
@@ -113,7 +110,7 @@ public class RulesAlarmIT extends AbstractRestServiceTest {
     
     @Test
     public void sendEmailIfReportedSpeedIslessThan10knotsTest() throws Exception {
-        Date timestamp = new Date();
+        LocalDateTime timestamp = LocalDateTime.now();;
         
         Asset asset = AssetTestHelper.createTestAsset();
         
@@ -146,7 +143,7 @@ public class RulesAlarmIT extends AbstractRestServiceTest {
 
     @Test
     public void doNotTriggerRuleIfReportedSpeedIsLessThan10knotsTest() throws Exception {
-        Date timestamp = new Date();
+        LocalDateTime timestamp = LocalDateTime.now();;
         
         Asset asset = AssetTestHelper.createTestAsset();
         
@@ -191,7 +188,7 @@ public class RulesAlarmIT extends AbstractRestServiceTest {
     
     @Test
     public void doNotTriggerRuleIfReportedSpeedIsGreaterThan10knotsTest() throws Exception {
-        Date timestamp = new Date();
+        LocalDateTime timestamp = LocalDateTime.now();;
         
         Asset asset = AssetTestHelper.createTestAsset();
         
@@ -236,7 +233,7 @@ public class RulesAlarmIT extends AbstractRestServiceTest {
     
     @Test
     public void sendEmailIfReportedSpeedIsGreaterThanOrEqual10knotsTest() throws Exception {
-        Date timestamp = new Date();
+        LocalDateTime timestamp = LocalDateTime.now();;
         
         Asset asset = AssetTestHelper.createTestAsset();
         
@@ -269,7 +266,7 @@ public class RulesAlarmIT extends AbstractRestServiceTest {
     
     @Test
     public void sendEmailIfReportedSpeedIsLessThanOrEqual10knotsTest() throws Exception {
-        Date timestamp = new Date();
+        LocalDateTime timestamp = LocalDateTime.now();;
         
         Asset asset = AssetTestHelper.createTestAsset();
         
@@ -302,7 +299,7 @@ public class RulesAlarmIT extends AbstractRestServiceTest {
     
     @Test
     public void sendEmailIfReportedSpeedIsGreaterThan10knotsAndAreaIsDNKTest() throws Exception {
-        Date timestamp = new Date();
+        LocalDateTime timestamp = LocalDateTime.now();;
         
         Asset asset = AssetTestHelper.createTestAsset();
         
@@ -337,7 +334,7 @@ public class RulesAlarmIT extends AbstractRestServiceTest {
     
     @Test
     public void sendEmailIfReportedSpeedIsLessThan10knotsAndAreaIsDNKTest() throws Exception {
-        Date timestamp = new Date();
+        LocalDateTime timestamp = LocalDateTime.now();;
         
         Asset asset = AssetTestHelper.createTestAsset();
         
@@ -372,7 +369,7 @@ public class RulesAlarmIT extends AbstractRestServiceTest {
     
     @Test
     public void sendEmailIfAreaCodeIsDEUTest() throws Exception {
-        Date timestamp = new Date();
+        LocalDateTime timestamp = LocalDateTime.now();;
         
         Asset asset = AssetTestHelper.createTestAsset();
         
@@ -404,7 +401,7 @@ public class RulesAlarmIT extends AbstractRestServiceTest {
     
     @Test
     public void sendEmailIfAssetIRCSMatchesTest() throws Exception {
-        Date timestamp = new Date();
+        LocalDateTime timestamp = LocalDateTime.now();;
         
         Asset asset = AssetTestHelper.createTestAsset();
         
@@ -434,10 +431,9 @@ public class RulesAlarmIT extends AbstractRestServiceTest {
         CustomRuleHelper.removeCustomRule(createdIrcsRule.getGuid());
     }
     
-    
     @Test
     public void sendEmailIfIrcsDisjunctionMatchesTest() throws Exception {
-        Date timestamp = new Date();
+        LocalDateTime timestamp = LocalDateTime.now();;
 
         Asset asset1 = AssetTestHelper.createTestAsset();
         Asset asset2 = AssetTestHelper.createTestAsset();
@@ -466,7 +462,7 @@ public class RulesAlarmIT extends AbstractRestServiceTest {
         
         CustomRuleHelper.assertRuleTriggered(createdCustomRule, timestamp);
         
-        timestamp = new Date();
+        timestamp = LocalDateTime.now();
         
         LatLong position2 = new LatLong(2d, 2d, new Date());
         FLUXHelper.sendPositionToFluxPlugin(asset2, position2);
@@ -485,7 +481,7 @@ public class RulesAlarmIT extends AbstractRestServiceTest {
     
     @Test
     public void sendEmailIfIrcsCfrConjunctionMatchesTest() throws Exception {
-        Date timestamp = new Date();
+        LocalDateTime timestamp = LocalDateTime.now();;
 
         Asset asset = AssetTestHelper.createTestAsset();
         
@@ -516,10 +512,9 @@ public class RulesAlarmIT extends AbstractRestServiceTest {
         CustomRuleHelper.removeCustomRule(createdCustomRule.getGuid());
     }
     
-    @Ignore
     @Test
     public void doNotTriggerRuleIfIrcsCfrConjunctionNotMatchesTest() throws Exception {
-        Date timestamp = new Date();
+        LocalDateTime timestamp = LocalDateTime.now();;
         
         Asset asset = AssetTestHelper.createTestAsset();
         
@@ -563,7 +558,7 @@ public class RulesAlarmIT extends AbstractRestServiceTest {
     
     @Test
     public void sendEmailIfAssetCFRMatchesTest() throws Exception {
-        Date timestamp = new Date();
+        LocalDateTime timestamp = LocalDateTime.now();;
         
         Asset asset = AssetTestHelper.createTestAsset();
         
@@ -595,7 +590,7 @@ public class RulesAlarmIT extends AbstractRestServiceTest {
     
     @Test
     public void sendEmailIfAssetNameMatchesTest() throws Exception {
-        Date timestamp = new Date();
+        LocalDateTime timestamp = LocalDateTime.now();;
         
         Asset asset = AssetTestHelper.createTestAsset();
         
@@ -627,7 +622,7 @@ public class RulesAlarmIT extends AbstractRestServiceTest {
     
     @Test
     public void sendEmailIfLatitudeIsGreaterThan10Test() throws Exception {
-        Date timestamp = new Date();
+        LocalDateTime timestamp = LocalDateTime.now();;
 
         Asset asset = AssetTestHelper.createTestAsset();
         
@@ -658,7 +653,7 @@ public class RulesAlarmIT extends AbstractRestServiceTest {
     
     @Test
     public void sendEmailIfLongitudeIsGreaterThan10Test() throws Exception {
-        Date timestamp = new Date();
+        LocalDateTime timestamp = LocalDateTime.now();;
 
         Asset asset = AssetTestHelper.createTestAsset();
         
@@ -689,7 +684,7 @@ public class RulesAlarmIT extends AbstractRestServiceTest {
     
     @Test
     public void sendEmailIfPositionReportTimeIsGreaterOrEqualTest() throws Exception {
-        Date timestamp = new Date();
+        LocalDateTime timestamp = LocalDateTime.now();;
 
         Asset asset = AssetTestHelper.createTestAsset();
         

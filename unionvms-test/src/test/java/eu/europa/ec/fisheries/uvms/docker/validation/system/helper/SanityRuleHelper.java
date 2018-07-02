@@ -11,15 +11,17 @@ copy of the GNU General Public License along with the IFDM Suite. If not, see <h
  */
 package eu.europa.ec.fisheries.uvms.docker.validation.system.helper;
 
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.CoreMatchers.notNullValue;
-import java.io.IOException;
-import java.util.List;
+import eu.europa.ec.fisheries.schema.movementrules.customrule.v1.SanityRuleType;
+import eu.europa.ec.fisheries.uvms.docker.validation.common.AbstractHelper;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.fluent.Request;
-import eu.europa.ec.fisheries.schema.movementrules.customrule.v1.SanityRuleType;
-import eu.europa.ec.fisheries.uvms.docker.validation.common.AbstractHelper;
+
+import java.io.IOException;
+import java.util.List;
+
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.notNullValue;
 
 public class SanityRuleHelper extends AbstractHelper {
 

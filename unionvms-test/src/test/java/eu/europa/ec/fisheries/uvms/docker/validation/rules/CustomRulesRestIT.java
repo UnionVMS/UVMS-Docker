@@ -13,27 +13,24 @@ copy of the GNU General Public License along with the IFDM Suite. If not, see <h
 */
 package eu.europa.ec.fisheries.uvms.docker.validation.rules;
 
-import java.util.List;
-import java.util.Map;
-
+import eu.europa.ec.fisheries.schema.movementrules.customrule.v1.CustomRuleType;
+import eu.europa.ec.fisheries.schema.movementrules.customrule.v1.UpdateSubscriptionType;
 import eu.europa.ec.fisheries.schema.movementrules.search.v1.CustomRuleListCriteria;
+import eu.europa.ec.fisheries.schema.movementrules.search.v1.CustomRuleQuery;
 import eu.europa.ec.fisheries.schema.movementrules.search.v1.CustomRuleSearchKey;
 import eu.europa.ec.fisheries.schema.movementrules.search.v1.ListPagination;
+import eu.europa.ec.fisheries.uvms.docker.validation.common.AbstractRestServiceTest;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
 import org.apache.http.client.fluent.Request;
-import org.junit.Ignore;
 import org.junit.Test;
 
-import eu.europa.ec.fisheries.schema.movementrules.customrule.v1.CustomRuleType;
-import eu.europa.ec.fisheries.schema.movementrules.customrule.v1.UpdateSubscriptionType;
-import eu.europa.ec.fisheries.schema.movementrules.search.v1.CustomRuleQuery;
-import eu.europa.ec.fisheries.uvms.docker.validation.common.AbstractRestServiceTest;
+import java.util.List;
+import java.util.Map;
 
 /**
  * The Class CustomRulesRestIT.
  */
-@Ignore
 public class CustomRulesRestIT extends AbstractRestServiceTest {
 
 	/**
@@ -114,9 +111,8 @@ public class CustomRulesRestIT extends AbstractRestServiceTest {
 				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken()).execute()
 				.returnResponse();
 		//internal server error aka 500
-		assertEquals(HttpStatus.SC_INTERNAL_SERVER_ERROR, response.getStatusLine().getStatusCode());
-
-
+		String responseCode = returnErrorResponse(response);
+		assertEquals("500", responseCode);
 	}
 
 	/**
@@ -131,7 +127,8 @@ public class CustomRulesRestIT extends AbstractRestServiceTest {
 				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken()).execute()
 				.returnResponse();
 		//internal server error aka 500
-		assertEquals(HttpStatus.SC_INTERNAL_SERVER_ERROR, response.getStatusLine().getStatusCode());
+		String responseCode = returnErrorResponse(response);
+        assertEquals("500", responseCode);
 	}
 
 	/**
@@ -146,7 +143,7 @@ public class CustomRulesRestIT extends AbstractRestServiceTest {
 		final HttpResponse response = Request.Post(getBaseUrl() + "movement-rules/rest/customrules/subscription")
 				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken())
 				.bodyByteArray(writeValueAsString(updateSubscriptionType).getBytes()).execute().returnResponse();
-		assertEquals(HttpStatus.SC_INTERNAL_SERVER_ERROR, response.getStatusLine().getStatusCode());
+		checkErrorResponse(response);
 	}
 
 	/**
@@ -161,7 +158,7 @@ public class CustomRulesRestIT extends AbstractRestServiceTest {
 		final HttpResponse response = Request.Put(getBaseUrl() + "movement-rules/rest/customrules/")
 				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken())
 				.bodyByteArray(writeValueAsString(customRuleType).getBytes()).execute().returnResponse();
-		assertEquals(HttpStatus.SC_INTERNAL_SERVER_ERROR, response.getStatusLine().getStatusCode());
+		String responseCode = returnErrorResponse(response);
+        assertEquals("511", responseCode);
 	}
-
 }

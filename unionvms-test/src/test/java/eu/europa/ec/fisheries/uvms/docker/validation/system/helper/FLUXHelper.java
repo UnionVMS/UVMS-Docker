@@ -11,8 +11,19 @@ copy of the GNU General Public License along with the IFDM Suite. If not, see <h
  */
 package eu.europa.ec.fisheries.uvms.docker.validation.system.helper;
 
-import java.math.BigDecimal;
-import java.util.GregorianCalendar;
+import eu.europa.ec.fisheries.uvms.docker.validation.common.AbstractHelper;
+import eu.europa.ec.fisheries.uvms.docker.validation.movement.LatLong;
+import eu.europa.ec.fisheries.wsdl.asset.types.Asset;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import un.unece.uncefact.data.standard.fluxvesselpositionmessage._4.FLUXVesselPositionMessage;
+import un.unece.uncefact.data.standard.reusableaggregatebusinessinformationentity._18.*;
+import un.unece.uncefact.data.standard.unqualifieddatatype._18.*;
+import xeu.bridge_connector.v1.RequestType;
+import xeu.bridge_connector.v1.ResponseType;
+import xeu.bridge_connector.wsdl.v1.BridgeConnectorPortType;
+import xeu.bridge_connector.wsdl.v1.MovementService;
+
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
@@ -22,27 +33,8 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.ws.BindingProvider;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import eu.europa.ec.fisheries.uvms.docker.validation.common.AbstractHelper;
-import eu.europa.ec.fisheries.uvms.docker.validation.movement.LatLong;
-import eu.europa.ec.fisheries.wsdl.asset.types.Asset;
-import un.unece.uncefact.data.standard.fluxvesselpositionmessage._4.FLUXVesselPositionMessage;
-import un.unece.uncefact.data.standard.reusableaggregatebusinessinformationentity._18.FLUXPartyType;
-import un.unece.uncefact.data.standard.reusableaggregatebusinessinformationentity._18.FLUXReportDocumentType;
-import un.unece.uncefact.data.standard.reusableaggregatebusinessinformationentity._18.VesselCountryType;
-import un.unece.uncefact.data.standard.reusableaggregatebusinessinformationentity._18.VesselGeographicalCoordinateType;
-import un.unece.uncefact.data.standard.reusableaggregatebusinessinformationentity._18.VesselPositionEventType;
-import un.unece.uncefact.data.standard.reusableaggregatebusinessinformationentity._18.VesselTransportMeansType;
-import un.unece.uncefact.data.standard.unqualifieddatatype._18.CodeType;
-import un.unece.uncefact.data.standard.unqualifieddatatype._18.DateTimeType;
-import un.unece.uncefact.data.standard.unqualifieddatatype._18.IDType;
-import un.unece.uncefact.data.standard.unqualifieddatatype._18.MeasureType;
-import un.unece.uncefact.data.standard.unqualifieddatatype._18.TextType;
-import xeu.bridge_connector.v1.RequestType;
-import xeu.bridge_connector.v1.ResponseType;
-import xeu.bridge_connector.wsdl.v1.BridgeConnectorPortType;
-import xeu.bridge_connector.wsdl.v1.MovementService;
+import java.math.BigDecimal;
+import java.util.GregorianCalendar;
 
 public class FLUXHelper extends AbstractHelper {
 

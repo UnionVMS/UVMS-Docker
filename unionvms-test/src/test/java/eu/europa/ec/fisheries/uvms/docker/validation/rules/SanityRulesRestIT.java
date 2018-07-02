@@ -13,20 +13,17 @@ copy of the GNU General Public License along with the IFDM Suite. If not, see <h
 */
 package eu.europa.ec.fisheries.uvms.docker.validation.rules;
 
-import java.util.List;
-
+import eu.europa.ec.fisheries.uvms.docker.validation.common.AbstractRestServiceTest;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.fluent.Request;
 import org.junit.Test;
-import org.junit.Ignore;
 
-import eu.europa.ec.fisheries.uvms.docker.validation.common.AbstractRestServiceTest;
+import java.util.List;
 
 /**
  * The Class SanityRulesRestIT.
  */
 
-@Ignore
 public class SanityRulesRestIT extends AbstractRestServiceTest {
 
 	/**

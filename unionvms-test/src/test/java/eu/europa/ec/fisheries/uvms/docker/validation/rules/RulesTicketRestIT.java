@@ -13,18 +13,6 @@ copy of the GNU General Public License along with the IFDM Suite. If not, see <h
 */
 package eu.europa.ec.fisheries.uvms.docker.validation.rules;
 
-import java.net.URLEncoder;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.Map;
-
-import eu.europa.ec.fisheries.uvms.docker.validation.movement.MovementHelper;
-import org.apache.http.HttpResponse;
-import org.apache.http.HttpStatus;
-import org.apache.http.client.fluent.Request;
-import org.junit.Ignore;
-import org.junit.Test;
-
 import eu.europa.ec.fisheries.schema.movementrules.search.v1.ListPagination;
 import eu.europa.ec.fisheries.schema.movementrules.search.v1.TicketListCriteria;
 import eu.europa.ec.fisheries.schema.movementrules.search.v1.TicketQuery;
@@ -32,13 +20,19 @@ import eu.europa.ec.fisheries.schema.movementrules.search.v1.TicketSearchKey;
 import eu.europa.ec.fisheries.schema.movementrules.ticket.v1.TicketStatusType;
 import eu.europa.ec.fisheries.schema.movementrules.ticket.v1.TicketType;
 import eu.europa.ec.fisheries.uvms.docker.validation.common.AbstractRestServiceTest;
+import org.apache.http.HttpResponse;
+import org.apache.http.client.fluent.Request;
+import org.junit.Test;
 
-import static eu.europa.ec.fisheries.uvms.rest.security.UnionVMSModule.Movement;
+import java.net.URLEncoder;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.Map;
 
 /**
  * The Class RulesTicketRestIT.
  */
-@Ignore
+
 public class RulesTicketRestIT extends AbstractRestServiceTest {
 
 	/**
@@ -124,7 +118,7 @@ public class RulesTicketRestIT extends AbstractRestServiceTest {
 		final HttpResponse response = Request.Put(getBaseUrl() + "movement-rules/rest/tickets/status")
 				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken())
 				.bodyByteArray(writeValueAsString(ticketType).getBytes()).execute().returnResponse();
-        assertEquals(HttpStatus.SC_INTERNAL_SERVER_ERROR, response.getStatusLine().getStatusCode());
+		checkErrorResponse(response);
 	}
 
 	/**
@@ -163,7 +157,7 @@ public class RulesTicketRestIT extends AbstractRestServiceTest {
 		final HttpResponse response = Request.Get(getBaseUrl() + "movement-rules/rest/tickets/guid")
 				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken()).execute()
 				.returnResponse();
-        assertEquals(HttpStatus.SC_INTERNAL_SERVER_ERROR, response.getStatusLine().getStatusCode());
+		checkErrorResponse(response);
 	}
 
 	/**

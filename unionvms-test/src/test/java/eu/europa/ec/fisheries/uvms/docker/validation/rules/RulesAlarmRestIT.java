@@ -13,21 +13,18 @@ copy of the GNU General Public License along with the IFDM Suite. If not, see <h
 */
 package eu.europa.ec.fisheries.uvms.docker.validation.rules;
 
-import java.util.ArrayList;
-import java.util.Map;
-
+import eu.europa.ec.fisheries.schema.movementrules.alarm.v1.AlarmReportType;
 import eu.europa.ec.fisheries.schema.movementrules.search.v1.AlarmListCriteria;
+import eu.europa.ec.fisheries.schema.movementrules.search.v1.AlarmQuery;
 import eu.europa.ec.fisheries.schema.movementrules.search.v1.AlarmSearchKey;
 import eu.europa.ec.fisheries.schema.movementrules.search.v1.ListPagination;
+import eu.europa.ec.fisheries.uvms.docker.validation.common.AbstractRestServiceTest;
 import org.apache.http.HttpResponse;
-import org.apache.http.HttpStatus;
 import org.apache.http.client.fluent.Request;
-import org.junit.Ignore;
 import org.junit.Test;
 
-import eu.europa.ec.fisheries.schema.movementrules.alarm.v1.AlarmReportType;
-import eu.europa.ec.fisheries.schema.movementrules.search.v1.AlarmQuery;
-import eu.europa.ec.fisheries.uvms.docker.validation.common.AbstractRestServiceTest;
+import java.util.ArrayList;
+import java.util.Map;
 
 /**
  * The Class RulesAlarmRestIT.
@@ -87,7 +84,7 @@ public class RulesAlarmRestIT extends AbstractRestServiceTest {
 		AlarmReportType alarmReportType = new AlarmReportType();
 		final HttpResponse response = Request.Put(getBaseUrl() + "movement-rules/rest/alarms")
 				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken()).bodyByteArray(writeValueAsString(alarmReportType).getBytes()).execute().returnResponse();
-		assertEquals(HttpStatus.SC_INTERNAL_SERVER_ERROR, response.getStatusLine().getStatusCode());
+		checkErrorResponse(response);
 	}
 
 	
@@ -102,7 +99,7 @@ public class RulesAlarmRestIT extends AbstractRestServiceTest {
 	public void getAlarmReportByGuidTest() throws Exception {
 		final HttpResponse response = Request.Get(getBaseUrl() + "movement-rules/rest/alarms/guid")
 				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken()).execute().returnResponse();
-		assertEquals(HttpStatus.SC_INTERNAL_SERVER_ERROR, response.getStatusLine().getStatusCode());
+		checkErrorResponse(response);
 	}
 
 	
@@ -116,7 +113,7 @@ public class RulesAlarmRestIT extends AbstractRestServiceTest {
 	public void reprocessAlarmTest() throws Exception {
 		final HttpResponse response = Request.Post(getBaseUrl() + "movement-rules/rest/alarms/reprocess")
 				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken()).bodyByteArray(writeValueAsString(new ArrayList<String>()).getBytes()).execute().returnResponse();
-		assertEquals(HttpStatus.SC_INTERNAL_SERVER_ERROR, response.getStatusLine().getStatusCode());
+		checkErrorResponse(response);
 	}
 	
 }

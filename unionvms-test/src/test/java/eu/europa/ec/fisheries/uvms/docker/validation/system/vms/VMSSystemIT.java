@@ -11,21 +11,10 @@ copy of the GNU General Public License along with the IFDM Suite. If not, see <h
  */
 package eu.europa.ec.fisheries.uvms.docker.validation.system.vms;
 
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.CoreMatchers.notNullValue;
-import java.util.Calendar;
-import java.util.Date;
-import javax.jms.TextMessage;
-import org.junit.Test;
-import org.junit.Ignore;
 import eu.europa.ec.fisheries.schema.exchange.movement.v1.MovementType;
 import eu.europa.ec.fisheries.schema.exchange.plugin.v1.SetReportRequest;
 import eu.europa.ec.fisheries.schema.mobileterminal.types.v1.MobileTerminalType;
-import eu.europa.ec.fisheries.schema.movementrules.customrule.v1.ActionType;
-import eu.europa.ec.fisheries.schema.movementrules.customrule.v1.ConditionType;
-import eu.europa.ec.fisheries.schema.movementrules.customrule.v1.CriteriaType;
-import eu.europa.ec.fisheries.schema.movementrules.customrule.v1.CustomRuleType;
-import eu.europa.ec.fisheries.schema.movementrules.customrule.v1.SubCriteriaType;
+import eu.europa.ec.fisheries.schema.movementrules.customrule.v1.*;
 import eu.europa.ec.fisheries.uvms.docker.validation.asset.AssetTestHelper;
 import eu.europa.ec.fisheries.uvms.docker.validation.common.AbstractRestServiceTest;
 import eu.europa.ec.fisheries.uvms.docker.validation.common.MessageHelper;
@@ -36,8 +25,16 @@ import eu.europa.ec.fisheries.uvms.docker.validation.system.helper.CustomRuleHel
 import eu.europa.ec.fisheries.uvms.docker.validation.system.helper.FLUXHelper;
 import eu.europa.ec.fisheries.uvms.exchange.model.mapper.JAXBMarshaller;
 import eu.europa.ec.fisheries.wsdl.asset.types.Asset;
+import org.junit.Test;
 
-@Ignore
+import javax.jms.TextMessage;
+import java.time.LocalDateTime;
+import java.util.Calendar;
+import java.util.Date;
+
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.notNullValue;
+
 public class VMSSystemIT extends AbstractRestServiceTest {
 
     private static final String SELECTOR = "ServiceName='eu.europa.ec.fisheries.uvms.plugins.flux'";
@@ -45,8 +42,9 @@ public class VMSSystemIT extends AbstractRestServiceTest {
 
     @Test
     public void sendFlagStateToFLUXDNKTest() throws Exception {
-        Date timestamp = new Date();
-        
+        LocalDateTime timestamp = LocalDateTime.now();
+
+
         Asset asset = AssetTestHelper.createTestAsset();
         MobileTerminalType mobileTerminalType = MobileTerminalTestHelper.createMobileTerminalType();
         MobileTerminalTestHelper.assignMobileTerminal(asset, mobileTerminalType);
@@ -87,8 +85,8 @@ public class VMSSystemIT extends AbstractRestServiceTest {
     
     @Test
     public void sendFlagStateAndAreaDNKToFLUXDNKTest() throws Exception {
-        Date timestamp = new Date();
-        
+        LocalDateTime timestamp = LocalDateTime.now();
+
         Asset asset = AssetTestHelper.createTestAsset();
         MobileTerminalType mobileTerminalType = MobileTerminalTestHelper.createMobileTerminalType();
         MobileTerminalTestHelper.assignMobileTerminal(asset, mobileTerminalType);
@@ -131,7 +129,7 @@ public class VMSSystemIT extends AbstractRestServiceTest {
     
     @Test
     public void sendFlagStateToFLUXDNKWithRuleIntervalTest() throws Exception {
-        Date timestamp = new Date();
+        LocalDateTime timestamp = LocalDateTime.now();
         
         Asset asset = AssetTestHelper.createTestAsset();
         MobileTerminalType mobileTerminalType = MobileTerminalTestHelper.createMobileTerminalType();
@@ -182,7 +180,7 @@ public class VMSSystemIT extends AbstractRestServiceTest {
     
     @Test
     public void sendFlagStateToFLUXDNKWithPastValidRuleIntervalTest() throws Exception {
-        Date timestamp = new Date();
+        LocalDateTime timestamp = LocalDateTime.now();
         
         Asset asset = AssetTestHelper.createTestAsset();
         MobileTerminalType mobileTerminalType = MobileTerminalTestHelper.createMobileTerminalType();
@@ -235,8 +233,8 @@ public class VMSSystemIT extends AbstractRestServiceTest {
     
     @Test
     public void sendFlagStateToFLUXDNKWithFutureValidRuleIntervalTest() throws Exception {
-        Date timestamp = new Date();
-        
+        LocalDateTime timestamp = LocalDateTime.now();
+
         Asset asset = AssetTestHelper.createTestAsset();
         MobileTerminalType mobileTerminalType = MobileTerminalTestHelper.createMobileTerminalType();
         MobileTerminalTestHelper.assignMobileTerminal(asset, mobileTerminalType);

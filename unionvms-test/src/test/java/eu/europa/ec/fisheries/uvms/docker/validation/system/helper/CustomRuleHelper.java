@@ -11,19 +11,24 @@ copy of the GNU General Public License along with the IFDM Suite. If not, see <h
  */
 package eu.europa.ec.fisheries.uvms.docker.validation.system.helper;
 
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.CoreMatchers.notNullValue;
-import static org.hamcrest.CoreMatchers.nullValue;
-import java.io.IOException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.TimeZone;
-import org.apache.http.HttpResponse;
-import org.apache.http.client.ClientProtocolException;
-import org.apache.http.client.fluent.Request;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import eu.europa.ec.fisheries.schema.movementrules.customrule.v1.CustomRuleType;
 import eu.europa.ec.fisheries.uvms.docker.validation.common.AbstractHelper;
+import org.apache.http.HttpResponse;
+import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.fluent.Request;
+
+import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.ZoneOffset;
+import java.time.format.DateTimeFormatter;
+import java.util.Date;
+import java.util.TimeZone;
+
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.nullValue;
 
 public class CustomRuleHelper extends AbstractHelper {
 
@@ -43,18 +48,24 @@ public class CustomRuleHelper extends AbstractHelper {
         checkSuccessResponseReturnDataMap(response);
     }
 
-    public static void assertRuleTriggered(CustomRuleType rule, Date dateFrom) throws Exception {
+    public static void assertRuleTriggered(CustomRuleType rule, LocalDateTime dateFrom) throws Exception {
         HttpResponse response = Request.Get(getBaseUrl() + "movement-rules/rest/customrules/" + rule.getGuid())
                 .setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken()).execute()
                 .returnResponse();
 
         CustomRuleType fetchedCustomRule = checkSuccessResponseReturnObject(response, CustomRuleType.class);
-        
-        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss Z");
-        formatter.setTimeZone(TimeZone.getTimeZone("UTC"));
-        Date lastTriggered = formatter.parse(fetchedCustomRule.getLastTriggered());
-        
-        assertTrue(lastTriggered.getTime() >= dateFrom.getTime());
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss Z");
+        LocalDateTime lastTriggered = LocalDateTime.parse(fetchedCustomRule.getLastTriggered(), formatter);
+        lastTriggered.atOffset(ZoneOffset.UTC);
+        assertNotNull(lastTriggered);
+
+        assertTrue(lastTriggered.isAfter(dateFrom) || compareWithoutMillis(lastTriggered,dateFrom));
+    }
+
+    public static boolean compareWithoutMillis(LocalDateTime a, LocalDateTime b) {
+        return a.getYear() == b.getYear() && a.getMonth().equals(b.getMonth()) && a.getDayOfMonth() == b.getDayOfMonth() &&
+                a.getHour() == b.getHour() && a.getMinute() == b.getMinute() && a.getSecond() == b.getSecond();
     }
     
     public static void assertRuleNotTriggered(CustomRuleType rule) throws Exception {
@@ -66,12 +77,5 @@ public class CustomRuleHelper extends AbstractHelper {
         
         assertThat(fetchedCustomRule.getLastTriggered(), is(nullValue()));
     }
-    
-    public static void pollTicketCreated() throws ClientProtocolException, IOException {
-        final HttpResponse response = Request.Get(getBaseUrl() + "movement-rules/activity/ticket")
-                .setHeader("Content-Type", "application/json")
-                .execute().returnResponse();
-        
-        assertThat(response.getStatusLine().getStatusCode(), is(200));
-    }
+
 }
