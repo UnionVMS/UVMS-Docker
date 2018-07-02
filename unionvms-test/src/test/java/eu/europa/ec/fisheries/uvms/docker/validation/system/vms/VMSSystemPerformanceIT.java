@@ -28,6 +28,7 @@ import eu.europa.ec.fisheries.wsdl.asset.types.Asset;
 import org.databene.contiperf.PerfTest;
 import org.databene.contiperf.Required;
 import org.databene.contiperf.junit.ContiPerfRule;
+import org.junit.After;
 import org.junit.Rule;
 import org.junit.Test;
 
@@ -46,6 +47,11 @@ public class VMSSystemPerformanceIT extends AbstractRestServiceTest {
     
     @Rule
     public ContiPerfRule contiPerfRule = new ContiPerfRule();
+    
+    @After
+    public void removeCustomRules() throws Exception {
+        CustomRuleHelper.removeCustomRulesByDefaultUser();
+    }
     
     @Test
     @PerfTest(threads = 1)

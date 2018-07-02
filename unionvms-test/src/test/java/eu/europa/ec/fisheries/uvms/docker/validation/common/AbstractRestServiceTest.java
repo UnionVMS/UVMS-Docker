@@ -29,7 +29,7 @@ public abstract class AbstractRestServiceTest extends AbstractRest {
 
     @BeforeClass
     @SneakyThrows
-    public static void init(){
+    public static void init() throws Exception {
 
         com.mashape.unirest.http.HttpResponse<String> stringHttpResponse =
                 Unirest.post("http://localhost:28080/unionvms/usm-administration/rest/authenticate")

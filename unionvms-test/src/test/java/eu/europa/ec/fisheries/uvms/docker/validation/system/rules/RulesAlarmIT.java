@@ -11,6 +11,20 @@ copy of the GNU General Public License along with the IFDM Suite. If not, see <h
  */
 package eu.europa.ec.fisheries.uvms.docker.validation.system.rules;
 
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.notNullValue;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.Arrays;
+import java.util.Date;
+import java.util.List;
+import javax.jms.Message;
+import javax.jms.TextMessage;
+import org.junit.After;
+import org.junit.BeforeClass;
+import org.junit.Test;
 import eu.europa.ec.fisheries.schema.exchange.module.v1.GetServiceListResponse;
 import eu.europa.ec.fisheries.schema.exchange.plugin.types.v1.PluginType;
 import eu.europa.ec.fisheries.schema.exchange.plugin.v1.SetCommandRequest;
@@ -18,7 +32,11 @@ import eu.europa.ec.fisheries.schema.exchange.service.v1.CapabilityListType;
 import eu.europa.ec.fisheries.schema.exchange.service.v1.ServiceResponseType;
 import eu.europa.ec.fisheries.schema.exchange.service.v1.ServiceType;
 import eu.europa.ec.fisheries.schema.exchange.service.v1.SettingListType;
-import eu.europa.ec.fisheries.schema.movementrules.customrule.v1.*;
+import eu.europa.ec.fisheries.schema.movementrules.customrule.v1.ActionType;
+import eu.europa.ec.fisheries.schema.movementrules.customrule.v1.ConditionType;
+import eu.europa.ec.fisheries.schema.movementrules.customrule.v1.CriteriaType;
+import eu.europa.ec.fisheries.schema.movementrules.customrule.v1.CustomRuleType;
+import eu.europa.ec.fisheries.schema.movementrules.customrule.v1.SubCriteriaType;
 import eu.europa.ec.fisheries.uvms.commons.message.api.MessageConstants;
 import eu.europa.ec.fisheries.uvms.docker.validation.asset.AssetTestHelper;
 import eu.europa.ec.fisheries.uvms.docker.validation.common.AbstractRestServiceTest;
@@ -31,20 +49,6 @@ import eu.europa.ec.fisheries.uvms.exchange.model.constant.ExchangeModelConstant
 import eu.europa.ec.fisheries.uvms.exchange.model.mapper.ExchangeModuleRequestMapper;
 import eu.europa.ec.fisheries.uvms.exchange.model.mapper.JAXBMarshaller;
 import eu.europa.ec.fisheries.wsdl.asset.types.Asset;
-import org.junit.BeforeClass;
-import org.junit.Test;
-
-import javax.jms.Message;
-import javax.jms.TextMessage;
-import java.text.SimpleDateFormat;
-import java.time.LocalDateTime;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.List;
-import java.util.TimeZone;
-
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.CoreMatchers.notNullValue;
 
 public class RulesAlarmIT extends AbstractRestServiceTest {
 
@@ -73,6 +77,11 @@ public class RulesAlarmIT extends AbstractRestServiceTest {
             MessageHelper.listenOnEventBus(emailSelector, TIMEOUT);
             MessageHelper.listenOnEventBus(emailSelector, TIMEOUT);
         }
+    }
+    
+    @After
+    public void removeCustomRules() throws Exception {
+        CustomRuleHelper.removeCustomRulesByDefaultUser();
     }
     
     @Test
@@ -104,8 +113,6 @@ public class RulesAlarmIT extends AbstractRestServiceTest {
         assertThat(setCommandRequest.getCommand().getFwdRule(), is(createdSpeedRule.getName()));
         
         CustomRuleHelper.assertRuleTriggered(createdSpeedRule, timestamp);
-        
-        CustomRuleHelper.removeCustomRule(createdSpeedRule.getGuid());
     }
     
     @Test
@@ -137,8 +144,6 @@ public class RulesAlarmIT extends AbstractRestServiceTest {
         assertThat(setCommandRequest.getCommand().getFwdRule(), is(createdSpeedRule.getName()));
         
         CustomRuleHelper.assertRuleTriggered(createdSpeedRule, timestamp);
-        
-        CustomRuleHelper.removeCustomRule(createdSpeedRule.getGuid());
     }
 
     @Test
@@ -181,9 +186,6 @@ public class RulesAlarmIT extends AbstractRestServiceTest {
         
         CustomRuleHelper.assertRuleNotTriggered(createdSpeedRule);
         CustomRuleHelper.assertRuleTriggered(createdFsRule, timestamp);
-        
-        CustomRuleHelper.removeCustomRule(createdSpeedRule.getGuid());
-        CustomRuleHelper.removeCustomRule(createdFsRule.getGuid());
     }
     
     @Test
@@ -226,9 +228,6 @@ public class RulesAlarmIT extends AbstractRestServiceTest {
         
         CustomRuleHelper.assertRuleNotTriggered(createdSpeedRule);
         CustomRuleHelper.assertRuleTriggered(createdFsRule, timestamp);
-        
-        CustomRuleHelper.removeCustomRule(createdSpeedRule.getGuid());
-        CustomRuleHelper.removeCustomRule(createdFsRule.getGuid());
     }
     
     @Test
@@ -260,8 +259,6 @@ public class RulesAlarmIT extends AbstractRestServiceTest {
         assertThat(setCommandRequest.getCommand().getFwdRule(), is(createdSpeedRule.getName()));
         
         CustomRuleHelper.assertRuleTriggered(createdSpeedRule, timestamp);
-        
-        CustomRuleHelper.removeCustomRule(createdSpeedRule.getGuid());
     }
     
     @Test
@@ -293,8 +290,6 @@ public class RulesAlarmIT extends AbstractRestServiceTest {
         assertThat(setCommandRequest.getCommand().getFwdRule(), is(createdSpeedRule.getName()));
         
         CustomRuleHelper.assertRuleTriggered(createdSpeedRule, timestamp);
-        
-        CustomRuleHelper.removeCustomRule(createdSpeedRule.getGuid());
     }
     
     @Test
@@ -328,8 +323,6 @@ public class RulesAlarmIT extends AbstractRestServiceTest {
         assertThat(setCommandRequest.getCommand().getFwdRule(), is(createdSpeedAndAreaRule.getName()));
         
         CustomRuleHelper.assertRuleTriggered(createdSpeedAndAreaRule, timestamp);
-        
-        CustomRuleHelper.removeCustomRule(createdSpeedAndAreaRule.getGuid());
     }
     
     @Test
@@ -363,8 +356,6 @@ public class RulesAlarmIT extends AbstractRestServiceTest {
         assertThat(setCommandRequest.getCommand().getFwdRule(), is(createdSpeedAndAreaRule.getName()));
         
         CustomRuleHelper.assertRuleTriggered(createdSpeedAndAreaRule, timestamp);
-        
-        CustomRuleHelper.removeCustomRule(createdSpeedAndAreaRule.getGuid());
     }
     
     @Test
@@ -395,8 +386,6 @@ public class RulesAlarmIT extends AbstractRestServiceTest {
         assertThat(setCommandRequest.getCommand().getFwdRule(), is(createdAreaRule.getName()));
         
         CustomRuleHelper.assertRuleTriggered(createdAreaRule, timestamp);
-        
-        CustomRuleHelper.removeCustomRule(createdAreaRule.getGuid());
     }
     
     @Test
@@ -427,8 +416,6 @@ public class RulesAlarmIT extends AbstractRestServiceTest {
         assertThat(setCommandRequest.getCommand().getFwdRule(), is(createdIrcsRule.getName()));
         
         CustomRuleHelper.assertRuleTriggered(createdIrcsRule, timestamp);
-        
-        CustomRuleHelper.removeCustomRule(createdIrcsRule.getGuid());
     }
     
     @Test
@@ -475,8 +462,6 @@ public class RulesAlarmIT extends AbstractRestServiceTest {
         assertThat(setCommandRequest2.getCommand().getFwdRule(), is(createdCustomRule.getName()));
         
         CustomRuleHelper.assertRuleTriggered(createdCustomRule, timestamp);
-        
-        CustomRuleHelper.removeCustomRule(createdCustomRule.getGuid());
     }
     
     @Test
@@ -508,8 +493,6 @@ public class RulesAlarmIT extends AbstractRestServiceTest {
         assertThat(setCommandRequest.getCommand().getFwdRule(), is(createdCustomRule.getName()));
         
         CustomRuleHelper.assertRuleTriggered(createdCustomRule, timestamp);
-        
-        CustomRuleHelper.removeCustomRule(createdCustomRule.getGuid());
     }
     
     @Test
@@ -551,9 +534,6 @@ public class RulesAlarmIT extends AbstractRestServiceTest {
         
         CustomRuleHelper.assertRuleNotTriggered(createdCustomRule);
         CustomRuleHelper.assertRuleTriggered(createdFsRule, timestamp);
-        
-        CustomRuleHelper.removeCustomRule(createdCustomRule.getGuid());
-        CustomRuleHelper.removeCustomRule(createdFsRule.getGuid());
     }
     
     @Test
@@ -584,8 +564,6 @@ public class RulesAlarmIT extends AbstractRestServiceTest {
         assertThat(setCommandRequest.getCommand().getFwdRule(), is(createdCfrRule.getName()));
         
         CustomRuleHelper.assertRuleTriggered(createdCfrRule, timestamp);
-        
-        CustomRuleHelper.removeCustomRule(createdCfrRule.getGuid());
     }
     
     @Test
@@ -616,8 +594,6 @@ public class RulesAlarmIT extends AbstractRestServiceTest {
         assertThat(setCommandRequest.getCommand().getFwdRule(), is(createdAssetNameRule.getName()));
         
         CustomRuleHelper.assertRuleTriggered(createdAssetNameRule, timestamp);
-        
-        CustomRuleHelper.removeCustomRule(createdAssetNameRule.getGuid());
     }
     
     @Test
@@ -647,8 +623,6 @@ public class RulesAlarmIT extends AbstractRestServiceTest {
         assertThat(setCommandRequest.getCommand().getFwdRule(), is(createdCustomRule.getName()));
         
         CustomRuleHelper.assertRuleTriggered(createdCustomRule, timestamp);
-        
-        CustomRuleHelper.removeCustomRule(createdCustomRule.getGuid());
     }
     
     @Test
@@ -678,23 +652,18 @@ public class RulesAlarmIT extends AbstractRestServiceTest {
         assertThat(setCommandRequest.getCommand().getFwdRule(), is(createdCustomRule.getName()));
         
         CustomRuleHelper.assertRuleTriggered(createdCustomRule, timestamp);
-        
-        CustomRuleHelper.removeCustomRule(createdCustomRule.getGuid());
     }
     
     @Test
     public void sendEmailIfPositionReportTimeIsGreaterOrEqualTest() throws Exception {
-        LocalDateTime timestamp = LocalDateTime.now();;
+        ZonedDateTime timestamp = ZonedDateTime.now(ZoneId.of("UTC"));
 
         Asset asset = AssetTestHelper.createTestAsset();
-        
-        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss Z");
-        formatter.setTimeZone(TimeZone.getTimeZone("UTC"));
         
         String email = System.currentTimeMillis() + "@mail.com";
         CustomRuleType customRule = CustomRuleBuilder.getBuilder()
                 .rule(CriteriaType.POSITION, SubCriteriaType.POSITION_REPORT_TIME, 
-                        ConditionType.GE, formatter.format(timestamp))
+                        ConditionType.GE, timestamp.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss Z")))
                 .action(ActionType.EMAIL, email)
                 .build();
         
@@ -711,8 +680,6 @@ public class RulesAlarmIT extends AbstractRestServiceTest {
         assertThat(setCommandRequest.getCommand().getEmail().getTo(), is(email));
         assertThat(setCommandRequest.getCommand().getFwdRule(), is(createdCustomRule.getName()));
         
-        CustomRuleHelper.assertRuleTriggered(createdCustomRule, timestamp);
-        
-        CustomRuleHelper.removeCustomRule(createdCustomRule.getGuid());
+        CustomRuleHelper.assertRuleTriggered(createdCustomRule, timestamp.toLocalDateTime());
     }
 }

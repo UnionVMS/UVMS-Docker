@@ -11,24 +11,19 @@ copy of the GNU General Public License along with the IFDM Suite. If not, see <h
  */
 package eu.europa.ec.fisheries.uvms.docker.validation.system.helper;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import eu.europa.ec.fisheries.schema.movementrules.customrule.v1.CustomRuleType;
-import eu.europa.ec.fisheries.uvms.docker.validation.common.AbstractHelper;
-import org.apache.http.HttpResponse;
-import org.apache.http.client.ClientProtocolException;
-import org.apache.http.client.fluent.Request;
-
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.nullValue;
 import java.io.IOException;
-import java.text.SimpleDateFormat;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
-import java.util.Date;
-import java.util.TimeZone;
-
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.CoreMatchers.nullValue;
+import java.util.List;
+import org.apache.http.HttpResponse;
+import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.fluent.Request;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import eu.europa.ec.fisheries.schema.movementrules.customrule.v1.CustomRuleType;
+import eu.europa.ec.fisheries.uvms.docker.validation.common.AbstractHelper;
 
 public class CustomRuleHelper extends AbstractHelper {
 
@@ -48,6 +43,17 @@ public class CustomRuleHelper extends AbstractHelper {
         checkSuccessResponseReturnDataMap(response);
     }
 
+    public static void removeCustomRulesByDefaultUser() throws Exception {
+        HttpResponse response = Request.Get(getBaseUrl() + "movement-rules/rest/customrules/listAll/" + CustomRuleBuilder.DEFAULT_USER)
+                .setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken()).execute()
+                .returnResponse();
+        
+        List<CustomRuleType> customRules = checkSuccessResponseReturnList(response, CustomRuleType.class);
+        for (CustomRuleType customRuleType : customRules) {
+            removeCustomRule(customRuleType.getGuid());
+        }
+    }
+    
     public static void assertRuleTriggered(CustomRuleType rule, LocalDateTime dateFrom) throws Exception {
         HttpResponse response = Request.Get(getBaseUrl() + "movement-rules/rest/customrules/" + rule.getGuid())
                 .setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken()).execute()

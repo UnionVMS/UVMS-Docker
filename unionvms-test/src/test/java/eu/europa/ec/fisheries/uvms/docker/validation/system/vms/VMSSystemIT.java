@@ -11,10 +11,22 @@ copy of the GNU General Public License along with the IFDM Suite. If not, see <h
  */
 package eu.europa.ec.fisheries.uvms.docker.validation.system.vms;
 
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.notNullValue;
+import java.time.LocalDateTime;
+import java.util.Calendar;
+import java.util.Date;
+import javax.jms.TextMessage;
+import org.junit.After;
+import org.junit.Test;
 import eu.europa.ec.fisheries.schema.exchange.movement.v1.MovementType;
 import eu.europa.ec.fisheries.schema.exchange.plugin.v1.SetReportRequest;
 import eu.europa.ec.fisheries.schema.mobileterminal.types.v1.MobileTerminalType;
-import eu.europa.ec.fisheries.schema.movementrules.customrule.v1.*;
+import eu.europa.ec.fisheries.schema.movementrules.customrule.v1.ActionType;
+import eu.europa.ec.fisheries.schema.movementrules.customrule.v1.ConditionType;
+import eu.europa.ec.fisheries.schema.movementrules.customrule.v1.CriteriaType;
+import eu.europa.ec.fisheries.schema.movementrules.customrule.v1.CustomRuleType;
+import eu.europa.ec.fisheries.schema.movementrules.customrule.v1.SubCriteriaType;
 import eu.europa.ec.fisheries.uvms.docker.validation.asset.AssetTestHelper;
 import eu.europa.ec.fisheries.uvms.docker.validation.common.AbstractRestServiceTest;
 import eu.europa.ec.fisheries.uvms.docker.validation.common.MessageHelper;
@@ -25,21 +37,17 @@ import eu.europa.ec.fisheries.uvms.docker.validation.system.helper.CustomRuleHel
 import eu.europa.ec.fisheries.uvms.docker.validation.system.helper.FLUXHelper;
 import eu.europa.ec.fisheries.uvms.exchange.model.mapper.JAXBMarshaller;
 import eu.europa.ec.fisheries.wsdl.asset.types.Asset;
-import org.junit.Test;
-
-import javax.jms.TextMessage;
-import java.time.LocalDateTime;
-import java.util.Calendar;
-import java.util.Date;
-
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.CoreMatchers.notNullValue;
 
 public class VMSSystemIT extends AbstractRestServiceTest {
 
     private static final String SELECTOR = "ServiceName='eu.europa.ec.fisheries.uvms.plugins.flux'";
     private static final long TIMEOUT = 10000;
 
+    @After
+    public void removeCustomRules() throws Exception {
+        CustomRuleHelper.removeCustomRulesByDefaultUser();
+    }
+    
     @Test
     public void sendFlagStateToFLUXDNKTest() throws Exception {
         LocalDateTime timestamp = LocalDateTime.now();
@@ -79,8 +87,6 @@ public class VMSSystemIT extends AbstractRestServiceTest {
         assertThat(movement.getIrcs(), is(asset.getIrcs()));
         assertThat(movement.getPosition().getLatitude(), is(position.latitude));
         assertThat(movement.getPosition().getLongitude(), is(position.longitude));
-        
-        CustomRuleHelper.removeCustomRule(createdCustomRule.getGuid());
     }
     
     @Test
@@ -123,8 +129,6 @@ public class VMSSystemIT extends AbstractRestServiceTest {
         assertThat(movement.getIrcs(), is(asset.getIrcs()));
         assertThat(movement.getPosition().getLatitude(), is(position.latitude));
         assertThat(movement.getPosition().getLongitude(), is(position.longitude));
-        
-        CustomRuleHelper.removeCustomRule(createdCustomRule.getGuid());
     }
     
     @Test
@@ -174,8 +178,6 @@ public class VMSSystemIT extends AbstractRestServiceTest {
         assertThat(movement.getIrcs(), is(asset.getIrcs()));
         assertThat(movement.getPosition().getLatitude(), is(position.latitude));
         assertThat(movement.getPosition().getLongitude(), is(position.longitude));
-        
-        CustomRuleHelper.removeCustomRule(createdCustomRule.getGuid());
     }
     
     @Test
@@ -226,9 +228,6 @@ public class VMSSystemIT extends AbstractRestServiceTest {
         
         CustomRuleHelper.assertRuleNotTriggered(createdCustomRuleWithInterval);
         CustomRuleHelper.assertRuleTriggered(createdCustomRuleWithoutInterval, timestamp);
-        
-        CustomRuleHelper.removeCustomRule(createdCustomRuleWithInterval.getGuid());
-        CustomRuleHelper.removeCustomRule(createdCustomRuleWithoutInterval.getGuid());
     }
     
     @Test
@@ -279,8 +278,5 @@ public class VMSSystemIT extends AbstractRestServiceTest {
         
         CustomRuleHelper.assertRuleNotTriggered(createdCustomRuleWithInterval);
         CustomRuleHelper.assertRuleTriggered(createdCustomRuleWithoutInterval, timestamp);
-        
-        CustomRuleHelper.removeCustomRule(createdCustomRuleWithInterval.getGuid());
-        CustomRuleHelper.removeCustomRule(createdCustomRuleWithoutInterval.getGuid());
     }
 }
