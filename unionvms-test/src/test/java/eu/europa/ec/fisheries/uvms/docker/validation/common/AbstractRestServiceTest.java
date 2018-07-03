@@ -36,7 +36,7 @@ public abstract class AbstractRestServiceTest extends AbstractRest {
                         .header("Content-Type", "application/json")
                         .header("Cache-Control", "no-cache")
                         .header("Postman-Token", "7b47305b-d8a2-4e2c-aa36-28ab8250670e")
-                        .body("{\n   \"userName\": \"rep_power\",\n   \"password\": \"abcd-1234\"\n}")
+                        .body("{\n   \"userName\": \"vms_admin_se\",\n   \"password\": \"password\"\n}")
                         .asString();
 
         authenticateMap = new ObjectMapper().readValue(stringHttpResponse.getBody(), HashMap.class);

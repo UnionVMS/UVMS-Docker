@@ -93,8 +93,8 @@ public class ReportingRestIT extends AbstractRestServiceTest {
 	@Test
 	public void listReportsTest() throws Exception {
 		final HttpResponse response = Request.Get(getBaseUrl() + "reporting/rest/report/list")
-				.setHeader("Content-Type", "application/json").setHeader("scopeName", "EC")
-				.setHeader("roleName", "rep_power_role").setHeader("Authorization", String.valueOf(authenticateMap.get("jwtoken"))).execute()
+				.setHeader("Content-Type", "application/json").setHeader("scopeName", "All Vessels")
+				.setHeader("roleName", "AdminAllUVMS").setHeader("Authorization", String.valueOf(authenticateMap.get("jwtoken"))).execute()
 				.returnResponse();
 		List dataMap = checkSuccessResponseReturnType(response, List.class);
 		assertNotNull(dataMap);
@@ -109,8 +109,8 @@ public class ReportingRestIT extends AbstractRestServiceTest {
 	@Test
 	public void listLastExecutedReportsTest() throws Exception {
 		final HttpResponse response = Request.Get(getBaseUrl() + "reporting/rest/report/list/lastexecuted/10")
-				.setHeader("Content-Type", "application/json").setHeader("scopeName", "EC")
-				.setHeader("roleName", "rep_power_role").setHeader("Authorization", String.valueOf(authenticateMap.get("jwtoken"))).execute()
+				.setHeader("Content-Type", "application/json").setHeader("scopeName", "All Vessels")
+				.setHeader("roleName", "AdminAllUVMS").setHeader("Authorization", String.valueOf(authenticateMap.get("jwtoken"))).execute()
 				.returnResponse();
 		List dataMap = checkSuccessResponseReturnType(response, List.class);
 		assertNotNull(dataMap);
@@ -128,8 +128,8 @@ public class ReportingRestIT extends AbstractRestServiceTest {
 		Long reportId = createTwoWeeksReport("createReportTest", "TwoWeeksReports").getId();
 
 		final HttpResponse response = Request.Get(getBaseUrl() + "reporting/rest/report/" + reportId)
-				.setHeader("Content-Type", "application/json").setHeader("scopeName", "EC")
-				.setHeader("roleName", "rep_power_role").setHeader("Authorization", String.valueOf(authenticateMap.get("jwtoken"))).execute()
+				.setHeader("Content-Type", "application/json").setHeader("scopeName", "All Vessels")
+				.setHeader("roleName", "AdminAllUVMS").setHeader("Authorization", String.valueOf(authenticateMap.get("jwtoken"))).execute()
 				.returnResponse();
 		Map<String, Object> dataMap = checkSuccessResponseReturnMap(response);
 		assertNotNull(dataMap);
@@ -214,8 +214,8 @@ public class ReportingRestIT extends AbstractRestServiceTest {
 		
 		String writeValueAsString = writeValueAsString(reportDTO);
 		final HttpResponse response = Request.Post(getBaseUrl() + "reporting/rest/report?projection=DEFAULT")
-				.setHeader("Content-Type", "application/json").setHeader("scopeName", "EC")
-				.setHeader("roleName", "rep_power_role").setHeader("Authorization", String.valueOf(authenticateMap.get("jwtoken")))
+				.setHeader("Content-Type", "application/json").setHeader("scopeName", "All Vessels")
+				.setHeader("roleName", "AdminAllUVMS").setHeader("Authorization", String.valueOf(authenticateMap.get("jwtoken")))
 				.bodyByteArray(writeValueAsString.getBytes()).execute().returnResponse();
 		reportDTO.setId(checkSuccessResponseReturnType(response, Integer.class).longValue());
 
@@ -253,8 +253,8 @@ public class ReportingRestIT extends AbstractRestServiceTest {
 		
 		String writeValueAsString = writeValueAsString(reportDTO);
 		final HttpResponse response = Request.Post(getBaseUrl() + "reporting/rest/report?projection=DEFAULT")
-				.setHeader("Content-Type", "application/json").setHeader("scopeName", "EC")
-				.setHeader("roleName", "rep_power_role").setHeader("Authorization", String.valueOf(authenticateMap.get("jwtoken")))
+				.setHeader("Content-Type", "application/json").setHeader("scopeName", "All Vessels")
+				.setHeader("roleName", "AdminAllUVMS").setHeader("Authorization", String.valueOf(authenticateMap.get("jwtoken")))
 				.bodyByteArray(writeValueAsString.getBytes()).execute().returnResponse();
 		reportDTO.setId(checkSuccessResponseReturnType(response, Integer.class).longValue());
 
@@ -273,8 +273,8 @@ public class ReportingRestIT extends AbstractRestServiceTest {
 		Long reportId = createTwoWeeksReport("deleteReportTest", "TwoWeeksReports").getId();
 
 		final HttpResponse response = Request.Delete(getBaseUrl() + "reporting/rest/report/" + reportId)
-				.setHeader("Content-Type", "application/json").setHeader("scopeName", "EC")
-				.setHeader("roleName", "rep_power_role").setHeader("Authorization", String.valueOf(authenticateMap.get("jwtoken"))).execute()
+				.setHeader("Content-Type", "application/json").setHeader("scopeName", "All Vessels")
+				.setHeader("roleName", "AdminAllUVMS").setHeader("Authorization", String.valueOf(authenticateMap.get("jwtoken"))).execute()
 				.returnResponse();
 		assertEquals(HttpStatus.SC_OK, response.getStatusLine().getStatusCode());
 	}
@@ -291,8 +291,8 @@ public class ReportingRestIT extends AbstractRestServiceTest {
 		twoWeeksReport.setDescription("new Description");
 
 		final HttpResponse response = Request.Put(getBaseUrl() + "reporting/rest/report/" + twoWeeksReport.getId())
-				.setHeader("Content-Type", "application/json").setHeader("scopeName", "EC")
-				.setHeader("roleName", "rep_power_role").setHeader("Authorization", String.valueOf(authenticateMap.get("jwtoken")))
+				.setHeader("Content-Type", "application/json").setHeader("scopeName", "All Vessels")
+				.setHeader("roleName", "AdminAllUVMS").setHeader("Authorization", String.valueOf(authenticateMap.get("jwtoken")))
 				.bodyByteArray(writeValueAsString(twoWeeksReport).getBytes()).execute().returnResponse();
 		assertEquals(HttpStatus.SC_OK, response.getStatusLine().getStatusCode());
 	}
@@ -311,8 +311,8 @@ public class ReportingRestIT extends AbstractRestServiceTest {
 		final HttpResponse response = Request
 				.Put(getBaseUrl() + "reporting/rest/report/share/" + twoWeeksReport.getId() + "/"
 						+ VisibilityEnum.PUBLIC)
-				.setHeader("Content-Type", "application/json").setHeader("scopeName", "EC")
-				.setHeader("roleName", "rep_power_role").setHeader("Authorization", String.valueOf(authenticateMap.get("jwtoken"))).execute()
+				.setHeader("Content-Type", "application/json").setHeader("scopeName", "All Vessels")
+				.setHeader("roleName", "AdminAllUVMS").setHeader("Authorization", String.valueOf(authenticateMap.get("jwtoken"))).execute()
 				.returnResponse();
 		assertEquals(HttpStatus.SC_OK, response.getStatusLine().getStatusCode());
 	}
@@ -341,8 +341,8 @@ public class ReportingRestIT extends AbstractRestServiceTest {
 
 		final HttpResponse response = Request
 				.Post(getBaseUrl() + "reporting/rest/report/execute/" + twoWeeksReport.getId())
-				.setHeader("Content-Type", "application/json").setHeader("scopeName", "EC")
-				.setHeader("roleName", "rep_power_role").setHeader("Authorization", String.valueOf(authenticateMap.get("jwtoken")))
+				.setHeader("Content-Type", "application/json").setHeader("scopeName", "All Vessels")
+				.setHeader("roleName", "AdminAllUVMS").setHeader("Authorization", String.valueOf(authenticateMap.get("jwtoken")))
 				.bodyByteArray(writeValueAsString(displayFormat).getBytes()).execute().returnResponse();
 		Map<String, Object> dataMap = checkSuccessResponseReturnMap(response);
 		assertNotNull(dataMap);
@@ -379,8 +379,8 @@ public class ReportingRestIT extends AbstractRestServiceTest {
 
 		final HttpResponse response = Request
 				.Post(getBaseUrl() + "reporting/rest/report/execute/" + twoWeeksReport.getId())
-				.setHeader("Content-Type", "application/json").setHeader("scopeName", "EC")
-				.setHeader("roleName", "rep_power_role").setHeader("Authorization", String.valueOf(authenticateMap.get("jwtoken")))
+				.setHeader("Content-Type", "application/json").setHeader("scopeName", "All Vessels")
+				.setHeader("roleName", "AdminAllUVMS").setHeader("Authorization", String.valueOf(authenticateMap.get("jwtoken")))
 				.bodyByteArray(writeValueAsString(displayFormat).getBytes()).execute().returnResponse();
 		Map<String, Object> dataMap = checkSuccessResponseReturnMap(response);
 		assertNotNull(dataMap);
@@ -416,8 +416,8 @@ public class ReportingRestIT extends AbstractRestServiceTest {
 
 		final HttpResponse response = Request
 				.Post(getBaseUrl() + "reporting/rest/report/execute/" + twoWeeksReport.getId())
-				.setHeader("Content-Type", "application/json").setHeader("scopeName", "EC")
-				.setHeader("roleName", "rep_power_role").setHeader("Authorization", String.valueOf(authenticateMap.get("jwtoken")))
+				.setHeader("Content-Type", "application/json").setHeader("scopeName", "All Vessels")
+				.setHeader("roleName", "AdminAllUVMS").setHeader("Authorization", String.valueOf(authenticateMap.get("jwtoken")))
 				.bodyByteArray(writeValueAsString(displayFormat).getBytes()).execute().returnResponse();
 		Map<String, Object> dataMap = checkSuccessResponseReturnMap(response);
 		assertNotNull(dataMap);
@@ -471,8 +471,8 @@ public class ReportingRestIT extends AbstractRestServiceTest {
 
 		final HttpResponse response = Request
 				.Post(getBaseUrl() + "reporting/rest/report/execute/" + twoWeeksReport.getId())
-				.setHeader("Content-Type", "application/json").setHeader("scopeName", "EC")
-				.setHeader("roleName", "rep_power_role").setHeader("Authorization", String.valueOf(authenticateMap.get("jwtoken")))
+				.setHeader("Content-Type", "application/json").setHeader("scopeName", "All Vessels")
+				.setHeader("roleName", "AdminAllUVMS").setHeader("Authorization", String.valueOf(authenticateMap.get("jwtoken")))
 				.bodyByteArray(writeValueAsString(displayFormat).getBytes()).execute().returnResponse();
 		Map<String, Object> dataMap = checkSuccessResponseReturnMap(response);
 		Map<String, Object> movementDataMap = (Map<String, Object>) dataMap.get("movements");
