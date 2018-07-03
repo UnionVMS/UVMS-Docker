@@ -42,7 +42,7 @@ public abstract class AbstractRest extends Assert {
 	 *             the exception
 	 */
 	public static String aquireJwtTokenForTest() throws Exception {
-		return aquireJwtToken("vms_admin_com","password");
+		return aquireJwtToken("vms_admin_se","password");
 	}
 
 	/**
