@@ -425,7 +425,7 @@
 		<module>wildfly-unionvms</module>
 		<!--module>foundation-test</module-->
 		<module>unionvms-test</module>
-		<!--module>wildfly-release</module-->>
+		<!--module>wildfly-release</module-->
 		<module>docker-compose</module>
 		<!--module>release-test</module-->
 		<module>unionvms-wildfly-dist</module>
