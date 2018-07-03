@@ -80,6 +80,13 @@
             <version>${unionvms.project.sales.module}</version>
         </dependency>
 
+        <dependency>
+            <groupId>eu.europa.ec.fisheries.uvms.sales</groupId>
+            <artifactId>sales-proxy-ecb-module</artifactId>
+            <type>ear</type>
+            <version>${unionvms.project.sales-ecb-proxy.module}</version>
+        </dependency>
+
         <!-- plugin modules -->
         <dependency>
             <groupId>eu.europa.ec.fisheries.uvms.plugins</groupId>
@@ -238,8 +245,11 @@
                                             <zipfileset dir="${project.basedir}/target/dockerfile/jboss-deployment/subscription" includes="*.xml" prefix="META-INF" />
                                         </jar>
                                         
-                                        <jar destfile="${project.basedir}/target/dockerfile/deployments/sales-module-${unionvms.project.subscription.module}.ear" update="true">
+                                        <jar destfile="${project.basedir}/target/dockerfile/deployments/sales-module-${unionvms.project.sales.module}.ear" update="true">
                                             <zipfileset dir="${project.basedir}/target/dockerfile/jboss-deployment/sales" includes="*.xml" prefix="META-INF" />
+                                        </jar>
+                                        <jar destfile="${project.basedir}/target/dockerfile/deployments/sales-proxy-ecb-module-${unionvms.project.sales-ecb-proxy.module}.ear" update="true">
+                                            <zipfileset dir="${project.basedir}/target/dockerfile/jboss-deployment/sales-proxy-ecb" includes="*.xml" prefix="META-INF" />
                                         </jar>
 
                                         <jar destfile="${project.basedir}/target/dockerfile/deployments/naf-module-${unionvms.project.plugins.naf}.ear" update="true">
