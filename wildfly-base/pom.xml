@@ -16,7 +16,7 @@
 		<wildfly.hibernate.module.hibernate.version>5.1.10.Final</wildfly.hibernate.module.hibernate.version>
 		<wildfly.hibernate.module.spatial.version>5.1.10.Final</wildfly.hibernate.module.spatial.version>
 		<wildfly.hibernate.module.jts.version>1.13</wildfly.hibernate.module.jts.version>
-		<wildfly.hibernate.module.jipijapa.version>1.0.1.Final</wildfly.hibernate.module.jipijapa.version>
+		<wildfly.hibernate.module.jipijapa.version>12.0.0.Final</wildfly.hibernate.module.jipijapa.version>
 		<wildfly.postgres.module.postgis.version>1.5.3</wildfly.postgres.module.postgis.version>
 		<wildfly.postgres.module.postgres.version>42.1.4.jre7</wildfly.postgres.module.postgres.version>
 		<wildfly.activemq.rar.version>5.15.2</wildfly.activemq.rar.version>
@@ -28,7 +28,7 @@
 			<version>1.0.1</version>
 		</dependency>
 		<dependency>
-		    <groupId>org.jipijapa</groupId>
+		    <groupId>org.wildfly</groupId>
 		    <artifactId>jipijapa-hibernate4-3</artifactId>
 		    <version>${wildfly.hibernate.module.jipijapa.version}</version>
 		</dependency>
