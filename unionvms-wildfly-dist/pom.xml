@@ -42,10 +42,19 @@
 		</dependency>
 		<dependency>
 			<groupId>eu.europa.ec.fisheries.uvms.docker</groupId>
+			<artifactId>uvms-docker-wildfly-unionvms</artifactId>
+			<version>${project.version}</version>
+			<type>zip</type>
+		</dependency>
+		<!--
+		<dependency>
+			<groupId>eu.europa.ec.fisheries.uvms.docker</groupId>
 			<artifactId>uvms-docker-wildfly-release</artifactId>
 			<version>${project.version}</version>
 			<type>zip</type>
 		</dependency>
+		-->
+		<!--
 		<dependency>
 			<groupId>eu.europa.ec.fisheries.uvms.docker</groupId>
 			<artifactId>uvms-docker-wildfly-foundation</artifactId>
@@ -57,7 +66,8 @@
 					<artifactId>mapfish-print</artifactId>
 				</exclusion>
 			</exclusions>			
-		</dependency>		
+		</dependency>
+		-->
 	</dependencies>
 	<build>
 		<plugins>
