@@ -11,9 +11,16 @@ copy of the GNU General Public License along with the IFDM Suite. If not, see <h
  */
 package eu.europa.ec.fisheries.uvms.docker.validation.system.sales;
 
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.notNullValue;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Random;
+import java.util.UUID;
+import javax.jms.TextMessage;
 import javax.xml.namespace.QName;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.ParserConfigurationException;
@@ -22,33 +29,42 @@ import org.junit.Test;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.xml.sax.SAXException;
+import eu.europa.ec.fisheries.schema.exchange.plugin.v1.SendSalesResponseRequest;
 import eu.europa.ec.fisheries.uvms.docker.validation.common.AbstractRestServiceTest;
+import eu.europa.ec.fisheries.uvms.docker.validation.common.MessageHelper;
+import eu.europa.ec.fisheries.uvms.exchange.model.mapper.JAXBMarshaller;
 import xeu.bridge_connector.v1.RequestType;
 import xeu.bridge_connector.v1.VerbosityType;
 import xeu.bridge_connector.wsdl.v1.BridgeConnectorPortType;
 import xeu.bridge_connector.wsdl.v1.SalesService;
 
 public class ReceiveSalesReportIT extends AbstractRestServiceTest {
+    
+    private static final String SELECTOR = "ServiceName='eu.europa.ec.fisheries.uvms.plugins.flux.sales'";
+    private static final long TIMEOUT = 10000;
 
     @Test
-    public void pluginReceivesAMessageAndSendsItExchangeSuccessfully() throws Exception {
+    public void sendSalesReportTest() throws Exception {
         //send message
         RequestType request = createRequest();
         BridgeConnectorPortType bridgeConnectorPortType = createBridgeConnector();
         bridgeConnectorPortType.post(request);
 
-        //assert message content
-//        assertEquals(1, receivedMessagesInExchange.getAll().size());
-//        String actualMessage = receivedMessagesInExchange.getAll().get(0);
-//        assertTrue(actualMessage.startsWith(EXPECTED_MESSAGE_BEFORE_CURRENT_DATE));
-//        assertTrue(actualMessage.endsWith(EXPECTED_MESSAGE_AFTER_CURRENT_DATE));
+        // listen for response
+        TextMessage message = (TextMessage) MessageHelper.listenOnEventBus(SELECTOR, TIMEOUT);
+        assertThat(message, is(notNullValue()));
+        
+//        System.out.println(message.getText());
+        
+        SendSalesResponseRequest salesResponse = JAXBMarshaller.unmarshallTextMessage(message, SendSalesResponseRequest.class);
+        assertThat(salesResponse.getRecipient(), is("NLD"));
     }
 
     private RequestType createRequest() {
         RequestType request = new RequestType();
         request.setON("12345678901234567890");
         request.setDF("urn:un:unece:uncefact:fisheries:FLUX:SALES:EU:2");
-        request.setAny(marshalToDOM(SALES_REPORT));
+        request.setAny(marshalToDOM(getBasicSalesReport()));
         request.setAD("BEL");
         request.setAR(false);
         request.setTO(200);
@@ -82,427 +98,179 @@ public class ReceiveSalesReportIT extends AbstractRestServiceTest {
         }
     }
 
-    private static final String EXPECTED_MESSAGE_BEFORE_CURRENT_DATE = "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>\n" +
-            "<ns2:ReceiveSalesReportRequest xmlns:ns2=\"urn:module.exchange.schema.fisheries.ec.europa.eu:v1\">\n" +
-            "    <method>RECEIVE_SALES_REPORT</method>\n" +
-            "    <username>FLUX</username>\n" +
-            "    <pluginType>FLUX</pluginType>\n" +
-            "    <senderOrReceiver>NLD</senderOrReceiver>\n" +
-            "    <messageGuid>23b098af-e300-4369-bc7a-9b207305efdd</messageGuid>\n" +
-            "    <date>";
-
-    private static final String EXPECTED_MESSAGE_AFTER_CURRENT_DATE = "</date>\n" +
-            "    <onValue>12345678901234567890</onValue>\n" +
-            "    <report>&lt;?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?&gt;\n" +
-            "&lt;ns4:Report xmlns=\"urn:un:unece:uncefact:data:standard:ReusableAggregateBusinessInformationEntity:20\" xmlns:ns2=\"urn:un:unece:uncefact:data:standard:UnqualifiedDataType:20\" xmlns:ns4=\"eu.europa.ec.fisheries.schema.sales\" xmlns:ns3=\"eu.europa.ec.fisheries.schema.sales.flux\"&gt;\n" +
-            "    &lt;ns4:FLUXSalesReportMessage&gt;\n" +
-            "        &lt;ns3:FLUXReportDocument&gt;\n" +
-            "            &lt;ID schemeID=\"UUID\"&gt;23b098af-e300-4369-bc7a-9b207305efdd&lt;/ID&gt;\n" +
-            "            &lt;CreationDateTime&gt;\n" +
-            "                &lt;ns2:DateTime&gt;2018-04-19T10:08:08.391Z&lt;/ns2:DateTime&gt;\n" +
-            "            &lt;/CreationDateTime&gt;\n" +
-            "            &lt;PurposeCode listID=\"FLUX_GP_PURPOSE\"&gt;9&lt;/PurposeCode&gt;\n" +
-            "            &lt;Purpose&gt;Sales note example&lt;/Purpose&gt;\n" +
-            "            &lt;OwnerFLUXParty&gt;\n" +
-            "                &lt;ID schemeID=\"FLUX_GP_PARTY\"&gt;FRA&lt;/ID&gt;\n" +
-            "            &lt;/OwnerFLUXParty&gt;\n" +
-            "        &lt;/ns3:FLUXReportDocument&gt;\n" +
-            "        &lt;ns3:SalesReport&gt;\n" +
-            "            &lt;ItemTypeCode listID=\"FLUX_SALES_TYPE\"&gt;SN&lt;/ItemTypeCode&gt;\n" +
-            "            &lt;IncludedSalesDocument&gt;\n" +
-            "                &lt;ID schemeID=\"EU_SALES_ID\"&gt;FRA-SN-23b098af-e300-4369-bc7a-9b207305efdd&lt;/ID&gt;\n" +
-            "                &lt;CurrencyCode listID=\"TERRITORY_CURR\"&gt;EUR&lt;/CurrencyCode&gt;\n" +
-            "                &lt;SpecifiedSalesBatch&gt;\n" +
-            "                    &lt;SpecifiedAAPProduct&gt;\n" +
-            "                        &lt;SpeciesCode listID=\"FAO_SPECIES\"&gt;PLE&lt;/SpeciesCode&gt;\n" +
-            "                        &lt;WeightMeasure unitCode=\"KGM\"&gt;6&lt;/WeightMeasure&gt;\n" +
-            "                        &lt;UsageCode listID=\"PROD_USAGE\"&gt;HCN&lt;/UsageCode&gt;\n" +
-            "                        &lt;AppliedAAPProcess&gt;\n" +
-            "                            &lt;TypeCode listID=\"FISH_FRESHNESS\"&gt;E&lt;/TypeCode&gt;\n" +
-            "                            &lt;TypeCode listID=\"FISH_PRESERVATION\"&gt;FRE&lt;/TypeCode&gt;\n" +
-            "                            &lt;TypeCode listID=\"FISH_PRESENTATION\"&gt;WHL&lt;/TypeCode&gt;\n" +
-            "                        &lt;/AppliedAAPProcess&gt;\n" +
-            "                        &lt;TotalSalesPrice&gt;\n" +
-            "                            &lt;ChargeAmount&gt;1.31&lt;/ChargeAmount&gt;\n" +
-            "                        &lt;/TotalSalesPrice&gt;\n" +
-            "                        &lt;SpecifiedSizeDistribution&gt;\n" +
-            "                            &lt;CategoryCode listID=\"FISH_SIZE_CATEGORY\"&gt;1&lt;/CategoryCode&gt;\n" +
-            "                            &lt;ClassCode listID=\"FISH_SIZE_CLASS\"&gt;LSC&lt;/ClassCode&gt;\n" +
-            "                        &lt;/SpecifiedSizeDistribution&gt;\n" +
-            "                        &lt;OriginFLUXLocation&gt;\n" +
-            "                            &lt;TypeCode listID=\"FLUX_LOCATION_TYPE\"&gt;AREA&lt;/TypeCode&gt;\n" +
-            "                            &lt;ID schemeID=\"FAO_AREA\"&gt;27.3.d.24&lt;/ID&gt;\n" +
-            "                        &lt;/OriginFLUXLocation&gt;\n" +
-            "                    &lt;/SpecifiedAAPProduct&gt;\n" +
-            "                    &lt;SpecifiedAAPProduct&gt;\n" +
-            "                        &lt;SpeciesCode listID=\"FAO_SPECIES\"&gt;PLE&lt;/SpeciesCode&gt;\n" +
-            "                        &lt;WeightMeasure unitCode=\"KGM\"&gt;36&lt;/WeightMeasure&gt;\n" +
-            "                        &lt;UsageCode listID=\"PROD_USAGE\"&gt;HCN&lt;/UsageCode&gt;\n" +
-            "                        &lt;AppliedAAPProcess&gt;\n" +
-            "                            &lt;TypeCode listID=\"FISH_FRESHNESS\"&gt;B&lt;/TypeCode&gt;\n" +
-            "                            &lt;TypeCode listID=\"FISH_PRESERVATION\"&gt;FRE&lt;/TypeCode&gt;\n" +
-            "                            &lt;TypeCode listID=\"FISH_PRESENTATION\"&gt;WHL&lt;/TypeCode&gt;\n" +
-            "                        &lt;/AppliedAAPProcess&gt;\n" +
-            "                        &lt;TotalSalesPrice&gt;\n" +
-            "                            &lt;ChargeAmount&gt;1.29&lt;/ChargeAmount&gt;\n" +
-            "                        &lt;/TotalSalesPrice&gt;\n" +
-            "                        &lt;SpecifiedSizeDistribution&gt;\n" +
-            "                            &lt;CategoryCode listID=\"FISH_SIZE_CATEGORY\"&gt;2&lt;/CategoryCode&gt;\n" +
-            "                            &lt;ClassCode listID=\"FISH_SIZE_CLASS\"&gt;LSC&lt;/ClassCode&gt;\n" +
-            "                        &lt;/SpecifiedSizeDistribution&gt;\n" +
-            "                        &lt;OriginFLUXLocation&gt;\n" +
-            "                            &lt;TypeCode listID=\"FLUX_LOCATION_TYPE\"&gt;AREA&lt;/TypeCode&gt;\n" +
-            "                            &lt;ID schemeID=\"FAO_AREA\"&gt;27.3.d.24&lt;/ID&gt;\n" +
-            "                        &lt;/OriginFLUXLocation&gt;\n" +
-            "                    &lt;/SpecifiedAAPProduct&gt;\n" +
-            "                    &lt;SpecifiedAAPProduct&gt;\n" +
-            "                        &lt;SpeciesCode listID=\"FAO_SPECIES\"&gt;DAB&lt;/SpeciesCode&gt;\n" +
-            "                        &lt;WeightMeasure unitCode=\"KGM\"&gt;517&lt;/WeightMeasure&gt;\n" +
-            "                        &lt;UsageCode listID=\"PROD_USAGE\"&gt;HCN&lt;/UsageCode&gt;\n" +
-            "                        &lt;AppliedAAPProcess&gt;\n" +
-            "                            &lt;TypeCode listID=\"FISH_FRESHNESS\"&gt;B&lt;/TypeCode&gt;\n" +
-            "                            &lt;TypeCode listID=\"FISH_PRESERVATION\"&gt;FRE&lt;/TypeCode&gt;\n" +
-            "                            &lt;TypeCode listID=\"FISH_PRESENTATION\"&gt;WHL&lt;/TypeCode&gt;\n" +
-            "                        &lt;/AppliedAAPProcess&gt;\n" +
-            "                        &lt;TotalSalesPrice&gt;\n" +
-            "                            &lt;ChargeAmount&gt;1.12&lt;/ChargeAmount&gt;\n" +
-            "                        &lt;/TotalSalesPrice&gt;\n" +
-            "                        &lt;SpecifiedSizeDistribution&gt;\n" +
-            "                            &lt;CategoryCode listID=\"FISH_SIZE_CATEGORY\"&gt;2&lt;/CategoryCode&gt;\n" +
-            "                            &lt;ClassCode listID=\"FISH_SIZE_CLASS\"&gt;LSC&lt;/ClassCode&gt;\n" +
-            "                        &lt;/SpecifiedSizeDistribution&gt;\n" +
-            "                        &lt;OriginFLUXLocation&gt;\n" +
-            "                            &lt;TypeCode listID=\"FLUX_LOCATION_TYPE\"&gt;AREA&lt;/TypeCode&gt;\n" +
-            "                            &lt;ID schemeID=\"FAO_AREA\"&gt;27.3.d.24&lt;/ID&gt;\n" +
-            "                        &lt;/OriginFLUXLocation&gt;\n" +
-            "                    &lt;/SpecifiedAAPProduct&gt;\n" +
-            "                    &lt;SpecifiedAAPProduct&gt;\n" +
-            "                        &lt;SpeciesCode listID=\"FAO_SPECIES\"&gt;COD&lt;/SpeciesCode&gt;\n" +
-            "                        &lt;WeightMeasure unitCode=\"KGM\"&gt;13&lt;/WeightMeasure&gt;\n" +
-            "                        &lt;UsageCode listID=\"PROD_USAGE\"&gt;HCN&lt;/UsageCode&gt;\n" +
-            "                        &lt;AppliedAAPProcess&gt;\n" +
-            "                            &lt;TypeCode listID=\"FISH_FRESHNESS\"&gt;B&lt;/TypeCode&gt;\n" +
-            "                            &lt;TypeCode listID=\"FISH_PRESERVATION\"&gt;FRE&lt;/TypeCode&gt;\n" +
-            "                            &lt;TypeCode listID=\"FISH_PRESENTATION\"&gt;GUT&lt;/TypeCode&gt;\n" +
-            "                        &lt;/AppliedAAPProcess&gt;\n" +
-            "                        &lt;TotalSalesPrice&gt;\n" +
-            "                            &lt;ChargeAmount&gt;2&lt;/ChargeAmount&gt;\n" +
-            "                        &lt;/TotalSalesPrice&gt;\n" +
-            "                        &lt;SpecifiedSizeDistribution&gt;\n" +
-            "                            &lt;CategoryCode listID=\"FISH_SIZE_CATEGORY\"&gt;3&lt;/CategoryCode&gt;\n" +
-            "                            &lt;ClassCode listID=\"FISH_SIZE_CLASS\"&gt;LSC&lt;/ClassCode&gt;\n" +
-            "                        &lt;/SpecifiedSizeDistribution&gt;\n" +
-            "                        &lt;OriginFLUXLocation&gt;\n" +
-            "                            &lt;TypeCode listID=\"FLUX_LOCATION_TYPE\"&gt;AREA&lt;/TypeCode&gt;\n" +
-            "                            &lt;ID schemeID=\"FAO_AREA\"&gt;27.3.d.24&lt;/ID&gt;\n" +
-            "                        &lt;/OriginFLUXLocation&gt;\n" +
-            "                    &lt;/SpecifiedAAPProduct&gt;\n" +
-            "                    &lt;SpecifiedAAPProduct&gt;\n" +
-            "                        &lt;SpeciesCode listID=\"FAO_SPECIES\"&gt;FLE&lt;/SpeciesCode&gt;\n" +
-            "                        &lt;WeightMeasure unitCode=\"KGM\"&gt;102&lt;/WeightMeasure&gt;\n" +
-            "                        &lt;UsageCode listID=\"PROD_USAGE\"&gt;HCN&lt;/UsageCode&gt;\n" +
-            "                        &lt;AppliedAAPProcess&gt;\n" +
-            "                            &lt;TypeCode listID=\"FISH_FRESHNESS\"&gt;B&lt;/TypeCode&gt;\n" +
-            "                            &lt;TypeCode listID=\"FISH_PRESERVATION\"&gt;FRE&lt;/TypeCode&gt;\n" +
-            "                            &lt;TypeCode listID=\"FISH_PRESENTATION\"&gt;WHL&lt;/TypeCode&gt;\n" +
-            "                        &lt;/AppliedAAPProcess&gt;\n" +
-            "                        &lt;TotalSalesPrice&gt;\n" +
-            "                            &lt;ChargeAmount&gt;0.82&lt;/ChargeAmount&gt;\n" +
-            "                        &lt;/TotalSalesPrice&gt;\n" +
-            "                        &lt;SpecifiedSizeDistribution&gt;\n" +
-            "                            &lt;CategoryCode listID=\"FISH_SIZE_CATEGORY\"&gt;2&lt;/CategoryCode&gt;\n" +
-            "                            &lt;ClassCode listID=\"FISH_SIZE_CLASS\"&gt;LSC&lt;/ClassCode&gt;\n" +
-            "                        &lt;/SpecifiedSizeDistribution&gt;\n" +
-            "                        &lt;OriginFLUXLocation&gt;\n" +
-            "                            &lt;TypeCode listID=\"FLUX_LOCATION_TYPE\"&gt;AREA&lt;/TypeCode&gt;\n" +
-            "                            &lt;ID schemeID=\"FAO_AREA\"&gt;27.3.d.24&lt;/ID&gt;\n" +
-            "                        &lt;/OriginFLUXLocation&gt;\n" +
-            "                    &lt;/SpecifiedAAPProduct&gt;\n" +
-            "                    &lt;SpecifiedAAPProduct&gt;\n" +
-            "                        &lt;SpeciesCode listID=\"FAO_SPECIES\"&gt;LIN&lt;/SpeciesCode&gt;\n" +
-            "                        &lt;WeightMeasure unitCode=\"KGM\"&gt;9&lt;/WeightMeasure&gt;\n" +
-            "                        &lt;UsageCode listID=\"PROD_USAGE\"&gt;HCN&lt;/UsageCode&gt;\n" +
-            "                        &lt;AppliedAAPProcess&gt;\n" +
-            "                            &lt;TypeCode listID=\"FISH_FRESHNESS\"&gt;B&lt;/TypeCode&gt;\n" +
-            "                            &lt;TypeCode listID=\"FISH_PRESERVATION\"&gt;FRE&lt;/TypeCode&gt;\n" +
-            "                            &lt;TypeCode listID=\"FISH_PRESENTATION\"&gt;GUT&lt;/TypeCode&gt;\n" +
-            "                        &lt;/AppliedAAPProcess&gt;\n" +
-            "                        &lt;TotalSalesPrice&gt;\n" +
-            "                            &lt;ChargeAmount&gt;3.55&lt;/ChargeAmount&gt;\n" +
-            "                        &lt;/TotalSalesPrice&gt;\n" +
-            "                        &lt;SpecifiedSizeDistribution&gt;\n" +
-            "                            &lt;CategoryCode listID=\"FISH_SIZE_CATEGORY\"&gt;3&lt;/CategoryCode&gt;\n" +
-            "                            &lt;ClassCode listID=\"FISH_SIZE_CLASS\"&gt;LSC&lt;/ClassCode&gt;\n" +
-            "                        &lt;/SpecifiedSizeDistribution&gt;\n" +
-            "                        &lt;OriginFLUXLocation&gt;\n" +
-            "                            &lt;TypeCode listID=\"FLUX_LOCATION_TYPE\"&gt;AREA&lt;/TypeCode&gt;\n" +
-            "                            &lt;ID schemeID=\"FAO_AREA\"&gt;27.7.a&lt;/ID&gt;\n" +
-            "                        &lt;/OriginFLUXLocation&gt;\n" +
-            "                    &lt;/SpecifiedAAPProduct&gt;\n" +
-            "                &lt;/SpecifiedSalesBatch&gt;\n" +
-            "                &lt;SpecifiedSalesEvent&gt;\n" +
-            "                    &lt;OccurrenceDateTime&gt;\n" +
-            "                        &lt;ns2:DateTime&gt;2018-04-19T05:09:08.391Z&lt;/ns2:DateTime&gt;\n" +
-            "                    &lt;/OccurrenceDateTime&gt;\n" +
-            "                &lt;/SpecifiedSalesEvent&gt;\n" +
-            "                &lt;SpecifiedFishingActivity&gt;\n" +
-            "                    &lt;TypeCode&gt;LAN&lt;/TypeCode&gt;\n" +
-            "                    &lt;RelatedFLUXLocation&gt;\n" +
-            "                        &lt;TypeCode listID=\"FLUX_LOCATION_TYPE\"&gt;LOCATION&lt;/TypeCode&gt;\n" +
-            "                        &lt;CountryID schemeID=\"TERRITORY\"&gt;BEL&lt;/CountryID&gt;\n" +
-            "                        &lt;ID schemeID=\"LOCATION\"&gt;BEOST&lt;/ID&gt;\n" +
-            "                    &lt;/RelatedFLUXLocation&gt;\n" +
-            "                    &lt;SpecifiedDelimitedPeriod&gt;\n" +
-            "                        &lt;StartDateTime&gt;\n" +
-            "                            &lt;ns2:DateTime&gt;2018-04-19T10:02:08.391Z&lt;/ns2:DateTime&gt;\n" +
-            "                        &lt;/StartDateTime&gt;\n" +
-            "                    &lt;/SpecifiedDelimitedPeriod&gt;\n" +
-            "                    &lt;SpecifiedFishingTrip&gt;\n" +
-            "                        &lt;ID schemeID=\"EU_TRIP_ID\"&gt;BEL-TRP-2018-1111-1111&lt;/ID&gt;\n" +
-            "                    &lt;/SpecifiedFishingTrip&gt;\n" +
-            "                    &lt;RelatedVesselTransportMeans&gt;\n" +
-            "                        &lt;ID schemeID=\"CFR\"&gt;BEL123456789&lt;/ID&gt;\n" +
-            "                        &lt;Name&gt;FAKE VESSEL&lt;/Name&gt;\n" +
-            "                        &lt;RegistrationVesselCountry&gt;\n" +
-            "                            &lt;ID schemeID=\"TERRITORY\"&gt;FRA&lt;/ID&gt;\n" +
-            "                        &lt;/RegistrationVesselCountry&gt;\n" +
-            "                        &lt;SpecifiedContactParty&gt;\n" +
-            "                            &lt;RoleCode listID=\"FLUX_CONTACT_ROLE\"&gt;MASTER&lt;/RoleCode&gt;\n" +
-            "                            &lt;SpecifiedContactPerson&gt;\n" +
-            "                                &lt;GivenName&gt;Henrick&lt;/GivenName&gt;\n" +
-            "                                &lt;MiddleName&gt;Jan&lt;/MiddleName&gt;\n" +
-            "                                &lt;FamilyName&gt;JANSEN&lt;/FamilyName&gt;\n" +
-            "                            &lt;/SpecifiedContactPerson&gt;\n" +
-            "                        &lt;/SpecifiedContactParty&gt;\n" +
-            "                    &lt;/RelatedVesselTransportMeans&gt;\n" +
-            "                &lt;/SpecifiedFishingActivity&gt;\n" +
-            "                &lt;SpecifiedFLUXLocation&gt;\n" +
-            "                    &lt;TypeCode listID=\"FLUX_LOCATION_TYPE\"&gt;LOCATION&lt;/TypeCode&gt;\n" +
-            "                    &lt;CountryID schemeID=\"TERRITORY\"&gt;BEL&lt;/CountryID&gt;\n" +
-            "                    &lt;ID schemeID=\"LOCATION\"&gt;BEOST&lt;/ID&gt;\n" +
-            "                &lt;/SpecifiedFLUXLocation&gt;\n" +
-            "                &lt;SpecifiedSalesParty&gt;\n" +
-            "                    &lt;ID schemeID=\"MS\"&gt;123456&lt;/ID&gt;\n" +
-            "                    &lt;Name&gt;Mr SENDER&lt;/Name&gt;\n" +
-            "                    &lt;RoleCode listID=\"FLUX_SALES_PARTY_ROLE\"&gt;SENDER&lt;/RoleCode&gt;\n" +
-            "                &lt;/SpecifiedSalesParty&gt;\n" +
-            "                &lt;SpecifiedSalesParty&gt;\n" +
-            "                    &lt;ID schemeID=\"VAT\"&gt;1234567890&lt;/ID&gt;\n" +
-            "                    &lt;Name&gt;Mr BUYER&lt;/Name&gt;\n" +
-            "                    &lt;RoleCode listID=\"FLUX_SALES_PARTY_ROLE\"&gt;BUYER&lt;/RoleCode&gt;\n" +
-            "                &lt;/SpecifiedSalesParty&gt;\n" +
-            "                &lt;SpecifiedSalesParty&gt;\n" +
-            "                    &lt;Name&gt;Mr PROVIDER&lt;/Name&gt;\n" +
-            "                    &lt;RoleCode listID=\"FLUX_SALES_PARTY_ROLE\"&gt;PROVIDER&lt;/RoleCode&gt;\n" +
-            "                &lt;/SpecifiedSalesParty&gt;\n" +
-            "            &lt;/IncludedSalesDocument&gt;\n" +
-            "        &lt;/ns3:SalesReport&gt;\n" +
-            "    &lt;/ns4:FLUXSalesReportMessage&gt;\n" +
-            "&lt;/ns4:Report&gt;\n" +
-            "</report>\n" +
-            "</ns2:ReceiveSalesReportRequest>\n";
-
-    private static final String SALES_REPORT = "<FLUXSalesReportMessage xmlns:clm63155CommunicationChannelCode=\"urn:un:unece:uncefact:codelist:standard:UNECE:CommunicationMeansTypeCode:D16A\" xmlns:qdt=\"urn:un:unece:uncefact:data:Standard:QualifiedDataType:20\" xmlns:ram=\"urn:un:unece:uncefact:data:standard:ReusableAggregateBusinessInformationEntity:20\" xmlns:udt=\"urn:un:unece:uncefact:data:standard:UnqualifiedDataType:20\" xsi:schemaLocation=\"urn:un:unece:uncefact:data:standard:FLUXSalesReportMessage:3 FLUXSalesReportMessage_3p1.xsd\" xmlns=\"urn:un:unece:uncefact:data:standard:FLUXSalesReportMessage:3\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\">\n" +
-            "\t<FLUXReportDocument>\n" +
-            "\t\t<ram:ID schemeID=\"UUID\">23b098af-e300-4369-bc7a-9b207305efdd</ram:ID>\n" +
-            "\t\t<ram:CreationDateTime>\n" +
-            "\t\t\t<udt:DateTime>2018-04-19T10:08:08.391Z</udt:DateTime>\n" +
-            "\t\t</ram:CreationDateTime>\n" +
-            "\t\t<ram:PurposeCode listID=\"FLUX_GP_PURPOSE\">9</ram:PurposeCode>\n" +
-            "\t\t<ram:Purpose>Sales note example</ram:Purpose>\n" +
-            "\t\t<ram:OwnerFLUXParty>\n" +
-            "\t\t\t<ram:ID schemeID=\"FLUX_GP_PARTY\">FRA</ram:ID>\n" +
-            "\t\t</ram:OwnerFLUXParty>\n" +
-            "\t</FLUXReportDocument>\n" +
-            "\t<SalesReport>\n" +
-            "\t\t<ram:ItemTypeCode listID=\"FLUX_SALES_TYPE\">SN</ram:ItemTypeCode>\n" +
-            "\t\t<ram:IncludedSalesDocument>\n" +
-            "\t\t\t<ram:ID schemeID=\"EU_SALES_ID\">FRA-SN-23b098af-e300-4369-bc7a-9b207305efdd</ram:ID>\n" +
-            "\t\t\t<ram:CurrencyCode listID=\"TERRITORY_CURR\">EUR</ram:CurrencyCode>\n" +
-            "\t\t\t<ram:SpecifiedSalesBatch>\n" +
-            "\t\t\t\t<ram:SpecifiedAAPProduct>\n" +
-            "\t\t\t\t\t<ram:SpeciesCode listID=\"FAO_SPECIES\">PLE</ram:SpeciesCode>\n" +
-            "\t\t\t\t\t<ram:WeightMeasure unitCode=\"KGM\">6</ram:WeightMeasure>\n" +
-            "\t\t\t\t\t<ram:UsageCode listID=\"PROD_USAGE\">HCN</ram:UsageCode>\n" +
-            "\t\t\t\t\t<ram:AppliedAAPProcess>\n" +
-            "\t\t\t\t\t\t<ram:TypeCode listID=\"FISH_FRESHNESS\">E</ram:TypeCode>\n" +
-            "\t\t\t\t\t\t<ram:TypeCode listID=\"FISH_PRESERVATION\">FRE</ram:TypeCode>\n" +
-            "\t\t\t\t\t\t<ram:TypeCode listID=\"FISH_PRESENTATION\">WHL</ram:TypeCode>\n" +
-            "\t\t\t\t\t</ram:AppliedAAPProcess>\n" +
-            "\t\t\t\t\t<ram:TotalSalesPrice>\n" +
-            "\t\t\t\t\t\t<ram:ChargeAmount>1.31</ram:ChargeAmount>\n" +
-            "\t\t\t\t\t</ram:TotalSalesPrice>\n" +
-            "\t\t\t\t\t<ram:SpecifiedSizeDistribution>\n" +
-            "\t\t\t\t\t\t<ram:CategoryCode listID=\"FISH_SIZE_CATEGORY\">1</ram:CategoryCode>\n" +
-            "\t\t\t\t\t\t<ram:ClassCode listID=\"FISH_SIZE_CLASS\">LSC</ram:ClassCode>\n" +
-            "\t\t\t\t\t</ram:SpecifiedSizeDistribution>\n" +
-            "\t\t\t\t\t<ram:OriginFLUXLocation>\n" +
-            "\t\t\t\t\t\t<ram:TypeCode listID=\"FLUX_LOCATION_TYPE\">AREA</ram:TypeCode>\n" +
-            "\t\t\t\t\t\t<ram:ID schemeID=\"FAO_AREA\">27.3.d.24</ram:ID>\n" +
-            "\t\t\t\t\t</ram:OriginFLUXLocation>\n" +
-            "\t\t\t\t</ram:SpecifiedAAPProduct>\n" +
-            "\t\t\t\t<ram:SpecifiedAAPProduct>\n" +
-            "\t\t\t\t\t<ram:SpeciesCode listID=\"FAO_SPECIES\">PLE</ram:SpeciesCode>\n" +
-            "\t\t\t\t\t<ram:WeightMeasure unitCode=\"KGM\">36</ram:WeightMeasure>\n" +
-            "\t\t\t\t\t<ram:UsageCode listID=\"PROD_USAGE\">HCN</ram:UsageCode>\n" +
-            "\t\t\t\t\t<ram:AppliedAAPProcess>\n" +
-            "\t\t\t\t\t\t<ram:TypeCode listID=\"FISH_FRESHNESS\">B</ram:TypeCode>\n" +
-            "\t\t\t\t\t\t<ram:TypeCode listID=\"FISH_PRESERVATION\">FRE</ram:TypeCode>\n" +
-            "\t\t\t\t\t\t<ram:TypeCode listID=\"FISH_PRESENTATION\">WHL</ram:TypeCode>\n" +
-            "\t\t\t\t\t</ram:AppliedAAPProcess>\n" +
-            "\t\t\t\t\t<ram:TotalSalesPrice>\n" +
-            "\t\t\t\t\t\t<ram:ChargeAmount>1.29</ram:ChargeAmount>\n" +
-            "\t\t\t\t\t</ram:TotalSalesPrice>\n" +
-            "\t\t\t\t\t<ram:SpecifiedSizeDistribution>\n" +
-            "\t\t\t\t\t\t<ram:CategoryCode listID=\"FISH_SIZE_CATEGORY\">2</ram:CategoryCode>\n" +
-            "\t\t\t\t\t\t<ram:ClassCode listID=\"FISH_SIZE_CLASS\">LSC</ram:ClassCode>\n" +
-            "\t\t\t\t\t</ram:SpecifiedSizeDistribution>\n" +
-            "\t\t\t\t\t<ram:OriginFLUXLocation>\n" +
-            "\t\t\t\t\t\t<ram:TypeCode listID=\"FLUX_LOCATION_TYPE\">AREA</ram:TypeCode>\n" +
-            "\t\t\t\t\t\t<ram:ID schemeID=\"FAO_AREA\">27.3.d.24</ram:ID>\n" +
-            "\t\t\t\t\t</ram:OriginFLUXLocation>\n" +
-            "\t\t\t\t</ram:SpecifiedAAPProduct>\n" +
-            "\t\t\t\t<ram:SpecifiedAAPProduct>\n" +
-            "\t\t\t\t\t<ram:SpeciesCode listID=\"FAO_SPECIES\">DAB</ram:SpeciesCode>\n" +
-            "\t\t\t\t\t<ram:WeightMeasure unitCode=\"KGM\">517</ram:WeightMeasure>\n" +
-            "\t\t\t\t\t<ram:UsageCode listID=\"PROD_USAGE\">HCN</ram:UsageCode>\n" +
-            "\t\t\t\t\t<ram:AppliedAAPProcess>\n" +
-            "\t\t\t\t\t\t<ram:TypeCode listID=\"FISH_FRESHNESS\">B</ram:TypeCode>\n" +
-            "\t\t\t\t\t\t<ram:TypeCode listID=\"FISH_PRESERVATION\">FRE</ram:TypeCode>\n" +
-            "\t\t\t\t\t\t<ram:TypeCode listID=\"FISH_PRESENTATION\">WHL</ram:TypeCode>\n" +
-            "\t\t\t\t\t</ram:AppliedAAPProcess>\n" +
-            "\t\t\t\t\t<ram:TotalSalesPrice>\n" +
-            "\t\t\t\t\t\t<ram:ChargeAmount>1.12</ram:ChargeAmount>\n" +
-            "\t\t\t\t\t</ram:TotalSalesPrice>\n" +
-            "\t\t\t\t\t<ram:SpecifiedSizeDistribution>\n" +
-            "\t\t\t\t\t\t<ram:CategoryCode listID=\"FISH_SIZE_CATEGORY\">2</ram:CategoryCode>\n" +
-            "\t\t\t\t\t\t<ram:ClassCode listID=\"FISH_SIZE_CLASS\">LSC</ram:ClassCode>\n" +
-            "\t\t\t\t\t</ram:SpecifiedSizeDistribution>\n" +
-            "\t\t\t\t\t<ram:OriginFLUXLocation>\n" +
-            "\t\t\t\t\t\t<ram:TypeCode listID=\"FLUX_LOCATION_TYPE\">AREA</ram:TypeCode>\n" +
-            "\t\t\t\t\t\t<ram:ID schemeID=\"FAO_AREA\">27.3.d.24</ram:ID>\n" +
-            "\t\t\t\t\t</ram:OriginFLUXLocation>\n" +
-            "\t\t\t\t</ram:SpecifiedAAPProduct>\n" +
-            "\t\t\t\t<ram:SpecifiedAAPProduct>\n" +
-            "\t\t\t\t\t<ram:SpeciesCode listID=\"FAO_SPECIES\">COD</ram:SpeciesCode>\n" +
-            "\t\t\t\t\t<ram:WeightMeasure unitCode=\"KGM\">13</ram:WeightMeasure>\n" +
-            "\t\t\t\t\t<ram:UsageCode listID=\"PROD_USAGE\">HCN</ram:UsageCode>\n" +
-            "\t\t\t\t\t<ram:AppliedAAPProcess>\n" +
-            "\t\t\t\t\t\t<ram:TypeCode listID=\"FISH_FRESHNESS\">B</ram:TypeCode>\n" +
-            "\t\t\t\t\t\t<ram:TypeCode listID=\"FISH_PRESERVATION\">FRE</ram:TypeCode>\n" +
-            "\t\t\t\t\t\t<ram:TypeCode listID=\"FISH_PRESENTATION\">GUT</ram:TypeCode>\n" +
-            "\t\t\t\t\t</ram:AppliedAAPProcess>\n" +
-            "\t\t\t\t\t<ram:TotalSalesPrice>\n" +
-            "\t\t\t\t\t\t<ram:ChargeAmount>2</ram:ChargeAmount>\n" +
-            "\t\t\t\t\t</ram:TotalSalesPrice>\n" +
-            "\t\t\t\t\t<ram:SpecifiedSizeDistribution>\n" +
-            "\t\t\t\t\t\t<ram:CategoryCode listID=\"FISH_SIZE_CATEGORY\">3</ram:CategoryCode>\n" +
-            "\t\t\t\t\t\t<ram:ClassCode listID=\"FISH_SIZE_CLASS\">LSC</ram:ClassCode>\n" +
-            "\t\t\t\t\t</ram:SpecifiedSizeDistribution>\n" +
-            "\t\t\t\t\t<ram:OriginFLUXLocation>\n" +
-            "\t\t\t\t\t\t<ram:TypeCode listID=\"FLUX_LOCATION_TYPE\">AREA</ram:TypeCode>\n" +
-            "\t\t\t\t\t\t<ram:ID schemeID=\"FAO_AREA\">27.3.d.24</ram:ID>\n" +
-            "\t\t\t\t\t</ram:OriginFLUXLocation>\n" +
-            "\t\t\t\t</ram:SpecifiedAAPProduct>\n" +
-            "\t\t\t\t<ram:SpecifiedAAPProduct>\n" +
-            "\t\t\t\t\t<ram:SpeciesCode listID=\"FAO_SPECIES\">FLE</ram:SpeciesCode>\n" +
-            "\t\t\t\t\t<ram:WeightMeasure unitCode=\"KGM\">102</ram:WeightMeasure>\n" +
-            "\t\t\t\t\t<ram:UsageCode listID=\"PROD_USAGE\">HCN</ram:UsageCode>\n" +
-            "\t\t\t\t\t<ram:AppliedAAPProcess>\n" +
-            "\t\t\t\t\t\t<ram:TypeCode listID=\"FISH_FRESHNESS\">B</ram:TypeCode>\n" +
-            "\t\t\t\t\t\t<ram:TypeCode listID=\"FISH_PRESERVATION\">FRE</ram:TypeCode>\n" +
-            "\t\t\t\t\t\t<ram:TypeCode listID=\"FISH_PRESENTATION\">WHL</ram:TypeCode>\n" +
-            "\t\t\t\t\t</ram:AppliedAAPProcess>\n" +
-            "\t\t\t\t\t<ram:TotalSalesPrice>\n" +
-            "\t\t\t\t\t\t<ram:ChargeAmount>0.82</ram:ChargeAmount>\n" +
-            "\t\t\t\t\t</ram:TotalSalesPrice>\n" +
-            "\t\t\t\t\t<ram:SpecifiedSizeDistribution>\n" +
-            "\t\t\t\t\t\t<ram:CategoryCode listID=\"FISH_SIZE_CATEGORY\">2</ram:CategoryCode>\n" +
-            "\t\t\t\t\t\t<ram:ClassCode listID=\"FISH_SIZE_CLASS\">LSC</ram:ClassCode>\n" +
-            "\t\t\t\t\t</ram:SpecifiedSizeDistribution>\n" +
-            "\t\t\t\t\t<ram:OriginFLUXLocation>\n" +
-            "\t\t\t\t\t\t<ram:TypeCode listID=\"FLUX_LOCATION_TYPE\">AREA</ram:TypeCode>\n" +
-            "\t\t\t\t\t\t<ram:ID schemeID=\"FAO_AREA\">27.3.d.24</ram:ID>\n" +
-            "\t\t\t\t\t</ram:OriginFLUXLocation>\n" +
-            "\t\t\t\t</ram:SpecifiedAAPProduct>\n" +
-            "\t\t\t\t<ram:SpecifiedAAPProduct>\n" +
-            "\t\t\t\t\t<ram:SpeciesCode listID=\"FAO_SPECIES\">LIN</ram:SpeciesCode>\n" +
-            "\t\t\t\t\t<ram:WeightMeasure unitCode=\"KGM\">9</ram:WeightMeasure>\n" +
-            "\t\t\t\t\t<ram:UsageCode listID=\"PROD_USAGE\">HCN</ram:UsageCode>\n" +
-            "\t\t\t\t\t<ram:AppliedAAPProcess>\n" +
-            "\t\t\t\t\t\t<ram:TypeCode listID=\"FISH_FRESHNESS\">B</ram:TypeCode>\n" +
-            "\t\t\t\t\t\t<ram:TypeCode listID=\"FISH_PRESERVATION\">FRE</ram:TypeCode>\n" +
-            "\t\t\t\t\t\t<ram:TypeCode listID=\"FISH_PRESENTATION\">GUT</ram:TypeCode>\n" +
-            "\t\t\t\t\t</ram:AppliedAAPProcess>\n" +
-            "\t\t\t\t\t<ram:TotalSalesPrice>\n" +
-            "\t\t\t\t\t\t<ram:ChargeAmount>3.55</ram:ChargeAmount>\n" +
-            "\t\t\t\t\t</ram:TotalSalesPrice>\n" +
-            "\t\t\t\t\t<ram:SpecifiedSizeDistribution>\n" +
-            "\t\t\t\t\t\t<ram:CategoryCode listID=\"FISH_SIZE_CATEGORY\">3</ram:CategoryCode>\n" +
-            "\t\t\t\t\t\t<ram:ClassCode listID=\"FISH_SIZE_CLASS\">LSC</ram:ClassCode>\n" +
-            "\t\t\t\t\t</ram:SpecifiedSizeDistribution>\n" +
-            "\t\t\t\t\t<ram:OriginFLUXLocation>\n" +
-            "\t\t\t\t\t\t<ram:TypeCode listID=\"FLUX_LOCATION_TYPE\">AREA</ram:TypeCode>\n" +
-            "\t\t\t\t\t\t<ram:ID schemeID=\"FAO_AREA\">27.7.a</ram:ID>\n" +
-            "\t\t\t\t\t</ram:OriginFLUXLocation>\n" +
-            "\t\t\t\t</ram:SpecifiedAAPProduct>\n" +
-            "\t\t\t</ram:SpecifiedSalesBatch>\n" +
-            "\t\t\t<ram:SpecifiedSalesEvent>\n" +
-            "\t\t\t\t<ram:OccurrenceDateTime>\n" +
-            "\t\t\t\t\t<udt:DateTime>2018-04-19T05:09:08.391Z</udt:DateTime>\n" +
-            "\t\t\t\t</ram:OccurrenceDateTime>\n" +
-            "\t\t\t</ram:SpecifiedSalesEvent>\n" +
-            "\t\t\t<ram:SpecifiedFishingActivity>\n" +
-            "\t\t\t\t<ram:TypeCode>LAN</ram:TypeCode>\n" +
-            "\t\t\t\t<ram:RelatedFLUXLocation>\n" +
-            "\t\t\t\t\t<ram:TypeCode listID=\"FLUX_LOCATION_TYPE\">LOCATION</ram:TypeCode>\n" +
-            "\t\t\t\t\t<ram:CountryID schemeID=\"TERRITORY\">BEL</ram:CountryID>\n" +
-            "\t\t\t\t\t<ram:ID schemeID=\"LOCATION\">BEOST</ram:ID>\n" +
-            "\t\t\t\t</ram:RelatedFLUXLocation>\n" +
-            "\t\t\t\t<ram:SpecifiedDelimitedPeriod>\n" +
-            "\t\t\t\t\t<ram:StartDateTime>\n" +
-            "\t\t\t\t\t\t<udt:DateTime>2018-04-19T10:02:08.391Z</udt:DateTime>\n" +
-            "\t\t\t\t\t</ram:StartDateTime>\n" +
-            "\t\t\t\t</ram:SpecifiedDelimitedPeriod>\n" +
-            "\t\t\t\t<ram:SpecifiedFishingTrip>\n" +
-            "\t\t\t\t\t<ram:ID schemeID=\"EU_TRIP_ID\">BEL-TRP-2018-1111-1111</ram:ID>\n" +
-            "\t\t\t\t</ram:SpecifiedFishingTrip>\n" +
-            "\t\t\t\t<ram:RelatedVesselTransportMeans>\n" +
-            "\t\t\t\t\t<ram:ID schemeID=\"CFR\">BEL123456789</ram:ID>\n" +
-            "\t\t\t\t\t<ram:Name>FAKE VESSEL</ram:Name>\n" +
-            "\t\t\t\t\t<ram:RegistrationVesselCountry>\n" +
-            "\t\t\t\t\t\t<ram:ID schemeID=\"TERRITORY\">FRA</ram:ID>\n" +
-            "\t\t\t\t\t</ram:RegistrationVesselCountry>\n" +
-            "\t\t\t\t\t<ram:SpecifiedContactParty>\n" +
-            "\t\t\t\t\t\t<ram:RoleCode listID=\"FLUX_CONTACT_ROLE\">MASTER</ram:RoleCode>\n" +
-            "\t\t\t\t\t\t<ram:SpecifiedContactPerson>\n" +
-            "\t\t\t\t\t\t\t<ram:GivenName>Henrick</ram:GivenName>\n" +
-            "\t\t\t\t\t\t\t<ram:MiddleName>Jan</ram:MiddleName>\n" +
-            "\t\t\t\t\t\t\t<ram:FamilyName>JANSEN</ram:FamilyName>\n" +
-            "\t\t\t\t\t\t</ram:SpecifiedContactPerson>\n" +
-            "\t\t\t\t\t</ram:SpecifiedContactParty>\n" +
-            "\t\t\t\t</ram:RelatedVesselTransportMeans>\n" +
-            "\t\t\t</ram:SpecifiedFishingActivity>\n" +
-            "\t\t\t<ram:SpecifiedFLUXLocation>\n" +
-            "\t\t\t\t<ram:TypeCode listID=\"FLUX_LOCATION_TYPE\">LOCATION</ram:TypeCode>\n" +
-            "\t\t\t\t<ram:CountryID schemeID=\"TERRITORY\">BEL</ram:CountryID>\n" +
-            "\t\t\t\t<ram:ID schemeID=\"LOCATION\">BEOST</ram:ID>\n" +
-            "\t\t\t</ram:SpecifiedFLUXLocation>\n" +
-            "\t\t\t<ram:SpecifiedSalesParty>\n" +
-            "\t\t\t\t<ram:ID schemeID=\"MS\">123456</ram:ID>\n" +
-            "\t\t\t\t<ram:Name>Mr SENDER</ram:Name>\n" +
-            "\t\t\t\t<ram:RoleCode listID=\"FLUX_SALES_PARTY_ROLE\">SENDER</ram:RoleCode>\n" +
-            "\t\t\t</ram:SpecifiedSalesParty>\n" +
-            "\t\t\t<ram:SpecifiedSalesParty>\n" +
-            "\t\t\t\t<ram:ID schemeID=\"VAT\">1234567890</ram:ID>\n" +
-            "\t\t\t\t<ram:Name>Mr BUYER</ram:Name>\n" +
-            "\t\t\t\t<ram:RoleCode listID=\"FLUX_SALES_PARTY_ROLE\">BUYER</ram:RoleCode>\n" +
-            "\t\t\t</ram:SpecifiedSalesParty>\n" +
-            "\t\t\t<ram:SpecifiedSalesParty>\n" +
-            "\t\t\t\t<ram:Name>Mr PROVIDER</ram:Name>\n" +
-            "\t\t\t\t<ram:RoleCode listID=\"FLUX_SALES_PARTY_ROLE\">PROVIDER</ram:RoleCode>\n" +
-            "\t\t\t</ram:SpecifiedSalesParty>\n" +
-            "\t\t</ram:IncludedSalesDocument>\n" +
-            "\t</SalesReport>\n" +
+    private static final String getBasicSalesReport() {
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'"); 
+        Date timestamp = new Date(System.currentTimeMillis() - 24 * 60 * 60 * 1000);
+        return
+            "<FLUXSalesReportMessage xmlns:clm63155CommunicationChannelCode=\"urn:un:unece:uncefact:codelist:standard:UNECE:CommunicationMeansTypeCode:D16A\" xmlns:qdt=\"urn:un:unece:uncefact:data:Standard:QualifiedDataType:20\" xmlns:ram=\"urn:un:unece:uncefact:data:standard:ReusableAggregateBusinessInformationEntity:20\" xmlns:udt=\"urn:un:unece:uncefact:data:standard:UnqualifiedDataType:20\" xsi:schemaLocation=\"urn:un:unece:uncefact:data:standard:FLUXSalesReportMessage:3 FLUXSalesReportMessage_3p1.xsd\" xmlns=\"urn:un:unece:uncefact:data:standard:FLUXSalesReportMessage:3\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\">\n" +
+            "   <FLUXReportDocument>\n" +
+            "       <ram:ID schemeID=\"UUID\">" + UUID.randomUUID().toString() + "</ram:ID>\n" +
+            "       <ram:CreationDateTime>\n" +
+            "           <udt:DateTime>" + format.format(timestamp) + "</udt:DateTime>\n" +
+            "       </ram:CreationDateTime>\n" +
+            "       <ram:PurposeCode listID=\"FLUX_GP_PURPOSE\">9</ram:PurposeCode>\n" +
+            "       <ram:Purpose>Sales note example</ram:Purpose>\n" +
+            "       <ram:OwnerFLUXParty>\n" +
+            "           <ram:ID schemeID=\"FLUX_GP_PARTY\">NLD</ram:ID>\n" +
+            "       </ram:OwnerFLUXParty>\n" +
+            "   </FLUXReportDocument>\n" +
+            "   <SalesReport>\n" + 
+            "        <ram:ItemTypeCode listID=\"FLUX_SALES_TYPE\">SN</ram:ItemTypeCode>\n" + 
+            "        <ram:IncludedSalesDocument>\n" + 
+            "            <ram:ID schemeID=\"EU_SALES_ID\">NLD-SN-2018-" + getRandomIntegers(6) + "</ram:ID>\n" + 
+            "            <ram:CurrencyCode listID=\"TERRITORY_CURR\">EUR</ram:CurrencyCode>\n" + 
+            "            <ram:SpecifiedSalesBatch>\n" + 
+            "                <ram:SpecifiedAAPProduct>\n" + 
+            "                    <ram:SpeciesCode listID=\"FAO_SPECIES\">AAK</ram:SpeciesCode>\n" + 
+            "                    <ram:WeightMeasure unitCode=\"KGM\">6616</ram:WeightMeasure>\n" + 
+            "                    <ram:UsageCode listID=\"PROD_USAGE\">WST</ram:UsageCode>\n" + 
+            "                    <ram:AppliedAAPProcess>\n" + 
+            "                        <ram:TypeCode listID=\"FISH_FRESHNESS\">SO</ram:TypeCode>\n" + 
+            "                        <ram:TypeCode listID=\"FISH_PRESERVATION\">FRO</ram:TypeCode>\n" + 
+            "                        <ram:TypeCode listID=\"FISH_PRESENTATION\">SKI</ram:TypeCode>\n" + 
+            "                    </ram:AppliedAAPProcess>\n" + 
+            "                    <ram:TotalSalesPrice>\n" + 
+            "                        <ram:ChargeAmount>3387.76</ram:ChargeAmount>\n" + 
+            "                    </ram:TotalSalesPrice>\n" + 
+            "                    <ram:SpecifiedSizeDistribution>\n" + 
+            "                        <ram:CategoryCode listID=\"FISH_SIZE_CATEGORY\">2</ram:CategoryCode>\n" + 
+            "                        <ram:ClassCode listID=\"FISH_SIZE_CLASS\">LSC</ram:ClassCode>\n" + 
+            "                    </ram:SpecifiedSizeDistribution>\n" + 
+            "                    <ram:OriginFLUXLocation>\n" + 
+            "                        <ram:TypeCode listID=\"FLUX_LOCATION_TYPE\">AREA</ram:TypeCode>\n" + 
+            "                        <ram:ID schemeID=\"FAO_AREA\">27.3.d.24</ram:ID>\n" + 
+            "                    </ram:OriginFLUXLocation>\n" + 
+            "                </ram:SpecifiedAAPProduct>\n" + 
+            "                <ram:SpecifiedAAPProduct>\n" + 
+            "                    <ram:SpeciesCode listID=\"FAO_SPECIES\">ABS</ram:SpeciesCode>\n" + 
+            "                    <ram:WeightMeasure unitCode=\"KGM\">8168</ram:WeightMeasure>\n" + 
+            "                    <ram:UsageCode listID=\"PROD_USAGE\">WST</ram:UsageCode>\n" + 
+            "                    <ram:AppliedAAPProcess>\n" + 
+            "                        <ram:TypeCode listID=\"FISH_FRESHNESS\">A</ram:TypeCode>\n" + 
+            "                        <ram:TypeCode listID=\"FISH_PRESERVATION\">SMO</ram:TypeCode>\n" + 
+            "                        <ram:TypeCode listID=\"FISH_PRESENTATION\">DWT</ram:TypeCode>\n" + 
+            "                    </ram:AppliedAAPProcess>\n" + 
+            "                    <ram:TotalSalesPrice>\n" + 
+            "                        <ram:ChargeAmount>6726.38</ram:ChargeAmount>\n" + 
+            "                    </ram:TotalSalesPrice>\n" + 
+            "                    <ram:SpecifiedSizeDistribution>\n" + 
+            "                        <ram:CategoryCode listID=\"FISH_SIZE_CATEGORY\">4b</ram:CategoryCode>\n" + 
+            "                        <ram:ClassCode listID=\"FISH_SIZE_CLASS\">LSC</ram:ClassCode>\n" + 
+            "                    </ram:SpecifiedSizeDistribution>\n" + 
+            "                    <ram:OriginFLUXLocation>\n" + 
+            "                        <ram:TypeCode listID=\"FLUX_LOCATION_TYPE\">AREA</ram:TypeCode>\n" + 
+            "                        <ram:ID schemeID=\"FAO_AREA\">27.3.d.24</ram:ID>\n" + 
+            "                    </ram:OriginFLUXLocation>\n" + 
+            "                </ram:SpecifiedAAPProduct>\n" + 
+            "                <ram:SpecifiedAAPProduct>\n" + 
+            "                    <ram:SpeciesCode listID=\"FAO_SPECIES\">ACE</ram:SpeciesCode>\n" + 
+            "                    <ram:WeightMeasure unitCode=\"KGM\">3028</ram:WeightMeasure>\n" + 
+            "                    <ram:UsageCode listID=\"PROD_USAGE\">IND</ram:UsageCode>\n" + 
+            "                    <ram:AppliedAAPProcess>\n" + 
+            "                        <ram:TypeCode listID=\"FISH_FRESHNESS\">V</ram:TypeCode>\n" + 
+            "                        <ram:TypeCode listID=\"FISH_PRESERVATION\">DRI</ram:TypeCode>\n" + 
+            "                        <ram:TypeCode listID=\"FISH_PRESENTATION\">TNG</ram:TypeCode>\n" + 
+            "                    </ram:AppliedAAPProcess>\n" + 
+            "                    <ram:TotalSalesPrice>\n" + 
+            "                        <ram:ChargeAmount>8525.89</ram:ChargeAmount>\n" + 
+            "                    </ram:TotalSalesPrice>\n" + 
+            "                    <ram:SpecifiedSizeDistribution>\n" + 
+            "                        <ram:CategoryCode listID=\"FISH_SIZE_CATEGORY\">6</ram:CategoryCode>\n" + 
+            "                        <ram:ClassCode listID=\"FISH_SIZE_CLASS\">LSC</ram:ClassCode>\n" + 
+            "                    </ram:SpecifiedSizeDistribution>\n" + 
+            "                    <ram:OriginFLUXLocation>\n" + 
+            "                        <ram:TypeCode listID=\"FLUX_LOCATION_TYPE\">AREA</ram:TypeCode>\n" + 
+            "                        <ram:ID schemeID=\"FAO_AREA\">27.3.d.24</ram:ID>\n" + 
+            "                    </ram:OriginFLUXLocation>\n" + 
+            "                </ram:SpecifiedAAPProduct>\n" + 
+            "                <ram:SpecifiedAAPProduct>\n" + 
+            "                    <ram:SpeciesCode listID=\"FAO_SPECIES\">ABB</ram:SpeciesCode>\n" + 
+            "                    <ram:WeightMeasure unitCode=\"KGM\">2067</ram:WeightMeasure>\n" + 
+            "                    <ram:UsageCode listID=\"PROD_USAGE\">HCN-INDIRECT</ram:UsageCode>\n" + 
+            "                    <ram:AppliedAAPProcess>\n" + 
+            "                        <ram:TypeCode listID=\"FISH_FRESHNESS\">E</ram:TypeCode>\n" + 
+            "                        <ram:TypeCode listID=\"FISH_PRESERVATION\">FRE</ram:TypeCode>\n" + 
+            "                        <ram:TypeCode listID=\"FISH_PRESENTATION\">GUH</ram:TypeCode>\n" + 
+            "                    </ram:AppliedAAPProcess>\n" + 
+            "                    <ram:TotalSalesPrice>\n" + 
+            "                        <ram:ChargeAmount>6158.17</ram:ChargeAmount>\n" + 
+            "                    </ram:TotalSalesPrice>\n" + 
+            "                    <ram:SpecifiedSizeDistribution>\n" + 
+            "                        <ram:CategoryCode listID=\"FISH_SIZE_CATEGORY\">N/A</ram:CategoryCode>\n" + 
+            "                        <ram:ClassCode listID=\"FISH_SIZE_CLASS\">BMS</ram:ClassCode>\n" + 
+            "                    </ram:SpecifiedSizeDistribution>\n" + 
+            "                    <ram:OriginFLUXLocation>\n" + 
+            "                        <ram:TypeCode listID=\"FLUX_LOCATION_TYPE\">AREA</ram:TypeCode>\n" + 
+            "                        <ram:ID schemeID=\"FAO_AREA\">27.3.d.24</ram:ID>\n" + 
+            "                    </ram:OriginFLUXLocation>\n" + 
+            "                </ram:SpecifiedAAPProduct>\n" + 
+            "            </ram:SpecifiedSalesBatch>\n" + 
+            "            <ram:SpecifiedSalesEvent>\n" + 
+            "                <ram:OccurrenceDateTime>\n" + 
+            "                    <udt:DateTime>" + format.format(timestamp) + "</udt:DateTime>\n" + 
+            "                </ram:OccurrenceDateTime>\n" + 
+            "            </ram:SpecifiedSalesEvent>\n" + 
+            "            <ram:SpecifiedFishingActivity>\n" + 
+            "                <ram:TypeCode>LAN</ram:TypeCode>\n" + 
+            "                <ram:RelatedFLUXLocation>\n" + 
+            "                    <ram:TypeCode listID=\"FLUX_LOCATION_TYPE\">LOCATION</ram:TypeCode>\n" + 
+            "                    <ram:CountryID schemeID=\"TERRITORY\">NLD</ram:CountryID>\n" + 
+            "                    <ram:ID schemeID=\"LOCATION\">NLAMS</ram:ID>\n" + 
+            "                </ram:RelatedFLUXLocation>\n" + 
+            "                <ram:SpecifiedDelimitedPeriod>\n" + 
+            "                    <ram:StartDateTime>\n" + 
+            "                        <udt:DateTime>" + format.format(timestamp) + "</udt:DateTime>\n" + 
+            "                    </ram:StartDateTime>\n" + 
+            "                </ram:SpecifiedDelimitedPeriod>\n" + 
+            "                <ram:SpecifiedFishingTrip>\n" + 
+            "                    <ram:ID schemeID=\"EU_TRIP_ID\">NLD-TRP-2018-29861837</ram:ID>\n" + 
+            "                </ram:SpecifiedFishingTrip>\n" + 
+            "                <ram:RelatedVesselTransportMeans>\n" + 
+            "                    <ram:ID schemeID=\"CFR\">NLD531861791</ram:ID>\n" + 
+            "                    <ram:Name>Awesome</ram:Name>\n" + 
+            "                    <ram:RegistrationVesselCountry>\n" + 
+            "                        <ram:ID schemeID=\"TERRITORY\">NLD</ram:ID>\n" + 
+            "                    </ram:RegistrationVesselCountry>\n" + 
+            "                    <ram:SpecifiedContactParty>\n" + 
+            "                        <ram:RoleCode listID=\"FLUX_CONTACT_ROLE\">MASTER</ram:RoleCode>\n" + 
+            "                        <ram:SpecifiedContactPerson>\n" + 
+            "                            <ram:GivenName>Mathias</ram:GivenName>\n" + 
+            "                            <ram:MiddleName>Mathias</ram:MiddleName>\n" + 
+            "                            <ram:FamilyName>Van Impe</ram:FamilyName>\n" + 
+            "                        </ram:SpecifiedContactPerson>\n" + 
+            "                    </ram:SpecifiedContactParty>\n" + 
+            "                </ram:RelatedVesselTransportMeans>\n" + 
+            "            </ram:SpecifiedFishingActivity>\n" + 
+            "            <ram:SpecifiedFLUXLocation>\n" + 
+            "                <ram:TypeCode listID=\"FLUX_LOCATION_TYPE\">LOCATION</ram:TypeCode>\n" + 
+            "                <ram:CountryID schemeID=\"TERRITORY\">NLD</ram:CountryID>\n" + 
+            "                <ram:ID schemeID=\"LOCATION\">NLAMS</ram:ID>\n" + 
+            "            </ram:SpecifiedFLUXLocation>\n" + 
+            "            <ram:SpecifiedSalesParty>\n" + 
+            "                <ram:ID schemeID=\"MS\">4521845272</ram:ID>\n" + 
+            "                <ram:Name>Bogaerts</ram:Name>\n" + 
+            "                <ram:RoleCode listID=\"FLUX_SALES_PARTY_ROLE\">SENDER</ram:RoleCode>\n" + 
+            "            </ram:SpecifiedSalesParty>\n" + 
+            "            <ram:SpecifiedSalesParty>\n" + 
+            "                <ram:ID schemeID=\"VAT\">6208439451</ram:ID>\n" + 
+            "                <ram:Name>Schockaert</ram:Name>\n" + 
+            "                <ram:RoleCode listID=\"FLUX_SALES_PARTY_ROLE\">BUYER</ram:RoleCode>\n" + 
+            "            </ram:SpecifiedSalesParty>\n" + 
+            "            <ram:SpecifiedSalesParty>\n" + 
+            "                <ram:Name>Blaaaaaaaa</ram:Name>\n" + 
+            "                <ram:RoleCode listID=\"FLUX_SALES_PARTY_ROLE\">PROVIDER</ram:RoleCode>\n" + 
+            "            </ram:SpecifiedSalesParty>\n" + 
+            "        </ram:IncludedSalesDocument>\n" + 
+            "    </SalesReport>\n" +
             "</FLUXSalesReportMessage>\n";
+    }
+    
+    private static String getRandomIntegers(int length) {
+        return new Random()
+                .ints(0,9)
+                .mapToObj(i -> String.valueOf(i))
+                .limit(length)
+                .collect(StringBuilder::new, StringBuilder::append, StringBuilder::append)
+                .toString();
+    }
 }
