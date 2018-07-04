@@ -41,7 +41,7 @@ import xeu.bridge_connector.wsdl.v1.SalesService;
 public class ReceiveSalesReportIT extends AbstractRestServiceTest {
     
     private static final String SELECTOR = "ServiceName='eu.europa.ec.fisheries.uvms.plugins.flux.sales'";
-    private static final long TIMEOUT = 60000;
+    private static final long TIMEOUT = 120000;
 
     @Test
     public void sendSalesReportTest() throws Exception {
