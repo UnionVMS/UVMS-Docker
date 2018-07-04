@@ -48,6 +48,7 @@ echo "Completed module.sql"
 
 echo "Docker specific update"
 psql -U spatial -d db71u -c "update system_configurations set value = 'http://localhost:28080/geoserver/' where name='geo_server_url'"
+psql -U config -d db71u -c "UPDATE settings SET setting_value = 'BEL' WHERE setting_key = 'flux_local_nation_code'"
 echo "Docker specific completed"
 
 echo "All uvms databases created"
