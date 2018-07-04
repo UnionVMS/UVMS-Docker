@@ -4,12 +4,10 @@
 	<parent>
 		<groupId>eu.europa.ec.fisheries.uvms.docker</groupId>
 		<artifactId>uvms-docker</artifactId>
-		<version>3.25.1-SNAPSHOT</version>
+		<version>3.25.2-SNAPSHOT</version>
 		<relativePath>../pom.xml</relativePath>
 	</parent>
-	<groupId>eu.europa.ec.fisheries.uvms.docker</groupId>
 	<artifactId>uvms-docker-postgres-release</artifactId>
-	<version>3.25.1-SNAPSHOT</version>
 	<packaging>pom</packaging>
 	<name>uvms-docker-postgres-release</name>
 	<dependencies>
@@ -17,7 +15,6 @@
 			<groupId>eu.europa.ec.fisheries.uvms.asset</groupId>
 			<artifactId>liquibase</artifactId>
 			<type>sql</type>
-			<version>${unionvms.project.asset.module}</version>
 			<exclusions>
 				<exclusion>
 					<groupId>com.oracle</groupId>
@@ -29,7 +26,6 @@
 			<groupId>eu.europa.ec.fisheries.uvms.audit</groupId>
 			<artifactId>liquibase</artifactId>
 			<type>sql</type>
-			<version>${unionvms.project.audit.module}</version>
 			<exclusions>
 				<exclusion>
 					<groupId>com.oracle</groupId>
@@ -41,7 +37,6 @@
 			<groupId>eu.europa.ec.fisheries.uvms.config</groupId>
 			<artifactId>liquibase</artifactId>
 			<type>sql</type>
-			<version>${unionvms.project.config.module}</version>
 			<exclusions>
 				<exclusion>
 					<groupId>com.oracle</groupId>
@@ -53,7 +48,6 @@
 			<groupId>eu.europa.ec.fisheries.uvms.exchange</groupId>
 			<artifactId>liquibase</artifactId>
 			<type>sql</type>
-			<version>${unionvms.project.exchange.module}</version>
 			<exclusions>
 				<exclusion>
 					<groupId>com.oracle</groupId>
@@ -65,7 +59,6 @@
 			<groupId>eu.europa.ec.fisheries.uvms.mobileterminal</groupId>
 			<artifactId>liquibase</artifactId>
 			<type>sql</type>
-			<version>${unionvms.project.mobileterminal.module}</version>
 			<exclusions>
 				<exclusion>
 					<groupId>com.oracle</groupId>
@@ -77,7 +70,6 @@
 			<groupId>eu.europa.ec.fisheries.uvms.movement</groupId>
 			<artifactId>liquibase</artifactId>
 			<type>sql</type>
-			<version>${unionvms.project.movement.module}</version>
 			<exclusions>
 				<exclusion>
 					<groupId>com.oracle</groupId>
@@ -89,7 +81,17 @@
 			<groupId>eu.europa.ec.fisheries.uvms.rules</groupId>
 			<artifactId>liquibase</artifactId>
 			<type>sql</type>
-			<version>${unionvms.project.rules.module}</version>
+			<exclusions>
+				<exclusion>
+					<groupId>com.oracle</groupId>
+					<artifactId>ojdbc6</artifactId>
+				</exclusion>
+			</exclusions>			
+		</dependency>
+		<dependency>
+			<groupId>eu.europa.ec.fisheries.uvms.movement-rules</groupId>
+			<artifactId>liquibase</artifactId>
+			<type>sql</type>
 			<exclusions>
 				<exclusion>
 					<groupId>com.oracle</groupId>
@@ -101,7 +103,6 @@
 			<groupId>eu.europa.ec.fisheries.uvms.spatial</groupId>
 			<artifactId>liquibase</artifactId>
 			<type>sql</type>
-			<version>${unionvms.project.spatial.db.module}</version>
 			<exclusions>
 				<exclusion>
 					<groupId>com.oracle</groupId>
@@ -113,7 +114,6 @@
 			<groupId>eu.europa.ec.fisheries.uvms.activity</groupId>
 			<artifactId>liquibase</artifactId>
 			<type>sql</type>
-			<version>${unionvms.project.activity.module}</version>
 			<exclusions>
 				<exclusion>
 					<groupId>com.oracle</groupId>
@@ -125,7 +125,6 @@
 			<groupId>eu.europa.ec.fisheries.uvms.mdr</groupId>
 			<artifactId>liquibase</artifactId>
 			<type>sql</type>
-			<version>${unionvms.project.mdr.module}</version>
 			<exclusions>
 				<exclusion>
 					<groupId>com.oracle</groupId>
@@ -137,7 +136,6 @@
 			<groupId>eu.europa.ec.fisheries.uvms.reporting</groupId>
 			<artifactId>liquibase</artifactId>
 			<type>sql</type>
-			<version>${unionvms.project.reporting.db.module}</version>
 			<exclusions>
 				<exclusion>
 					<groupId>com.oracle</groupId>
@@ -173,7 +171,6 @@
 			<groupId>eu.europa.ec.fisheries.uvms.user</groupId>
 			<artifactId>liquibase</artifactId>
 			<type>sql</type>
-			<version>${unionvms.project.user.module}</version>
 			<exclusions>
 				<exclusion>
 					<groupId>com.oracle</groupId>
@@ -185,7 +182,6 @@
 			<groupId>eu.europa.ec.fisheries.uvms.subscription</groupId>
 			<artifactId>liquibase</artifactId>
 			<type>sql</type>
-			<version>${unionvms.project.subscription.module}</version>
 			<exclusions>
 				<exclusion>
 					<groupId>com.oracle</groupId>
@@ -208,7 +204,7 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-dependency-plugin</artifactId>
-				<version>3.0.1</version>
+				<version>3.1.1</version>
 				<executions>
 					<execution>
 						<id>copy-dependencies</id>

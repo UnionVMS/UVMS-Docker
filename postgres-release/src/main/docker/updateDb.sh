@@ -28,6 +28,8 @@ echo "Running movement.sql to create tables and init data"
 psql -U movement -d db71u --single-transaction -q -f  /var/lib/postgresql/eu.europa.ec.fisheries.uvms.movement.liquibase-${unionvms.project.movement.module}.sql >/dev/null
 echo "Running rules.sql to create tables and init data"
 psql -U rules -d db71u -a --single-transaction -q -f  /var/lib/postgresql/eu.europa.ec.fisheries.uvms.rules.liquibase-${unionvms.project.rules.module}.sql >/dev/null
+echo "Running movementrules.sql to create tables and init data"
+psql -U movementrules -d db71u -a --single-transaction -q -f  /var/lib/postgresql/eu.europa.ec.fisheries.uvms.movement-rules.liquibase-${unionvms.project.movementrules.module}.sql >/dev/null
 echo "Running usm.sql to create tables and init data"
 psql -U usm -d db71u --single-transaction -q -f /var/lib/postgresql/eu.europa.ec.fisheries.uvms.user.liquibase-${unionvms.project.user.module}.sql >/dev/null
 echo "Running spatial.sql to create tables and init data"
