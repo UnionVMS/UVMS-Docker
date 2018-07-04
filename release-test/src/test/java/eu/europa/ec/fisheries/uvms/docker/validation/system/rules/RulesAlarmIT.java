@@ -19,6 +19,7 @@ import java.util.Date;
 import java.util.List;
 import javax.jms.Message;
 import javax.jms.TextMessage;
+import org.junit.After;
 import org.junit.BeforeClass;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -76,6 +77,11 @@ public class RulesAlarmIT extends AbstractRestServiceTest {
         }
     }
     
+    @After
+    public void removeCustomRules() throws Exception {
+        CustomRuleHelper.removeCustomRulesByDefaultUser();
+    }
+    
     @Test
     public void sendEmailIfReportedSpeedIsGreaterThan10knotsTest() throws Exception {
         Date timestamp = new Date();
@@ -105,8 +111,6 @@ public class RulesAlarmIT extends AbstractRestServiceTest {
         assertThat(setCommandRequest.getCommand().getFwdRule(), is(createdSpeedRule.getName()));
         
         CustomRuleHelper.assertRuleTriggered(createdSpeedRule, timestamp);
-        
-        CustomRuleHelper.removeCustomRule(createdSpeedRule.getGuid());
     }
     
     @Test
@@ -138,8 +142,6 @@ public class RulesAlarmIT extends AbstractRestServiceTest {
         assertThat(setCommandRequest.getCommand().getFwdRule(), is(createdSpeedRule.getName()));
         
         CustomRuleHelper.assertRuleTriggered(createdSpeedRule, timestamp);
-        
-        CustomRuleHelper.removeCustomRule(createdSpeedRule.getGuid());
     }
 
     @Test
@@ -182,9 +184,6 @@ public class RulesAlarmIT extends AbstractRestServiceTest {
         
         CustomRuleHelper.assertRuleNotTriggered(createdSpeedRule);
         CustomRuleHelper.assertRuleTriggered(createdFsRule, timestamp);
-        
-        CustomRuleHelper.removeCustomRule(createdSpeedRule.getGuid());
-        CustomRuleHelper.removeCustomRule(createdFsRule.getGuid());
     }
     
     @Test
@@ -227,9 +226,6 @@ public class RulesAlarmIT extends AbstractRestServiceTest {
         
         CustomRuleHelper.assertRuleNotTriggered(createdSpeedRule);
         CustomRuleHelper.assertRuleTriggered(createdFsRule, timestamp);
-        
-        CustomRuleHelper.removeCustomRule(createdSpeedRule.getGuid());
-        CustomRuleHelper.removeCustomRule(createdFsRule.getGuid());
     }
     
     @Test
@@ -261,8 +257,6 @@ public class RulesAlarmIT extends AbstractRestServiceTest {
         assertThat(setCommandRequest.getCommand().getFwdRule(), is(createdSpeedRule.getName()));
         
         CustomRuleHelper.assertRuleTriggered(createdSpeedRule, timestamp);
-        
-        CustomRuleHelper.removeCustomRule(createdSpeedRule.getGuid());
     }
     
     @Test
@@ -294,8 +288,6 @@ public class RulesAlarmIT extends AbstractRestServiceTest {
         assertThat(setCommandRequest.getCommand().getFwdRule(), is(createdSpeedRule.getName()));
         
         CustomRuleHelper.assertRuleTriggered(createdSpeedRule, timestamp);
-        
-        CustomRuleHelper.removeCustomRule(createdSpeedRule.getGuid());
     }
     
     @Test
@@ -329,8 +321,6 @@ public class RulesAlarmIT extends AbstractRestServiceTest {
         assertThat(setCommandRequest.getCommand().getFwdRule(), is(createdSpeedAndAreaRule.getName()));
         
         CustomRuleHelper.assertRuleTriggered(createdSpeedAndAreaRule, timestamp);
-        
-        CustomRuleHelper.removeCustomRule(createdSpeedAndAreaRule.getGuid());
     }
     
     @Test
@@ -364,8 +354,6 @@ public class RulesAlarmIT extends AbstractRestServiceTest {
         assertThat(setCommandRequest.getCommand().getFwdRule(), is(createdSpeedAndAreaRule.getName()));
         
         CustomRuleHelper.assertRuleTriggered(createdSpeedAndAreaRule, timestamp);
-        
-        CustomRuleHelper.removeCustomRule(createdSpeedAndAreaRule.getGuid());
     }
     
     @Test
@@ -396,8 +384,6 @@ public class RulesAlarmIT extends AbstractRestServiceTest {
         assertThat(setCommandRequest.getCommand().getFwdRule(), is(createdAreaRule.getName()));
         
         CustomRuleHelper.assertRuleTriggered(createdAreaRule, timestamp);
-        
-        CustomRuleHelper.removeCustomRule(createdAreaRule.getGuid());
     }
     
     @Test
@@ -428,8 +414,6 @@ public class RulesAlarmIT extends AbstractRestServiceTest {
         assertThat(setCommandRequest.getCommand().getFwdRule(), is(createdIrcsRule.getName()));
         
         CustomRuleHelper.assertRuleTriggered(createdIrcsRule, timestamp);
-        
-        CustomRuleHelper.removeCustomRule(createdIrcsRule.getGuid());
     }
     
     
@@ -477,8 +461,6 @@ public class RulesAlarmIT extends AbstractRestServiceTest {
         assertThat(setCommandRequest2.getCommand().getFwdRule(), is(createdCustomRule.getName()));
         
         CustomRuleHelper.assertRuleTriggered(createdCustomRule, timestamp);
-        
-        CustomRuleHelper.removeCustomRule(createdCustomRule.getGuid());
     }
     
     @Test
@@ -510,8 +492,6 @@ public class RulesAlarmIT extends AbstractRestServiceTest {
         assertThat(setCommandRequest.getCommand().getFwdRule(), is(createdCustomRule.getName()));
         
         CustomRuleHelper.assertRuleTriggered(createdCustomRule, timestamp);
-        
-        CustomRuleHelper.removeCustomRule(createdCustomRule.getGuid());
     }
     
     @Ignore
@@ -554,9 +534,6 @@ public class RulesAlarmIT extends AbstractRestServiceTest {
         
         CustomRuleHelper.assertRuleNotTriggered(createdCustomRule);
         CustomRuleHelper.assertRuleTriggered(createdFsRule, timestamp);
-        
-        CustomRuleHelper.removeCustomRule(createdCustomRule.getGuid());
-        CustomRuleHelper.removeCustomRule(createdFsRule.getGuid());
     }
     
     @Test
@@ -587,8 +564,6 @@ public class RulesAlarmIT extends AbstractRestServiceTest {
         assertThat(setCommandRequest.getCommand().getFwdRule(), is(createdCfrRule.getName()));
         
         CustomRuleHelper.assertRuleTriggered(createdCfrRule, timestamp);
-        
-        CustomRuleHelper.removeCustomRule(createdCfrRule.getGuid());
     }
     
     @Test
@@ -619,8 +594,6 @@ public class RulesAlarmIT extends AbstractRestServiceTest {
         assertThat(setCommandRequest.getCommand().getFwdRule(), is(createdAssetNameRule.getName()));
         
         CustomRuleHelper.assertRuleTriggered(createdAssetNameRule, timestamp);
-        
-        CustomRuleHelper.removeCustomRule(createdAssetNameRule.getGuid());
     }
     
     @Test
@@ -650,8 +623,6 @@ public class RulesAlarmIT extends AbstractRestServiceTest {
         assertThat(setCommandRequest.getCommand().getFwdRule(), is(createdCustomRule.getName()));
         
         CustomRuleHelper.assertRuleTriggered(createdCustomRule, timestamp);
-        
-        CustomRuleHelper.removeCustomRule(createdCustomRule.getGuid());
     }
     
     @Test
@@ -681,8 +652,6 @@ public class RulesAlarmIT extends AbstractRestServiceTest {
         assertThat(setCommandRequest.getCommand().getFwdRule(), is(createdCustomRule.getName()));
         
         CustomRuleHelper.assertRuleTriggered(createdCustomRule, timestamp);
-        
-        CustomRuleHelper.removeCustomRule(createdCustomRule.getGuid());
     }
     
     @Test
@@ -714,7 +683,5 @@ public class RulesAlarmIT extends AbstractRestServiceTest {
         assertThat(setCommandRequest.getCommand().getFwdRule(), is(createdCustomRule.getName()));
         
         CustomRuleHelper.assertRuleTriggered(createdCustomRule, timestamp);
-        
-        CustomRuleHelper.removeCustomRule(createdCustomRule.getGuid());
     }
 }

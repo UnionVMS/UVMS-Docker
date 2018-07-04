@@ -27,7 +27,7 @@ import eu.europa.ec.fisheries.schema.rules.customrule.v1.SubCriteriaType;
 
 public class CustomRuleBuilder {
 
-    private static final String DEFAULT_USER = "vms_admin_com";
+    protected static final String DEFAULT_USER = "vms_admin_com";
 
     private int segmentOrder = 0;
     private int actionOrder = 0;

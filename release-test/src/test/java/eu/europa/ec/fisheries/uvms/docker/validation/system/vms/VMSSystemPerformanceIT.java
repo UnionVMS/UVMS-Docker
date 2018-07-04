@@ -18,6 +18,7 @@ import javax.jms.TextMessage;
 import org.databene.contiperf.PerfTest;
 import org.databene.contiperf.Required;
 import org.databene.contiperf.junit.ContiPerfRule;
+import org.junit.After;
 import org.junit.Rule;
 import org.junit.Test;
 import eu.europa.ec.fisheries.schema.exchange.plugin.v1.SetReportRequest;
@@ -42,12 +43,17 @@ import eu.europa.ec.fisheries.wsdl.asset.types.Asset;
 public class VMSSystemPerformanceIT extends AbstractRestServiceTest {
 
     private static final String SELECTOR = "ServiceName='eu.europa.ec.fisheries.uvms.plugins.flux'";
-    private static final long TIMEOUT = 10000;
+    private static final long TIMEOUT = 30000;
 
     private static final int NUMBER_OF_POSITIONS = 10;
     
     @Rule
     public ContiPerfRule contiPerfRule = new ContiPerfRule();
+    
+    @After
+    public void removeCustomRules() throws Exception {
+        CustomRuleHelper.removeCustomRulesByDefaultUser();
+    }
     
     @Test
     @PerfTest(threads = 1)
@@ -88,6 +94,5 @@ public class VMSSystemPerformanceIT extends AbstractRestServiceTest {
             assertThat(setReportRequest.getReport().getMovement().getPosition().getLongitude(), is(position.longitude));
 
         }
-        CustomRuleHelper.removeCustomRule(createdCustomRule.getGuid());
     }
 }
