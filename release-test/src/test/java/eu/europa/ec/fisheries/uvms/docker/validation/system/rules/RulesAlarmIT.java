@@ -416,7 +416,7 @@ public class RulesAlarmIT extends AbstractRestServiceTest {
         CustomRuleHelper.assertRuleTriggered(createdIrcsRule, timestamp);
     }
     
-    
+    @Ignore
     @Test
     public void sendEmailIfIrcsDisjunctionMatchesTest() throws Exception {
         Date timestamp = new Date();
