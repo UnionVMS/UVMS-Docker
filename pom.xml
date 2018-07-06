@@ -29,7 +29,7 @@
 		<unionvms.project.rules.module>3.0.31</unionvms.project.rules.module>
 		<unionvms.project.movementrules.module>0.9.2</unionvms.project.movementrules.module>
 		<unionvms.project.movement.module>4.0.14</unionvms.project.movement.module>
-		<unionvms.project.mobileterminal.module>4.0.11</unionvms.project.mobileterminal.module>
+		<unionvms.project.mobileterminal.module>4.0.12-UVMS-SNAPSHOT</unionvms.project.mobileterminal.module>
 		<unionvms.project.exchange.module>4.0.23</unionvms.project.exchange.module>
 		<unionvms.project.reporting.module>1.1.4-MR</unionvms.project.reporting.module>
 		<unionvms.project.spatial.module>1.1.7</unionvms.project.spatial.module>
