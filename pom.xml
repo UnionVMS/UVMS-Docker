@@ -26,11 +26,11 @@
 		<unionvms.project.reporting.db.module>1.0.4</unionvms.project.reporting.db.module>
 		<unionvms.project.spatial.db.module>1.0.5</unionvms.project.spatial.db.module>
 		<unionvms.project.user.module>2.0.9</unionvms.project.user.module>
-		<unionvms.project.rules.module>3.0.31</unionvms.project.rules.module>
+		<unionvms.project.rules.module>3.0.38</unionvms.project.rules.module>
 		<unionvms.project.movementrules.module>0.9.1</unionvms.project.movementrules.module>
 		<unionvms.project.movement.module>4.0.13</unionvms.project.movement.module>
 		<unionvms.project.mobileterminal.module>4.0.9</unionvms.project.mobileterminal.module>
-		<unionvms.project.exchange.module>4.0.20</unionvms.project.exchange.module>
+		<unionvms.project.exchange.module>4.0.26</unionvms.project.exchange.module>
 		<unionvms.project.reporting.module>1.1.4</unionvms.project.reporting.module>
 		<unionvms.project.spatial.module>1.1.6</unionvms.project.spatial.module>
 		<unionvms.project.subscription.module>1.3</unionvms.project.subscription.module>
@@ -38,7 +38,7 @@
 		<unionvms.project.audit.module>4.0.7</unionvms.project.audit.module>
 		<unionvms.project.asset.module>4.0.11</unionvms.project.asset.module>
 		<unionvms.project.activity.module>1.1.6</unionvms.project.activity.module>
-		<unionvms.project.sales.module>1.0.14</unionvms.project.sales.module>
+		<unionvms.project.sales.module>1.0.16</unionvms.project.sales.module>
 		<unionvms.project.sales-ecb-proxy.module>1.0.5</unionvms.project.sales-ecb-proxy.module>
 		<unionvms.project.mdr.module>1.0.10</unionvms.project.mdr.module>
 		<unionvms.project.plugins.naf>3.0.7</unionvms.project.plugins.naf>
