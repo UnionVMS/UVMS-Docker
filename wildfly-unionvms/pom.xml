@@ -4,13 +4,13 @@
 	<parent>
 		<groupId>eu.europa.ec.fisheries.uvms.docker</groupId>
 		<artifactId>uvms-docker</artifactId>
-		<version>3.25.0.w12</version>
+		<version>3.25.1.w12-SNAPSHOT</version>
 		<relativePath>../pom.xml</relativePath>
 	</parent>
 
 	<groupId>eu.europa.ec.fisheries.uvms.docker</groupId>
 	<artifactId>uvms-docker-wildfly-unionvms</artifactId>
-	<version>3.25.0.w12</version>
+	<version>3.25.1.w12-SNAPSHOT</version>
 	<packaging>pom</packaging>
 	<name>uvms-docker-wildfly-unionvms</name>
 
@@ -433,6 +433,6 @@
 		</profile>
 	</profiles>
 	<scm>
-		<tag>uvms-docker-3.25.0.w12</tag>
+		<tag>HEAD</tag>
 	</scm>
 </project>
