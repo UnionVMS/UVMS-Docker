@@ -5,7 +5,7 @@
 	</formats>
 	<fileSets>
 		<fileSet>
-			<directory>target/content/wildfly-8.2.1.Final/</directory>
+			<directory>target/content/wildfly-12.0.0.Final/</directory>
 			<includes>
 				<include>**/*.*</include>
 			</includes>
@@ -19,7 +19,7 @@
 			<outputDirectory></outputDirectory>
 		</fileSet>
 		<fileSet>
-			<directory>target/content/wildfly-8.2.1.Final/</directory>
+			<directory>target/content/wildfly-12.0.0.Final/</directory>
 			<includes>
 				<include>**/logging.properties</include>
 			</includes>
@@ -69,7 +69,7 @@
 			</includes>
 			<outputDirectory>modules/org/postgresql/main</outputDirectory>
 		</fileSet>
-		<fileSet>
+		<!-- <fileSet>
 			<directory>target/content/uvms-docker-wildfly-release/deployments/
 			</directory>
 			<includes>
@@ -79,6 +79,14 @@
 		</fileSet>
 		<fileSet>
 			<directory>target/content/uvms-docker-wildfly-foundation/deployments/
+			</directory>
+			<includes>
+				<include>*.*</include>
+			</includes>
+			<outputDirectory>standalone/deployments</outputDirectory>
+		</fileSet>  -->
+		<fileSet>
+			<directory>target/content/uvms-docker-wildfly-unionvms/deployments/
 			</directory>
 			<includes>
 				<include>*.*</include>
@@ -95,7 +103,7 @@
 	</fileSets>
 	<files>
 		<file>
-			<source>target/content/uvms-docker-wildfly-base/deployments/activemq-rar-5.14.5.rar
+			<source>target/content/uvms-docker-wildfly-base/deployments/activemq-rar-5.15.2.rar
 			</source>
 			<outputDirectory>standalone/deployments</outputDirectory>
 			<destName>activemq-rar.rar</destName>
