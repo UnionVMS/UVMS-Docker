@@ -47,9 +47,6 @@ echo "Completed module.sql"
 echo "Docker specific update"
 psql -U spatial -d db71u -c "update system_configurations set value = 'http://localhost:28080/geoserver/' where name='geo_server_url'"
 
-echo "Inserting test data"
-psql -U mobterm -d db71u -q -c "INSERT INTO mobterm.plugin (id,name,service_name,satellite_type) VALUES ('4','Thrane&Thrane','eu.europa.ec.fisheries.uvms.plugins.inmarsat','INMARSAT_C')"
-
 echo "Docker specific completed"
 
 echo "All uvms databases created"
