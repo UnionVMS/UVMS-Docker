@@ -57,13 +57,31 @@
                 <version>3.1.13</version>
                 <executions>
                     <execution>
-                        <id>wsdl-services</id>
+                        <id>wsdl-services-flux</id>
                         <phase>generate-sources</phase>
                         <configuration>
                             <wsdlOptions>
                                 <wsdlOption>
                                     <wsdl>${basedir}/src/main/wsdl/FluxMessageReceiverBean.wsdl</wsdl>
                                     <serviceName>MovementService</serviceName>
+                                    <bindingFiles>
+                                        <bindingFile>${basedir}/src/main/wsdl/binding.xml</bindingFile>
+                                    </bindingFiles>
+                                </wsdlOption>
+                            </wsdlOptions>
+                        </configuration>
+                        <goals>
+                            <goal>wsdl2java</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>wsdl-services-fluxsales</id>
+                        <phase>generate-sources</phase>
+                        <configuration>
+                            <wsdlOptions>
+                                <wsdlOption>
+                                    <wsdl>${basedir}/src/main/wsdl/FluxSalesMessageReceiverBean.wsdl</wsdl>
+                                    <serviceName>SalesService</serviceName>
                                     <bindingFiles>
                                         <bindingFile>${basedir}/src/main/wsdl/binding.xml</bindingFile>
                                     </bindingFiles>

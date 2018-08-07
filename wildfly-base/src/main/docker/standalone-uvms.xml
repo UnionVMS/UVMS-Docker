@@ -511,7 +511,7 @@
                          <password>mdr</password>
                      </security>
                  </xa-datasource>
-                 <xa-datasource jta="true" jndi-name="java:jboss/datasources/uvms_sales" pool-name="uvms_sales" enabled="true" use-ccm="true" statistics-enabled="false">
+                 <xa-datasource jta="true" jndi-name="java:/jdbc/uvms_sales" pool-name="jdbc/uvms_sales" enabled="true" use-ccm="true" statistics-enabled="false">
                      <xa-datasource-property name="ServerName">postgres</xa-datasource-property>
                      <xa-datasource-property name="PortNumber">5432</xa-datasource-property>
                      <xa-datasource-property name="DatabaseName">db71u</xa-datasource-property>
@@ -532,6 +532,29 @@
                      <security>
                          <user-name>sales</user-name>
                          <password>sales</password>
+                     </security>
+                </xa-datasource>
+                <xa-datasource jta="true" jndi-name="java:/jdbc/uvms_salesecbproxy" pool-name="uvms_salesecbproxy" enabled="true" use-ccm="true" statistics-enabled="false">
+                     <xa-datasource-property name="ServerName">postgres</xa-datasource-property>
+                     <xa-datasource-property name="PortNumber">5432</xa-datasource-property>
+                     <xa-datasource-property name="DatabaseName">db71u</xa-datasource-property>
+
+                     <driver>postgresql</driver>
+                     <xa-pool>
+                         <min-pool-size>2</min-pool-size>
+                         <initial-pool-size>2</initial-pool-size>
+                         <max-pool-size>20</max-pool-size>
+                         <prefill>true</prefill>
+                     </xa-pool>
+                     <validation>
+                         <valid-connection-checker
+                                 class-name="org.jboss.jca.adapters.jdbc.extensions.postgres.PostgreSQLValidConnectionChecker"></valid-connection-checker>
+                         <exception-sorter
+                                 class-name="org.jboss.jca.adapters.jdbc.extensions.postgres.PostgreSQLExceptionSorter"></exception-sorter>
+                     </validation>
+                     <security>
+                         <user-name>salesecbproxy</user-name>
+                         <password>salesecbproxy</password>
                      </security>
                 </xa-datasource>
                 <xa-datasource jta="true" jndi-name="java:jboss/datasources/uvms_subscription" pool-name="uvms_subscription" enabled="true" use-ccm="true" statistics-enabled="false">
@@ -1016,6 +1039,16 @@
                         <admin-object class-name="org.apache.activemq.command.ActiveMQQueue" jndi-name="java:/jms/queue/UVMSSales" use-java-context="true" pool-name="UVMSSales">
                             <config-property name="PhysicalName">
                                 UVMSSales
+                            </config-property>
+                        </admin-object>
+                        <admin-object class-name="org.apache.activemq.command.ActiveMQQueue" jndi-name="java:/jms/queue/UVMSSalesEcbProxy" use-java-context="true" pool-name="UVMSSalesEcbProxy">
+                            <config-property name="PhysicalName">
+                                UVMSSalesEcbProxy
+                            </config-property>
+                        </admin-object>
+                        <admin-object class-name="org.apache.activemq.command.ActiveMQQueue" jndi-name="java:/jms/queue/UVMSSalesEcbProxyConfig" use-java-context="true" pool-name="UVMSSalesEcbProxyConfig">
+                            <config-property name="PhysicalName">
+                                UVMSSalesEcbProxyConfig
                             </config-property>
                         </admin-object>
 						<admin-object class-name="org.apache.activemq.command.ActiveMQQueue"

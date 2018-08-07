@@ -16,6 +16,8 @@ import static org.hamcrest.CoreMatchers.notNullValue;
 import java.util.Calendar;
 import java.util.Date;
 import javax.jms.TextMessage;
+import org.junit.After;
+import org.junit.Ignore;
 import org.junit.Test;
 import eu.europa.ec.fisheries.schema.exchange.movement.v1.MovementType;
 import eu.europa.ec.fisheries.schema.exchange.plugin.v1.SetReportRequest;
@@ -36,11 +38,17 @@ import eu.europa.ec.fisheries.uvms.docker.validation.system.helper.FLUXHelper;
 import eu.europa.ec.fisheries.uvms.exchange.model.mapper.JAXBMarshaller;
 import eu.europa.ec.fisheries.wsdl.asset.types.Asset;
 
+@Ignore
 public class VMSSystemIT extends AbstractRestServiceTest {
 
     private static final String SELECTOR = "ServiceName='eu.europa.ec.fisheries.uvms.plugins.flux'";
-    private static final long TIMEOUT = 10000;
+    private static final long TIMEOUT = 30000;
 
+    @After
+    public void removeCustomRules() throws Exception {
+        CustomRuleHelper.removeCustomRulesByDefaultUser();
+    }
+    
     @Test
     public void sendFlagStateToFLUXDNKTest() throws Exception {
         Date timestamp = new Date();
@@ -79,8 +87,6 @@ public class VMSSystemIT extends AbstractRestServiceTest {
         assertThat(movement.getIrcs(), is(asset.getIrcs()));
         assertThat(movement.getPosition().getLatitude(), is(position.latitude));
         assertThat(movement.getPosition().getLongitude(), is(position.longitude));
-        
-        CustomRuleHelper.removeCustomRule(createdCustomRule.getGuid());
     }
     
     @Test
@@ -123,8 +129,6 @@ public class VMSSystemIT extends AbstractRestServiceTest {
         assertThat(movement.getIrcs(), is(asset.getIrcs()));
         assertThat(movement.getPosition().getLatitude(), is(position.latitude));
         assertThat(movement.getPosition().getLongitude(), is(position.longitude));
-        
-        CustomRuleHelper.removeCustomRule(createdCustomRule.getGuid());
     }
     
     @Test
@@ -174,8 +178,6 @@ public class VMSSystemIT extends AbstractRestServiceTest {
         assertThat(movement.getIrcs(), is(asset.getIrcs()));
         assertThat(movement.getPosition().getLatitude(), is(position.latitude));
         assertThat(movement.getPosition().getLongitude(), is(position.longitude));
-        
-        CustomRuleHelper.removeCustomRule(createdCustomRule.getGuid());
     }
     
     @Test
@@ -226,9 +228,6 @@ public class VMSSystemIT extends AbstractRestServiceTest {
         
         CustomRuleHelper.assertRuleNotTriggered(createdCustomRuleWithInterval);
         CustomRuleHelper.assertRuleTriggered(createdCustomRuleWithoutInterval, timestamp);
-        
-        CustomRuleHelper.removeCustomRule(createdCustomRuleWithInterval.getGuid());
-        CustomRuleHelper.removeCustomRule(createdCustomRuleWithoutInterval.getGuid());
     }
     
     @Test
@@ -279,8 +278,5 @@ public class VMSSystemIT extends AbstractRestServiceTest {
         
         CustomRuleHelper.assertRuleNotTriggered(createdCustomRuleWithInterval);
         CustomRuleHelper.assertRuleTriggered(createdCustomRuleWithoutInterval, timestamp);
-        
-        CustomRuleHelper.removeCustomRule(createdCustomRuleWithInterval.getGuid());
-        CustomRuleHelper.removeCustomRule(createdCustomRuleWithoutInterval.getGuid());
     }
 }

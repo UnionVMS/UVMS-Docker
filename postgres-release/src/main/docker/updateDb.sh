@@ -42,10 +42,15 @@ echo "Running reporting.sql to create tables and init data"
 psql -U reporting -d db71u --single-transaction -q -f /var/lib/postgresql/eu.europa.ec.fisheries.uvms.reporting.liquibase-${unionvms.project.reporting.db.module}.sql >/dev/null
 echo "Running subscription.sql to create tables and init data"
 psql -U subscription -d db71u --single-transaction -q -f /var/lib/postgresql/eu.europa.ec.fisheries.uvms.subscription.liquibase-${unionvms.project.subscription.module}.sql >/dev/null
+echo "Running sales.sql to create tables and init data"
+psql -U sales -d db71u --single-transaction -q -f /var/lib/postgresql/eu.europa.ec.fisheries.uvms.sales.liquibase-${unionvms.project.sales.module}.sql >/dev/null
+echo "Running sales-ecb-proxy.sql to create tables and init data"
+psql -U salesecbproxy -d db71u --single-transaction -q -f /var/lib/postgresql/eu.europa.ec.fisheries.uvms.sales.sales-proxy-ecb-liquibase-${unionvms.project.sales-ecb-proxy.module}.sql >/dev/null
 echo "Completed module.sql"
 
 echo "Docker specific update"
 psql -U spatial -d db71u -c "update system_configurations set value = 'http://localhost:28080/geoserver/' where name='geo_server_url'"
+psql -U config -d db71u -c "UPDATE settings SET setting_value = 'BEL' WHERE setting_key = 'flux_local_nation_code'"
 echo "Docker specific completed"
 
 echo "All uvms databases created"

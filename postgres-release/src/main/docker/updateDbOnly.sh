@@ -34,4 +34,8 @@ echo "Running reporting.sql to create tables and init data"
 psql -U reporting -d $1 --host=$2 --single-transaction -q -f eu.europa.ec.fisheries.uvms.reporting.liquibase-${unionvms.project.reporting.db.module}.sql >/dev/null
 echo "Running subscription.sql to create tables and init data"
 psql -U subscription -d $1 --host=$2 --single-transaction -q -f eu.europa.ec.fisheries.uvms.subscription.liquibase-${unionvms.project.subscription.module}.sql >/dev/null
+echo "Running sales.sql to create tables and init data"
+psql -U sales -d $1 --host=$2 --single-transaction -q -f eu.europa.ec.fisheries.uvms.sales.liquibase-${unionvms.project.sales.module}.sql >/dev/null
+echo "Running sales-ecb-proxy.sql to create tables and init data"
+psql -U salesecbproxy -d $1 --host=$2 --single-transaction -q -f /var/lib/postgresql/eu.europa.ec.fisheries.uvms.sales.sales-proxy-ecb-liquibase-${unionvms.project.sales-ecb-proxy.module}.sql >/dev/null
 echo "Completed module.sql"

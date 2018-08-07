@@ -17,6 +17,7 @@ import static org.hamcrest.CoreMatchers.nullValue;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.fluent.Request;
@@ -40,6 +41,17 @@ public class CustomRuleHelper extends AbstractHelper {
                 .execute().returnResponse();
         
         checkSuccessResponseReturnDataMap(response);
+    }
+    
+    public static void removeCustomRulesByDefaultUser() throws Exception {
+        HttpResponse response = Request.Get(getBaseUrl() + "rules/rest/customrules/listAll/" + CustomRuleBuilder.DEFAULT_USER)
+                .setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken()).execute()
+                .returnResponse();
+        
+        List<CustomRuleType> customRules = checkSuccessResponseReturnList(response, CustomRuleType.class);
+        for (CustomRuleType customRuleType : customRules) {
+            removeCustomRule(customRuleType.getGuid());
+        }
     }
 
     public static void assertRuleTriggered(CustomRuleType rule, Date dateFrom) throws Exception {

@@ -144,6 +144,30 @@
 			</exclusions>			
 		</dependency>
 		<dependency>
+			<groupId>eu.europa.ec.fisheries.uvms.sales</groupId>
+			<artifactId>liquibase</artifactId>
+			<type>sql</type>
+			<version>${unionvms.project.sales.module}</version>
+			<exclusions>
+				<exclusion>
+					<groupId>com.oracle</groupId>
+					<artifactId>ojdbc6</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		<dependency>
+			<groupId>eu.europa.ec.fisheries.uvms.sales</groupId>
+			<artifactId>sales-proxy-ecb-liquibase</artifactId>
+			<type>sql</type>
+			<version>${unionvms.project.sales-ecb-proxy.module}</version>
+			<exclusions>
+				<exclusion>
+					<groupId>com.oracle</groupId>
+					<artifactId>ojdbc6</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		<dependency>
 			<groupId>eu.europa.ec.fisheries.uvms.user</groupId>
 			<artifactId>liquibase</artifactId>
 			<type>sql</type>
