@@ -24,9 +24,9 @@ import eu.europa.ec.fisheries.schema.mobileterminal.types.v1.MobileTerminalAttri
 import eu.europa.ec.fisheries.schema.mobileterminal.types.v1.MobileTerminalSource;
 import eu.europa.ec.fisheries.schema.mobileterminal.types.v1.MobileTerminalType;
 import eu.europa.ec.fisheries.schema.mobileterminal.types.v1.Plugin;
+import eu.europa.ec.fisheries.uvms.asset.client.model.Asset;
 import eu.europa.ec.fisheries.uvms.docker.validation.asset.AssetTestHelper;
 import eu.europa.ec.fisheries.uvms.docker.validation.common.AbstractHelper;
-import eu.europa.ec.fisheries.wsdl.asset.types.Asset;
 
 public final class MobileTerminalTestHelper extends AbstractHelper {
 
@@ -36,7 +36,7 @@ public final class MobileTerminalTestHelper extends AbstractHelper {
 		{
 			MobileTerminalAssignQuery mobileTerminalAssignQuery = new MobileTerminalAssignQuery();
 			mobileTerminalAssignQuery.setMobileTerminalId(createdMobileTerminalType.getMobileTerminalId());
-			mobileTerminalAssignQuery.setConnectId(testAsset.getAssetId().getGuid());
+			mobileTerminalAssignQuery.setConnectId(testAsset.getId().toString());
 			// Assign first
 			final HttpResponse response = Request
 					.Post(getBaseUrl() + "mobileterminal/rest/mobileterminal/assign?comment=comment")
@@ -55,7 +55,7 @@ public final class MobileTerminalTestHelper extends AbstractHelper {
 
 		PollMobileTerminal pollMobileTerminal = new PollMobileTerminal();
 		pollMobileTerminal.setComChannelId(comChannelId);
-		pollMobileTerminal.setConnectId(testAsset.getAssetId().getGuid());
+		pollMobileTerminal.setConnectId(testAsset.getId().toString());
 		pollMobileTerminal.setMobileTerminalId(createdMobileTerminalType.getMobileTerminalId().getGuid());
 
 		List<MobileTerminalAttribute> mobileTerminalAttributes = createdMobileTerminalType.getAttributes();
@@ -174,8 +174,8 @@ public final class MobileTerminalTestHelper extends AbstractHelper {
 
 		MobileTerminalAssignQuery mobileTerminalAssignQuery = new MobileTerminalAssignQuery();
 		mobileTerminalAssignQuery.setMobileTerminalId(createdMobileTerminalType.getMobileTerminalId());
-		mobileTerminalAssignQuery.setConnectId(testAsset.getAssetId().getGuid());
-		createdMobileTerminalType.setConnectId(testAsset.getAssetId().getGuid());
+		mobileTerminalAssignQuery.setConnectId(testAsset.getId().toString());
+		createdMobileTerminalType.setConnectId(testAsset.getId().toString());
 		
 		final HttpResponse response = Request
 				.Post(getBaseUrl() + "mobileterminal/rest/mobileterminal/assign?comment=comment")

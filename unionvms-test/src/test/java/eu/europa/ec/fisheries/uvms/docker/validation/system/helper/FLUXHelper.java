@@ -11,9 +11,9 @@ copy of the GNU General Public License along with the IFDM Suite. If not, see <h
  */
 package eu.europa.ec.fisheries.uvms.docker.validation.system.helper;
 
+import eu.europa.ec.fisheries.uvms.asset.client.model.Asset;
 import eu.europa.ec.fisheries.uvms.docker.validation.common.AbstractHelper;
 import eu.europa.ec.fisheries.uvms.docker.validation.movement.LatLong;
-import eu.europa.ec.fisheries.wsdl.asset.types.Asset;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import un.unece.uncefact.data.standard.fluxvesselpositionmessage._4.FLUXVesselPositionMessage;
@@ -91,7 +91,7 @@ public class FLUXHelper extends AbstractHelper {
 
         VesselCountryType vesselCountry = new VesselCountryType();
         IDType countryId = new IDType();
-        countryId.setValue(testAsset.getCountryCode());
+        countryId.setValue(testAsset.getFlagStateCode());
         vesselCountry.setID(countryId);
         vesselTransportMeansType.setRegistrationVesselCountry(vesselCountry);
         

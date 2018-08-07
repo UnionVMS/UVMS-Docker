@@ -22,6 +22,7 @@ import eu.europa.ec.fisheries.schema.movement.search.v1.MovementQuery;
 import eu.europa.ec.fisheries.schema.movement.search.v1.SearchKey;
 import eu.europa.ec.fisheries.schema.movement.v1.MovementType;
 import eu.europa.ec.fisheries.schema.movementrules.customrule.v1.*;
+import eu.europa.ec.fisheries.uvms.asset.client.model.Asset;
 import eu.europa.ec.fisheries.uvms.docker.validation.asset.AssetTestHelper;
 import eu.europa.ec.fisheries.uvms.docker.validation.common.AbstractRestServiceTest;
 import eu.europa.ec.fisheries.uvms.docker.validation.movement.LatLong;
@@ -31,7 +32,6 @@ import eu.europa.ec.fisheries.uvms.docker.validation.system.helper.CustomRuleHel
 import eu.europa.ec.fisheries.uvms.docker.validation.system.helper.NAFHelper;
 import eu.europa.ec.fisheries.uvms.reporting.service.dto.rules.AlarmMovement;
 import eu.europa.ec.fisheries.uvms.reporting.service.dto.rules.AlarmMovementList;
-import eu.europa.ec.fisheries.wsdl.asset.types.Asset;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
 import org.apache.http.client.fluent.Request;
@@ -74,7 +74,7 @@ public class AlarmRestIT extends AbstractRestServiceTest {
 	    Asset asset = AssetTestHelper.createTestAsset();
 	    CustomRuleType customRule = CustomRuleBuilder.getBuilder()
 	        .rule(CriteriaType.ASSET, SubCriteriaType.FLAG_STATE, 
-	                ConditionType.EQ, asset.getCountryCode())
+	                ConditionType.EQ, asset.getFlagStateCode())
 	        .setAvailability(AvailabilityType.GLOBAL)
 	        .build();
 	    CustomRuleType createdCustomRule = CustomRuleHelper.createCustomRule(customRule);
@@ -92,7 +92,7 @@ public class AlarmRestIT extends AbstractRestServiceTest {
         query.setPagination(pagination);
         ListCriteria criteria = new ListCriteria();
         criteria.setKey(SearchKey.CONNECT_ID);
-        criteria.setValue(asset.getEventHistory().getEventId());
+        criteria.setValue(asset.getHistoryId().toString());
         query.getMovementSearchCriteria().add(criteria);
         List<MovementType> movements = MovementHelper.getListByQuery(query);
         assertThat(movements.size(), is(1));
