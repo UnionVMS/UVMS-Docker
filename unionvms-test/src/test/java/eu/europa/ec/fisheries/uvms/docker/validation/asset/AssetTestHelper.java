@@ -79,8 +79,6 @@ public class AssetTestHelper extends AbstractHelper {
 		final HttpResponse response = Request.Post(getBaseUrl() + "asset/rest/asset/list")
 				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken())
 				.bodyByteArray(writeValueAsString(query).getBytes()).execute().returnResponse();
-		System.out.println(response);
-		System.out.println(EntityUtils.toString(response.getEntity()));
 		return checkSuccessResponseAndReturnType(response, AssetListResponse.class);
 	}
 
@@ -241,7 +239,7 @@ public class AssetTestHelper extends AbstractHelper {
         asset.setImo("0" + generateARandomStringWithMaxLength(6));
         asset.setMmsi(generateARandomStringWithMaxLength(9));
 
-        asset.setSource("TEST");
+        asset.setSource("INTERNAL");
 
         asset.setMainFishingGearCode("DERMERSAL");
         asset.setHasLicence(true);
