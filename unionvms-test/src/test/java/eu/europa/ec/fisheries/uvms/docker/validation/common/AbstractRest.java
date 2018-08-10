@@ -6,6 +6,8 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+
+import com.fasterxml.jackson.core.type.TypeReference;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
@@ -145,11 +147,14 @@ public abstract class AbstractRest extends Assert {
 			throws IOException {
 		final Map<String, Object> data = checkSuccessResponseReturnDataMap(response);
 		String valueAsString = writeValueAsString(data.get("data"));
+
+		TypeReference<List<String>> typeRef =  new TypeReference<List<String>>(){};
+
 		List<T> dataValue = OBJECT_MAPPER.readValue(valueAsString, OBJECT_MAPPER.getTypeFactory().constructCollectionType(List.class, classCast));
 		assertNotNull(dataValue);
 		return dataValue;
 	}
-	
+
 	protected static <T> List<T> checkSuccessResponseAndReturnList(final HttpResponse response, Class<T> classCast)
             throws IOException {
 	    assertEquals(HttpStatus.SC_OK, response.getStatusLine().getStatusCode());

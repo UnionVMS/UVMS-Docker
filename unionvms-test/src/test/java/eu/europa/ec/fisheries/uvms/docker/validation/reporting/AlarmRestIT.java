@@ -70,55 +70,57 @@ public class AlarmRestIT extends AbstractRestServiceTest {
 	
 	@Test
     public void getTicketForMovementTest() throws Exception {
-	    // Create ticket
-	    Asset asset = AssetTestHelper.createTestAsset();
-	    CustomRuleType customRule = CustomRuleBuilder.getBuilder()
-	        .rule(CriteriaType.ASSET, SubCriteriaType.FLAG_STATE, 
-	                ConditionType.EQ, asset.getFlagStateCode())
-	        .setAvailability(AvailabilityType.GLOBAL)
-	        .build();
-	    CustomRuleType createdCustomRule = CustomRuleHelper.createCustomRule(customRule);
-	    NAFHelper.sendPositionToNAFPlugin(new LatLong(1, 1, new Date()), asset);
+		try {
+			// Create ticket
+			Asset asset = AssetTestHelper.createTestAsset();
+			CustomRuleType customRule = CustomRuleBuilder.getBuilder()
+					.rule(CriteriaType.ASSET, SubCriteriaType.FLAG_STATE,
+							ConditionType.EQ, asset.getFlagStateCode())
+					.setAvailability(AvailabilityType.GLOBAL)
+					.build();
+			CustomRuleType createdCustomRule = CustomRuleHelper.createCustomRule(customRule);
+			NAFHelper.sendPositionToNAFPlugin(new LatLong(1, 1, new Date()), asset);
 
-	    MovementHelper.pollMovementCreated();
-	    // TODO find an alternative to Thread.sleep
-	    Thread.sleep(10000);
-	    
-	    // Get movement guid
-	    MovementQuery query = new MovementQuery();
-	    ListPagination pagination = new ListPagination();
-	    pagination.setListSize(BigInteger.TEN);
-	    pagination.setPage(BigInteger.ONE);
-        query.setPagination(pagination);
-        ListCriteria criteria = new ListCriteria();
-        criteria.setKey(SearchKey.CONNECT_ID);
-        criteria.setValue(asset.getHistoryId().toString());
-        query.getMovementSearchCriteria().add(criteria);
-        List<MovementType> movements = MovementHelper.getListByQuery(query);
-        assertThat(movements.size(), is(1));
-	    	    
-        // Query reporting
-        AlarmMovementList alarmMovementList = new AlarmMovementList();
-        ArrayList<AlarmMovement> alarmMovementListContent = new ArrayList<AlarmMovement>();
-        AlarmMovement alarmMovement = new AlarmMovement();
-        alarmMovement.setMovementId(movements.get(0).getGuid());
-        alarmMovement.setxCoordinate("1");
-        alarmMovement.setyCoordinate("1");
-        alarmMovementListContent.add(alarmMovement);    
-        alarmMovementList.setAlarmMovementList(alarmMovementListContent);
+			MovementHelper.pollMovementCreated();
+			// TODO find an alternative to Thread.sleep
+			Thread.sleep(10000);
 
-        final HttpResponse response = Request.Post(getBaseUrl() + "reporting/rest/alarms")
-                .setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken())
-                .bodyByteArray(writeValueAsString(alarmMovementList).getBytes()).execute().returnResponse();
-        assertEquals(HttpStatus.SC_OK, response.getStatusLine().getStatusCode());
+			// Get movement guid
+			MovementQuery query = new MovementQuery();
+			ListPagination pagination = new ListPagination();
+			pagination.setListSize(BigInteger.TEN);
+			pagination.setPage(BigInteger.ONE);
+			query.setPagination(pagination);
+			ListCriteria criteria = new ListCriteria();
+			criteria.setKey(SearchKey.CONNECT_ID);
+			criteria.setValue(asset.getHistoryId().toString());
+			query.getMovementSearchCriteria().add(criteria);
+			List<MovementType> movements = MovementHelper.getListByQuery(query);
+			assertThat(movements.size(), is(1));
 
-        ObjectNode value = new ObjectMapper().readValue(response.getEntity().getContent(), ObjectNode.class);
-        JsonNode data = value.get("data");
-        JsonNode alarms = data.get("alarms");
-        JsonNode features = alarms.get("features");
-        assertThat(features.size(), is(1));
-        
-        CustomRuleHelper.removeCustomRule(createdCustomRule.getGuid());
+			// Query reporting
+			AlarmMovementList alarmMovementList = new AlarmMovementList();
+			ArrayList<AlarmMovement> alarmMovementListContent = new ArrayList<AlarmMovement>();
+			AlarmMovement alarmMovement = new AlarmMovement();
+			alarmMovement.setMovementId(movements.get(0).getGuid());
+			alarmMovement.setxCoordinate("1");
+			alarmMovement.setyCoordinate("1");
+			alarmMovementListContent.add(alarmMovement);
+			alarmMovementList.setAlarmMovementList(alarmMovementListContent);
+
+			final HttpResponse response = Request.Post(getBaseUrl() + "reporting/rest/alarms")
+					.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken())
+					.bodyByteArray(writeValueAsString(alarmMovementList).getBytes()).execute().returnResponse();
+			assertEquals(HttpStatus.SC_OK, response.getStatusLine().getStatusCode());
+
+			ObjectNode value = new ObjectMapper().readValue(response.getEntity().getContent(), ObjectNode.class);
+			JsonNode data = value.get("data");
+			JsonNode alarms = data.get("alarms");
+			JsonNode features = alarms.get("features");
+			assertThat(features.size(), is(1));
+		} finally {
+			CustomRuleHelper.removeCustomRulesByDefaultUser();
+		}
     }
 
 }
