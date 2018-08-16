@@ -25,6 +25,8 @@ import eu.europa.ec.fisheries.uvms.asset.client.model.AssetGroup;
 import eu.europa.ec.fisheries.uvms.asset.client.model.AssetGroupField;
 import eu.europa.ec.fisheries.uvms.asset.client.model.AssetListResponse;
 import eu.europa.ec.fisheries.uvms.asset.client.model.AssetQuery;
+import eu.europa.ec.fisheries.uvms.asset.client.model.ContactInfo;
+import eu.europa.ec.fisheries.uvms.asset.client.model.Note;
 import eu.europa.ec.fisheries.uvms.asset.model.constants.AuditObjectTypeEnum;
 import eu.europa.ec.fisheries.uvms.asset.model.constants.AuditOperationEnum;
 import eu.europa.ec.fisheries.uvms.commons.date.DateUtils;
@@ -89,10 +91,6 @@ public class AssetTestHelper extends AbstractHelper {
 		return checkSuccessResponseAndReturnType(response, Integer.class);
 	}
 
-	// ************************************************
-	//  AssetHistoryResource
-	// ************************************************
-		
 	public static List<Asset> getAssetHistoryFromAssetGuid(UUID assetId) throws ClientProtocolException, IOException {
 		final HttpResponse response = Request.Get(getBaseUrl() + "asset/rest/asset/history/asset/" + assetId)
 				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken()).execute()
@@ -114,6 +112,20 @@ public class AssetTestHelper extends AbstractHelper {
 				.returnResponse();
 		return checkSuccessResponseAndReturnType(response, Asset.class);
 	}
+	
+	public static ContactInfo createContactInfoForAsset(Asset asset, ContactInfo contact) throws ClientProtocolException, JsonProcessingException, IOException {
+	    HttpResponse response = Request.Post(getBaseUrl() + "asset/rest/asset/" + asset.getId() + "/contacts")
+                .setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken())
+                .bodyByteArray(writeValueAsString(contact).getBytes()).execute().returnResponse();
+        return checkSuccessResponseAndReturnType(response, ContactInfo.class);
+	}
+	
+	public static Note createNoteForAsset(Asset asset, Note contact) throws ClientProtocolException, JsonProcessingException, IOException {
+        HttpResponse response = Request.Post(getBaseUrl() + "asset/rest/asset/" + asset.getId() + "/notes")
+                .setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken())
+                .bodyByteArray(writeValueAsString(contact).getBytes()).execute().returnResponse();
+        return checkSuccessResponseAndReturnType(response, Note.class);
+    }
 
 		// ************************************************
 	//  AssetGroupResource

@@ -13,6 +13,8 @@ copy of the GNU General Public License along with the IFDM Suite. If not, see <h
 */
 package eu.europa.ec.fisheries.uvms.docker.validation.asset;
 
+import java.time.LocalDateTime;
+import java.time.ZoneOffset;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
@@ -27,6 +29,8 @@ import com.fasterxml.jackson.databind.ser.std.ArraySerializerBase;
 import eu.europa.ec.fisheries.uvms.asset.client.model.Asset;
 import eu.europa.ec.fisheries.uvms.asset.client.model.AssetListResponse;
 import eu.europa.ec.fisheries.uvms.asset.client.model.AssetQuery;
+import eu.europa.ec.fisheries.uvms.asset.client.model.ContactInfo;
+import eu.europa.ec.fisheries.uvms.asset.client.model.Note;
 import eu.europa.ec.fisheries.uvms.asset.model.constants.AuditOperationEnum;
 import eu.europa.ec.fisheries.uvms.commons.date.DateUtils;
 import eu.europa.ec.fisheries.uvms.docker.validation.common.AbstractRestServiceTest;
@@ -331,5 +335,33 @@ public class AssetRestIT extends AbstractRestServiceTest {
 		assertEquals(2, assets.size());
 		assertTrue(assets.stream().anyMatch(a -> a.getId().equals(asset1.getId()) && a.getName().equals(asset1.getName())));	
 		assertTrue(assets.stream().anyMatch(a -> a.getId().equals(createdAsset2.getId()) && a.getName().equals(asset2.getName())));
+	}
+	
+	@Test
+	public void addContactToAsset() throws Exception {
+	    Asset asset = AssetTestHelper.createTestAsset();
+	    
+	    ContactInfo contact = new ContactInfo();
+	    contact.setName("Test contact");
+	    contact.setEmail("test@mail.com");
+	    contact.setPhoneNumber("123-456789");
+	    ContactInfo createdContact = AssetTestHelper.createContactInfoForAsset(asset, contact);
+
+	    assertTrue(createdContact.getId() != null);
+	}
+	
+	@Test
+	public void addNoteToAsset() throws Exception {
+	    Asset asset = AssetTestHelper.createTestAsset();
+
+	    Note note = new Note();
+	    note.setActivityCode("1");
+	    note.setDate(LocalDateTime.now(ZoneOffset.UTC));
+	    note.setNotes("apa");
+
+	    
+	    Note createdNote = AssetTestHelper.createNoteForAsset(asset, note);
+	    
+	    assertTrue(createdNote.getId() != null);
 	}
 }
