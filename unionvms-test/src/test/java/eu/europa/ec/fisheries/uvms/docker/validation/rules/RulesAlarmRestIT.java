@@ -13,18 +13,29 @@ copy of the GNU General Public License along with the IFDM Suite. If not, see <h
 */
 package eu.europa.ec.fisheries.uvms.docker.validation.rules;
 
+import java.time.ZoneOffset;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
+import org.apache.http.HttpResponse;
+import org.apache.http.client.fluent.Request;
+import org.hamcrest.CoreMatchers;
+import org.junit.Ignore;
+import org.junit.Test;
 import eu.europa.ec.fisheries.schema.movementrules.alarm.v1.AlarmReportType;
+import eu.europa.ec.fisheries.schema.movementrules.module.v1.GetAlarmListByQueryResponse;
 import eu.europa.ec.fisheries.schema.movementrules.search.v1.AlarmListCriteria;
 import eu.europa.ec.fisheries.schema.movementrules.search.v1.AlarmQuery;
 import eu.europa.ec.fisheries.schema.movementrules.search.v1.AlarmSearchKey;
 import eu.europa.ec.fisheries.schema.movementrules.search.v1.ListPagination;
+import eu.europa.ec.fisheries.uvms.asset.client.model.Asset;
+import eu.europa.ec.fisheries.uvms.docker.validation.asset.AssetTestHelper;
 import eu.europa.ec.fisheries.uvms.docker.validation.common.AbstractRestServiceTest;
-import org.apache.http.HttpResponse;
-import org.apache.http.client.fluent.Request;
-import org.junit.Test;
-
-import java.util.ArrayList;
-import java.util.Map;
+import eu.europa.ec.fisheries.uvms.docker.validation.movement.LatLong;
+import eu.europa.ec.fisheries.uvms.docker.validation.system.helper.NAFHelper;
 
 /**
  * The Class RulesAlarmRestIT.
@@ -116,4 +127,34 @@ public class RulesAlarmRestIT extends AbstractRestServiceTest {
 		checkErrorResponse(response);
 	}
 	
+	@Test
+	public void getAlarmReportVerifyRawMovementDataTest() throws Exception {
+        ZonedDateTime timestamp = ZonedDateTime.now(ZoneOffset.UTC);
+
+        Asset asset = AssetTestHelper.createBasicAsset();
+        NAFHelper.sendPositionToNAFPlugin(new LatLong(56d, 11d, new Date()), asset);
+
+        AlarmQuery query = new AlarmQuery();
+        ListPagination pagination = new ListPagination();
+        pagination.setListSize(100);
+        pagination.setPage(1);
+        query.setPagination(pagination);
+        query.setDynamic(true);
+        AlarmListCriteria criteria = new AlarmListCriteria();
+        criteria.setKey(AlarmSearchKey.FROM_DATE);
+        criteria.setValue(timestamp.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss Z")));
+        query.getAlarmSearchCriteria().add(criteria);
+
+        HttpResponse response = Request.Post(getBaseUrl() + "movement-rules/rest/alarms/list")
+                .setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken())
+                .bodyByteArray(writeValueAsString(query).getBytes()).execute().returnResponse();
+
+        GetAlarmListByQueryResponse alarmResponse = checkSuccessResponseReturnObject(response,GetAlarmListByQueryResponse.class);
+        assertThat(alarmResponse, CoreMatchers.is(CoreMatchers.notNullValue()));
+        List<AlarmReportType> alarms = alarmResponse.getAlarms();
+        assertThat(alarms.size(), CoreMatchers.is(1));
+        AlarmReportType alarm = alarms.get(0);
+        assertThat(alarm.getRawMovement(), CoreMatchers.is(CoreMatchers.notNullValue()));
+        assertThat(alarm.getRawMovement().getAssetName(), CoreMatchers.is(asset.getName()));
+	}
 }
