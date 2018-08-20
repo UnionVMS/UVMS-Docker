@@ -32,7 +32,7 @@
 		<dependency>
 			<groupId>org.apache.activemq</groupId>
 			<artifactId>activemq-client</artifactId>
-			<version>5.15.2</version>			
+			<version>5.15.5</version>
 		</dependency>
 		<dependency>
 			<artifactId>mobileterminal-model</artifactId>
@@ -43,6 +43,12 @@
 			<groupId>eu.europa.ec.fisheries.uvms.exchange</groupId>
 			<artifactId>exchange-model</artifactId>
 			<version>4.0.19</version>
+			<exclusions>
+				<exclusion>
+					<artifactId>uvms-commons-date</artifactId>
+					<groupId>eu.europa.ec.fisheries.uvms.commons</groupId>
+				</exclusion>
+			</exclusions>
 		</dependency>		
 		<dependency>
 			<groupId>eu.europa.ec.fisheries.uvms.asset</groupId>
@@ -63,7 +69,18 @@
 			<groupId>eu.europa.ec.fisheries.uvms.reporting</groupId>
 			<artifactId>service</artifactId>
 			<version>${unionvms.project.reporting.module}</version>
-		</dependency>		
+			<exclusions>
+				<exclusion>
+					<artifactId>uvms-commons-date</artifactId>
+					<groupId>eu.europa.ec.fisheries.uvms.commons</groupId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		<dependency>
+			<artifactId>uvms-commons-date</artifactId>
+			<groupId>eu.europa.ec.fisheries.uvms.commons</groupId>
+			<version>3.0.25</version>
+		</dependency>
 		<dependency>
 			<groupId>eu.europa.ec.fisheries.uvms.config</groupId>
 			<artifactId>config-model</artifactId>
