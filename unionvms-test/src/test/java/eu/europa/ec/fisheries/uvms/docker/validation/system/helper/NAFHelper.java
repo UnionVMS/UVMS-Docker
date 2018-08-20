@@ -11,18 +11,19 @@ copy of the GNU General Public License along with the IFDM Suite. If not, see <h
  */
 package eu.europa.ec.fisheries.uvms.docker.validation.system.helper;
 
-import eu.europa.ec.fisheries.uvms.docker.validation.common.AbstractHelper;
-import eu.europa.ec.fisheries.uvms.docker.validation.movement.LatLong;
-import eu.europa.ec.fisheries.wsdl.asset.types.Asset;
-import org.apache.http.HttpResponse;
-import org.apache.http.client.ClientProtocolException;
-import org.apache.http.client.fluent.Request;
-
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
+import java.time.ZoneId;
+import java.util.TimeZone;
+import org.apache.http.HttpResponse;
+import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.fluent.Request;
+import eu.europa.ec.fisheries.uvms.docker.validation.common.AbstractHelper;
+import eu.europa.ec.fisheries.uvms.docker.validation.movement.LatLong;
+import eu.europa.ec.fisheries.wsdl.asset.types.Asset;
 
 public class NAFHelper extends AbstractHelper {
 
@@ -36,7 +37,9 @@ public class NAFHelper extends AbstractHelper {
     
     private static String convertToNafString(LatLong position, Asset asset) throws UnsupportedEncodingException {
         SimpleDateFormat dateFormatter = new SimpleDateFormat("yyyyMMdd");
+        dateFormatter.setTimeZone(TimeZone.getTimeZone(ZoneId.of("UTC")));
         SimpleDateFormat timeFormatter = new SimpleDateFormat("HHmm");
+        timeFormatter.setTimeZone(TimeZone.getTimeZone(ZoneId.of("UTC")));
         
         DecimalFormat decimalformatter = new DecimalFormat("#00.000");
         
