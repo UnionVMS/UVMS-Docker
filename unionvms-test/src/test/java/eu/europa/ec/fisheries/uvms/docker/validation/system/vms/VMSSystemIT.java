@@ -14,6 +14,7 @@ package eu.europa.ec.fisheries.uvms.docker.validation.system.vms;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.notNullValue;
 import java.time.LocalDateTime;
+import java.time.ZoneOffset;
 import java.util.Calendar;
 import java.util.Date;
 import javax.jms.TextMessage;
@@ -50,7 +51,7 @@ public class VMSSystemIT extends AbstractRestServiceTest {
     
     @Test
     public void sendFlagStateToFLUXDNKTest() throws Exception {
-        LocalDateTime timestamp = LocalDateTime.now();
+        LocalDateTime timestamp = LocalDateTime.now(ZoneOffset.UTC);
 
 
         Asset asset = AssetTestHelper.createTestAsset();
@@ -91,7 +92,7 @@ public class VMSSystemIT extends AbstractRestServiceTest {
     
     @Test
     public void sendFlagStateAndAreaDNKToFLUXDNKTest() throws Exception {
-        LocalDateTime timestamp = LocalDateTime.now();
+        LocalDateTime timestamp = LocalDateTime.now(ZoneOffset.UTC);
 
         Asset asset = AssetTestHelper.createTestAsset();
         MobileTerminalType mobileTerminalType = MobileTerminalTestHelper.createMobileTerminalType();
@@ -133,7 +134,7 @@ public class VMSSystemIT extends AbstractRestServiceTest {
     
     @Test
     public void sendFlagStateToFLUXDNKWithRuleIntervalTest() throws Exception {
-        LocalDateTime timestamp = LocalDateTime.now();
+        LocalDateTime timestamp = LocalDateTime.now(ZoneOffset.UTC);
         
         Asset asset = AssetTestHelper.createTestAsset();
         MobileTerminalType mobileTerminalType = MobileTerminalTestHelper.createMobileTerminalType();
@@ -182,7 +183,7 @@ public class VMSSystemIT extends AbstractRestServiceTest {
     
     @Test
     public void sendFlagStateToFLUXDNKWithPastValidRuleIntervalTest() throws Exception {
-        LocalDateTime timestamp = LocalDateTime.now();
+        LocalDateTime timestamp = LocalDateTime.now(ZoneOffset.UTC);
         
         Asset asset = AssetTestHelper.createTestAsset();
         MobileTerminalType mobileTerminalType = MobileTerminalTestHelper.createMobileTerminalType();
@@ -232,7 +233,7 @@ public class VMSSystemIT extends AbstractRestServiceTest {
     
     @Test
     public void sendFlagStateToFLUXDNKWithFutureValidRuleIntervalTest() throws Exception {
-        LocalDateTime timestamp = LocalDateTime.now();
+        LocalDateTime timestamp = LocalDateTime.now(ZoneOffset.UTC);
 
         Asset asset = AssetTestHelper.createTestAsset();
         MobileTerminalType mobileTerminalType = MobileTerminalTestHelper.createMobileTerminalType();

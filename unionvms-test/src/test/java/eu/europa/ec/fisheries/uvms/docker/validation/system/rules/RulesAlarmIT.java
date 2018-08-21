@@ -15,6 +15,7 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.notNullValue;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
@@ -86,7 +87,7 @@ public class RulesAlarmIT extends AbstractRestServiceTest {
     
     @Test
     public void sendEmailIfReportedSpeedIsGreaterThan10knotsTest() throws Exception {
-        LocalDateTime timestamp = LocalDateTime.now();
+        LocalDateTime timestamp = LocalDateTime.now(ZoneOffset.UTC);
         
         Asset asset = AssetTestHelper.createTestAsset();
         
@@ -117,7 +118,7 @@ public class RulesAlarmIT extends AbstractRestServiceTest {
     
     @Test
     public void sendEmailIfReportedSpeedIslessThan10knotsTest() throws Exception {
-        LocalDateTime timestamp = LocalDateTime.now();;
+        LocalDateTime timestamp = LocalDateTime.now(ZoneOffset.UTC);
         
         Asset asset = AssetTestHelper.createTestAsset();
         
@@ -148,7 +149,7 @@ public class RulesAlarmIT extends AbstractRestServiceTest {
 
     @Test
     public void doNotTriggerRuleIfReportedSpeedIsLessThan10knotsTest() throws Exception {
-        LocalDateTime timestamp = LocalDateTime.now();;
+        LocalDateTime timestamp = LocalDateTime.now(ZoneOffset.UTC);
         
         Asset asset = AssetTestHelper.createTestAsset();
         
@@ -190,7 +191,7 @@ public class RulesAlarmIT extends AbstractRestServiceTest {
     
     @Test
     public void doNotTriggerRuleIfReportedSpeedIsGreaterThan10knotsTest() throws Exception {
-        LocalDateTime timestamp = LocalDateTime.now();;
+        LocalDateTime timestamp = LocalDateTime.now(ZoneOffset.UTC);
         
         Asset asset = AssetTestHelper.createTestAsset();
         
@@ -232,7 +233,7 @@ public class RulesAlarmIT extends AbstractRestServiceTest {
     
     @Test
     public void sendEmailIfReportedSpeedIsGreaterThanOrEqual10knotsTest() throws Exception {
-        LocalDateTime timestamp = LocalDateTime.now();;
+        LocalDateTime timestamp = LocalDateTime.now(ZoneOffset.UTC);
         
         Asset asset = AssetTestHelper.createTestAsset();
         
@@ -263,7 +264,7 @@ public class RulesAlarmIT extends AbstractRestServiceTest {
     
     @Test
     public void sendEmailIfReportedSpeedIsLessThanOrEqual10knotsTest() throws Exception {
-        LocalDateTime timestamp = LocalDateTime.now();;
+        LocalDateTime timestamp = LocalDateTime.now(ZoneOffset.UTC);
         
         Asset asset = AssetTestHelper.createTestAsset();
         
@@ -294,7 +295,7 @@ public class RulesAlarmIT extends AbstractRestServiceTest {
     
     @Test
     public void sendEmailIfReportedSpeedIsGreaterThan10knotsAndAreaIsDNKTest() throws Exception {
-        LocalDateTime timestamp = LocalDateTime.now();;
+        LocalDateTime timestamp = LocalDateTime.now(ZoneOffset.UTC);
         
         Asset asset = AssetTestHelper.createTestAsset();
         
@@ -327,7 +328,7 @@ public class RulesAlarmIT extends AbstractRestServiceTest {
     
     @Test
     public void sendEmailIfReportedSpeedIsLessThan10knotsAndAreaIsDNKTest() throws Exception {
-        LocalDateTime timestamp = LocalDateTime.now();;
+        LocalDateTime timestamp = LocalDateTime.now(ZoneOffset.UTC);
         
         Asset asset = AssetTestHelper.createTestAsset();
         
@@ -360,7 +361,7 @@ public class RulesAlarmIT extends AbstractRestServiceTest {
     
     @Test
     public void sendEmailIfAreaCodeIsDEUTest() throws Exception {
-        LocalDateTime timestamp = LocalDateTime.now();;
+        LocalDateTime timestamp = LocalDateTime.now(ZoneOffset.UTC);
         
         Asset asset = AssetTestHelper.createTestAsset();
         
@@ -390,7 +391,7 @@ public class RulesAlarmIT extends AbstractRestServiceTest {
     
     @Test
     public void sendEmailIfAssetIRCSMatchesTest() throws Exception {
-        LocalDateTime timestamp = LocalDateTime.now();;
+        LocalDateTime timestamp = LocalDateTime.now(ZoneOffset.UTC);
         
         Asset asset = AssetTestHelper.createTestAsset();
         
@@ -420,7 +421,7 @@ public class RulesAlarmIT extends AbstractRestServiceTest {
     
     @Test
     public void sendEmailIfIrcsDisjunctionMatchesTest() throws Exception {
-        LocalDateTime timestamp = LocalDateTime.now();;
+        LocalDateTime timestamp = LocalDateTime.now(ZoneOffset.UTC);
 
         Asset asset1 = AssetTestHelper.createTestAsset();
         Asset asset2 = AssetTestHelper.createTestAsset();
@@ -449,7 +450,7 @@ public class RulesAlarmIT extends AbstractRestServiceTest {
         
         CustomRuleHelper.assertRuleTriggered(createdCustomRule, timestamp);
         
-        timestamp = LocalDateTime.now();
+        timestamp = LocalDateTime.now(ZoneOffset.UTC);
         
         LatLong position2 = new LatLong(2d, 2d, new Date());
         FLUXHelper.sendPositionToFluxPlugin(asset2, position2);
@@ -466,7 +467,7 @@ public class RulesAlarmIT extends AbstractRestServiceTest {
     
     @Test
     public void sendEmailIfIrcsCfrConjunctionMatchesTest() throws Exception {
-        LocalDateTime timestamp = LocalDateTime.now();;
+        LocalDateTime timestamp = LocalDateTime.now(ZoneOffset.UTC);
 
         Asset asset = AssetTestHelper.createTestAsset();
         
@@ -497,7 +498,7 @@ public class RulesAlarmIT extends AbstractRestServiceTest {
     
     @Test
     public void doNotTriggerRuleIfIrcsCfrConjunctionNotMatchesTest() throws Exception {
-        LocalDateTime timestamp = LocalDateTime.now();;
+        LocalDateTime timestamp = LocalDateTime.now(ZoneOffset.UTC);
         
         Asset asset = AssetTestHelper.createTestAsset();
         
@@ -538,7 +539,7 @@ public class RulesAlarmIT extends AbstractRestServiceTest {
     
     @Test
     public void sendEmailIfAssetCFRMatchesTest() throws Exception {
-        LocalDateTime timestamp = LocalDateTime.now();;
+        LocalDateTime timestamp = LocalDateTime.now(ZoneOffset.UTC);
         
         Asset asset = AssetTestHelper.createTestAsset();
         
@@ -568,7 +569,7 @@ public class RulesAlarmIT extends AbstractRestServiceTest {
     
     @Test
     public void sendEmailIfAssetNameMatchesTest() throws Exception {
-        LocalDateTime timestamp = LocalDateTime.now();;
+        LocalDateTime timestamp = LocalDateTime.now(ZoneOffset.UTC);
         
         Asset asset = AssetTestHelper.createTestAsset();
         
@@ -598,7 +599,7 @@ public class RulesAlarmIT extends AbstractRestServiceTest {
     
     @Test
     public void sendEmailIfLatitudeIsGreaterThan10Test() throws Exception {
-        LocalDateTime timestamp = LocalDateTime.now();;
+        LocalDateTime timestamp = LocalDateTime.now(ZoneOffset.UTC);
 
         Asset asset = AssetTestHelper.createTestAsset();
         
@@ -627,7 +628,7 @@ public class RulesAlarmIT extends AbstractRestServiceTest {
     
     @Test
     public void sendEmailIfLongitudeIsGreaterThan10Test() throws Exception {
-        LocalDateTime timestamp = LocalDateTime.now();;
+        LocalDateTime timestamp = LocalDateTime.now(ZoneOffset.UTC);
 
         Asset asset = AssetTestHelper.createTestAsset();
         
@@ -656,7 +657,7 @@ public class RulesAlarmIT extends AbstractRestServiceTest {
     
     @Test
     public void sendEmailIfPositionReportTimeIsGreaterOrEqualTest() throws Exception {
-        ZonedDateTime timestamp = ZonedDateTime.now(ZoneId.of("UTC"));
+        ZonedDateTime timestamp = ZonedDateTime.now(ZoneOffset.UTC);
 
         Asset asset = AssetTestHelper.createTestAsset();
         
