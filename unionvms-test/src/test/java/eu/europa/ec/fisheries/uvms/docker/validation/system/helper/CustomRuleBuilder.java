@@ -20,7 +20,7 @@ import java.util.TimeZone;
 
 public class CustomRuleBuilder {
 
-    protected static final String DEFAULT_USER = "vms_admin_com";
+    protected static final String DEFAULT_USER = "vms_admin_se";
 
     private int segmentOrder = 0;
     private int actionOrder = 0;
