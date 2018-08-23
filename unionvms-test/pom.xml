@@ -257,6 +257,21 @@
 				<version>1.8</version>
 				<executions>
 					<execution>
+						<id>downloadRegressionSuite</id>
+						<phase>test</phase>
+						<configuration>
+							<tasks>
+								<!-- Get the regression-suite-selenium front-end -->
+								<get src="https://github.com/UnionVMS/UVMS-SeleniumTests/raw/swe-dev/UVMS-SeleniumRegressionTests.zip" dest="target/UVMS-SeleniumRegressionTests.zip" verbose="true" usetimestamp="true" />
+								<unzip src="target/UVMS-SeleniumRegressionTests.zip" dest="target/"/>
+								<move file="target/DockerUnionVMSparameters.py" tofile="target/UnionVMSparameters.py" />
+							</tasks>
+						</configuration>
+						<goals>
+							<goal>run</goal>
+						</goals>
+					</execution>
+					<execution>
 						<id>downloadMonitoringMetrics</id>
 						<phase>post-integration-test</phase>
 						<configuration>
