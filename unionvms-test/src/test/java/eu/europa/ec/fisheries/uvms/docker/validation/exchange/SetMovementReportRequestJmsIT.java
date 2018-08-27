@@ -17,6 +17,7 @@ import eu.europa.ec.fisheries.schema.exchange.movement.asset.v1.AssetIdType;
 import eu.europa.ec.fisheries.schema.exchange.movement.asset.v1.AssetType;
 import eu.europa.ec.fisheries.schema.exchange.movement.mobileterminal.v1.MobileTerminalId;
 import eu.europa.ec.fisheries.schema.exchange.movement.v1.MovementActivityType;
+import eu.europa.ec.fisheries.schema.exchange.movement.v1.MovementActivityTypeType;
 import eu.europa.ec.fisheries.schema.exchange.movement.v1.MovementBaseType;
 import eu.europa.ec.fisheries.schema.exchange.movement.v1.MovementComChannelType;
 import eu.europa.ec.fisheries.schema.exchange.movement.v1.MovementPoint;
@@ -127,31 +128,15 @@ public class SetMovementReportRequestJmsIT extends AbstractRestServiceTest {
 		MovementBaseType movementBaseType = new MovementBaseType();
 		movementType.setMovement(movementBaseType);
 		MovementActivityType movementActivityType = new MovementActivityType();
+		movementActivityType.setMessageType(MovementActivityTypeType.CAN);
 		movementBaseType.setActivity(movementActivityType);
 		AssetId assetId = new AssetId();
 		movementBaseType.setAssetId(assetId);
 		assetId.setAssetType(AssetType.VESSEL);
 		AssetIdList assetIdList = new AssetIdList();
-		{
-			assetIdList.setIdType(AssetIdType.GUID);
-			assetIdList.setValue(testAsset.getId().toString());
-			assetId.getAssetIdList().add(assetIdList);
-		}
-		{
-			assetIdList.setIdType(AssetIdType.IRCS);
-			assetIdList.setValue(testAsset.getIrcs());
-			assetId.getAssetIdList().add(assetIdList);
-		}
-		{
-			assetIdList.setIdType(AssetIdType.CFR);
-			assetIdList.setValue(testAsset.getCfr());
-			assetId.getAssetIdList().add(assetIdList);
-		}
-		{
-			assetIdList.setIdType(AssetIdType.MMSI);
-			assetIdList.setValue(testAsset.getMmsi());
-			assetId.getAssetIdList().add(assetIdList);
-		}
+		assetIdList.setIdType(AssetIdType.CFR);
+		assetIdList.setValue(testAsset.getCfr());
+		assetId.getAssetIdList().add(assetIdList);
 
 		movementBaseType.setAssetName(testAsset.getName());
 		movementBaseType.setComChannelType(MovementComChannelType.NAF);

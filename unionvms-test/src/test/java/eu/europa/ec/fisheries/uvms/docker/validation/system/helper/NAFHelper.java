@@ -24,7 +24,6 @@ import java.net.URLEncoder;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.time.ZoneId;
-import java.time.ZoneOffset;
 import java.util.TimeZone;
 
 public class NAFHelper extends AbstractHelper {
@@ -42,7 +41,7 @@ public class NAFHelper extends AbstractHelper {
         dateFormatter.setTimeZone(TimeZone.getTimeZone(ZoneId.of("UTC")));
         SimpleDateFormat timeFormatter = new SimpleDateFormat("HHmm");
         timeFormatter.setTimeZone(TimeZone.getTimeZone(ZoneId.of("UTC")));
-        
+
         DecimalFormat decimalformatter = new DecimalFormat("#00.000");
         
         StringBuilder str = new StringBuilder();

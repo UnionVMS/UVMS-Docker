@@ -119,7 +119,7 @@ public class RulesAlarmIT extends AbstractRestServiceTest {
     @Test
     public void sendEmailIfReportedSpeedIslessThan10knotsTest() throws Exception {
         LocalDateTime timestamp = LocalDateTime.now(ZoneOffset.UTC);
-
+        
         Asset asset = AssetTestHelper.createTestAsset();
         
         String email = System.currentTimeMillis() + "@mail.com";
@@ -150,7 +150,7 @@ public class RulesAlarmIT extends AbstractRestServiceTest {
     @Test
     public void doNotTriggerRuleIfReportedSpeedIsLessThan10knotsTest() throws Exception {
         LocalDateTime timestamp = LocalDateTime.now(ZoneOffset.UTC);
-
+        
         Asset asset = AssetTestHelper.createTestAsset();
         
         CustomRuleType speedRule = CustomRuleBuilder.getBuilder()
@@ -192,7 +192,7 @@ public class RulesAlarmIT extends AbstractRestServiceTest {
     @Test
     public void doNotTriggerRuleIfReportedSpeedIsGreaterThan10knotsTest() throws Exception {
         LocalDateTime timestamp = LocalDateTime.now(ZoneOffset.UTC);
-
+        
         Asset asset = AssetTestHelper.createTestAsset();
         
         CustomRuleType speedRule = CustomRuleBuilder.getBuilder()
@@ -265,7 +265,7 @@ public class RulesAlarmIT extends AbstractRestServiceTest {
     @Test
     public void sendEmailIfReportedSpeedIsLessThanOrEqual10knotsTest() throws Exception {
         LocalDateTime timestamp = LocalDateTime.now(ZoneOffset.UTC);
-
+        
         Asset asset = AssetTestHelper.createTestAsset();
         
         String email = System.currentTimeMillis() + "@mail.com";
@@ -329,7 +329,7 @@ public class RulesAlarmIT extends AbstractRestServiceTest {
     @Test
     public void sendEmailIfReportedSpeedIsLessThan10knotsAndAreaIsDNKTest() throws Exception {
         LocalDateTime timestamp = LocalDateTime.now(ZoneOffset.UTC);
-
+        
         Asset asset = AssetTestHelper.createTestAsset();
         
         String email = System.currentTimeMillis() + "@mail.com";
@@ -449,9 +449,9 @@ public class RulesAlarmIT extends AbstractRestServiceTest {
         assertThat(setCommandRequest.getCommand().getFwdRule(), is(createdCustomRule.getName()));
         
         CustomRuleHelper.assertRuleTriggered(createdCustomRule, timestamp);
-
-         timestamp = LocalDateTime.now(ZoneOffset.UTC);
-
+        
+        timestamp = LocalDateTime.now(ZoneOffset.UTC);
+        
         LatLong position2 = new LatLong(2d, 2d, new Date());
         FLUXHelper.sendPositionToFluxPlugin(asset2, position2);
         
@@ -499,7 +499,7 @@ public class RulesAlarmIT extends AbstractRestServiceTest {
     @Test
     public void doNotTriggerRuleIfIrcsCfrConjunctionNotMatchesTest() throws Exception {
         LocalDateTime timestamp = LocalDateTime.now(ZoneOffset.UTC);
-
+        
         Asset asset = AssetTestHelper.createTestAsset();
         
         CustomRuleType customRule = CustomRuleBuilder.getBuilder()
@@ -540,7 +540,7 @@ public class RulesAlarmIT extends AbstractRestServiceTest {
     @Test
     public void sendEmailIfAssetCFRMatchesTest() throws Exception {
         LocalDateTime timestamp = LocalDateTime.now(ZoneOffset.UTC);
-
+        
         Asset asset = AssetTestHelper.createTestAsset();
         
         String email = System.currentTimeMillis() + "@mail.com";
@@ -570,7 +570,7 @@ public class RulesAlarmIT extends AbstractRestServiceTest {
     @Test
     public void sendEmailIfAssetNameMatchesTest() throws Exception {
         LocalDateTime timestamp = LocalDateTime.now(ZoneOffset.UTC);
-
+        
         Asset asset = AssetTestHelper.createTestAsset();
         
         String email = System.currentTimeMillis() + "@mail.com";

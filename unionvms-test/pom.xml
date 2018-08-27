@@ -5,11 +5,11 @@
 	<parent>
 		<groupId>eu.europa.ec.fisheries.uvms.docker</groupId>
 		<artifactId>uvms-docker</artifactId>
-		<version>3.25.1.w12-SNAPSHOT</version>
+		<version>3.25.4.w12-SNAPSHOT</version>
 		<relativePath>../pom.xml</relativePath>
 	</parent>
 	<groupId>eu.europa.ec.fisheries.uvms.docker</groupId>
-	<version>3.25.1.w12-SNAPSHOT</version>
+	<version>3.25.4.w12-SNAPSHOT</version>
 	<artifactId>uvms-unionvms-test</artifactId>
 	<packaging>jar</packaging>
 	<name>uvms-unionvms-test</name>
@@ -42,13 +42,7 @@
 		<dependency>
 			<groupId>eu.europa.ec.fisheries.uvms.exchange</groupId>
 			<artifactId>exchange-model</artifactId>
-			<version>4.0.19</version>
-			<exclusions>
-				<exclusion>
-					<artifactId>uvms-commons-date</artifactId>
-					<groupId>eu.europa.ec.fisheries.uvms.commons</groupId>
-				</exclusion>
-			</exclusions>
+			<version>4.0.18</version>
 		</dependency>		
 		<dependency>
 			<groupId>eu.europa.ec.fisheries.uvms.asset</groupId>
@@ -69,18 +63,7 @@
 			<groupId>eu.europa.ec.fisheries.uvms.reporting</groupId>
 			<artifactId>service</artifactId>
 			<version>${unionvms.project.reporting.module}</version>
-			<exclusions>
-				<exclusion>
-					<artifactId>uvms-commons-date</artifactId>
-					<groupId>eu.europa.ec.fisheries.uvms.commons</groupId>
-				</exclusion>
-			</exclusions>
-		</dependency>
-		<dependency>
-			<artifactId>uvms-commons-date</artifactId>
-			<groupId>eu.europa.ec.fisheries.uvms.commons</groupId>
-			<version>3.0.25</version>
-		</dependency>
+		</dependency>		
 		<dependency>
 			<groupId>eu.europa.ec.fisheries.uvms.config</groupId>
 			<artifactId>config-model</artifactId>
@@ -114,7 +97,7 @@
 		<dependency>
 			<groupId>com.fasterxml.jackson.core</groupId>
 			<artifactId>jackson-databind</artifactId>
-			<version>2.9.4</version>			
+			<version>2.9.4</version>
 		</dependency>
 		<dependency>
 			<groupId>com.fasterxml.jackson.module</groupId>
@@ -124,7 +107,7 @@
 		<dependency>
 			<groupId>com.fasterxml.jackson.core</groupId>
 			<artifactId>jackson-annotations</artifactId>
-			<version>2.9.4</version>			
+			<version>2.9.4</version>
 		</dependency>
 		<dependency>
             <groupId>com.fasterxml.jackson.datatype</groupId>
@@ -283,6 +266,21 @@
 				<artifactId>maven-antrun-plugin</artifactId>
 				<version>1.8</version>
 				<executions>
+					<execution>
+						<id>downloadRegressionSuite</id>
+						<phase>test</phase>
+						<configuration>
+							<tasks>
+								<!-- Get the regression-suite-selenium front-end -->
+								<get src="https://github.com/UnionVMS/UVMS-SeleniumTests/raw/swe-dev/UVMS-SeleniumRegressionTests.zip" dest="target/UVMS-SeleniumRegressionTests.zip" verbose="true" usetimestamp="true" />
+								<unzip src="target/UVMS-SeleniumRegressionTests.zip" dest="target/"/>
+								<move file="target/DockerUnionVMSparameters.py" tofile="target/UnionVMSparameters.py" />
+							</tasks>
+						</configuration>
+						<goals>
+							<goal>run</goal>
+						</goals>
+					</execution>
 					<execution>
 						<id>downloadMonitoringMetrics</id>
 						<phase>post-integration-test</phase>
@@ -480,7 +478,10 @@
 										<exec dir="${project.basedir}/target/" executable="${python.runtime}">
 										 	<redirector output="target/Python-regression-suite-selenium.log" alwayslog="true" /> 
 											<arg value="-u" />
-											<arg value="Python-regression-suite-selenium.py" />											
+											<arg value="-m" />
+											<arg value="unittest" />
+											<arg value="-v" />
+											<arg value="Python-regression-suite-selenium.UnionVMSTestCase" />
 									  </exec>
 									</tasks>
 								</configuration>

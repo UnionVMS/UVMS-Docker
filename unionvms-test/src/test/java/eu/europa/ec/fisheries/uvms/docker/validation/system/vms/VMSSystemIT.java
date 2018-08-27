@@ -135,7 +135,7 @@ public class VMSSystemIT extends AbstractRestServiceTest {
     @Test
     public void sendFlagStateToFLUXDNKWithRuleIntervalTest() throws Exception {
         LocalDateTime timestamp = LocalDateTime.now(ZoneOffset.UTC);
-
+        
         Asset asset = AssetTestHelper.createTestAsset();
         MobileTerminalType mobileTerminalType = MobileTerminalTestHelper.createMobileTerminalType();
         MobileTerminalTestHelper.assignMobileTerminal(asset, mobileTerminalType);
@@ -184,7 +184,7 @@ public class VMSSystemIT extends AbstractRestServiceTest {
     @Test
     public void sendFlagStateToFLUXDNKWithPastValidRuleIntervalTest() throws Exception {
         LocalDateTime timestamp = LocalDateTime.now(ZoneOffset.UTC);
-
+        
         Asset asset = AssetTestHelper.createTestAsset();
         MobileTerminalType mobileTerminalType = MobileTerminalTestHelper.createMobileTerminalType();
         MobileTerminalTestHelper.assignMobileTerminal(asset, mobileTerminalType);

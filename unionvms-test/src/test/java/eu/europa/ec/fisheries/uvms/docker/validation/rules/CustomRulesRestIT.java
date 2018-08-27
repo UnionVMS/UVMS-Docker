@@ -69,7 +69,7 @@ public class CustomRulesRestIT extends AbstractRestServiceTest {
 				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken()).execute()
 				.returnResponse();
 		//Map<String, Object> dataMap = checkSuccessResponseReturnMap(response);
-		checkSuccessResponseReturnList(response,CustomRuleType.class);
+		checkSuccessResponseReturnList(response, CustomRuleType.class);
 	}
 
 	/**
