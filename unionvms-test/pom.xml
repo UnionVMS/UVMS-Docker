@@ -5,11 +5,11 @@
 	<parent>
 		<groupId>eu.europa.ec.fisheries.uvms.docker</groupId>
 		<artifactId>uvms-docker</artifactId>
-		<version>3.25.4.w12-SNAPSHOT</version>
+		<version>3.25.4.w12</version>
 		<relativePath>../pom.xml</relativePath>
 	</parent>
 	<groupId>eu.europa.ec.fisheries.uvms.docker</groupId>
-	<version>3.25.4.w12-SNAPSHOT</version>
+	<version>3.25.4.w12</version>
 	<artifactId>uvms-unionvms-test</artifactId>
 	<packaging>jar</packaging>
 	<name>uvms-unionvms-test</name>
@@ -273,7 +273,7 @@
 							<tasks>
 								<!-- Get the regression-suite-selenium front-end -->
 								<get src="https://github.com/UnionVMS/UVMS-SeleniumTests/raw/swe-dev/UVMS-SeleniumRegressionTests.zip" dest="target/UVMS-SeleniumRegressionTests.zip" verbose="true" usetimestamp="true" />
-								<unzip src="target/UVMS-SeleniumRegressionTests.zip" dest="target/"/>
+								<unzip src="target/UVMS-SeleniumRegressionTests.zip" dest="target/" />
 								<move file="target/DockerUnionVMSparameters.py" tofile="target/UnionVMSparameters.py" />
 							</tasks>
 						</configuration>
