@@ -17,6 +17,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.http.HttpResponse;
+import org.apache.http.HttpStatus;
 import org.apache.http.client.fluent.Request;
 import org.junit.Test;
 
@@ -40,7 +41,7 @@ public class ConfigRestIT extends AbstractRestServiceTest {
 		final HttpResponse response = Request.Get(getBaseUrl() + "asset/rest/config/searchfields")
 				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken()).execute()
 				.returnResponse();
-		List dataList = checkSuccessResponseReturnType(response,List.class);
+		assertEquals(HttpStatus.SC_OK, response.getStatusLine().getStatusCode());
 	}
 
 	/**
@@ -55,7 +56,7 @@ public class ConfigRestIT extends AbstractRestServiceTest {
 		final HttpResponse response = Request.Get(getBaseUrl() + "asset/rest/config")
 				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken()).execute()
 				.returnResponse();
-		Map<String, Object> dataMap = checkSuccessResponseReturnMap(response);
+		assertEquals(HttpStatus.SC_OK, response.getStatusLine().getStatusCode());
 	}
 
 	/**
@@ -70,7 +71,7 @@ public class ConfigRestIT extends AbstractRestServiceTest {
 		final HttpResponse response = Request.Get(getBaseUrl() + "asset/rest/config/parameters")
 				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken()).execute()
 				.returnResponse();
-		Map<String, Object> dataMap = checkSuccessResponseReturnMap(response);
+		assertEquals(HttpStatus.SC_OK, response.getStatusLine().getStatusCode());
 	}
 
 }

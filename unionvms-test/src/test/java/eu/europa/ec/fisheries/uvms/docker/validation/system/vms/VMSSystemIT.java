@@ -28,6 +28,7 @@ import eu.europa.ec.fisheries.schema.movementrules.customrule.v1.ConditionType;
 import eu.europa.ec.fisheries.schema.movementrules.customrule.v1.CriteriaType;
 import eu.europa.ec.fisheries.schema.movementrules.customrule.v1.CustomRuleType;
 import eu.europa.ec.fisheries.schema.movementrules.customrule.v1.SubCriteriaType;
+import eu.europa.ec.fisheries.uvms.asset.client.model.Asset;
 import eu.europa.ec.fisheries.uvms.docker.validation.asset.AssetTestHelper;
 import eu.europa.ec.fisheries.uvms.docker.validation.common.AbstractRestServiceTest;
 import eu.europa.ec.fisheries.uvms.docker.validation.common.MessageHelper;
@@ -37,7 +38,6 @@ import eu.europa.ec.fisheries.uvms.docker.validation.system.helper.CustomRuleBui
 import eu.europa.ec.fisheries.uvms.docker.validation.system.helper.CustomRuleHelper;
 import eu.europa.ec.fisheries.uvms.docker.validation.system.helper.FLUXHelper;
 import eu.europa.ec.fisheries.uvms.exchange.model.mapper.JAXBMarshaller;
-import eu.europa.ec.fisheries.wsdl.asset.types.Asset;
 
 public class VMSSystemIT extends AbstractRestServiceTest {
 
@@ -63,7 +63,7 @@ public class VMSSystemIT extends AbstractRestServiceTest {
         CustomRuleType flagStateRule = CustomRuleBuilder.getBuilder()
                 .setName("Flag state => FLUX DNK")
                 .rule(CriteriaType.ASSET, SubCriteriaType.FLAG_STATE, 
-                        ConditionType.EQ, asset.getCountryCode())
+                        ConditionType.EQ, asset.getFlagStateCode())
                 .action(ActionType.SEND_TO_FLUX, fluxEndpoint)
                 .build();
         
@@ -104,7 +104,7 @@ public class VMSSystemIT extends AbstractRestServiceTest {
         CustomRuleType flagStateAndAreaRule = CustomRuleBuilder.getBuilder()
                 .setName("Flag state && Area => FLUX DNK")
                 .rule(CriteriaType.ASSET, SubCriteriaType.FLAG_STATE, 
-                        ConditionType.EQ, asset.getCountryCode())
+                        ConditionType.EQ, asset.getFlagStateCode())
                 .and(CriteriaType.AREA, SubCriteriaType.AREA_CODE, 
                         ConditionType.EQ, areaCode)
                 .action(ActionType.SEND_TO_FLUX, fluxEndpoint)
@@ -153,7 +153,7 @@ public class VMSSystemIT extends AbstractRestServiceTest {
         CustomRuleType flagStateRuleWithInterval = CustomRuleBuilder.getBuilder()
                 .setName("Flag state => FLUX DNK")
                 .rule(CriteriaType.ASSET, SubCriteriaType.FLAG_STATE, 
-                        ConditionType.EQ, asset.getCountryCode())
+                        ConditionType.EQ, asset.getFlagStateCode())
                 .interval(ruleIntervalStart, ruleIntervalEnd)
                 .action(ActionType.SEND_TO_FLUX, fluxEndpoint)
                 .build();
@@ -202,7 +202,7 @@ public class VMSSystemIT extends AbstractRestServiceTest {
         CustomRuleType flagStateRuleWithInterval = CustomRuleBuilder.getBuilder()
                 .setName("Flag state => FLUX DNK")
                 .rule(CriteriaType.ASSET, SubCriteriaType.FLAG_STATE, 
-                        ConditionType.EQ, asset.getCountryCode())
+                        ConditionType.EQ, asset.getFlagStateCode())
                 .interval(ruleIntervalStart, ruleIntervalEnd)
                 .action(ActionType.SEND_TO_FLUX, fluxEndpoint)
                 .build();
@@ -213,7 +213,7 @@ public class VMSSystemIT extends AbstractRestServiceTest {
         CustomRuleType flagStateRuleWithoutInterval = CustomRuleBuilder.getBuilder()
                 .setName("Flag state => FLUX DNK")
                 .rule(CriteriaType.ASSET, SubCriteriaType.FLAG_STATE, 
-                        ConditionType.EQ, asset.getCountryCode())
+                        ConditionType.EQ, asset.getFlagStateCode())
                 .action(ActionType.SEND_TO_FLUX, fluxEndpoint)
                 .build();
         
@@ -252,7 +252,7 @@ public class VMSSystemIT extends AbstractRestServiceTest {
         CustomRuleType flagStateRuleWithInterval = CustomRuleBuilder.getBuilder()
                 .setName("Flag state => FLUX DNK")
                 .rule(CriteriaType.ASSET, SubCriteriaType.FLAG_STATE, 
-                        ConditionType.EQ, asset.getCountryCode())
+                        ConditionType.EQ, asset.getFlagStateCode())
                 .interval(ruleIntervalStart, ruleIntervalEnd)
                 .action(ActionType.SEND_TO_FLUX, fluxEndpoint)
                 .build();
@@ -263,7 +263,7 @@ public class VMSSystemIT extends AbstractRestServiceTest {
         CustomRuleType flagStateRuleWithoutInterval = CustomRuleBuilder.getBuilder()
                 .setName("Flag state => FLUX DNK")
                 .rule(CriteriaType.ASSET, SubCriteriaType.FLAG_STATE, 
-                        ConditionType.EQ, asset.getCountryCode())
+                        ConditionType.EQ, asset.getFlagStateCode())
                 .action(ActionType.SEND_TO_FLUX, fluxEndpoint)
                 .build();
         

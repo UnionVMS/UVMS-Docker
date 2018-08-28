@@ -13,26 +13,14 @@ copy of the GNU General Public License along with the IFDM Suite. If not, see <h
 */
 package eu.europa.ec.fisheries.uvms.docker.validation.reporting;
 
-import com.fasterxml.jackson.core.JsonParseException;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonMappingException;
-import eu.europa.ec.fisheries.schema.mobileterminal.types.v1.MobileTerminalType;
-import eu.europa.ec.fisheries.schema.movement.module.v1.CreateMovementRequest;
-import eu.europa.ec.fisheries.schema.movement.module.v1.CreateMovementResponse;
-import eu.europa.ec.fisheries.uvms.docker.validation.asset.AssetTestHelper;
-import eu.europa.ec.fisheries.uvms.docker.validation.common.AbstractRestServiceTest;
-import eu.europa.ec.fisheries.uvms.docker.validation.mobileterminal.MobileTerminalTestHelper;
-import eu.europa.ec.fisheries.uvms.docker.validation.movement.LatLong;
-import eu.europa.ec.fisheries.uvms.docker.validation.movement.MovementHelper;
-import eu.europa.ec.fisheries.uvms.reporting.service.dto.*;
-import eu.europa.ec.fisheries.uvms.reporting.service.dto.report.ReportDTO;
-import eu.europa.ec.fisheries.uvms.reporting.service.dto.report.VisibilityEnum;
-import eu.europa.ec.fisheries.uvms.reporting.service.entities.FilterType;
-import eu.europa.ec.fisheries.uvms.reporting.service.entities.Position;
-import eu.europa.ec.fisheries.uvms.reporting.service.entities.Selector;
-import eu.europa.ec.fisheries.uvms.reporting.service.enums.ReportTypeEnum;
-import eu.europa.ec.fisheries.uvms.reporting.service.enums.VelocityType;
-import eu.europa.ec.fisheries.wsdl.asset.types.Asset;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.TimeZone;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
 import org.apache.http.client.ClientProtocolException;
@@ -40,11 +28,30 @@ import org.apache.http.client.fluent.Request;
 import org.junit.BeforeClass;
 import org.junit.Ignore;
 import org.junit.Test;
-
-import java.io.IOException;
-import java.text.SimpleDateFormat;
-import java.util.*;
-import java.util.Map.Entry;
+import com.fasterxml.jackson.core.JsonParseException;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import eu.europa.ec.fisheries.schema.mobileterminal.types.v1.MobileTerminalType;
+import eu.europa.ec.fisheries.schema.movement.module.v1.CreateMovementRequest;
+import eu.europa.ec.fisheries.schema.movement.module.v1.CreateMovementResponse;
+import eu.europa.ec.fisheries.uvms.asset.client.model.Asset;
+import eu.europa.ec.fisheries.uvms.docker.validation.asset.AssetTestHelper;
+import eu.europa.ec.fisheries.uvms.docker.validation.common.AbstractRestServiceTest;
+import eu.europa.ec.fisheries.uvms.docker.validation.mobileterminal.MobileTerminalTestHelper;
+import eu.europa.ec.fisheries.uvms.docker.validation.movement.LatLong;
+import eu.europa.ec.fisheries.uvms.docker.validation.movement.MovementHelper;
+import eu.europa.ec.fisheries.uvms.reporting.service.dto.AssetFilterDTO;
+import eu.europa.ec.fisheries.uvms.reporting.service.dto.CommonFilterDTO;
+import eu.europa.ec.fisheries.uvms.reporting.service.dto.DisplayFormat;
+import eu.europa.ec.fisheries.uvms.reporting.service.dto.LengthType;
+import eu.europa.ec.fisheries.uvms.reporting.service.dto.PositionSelectorDTO;
+import eu.europa.ec.fisheries.uvms.reporting.service.dto.report.ReportDTO;
+import eu.europa.ec.fisheries.uvms.reporting.service.dto.report.VisibilityEnum;
+import eu.europa.ec.fisheries.uvms.reporting.service.entities.FilterType;
+import eu.europa.ec.fisheries.uvms.reporting.service.entities.Position;
+import eu.europa.ec.fisheries.uvms.reporting.service.entities.Selector;
+import eu.europa.ec.fisheries.uvms.reporting.service.enums.ReportTypeEnum;
+import eu.europa.ec.fisheries.uvms.reporting.service.enums.VelocityType;
 
 /**
  * The Class ReportingRestIT.
@@ -207,7 +214,7 @@ public class ReportingRestIT extends AbstractRestServiceTest {
 
 		if (asset != null) {
 			AssetFilterDTO assetFilterDTO = new AssetFilterDTO();
-			assetFilterDTO.setGuid(asset.getAssetId().getGuid());
+			assetFilterDTO.setGuid(asset.getId().toString());
 			assetFilterDTO.setName(asset.getName());
 			reportDTO.addFilter(assetFilterDTO);
 		}
@@ -246,7 +253,7 @@ public class ReportingRestIT extends AbstractRestServiceTest {
 
 		if (asset != null) {
 			AssetFilterDTO assetFilterDTO = new AssetFilterDTO();
-			assetFilterDTO.setGuid(asset.getAssetId().getGuid());
+			assetFilterDTO.setGuid(asset.getId().toString());
 			assetFilterDTO.setName(asset.getName());
 			reportDTO.addFilter(assetFilterDTO);
 		}

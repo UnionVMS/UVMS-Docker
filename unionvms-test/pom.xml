@@ -5,11 +5,11 @@
 	<parent>
 		<groupId>eu.europa.ec.fisheries.uvms.docker</groupId>
 		<artifactId>uvms-docker</artifactId>
-		<version>3.25.4.w12-SNAPSHOT</version>
+		<version>3.25.5.w12-SNAPSHOT</version>
 		<relativePath>../pom.xml</relativePath>
 	</parent>
 	<groupId>eu.europa.ec.fisheries.uvms.docker</groupId>
-	<version>3.25.4.w12-SNAPSHOT</version>
+	<version>3.25.5.w12-SNAPSHOT</version>
 	<artifactId>uvms-unionvms-test</artifactId>
 	<packaging>jar</packaging>
 	<name>uvms-unionvms-test</name>
@@ -32,7 +32,7 @@
 		<dependency>
 			<groupId>org.apache.activemq</groupId>
 			<artifactId>activemq-client</artifactId>
-			<version>5.14.5</version>			
+			<version>5.15.5</version>
 		</dependency>
 		<dependency>
 			<artifactId>mobileterminal-model</artifactId>
@@ -47,6 +47,11 @@
 		<dependency>
 			<groupId>eu.europa.ec.fisheries.uvms.asset</groupId>
 			<artifactId>asset-model</artifactId>
+			<version>${unionvms.project.asset.module}</version>
+		</dependency>
+		<dependency>
+			<groupId>eu.europa.ec.fisheries.uvms.asset</groupId>
+			<artifactId>asset-client</artifactId>
 			<version>${unionvms.project.asset.module}</version>
 		</dependency>
 		<dependency>
@@ -92,18 +97,23 @@
 		<dependency>
 			<groupId>com.fasterxml.jackson.core</groupId>
 			<artifactId>jackson-databind</artifactId>
-			<version>2.8.8</version>			
+			<version>2.9.4</version>
 		</dependency>
 		<dependency>
 			<groupId>com.fasterxml.jackson.module</groupId>
 			<artifactId>jackson-module-jaxb-annotations</artifactId>
-			<version>2.8.8</version>
+			<version>2.9.4</version>
 		</dependency>
 		<dependency>
 			<groupId>com.fasterxml.jackson.core</groupId>
 			<artifactId>jackson-annotations</artifactId>
-			<version>2.8.8</version>			
+			<version>2.9.4</version>
 		</dependency>
+		<dependency>
+            <groupId>com.fasterxml.jackson.datatype</groupId>
+            <artifactId>jackson-datatype-jsr310</artifactId>
+            <version>2.9.4</version>
+        </dependency>
 		<dependency>
 			<groupId>org.databene</groupId>
 			<artifactId>contiperf</artifactId>
@@ -263,7 +273,7 @@
 							<tasks>
 								<!-- Get the regression-suite-selenium front-end -->
 								<get src="https://github.com/UnionVMS/UVMS-SeleniumTests/raw/swe-dev/UVMS-SeleniumRegressionTests.zip" dest="target/UVMS-SeleniumRegressionTests.zip" verbose="true" usetimestamp="true" />
-								<unzip src="target/UVMS-SeleniumRegressionTests.zip" dest="target/"/>
+								<unzip src="target/UVMS-SeleniumRegressionTests.zip" dest="target/" />
 								<move file="target/DockerUnionVMSparameters.py" tofile="target/UnionVMSparameters.py" />
 							</tasks>
 						</configuration>

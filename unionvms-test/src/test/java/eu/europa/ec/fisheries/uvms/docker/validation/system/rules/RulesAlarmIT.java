@@ -38,6 +38,7 @@ import eu.europa.ec.fisheries.schema.movementrules.customrule.v1.ConditionType;
 import eu.europa.ec.fisheries.schema.movementrules.customrule.v1.CriteriaType;
 import eu.europa.ec.fisheries.schema.movementrules.customrule.v1.CustomRuleType;
 import eu.europa.ec.fisheries.schema.movementrules.customrule.v1.SubCriteriaType;
+import eu.europa.ec.fisheries.uvms.asset.client.model.Asset;
 import eu.europa.ec.fisheries.uvms.commons.message.api.MessageConstants;
 import eu.europa.ec.fisheries.uvms.docker.validation.asset.AssetTestHelper;
 import eu.europa.ec.fisheries.uvms.docker.validation.common.AbstractRestServiceTest;
@@ -49,7 +50,6 @@ import eu.europa.ec.fisheries.uvms.docker.validation.system.helper.FLUXHelper;
 import eu.europa.ec.fisheries.uvms.exchange.model.constant.ExchangeModelConstants;
 import eu.europa.ec.fisheries.uvms.exchange.model.mapper.ExchangeModuleRequestMapper;
 import eu.europa.ec.fisheries.uvms.exchange.model.mapper.JAXBMarshaller;
-import eu.europa.ec.fisheries.wsdl.asset.types.Asset;
 
 public class RulesAlarmIT extends AbstractRestServiceTest {
 
@@ -167,7 +167,7 @@ public class RulesAlarmIT extends AbstractRestServiceTest {
         CustomRuleType fsRule = CustomRuleBuilder.getBuilder()
                 .setName("Flag state => Send email")
                 .rule(CriteriaType.ASSET, SubCriteriaType.FLAG_STATE, 
-                        ConditionType.EQ, asset.getCountryCode())
+                        ConditionType.EQ, asset.getFlagStateCode())
                 .action(ActionType.EMAIL, email)
                 .build();
         
@@ -209,7 +209,7 @@ public class RulesAlarmIT extends AbstractRestServiceTest {
         CustomRuleType fsRule = CustomRuleBuilder.getBuilder()
                 .setName("Flag state => Send email")
                 .rule(CriteriaType.ASSET, SubCriteriaType.FLAG_STATE, 
-                        ConditionType.EQ, asset.getCountryCode())
+                        ConditionType.EQ, asset.getFlagStateCode())
                 .action(ActionType.EMAIL, email)
                 .build();
         
@@ -516,7 +516,7 @@ public class RulesAlarmIT extends AbstractRestServiceTest {
         String email = System.currentTimeMillis() + "@mail.com";
         CustomRuleType fsRule = CustomRuleBuilder.getBuilder()
                 .rule(CriteriaType.ASSET, SubCriteriaType.FLAG_STATE, 
-                        ConditionType.EQ, asset.getCountryCode())
+                        ConditionType.EQ, asset.getFlagStateCode())
                 .action(ActionType.EMAIL, email)
                 .build();
         

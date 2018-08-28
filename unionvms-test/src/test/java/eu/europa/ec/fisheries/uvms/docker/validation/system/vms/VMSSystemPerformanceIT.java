@@ -14,6 +14,7 @@ package eu.europa.ec.fisheries.uvms.docker.validation.system.vms;
 import eu.europa.ec.fisheries.schema.exchange.plugin.v1.SetReportRequest;
 import eu.europa.ec.fisheries.schema.mobileterminal.types.v1.MobileTerminalType;
 import eu.europa.ec.fisheries.schema.movementrules.customrule.v1.*;
+import eu.europa.ec.fisheries.uvms.asset.client.model.Asset;
 import eu.europa.ec.fisheries.uvms.docker.validation.asset.AssetTestHelper;
 import eu.europa.ec.fisheries.uvms.docker.validation.common.AbstractRestServiceTest;
 import eu.europa.ec.fisheries.uvms.docker.validation.common.MessageHelper;
@@ -24,7 +25,6 @@ import eu.europa.ec.fisheries.uvms.docker.validation.system.helper.CustomRuleBui
 import eu.europa.ec.fisheries.uvms.docker.validation.system.helper.CustomRuleHelper;
 import eu.europa.ec.fisheries.uvms.docker.validation.system.helper.FLUXHelper;
 import eu.europa.ec.fisheries.uvms.exchange.model.mapper.JAXBMarshaller;
-import eu.europa.ec.fisheries.wsdl.asset.types.Asset;
 import org.databene.contiperf.PerfTest;
 import org.databene.contiperf.Required;
 import org.databene.contiperf.junit.ContiPerfRule;
@@ -67,7 +67,7 @@ public class VMSSystemPerformanceIT extends AbstractRestServiceTest {
         CustomRuleType flagStateRule = CustomRuleBuilder.getBuilder()
                 .setName("Flag state => FLUX DNK")
                 .rule(CriteriaType.ASSET, SubCriteriaType.FLAG_STATE, 
-                        ConditionType.EQ, asset.getCountryCode())
+                        ConditionType.EQ, asset.getFlagStateCode())
                 .action(ActionType.SEND_TO_FLUX, fluxEndpoint)
                 .build();
 

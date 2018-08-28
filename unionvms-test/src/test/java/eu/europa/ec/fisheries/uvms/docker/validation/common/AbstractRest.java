@@ -6,23 +6,28 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+
+import com.fasterxml.jackson.core.type.TypeReference;
+import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.fluent.Request;
+import org.apache.http.util.EntityUtils;
 import org.junit.Assert;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.type.MapType;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
 public abstract class AbstractRest extends Assert {
 
 	private static final String DOCKER_RELEASE_TEST_BASE_URL_PROPERTY = "docker.release.test.base.url";
 
 	/** The Constant OBJECT_MAPPER. */
-	private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
+	private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper().registerModule(new JavaTimeModule());
 
 	/** The Constant BASE_URL. */
 	protected static final String BASE_URL = "http://localhost:28080/unionvms/";
@@ -129,14 +134,35 @@ public abstract class AbstractRest extends Assert {
 		return dataValue;
 	}
 	
+	protected static <T> T checkSuccessResponseAndReturnType(final HttpResponse response, Class<T> classCast)
+            throws IOException {
+	    assertEquals(HttpStatus.SC_OK, response.getStatusLine().getStatusCode());
+        HttpEntity entity = response.getEntity();
+        T dataValue = OBJECT_MAPPER.readValue(EntityUtils.toString(entity), classCast);
+        assertNotNull(dataValue);
+        return dataValue;
+    }
+	
 	protected static <T> List<T> checkSuccessResponseReturnList(final HttpResponse response, Class<T> classCast)
 			throws IOException {
 		final Map<String, Object> data = checkSuccessResponseReturnDataMap(response);
 		String valueAsString = writeValueAsString(data.get("data"));
+
+		TypeReference<List<String>> typeRef =  new TypeReference<List<String>>(){};
+
 		List<T> dataValue = OBJECT_MAPPER.readValue(valueAsString, OBJECT_MAPPER.getTypeFactory().constructCollectionType(List.class, classCast));
 		assertNotNull(dataValue);
 		return dataValue;
 	}
+
+	protected static <T> List<T> checkSuccessResponseAndReturnList(final HttpResponse response, Class<T> classCast)
+            throws IOException {
+	    assertEquals(HttpStatus.SC_OK, response.getStatusLine().getStatusCode());
+	    HttpEntity entity = response.getEntity();
+        List<T> returnList = OBJECT_MAPPER.readValue(EntityUtils.toString(entity), OBJECT_MAPPER.getTypeFactory().constructCollectionType(List.class, classCast));
+        assertNotNull(returnList);
+        return returnList;
+    }
 	
 	protected static void checkErrorResponse(final HttpResponse response)
             throws IOException {

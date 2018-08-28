@@ -45,9 +45,9 @@ import eu.europa.ec.fisheries.schema.movement.v1.MovementBaseType;
 import eu.europa.ec.fisheries.schema.movement.v1.MovementPoint;
 import eu.europa.ec.fisheries.schema.movement.v1.MovementType;
 import eu.europa.ec.fisheries.schema.movement.v1.MovementTypeType;
+import eu.europa.ec.fisheries.uvms.asset.client.model.Asset;
 import eu.europa.ec.fisheries.uvms.docker.validation.common.AbstractHelper;
 import eu.europa.ec.fisheries.uvms.docker.validation.common.MessageHelper;
-import eu.europa.ec.fisheries.wsdl.asset.types.Asset;
 import io.jsonwebtoken.lang.Collections;
 
 public class MovementHelper extends AbstractHelper {
@@ -66,9 +66,9 @@ public class MovementHelper extends AbstractHelper {
 		AssetId assetId = new AssetId();
 		assetId.setAssetType(AssetType.VESSEL);
 		assetId.setIdType(AssetIdType.GUID);
-		assetId.setValue(testAsset.getAssetId().getGuid());
+		assetId.setValue(testAsset.getId().toString());
 		movementBaseType.setAssetId(assetId);
-		movementBaseType.setConnectId(testAsset.getEventHistory().getEventId());
+		movementBaseType.setConnectId(testAsset.getHistoryId().toString());
 
 		MovementActivityType movementActivityType = new MovementActivityType();
 		movementBaseType.setActivity(movementActivityType);
@@ -104,7 +104,7 @@ public class MovementHelper extends AbstractHelper {
 		AssetId assetId = new AssetId();
 		assetId.setAssetType(AssetType.VESSEL);
 		assetId.setIdType(AssetIdType.GUID);
-		assetId.setValue(testAsset.getAssetId().getGuid());
+		assetId.setValue(testAsset.getId().toString());
 
 		MovementActivityType movementActivityType = new MovementActivityType();
 		movementActivityType.setMessageId(UUID.randomUUID().toString());

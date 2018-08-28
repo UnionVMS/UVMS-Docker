@@ -26,9 +26,9 @@ import org.junit.Test;
 import eu.europa.ec.fisheries.schema.movement.search.v1.GroupListCriteria;
 import eu.europa.ec.fisheries.schema.movement.search.v1.MovementSearchGroup;
 import eu.europa.ec.fisheries.schema.movement.search.v1.SearchKeyType;
+import eu.europa.ec.fisheries.uvms.asset.client.model.Asset;
 import eu.europa.ec.fisheries.uvms.docker.validation.asset.AssetTestHelper;
 import eu.europa.ec.fisheries.uvms.docker.validation.common.AbstractRestServiceTest;
-import eu.europa.ec.fisheries.wsdl.asset.types.Asset;
 
 /**
  * The Class MovementPerformanceIT.
@@ -64,7 +64,7 @@ public class MovementMovementSearchRestIT extends AbstractRestServiceTest {
 		GroupListCriteria groupListCriteria = new GroupListCriteria();
 		groupListCriteria.setType(SearchKeyType.ASSET);
 		groupListCriteria.setKey("GUID");
-		groupListCriteria.setValue(testAsset.getAssetId().getGuid());
+		groupListCriteria.setValue(testAsset.getId().toString());
 		movementSearchGroup.getSearchFields().add(groupListCriteria);
 		
 		final HttpResponse response = Request.Post(getBaseUrl() + "movement/rest/search/group")

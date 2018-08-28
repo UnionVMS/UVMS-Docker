@@ -27,13 +27,13 @@ import eu.europa.ec.fisheries.schema.exchange.movement.v1.SetReportMovementType;
 import eu.europa.ec.fisheries.schema.exchange.plugin.types.v1.PluginType;
 import eu.europa.ec.fisheries.schema.mobileterminal.types.v1.MobileTerminalType;
 import eu.europa.ec.fisheries.schema.movement.module.v1.CreateMovementRequest;
+import eu.europa.ec.fisheries.uvms.asset.client.model.Asset;
 import eu.europa.ec.fisheries.uvms.docker.validation.asset.AssetTestHelper;
 import eu.europa.ec.fisheries.uvms.docker.validation.common.AbstractRestServiceTest;
 import eu.europa.ec.fisheries.uvms.docker.validation.common.MessageHelper;
 import eu.europa.ec.fisheries.uvms.docker.validation.mobileterminal.MobileTerminalTestHelper;
 import eu.europa.ec.fisheries.uvms.docker.validation.movement.LatLong;
 import eu.europa.ec.fisheries.uvms.docker.validation.movement.MovementHelper;
-import eu.europa.ec.fisheries.wsdl.asset.types.Asset;
 
 /**
  * The Class SetMovementReportRequestJmsIT.
@@ -141,10 +141,10 @@ public class SetMovementReportRequestJmsIT extends AbstractRestServiceTest {
 		movementBaseType.setAssetName(testAsset.getName());
 		movementBaseType.setComChannelType(MovementComChannelType.NAF);
 		movementBaseType.setExternalMarking(testAsset.getExternalMarking());
-		movementBaseType.setFlagState(testAsset.getCountryCode());
+		movementBaseType.setFlagState(testAsset.getFlagStateCode());
 		movementBaseType.setInternalReferenceNumber(testAsset.getIrcs());
 		movementBaseType.setIrcs(testAsset.getIrcs());
-		movementBaseType.setMmsi(testAsset.getMmsiNo());
+		movementBaseType.setMmsi(testAsset.getMmsi());
 
 		MobileTerminalId mobileTerminalId = new MobileTerminalId();
 		mobileTerminalId.setConnectId(mobileTerminalType.getConnectId());

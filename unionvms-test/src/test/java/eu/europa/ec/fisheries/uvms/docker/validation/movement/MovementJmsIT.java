@@ -13,11 +13,11 @@ import eu.europa.ec.fisheries.schema.movement.module.v1.CreateMovementBatchReque
 import eu.europa.ec.fisheries.schema.movement.module.v1.CreateMovementBatchResponse;
 import eu.europa.ec.fisheries.schema.movement.module.v1.CreateMovementRequest;
 import eu.europa.ec.fisheries.schema.movement.module.v1.CreateMovementResponse;
+import eu.europa.ec.fisheries.uvms.asset.client.model.Asset;
 import eu.europa.ec.fisheries.uvms.docker.validation.asset.AssetTestHelper;
 import eu.europa.ec.fisheries.uvms.docker.validation.common.AbstractRestServiceTest;
 import eu.europa.ec.fisheries.uvms.docker.validation.common.MessageHelper;
 import eu.europa.ec.fisheries.uvms.docker.validation.mobileterminal.MobileTerminalTestHelper;
-import eu.europa.ec.fisheries.wsdl.asset.types.Asset;
 
 /**
  * The Class MovementJmsIT.

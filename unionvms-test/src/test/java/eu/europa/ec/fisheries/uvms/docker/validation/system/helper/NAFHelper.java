@@ -11,6 +11,13 @@ copy of the GNU General Public License along with the IFDM Suite. If not, see <h
  */
 package eu.europa.ec.fisheries.uvms.docker.validation.system.helper;
 
+import eu.europa.ec.fisheries.uvms.asset.client.model.Asset;
+import eu.europa.ec.fisheries.uvms.docker.validation.common.AbstractHelper;
+import eu.europa.ec.fisheries.uvms.docker.validation.movement.LatLong;
+import org.apache.http.HttpResponse;
+import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.fluent.Request;
+
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
@@ -18,12 +25,6 @@ import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.time.ZoneId;
 import java.util.TimeZone;
-import org.apache.http.HttpResponse;
-import org.apache.http.client.ClientProtocolException;
-import org.apache.http.client.fluent.Request;
-import eu.europa.ec.fisheries.uvms.docker.validation.common.AbstractHelper;
-import eu.europa.ec.fisheries.uvms.docker.validation.movement.LatLong;
-import eu.europa.ec.fisheries.wsdl.asset.types.Asset;
 
 public class NAFHelper extends AbstractHelper {
 
@@ -40,12 +41,12 @@ public class NAFHelper extends AbstractHelper {
         dateFormatter.setTimeZone(TimeZone.getTimeZone(ZoneId.of("UTC")));
         SimpleDateFormat timeFormatter = new SimpleDateFormat("HHmm");
         timeFormatter.setTimeZone(TimeZone.getTimeZone(ZoneId.of("UTC")));
-        
+
         DecimalFormat decimalformatter = new DecimalFormat("#00.000");
         
         StringBuilder str = new StringBuilder();
         str.append("//SR");
-        str.append("//FR/" + asset.getCountryCode());
+        str.append("//FR/" + asset.getFlagStateCode());
         str.append("//AD/UVM");
         str.append("//TM/POS");
         str.append("//RC/" + asset.getIrcs());
@@ -58,7 +59,7 @@ public class NAFHelper extends AbstractHelper {
         str.append("//DA/" + dateFormatter.format(position.positionTime));
         str.append("//TI/" + timeFormatter.format(position.positionTime));
         str.append("//NA/" + asset.getName());
-        str.append("//FS/" + asset.getCountryCode());
+        str.append("//FS/" + asset.getFlagStateCode());
         str.append("//ER//");
         return URLEncoder.encode(str.toString(), "UTF-8");
     }

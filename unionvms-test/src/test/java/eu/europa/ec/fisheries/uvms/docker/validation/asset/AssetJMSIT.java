@@ -3,15 +3,12 @@ package eu.europa.ec.fisheries.uvms.docker.validation.asset;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
-
 import java.util.ArrayList;
 import java.util.List;
-
 import org.junit.Test;
-
-import eu.europa.ec.fisheries.wsdl.asset.group.AssetGroup;
-import eu.europa.ec.fisheries.wsdl.asset.group.AssetGroupSearchField;
-import eu.europa.ec.fisheries.wsdl.asset.types.Asset;
+import eu.europa.ec.fisheries.uvms.asset.client.model.Asset;
+import eu.europa.ec.fisheries.uvms.asset.client.model.AssetGroup;
+import eu.europa.ec.fisheries.uvms.asset.client.model.AssetGroupField;
 import eu.europa.ec.fisheries.wsdl.asset.types.AssetIdType;
 import eu.europa.ec.fisheries.wsdl.asset.types.AssetListCriteriaPair;
 import eu.europa.ec.fisheries.wsdl.asset.types.AssetListQuery;
@@ -22,150 +19,146 @@ public class AssetJMSIT {
 	@Test
 	public void testGetAssetByGuid() throws Exception {
 		Asset asset = AssetTestHelper.createTestAsset();
-		Asset assetById = AssetJMSHelper.getAssetById(asset.getAssetId().getGuid(), AssetIdType.GUID);
-		setDecimalScaleAndNullNotes(assetById);
-		assertEquals(asset, assetById);
+		eu.europa.ec.fisheries.wsdl.asset.types.Asset assetById = AssetJMSHelper.getAssetById(asset.getId().toString(), AssetIdType.GUID);
+		
+		assertEquals(asset.getId().toString(), assetById.getAssetId().getGuid());
+		assertEquals(asset.getHistoryId().toString(), assetById.getEventHistory().getEventId());
 	}
-	
+
 	@Test
 	public void testGetAssetByCFR() throws Exception {
-		Asset asset = AssetTestHelper.createDummyCFRAsset();
+		Asset asset = AssetTestHelper.createBasicAsset();
 		asset = AssetTestHelper.createAsset(asset);
-		Asset assetById = AssetJMSHelper.getAssetById(asset.getCfr(), AssetIdType.CFR);
-		setDecimalScaleAndNullNotes(assetById);
-		assertEquals(asset, assetById);
+		eu.europa.ec.fisheries.wsdl.asset.types.Asset assetById = AssetJMSHelper.getAssetById(asset.getCfr(), AssetIdType.CFR);
+
+		assertEquals(asset.getId().toString(), assetById.getAssetId().getGuid());
+        assertEquals(asset.getHistoryId().toString(), assetById.getEventHistory().getEventId());
+        assertEquals(asset.getCfr(), assetById.getCfr());
 	}
 	
 	@Test
 	public void testGetAssetByIRCS() throws Exception {
 		Asset asset = AssetTestHelper.createTestAsset();
-		Asset assetById = AssetJMSHelper.getAssetById(asset.getIrcs(), AssetIdType.IRCS);
-		setDecimalScaleAndNullNotes(assetById);
-		assertEquals(asset, assetById);
+		eu.europa.ec.fisheries.wsdl.asset.types.Asset assetById = AssetJMSHelper.getAssetById(asset.getIrcs(), AssetIdType.IRCS);
+		
+		assertEquals(asset.getId().toString(), assetById.getAssetId().getGuid());
+        assertEquals(asset.getHistoryId().toString(), assetById.getEventHistory().getEventId());
+        assertEquals(asset.getIrcs(), assetById.getIrcs());
 	}
 	
 	@Test
 	public void testGetAssetByMMSI() throws Exception {
 		Asset asset = AssetTestHelper.createTestAsset();
-		Asset assetById = AssetJMSHelper.getAssetById(asset.getMmsiNo(), AssetIdType.MMSI);
-		setDecimalScaleAndNullNotes(assetById);
-		assertEquals(asset, assetById);
+		eu.europa.ec.fisheries.wsdl.asset.types.Asset assetById = AssetJMSHelper.getAssetById(asset.getMmsi(), AssetIdType.MMSI);
+		
+		assertEquals(asset.getId().toString(), assetById.getAssetId().getGuid());
+        assertEquals(asset.getHistoryId().toString(), assetById.getEventHistory().getEventId());
+        assertEquals(asset.getMmsi(), assetById.getMmsiNo());
 	}
 	
 	@Test
 	public void testGetAssetListByQuery() throws Exception {
 		Asset asset = AssetTestHelper.createTestAsset();
 		
-		AssetListQuery assetListQuery = AssetTestHelper.getBasicAssetQuery();
+		AssetListQuery assetListQuery = AssetJMSHelper.getBasicAssetQuery();
 		AssetListCriteriaPair assetListCriteriaPair = new AssetListCriteriaPair();
 		assetListCriteriaPair.setKey(ConfigSearchField.FLAG_STATE);
-		assetListCriteriaPair.setValue(asset.getCountryCode());
+		assetListCriteriaPair.setValue(asset.getFlagStateCode());
 		assetListQuery.getAssetSearchCriteria().getCriterias().add(assetListCriteriaPair);
 		
-		List<Asset> assets = AssetJMSHelper.getAssetByAssetListQuery(assetListQuery);
-		setDecimalScaleAndNullNotes(assets);
-		assertTrue(assets.contains(asset));
+		List<eu.europa.ec.fisheries.wsdl.asset.types.Asset> assets = AssetJMSHelper.getAssetByAssetListQuery(assetListQuery);
+
+		assertTrue(assets.stream().anyMatch(a -> a.getAssetId().getGuid().equals(asset.getId().toString())));
 	}
 	
 	@Test
 	public void getAssetGroupListByUserTest() throws Exception {
+	    // Create Group
 		AssetGroup assetGroup = AssetTestHelper.createBasicAssetGroup();
+		AssetGroup createdAssetGroup = AssetTestHelper.createAssetGroup(assetGroup);
 		
 		Asset asset1 = AssetTestHelper.createTestAsset();
 		Asset asset2 = AssetTestHelper.createTestAsset();
 		
 		// Add assets to group
-		AssetGroupSearchField assetGroupSearchField1 = new AssetGroupSearchField();
-		assetGroupSearchField1.setKey(ConfigSearchField.GUID);
-		assetGroupSearchField1.setValue(asset1.getAssetId().getGuid());
-		assetGroup.getSearchFields().add(assetGroupSearchField1);
+		AssetGroupField assetGroupField1 = new AssetGroupField();
+		assetGroupField1.setField(ConfigSearchField.GUID.toString());
+		assetGroupField1.setValue(asset1.getId().toString());
+		assetGroupField1.setAssetGroup(createdAssetGroup.getId());
+		AssetTestHelper.createAssetGroupField(createdAssetGroup.getId(), assetGroupField1);
 	
-		AssetGroupSearchField assetGroupSearchField2 = new AssetGroupSearchField();
-		assetGroupSearchField2.setKey(ConfigSearchField.GUID);
-		assetGroupSearchField2.setValue(asset2.getAssetId().getGuid());
-		assetGroup.getSearchFields().add(assetGroupSearchField2);
+		AssetGroupField assetGroupField2 = new AssetGroupField();
+		assetGroupField2.setField(ConfigSearchField.GUID.toString());
+		assetGroupField2.setValue(asset2.getId().toString());
+		assetGroupField2.setAssetGroup(createdAssetGroup.getId());
+		AssetTestHelper.createAssetGroupField(createdAssetGroup.getId(), assetGroupField2);
 	
-		// Create Group
-		assetGroup = AssetTestHelper.createAssetGroup(assetGroup);
 
-		List<AssetGroup> assetGroups = AssetJMSHelper.getAssetGroupByUser(assetGroup.getUser());
+		List<eu.europa.ec.fisheries.wsdl.asset.group.AssetGroup> assetGroups = AssetJMSHelper.getAssetGroupByUser(createdAssetGroup.getOwner());
 		
-		assertTrue(assetGroups.contains(assetGroup));
+		assertTrue(assetGroups.stream().anyMatch(group -> group.getGuid().equals(createdAssetGroup.getId().toString()) && 
+		        group.getSearchFields().stream().anyMatch(field -> field.getValue().equals(asset1.getId().toString())) &&
+		        group.getSearchFields().stream().anyMatch(field -> field.getValue().equals(asset2.getId().toString()))));
 	}
 	
 	@Test
 	public void getAssetGroupByAssetGuidTest() throws Exception {
+	    // Create Group
 		AssetGroup assetGroup = AssetTestHelper.createBasicAssetGroup();
+		AssetGroup createdAssetGroup = AssetTestHelper.createAssetGroup(assetGroup);
 		
 		Asset asset1 = AssetTestHelper.createTestAsset();
 		
 		// Add asset to group
-		AssetGroupSearchField assetGroupSearchField1 = new AssetGroupSearchField();
-		assetGroupSearchField1.setKey(ConfigSearchField.GUID);
-		assetGroupSearchField1.setValue(asset1.getAssetId().getGuid());
-		assetGroup.getSearchFields().add(assetGroupSearchField1);
+		AssetGroupField assetGroupField1 = new AssetGroupField();
+		assetGroupField1.setField(ConfigSearchField.GUID.toString());
+		assetGroupField1.setValue(asset1.getId().toString());
+		assetGroupField1.setAssetGroup(assetGroup.getId());
+		AssetTestHelper.createAssetGroupField(createdAssetGroup.getId(), assetGroupField1);
 	
-		// Create Group
-		assetGroup = AssetTestHelper.createAssetGroup(assetGroup);
 
-		List<AssetGroup> assetGroups = AssetJMSHelper.getAssetGroupListByAssetGuid(asset1.getAssetId().getGuid());
+		List<eu.europa.ec.fisheries.wsdl.asset.group.AssetGroup> assetGroups = AssetJMSHelper.getAssetGroupListByAssetGuid(asset1.getId().toString());
 		
-		assertTrue(assetGroups.contains(assetGroup));
+		assertTrue(assetGroups.stream().anyMatch(group -> group.getGuid().equals(createdAssetGroup.getId().toString()) && 
+                group.getSearchFields().stream().anyMatch(field -> field.getValue().equals(asset1.getId().toString()))));
 	}
 	
 	@Test
 	public void getAssetListByAssetGroups() throws Exception {
+	    // Create Group
 		AssetGroup assetGroup = AssetTestHelper.createBasicAssetGroup();
+		AssetGroup createdAssetGroup = AssetTestHelper.createAssetGroup(assetGroup);
 		
 		Asset asset1 = AssetTestHelper.createTestAsset();
 		Asset asset2 = AssetTestHelper.createTestAsset();
 		
 		// Add assets to group
-		AssetGroupSearchField assetGroupSearchField1 = new AssetGroupSearchField();
-		assetGroupSearchField1.setKey(ConfigSearchField.GUID);
-		assetGroupSearchField1.setValue(asset1.getAssetId().getGuid());
-		assetGroup.getSearchFields().add(assetGroupSearchField1);
+		AssetGroupField assetGroupField1 = new AssetGroupField();
+        assetGroupField1.setField(ConfigSearchField.GUID.toString());
+        assetGroupField1.setValue(asset1.getId().toString());
+        assetGroupField1.setAssetGroup(createdAssetGroup.getId());
+        AssetTestHelper.createAssetGroupField(createdAssetGroup.getId(), assetGroupField1);
+    
+        AssetGroupField assetGroupField2 = new AssetGroupField();
+        assetGroupField2.setField(ConfigSearchField.GUID.toString());
+        assetGroupField2.setValue(asset2.getId().toString());
+        assetGroupField2.setAssetGroup(createdAssetGroup.getId());
+        AssetTestHelper.createAssetGroupField(createdAssetGroup.getId(), assetGroupField2);
 	
-		AssetGroupSearchField assetGroupSearchField2 = new AssetGroupSearchField();
-		assetGroupSearchField2.setKey(ConfigSearchField.GUID);
-		assetGroupSearchField2.setValue(asset2.getAssetId().getGuid());
-		assetGroup.getSearchFields().add(assetGroupSearchField2);
-	
-		// Create Group
-		assetGroup = AssetTestHelper.createAssetGroup(assetGroup);
-
-		List<AssetGroup> assetGroups = new ArrayList<AssetGroup>();
-		assetGroups.add(assetGroup);
-		List<Asset> assets = AssetJMSHelper.getAssetListByAssetGroups(assetGroups);
+        List<eu.europa.ec.fisheries.wsdl.asset.group.AssetGroup> assetGroups = AssetJMSHelper.getAssetGroupListByAssetGuid(asset1.getId().toString());
+        assertEquals(1, assetGroups.size());
+        
+		List<eu.europa.ec.fisheries.wsdl.asset.group.AssetGroup> assetGroupsSearch = new ArrayList<>();
+		assetGroupsSearch.add(assetGroups.get(0));
+		List<eu.europa.ec.fisheries.wsdl.asset.types.Asset> assets = AssetJMSHelper.getAssetListByAssetGroups(assetGroupsSearch);
 		
-		setDecimalScaleAndNullNotes(assets);
-		assertTrue(assets.contains(asset1));
-		assertTrue(assets.contains(asset2));
+		assertTrue(assets.stream().anyMatch(asset -> asset.getAssetId().getGuid().equals(asset1.getId().toString())));
+		assertTrue(assets.stream().anyMatch(asset -> asset.getAssetId().getGuid().equals(asset2.getId().toString())));
 	}
 
 	@Test
 	public void testPingAsset() throws Exception {
 		String pingResponse = AssetJMSHelper.pingModule();
 		assertNotNull(pingResponse);
-	}
-	
-	
-	/**
-	 *  Adjust the values returned for easier comparison
-	 */
-	private void setDecimalScaleAndNullNotes(List<Asset> assets) {
-		for (Asset asset : assets) {
-			setDecimalScaleAndNullNotes(asset);
-		}
-	}
-	
-	private void setDecimalScaleAndNullNotes(Asset asset) {
-		asset.setLengthOverAll(asset.getLengthOverAll().setScale(1));
-		asset.setLengthBetweenPerpendiculars(asset.getLengthBetweenPerpendiculars().setScale(1));
-		asset.setGrossTonnage(asset.getGrossTonnage().setScale(1));
-		asset.setSafetyGrossTonnage(asset.getSafetyGrossTonnage().setScale(1));
-		asset.setPowerMain(asset.getPowerMain().setScale(1));
-		asset.setPowerAux(asset.getPowerAux().setScale(1));
-		asset.getNotes();
 	}
 }

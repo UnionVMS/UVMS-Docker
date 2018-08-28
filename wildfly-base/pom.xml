@@ -4,12 +4,12 @@
 	<parent>
 		<groupId>eu.europa.ec.fisheries.uvms.docker</groupId>
 		<artifactId>uvms-docker</artifactId>
-		<version>3.25.4.w12-SNAPSHOT</version>
+		<version>3.25.5.w12-SNAPSHOT</version>
 		<relativePath>../pom.xml</relativePath>
 	</parent>
 	<groupId>eu.europa.ec.fisheries.uvms.docker</groupId>
 	<artifactId>uvms-docker-wildfly-base</artifactId>
-	<version>3.25.4.w12-SNAPSHOT</version>
+	<version>3.25.5.w12-SNAPSHOT</version>
 	<packaging>pom</packaging>
 	<name>uvms-docker-wildfly-base</name>
 	<properties>
@@ -19,7 +19,7 @@
 		<wildfly.hibernate.module.jipijapa.version>12.0.0.Final</wildfly.hibernate.module.jipijapa.version>
 		<wildfly.postgres.module.postgis.version>1.5.3</wildfly.postgres.module.postgis.version>
 		<wildfly.postgres.module.postgres.version>42.1.4.jre7</wildfly.postgres.module.postgres.version>
-		<wildfly.activemq.rar.version>5.15.2</wildfly.activemq.rar.version>
+		<wildfly.activemq.rar.version>5.15.5</wildfly.activemq.rar.version>
 	</properties>
 	<dependencies>
 		<dependency>

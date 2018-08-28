@@ -24,8 +24,8 @@ import eu.europa.ec.fisheries.schema.mobileterminal.types.v1.MobileTerminalAssig
 import eu.europa.ec.fisheries.schema.mobileterminal.types.v1.MobileTerminalListQuery;
 import eu.europa.ec.fisheries.schema.mobileterminal.types.v1.MobileTerminalSearchCriteria;
 import eu.europa.ec.fisheries.schema.mobileterminal.types.v1.MobileTerminalType;
+import eu.europa.ec.fisheries.uvms.asset.client.model.Asset;
 import eu.europa.ec.fisheries.uvms.docker.validation.asset.AssetTestHelper;
-import eu.europa.ec.fisheries.wsdl.asset.types.Asset;
 
 /**
  * The Class MobileTerminalRestIT.
@@ -132,7 +132,7 @@ public class MobileTerminalRestIT extends AbstractMobileTerminalTest {
 
 		MobileTerminalAssignQuery mobileTerminalAssignQuery = new MobileTerminalAssignQuery();
 		mobileTerminalAssignQuery.setMobileTerminalId(createdMobileTerminalType.getMobileTerminalId());
-		mobileTerminalAssignQuery.setConnectId(testAsset.getAssetId().getGuid());
+		mobileTerminalAssignQuery.setConnectId(testAsset.getId().toString());
 		{
 			// Assign first
 			final HttpResponse response = Request
