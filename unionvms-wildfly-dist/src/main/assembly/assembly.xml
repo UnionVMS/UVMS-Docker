@@ -5,7 +5,7 @@
 	</formats>
 	<fileSets>
 		<fileSet>
-			<directory>target/content/wildfly-12.0.0.Final/</directory>
+			<directory>target/content/wildfly-13.0.0.Final/</directory>
 			<includes>
 				<include>**/*.*</include>
 			</includes>
@@ -19,7 +19,7 @@
 			<outputDirectory></outputDirectory>
 		</fileSet>
 		<fileSet>
-			<directory>target/content/wildfly-12.0.0.Final/</directory>
+			<directory>target/content/wildfly-13.0.0.Final/</directory>
 			<includes>
 				<include>**/logging.properties</include>
 			</includes>

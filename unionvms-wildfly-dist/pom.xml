@@ -15,7 +15,7 @@
 		<dependency>
 			<groupId>org.wildfly</groupId>
 			<artifactId>wildfly-dist</artifactId>
-			<version>12.0.0.Final</version>
+			<version>13.0.0.Final</version>
 			<type>zip</type>
 		</dependency>
 		<dependency>

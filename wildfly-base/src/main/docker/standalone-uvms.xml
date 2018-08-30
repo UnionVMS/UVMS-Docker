@@ -1,6 +1,6 @@
 <?xml version='1.0' encoding='UTF-8'?>
 
-<server xmlns="urn:jboss:domain:6.0">
+<server xmlns="urn:jboss:domain:7.0">
     <extensions>
         <extension module="org.jboss.as.clustering.infinispan"/>
         <extension module="org.jboss.as.connector"/>
@@ -12,7 +12,6 @@
         <extension module="org.jboss.as.jmx"/>
         <extension module="org.jboss.as.jpa"/>
         <extension module="org.jboss.as.jsf"/>
-        <extension module="org.jboss.as.jsr77"/>
         <extension module="org.jboss.as.logging"/>
         <extension module="org.jboss.as.mail"/>
         <extension module="org.jboss.as.naming"/>
@@ -26,14 +25,14 @@
         <extension module="org.wildfly.extension.batch.jberet"/>
         <extension module="org.wildfly.extension.bean-validation"/>
         <extension module="org.wildfly.extension.core-management"/>
+        <extension module="org.wildfly.extension.discovery"/>
+        <extension module="org.wildfly.extension.ee-security"/>
         <extension module="org.wildfly.extension.elytron"/>
         <extension module="org.wildfly.extension.io"/>
-
-       <!--  <extension module="org.wildfly.extension.messaging-activemq"/>-->
         <extension module="org.wildfly.extension.request-controller"/>
         <extension module="org.wildfly.extension.security.manager"/>
         <extension module="org.wildfly.extension.undertow"/>
-        <extension module="org.wildfly.iiop-openjdk"/>
+        <!--  <extension module="org.wildfly.iiop-openjdk"/> -->
     </extensions>
 
     <system-properties>
@@ -102,7 +101,7 @@
         </access-control>
     </management>
     <profile>
-        <subsystem xmlns="urn:jboss:domain:logging:4.0">
+        <subsystem xmlns="urn:jboss:domain:logging:5.0">
             <console-handler name="CONSOLE">
                 <level name="INFO"/>
                 <formatter>
@@ -674,6 +673,7 @@
             </concurrent>
             <default-bindings context-service="java:jboss/ee/concurrency/context/default" datasource="java:jboss/datasources/ExampleDS" jms-connection-factory="java:jboss/DefaultJMSConnectionFactory" managed-executor-service="java:jboss/ee/concurrency/executor/default" managed-scheduled-executor-service="java:jboss/ee/concurrency/scheduler/default" managed-thread-factory="java:jboss/ee/concurrency/factory/default"/>
         </subsystem>
+        <subsystem xmlns="urn:jboss:domain:ee-security:1.0"/>
         <subsystem xmlns="urn:jboss:domain:ejb3:5.0">
             <session-bean>
                 <stateless>
@@ -722,7 +722,7 @@
             <default-missing-method-permissions-deny-access value="true"/>
             <log-system-exceptions value="true"/>
         </subsystem>
-        <subsystem xmlns="urn:wildfly:elytron:1.2" final-providers="combined-providers" disallowed-providers="OracleUcrypto">
+        <subsystem xmlns="urn:wildfly:elytron:3.0" final-providers="combined-providers" disallowed-providers="OracleUcrypto">
             <providers>
                 <aggregate-providers name="combined-providers">
                     <providers name="elytron"/>
@@ -824,11 +824,11 @@
                 <provider-sasl-server-factory name="global"/>
             </sasl>
         </subsystem>
-        <subsystem xmlns="urn:jboss:domain:io:2.0">
+        <subsystem xmlns="urn:jboss:domain:io:3.0">
             <worker name="default"/>
             <buffer-pool name="default"/>
         </subsystem>
-        <subsystem xmlns="urn:jboss:domain:infinispan:5.0">
+        <subsystem xmlns="urn:jboss:domain:infinispan:6.0">
             <cache-container name="server" default-cache="default" module="org.wildfly.clustering.server">
                 <local-cache name="default">
                     <transaction mode="BATCH"/>
@@ -861,11 +861,12 @@
                 <local-cache name="timestamps"/>
             </cache-container>
         </subsystem>
-        <subsystem xmlns="urn:jboss:domain:iiop-openjdk:2.0">
+        <!-- <subsystem xmlns="urn:jboss:domain:iiop-openjdk:2.0">
             <orb socket-binding="iiop"/>
             <initializers security="identity" transactions="spec"/>
             <security server-requires-ssl="false" client-requires-ssl="false"/>
         </subsystem>
+         -->
         <subsystem xmlns="urn:jboss:domain:jaxrs:1.0"/>
         <subsystem xmlns="urn:jboss:domain:jca:5.0">
             <archive-validation enabled="true" fail-on-error="true" fail-on-warn="false"/>
@@ -896,7 +897,6 @@
             <jpa default-datasource="" default-extended-persistence-inheritance="DEEP"/>
         </subsystem>
         <subsystem xmlns="urn:jboss:domain:jsf:1.0"/>
-        <subsystem xmlns="urn:jboss:domain:jsr77:1.0"/>
         <subsystem xmlns="urn:jboss:domain:mail:3.0">
             <mail-session name="default" jndi-name="java:jboss/mail/Default">
                 <smtp-server outbound-socket-binding-ref="mail-smtp"/>

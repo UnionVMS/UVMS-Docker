@@ -2,7 +2,7 @@ FROM njmittet/alpine-openjdk:jdk8
 
 MAINTAINER Nils Jørgen Mittet <njmittet@gmail.com>
 
-ENV WILDFLY_VERSION 12.0.0.Final
+ENV WILDFLY_VERSION 13.0.0.Final
 ENV JBOSS_HOME /opt/jboss/wildfly
 
 USER root
@@ -37,13 +37,8 @@ COPY dependencies/postgis-jdbc-${wildfly.postgres.module.postgis.version}.jar $P
 
 COPY hibernate/module.xml $HIBERNATE_MODULE
 COPY dependencies/hibernate-spatial-${wildfly.hibernate.module.spatial.version}.jar $HIBERNATE_MODULE
-COPY dependencies/hibernate-core-${wildfly.hibernate.module.hibernate.version}.jar $HIBERNATE_MODULE
-COPY dependencies/hibernate-entitymanager-${wildfly.hibernate.module.hibernate.version}.jar $HIBERNATE_MODULE
-COPY dependencies/hibernate-envers-${wildfly.hibernate.module.hibernate.version}.jar $HIBERNATE_MODULE
-COPY dependencies/hibernate-infinispan-${wildfly.hibernate.module.hibernate.version}.jar $HIBERNATE_MODULE
 COPY dependencies/jts-${wildfly.hibernate.module.jts.version}.jar $HIBERNATE_MODULE
-COPY dependencies/jipijapa-hibernate4-3-${wildfly.hibernate.module.jipijapa.version}.jar $HIBERNATE_MODULE
-COPY dependencies/geolatte-geom-1.0.1.jar $HIBERNATE_MODULE
+COPY dependencies/geolatte-geom-${wildfly.hibernate.module.geolatte.version}.jar $HIBERNATE_MODULE
 COPY dependencies/hibernate-spatial-4x-to-5x-wrapper-${project.version}.jar $HIBERNATE_MODULE
 
 # Standalone config
