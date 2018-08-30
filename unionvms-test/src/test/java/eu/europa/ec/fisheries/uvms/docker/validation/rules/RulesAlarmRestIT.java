@@ -36,6 +36,7 @@ import eu.europa.ec.fisheries.uvms.docker.validation.asset.AssetTestHelper;
 import eu.europa.ec.fisheries.uvms.docker.validation.common.AbstractRestServiceTest;
 import eu.europa.ec.fisheries.uvms.docker.validation.movement.LatLong;
 import eu.europa.ec.fisheries.uvms.docker.validation.system.helper.NAFHelper;
+import eu.europa.ec.fisheries.uvms.docker.validation.system.helper.SanityRuleHelper;
 
 /**
  * The Class RulesAlarmRestIT.
@@ -134,6 +135,7 @@ public class RulesAlarmRestIT extends AbstractRestServiceTest {
         Asset asset = AssetTestHelper.createBasicAsset();
         NAFHelper.sendPositionToNAFPlugin(new LatLong(56d, 11d, new Date()), asset);
 
+        SanityRuleHelper.pollAlarmReportCreated();
         AlarmQuery query = new AlarmQuery();
         ListPagination pagination = new ListPagination();
         pagination.setListSize(100);
