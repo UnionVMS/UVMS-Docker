@@ -95,7 +95,7 @@
 	</fileSets>
 	<files>
 		<file>
-			<source>target/content/uvms-docker-wildfly-base/deployments/activemq-rar-5.14.5.rar
+			<source>target/content/uvms-docker-wildfly-base/deployments/activemq-rar-5.15.4.rar
 			</source>
 			<outputDirectory>standalone/deployments</outputDirectory>
 			<destName>activemq-rar.rar</destName>
