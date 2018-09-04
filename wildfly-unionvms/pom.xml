@@ -15,7 +15,7 @@
 	<name>uvms-docker-wildfly-unionvms</name>
 
 	<properties>
-		<unionvms.project.exchange.module>4.0.28-MR</unionvms.project.exchange.module>
+		<unionvms.project.exchange.module>4.0.29-MR</unionvms.project.exchange.module>
 	</properties>
 
 	<repositories>
