@@ -4,16 +4,16 @@
 	<parent>
 		<groupId>eu.europa.ec.fisheries.uvms.docker</groupId>
 		<artifactId>uvms-docker</artifactId>
-		<version>3.25.5.w13-SNAPSHOT</version>
+		<version>3.25.5.w14-SNAPSHOT</version>
 		<relativePath>../pom.xml</relativePath>
 	</parent>
 	<groupId>eu.europa.ec.fisheries.uvms.docker</groupId>
 	<artifactId>uvms-docker-wildfly-base</artifactId>
-	<version>3.25.5.w13-SNAPSHOT</version>
+	<version>3.25.5.w14-SNAPSHOT</version>
 	<packaging>pom</packaging>
 	<name>uvms-docker-wildfly-base</name>
 	<properties>
-		<wildfly.hibernate.module.spatial.version>5.3.1.Final</wildfly.hibernate.module.spatial.version>
+		<wildfly.hibernate.module.spatial.version>5.3.6.Final</wildfly.hibernate.module.spatial.version>
 		<wildfly.hibernate.module.geolatte.version>1.2.0</wildfly.hibernate.module.geolatte.version>
 		<wildfly.hibernate.module.jts.version>1.13</wildfly.hibernate.module.jts.version>
 		<wildfly.postgres.module.postgis.version>1.5.3</wildfly.postgres.module.postgis.version>
