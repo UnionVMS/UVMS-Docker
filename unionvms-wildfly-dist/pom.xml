@@ -3,12 +3,12 @@
 	<parent>
 		<groupId>eu.europa.ec.fisheries.uvms.docker</groupId>
 		<artifactId>uvms-docker</artifactId>
-		<version>3.26.2.w14-SNAPSHOT</version>
+		<version>3.26.2.w14</version>
 		<relativePath>../pom.xml</relativePath>
 	</parent>
 	<artifactId>unionvms-wildfly-dist</artifactId>
 	<name>unionvms-wildfly-dist</name>
-	<version>3.26.2.w14-SNAPSHOT</version>
+	<version>3.26.2.w14</version>
 	<packaging>pom</packaging>
 	
 	<dependencies>
