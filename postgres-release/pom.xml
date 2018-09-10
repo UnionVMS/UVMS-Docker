@@ -58,17 +58,6 @@
 			</exclusions>			
 		</dependency>
 		<dependency>
-			<groupId>eu.europa.ec.fisheries.uvms.mobileterminal</groupId>
-			<artifactId>liquibase</artifactId>
-			<type>sql</type>
-			<exclusions>
-				<exclusion>
-					<groupId>com.oracle</groupId>
-					<artifactId>ojdbc6</artifactId>
-				</exclusion>
-			</exclusions>			
-		</dependency>
-		<dependency>
 			<groupId>eu.europa.ec.fisheries.uvms.movement</groupId>
 			<artifactId>liquibase</artifactId>
 			<type>sql</type>

@@ -39,7 +39,7 @@ public final class MobileTerminalTestHelper extends AbstractHelper {
 			mobileTerminalAssignQuery.setConnectId(testAsset.getId().toString());
 			// Assign first
 			final HttpResponse response = Request
-					.Post(getBaseUrl() + "mobileterminal/rest/mobileterminal/assign?comment=comment")
+					.Post(getBaseUrl() + "asset/rest/mobileterminal/assign?comment=comment")
 					.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken())
 					.bodyByteArray(writeValueAsString(mobileTerminalAssignQuery).getBytes()).execute().returnResponse();
 
@@ -93,7 +93,7 @@ public final class MobileTerminalTestHelper extends AbstractHelper {
 
 		pollRequestType.getMobileTerminals().add(pollMobileTerminal);
 
-		final HttpResponse response = Request.Post(getBaseUrl() + "mobileterminal/rest/poll")
+		final HttpResponse response = Request.Post(getBaseUrl() + "asset/rest/poll")
 				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken())
 				.bodyByteArray(writeValueAsString(pollRequestType).getBytes()).execute().returnResponse();
 
@@ -140,7 +140,7 @@ public final class MobileTerminalTestHelper extends AbstractHelper {
 
 		mobileTerminalRequest.setPlugin(plugin);
 
-		final HttpResponse response = Request.Post(getBaseUrl() + "mobileterminal/rest/mobileterminal")
+		final HttpResponse response = Request.Post(getBaseUrl() + "asset/rest/mobileterminal")
 				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken())
 				.bodyByteArray(writeValueAsString(mobileTerminalRequest).getBytes()).execute().returnResponse();
 
@@ -178,7 +178,7 @@ public final class MobileTerminalTestHelper extends AbstractHelper {
 		createdMobileTerminalType.setConnectId(testAsset.getId().toString());
 		
 		final HttpResponse response = Request
-				.Post(getBaseUrl() + "mobileterminal/rest/mobileterminal/assign?comment=comment")
+				.Post(getBaseUrl() + "asset/rest/mobileterminal/assign?comment=comment")
 				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken())
 				.bodyByteArray(writeValueAsString(mobileTerminalAssignQuery).getBytes()).execute().returnResponse();
 

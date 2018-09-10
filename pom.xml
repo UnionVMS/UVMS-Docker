@@ -29,7 +29,7 @@
 		<unionvms.project.rules.module>3.0.31</unionvms.project.rules.module>
 		<unionvms.project.movementrules.module>0.9.3</unionvms.project.movementrules.module>
 		<unionvms.project.movement.module>4.0.14</unionvms.project.movement.module>
-		<unionvms.project.mobileterminal.module>4.0.12</unionvms.project.mobileterminal.module>
+		<!--unionvms.project.mobileterminal.module>4.0.12</unionvms.project.mobileterminal.module-->
 		<unionvms.project.exchange.module>4.0.23</unionvms.project.exchange.module>
 		<unionvms.project.reporting.module>1.1.4-MR</unionvms.project.reporting.module>
 		<unionvms.project.spatial.module>1.1.8</unionvms.project.spatial.module>
@@ -113,18 +113,6 @@
 				<artifactId>liquibase</artifactId>
 				<type>sql</type>
 				<version>${unionvms.project.exchange.module}</version>
-				<exclusions>
-					<exclusion>
-						<groupId>com.oracle</groupId>
-						<artifactId>ojdbc6</artifactId>
-					</exclusion>
-				</exclusions>
-			</dependency>
-			<dependency>
-				<groupId>eu.europa.ec.fisheries.uvms.mobileterminal</groupId>
-				<artifactId>liquibase</artifactId>
-				<type>sql</type>
-				<version>${unionvms.project.mobileterminal.module}</version>
 				<exclusions>
 					<exclusion>
 						<groupId>com.oracle</groupId>
@@ -295,12 +283,6 @@
 				<version>${unionvms.project.exchange.module}</version>
 			</dependency>
 			<dependency>
-				<groupId>eu.europa.ec.fisheries.uvms.mobileterminal</groupId>
-				<artifactId>mobileterminal-module</artifactId>
-				<type>ear</type>
-				<version>${unionvms.project.mobileterminal.module}</version>
-			</dependency>
-			<dependency>
 				<groupId>eu.europa.ec.fisheries.uvms.movement</groupId>
 				<artifactId>movement-module</artifactId>
 				<type>ear</type>
@@ -452,7 +434,7 @@
 						<configuration>
 							<excludeProperties>wildfly.hibernate.module.hibernate.version,wildfly.hibernate.module.spatial.version,wildfly.hibernate.module.jts.version,wildfly.postgres.module.postgis.version,wildfly.postgres.module.postgres.version,wildfly.activemq.rar.version</excludeProperties>
 							<includeProperties>
-								unionvms.project.spatial.db.module,unionvms.project.reporting.db.module,unionvms.project.unionvms.web.version,unionvms.project.mapfishprint.version,unionvms.project.geoserver.version,unionvms.project.user.module,unionvms.project.rules.module,unionvms.project.movement.module,unionvms.project.mobileterminal.module,unionvms.project.exchange.module,unionvms.project.reporting.module,unionvms.project.subscription.module,unionvms.project.spatial.module,unionvms.project.config.module,unionvms.project.audit.module,unionvms.project.asset.module,unionvms.project.activity.module,unionvms.project.mdr.module,unionvms.project.plugins.naf,unionvms.project.plugins.flux,unionvms.project.plugins.inmarsat,unionvms.project.plugins.siriusone</includeProperties>
+								unionvms.project.spatial.db.module,unionvms.project.reporting.db.module,unionvms.project.unionvms.web.version,unionvms.project.mapfishprint.version,unionvms.project.geoserver.version,unionvms.project.user.module,unionvms.project.rules.module,unionvms.project.movement.module,unionvms.project.exchange.module,unionvms.project.reporting.module,unionvms.project.subscription.module,unionvms.project.spatial.module,unionvms.project.config.module,unionvms.project.audit.module,unionvms.project.asset.module,unionvms.project.activity.module,unionvms.project.mdr.module,unionvms.project.plugins.naf,unionvms.project.plugins.flux,unionvms.project.plugins.inmarsat,unionvms.project.plugins.siriusone</includeProperties>
 							<allowSnapshots>true</allowSnapshots>
 						</configuration>
 					</plugin>

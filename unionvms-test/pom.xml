@@ -35,11 +35,6 @@
 			<version>5.15.5</version>
 		</dependency>
 		<dependency>
-			<artifactId>mobileterminal-model</artifactId>
-			<groupId>eu.europa.ec.fisheries.uvms.mobileterminal</groupId>
-			<version>${unionvms.project.mobileterminal.module}</version>
-		</dependency>
-		<dependency>
 			<groupId>eu.europa.ec.fisheries.uvms.exchange</groupId>
 			<artifactId>exchange-model</artifactId>
 			<version>4.0.18</version>

@@ -7,7 +7,7 @@
 		<dependency name="spatial-module-${unionvms.project.spatial.module}.ear" />
 		<dependency name="movement-module-${unionvms.project.movement.module}.ear" />
 		<dependency name="asset-module-${unionvms.project.asset.module}.ear" />
-		<dependency name="mobileterminal-module-${unionvms.project.mobileterminal.module}.ear" />
+		<!--dependency name="mobileterminal-module-${unionvms.project.mobileterminal.module}.ear" /-->
 		<dependency name="rules-module-${unionvms.project.rules.module}.ear" />
 		<dependency name="reporting-module-${unionvms.project.reporting.module}.ear" />
 		<dependency name="mdr-module-${unionvms.project.mdr.module}.ear" />
