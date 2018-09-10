@@ -6,7 +6,7 @@ import static org.junit.Assert.assertTrue;
 import java.util.ArrayList;
 import java.util.List;
 import org.junit.Test;
-import eu.europa.ec.fisheries.uvms.asset.client.model.Asset;
+import eu.europa.ec.fisheries.uvms.asset.client.model.AssetDTO;
 import eu.europa.ec.fisheries.uvms.asset.client.model.AssetGroup;
 import eu.europa.ec.fisheries.uvms.asset.client.model.AssetGroupField;
 import eu.europa.ec.fisheries.wsdl.asset.types.AssetIdType;
@@ -18,7 +18,7 @@ public class AssetJMSIT {
 
 	@Test
 	public void testGetAssetByGuid() throws Exception {
-		Asset asset = AssetTestHelper.createTestAsset();
+		AssetDTO asset = AssetTestHelper.createTestAsset();
 		eu.europa.ec.fisheries.wsdl.asset.types.Asset assetById = AssetJMSHelper.getAssetById(asset.getId().toString(), AssetIdType.GUID);
 		
 		assertEquals(asset.getId().toString(), assetById.getAssetId().getGuid());
@@ -27,7 +27,7 @@ public class AssetJMSIT {
 
 	@Test
 	public void testGetAssetByCFR() throws Exception {
-		Asset asset = AssetTestHelper.createBasicAsset();
+		AssetDTO asset = AssetTestHelper.createBasicAsset();
 		asset = AssetTestHelper.createAsset(asset);
 		eu.europa.ec.fisheries.wsdl.asset.types.Asset assetById = AssetJMSHelper.getAssetById(asset.getCfr(), AssetIdType.CFR);
 
@@ -38,7 +38,7 @@ public class AssetJMSIT {
 	
 	@Test
 	public void testGetAssetByIRCS() throws Exception {
-		Asset asset = AssetTestHelper.createTestAsset();
+		AssetDTO asset = AssetTestHelper.createTestAsset();
 		eu.europa.ec.fisheries.wsdl.asset.types.Asset assetById = AssetJMSHelper.getAssetById(asset.getIrcs(), AssetIdType.IRCS);
 		
 		assertEquals(asset.getId().toString(), assetById.getAssetId().getGuid());
@@ -48,7 +48,7 @@ public class AssetJMSIT {
 	
 	@Test
 	public void testGetAssetByMMSI() throws Exception {
-		Asset asset = AssetTestHelper.createTestAsset();
+		AssetDTO asset = AssetTestHelper.createTestAsset();
 		eu.europa.ec.fisheries.wsdl.asset.types.Asset assetById = AssetJMSHelper.getAssetById(asset.getMmsi(), AssetIdType.MMSI);
 		
 		assertEquals(asset.getId().toString(), assetById.getAssetId().getGuid());
@@ -58,7 +58,7 @@ public class AssetJMSIT {
 	
 	@Test
 	public void testGetAssetListByQuery() throws Exception {
-		Asset asset = AssetTestHelper.createTestAsset();
+		AssetDTO asset = AssetTestHelper.createTestAsset();
 		
 		AssetListQuery assetListQuery = AssetJMSHelper.getBasicAssetQuery();
 		AssetListCriteriaPair assetListCriteriaPair = new AssetListCriteriaPair();
@@ -76,9 +76,9 @@ public class AssetJMSIT {
 	    // Create Group
 		AssetGroup assetGroup = AssetTestHelper.createBasicAssetGroup();
 		AssetGroup createdAssetGroup = AssetTestHelper.createAssetGroup(assetGroup);
-		
-		Asset asset1 = AssetTestHelper.createTestAsset();
-		Asset asset2 = AssetTestHelper.createTestAsset();
+
+		AssetDTO asset1 = AssetTestHelper.createTestAsset();
+		AssetDTO asset2 = AssetTestHelper.createTestAsset();
 		
 		// Add assets to group
 		AssetGroupField assetGroupField1 = new AssetGroupField();
@@ -106,8 +106,8 @@ public class AssetJMSIT {
 	    // Create Group
 		AssetGroup assetGroup = AssetTestHelper.createBasicAssetGroup();
 		AssetGroup createdAssetGroup = AssetTestHelper.createAssetGroup(assetGroup);
-		
-		Asset asset1 = AssetTestHelper.createTestAsset();
+
+		AssetDTO asset1 = AssetTestHelper.createTestAsset();
 		
 		// Add asset to group
 		AssetGroupField assetGroupField1 = new AssetGroupField();
@@ -128,9 +128,9 @@ public class AssetJMSIT {
 	    // Create Group
 		AssetGroup assetGroup = AssetTestHelper.createBasicAssetGroup();
 		AssetGroup createdAssetGroup = AssetTestHelper.createAssetGroup(assetGroup);
-		
-		Asset asset1 = AssetTestHelper.createTestAsset();
-		Asset asset2 = AssetTestHelper.createTestAsset();
+
+		AssetDTO asset1 = AssetTestHelper.createTestAsset();
+		AssetDTO asset2 = AssetTestHelper.createTestAsset();
 		
 		// Add assets to group
 		AssetGroupField assetGroupField1 = new AssetGroupField();

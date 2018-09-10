@@ -34,7 +34,7 @@ import com.fasterxml.jackson.databind.JsonMappingException;
 import eu.europa.ec.fisheries.schema.mobileterminal.types.v1.MobileTerminalType;
 import eu.europa.ec.fisheries.schema.movement.module.v1.CreateMovementRequest;
 import eu.europa.ec.fisheries.schema.movement.module.v1.CreateMovementResponse;
-import eu.europa.ec.fisheries.uvms.asset.client.model.Asset;
+import eu.europa.ec.fisheries.uvms.asset.client.model.AssetDTO;
 import eu.europa.ec.fisheries.uvms.docker.validation.asset.AssetTestHelper;
 import eu.europa.ec.fisheries.uvms.docker.validation.common.AbstractRestServiceTest;
 import eu.europa.ec.fisheries.uvms.docker.validation.mobileterminal.MobileTerminalTestHelper;
@@ -63,7 +63,7 @@ public class ReportingRestIT extends AbstractRestServiceTest {
 	private static MovementHelper movementHelper = new MovementHelper();
 
 	/** The test asset. */
-	private static Asset testAsset =null;
+	private static AssetDTO testAsset =null;
 	
 	/**
 	 * Creates the test asset with terminal and positions.
@@ -193,7 +193,7 @@ public class ReportingRestIT extends AbstractRestServiceTest {
 	 * @throws JsonMappingException the json mapping exception
 	 */
 	private ReportDTO createTwoWeeksReport(final String name, final String description, ReportTypeEnum reportTypeEnum,
-			VisibilityEnum visibilityEnum,Asset asset) throws IOException, ClientProtocolException, JsonProcessingException,
+			VisibilityEnum visibilityEnum,AssetDTO asset) throws IOException, ClientProtocolException, JsonProcessingException,
 			JsonParseException, JsonMappingException {
 		ReportDTO reportDTO = new ReportDTO();
 		long time = new Date().getTime();
@@ -230,7 +230,7 @@ public class ReportingRestIT extends AbstractRestServiceTest {
 	}
 
 	private ReportDTO createTwoWeeksLastFourPositionsReport(final String name, final String description, ReportTypeEnum reportTypeEnum,
-			VisibilityEnum visibilityEnum,Asset asset) throws IOException, ClientProtocolException, JsonProcessingException,
+			VisibilityEnum visibilityEnum,AssetDTO asset) throws IOException, ClientProtocolException, JsonProcessingException,
 			JsonParseException, JsonMappingException {
 		ReportDTO reportDTO = new ReportDTO();
 		long time = new Date().getTime();

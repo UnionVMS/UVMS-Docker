@@ -12,7 +12,7 @@ copy of the GNU General Public License along with the IFDM Suite. If not, see <h
 package eu.europa.ec.fisheries.uvms.docker.validation.system.rules;
 
 import eu.europa.ec.fisheries.schema.movementrules.customrule.v1.SanityRuleType;
-import eu.europa.ec.fisheries.uvms.asset.client.model.Asset;
+import eu.europa.ec.fisheries.uvms.asset.client.model.AssetDTO;
 import eu.europa.ec.fisheries.uvms.docker.validation.asset.AssetTestHelper;
 import eu.europa.ec.fisheries.uvms.docker.validation.common.AbstractRestServiceTest;
 import eu.europa.ec.fisheries.uvms.docker.validation.movement.LatLong;
@@ -44,7 +44,7 @@ public class SanityRulesIT extends AbstractRestServiceTest {
     @Test
     public void assetMustExistTest() throws Exception {
         // Do not save to DB
-        Asset asset = AssetTestHelper.createBasicAsset();
+        AssetDTO asset = AssetTestHelper.createBasicAsset();
 
         long openAlarmsBefore = SanityRuleHelper.countOpenAlarms();
         
@@ -62,7 +62,7 @@ public class SanityRulesIT extends AbstractRestServiceTest {
      */
     @Test
     public void positionTimeCannotBeFutureTest() throws Exception {
-        Asset asset = AssetTestHelper.createTestAsset();
+        AssetDTO asset = AssetTestHelper.createTestAsset();
 
         long openAlarmsBefore = SanityRuleHelper.countOpenAlarms();
         
@@ -82,7 +82,7 @@ public class SanityRulesIT extends AbstractRestServiceTest {
      */
     @Test
     public void latitudeMustExistsTest() throws Exception {
-        Asset asset = AssetTestHelper.createTestAsset();
+        AssetDTO asset = AssetTestHelper.createTestAsset();
 
         long openAlarmsBefore = SanityRuleHelper.countOpenAlarms();
         
@@ -103,7 +103,7 @@ public class SanityRulesIT extends AbstractRestServiceTest {
      */
     @Test
     public void longitudeMustExistsTest() throws Exception {
-        Asset asset = AssetTestHelper.createTestAsset();
+        AssetDTO asset = AssetTestHelper.createTestAsset();
 
         long openAlarmsBefore = SanityRuleHelper.countOpenAlarms();
         
@@ -152,7 +152,7 @@ public class SanityRulesIT extends AbstractRestServiceTest {
     */
     @Test
     public void positionTimeMustExistTest() throws Exception {
-        Asset asset = AssetTestHelper.createTestAsset();
+        AssetDTO asset = AssetTestHelper.createTestAsset();
 
         long openAlarmsBefore = SanityRuleHelper.countOpenAlarms();
         

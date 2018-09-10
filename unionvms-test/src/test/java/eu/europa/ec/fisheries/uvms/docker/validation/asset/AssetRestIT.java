@@ -14,6 +14,7 @@ copy of the GNU General Public License along with the IFDM Suite. If not, see <h
 package eu.europa.ec.fisheries.uvms.docker.validation.asset;
 
 import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -25,7 +26,7 @@ import org.apache.http.HttpResponse;
 import org.apache.http.client.fluent.Request;
 import org.junit.Ignore;
 import org.junit.Test;
-import eu.europa.ec.fisheries.uvms.asset.client.model.Asset;
+import eu.europa.ec.fisheries.uvms.asset.client.model.AssetDTO;
 import eu.europa.ec.fisheries.uvms.asset.client.model.AssetListResponse;
 import eu.europa.ec.fisheries.uvms.asset.client.model.AssetQuery;
 import eu.europa.ec.fisheries.uvms.asset.client.model.ContactInfo;
@@ -48,26 +49,26 @@ public class AssetRestIT extends AbstractRestServiceTest {
 	 */
 	@Test
 	public void getAssetListTest() throws Exception {
-		Asset asset = AssetTestHelper.createTestAsset();
+		AssetDTO asset = AssetTestHelper.createTestAsset();
 		
 		AssetQuery assetQuery = AssetTestHelper.getBasicAssetQuery();
 		assetQuery.setFlagState(Arrays.asList(asset.getFlagStateCode()));
 		
 		AssetListResponse assetListResponse = AssetTestHelper.assetListQuery(assetQuery);
-		List<Asset> assets = assetListResponse.getAssetList();
+		List<AssetDTO> assets = assetListResponse.getAssetList();
 		assertTrue(assets.stream().anyMatch(a -> a.getId().equals(asset.getId())));
 	}
 	
 	@Test
 	public void getAssetListMultipleAssetsGuidsTest() throws Exception {
-		Asset asset1 = AssetTestHelper.createTestAsset();
-		Asset asset2 = AssetTestHelper.createTestAsset();
+		AssetDTO asset1 = AssetTestHelper.createTestAsset();
+		AssetDTO asset2 = AssetTestHelper.createTestAsset();
 		
 		AssetQuery assetQuery = AssetTestHelper.getBasicAssetQuery();
 		assetQuery.setId(Arrays.asList(asset1.getId(), asset2.getId()));
 		
 		AssetListResponse assetListResponse = AssetTestHelper.assetListQuery(assetQuery);
-		List<Asset> assets = assetListResponse.getAssetList();
+		List<AssetDTO> assets = assetListResponse.getAssetList();
 		assertEquals(2, assets.size());
 		assertTrue(assets.stream().anyMatch(a -> a.getId().equals(asset1.getId())));
 		assertTrue(assets.stream().anyMatch(a -> a.getId().equals(asset2.getId())));
@@ -81,7 +82,7 @@ public class AssetRestIT extends AbstractRestServiceTest {
 		Integer countBefore = AssetTestHelper.assetListQueryCount(assetQuery);
 		
 		// Add new asset
-		Asset asset = AssetTestHelper.createBasicAsset();
+		AssetDTO asset = AssetTestHelper.createBasicAsset();
 		asset.setFlagStateCode("SWE");
 		AssetTestHelper.createAsset(asset);
 		
@@ -91,13 +92,13 @@ public class AssetRestIT extends AbstractRestServiceTest {
 	
 	@Test
 	public void getAssetListUpdatedIRCSNotFoundTest() throws Exception {
-		Asset testAsset = AssetTestHelper.createTestAsset();
+		AssetDTO testAsset = AssetTestHelper.createTestAsset();
 		
 		AssetQuery assetQuery = AssetTestHelper.getBasicAssetQuery();
 		assetQuery.setIrcs(Arrays.asList(testAsset.getIrcs()));
 		
 		AssetListResponse assetList = AssetTestHelper.assetListQuery(assetQuery);
-		List<Asset> assets = assetList.getAssetList();
+		List<AssetDTO> assets = assetList.getAssetList();
 		assertTrue(assets.stream().anyMatch(a -> a.getId().equals(testAsset.getId())));
 		
 		testAsset.setIrcs("I" + AssetTestHelper.generateARandomStringWithMaxLength(7));
@@ -111,15 +112,15 @@ public class AssetRestIT extends AbstractRestServiceTest {
 
 	@Test
 	public void getAssetListWithLikeSearchValue() throws Exception {
-		Asset asset = AssetTestHelper.createBasicAsset();
+		AssetDTO asset = AssetTestHelper.createBasicAsset();
 		asset.setPortOfRegistration("MyHomePort");
-		Asset createdAsset = AssetTestHelper.createAsset(asset);
+		AssetDTO createdAsset = AssetTestHelper.createAsset(asset);
 		
 		AssetQuery assetQuery = AssetTestHelper.getBasicAssetQuery();
 		assetQuery.setPortOfRegistration(Arrays.asList("My*"));
 		
 		AssetListResponse assetList = AssetTestHelper.assetListQuery(assetQuery);
-		List<Asset> assets = assetList.getAssetList();
+		List<AssetDTO> assets = assetList.getAssetList();
 		assertTrue(assets.stream().anyMatch(a -> a.getId().equals(createdAsset.getId())));
 	}
 	
@@ -132,8 +133,8 @@ public class AssetRestIT extends AbstractRestServiceTest {
 	 */
 	@Test
 	public void getAssetByIdTest() throws Exception {
-		Asset asset = AssetTestHelper.createTestAsset();
-		Asset assetByGuid = AssetTestHelper.getAssetByGuid(asset.getId());
+		AssetDTO asset = AssetTestHelper.createTestAsset();
+		AssetDTO assetByGuid = AssetTestHelper.getAssetByGuid(asset.getId());
 		assertEquals(asset.getId(), assetByGuid.getId());
 	}
 
@@ -151,7 +152,7 @@ public class AssetRestIT extends AbstractRestServiceTest {
 	@Test
 	public void createAssetAuditLogCreatedTest() throws Exception {
 		Date fromDate = DateUtils.getNowDateUTC();
-		Asset asset = AssetTestHelper.createTestAsset();
+		AssetDTO asset = AssetTestHelper.createTestAsset();
 		AssetTestHelper.assertAssetAuditLogCreated(asset.getId(), AuditOperationEnum.CREATE, fromDate);
 	}
 	
@@ -159,7 +160,7 @@ public class AssetRestIT extends AbstractRestServiceTest {
 	@Test
 	public void updateAssetAuditLogCreatedTest() throws Exception {
 		Date fromDate = DateUtils.getNowDateUTC();
-		Asset testAsset = AssetTestHelper.createTestAsset();
+		AssetDTO testAsset = AssetTestHelper.createTestAsset();
 		String newName = testAsset.getName() + "Changed";
 		testAsset.setName(newName);
 		AssetTestHelper.updateAsset(testAsset);
@@ -175,7 +176,7 @@ public class AssetRestIT extends AbstractRestServiceTest {
 	 */
 	@Test
 	public void archiveAssetTest() throws Exception {
-		Asset testAsset = AssetTestHelper.createTestAsset();
+		AssetDTO testAsset = AssetTestHelper.createTestAsset();
 		testAsset.setActive(false);
 		AssetTestHelper.archiveAsset(testAsset);
 	}
@@ -183,7 +184,7 @@ public class AssetRestIT extends AbstractRestServiceTest {
 	@Test
 	public void archiveAssetAuditLogCreatedTest() throws Exception {
 		Date fromDate = DateUtils.getNowDateUTC();
-		Asset testAsset = AssetTestHelper.createTestAsset();
+		AssetDTO testAsset = AssetTestHelper.createTestAsset();
 		testAsset.setActive(false);
 		AssetTestHelper.archiveAsset(testAsset);
 		
@@ -199,7 +200,7 @@ public class AssetRestIT extends AbstractRestServiceTest {
 	@Ignore // Removed resource?
 	@Test
 	public void assetListGroupByFlagStateTest() throws Exception {
-		Asset asset = AssetTestHelper.createTestAsset();
+		AssetDTO asset = AssetTestHelper.createTestAsset();
 		ArrayList<String> assetIdList = new ArrayList<String>();
 		assetIdList.add(asset.getId().toString());
 
@@ -212,14 +213,14 @@ public class AssetRestIT extends AbstractRestServiceTest {
 
 	@Test
 	public void getAssetListWithLikeSearchValue_ICCAT_AND_UVI_GFCM() throws Exception {
-		Asset asset = AssetTestHelper.createBasicAsset();
+		AssetDTO asset = AssetTestHelper.createBasicAsset();
 
 		String theValue = UUID.randomUUID().toString();
 		asset.setIccat(theValue);
 		asset.setUvi(theValue);
 		asset.setGfcm(theValue);
 
-		Asset createdAsset = AssetTestHelper.createAsset(asset);
+		AssetDTO createdAsset = AssetTestHelper.createAsset(asset);
 
 		AssetQuery assetQuery = AssetTestHelper.getBasicAssetQuery();
 
@@ -228,14 +229,14 @@ public class AssetRestIT extends AbstractRestServiceTest {
 		assetQuery.setGfcm(Arrays.asList(theValue));
 
 		AssetListResponse assetList = AssetTestHelper.assetListQuery(assetQuery);
-		List<Asset> assets = assetList.getAssetList();
+		List<AssetDTO> assets = assetList.getAssetList();
 		assertTrue(assets.stream().anyMatch(a -> a.getId().equals(createdAsset.getId())));
 	}
 
 	@Ignore // TODO check what happens when list doesn't find any asset
 	@Test
 	public void getAssetListWithLikeSearchValue_CHANGE_KEY_AND_FAIL() throws Exception {
-		Asset asset = AssetTestHelper.createTestAsset();
+		AssetDTO asset = AssetTestHelper.createTestAsset();
 		UUID guid = asset.getId();
 
 		String oldIccat = asset.getIccat();
@@ -250,7 +251,7 @@ public class AssetRestIT extends AbstractRestServiceTest {
 		assetQuery.setId(Arrays.asList(guid));
 
 		AssetListResponse listAssetResponse = AssetTestHelper.assetListQuery(assetQuery);
-		List<Asset> fetchedAsssets = listAssetResponse.getAssetList();
+		List<AssetDTO> fetchedAsssets = listAssetResponse.getAssetList();
 		assertFalse(fetchedAsssets.stream().anyMatch(a -> a.getId().equals(guid)));
 	}
 
@@ -263,10 +264,10 @@ public class AssetRestIT extends AbstractRestServiceTest {
 	 */
 	@Test
 	public void updateAssetTest() throws Exception {
-		Asset testAsset = AssetTestHelper.createTestAsset();
+		AssetDTO testAsset = AssetTestHelper.createTestAsset();
 		String newName = testAsset.getName() + "Changed";
 		testAsset.setName(newName);
-		Asset updatedAsset = AssetTestHelper.updateAsset(testAsset);
+		AssetDTO updatedAsset = AssetTestHelper.updateAsset(testAsset);
 		assertEquals(newName, updatedAsset.getName());
 		assertEquals(testAsset.getId(), updatedAsset.getId());
 		assertEquals(testAsset.getCfr(), updatedAsset.getCfr());
@@ -276,13 +277,13 @@ public class AssetRestIT extends AbstractRestServiceTest {
 	@Test
 	public void assetListQueryHistoryGuidTest() throws Exception {
 		// Create asset versions
-		Asset asset1 = AssetTestHelper.createTestAsset();
+		AssetDTO asset1 = AssetTestHelper.createTestAsset();
 
-		Asset asset2 = AssetTestHelper.getAssetByGuid(asset1.getId());
+		AssetDTO asset2 = AssetTestHelper.getAssetByGuid(asset1.getId());
 		asset2.setName(asset2.getName() + "1");
 		asset2 = AssetTestHelper.updateAsset(asset2);
 
-		Asset asset3 = AssetTestHelper.getAssetByGuid(asset2.getId());
+		AssetDTO asset3 = AssetTestHelper.getAssetByGuid(asset2.getId());
 		asset3.setName(asset3.getName() + "2");
 		asset3 = AssetTestHelper.updateAsset(asset3);
 
@@ -290,7 +291,7 @@ public class AssetRestIT extends AbstractRestServiceTest {
 		assetQuery1.setHistoryId(Arrays.asList(asset1.getHistoryId()));
 		
 		AssetListResponse assetHistory1 = AssetTestHelper.assetListQuery(assetQuery1);
-		List<Asset> assets = assetHistory1.getAssetList();
+		List<AssetDTO> assets = assetHistory1.getAssetList();
 		assertEquals(1, assets.size());
 		assertEquals(asset1.getId(), assets.get(0).getId());
 		
@@ -298,7 +299,7 @@ public class AssetRestIT extends AbstractRestServiceTest {
 		assetQuery2.setHistoryId(Arrays.asList(asset2.getHistoryId()));
 		
 		AssetListResponse assetHistory2 = AssetTestHelper.assetListQuery(assetQuery2);
-		List<Asset> assets2 = assetHistory2.getAssetList();
+		List<AssetDTO> assets2 = assetHistory2.getAssetList();
 		assertEquals(1, assets2.size());
 		assertEquals(asset2.getId(), assets2.get(0).getId());		
 		assertEquals(asset2.getName(), assets2.get(0).getName());
@@ -307,7 +308,7 @@ public class AssetRestIT extends AbstractRestServiceTest {
 		assetQuery3.setHistoryId(Arrays.asList(asset3.getHistoryId()));
 		
 		AssetListResponse assetHistory3 = AssetTestHelper.assetListQuery(assetQuery3);
-		List<Asset> assets3 = assetHistory3.getAssetList();
+		List<AssetDTO> assets3 = assetHistory3.getAssetList();
 		assertEquals(1, assets3.size());
 		assertEquals(asset3.getId(), assets3.get(0).getId());
 		assertEquals(asset3.getName(), assets3.get(0).getName());
@@ -316,17 +317,17 @@ public class AssetRestIT extends AbstractRestServiceTest {
 	@Test
 	public void assetListQueryMultipleHistoryGuidTest() throws Exception {
 		// Create asset versions
-		Asset asset1 = AssetTestHelper.createTestAsset();
+		AssetDTO asset1 = AssetTestHelper.createTestAsset();
 
-		Asset asset2 = AssetTestHelper.getAssetByGuid(asset1.getId());
+		AssetDTO asset2 = AssetTestHelper.getAssetByGuid(asset1.getId());
 		asset2.setName(asset2.getName() + "1");
-		Asset createdAsset2 = AssetTestHelper.updateAsset(asset2);
+		AssetDTO createdAsset2 = AssetTestHelper.updateAsset(asset2);
 
 		AssetQuery assetQuery = AssetTestHelper.getBasicAssetQuery();
 		assetQuery.setHistoryId(Arrays.asList(asset1.getHistoryId(), createdAsset2.getHistoryId()));
 		
 		AssetListResponse assetHistory = AssetTestHelper.assetListQuery(assetQuery);
-		List<Asset> assets = assetHistory.getAssetList();
+		List<AssetDTO> assets = assetHistory.getAssetList();
 		assertEquals(2, assets.size());
 		assertTrue(assets.stream().anyMatch(a -> a.getId().equals(asset1.getId()) && a.getName().equals(asset1.getName())));	
 		assertTrue(assets.stream().anyMatch(a -> a.getId().equals(createdAsset2.getId()) && a.getName().equals(asset2.getName())));
@@ -334,7 +335,7 @@ public class AssetRestIT extends AbstractRestServiceTest {
 	
 	@Test
 	public void addContactToAsset() throws Exception {
-	    Asset asset = AssetTestHelper.createTestAsset();
+		AssetDTO asset = AssetTestHelper.createTestAsset();
 	    
 	    ContactInfo contact = new ContactInfo();
 	    contact.setName("Test contact");
@@ -347,11 +348,11 @@ public class AssetRestIT extends AbstractRestServiceTest {
 	
 	@Test
 	public void addNoteToAsset() throws Exception {
-	    Asset asset = AssetTestHelper.createTestAsset();
+		AssetDTO asset = AssetTestHelper.createTestAsset();
 
 	    Note note = new Note();
 	    note.setActivityCode("1");
-	    note.setDate(LocalDateTime.now(ZoneOffset.UTC));
+	    note.setDate(OffsetDateTime.now(ZoneOffset.UTC));
 	    note.setNotes("apa");
 
 	    

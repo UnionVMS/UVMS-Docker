@@ -24,7 +24,7 @@ import eu.europa.ec.fisheries.schema.mobileterminal.types.v1.MobileTerminalAssig
 import eu.europa.ec.fisheries.schema.mobileterminal.types.v1.MobileTerminalListQuery;
 import eu.europa.ec.fisheries.schema.mobileterminal.types.v1.MobileTerminalSearchCriteria;
 import eu.europa.ec.fisheries.schema.mobileterminal.types.v1.MobileTerminalType;
-import eu.europa.ec.fisheries.uvms.asset.client.model.Asset;
+import eu.europa.ec.fisheries.uvms.asset.client.model.AssetDTO;
 import eu.europa.ec.fisheries.uvms.docker.validation.asset.AssetTestHelper;
 
 /**
@@ -113,7 +113,7 @@ public class MobileTerminalRestIT extends AbstractMobileTerminalTest {
 	 */
 	@Test
 	public void assignMobileTerminalTest() throws Exception {
-		Asset testAsset = AssetTestHelper.createTestAsset();
+		AssetDTO testAsset = AssetTestHelper.createTestAsset();
 		MobileTerminalType createdMobileTerminalType = MobileTerminalTestHelper.createMobileTerminalType();
 
 		Map<String, Object> dataMap = MobileTerminalTestHelper.assignMobileTerminal(testAsset, createdMobileTerminalType);
@@ -127,7 +127,7 @@ public class MobileTerminalRestIT extends AbstractMobileTerminalTest {
 	 */
 	@Test
 	public void unAssignMobileTerminalTest() throws Exception {
-		Asset testAsset = AssetTestHelper.createTestAsset();
+		AssetDTO testAsset = AssetTestHelper.createTestAsset();
 		MobileTerminalType createdMobileTerminalType = MobileTerminalTestHelper.createMobileTerminalType();
 
 		MobileTerminalAssignQuery mobileTerminalAssignQuery = new MobileTerminalAssignQuery();

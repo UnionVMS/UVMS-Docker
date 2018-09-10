@@ -14,7 +14,7 @@ package eu.europa.ec.fisheries.uvms.docker.validation.system.vms;
 import eu.europa.ec.fisheries.schema.exchange.plugin.v1.SetReportRequest;
 import eu.europa.ec.fisheries.schema.mobileterminal.types.v1.MobileTerminalType;
 import eu.europa.ec.fisheries.schema.movementrules.customrule.v1.*;
-import eu.europa.ec.fisheries.uvms.asset.client.model.Asset;
+import eu.europa.ec.fisheries.uvms.asset.client.model.AssetDTO;
 import eu.europa.ec.fisheries.uvms.docker.validation.asset.AssetTestHelper;
 import eu.europa.ec.fisheries.uvms.docker.validation.common.AbstractRestServiceTest;
 import eu.europa.ec.fisheries.uvms.docker.validation.common.MessageHelper;
@@ -58,7 +58,7 @@ public class VMSSystemPerformanceIT extends AbstractRestServiceTest {
     @Required(max = 45000)
     public void createPositionAndTriggerRulePerformanceTest() throws Exception {
 
-        Asset asset = AssetTestHelper.createTestAsset();
+        AssetDTO asset = AssetTestHelper.createTestAsset();
         MobileTerminalType mobileTerminalType = MobileTerminalTestHelper.createMobileTerminalType();
         MobileTerminalTestHelper.assignMobileTerminal(asset, mobileTerminalType);
 

@@ -25,7 +25,7 @@ import eu.europa.ec.fisheries.schema.mobileterminal.polltypes.v1.PollListQuery;
 import eu.europa.ec.fisheries.schema.mobileterminal.polltypes.v1.PollSearchCriteria;
 import eu.europa.ec.fisheries.schema.mobileterminal.polltypes.v1.PollableQuery;
 import eu.europa.ec.fisheries.schema.mobileterminal.types.v1.ListPagination;
-import eu.europa.ec.fisheries.uvms.asset.client.model.Asset;
+import eu.europa.ec.fisheries.uvms.asset.client.model.AssetDTO;
 import eu.europa.ec.fisheries.uvms.docker.validation.asset.AssetTestHelper;
 
 /**
@@ -57,7 +57,7 @@ public class PollRestIT extends AbstractMobileTerminalTest {
 	 */
 	@Test
 	public void createPollTest() throws Exception {
-		Asset testAsset = AssetTestHelper.createTestAsset();
+		AssetDTO testAsset = AssetTestHelper.createTestAsset();
 		Map<String, Object> programPollDataMap = MobileTerminalTestHelper.createPoll_Helper(testAsset);
 	}
 
@@ -69,7 +69,7 @@ public class PollRestIT extends AbstractMobileTerminalTest {
 	 */
 	@Test
 	public void startProgramPollTest() throws Exception {
-		Asset testAsset = AssetTestHelper.createTestAsset();
+		AssetDTO testAsset = AssetTestHelper.createTestAsset();
 		Map<String, Object> programPollDataMap = MobileTerminalTestHelper.createPoll_Helper(testAsset);
 		ArrayList sendPolls = (ArrayList) programPollDataMap.get("sentPolls");
 		String uid = (String) sendPolls.get(0);
@@ -93,7 +93,7 @@ public class PollRestIT extends AbstractMobileTerminalTest {
 	 */
 	@Test
 	public void stopProgramPollTest() throws Exception {
-		Asset testAsset = AssetTestHelper.createTestAsset();
+		AssetDTO testAsset = AssetTestHelper.createTestAsset();
 		Map<String, Object> programPollDataMap = MobileTerminalTestHelper.createPoll_Helper(testAsset);
 		ArrayList sendPolls = (ArrayList) programPollDataMap.get("sentPolls");
 		String uid = (String) sendPolls.get(0);
@@ -125,7 +125,7 @@ public class PollRestIT extends AbstractMobileTerminalTest {
 	 */
 	@Test
 	public void inactivateProgramPollTest() throws Exception {
-		Asset testAsset = AssetTestHelper.createTestAsset();
+		AssetDTO testAsset = AssetTestHelper.createTestAsset();
 		Map<String, Object> programPollDataMap = MobileTerminalTestHelper.createPoll_Helper(testAsset);
 		ArrayList sendPolls = (ArrayList) programPollDataMap.get("sentPolls");
 		String uid = (String) sendPolls.get(0);

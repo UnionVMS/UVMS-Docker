@@ -20,7 +20,7 @@ import eu.europa.ec.fisheries.schema.audit.search.v1.AuditLogListQuery;
 import eu.europa.ec.fisheries.schema.audit.search.v1.ListCriteria;
 import eu.europa.ec.fisheries.schema.audit.search.v1.SearchKey;
 import eu.europa.ec.fisheries.schema.audit.v1.AuditLogType;
-import eu.europa.ec.fisheries.uvms.asset.client.model.Asset;
+import eu.europa.ec.fisheries.uvms.asset.client.model.AssetDTO;
 import eu.europa.ec.fisheries.uvms.asset.client.model.AssetGroup;
 import eu.europa.ec.fisheries.uvms.asset.client.model.AssetGroupField;
 import eu.europa.ec.fisheries.uvms.asset.client.model.AssetListResponse;
@@ -39,42 +39,42 @@ public class AssetTestHelper extends AbstractHelper {
 	//  AssetResource
 	// ************************************************
 
-	public static Asset createTestAsset() throws IOException, ClientProtocolException, JsonProcessingException,
+	public static AssetDTO createTestAsset() throws IOException, ClientProtocolException, JsonProcessingException,
 			JsonParseException, JsonMappingException {
-		Asset asset = createBasicAsset();
+		AssetDTO asset = createBasicAsset();
 		final HttpResponse response = Request.Post(getBaseUrl() + "asset/rest/asset")
 				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken())
 				.bodyByteArray(writeValueAsString(asset).getBytes()).execute().returnResponse();
 
-		return checkSuccessResponseAndReturnType(response, Asset.class);
+		return checkSuccessResponseAndReturnType(response, AssetDTO.class);
 	}
 
-	public static Asset getAssetByGuid(UUID assetGuid) throws ClientProtocolException, IOException {
+	public static AssetDTO getAssetByGuid(UUID assetGuid) throws ClientProtocolException, IOException {
 		final HttpResponse response = Request.Get(getBaseUrl() + "asset/rest/asset/" + assetGuid)
 				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken()).execute()
 				.returnResponse();
-		return checkSuccessResponseAndReturnType(response, Asset.class);
+		return checkSuccessResponseAndReturnType(response, AssetDTO.class);
 	}
 
-	public static Asset createAsset(Asset asset) throws ClientProtocolException, JsonProcessingException, IOException {
+	public static AssetDTO createAsset(AssetDTO asset) throws ClientProtocolException, JsonProcessingException, IOException {
 		final HttpResponse response = Request.Post(getBaseUrl() + "asset/rest/asset")
 				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken())
 				.bodyByteArray(writeValueAsString(asset).getBytes()).execute().returnResponse();
-		return checkSuccessResponseAndReturnType(response, Asset.class);
+		return checkSuccessResponseAndReturnType(response, AssetDTO.class);
 	}
 
-	public static Asset updateAsset(Asset asset) throws ClientProtocolException, JsonProcessingException, IOException {
+	public static AssetDTO updateAsset(AssetDTO asset) throws ClientProtocolException, JsonProcessingException, IOException {
 		final HttpResponse response = Request.Put(getBaseUrl() + "asset/rest/asset?comment=UpdatedAsset")
 				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken())
 				.bodyByteArray(writeValueAsString(asset).getBytes()).execute().returnResponse();
-		return checkSuccessResponseAndReturnType(response, Asset.class);
+		return checkSuccessResponseAndReturnType(response, AssetDTO.class);
 	}
 
-	public static Asset archiveAsset(Asset asset) throws ClientProtocolException, JsonProcessingException, IOException {
+	public static AssetDTO archiveAsset(AssetDTO asset) throws ClientProtocolException, JsonProcessingException, IOException {
 		final HttpResponse response = Request.Put(getBaseUrl() + "asset/rest/asset/archive?comment=Archive")
 				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken())
 				.bodyByteArray(writeValueAsString(asset).getBytes()).execute().returnResponse();
-		return checkSuccessResponseAndReturnType(response, Asset.class);
+		return checkSuccessResponseAndReturnType(response, AssetDTO.class);
 	}
 	
 	public static AssetListResponse assetListQuery(AssetQuery query) throws ClientProtocolException, JsonProcessingException, IOException {
@@ -91,36 +91,36 @@ public class AssetTestHelper extends AbstractHelper {
 		return checkSuccessResponseAndReturnType(response, Integer.class);
 	}
 
-	public static List<Asset> getAssetHistoryFromAssetGuid(UUID assetId) throws ClientProtocolException, IOException {
+	public static List<AssetDTO> getAssetHistoryFromAssetGuid(UUID assetId) throws ClientProtocolException, IOException {
 		final HttpResponse response = Request.Get(getBaseUrl() + "asset/rest/asset/history/asset/" + assetId)
 				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken()).execute()
 				.returnResponse();
-		return checkSuccessResponseAndReturnList(response, Asset.class);
+		return checkSuccessResponseAndReturnList(response, AssetDTO.class);
 	}
 	
-	public static Asset getAssetHistoryFromHistoryGuid(UUID historyId) throws ClientProtocolException, IOException {
+	public static AssetDTO getAssetHistoryFromHistoryGuid(UUID historyId) throws ClientProtocolException, IOException {
 		final HttpResponse response = Request.Get(getBaseUrl() + "asset/rest/asset/history/" + historyId)
 				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken()).execute()
 				.returnResponse();
-		return checkSuccessResponseAndReturnType(response, Asset.class);
+		return checkSuccessResponseAndReturnType(response, AssetDTO.class);
 	}
 
-	public static Asset getAssetFromAssetIdAndDate(String type, String value, LocalDateTime date) throws ClientProtocolException, IOException {
+	public static AssetDTO getAssetFromAssetIdAndDate(String type, String value, LocalDateTime date) throws ClientProtocolException, IOException {
 		String dateStr = date.format(DateTimeFormatter.ISO_LOCAL_DATE_TIME);
 		final HttpResponse response = Request.Get(getBaseUrl() + "asset/rest/asset/history/" + type + "/" + value + "/" + dateStr)
 				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken()).execute()
 				.returnResponse();
-		return checkSuccessResponseAndReturnType(response, Asset.class);
+		return checkSuccessResponseAndReturnType(response, AssetDTO.class);
 	}
 	
-	public static ContactInfo createContactInfoForAsset(Asset asset, ContactInfo contact) throws ClientProtocolException, JsonProcessingException, IOException {
+	public static ContactInfo createContactInfoForAsset(AssetDTO asset, ContactInfo contact) throws ClientProtocolException, JsonProcessingException, IOException {
 	    HttpResponse response = Request.Post(getBaseUrl() + "asset/rest/asset/" + asset.getId() + "/contacts")
                 .setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken())
                 .bodyByteArray(writeValueAsString(contact).getBytes()).execute().returnResponse();
         return checkSuccessResponseAndReturnType(response, ContactInfo.class);
 	}
 	
-	public static Note createNoteForAsset(Asset asset, Note contact) throws ClientProtocolException, JsonProcessingException, IOException {
+	public static Note createNoteForAsset(AssetDTO asset, Note contact) throws ClientProtocolException, JsonProcessingException, IOException {
         HttpResponse response = Request.Post(getBaseUrl() + "asset/rest/asset/" + asset.getId() + "/notes")
                 .setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken())
                 .bodyByteArray(writeValueAsString(contact).getBytes()).execute().returnResponse();
@@ -237,8 +237,8 @@ public class AssetTestHelper extends AbstractHelper {
 		return checkSuccessResponseReturnInt(response);
 	}
 	
-	public static eu.europa.ec.fisheries.uvms.asset.client.model.Asset createBasicAsset() {
-        eu.europa.ec.fisheries.uvms.asset.client.model.Asset asset = new eu.europa.ec.fisheries.uvms.asset.client.model.Asset();
+	public static eu.europa.ec.fisheries.uvms.asset.client.model.AssetDTO createBasicAsset() {
+        eu.europa.ec.fisheries.uvms.asset.client.model.AssetDTO asset = new eu.europa.ec.fisheries.uvms.asset.client.model.AssetDTO();
 
         asset.setActive(true);
 
