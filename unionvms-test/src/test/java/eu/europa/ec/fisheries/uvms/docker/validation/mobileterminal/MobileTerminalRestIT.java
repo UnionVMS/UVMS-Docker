@@ -15,15 +15,11 @@ package eu.europa.ec.fisheries.uvms.docker.validation.mobileterminal;
 
 import java.util.Map;
 
+import eu.europa.ec.fisheries.schema.mobileterminal.types.v1.*;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.fluent.Request;
 import org.junit.Test;
 
-import eu.europa.ec.fisheries.schema.mobileterminal.types.v1.ListPagination;
-import eu.europa.ec.fisheries.schema.mobileterminal.types.v1.MobileTerminalAssignQuery;
-import eu.europa.ec.fisheries.schema.mobileterminal.types.v1.MobileTerminalListQuery;
-import eu.europa.ec.fisheries.schema.mobileterminal.types.v1.MobileTerminalSearchCriteria;
-import eu.europa.ec.fisheries.schema.mobileterminal.types.v1.MobileTerminalType;
 import eu.europa.ec.fisheries.uvms.asset.client.model.AssetDTO;
 import eu.europa.ec.fisheries.uvms.docker.validation.asset.AssetTestHelper;
 
@@ -95,6 +91,12 @@ public class MobileTerminalRestIT extends AbstractMobileTerminalTest {
 		pagination.setPage(1);
 		queryRequest.setPagination(pagination);
 		MobileTerminalSearchCriteria criteria = new MobileTerminalSearchCriteria();
+
+		ListCriteria cr = new ListCriteria();
+		cr.setKey(SearchKey.TRANSPONDER_TYPE);
+		cr.setValue("dummy");
+
+		criteria.getCriterias().add(cr);
 		criteria.setIsDynamic(true);
 		queryRequest.setMobileTerminalSearchCriteria(criteria);
 		
