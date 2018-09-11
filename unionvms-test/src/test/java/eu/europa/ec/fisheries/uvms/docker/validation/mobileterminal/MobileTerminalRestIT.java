@@ -180,8 +180,10 @@ public class MobileTerminalRestIT extends AbstractMobileTerminalTest {
 	public void setStatusInactiveTest() throws Exception {
 		MobileTerminalType createdMobileTerminalType = MobileTerminalTestHelper.createMobileTerminalType();
 
+		String endpoint = getBaseUrl() + "asset/rest/mobileterminal/";
+
 		final HttpResponse response = Request
-				.Put(getBaseUrl() + "asset/rest/mobileterminal/status/inactivate?comment=comment")
+				.Put(endpoint + "status/inactivate?comment=comment")
 				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken())
 				.bodyByteArray(writeValueAsString(createdMobileTerminalType.getMobileTerminalId()).getBytes()).execute().returnResponse();
 

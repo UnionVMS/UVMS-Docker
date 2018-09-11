@@ -161,6 +161,16 @@ public class ModuleAvailableSystemIT extends AbstractRest {
 
 	}
 
+	@Test
+	public void checkMobileterminalAccess2Test() throws Exception {
+
+		String endpoint = getBaseUrl() + "asset/rest/mobileterminal/blabla";
+		HttpResponse resp = Request.Get(endpoint).execute().returnResponse();
+		assertEquals(HttpStatus.SC_FORBIDDEN, Request.Get(endpoint).execute().returnResponse().getStatusLine().getStatusCode());
+		assertEquals(HttpStatus.SC_OK, Request.Get(getBaseUrl() + "asset/monitoring").execute().returnResponse().getStatusLine().getStatusCode());
+
+	}
+
 	/**
 	 * Check mapfish print access test.
 	 *
