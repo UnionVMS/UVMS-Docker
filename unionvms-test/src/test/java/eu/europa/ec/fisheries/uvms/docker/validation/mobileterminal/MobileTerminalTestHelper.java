@@ -140,6 +140,8 @@ public final class MobileTerminalTestHelper extends AbstractHelper {
 
 		mobileTerminalRequest.setPlugin(plugin);
 
+		String ep = getBaseUrl() + "asset/rest/mobileterminal/";
+		String jwt = getValidJwtToken();
 		final HttpResponse response = Request.Post(getBaseUrl() + "asset/rest/mobileterminal")
 				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken())
 				.bodyByteArray(writeValueAsString(mobileTerminalRequest).getBytes()).execute().returnResponse();
