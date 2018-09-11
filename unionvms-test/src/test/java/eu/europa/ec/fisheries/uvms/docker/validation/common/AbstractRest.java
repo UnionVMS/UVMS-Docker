@@ -101,7 +101,7 @@ public abstract class AbstractRest extends Assert {
 
 	public static Map<String, Object> checkSuccessResponseReturnDataMap(final HttpResponse response)
 			throws IOException {
-		assertEquals(HttpStatus.SC_OK, response.getStatusLine().getStatusCode());
+		assertEquals(EntityUtils.toString(response.getEntity()),HttpStatus.SC_OK, response.getStatusLine().getStatusCode());
 		final Map<String, Object> data = getJsonMap(response);
 		assertFalse(data.isEmpty());
 		assertNotNull(data.get("data"));
@@ -137,7 +137,7 @@ public abstract class AbstractRest extends Assert {
 	
 	protected static <T> T checkSuccessResponseAndReturnType(final HttpResponse response, Class<T> classCast)
             throws IOException {
-	    assertEquals(HttpStatus.SC_OK, response.getStatusLine().getStatusCode());
+	    assertEquals("Response Body: " + EntityUtils.toString(response.getEntity()), HttpStatus.SC_OK, response.getStatusLine().getStatusCode());
         HttpEntity entity = response.getEntity();
         T dataValue = OBJECT_MAPPER.readValue(EntityUtils.toString(entity), classCast);
         assertNotNull(dataValue);

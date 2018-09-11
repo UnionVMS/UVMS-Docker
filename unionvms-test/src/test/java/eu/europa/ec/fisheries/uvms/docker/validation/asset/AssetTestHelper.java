@@ -2,6 +2,7 @@ package eu.europa.ec.fisheries.uvms.docker.validation.asset;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
 import java.util.Date;
@@ -105,8 +106,8 @@ public class AssetTestHelper extends AbstractHelper {
 		return checkSuccessResponseAndReturnType(response, AssetDTO.class);
 	}
 
-	public static AssetDTO getAssetFromAssetIdAndDate(String type, String value, LocalDateTime date) throws ClientProtocolException, IOException {
-		String dateStr = date.format(DateTimeFormatter.ISO_LOCAL_DATE_TIME);
+	public static AssetDTO getAssetFromAssetIdAndDate(String type, String value, OffsetDateTime date) throws ClientProtocolException, IOException {
+		String dateStr = date.format(DateTimeFormatter.ISO_OFFSET_DATE_TIME);
 		final HttpResponse response = Request.Get(getBaseUrl() + "asset/rest/asset/history/" + type + "/" + value + "/" + dateStr)
 				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken()).execute()
 				.returnResponse();

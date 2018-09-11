@@ -51,13 +51,13 @@ public class AssetGroupRestIT extends AbstractRestServiceTest {
 		AssetGroupField assetGroupField1 = new AssetGroupField();
 		assetGroupField1.setField("GUID");
 		assetGroupField1.setValue(asset1.getId().toString());
-		assetGroupField1.setAssetGroup(createdAssetGroup.getId());
+		assetGroupField1.setAssetGroup(createdAssetGroup);
 		AssetGroupField createdAssetGroupField1 = AssetTestHelper.createAssetGroupField(createdAssetGroup.getId(), assetGroupField1);
 	
 		AssetGroupField assetGroupField2 = new AssetGroupField();
 		assetGroupField2.setField("GUID");
 		assetGroupField2.setValue(asset2.getId().toString());
-		assetGroupField2.setAssetGroup(createdAssetGroup.getId());
+		assetGroupField2.setAssetGroup(createdAssetGroup);
 		AssetGroupField createdAssetGroupField2 = AssetTestHelper.createAssetGroupField(createdAssetGroup.getId(), assetGroupField2);
 	
 		List<AssetGroupField> fetchedAssetGroups = AssetTestHelper.getAssetGroupFieldByAssetGroup(createdAssetGroup.getId());

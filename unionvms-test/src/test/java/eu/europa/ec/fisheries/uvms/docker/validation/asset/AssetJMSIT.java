@@ -84,13 +84,13 @@ public class AssetJMSIT {
 		AssetGroupField assetGroupField1 = new AssetGroupField();
 		assetGroupField1.setField(ConfigSearchField.GUID.toString());
 		assetGroupField1.setValue(asset1.getId().toString());
-		assetGroupField1.setAssetGroup(createdAssetGroup.getId());
+		assetGroupField1.setAssetGroup(createdAssetGroup);
 		AssetTestHelper.createAssetGroupField(createdAssetGroup.getId(), assetGroupField1);
 	
 		AssetGroupField assetGroupField2 = new AssetGroupField();
 		assetGroupField2.setField(ConfigSearchField.GUID.toString());
 		assetGroupField2.setValue(asset2.getId().toString());
-		assetGroupField2.setAssetGroup(createdAssetGroup.getId());
+		assetGroupField2.setAssetGroup(createdAssetGroup);
 		AssetTestHelper.createAssetGroupField(createdAssetGroup.getId(), assetGroupField2);
 	
 
@@ -113,7 +113,7 @@ public class AssetJMSIT {
 		AssetGroupField assetGroupField1 = new AssetGroupField();
 		assetGroupField1.setField(ConfigSearchField.GUID.toString());
 		assetGroupField1.setValue(asset1.getId().toString());
-		assetGroupField1.setAssetGroup(assetGroup.getId());
+		assetGroupField1.setAssetGroup(assetGroup);
 		AssetTestHelper.createAssetGroupField(createdAssetGroup.getId(), assetGroupField1);
 	
 
@@ -136,13 +136,13 @@ public class AssetJMSIT {
 		AssetGroupField assetGroupField1 = new AssetGroupField();
         assetGroupField1.setField(ConfigSearchField.GUID.toString());
         assetGroupField1.setValue(asset1.getId().toString());
-        assetGroupField1.setAssetGroup(createdAssetGroup.getId());
+        assetGroupField1.setAssetGroup(createdAssetGroup);
         AssetTestHelper.createAssetGroupField(createdAssetGroup.getId(), assetGroupField1);
     
         AssetGroupField assetGroupField2 = new AssetGroupField();
         assetGroupField2.setField(ConfigSearchField.GUID.toString());
         assetGroupField2.setValue(asset2.getId().toString());
-        assetGroupField2.setAssetGroup(createdAssetGroup.getId());
+        assetGroupField2.setAssetGroup(createdAssetGroup);
         AssetTestHelper.createAssetGroupField(createdAssetGroup.getId(), assetGroupField2);
 	
         List<eu.europa.ec.fisheries.wsdl.asset.group.AssetGroup> assetGroups = AssetJMSHelper.getAssetGroupListByAssetGuid(asset1.getId().toString());
