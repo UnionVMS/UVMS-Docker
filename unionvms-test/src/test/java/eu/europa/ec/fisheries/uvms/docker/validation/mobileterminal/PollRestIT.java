@@ -189,7 +189,7 @@ public class PollRestIT extends AbstractMobileTerminalTest {
 		listPagination.setListSize(100);
 		listPagination.setPage(1);
 		pollableQuery.setPagination(listPagination);
-		pollableQuery.getConnectIdList().add("connectId");
+		pollableQuery.getConnectIdList().add("00000000-0000-0000-0000-000000000001");
 
 		final HttpResponse response = Request.Post(getBaseUrl() + "asset/rest/poll/pollable")
 				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken())
