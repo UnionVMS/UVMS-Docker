@@ -286,7 +286,6 @@
 								<get src="http://localhost:28080/unionvms/exchange/monitoring?format=pdf" dest="target/exchange_monitoring.pdf" verbose="true" usetimestamp="true" />
 								<get src="http://localhost:28080/unionvms/spatial/monitoring?format=pdf" dest="target/spatial_monitoring.pdf" verbose="true" usetimestamp="true" />
 								<get src="http://localhost:28080/unionvms/asset/monitoring?format=pdf" dest="target/asset_monitoring.pdf" verbose="true" usetimestamp="true" />
-								<get src="http://localhost:28080/unionvms/mobileterminal/monitoring?format=pdf" dest="target/mobileterminal_monitoring.pdf" verbose="true" usetimestamp="true" />
 								<get src="http://localhost:28080/unionvms/movement/monitoring?format=pdf" dest="target/movement_monitoring.pdf" verbose="true" usetimestamp="true" />
 								<get src="http://localhost:28080/unionvms/user/monitoring?format=pdf" dest="target/user_monitoring.pdf" verbose="true" usetimestamp="true" />
 									

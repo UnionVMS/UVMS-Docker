@@ -72,6 +72,7 @@ public class SanityRulesIT extends AbstractRestServiceTest {
         NAFHelper.sendPositionToNAFPlugin(position, asset);
 
         SanityRuleHelper.pollAlarmReportCreated();
+        Thread.sleep(10000);
         long openAlarmsAfter = SanityRuleHelper.countOpenAlarms();
         assertThat(openAlarmsAfter, is(openAlarmsBefore + 1));
     }

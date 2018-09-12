@@ -93,7 +93,7 @@ public class AlarmRestIT extends AbstractRestServiceTest {
 			query.setPagination(pagination);
 			ListCriteria criteria = new ListCriteria();
 			criteria.setKey(SearchKey.CONNECT_ID);
-			criteria.setValue(asset.getHistoryId().toString());
+			criteria.setValue(asset.getId().toString());
 			query.getMovementSearchCriteria().add(criteria);
 			List<MovementType> movements = MovementHelper.getListByQuery(query);
 			assertThat(movements.size(), is(1));
