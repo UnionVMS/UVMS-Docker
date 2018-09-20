@@ -2,9 +2,9 @@ package eu.europa.ec.fisheries.uvms.docker.validation.spatial;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.DeserializationFeature;
-import com.fasterxml.jackson.databind.MapperFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import com.fasterxml.jackson.module.jaxb.JaxbAnnotationModule;
 import eu.europa.ec.fisheries.uvms.spatial.model.exception.SpatialModelMarshallException;
 import eu.europa.ec.fisheries.uvms.spatial.model.schemas.*;
 import org.junit.Assert;
@@ -29,11 +29,9 @@ public class SpatialRestIT {
 
     private String BASE_URL = "";
     private static final ObjectMapper MAPPER = new ObjectMapper()
-            .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
-            .configure(MapperFeature.ACCEPT_CASE_INSENSITIVE_PROPERTIES, true)
-            .registerModule(new JavaTimeModule());
+            .registerModule(new JaxbAnnotationModule())
+            .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
     private WebTarget webTarget;
-
 
     @Before
     public void before() {
@@ -46,7 +44,6 @@ public class SpatialRestIT {
             public ObjectMapper getContext(Class<?> type) {
                 ObjectMapper mapper = new ObjectMapper();
                 mapper.registerModule(new JavaTimeModule());
-                mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
                 return mapper;
             }
         });
@@ -62,12 +59,13 @@ public class SpatialRestIT {
         point.setLongitude(longitude);
         point.setCrs(crs);
 
+        String jsonReq = MAPPER.writeValueAsString(point);
         // @formatter:off
         Response ret =  webTarget
                 .path("getAreaByLocation")
                 .request(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON)
-                .post(Entity.json(point), Response.class);
+                .post(Entity.json(jsonReq), Response.class);
         // @formatter:on
 
         Assert.assertEquals(200, ret.getStatus());
@@ -92,13 +90,14 @@ public class SpatialRestIT {
         point.setLongitude(longitude);
         point.setCrs(crs);
         ClosestAreaSpatialRQ request = createClosestAreaRequest(point, UnitType.METERS, Arrays.asList(AreaType.EEZ));
+        String jsonReq = MAPPER.writeValueAsString(request);
 
         // @formatter:off
         Response ret =  webTarget
                 .path("getClosestArea")
                 .request(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON)
-                .post(Entity.json(request), Response.class);
+                .post(Entity.json(jsonReq), Response.class);
         // @formatter:on
 
         Assert.assertEquals(200, ret.getStatus());
@@ -122,6 +121,7 @@ public class SpatialRestIT {
         point.setLongitude(longitude);
         point.setCrs(crs);
         ClosestLocationSpatialRQ request = createClosestLocationRequest(point, UnitType.METERS, Arrays.asList(LocationType.PORT));
+        String jsonReq = MAPPER.writeValueAsString(request);
 
 
         // @formatter:off
@@ -129,7 +129,7 @@ public class SpatialRestIT {
                 .path("getClosestLocation")
                 .request(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON)
-                .post(Entity.json(request), Response.class);
+                .post(Entity.json(jsonReq), Response.class);
         // @formatter:on
 
         Assert.assertEquals(200, ret.getStatus());
@@ -157,12 +157,14 @@ public class SpatialRestIT {
         List<LocationType> locationTypes = Arrays.asList(LocationType.PORT);
         List<AreaType> areaTypes = Arrays.asList(AreaType.COUNTRY);
         SpatialEnrichmentRQ request = createSpatialEnrichmentRequest(point, UnitType.NAUTICAL_MILES, locationTypes, areaTypes);
+        String jsonReq = MAPPER.writeValueAsString(request);
+
         // @formatter:off
         Response ret =  webTarget
                 .path("getEnrichment")
                 .request(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON)
-                .post(Entity.json(request), Response.class);
+                .post(Entity.json(jsonReq), Response.class);
         // @formatter:on
 
         Assert.assertEquals(200, ret.getStatus());
@@ -187,13 +189,15 @@ public class SpatialRestIT {
         areaType.setAreaType(AreaType.EEZ);
         areaType.setId("1");
         FilterAreasSpatialRQ request = createFilterAreaSpatialRequest(Arrays.asList(areaType), Arrays.asList(areaType));
+        String jsonReq = MAPPER.writeValueAsString(request);
+
 
         // @formatter:off
         Response ret =  webTarget
                 .path("getFilterArea")
                 .request(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON)
-                .post(Entity.json(request), Response.class);
+                .post(Entity.json(jsonReq), Response.class);
         // @formatter:on
 
         Assert.assertEquals(200, ret.getStatus());
