@@ -9,6 +9,7 @@ import eu.europa.ec.fisheries.uvms.spatial.model.exception.SpatialModelMarshallE
 import eu.europa.ec.fisheries.uvms.spatial.model.schemas.*;
 import org.junit.Assert;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import javax.ws.rs.client.Client;
@@ -213,11 +214,6 @@ public class SpatialRestIT {
     }
 
     @Test
-    public void getEnrichmentBatch() throws Exception {
-
-    }
-
-    @Test
     public void getFilterArea() throws Exception {
 
         AreaIdentifierType areaType = new AreaIdentifierType();
@@ -392,6 +388,13 @@ public class SpatialRestIT {
         Assert.assertTrue(geometry.contains("MULTIPOINT"));
         // @formatter:on
     }
+
+    @Test
+    @Ignore
+    public void getEnrichmentBatch() throws Exception {
+
+    }
+
 
 
     /*******************************************************************************************************************
