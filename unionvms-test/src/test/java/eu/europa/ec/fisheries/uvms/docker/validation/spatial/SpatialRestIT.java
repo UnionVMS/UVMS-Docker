@@ -394,6 +394,10 @@ public class SpatialRestIT {
     }
 
 
+    /*******************************************************************************************************************
+     * HELPERS                                                                                                         *
+     *******************************************************************************************************************/
+
     private AreaByCodeRequest createAreaByCodeRequest() {
 
         AreaByCodeRequest request = new AreaByCodeRequest();
