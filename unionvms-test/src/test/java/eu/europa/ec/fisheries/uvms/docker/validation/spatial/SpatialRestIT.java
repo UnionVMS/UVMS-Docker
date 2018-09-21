@@ -209,6 +209,26 @@ public class SpatialRestIT {
     }
 
 
+    @Test
+    public void ping() throws Exception {
+
+        PingRQ request = new PingRQ();
+        String jsonReq = MAPPER.writeValueAsString(request);
+        // @formatter:off
+        Response ret =  webTarget
+                .path("ping")
+                .request(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON)
+                .post(Entity.json(jsonReq), Response.class);
+                String json = ret.readEntity(String.class);
+        PingRS rs = MAPPER.readValue(json, new TypeReference<PingRS>() {});
+            String str = rs.getResponse();
+        Assert.assertEquals("pong", str);
+        // @formatter:on
+    }
+
+
+
 
 
 
@@ -249,22 +269,6 @@ public class SpatialRestIT {
 
 
 	 */
-
-
-    @Test
-    public void ping() throws Exception {
-
-
-        // @formatter:off
-        String ret =  webTarget
-                .path("ping")
-                .request(MediaType.APPLICATION_JSON)
-                .get(String.class);
-        Assert.assertEquals("pong", ret);
-        // @formatter:on
-
-
-    }
 
 
     public FilterAreasSpatialRQ createFilterAreaSpatialRequest(List<AreaIdentifierType> scopeAreaList, List<AreaIdentifierType> userAreaList) throws SpatialModelMarshallException {
