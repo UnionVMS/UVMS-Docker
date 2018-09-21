@@ -84,6 +84,32 @@ public class SpatialRestIT {
     @Test
     public void getAreaTypes() throws Exception {
 
+        PointType point = new PointType();
+        point.setLatitude(latitude);
+        point.setLongitude(longitude);
+        point.setCrs(crs);
+        AllAreaTypesRequest request = createAllAreaTypesRequest();
+        String jsonReq = MAPPER.writeValueAsString(request);
+
+        // @formatter:off
+        Response ret =  webTarget
+                .path("getAreaTypes")
+                .request(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON)
+                .post(Entity.json(jsonReq), Response.class);
+        // @formatter:on
+
+        Assert.assertEquals(200, ret.getStatus());
+
+        String json = ret.readEntity(String.class);
+        List<String> list = MAPPER.readValue(json, new TypeReference<List<String>>() {
+        });
+
+        List<String> control = new ArrayList<>();
+        for (String str : list) {
+            control.add(str);
+        }
+        Assert.assertTrue(control.contains("EEZ"));
     }
 
 
@@ -191,9 +217,7 @@ public class SpatialRestIT {
 
     }
 
-
-
-        @Test
+    @Test
     public void getFilterArea() throws Exception {
 
         AreaIdentifierType areaType = new AreaIdentifierType();
@@ -222,15 +246,80 @@ public class SpatialRestIT {
     @Test
     public void getMapConfiguration() throws Exception {
 
+        SpatialGetMapConfigurationRQ request = getSpatialGetMapConfigurationRQ();
+        request.setReportId(1);
+
+        String jsonReq = MAPPER.writeValueAsString(request);
+
+
+        // @formatter:off
+        Response ret =  webTarget
+                .path("getMapConfiguration")
+                .request(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON)
+                .post(Entity.json(jsonReq), Response.class);
+        // @formatter:on
+
+        Assert.assertEquals(200, ret.getStatus());
+        String json = ret.readEntity(String.class);
+        FilterAreasSpatialRS rs = MAPPER.readValue(json, new TypeReference<FilterAreasSpatialRS>() {
+        });
+
+        // until we figure out something better
+        Assert.assertTrue(rs != null);
     }
 
     @Test
     public void saveOrUpdateMapConfiguration() throws Exception {
 
+        SpatialSaveOrUpdateMapConfigurationRQ request = createSpatialSaveOrUpdateMapConfigurationRQ();
+        String jsonReq = MAPPER.writeValueAsString(request);
+
+
+        // @formatter:off
+        Response ret =  webTarget
+                .path("saveOrUpdateMapConfiguration")
+                .request(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON)
+                .post(Entity.json(jsonReq), Response.class);
+        // @formatter:on
+
+        Assert.assertEquals(200, ret.getStatus());
+        String json = ret.readEntity(String.class);
+        SpatialSaveOrUpdateMapConfigurationRS rs = MAPPER.readValue(json, new TypeReference<SpatialSaveOrUpdateMapConfigurationRS>() {
+        });
+
+        // until we figure out something better
+        Assert.assertTrue(rs != null);
     }
+
+
     @Test
     public void deleteMapConfiguration() throws Exception {
 
+        SpatialDeleteMapConfigurationRQ request = creatSpatialDeleteMapConfigurationRQ();
+        String jsonReq = MAPPER.writeValueAsString(request);
+
+        // @formatter:off
+        Response ret =  webTarget
+                .path("deleteMapConfiguration")
+                .request(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON)
+                .post(Entity.json(jsonReq), Response.class);
+        // @formatter:on
+
+        Assert.assertEquals(200, ret.getStatus());
+        String json = ret.readEntity(String.class);
+        SpatialDeleteMapConfigurationRS rs = MAPPER.readValue(json, new TypeReference<SpatialDeleteMapConfigurationRS>() {
+        });
+
+        // until we figure out something better
+        Assert.assertTrue(rs != null);
+    }
+
+    private SpatialDeleteMapConfigurationRQ creatSpatialDeleteMapConfigurationRQ() {
+        SpatialDeleteMapConfigurationRQ request = new SpatialDeleteMapConfigurationRQ();
+        return request;
     }
 
 
@@ -255,6 +344,32 @@ public class SpatialRestIT {
     @Test
     public void getAreaByCode() throws Exception {
 
+
+        AreaByCodeRequest request = createAreaByCodeRequest();
+
+        String jsonReq = MAPPER.writeValueAsString(request);
+        // @formatter:off
+        Response ret =  webTarget
+                .path("getAreaByCode")
+                .request(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON)
+                .post(Entity.json(jsonReq), Response.class);
+        // @formatter:on
+
+        Assert.assertEquals(200, ret.getStatus());
+
+        String json = ret.readEntity(String.class);
+        AreaByCodeResponse response = MAPPER.readValue(json, new TypeReference<AreaByCodeResponse>() {
+        });
+
+        List<AreaSimpleType> resultList = response.getAreaSimples();
+        Assert.assertNotNull(resultList);
+        Assert.assertTrue(resultList.size() > 0);
+
+        AreaSimpleType line = resultList.get(0);
+        String wkt = line.getWkt();
+        Assert.assertNotNull(wkt);
+        Assert.assertTrue(wkt.contains("POLYGON"));
     }
 
 
@@ -279,36 +394,58 @@ public class SpatialRestIT {
     }
 
 
+    private AreaByCodeRequest createAreaByCodeRequest() {
 
+        AreaByCodeRequest request = new AreaByCodeRequest();
+        List<AreaSimpleType> list = new ArrayList<>();
+        AreaSimpleType ast = new AreaSimpleType();
 
+        ast.setAreaCode("DOM");
+        ast.setAreaType("eez");
+        //ast.setWkt("");
 
+        list.add(ast);
+        request.setAreaSimples(list);
 
-
-
-
-
-    public AllAreaTypesRequest createAllAreaTypesRequest(){
-
-        AllAreaTypesRequest allAreaTypesRequest = new AllAreaTypesRequest();
-
-
-
-
-
-        return allAreaTypesRequest;
-
-
+        return request;
     }
 
 
-    public  GeometryByPortCodeRequest createToGeometryByPortCodeRequest(String portCode) throws SpatialModelMarshallException {
+    private SpatialSaveOrUpdateMapConfigurationRQ createSpatialSaveOrUpdateMapConfigurationRQ() {
+        SpatialSaveOrUpdateMapConfigurationRQ request = new SpatialSaveOrUpdateMapConfigurationRQ();
+        MapConfigurationType config = new MapConfigurationType();
+
+        config.setCoordinatesFormat(CoordinatesFormat.DD);
+        config.setDisplayProjectionId(1L);
+        config.setReportId(1L);
+        config.setMapProjectionId(42L);
+
+
+        request.setMapConfiguration(config);
+        return request;
+    }
+
+
+    private SpatialGetMapConfigurationRQ getSpatialGetMapConfigurationRQ() {
+        SpatialGetMapConfigurationRQ request = new SpatialGetMapConfigurationRQ();
+        return request;
+    }
+
+
+    private AllAreaTypesRequest createAllAreaTypesRequest() {
+        AllAreaTypesRequest allAreaTypesRequest = new AllAreaTypesRequest();
+        return allAreaTypesRequest;
+    }
+
+
+    private GeometryByPortCodeRequest createToGeometryByPortCodeRequest(String portCode) throws SpatialModelMarshallException {
         GeometryByPortCodeRequest request = new GeometryByPortCodeRequest();
         request.setPortCode(portCode);
         request.setMethod(SpatialModuleMethod.GET_GEOMETRY_BY_PORT_CODE);
         return request;
     }
 
-    public FilterAreasSpatialRQ createFilterAreaSpatialRequest(List<AreaIdentifierType> scopeAreaList, List<AreaIdentifierType> userAreaList) throws SpatialModelMarshallException {
+    private FilterAreasSpatialRQ createFilterAreaSpatialRequest(List<AreaIdentifierType> scopeAreaList, List<AreaIdentifierType> userAreaList) throws SpatialModelMarshallException {
         FilterAreasSpatialRQ request = new FilterAreasSpatialRQ();
         ScopeAreasType scopeAreas = new ScopeAreasType();
         UserAreasType userAreas = new UserAreasType();
@@ -352,7 +489,7 @@ public class SpatialRestIT {
         return request;
     }
 
-    public ClosestLocationSpatialRQ createClosestLocationRequest(PointType point, UnitType unit, List<LocationType> locationTypes) throws SpatialModelMarshallException {
+    private ClosestLocationSpatialRQ createClosestLocationRequest(PointType point, UnitType unit, List<LocationType> locationTypes) throws SpatialModelMarshallException {
         ClosestLocationSpatialRQ request = new ClosestLocationSpatialRQ();
         request.setMethod(SpatialModuleMethod.GET_CLOSEST_LOCATION);
         request.setPoint(point);
