@@ -81,6 +81,11 @@ public class SpatialRestIT {
         Assert.assertTrue(control.contains("Göteborg-Lundbyhamnen"));
     }
 
+    @Test
+    public void getAreaTypes() throws Exception {
+
+    }
+
 
     @Test
     public void getClosestArea() throws Exception {
@@ -181,8 +186,14 @@ public class SpatialRestIT {
         Assert.assertTrue(control.contains("Kalvö"));
     }
 
-
     @Test
+    public void getEnrichmentBatch() throws Exception {
+
+    }
+
+
+
+        @Test
     public void getFilterArea() throws Exception {
 
         AreaIdentifierType areaType = new AreaIdentifierType();
@@ -208,6 +219,20 @@ public class SpatialRestIT {
         Assert.assertTrue(json.contains("POLYGON"));
     }
 
+    @Test
+    public void getMapConfiguration() throws Exception {
+
+    }
+
+    @Test
+    public void saveOrUpdateMapConfiguration() throws Exception {
+
+    }
+    @Test
+    public void deleteMapConfiguration() throws Exception {
+
+    }
+
 
     @Test
     public void ping() throws Exception {
@@ -227,49 +252,61 @@ public class SpatialRestIT {
         // @formatter:on
     }
 
+    @Test
+    public void getAreaByCode() throws Exception {
+
+    }
 
 
+    @Test
+    public void getGeometryByPortCode() throws Exception {
 
-
-
-
-
-
-	/*
-
-
-    @Override
-    public List<MovementType> enrichMovementBatchWithSpatialData(List<MovementBaseType> movements) throws MovementServiceException {
-        List<SpatialEnrichmentRQListElement> batchReqLements = new ArrayList<>();
-        for (MovementBaseType movement : movements) {
-            PointType point = new PointType();
-            point.setCrs(4326);
-            point.setLatitude(movement.getPosition().getLatitude());
-            point.setLongitude(movement.getPosition().getLongitude());
-            List<LocationType> locationTypes = Arrays.asList(LocationType.PORT);
-            List<AreaType> areaTypes = Arrays.asList(AreaType.COUNTRY);
-            SpatialEnrichmentRQListElement spatialEnrichmentRQListElement = SpatialModuleRequestMapper.mapToCreateSpatialEnrichmentRQElement(point, UnitType.NAUTICAL_MILES, locationTypes, areaTypes);
-            batchReqLements.add(spatialEnrichmentRQListElement);
-        }
-        try {
-            LOG.debug("Enrich movement Batch with spatial data envoked in MovementSpatialServiceBean");
-            String spatialRequest = SpatialModuleRequestMapper.mapToCreateBatchSpatialEnrichmentRequest(batchReqLements);
-            String spatialMessageId = producer.sendModuleMessage(spatialRequest, ModuleQueue.SPATIAL);
-            TextMessage spatialJmsMessageRS = consumer.getMessage(spatialMessageId, TextMessage.class);
-            LOG.debug("Got response from Spatial " + spatialJmsMessageRS.getText());
-            BatchSpatialEnrichmentRS enrichment = SpatialModuleResponseMapper.mapToBatchSpatialEnrichmentRSFromResponse(spatialJmsMessageRS, spatialMessageId);
-            return MovementMapper.enrichAndMapToMovementTypes(movements, enrichment);
-        } catch (JMSException | SpatialModelMapperException | MovementMessageException | MessageException ex) {
-            throw new MovementServiceException("FAILED TO GET DATA FROM SPATIAL ", ex);
-        }
+        GeometryByPortCodeRequest request = createToGeometryByPortCodeRequest("AOLAD");
+        String jsonReq = MAPPER.writeValueAsString(request);
+        // @formatter:off
+        Response ret =  webTarget
+                .path("getGeometryByPortCode")
+                .request(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON)
+                .post(Entity.json(jsonReq), Response.class);
+                String json = ret.readEntity(String.class);
+        GeometryByPortCodeResponse rs = MAPPER.readValue(json, new TypeReference<GeometryByPortCodeResponse>() {});
+        Assert.assertEquals(200, ret.getStatus());
+        String geometry = rs.getPortGeometry();
+        Assert.assertTrue(geometry != null);
+        Assert.assertTrue(geometry.contains("MULTIPOINT"));
+        // @formatter:on
     }
 
 
 
 
 
-	 */
 
+
+
+
+
+    public AllAreaTypesRequest createAllAreaTypesRequest(){
+
+        AllAreaTypesRequest allAreaTypesRequest = new AllAreaTypesRequest();
+
+
+
+
+
+        return allAreaTypesRequest;
+
+
+    }
+
+
+    public  GeometryByPortCodeRequest createToGeometryByPortCodeRequest(String portCode) throws SpatialModelMarshallException {
+        GeometryByPortCodeRequest request = new GeometryByPortCodeRequest();
+        request.setPortCode(portCode);
+        request.setMethod(SpatialModuleMethod.GET_GEOMETRY_BY_PORT_CODE);
+        return request;
+    }
 
     public FilterAreasSpatialRQ createFilterAreaSpatialRequest(List<AreaIdentifierType> scopeAreaList, List<AreaIdentifierType> userAreaList) throws SpatialModelMarshallException {
         FilterAreasSpatialRQ request = new FilterAreasSpatialRQ();
@@ -301,7 +338,6 @@ public class SpatialRestIT {
         request.setAreaTypes(area);
         return request;
     }
-
 
     private ClosestAreaSpatialRQ createClosestAreaRequest(PointType point, UnitType unit, List<AreaType> areaTypes) throws SpatialModelMarshallException {
         ClosestAreaSpatialRQ request = new ClosestAreaSpatialRQ();
