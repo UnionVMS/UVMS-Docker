@@ -1,6 +1,5 @@
 package eu.europa.ec.fisheries.uvms.docker.validation.spatial;
 
-import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
@@ -16,6 +15,7 @@ import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.client.WebTarget;
+import javax.ws.rs.core.GenericType;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.ext.ContextResolver;
@@ -23,16 +23,12 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-// Ignore ALL TESTS until the api is deployed in Spatial
 public class SpatialRestIT {
     private Integer crs = 4326;
     private Double latitude = 57.715523;
     private Double longitude = 11.973965;
 
     private String BASE_URL = "";
-    private static final ObjectMapper MAPPER = new ObjectMapper()
-            .registerModule(new JaxbAnnotationModule())
-            .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
     private WebTarget webTarget;
 
     @Before
@@ -46,11 +42,14 @@ public class SpatialRestIT {
             public ObjectMapper getContext(Class<?> type) {
                 ObjectMapper mapper = new ObjectMapper();
                 mapper.registerModule(new JavaTimeModule());
+                mapper.registerModule(new JaxbAnnotationModule());
+                mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
                 return mapper;
             }
         });
         webTarget = client.target(BASE_URL);
     }
+
 
 
     @Test
@@ -65,21 +64,16 @@ public class SpatialRestIT {
         AreaByLocationSpatialRQ areaByLocationSpatialRQ = new AreaByLocationSpatialRQ();
         areaByLocationSpatialRQ.setPoint(point);
         areaByLocationSpatialRQ.setMethod(SpatialModuleMethod.GET_AREA_BY_LOCATION);
-        String jsonReq = MAPPER.writeValueAsString(areaByLocationSpatialRQ);
         // @formatter:off
         Response ret =  webTarget
                 .path("getAreaByLocation")
                 .request(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON)
-                .post(Entity.json(jsonReq), Response.class);
+                .post(Entity.json(areaByLocationSpatialRQ), Response.class);
         // @formatter:on
 
         Assert.assertEquals(200, ret.getStatus());
-
-        String json = ret.readEntity(String.class);
-        List<AreaExtendedIdentifierType> list = MAPPER.readValue(json, new TypeReference<List<AreaExtendedIdentifierType>>() {
-        });
-
+        List<AreaExtendedIdentifierType> list = ret.readEntity(new GenericType<List<AreaExtendedIdentifierType>>() {});
         List<String> control = new ArrayList<>();
         for (AreaExtendedIdentifierType aeit : list) {
             control.add(aeit.getName());
@@ -96,21 +90,18 @@ public class SpatialRestIT {
         point.setLongitude(longitude);
         point.setCrs(crs);
         AllAreaTypesRequest request = createAllAreaTypesRequest();
-        String jsonReq = MAPPER.writeValueAsString(request);
 
         // @formatter:off
         Response ret =  webTarget
                 .path("getAreaTypes")
                 .request(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON)
-                .post(Entity.json(jsonReq), Response.class);
+                .post(Entity.json(request), Response.class);
         // @formatter:on
 
         Assert.assertEquals(200, ret.getStatus());
 
-        String json = ret.readEntity(String.class);
-        List<String> list = MAPPER.readValue(json, new TypeReference<List<String>>() {
-        });
+        List<String> list = ret.readEntity(new GenericType<List<String>>() {});
 
         List<String> control = new ArrayList<>();
         for (String str : list) {
@@ -129,21 +120,17 @@ public class SpatialRestIT {
         point.setLongitude(longitude);
         point.setCrs(crs);
         ClosestAreaSpatialRQ request = createClosestAreaRequest(point, UnitType.METERS, Arrays.asList(AreaType.EEZ));
-        String jsonReq = MAPPER.writeValueAsString(request);
 
         // @formatter:off
         Response ret =  webTarget
                 .path("getClosestArea")
                 .request(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON)
-                .post(Entity.json(jsonReq), Response.class);
+                .post(Entity.json(request), Response.class);
         // @formatter:on
 
         Assert.assertEquals(200, ret.getStatus());
-
-        String json = ret.readEntity(String.class);
-        List<Area> list = MAPPER.readValue(json, new TypeReference<List<Area>>() {
-        });
+        List<Area> list = ret.readEntity(new GenericType<List<Area>>() {});
 
         List<String> control = new ArrayList<>();
         for (Area aeit : list) {
@@ -161,7 +148,6 @@ public class SpatialRestIT {
         point.setLongitude(longitude);
         point.setCrs(crs);
         ClosestLocationSpatialRQ request = createClosestLocationRequest(point, UnitType.METERS, Arrays.asList(LocationType.PORT));
-        String jsonReq = MAPPER.writeValueAsString(request);
 
 
         // @formatter:off
@@ -169,14 +155,13 @@ public class SpatialRestIT {
                 .path("getClosestLocation")
                 .request(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON)
-                .post(Entity.json(jsonReq), Response.class);
+                .post(Entity.json(request), Response.class);
         // @formatter:on
 
         Assert.assertEquals(200, ret.getStatus());
 
-        String json = ret.readEntity(String.class);
-        List<Location> list = MAPPER.readValue(json, new TypeReference<List<Location>>() {
-        });
+        List<Location> list = ret.readEntity(new GenericType<List<Location>>() {});
+
 
         List<String> control = new ArrayList<>();
         for (Location aeit : list) {
@@ -198,20 +183,17 @@ public class SpatialRestIT {
         List<LocationType> locationTypes = Arrays.asList(LocationType.PORT);
         List<AreaType> areaTypes = Arrays.asList(AreaType.COUNTRY);
         SpatialEnrichmentRQ request = createSpatialEnrichmentRequest(point, UnitType.NAUTICAL_MILES, locationTypes, areaTypes);
-        String jsonReq = MAPPER.writeValueAsString(request);
 
         // @formatter:off
         Response ret =  webTarget
                 .path("getEnrichment")
                 .request(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON)
-                .post(Entity.json(jsonReq), Response.class);
+                .post(Entity.json(request), Response.class);
         // @formatter:on
 
         Assert.assertEquals(200, ret.getStatus());
-        String json = ret.readEntity(String.class);
-        SpatialEnrichmentRS rs = MAPPER.readValue(json, new TypeReference<SpatialEnrichmentRS>() {
-        });
+        SpatialEnrichmentRS rs = ret.readEntity(new GenericType<SpatialEnrichmentRS>() {});
 
         List<Location> list = rs.getClosestLocations().getClosestLocations();
 
@@ -230,7 +212,6 @@ public class SpatialRestIT {
         areaType.setAreaType(AreaType.EEZ);
         areaType.setId("1");
         FilterAreasSpatialRQ request = createFilterAreaSpatialRequest(Arrays.asList(areaType), Arrays.asList(areaType));
-        String jsonReq = MAPPER.writeValueAsString(request);
 
 
         // @formatter:off
@@ -238,15 +219,15 @@ public class SpatialRestIT {
                 .path("getFilterArea")
                 .request(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON)
-                .post(Entity.json(jsonReq), Response.class);
+                .post(Entity.json(request), Response.class);
         // @formatter:on
 
         Assert.assertEquals(200, ret.getStatus());
-        String json = ret.readEntity(String.class);
-        FilterAreasSpatialRS rs = MAPPER.readValue(json, new TypeReference<FilterAreasSpatialRS>() {
-        });
+        FilterAreasSpatialRS rs = ret.readEntity(new GenericType<FilterAreasSpatialRS>() {});
+        String geometry = rs.getGeometry();
+        System.out.println();
 
-        Assert.assertTrue(json.contains("POLYGON"));
+        Assert.assertTrue(geometry.contains("POLYGON"));
     }
 
     @Test
@@ -256,22 +237,16 @@ public class SpatialRestIT {
         SpatialGetMapConfigurationRQ request = getSpatialGetMapConfigurationRQ();
         request.setReportId(1);
 
-        String jsonReq = MAPPER.writeValueAsString(request);
-
-
         // @formatter:off
         Response ret =  webTarget
                 .path("getMapConfiguration")
                 .request(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON)
-                .post(Entity.json(jsonReq), Response.class);
+                .post(Entity.json(request), Response.class);
         // @formatter:on
 
         Assert.assertEquals(200, ret.getStatus());
-        String json = ret.readEntity(String.class);
-        FilterAreasSpatialRS rs = MAPPER.readValue(json, new TypeReference<FilterAreasSpatialRS>() {
-        });
-
+        FilterAreasSpatialRS rs = ret.readEntity(new GenericType<FilterAreasSpatialRS>() {});
         // until we figure out something better
         Assert.assertTrue(rs != null);
     }
@@ -281,7 +256,6 @@ public class SpatialRestIT {
     public void saveOrUpdateMapConfiguration() throws Exception {
 
         SpatialSaveOrUpdateMapConfigurationRQ request = createSpatialSaveOrUpdateMapConfigurationRQ();
-        String jsonReq = MAPPER.writeValueAsString(request);
 
 
         // @formatter:off
@@ -289,13 +263,11 @@ public class SpatialRestIT {
                 .path("saveOrUpdateMapConfiguration")
                 .request(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON)
-                .post(Entity.json(jsonReq), Response.class);
+                .post(Entity.json(request), Response.class);
         // @formatter:on
 
         Assert.assertEquals(200, ret.getStatus());
-        String json = ret.readEntity(String.class);
-        SpatialSaveOrUpdateMapConfigurationRS rs = MAPPER.readValue(json, new TypeReference<SpatialSaveOrUpdateMapConfigurationRS>() {
-        });
+        SpatialSaveOrUpdateMapConfigurationRS rs = ret.readEntity(new GenericType<SpatialSaveOrUpdateMapConfigurationRS>() {});
 
         // until we figure out something better
         Assert.assertTrue(rs != null);
@@ -307,20 +279,17 @@ public class SpatialRestIT {
     public void deleteMapConfiguration() throws Exception {
 
         SpatialDeleteMapConfigurationRQ request = creatSpatialDeleteMapConfigurationRQ();
-        String jsonReq = MAPPER.writeValueAsString(request);
 
         // @formatter:off
         Response ret =  webTarget
                 .path("deleteMapConfiguration")
                 .request(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON)
-                .post(Entity.json(jsonReq), Response.class);
+                .post(Entity.json(request), Response.class);
         // @formatter:on
 
         Assert.assertEquals(200, ret.getStatus());
-        String json = ret.readEntity(String.class);
-        SpatialDeleteMapConfigurationRS rs = MAPPER.readValue(json, new TypeReference<SpatialDeleteMapConfigurationRS>() {
-        });
+        SpatialDeleteMapConfigurationRS rs = ret.readEntity(new GenericType<SpatialDeleteMapConfigurationRS>() {});
 
         // until we figure out something better
         Assert.assertTrue(rs != null);
@@ -337,16 +306,16 @@ public class SpatialRestIT {
     public void ping() throws Exception {
 
         PingRQ request = new PingRQ();
-        String jsonReq = MAPPER.writeValueAsString(request);
         // @formatter:off
         Response ret =  webTarget
                 .path("ping")
                 .request(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON)
-                .post(Entity.json(jsonReq), Response.class);
-                String json = ret.readEntity(String.class);
-        PingRS rs = MAPPER.readValue(json, new TypeReference<PingRS>() {});
-            String str = rs.getResponse();
+                .post(Entity.json(request), Response.class);
+
+        PingRS rs = ret.readEntity(new GenericType<PingRS>() {});
+
+        String str = rs.getResponse();
         Assert.assertEquals("pong", str);
         // @formatter:on
     }
@@ -355,23 +324,18 @@ public class SpatialRestIT {
     @Ignore
     public void getAreaByCode() throws Exception {
 
-
         AreaByCodeRequest request = createAreaByCodeRequest();
-
-        String jsonReq = MAPPER.writeValueAsString(request);
         // @formatter:off
         Response ret =  webTarget
                 .path("getAreaByCode")
                 .request(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON)
-                .post(Entity.json(jsonReq), Response.class);
+                .post(Entity.json(request), Response.class);
         // @formatter:on
 
         Assert.assertEquals(200, ret.getStatus());
 
-        String json = ret.readEntity(String.class);
-        AreaByCodeResponse response = MAPPER.readValue(json, new TypeReference<AreaByCodeResponse>() {
-        });
+        AreaByCodeResponse response = ret.readEntity(new GenericType<AreaByCodeResponse>() {});
 
         List<AreaSimpleType> resultList = response.getAreaSimples();
         Assert.assertNotNull(resultList);
@@ -389,15 +353,13 @@ public class SpatialRestIT {
     public void getGeometryByPortCode() throws Exception {
 
         GeometryByPortCodeRequest request = createToGeometryByPortCodeRequest("AOLAD");
-        String jsonReq = MAPPER.writeValueAsString(request);
         // @formatter:off
         Response ret =  webTarget
                 .path("getGeometryByPortCode")
                 .request(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON)
-                .post(Entity.json(jsonReq), Response.class);
-                String json = ret.readEntity(String.class);
-        GeometryByPortCodeResponse rs = MAPPER.readValue(json, new TypeReference<GeometryByPortCodeResponse>() {});
+                .post(Entity.json(request), Response.class);
+        GeometryByPortCodeResponse rs = ret.readEntity(new GenericType<GeometryByPortCodeResponse>() {});
         Assert.assertEquals(200, ret.getStatus());
         String geometry = rs.getPortGeometry();
         Assert.assertTrue(geometry != null);
