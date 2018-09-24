@@ -38,7 +38,7 @@ public class SpatialRestIT {
     @Before
     public void before() {
         BASE_URL = "http://localhost:28080/unionvms/";
-        BASE_URL += "spatial/spatialnonsecure/spatial/";
+        BASE_URL += "spatial/spatialnonsecure/json/";
 
         Client client = ClientBuilder.newClient();
         client.register(new ContextResolver<ObjectMapper>() {
@@ -62,7 +62,10 @@ public class SpatialRestIT {
         point.setLongitude(longitude);
         point.setCrs(crs);
 
-        String jsonReq = MAPPER.writeValueAsString(point);
+        AreaByLocationSpatialRQ areaByLocationSpatialRQ = new AreaByLocationSpatialRQ();
+        areaByLocationSpatialRQ.setPoint(point);
+        areaByLocationSpatialRQ.setMethod(SpatialModuleMethod.GET_AREA_BY_LOCATION);
+        String jsonReq = MAPPER.writeValueAsString(areaByLocationSpatialRQ);
         // @formatter:off
         Response ret =  webTarget
                 .path("getAreaByLocation")
