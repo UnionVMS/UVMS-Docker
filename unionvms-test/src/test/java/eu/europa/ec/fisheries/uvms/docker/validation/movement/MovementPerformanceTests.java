@@ -60,6 +60,7 @@ public class MovementPerformanceTests extends AbstractRestServiceTest {
         System.out.println();
 
 
+        //WKT is taken from https://clydedacruz.github.io/openstreetmap-wkt-playground/
         String areaInWKT = "POLYGON((-19.6435546875 55.379110448010465,-18.9404296875 50.0641917366591,-5.493164062500001 49.525208341974405,-6.811523437499997 56.145549500679095,-19.6435546875 55.379110448010465))";    //simple "square" around ireland
 
         buildAndSendQuery(areaInWKT);
