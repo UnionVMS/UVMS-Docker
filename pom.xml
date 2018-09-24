@@ -11,7 +11,7 @@
 
 	<groupId>eu.europa.ec.fisheries.uvms.docker</groupId>
 	<artifactId>uvms-docker</artifactId>
-	<version>3.26.3.w14</version>
+	<version>3.26.4.w14-SNAPSHOT</version>
 	<packaging>pom</packaging>
 	<name>uvms-docker</name>
 
@@ -50,7 +50,7 @@
 
 	<scm>
 		<connection>${scm.connection}</connection>
-		<tag>uvms-docker-3.26.3.w14</tag>
+		<tag>HEAD</tag>
 	</scm>
 	<build>
 		<plugins>
