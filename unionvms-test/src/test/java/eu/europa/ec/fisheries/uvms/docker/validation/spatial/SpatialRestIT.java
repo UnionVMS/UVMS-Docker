@@ -251,49 +251,6 @@ public class SpatialRestIT {
         Assert.assertTrue(rs != null);
     }
 
-    @Test
-    @Ignore
-    public void saveOrUpdateMapConfiguration() throws Exception {
-
-        SpatialSaveOrUpdateMapConfigurationRQ request = createSpatialSaveOrUpdateMapConfigurationRQ();
-
-
-        // @formatter:off
-        Response ret =  webTarget
-                .path("saveOrUpdateMapConfiguration")
-                .request(MediaType.APPLICATION_JSON)
-                .accept(MediaType.APPLICATION_JSON)
-                .post(Entity.json(request), Response.class);
-        // @formatter:on
-
-        Assert.assertEquals(200, ret.getStatus());
-        SpatialSaveOrUpdateMapConfigurationRS rs = ret.readEntity(new GenericType<SpatialSaveOrUpdateMapConfigurationRS>() {});
-
-        // until we figure out something better
-        Assert.assertTrue(rs != null);
-    }
-
-
-    @Test
-    @Ignore
-    public void deleteMapConfiguration() throws Exception {
-
-        SpatialDeleteMapConfigurationRQ request = creatSpatialDeleteMapConfigurationRQ();
-
-        // @formatter:off
-        Response ret =  webTarget
-                .path("deleteMapConfiguration")
-                .request(MediaType.APPLICATION_JSON)
-                .accept(MediaType.APPLICATION_JSON)
-                .post(Entity.json(request), Response.class);
-        // @formatter:on
-
-        Assert.assertEquals(200, ret.getStatus());
-        SpatialDeleteMapConfigurationRS rs = ret.readEntity(new GenericType<SpatialDeleteMapConfigurationRS>() {});
-
-        // until we figure out something better
-        Assert.assertTrue(rs != null);
-    }
 
     private SpatialDeleteMapConfigurationRQ creatSpatialDeleteMapConfigurationRQ() {
         SpatialDeleteMapConfigurationRQ request = new SpatialDeleteMapConfigurationRQ();
