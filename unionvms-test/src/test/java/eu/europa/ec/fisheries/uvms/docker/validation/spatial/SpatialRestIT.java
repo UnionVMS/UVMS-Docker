@@ -25,10 +25,10 @@ import java.util.List;
 
 @Ignore
 public class SpatialRestIT {
+    int batchSize = 1000;
     private Integer crs = 4326;
     private Double latitude = 57.715523;
     private Double longitude = 11.973965;
-
     private String BASE_URL = "";
     private WebTarget webTarget;
 
@@ -51,8 +51,6 @@ public class SpatialRestIT {
         webTarget = client.target(BASE_URL);
     }
 
-
-
     @Test
     public void getAreaByLocation() throws Exception {
 
@@ -73,7 +71,8 @@ public class SpatialRestIT {
         // @formatter:on
 
         Assert.assertEquals(200, ret.getStatus());
-        List<AreaExtendedIdentifierType> list = ret.readEntity(new GenericType<List<AreaExtendedIdentifierType>>() {});
+        List<AreaExtendedIdentifierType> list = ret.readEntity(new GenericType<List<AreaExtendedIdentifierType>>() {
+        });
         List<String> control = new ArrayList<>();
         for (AreaExtendedIdentifierType aeit : list) {
             control.add(aeit.getName());
@@ -100,7 +99,8 @@ public class SpatialRestIT {
 
         Assert.assertEquals(200, ret.getStatus());
 
-        List<String> list = ret.readEntity(new GenericType<List<String>>() {});
+        List<String> list = ret.readEntity(new GenericType<List<String>>() {
+        });
 
         List<String> control = new ArrayList<>();
         for (String str : list) {
@@ -108,7 +108,6 @@ public class SpatialRestIT {
         }
         Assert.assertTrue(control.contains("EEZ"));
     }
-
 
     @Test
     public void getClosestArea() throws Exception {
@@ -128,7 +127,8 @@ public class SpatialRestIT {
         // @formatter:on
 
         Assert.assertEquals(200, ret.getStatus());
-        List<Area> list = ret.readEntity(new GenericType<List<Area>>() {});
+        List<Area> list = ret.readEntity(new GenericType<List<Area>>() {
+        });
 
         List<String> control = new ArrayList<>();
         for (Area aeit : list) {
@@ -157,7 +157,8 @@ public class SpatialRestIT {
 
         Assert.assertEquals(200, ret.getStatus());
 
-        List<Location> list = ret.readEntity(new GenericType<List<Location>>() {});
+        List<Location> list = ret.readEntity(new GenericType<List<Location>>() {
+        });
 
 
         List<String> control = new ArrayList<>();
@@ -166,7 +167,6 @@ public class SpatialRestIT {
         }
         Assert.assertTrue(control.contains("Kalvö"));
     }
-
 
     @Test
     public void getEnrichment() throws Exception {
@@ -189,7 +189,8 @@ public class SpatialRestIT {
         // @formatter:on
 
         Assert.assertEquals(200, ret.getStatus());
-        SpatialEnrichmentRS rs = ret.readEntity(new GenericType<SpatialEnrichmentRS>() {});
+        SpatialEnrichmentRS rs = ret.readEntity(new GenericType<SpatialEnrichmentRS>() {
+        });
 
         List<Location> list = rs.getClosestLocations().getClosestLocations();
 
@@ -218,7 +219,8 @@ public class SpatialRestIT {
         // @formatter:on
 
         Assert.assertEquals(200, ret.getStatus());
-        FilterAreasSpatialRS rs = ret.readEntity(new GenericType<FilterAreasSpatialRS>() {});
+        FilterAreasSpatialRS rs = ret.readEntity(new GenericType<FilterAreasSpatialRS>() {
+        });
         String geometry = rs.getGeometry();
         System.out.println();
 
@@ -240,17 +242,16 @@ public class SpatialRestIT {
         // @formatter:on
 
         Assert.assertEquals(200, ret.getStatus());
-        FilterAreasSpatialRS rs = ret.readEntity(new GenericType<FilterAreasSpatialRS>() {});
+        FilterAreasSpatialRS rs = ret.readEntity(new GenericType<FilterAreasSpatialRS>() {
+        });
         // until we figure out something better
         Assert.assertTrue(rs != null);
     }
-
 
     private SpatialDeleteMapConfigurationRQ creatSpatialDeleteMapConfigurationRQ() {
         SpatialDeleteMapConfigurationRQ request = new SpatialDeleteMapConfigurationRQ();
         return request;
     }
-
 
     @Test
     public void ping() throws Exception {
@@ -284,7 +285,8 @@ public class SpatialRestIT {
 
         Assert.assertEquals(200, ret.getStatus());
 
-        AreaByCodeResponse response = ret.readEntity(new GenericType<AreaByCodeResponse>() {});
+        AreaByCodeResponse response = ret.readEntity(new GenericType<AreaByCodeResponse>() {
+        });
 
         List<AreaSimpleType> resultList = response.getAreaSimples();
         Assert.assertNotNull(resultList);
@@ -295,7 +297,6 @@ public class SpatialRestIT {
         Assert.assertNotNull(wkt);
         Assert.assertTrue(wkt.contains("POLYGON"));
     }
-
 
     @Test
     public void getGeometryByPortCode() throws Exception {
@@ -316,16 +317,133 @@ public class SpatialRestIT {
     }
 
     @Test
-    @Ignore
     public void getEnrichmentBatch() throws Exception {
 
+
+        List<LocationType> locationTypes = Arrays.asList(LocationType.PORT);
+        List<AreaType> areaTypes = Arrays.asList(AreaType.COUNTRY);
+
+        PointType point = new PointType();
+        Double localLatitude = latitude;
+        Double localLongitude = longitude;
+        point.setCrs(crs);
+        point.setLatitude(localLatitude);
+        point.setLongitude(localLongitude);
+
+        List<SpatialEnrichmentRQListElement> listElements = new ArrayList<>();
+
+        for (int i = 0; i < batchSize; i++) {
+            listElements.add(createBatchLine(areaTypes, locationTypes, point));
+            Double lat = point.getLatitude();
+            lat = lat + 0.001;
+            point.setLatitude(lat);
+        }
+        BatchSpatialEnrichmentRQ request = createBATCHSpatialEnrichmentRequest(listElements);
+
+
+        // @formatter:off
+        long then = System.currentTimeMillis();
+        Response ret =  webTarget
+                .path("getEnrichmentBatch")
+                .request(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON)
+                .post(Entity.json(request), Response.class);
+        long now = System.currentTimeMillis();
+        // @formatter:on
+
+        Assert.assertEquals(200, ret.getStatus());
+        BatchSpatialEnrichmentRS rs = ret.readEntity(new GenericType<BatchSpatialEnrichmentRS>() {
+        });
+
+
+        List<SpatialEnrichmentRSListElement> responseLines = rs.getEnrichmentRespLists();
+
+        Assert.assertTrue(responseLines.size() == batchSize);
+
+        double elapsed = (double) (now - then);
+        double elapsedSecs = (elapsed / 1000);
+
+        //System.out.println(batchSize + " enrichments took " + elapsedSecs + " secs");
+        //System.out.println(batchSize + " Average  " + elapsedSecs / batchSize);
     }
 
+    @Test
+    public void getEnrichmentMulti() throws Exception {
+
+        PointType point = new PointType();
+        point.setCrs(4326);
+        point.setLatitude(latitude);
+        point.setLongitude(longitude);
+
+        List<LocationType> locationTypes = Arrays.asList(LocationType.PORT);
+        List<AreaType> areaTypes = Arrays.asList(AreaType.COUNTRY);
+
+
+        List<SpatialEnrichmentRQ> requests = new ArrayList<>();
+        for (int i = 0; i < batchSize; i++) {
+
+            Double lat = point.getLatitude();
+            lat = lat + 0.001;
+            point.setLatitude(lat);
+            SpatialEnrichmentRQ request = createSpatialEnrichmentRequest(point, UnitType.NAUTICAL_MILES, locationTypes, areaTypes);
+            requests.add(request);
+        }
+
+        // @formatter:off
+         long then = System.currentTimeMillis();
+        for(int i = 0 ; i < batchSize ; i++) {
+             SpatialEnrichmentRQ request = requests.get(i);
+          Response ret =  webTarget
+                .path("getEnrichment")
+                .request(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON)
+                .post(Entity.json(request), Response.class);
+        // @formatter:on
+
+            Assert.assertEquals(200, ret.getStatus());
+            SpatialEnrichmentRS rs = ret.readEntity(new GenericType<SpatialEnrichmentRS>() {
+            });
+        }
+        long now = System.currentTimeMillis();
+
+        double elapsed = (double) (now - then);
+        double elapsedSecs = (elapsed / 1000);
+
+       // System.out.println(batchSize + " enrichments took " + elapsedSecs + " secs");
+       // System.out.println(batchSize + " Average  " + elapsedSecs / batchSize);
+
+
+    }
 
 
     /*******************************************************************************************************************
      * HELPERS                                                                                                         *
      *******************************************************************************************************************/
+
+    /*
+
+        List<LocationType> locationTypes = Arrays.asList(LocationType.PORT);
+        List<AreaType> areaTypes = Arrays.asList(AreaType.COUNTRY);
+        SpatialEnrichmentRQ request = createSpatialEnrichmentRequest(point, UnitType.NAUTICAL_MILES, locationTypes, areaTypes);
+
+
+     */
+    private BatchSpatialEnrichmentRQ createBATCHSpatialEnrichmentRequest(List<SpatialEnrichmentRQListElement> listElements) {
+
+        BatchSpatialEnrichmentRQ request = new BatchSpatialEnrichmentRQ();
+        request.setEnrichmentLists(listElements);
+        return request;
+    }
+
+    private SpatialEnrichmentRQListElement createBatchLine(List<AreaType> areaTypes, List<LocationType> locationTypes, PointType point) {
+        SpatialEnrichmentRQListElement line = new SpatialEnrichmentRQListElement();
+        line.setUnit(UnitType.NAUTICAL_MILES);
+        line.setAreaTypes(areaTypes);
+        line.setLocationTypes(locationTypes);
+        line.setPoint(point);
+        return line;
+    }
+
 
     private AreaByCodeRequest createAreaByCodeRequest() {
 
