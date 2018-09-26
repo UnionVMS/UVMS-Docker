@@ -23,6 +23,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+@Ignore
 public class SpatialRestIT {
     private Integer crs = 4326;
     private Double latitude = 57.715523;
@@ -53,7 +54,6 @@ public class SpatialRestIT {
 
 
     @Test
-    @Ignore
     public void getAreaByLocation() throws Exception {
 
         PointType point = new PointType();
@@ -82,7 +82,6 @@ public class SpatialRestIT {
     }
 
     @Test
-    @Ignore
     public void getAreaTypes() throws Exception {
 
         PointType point = new PointType();
@@ -112,7 +111,6 @@ public class SpatialRestIT {
 
 
     @Test
-    @Ignore
     public void getClosestArea() throws Exception {
 
         PointType point = new PointType();
@@ -140,7 +138,6 @@ public class SpatialRestIT {
     }
 
     @Test
-    @Ignore
     public void getClosestLocation() throws Exception {
 
         PointType point = new PointType();
@@ -172,7 +169,6 @@ public class SpatialRestIT {
 
 
     @Test
-    @Ignore
     public void getEnrichment() throws Exception {
 
         PointType point = new PointType();
@@ -205,7 +201,6 @@ public class SpatialRestIT {
     }
 
     @Test
-    @Ignore
     public void getFilterArea() throws Exception {
 
         AreaIdentifierType areaType = new AreaIdentifierType();
@@ -231,7 +226,6 @@ public class SpatialRestIT {
     }
 
     @Test
-    @Ignore
     public void getMapConfiguration() throws Exception {
 
         SpatialGetMapConfigurationRQ request = getSpatialGetMapConfigurationRQ();
@@ -259,7 +253,6 @@ public class SpatialRestIT {
 
 
     @Test
-    @Ignore
     public void ping() throws Exception {
 
         PingRQ request = new PingRQ();
@@ -278,7 +271,6 @@ public class SpatialRestIT {
     }
 
     @Test
-    @Ignore
     public void getAreaByCode() throws Exception {
 
         AreaByCodeRequest request = createAreaByCodeRequest();
@@ -306,7 +298,6 @@ public class SpatialRestIT {
 
 
     @Test
-    @Ignore
     public void getGeometryByPortCode() throws Exception {
 
         GeometryByPortCodeRequest request = createToGeometryByPortCodeRequest("AOLAD");
