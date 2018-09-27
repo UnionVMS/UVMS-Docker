@@ -23,9 +23,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-@Ignore
 public class SpatialRestIT {
-    int batchSize = 1000;
+    int batchSize = 10;
     private Integer crs = 4326;
     private Double latitude = 57.715523;
     private Double longitude = 11.973965;
