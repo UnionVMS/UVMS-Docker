@@ -150,4 +150,18 @@ public final class MessageHelper {
             }
         }
     }
+
+    public static Message listenForResponseOnQueue(String correlationId, String queue) throws Exception {
+        Connection connection = connectionFactory.createConnection();
+        try {
+            connection.start();
+            Session session = connection.createSession(false, Session.AUTO_ACKNOWLEDGE);
+            Queue responseQueue = session.createQueue(queue);
+
+            //return session.createConsumer(responseQueue).receive(TIMEOUT);
+            return session.createConsumer(responseQueue, "JMSCorrelationID='" + correlationId + "'").receive(TIMEOUT);
+        } finally {
+            connection.close();
+        }
+    }
 }

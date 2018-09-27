@@ -10,6 +10,7 @@ import eu.europa.ec.fisheries.uvms.docker.validation.common.AbstractRestServiceT
 import eu.europa.ec.fisheries.uvms.docker.validation.common.MessageHelper;
 import eu.europa.ec.fisheries.uvms.docker.validation.mobileterminal.MobileTerminalTestHelper;
 
+import org.junit.Ignore;
 import org.junit.Test;
 
 import javax.jms.*;
@@ -24,12 +25,14 @@ import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.UUID;
 
 public class MovementPerformanceTests extends AbstractRestServiceTest {
 
     private static MovementHelper movementHelper = new MovementHelper();
 
     @Test
+    @Ignore
     public void createRouteTestTitanic1000Positions() throws Exception {
         Asset testAsset = AssetTestHelper.createTestAsset();
         MobileTerminalType mobileTerminalType = MobileTerminalTestHelper.createMobileTerminalType();
@@ -71,6 +74,7 @@ public class MovementPerformanceTests extends AbstractRestServiceTest {
     }
 
     @Test
+    @Ignore
     public void createRouteTestTitanic1000PositionsReverseOrder() throws Exception {
         Asset testAsset = AssetTestHelper.createTestAsset();
         MobileTerminalType mobileTerminalType = MobileTerminalTestHelper.createMobileTerminalType();
@@ -95,7 +99,7 @@ public class MovementPerformanceTests extends AbstractRestServiceTest {
             assertNotNull(createMovementResponse);
             i++;
             if ((i % 10) == 0) {
-                System.out.println("Created movement number: " + i + " Time so far: " + humanReadableFormat(Duration.between(b4, Instant.now())));   //on run: 4.30 ish
+                System.out.println("Created movement number: " + i + " Time so far: " + humanReadableFormat(Duration.between(b4, Instant.now()))+ " Time since last 10: " + humanReadableFormat(Duration.between(lastIteration, Instant.now())));   //on run: 4.30 ish
                 //System.out.println("Time for 10 movement for last iteration: " + Duration.between(lastIteration,Instant.now()).toString());
                 averageDurations.add(Duration.between(lastIteration, Instant.now()));
                 lastIteration = Instant.now();
@@ -108,6 +112,7 @@ public class MovementPerformanceTests extends AbstractRestServiceTest {
     }
 
     @Test
+    @Ignore
     public void createRouteTestTitanic1000PositionsAsync() throws Exception {
         Asset testAsset = AssetTestHelper.createTestAsset();
         MobileTerminalType mobileTerminalType = MobileTerminalTestHelper.createMobileTerminalType();
@@ -137,6 +142,70 @@ public class MovementPerformanceTests extends AbstractRestServiceTest {
         }
 
         //assertEquals(1, corrId.size());
+        i = 0;
+        //start listening for the returns
+        for (String id: corrId){
+
+            Message m = MessageHelper.listenOnTestResponseQueue(id, 60000);
+            try {
+                createMovementResponse = movementHelper.unMarshallCreateMovementResponse(m);
+            }catch(UnmarshalException e){
+                System.out.println(unMarshallErrorResponse(m).toString());
+                fail(e.getMessage() + " Number: " + i);
+            }
+            assertNotNull(createMovementResponse);
+
+            i++;
+            if ((i % 10) == 0) {
+                System.out.println("Recived movement number: " + i + " Time so far: " + humanReadableFormat(Duration.between(b4, Instant.now())) + " Time since last 10: " + humanReadableFormat(Duration.between(lastIteration, Instant.now())));
+                //System.out.println("Time for 10 movement for last iteration: " + Duration.between(lastIteration,Instant.now()).toString());
+                averageDurations.add(Duration.between(lastIteration, Instant.now()));
+                lastIteration = Instant.now();
+
+            }
+        }
+
+
+        averageDurations.stream().forEach(dur -> System.out.print(humanReadableFormat(dur) + ", "));
+        System.out.println();
+    }
+
+    @Test
+    @Ignore
+    public void createRouteTestTitanic1000PositionsAndShipsAsync() throws Exception {
+        List<LatLong> route = movementHelper.createRuttCobhNewYork(1000, 0.06f);                //0.1F = 654 pos    0.01 = 6543     0.07 = 934   0.06 = 1090
+
+        CreateMovementResponse createMovementResponse = null;
+        int i = 0;
+        Instant b4 = Instant.now();
+        Instant lastIteration = Instant.now();
+        List<Duration> averageDurations = new ArrayList<>();
+        List<String> corrId = new ArrayList<>();
+
+
+        i = 0;
+        for (LatLong position : route) {
+
+            Asset testAsset = new Asset();
+            testAsset.setId(UUID.randomUUID());
+            testAsset.setHistoryId(UUID.randomUUID());
+            MobileTerminalType mobileTerminalType = new MobileTerminalType();
+
+            final CreateMovementRequest createMovementRequest = movementHelper.createMovementRequest(testAsset,
+                    mobileTerminalType, position);
+            corrId.add(movementHelper.createMovementDontWaitForResponse(testAsset, mobileTerminalType,
+                    createMovementRequest));
+
+            i++;
+            if ((i % 10) == 0) {
+                System.out.println("Sent movement number: " + i + " Time so far: " + humanReadableFormat(Duration.between(b4, Instant.now())) + " Time since last 10: " + humanReadableFormat(Duration.between(lastIteration, Instant.now())));
+                averageDurations.add(Duration.between(lastIteration, Instant.now()));
+                lastIteration = Instant.now();
+
+            }
+        }
+
+        //assertEquals(1000, corrId.size());
         i = 0;
         //start listening for the returns
         for (String id: corrId){
@@ -220,6 +289,15 @@ public class MovementPerformanceTests extends AbstractRestServiceTest {
 
         //pentagram placed over ireland
         String areaInWKT = "POLYGON((-13.754882812499993 54.085173420886775,-3.6914062499999996 54.11094294272428,-13.666992187499993 50.09239321093878,-8.129882812499996 56.72862197314072,-5.229492187499991 50.205033264943324,-13.754882812499993 54.085173420886775))";
+
+        buildAndSendQuery(areaInWKT);
+    }
+
+    @Test
+    public void fishOverIrelandTest () throws Exception{
+
+        //"fish" placed over ireland
+        String areaInWKT = "POLYGON((-24.565429687500007 51.672555148396754,-20.7421875 52.776185688961704,-15.161132812500004 53.09402405506327,-11.250000000000002 52.509534770327264,-6.328125000000003 50.31740811261869,-6.547851562500004 53.06762664238738,-10.810546875000007 50.00773901463688,-14.853515625000004 49.32512199104002,-20.346679687500004 50.205033264943324,-23.466796875000004 50.81981826215653,-24.565429687500007 51.672555148396754))";
 
         buildAndSendQuery(areaInWKT);
     }
