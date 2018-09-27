@@ -12,9 +12,7 @@ import eu.europa.ec.fisheries.schema.movementrules.module.v1.RulesModuleMethod;
 import eu.europa.ec.fisheries.schema.movementrules.module.v1.SetMovementReportRequest;
 import eu.europa.ec.fisheries.schema.movementrules.movement.v1.*;
 import eu.europa.ec.fisheries.uvms.asset.client.model.Asset;
-import eu.europa.ec.fisheries.uvms.commons.message.api.MessageConstants;
 import eu.europa.ec.fisheries.uvms.docker.validation.asset.AssetTestHelper;
-import eu.europa.ec.fisheries.uvms.docker.validation.common.MessageHelper;
 import eu.europa.ec.fisheries.uvms.docker.validation.mobileterminal.MobileTerminalTestHelper;
 import eu.europa.ec.fisheries.uvms.docker.validation.movement.LatLong;
 import eu.europa.ec.fisheries.uvms.docker.validation.movement.MovementHelper;
@@ -103,6 +101,163 @@ public class RulesPerformanceTests {
         System.out.println();
     }
 
+    @Test
+    @Ignore
+    public void createRouteTestTitanic1000PositionsAsync() throws Exception{   //Needs a special version of rules that respond on the test queue to work!!!!
+
+        Asset testAsset = AssetTestHelper.createTestAsset();
+        MobileTerminalType mobileTerminalType = MobileTerminalTestHelper.createMobileTerminalType();
+        MobileTerminalTestHelper.assignMobileTerminal(testAsset, mobileTerminalType);
+        List<LatLong> route = movementHelper.createRuttCobhNewYork(1000, 0.06f);                //0.1F = 654 pos    0.01 = 6543     0.07 = 934   0.06 = 1090
+
+
+        AssetId assetId = new AssetId();
+        assetId.setAssetType(AssetType.VESSEL);
+        AssetIdList assetIdList = new AssetIdList();
+        assetIdList.setIdType(AssetIdType.IRCS);
+        assetIdList.setValue(testAsset.getIrcs());
+        assetId.getAssetIdList().add(assetIdList);
+
+        assetIdList = new AssetIdList();
+        assetIdList.setIdType(AssetIdType.CFR);
+        assetIdList.setValue(testAsset.getCfr());
+        assetId.getAssetIdList().add(assetIdList);
+
+
+        int i = 0;
+        Instant b4 = Instant.now();
+        Instant lastIteration = Instant.now();
+        List<Duration> averageDurations = new ArrayList<>();
+        List<String> corrList = new ArrayList<>();
+
+        for(LatLong pos : route) {
+            RawMovementType move = createBasicMovement(assetId, testAsset.getName(), pos);
+            String request = createSetMovementReportRequest(PluginType.FLUX, move, "PerformanceTester");
+
+            String corrId = sendMessageToRules(request, RulesModuleMethod.SET_MOVEMENT_REPORT.value());
+            corrList.add(corrId);
+
+
+            i++;
+            if((i % 10) == 0){
+                System.out.println("Created movement number: " + i + " Time so far: " + humanReadableFormat(Duration.between(b4, Instant.now())) + " Time since last 10: " + humanReadableFormat(Duration.between(lastIteration, Instant.now())));
+                //System.out.println("Time for 10 movement for last iteration: " + Duration.between(lastIteration,Instant.now()).toString());
+                averageDurations.add(Duration.between(lastIteration, Instant.now()));
+                lastIteration = Instant.now();
+
+            }
+
+
+        }
+
+        Instant middle = Instant.now();
+        i = 0;
+        for(String corr : corrList){
+            Message message = /*MessageHelper.*/listenForResponseOnQueue("PerformanceTester", "IntegrationTestsResponseQueue");
+            ProcessedMovementResponse movementResponse = JAXBMarshaller.unmarshallTextMessage((TextMessage) message, ProcessedMovementResponse.class);
+            if(movementResponse.getMovementRefType().getType().equals(MovementRefTypeType.ALARM)){
+                System.out.println("Alarm: " + i + ", ");
+            }
+            i++;
+
+            if((i % 10) == 0){
+                System.out.println("Recieved movement number: " + i + " Time so far: " + humanReadableFormat(Duration.between(b4, Instant.now())) + " Time since last 10: " + humanReadableFormat(Duration.between(lastIteration, Instant.now())));
+                //System.out.println("Time for 10 movement for last iteration: " + Duration.between(lastIteration,Instant.now()).toString());
+                averageDurations.add(Duration.between(lastIteration, Instant.now()));
+                lastIteration = Instant.now();
+
+            }
+        }
+
+        averageDurations.stream().forEach(dur -> System.out.print(humanReadableFormat(dur) + ", "));
+        System.out.println();
+    }
+
+    @Test
+    @Ignore
+    public void createRouteTestTitanic10ships100PositionsEachAsync() throws Exception{   //Needs a special version of rules that respond on the test queue to work!!!!
+
+        List<AssetId> assetList = new ArrayList<>();
+        List<String> nameList = new ArrayList<>();
+
+        System.out.println("Start creating assets");
+        for(int i = 0; i < 10; i++ ){
+            Asset testAsset = AssetTestHelper.createTestAsset();
+            MobileTerminalType mobileTerminalType = MobileTerminalTestHelper.createMobileTerminalType();
+            MobileTerminalTestHelper.assignMobileTerminal(testAsset, mobileTerminalType);
+
+
+
+            AssetId assetId = new AssetId();
+            assetId.setAssetType(AssetType.VESSEL);
+            AssetIdList assetIdList = new AssetIdList();
+            assetIdList.setIdType(AssetIdType.IRCS);
+            assetIdList.setValue(testAsset.getIrcs());
+            assetId.getAssetIdList().add(assetIdList);
+
+            assetIdList = new AssetIdList();
+            assetIdList.setIdType(AssetIdType.CFR);
+            assetIdList.setValue(testAsset.getCfr());
+            assetId.getAssetIdList().add(assetIdList);
+
+            assetList.add(assetId);
+            nameList.add(testAsset.getName());
+        }
+        System.out.println("Done with creating assets");
+
+        List<LatLong> route = movementHelper.createRuttCobhNewYork(1000, 0.06f);                //0.1F = 654 pos    0.01 = 6543     0.07 = 934   0.06 = 1090
+
+        int i = 0;
+        Instant b4 = Instant.now();
+        Instant lastIteration = Instant.now();
+        List<Duration> averageDurations = new ArrayList<>();
+        List<String> corrList = new ArrayList<>();
+
+        for(LatLong pos : route) {
+            AssetId assetId = assetList.get(i % 10);
+
+            RawMovementType move = createBasicMovement(assetId, nameList.get(i % 10), pos);
+            String request = createSetMovementReportRequest(PluginType.FLUX, move, "PerformanceTester");
+
+            String corrId = sendMessageToRules(request, RulesModuleMethod.SET_MOVEMENT_REPORT.value());
+            corrList.add(corrId);
+
+
+            i++;
+            if((i % 10) == 0){
+                System.out.println("Created movement number: " + i + " Time so far: " + humanReadableFormat(Duration.between(b4, Instant.now())) + " Time since last 10: " + humanReadableFormat(Duration.between(lastIteration, Instant.now())));
+                //System.out.println("Time for 10 movement for last iteration: " + Duration.between(lastIteration,Instant.now()).toString());
+                averageDurations.add(Duration.between(lastIteration, Instant.now()));
+                lastIteration = Instant.now();
+
+            }
+
+
+        }
+
+        Instant middle = Instant.now();
+        i = 0;
+        for(String corr : corrList){
+            Message message = /*MessageHelper.*/listenForResponseOnQueue("PerformanceTester", "IntegrationTestsResponseQueue");
+            ProcessedMovementResponse movementResponse = JAXBMarshaller.unmarshallTextMessage((TextMessage) message, ProcessedMovementResponse.class);
+            if(movementResponse.getMovementRefType().getType().equals(MovementRefTypeType.ALARM)){
+                System.out.println("Alarm: " + i + ", ");
+            }
+            i++;
+
+            if((i % 10) == 0){
+                System.out.println("Recieved movement number: " + i + " Time so far: " + humanReadableFormat(Duration.between(b4, Instant.now())) + " Time since last 10: " + humanReadableFormat(Duration.between(lastIteration, Instant.now())));
+                //System.out.println("Time for 10 movement for last iteration: " + Duration.between(lastIteration,Instant.now()).toString());
+                averageDurations.add(Duration.between(lastIteration, Instant.now()));
+                lastIteration = Instant.now();
+
+            }
+        }
+
+        averageDurations.stream().forEach(dur -> System.out.print(humanReadableFormat(dur) + ", "));
+        System.out.println();
+    }
+
 
     public String sendMessageToRules(String text, String requestType) throws Exception {
         Connection connection = connectionFactory.createConnection();
@@ -184,7 +339,7 @@ public class RulesPerformanceTests {
             Queue responseQueue = session.createQueue(queue);
 
             //return session.createConsumer(responseQueue).receive(TIMEOUT);
-            return session.createConsumer(responseQueue, "FUNCTION='" + correlationId + "'").receive(30000);
+            return session.createConsumer(responseQueue, "FUNCTION='" + correlationId + "'").receive(60000);
         } finally {
             connection.close();
         }
