@@ -406,10 +406,10 @@ public class MovementHelper extends AbstractHelper {
 	}
 
 	public String createMovementDontWaitForResponse(Asset testAsset, MobileTerminalType mobileTerminalType,
-												 CreateMovementRequest createMovementRequest) throws Exception {
+												 CreateMovementRequest createMovementRequest, int order) throws Exception {
 
 		String messageId =
-				MessageHelper.sendMessageAndReturnMessageId(UVMS_MOVEMENT_REQUEST_QUEUE, marshall(createMovementRequest), testAsset.getId().toString());
+				MessageHelper.sendMessageAndReturnMessageId(UVMS_MOVEMENT_REQUEST_QUEUE, marshall(createMovementRequest), testAsset.getId().toString(), order);
 		return messageId;
 	}
 

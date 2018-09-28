@@ -130,7 +130,7 @@ public class MovementPerformanceTests extends AbstractRestServiceTest {
             final CreateMovementRequest createMovementRequest = movementHelper.createMovementRequest(testAsset,
                     mobileTerminalType, position);
             corrId.add(movementHelper.createMovementDontWaitForResponse(testAsset, mobileTerminalType,
-                    createMovementRequest));
+                    createMovementRequest, i));
 
             i++;
             if ((i % 10) == 0) {
@@ -194,7 +194,7 @@ public class MovementPerformanceTests extends AbstractRestServiceTest {
             final CreateMovementRequest createMovementRequest = movementHelper.createMovementRequest(testAsset,
                     mobileTerminalType, position);
             corrId.add(movementHelper.createMovementDontWaitForResponse(testAsset, mobileTerminalType,
-                    createMovementRequest));
+                    createMovementRequest, i));
 
             i++;
             if ((i % 10) == 0) {

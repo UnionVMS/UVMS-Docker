@@ -40,7 +40,7 @@ public final class MessageHelper {
         return listenOnTestResponseQueue(createTextMessage.getJMSMessageID(), TIMEOUT);
     }
 
-    public static String sendMessageAndReturnMessageId(String queueName, final String msg, String asset) throws Exception {
+    public static String sendMessageAndReturnMessageId(String queueName, final String msg, String asset, int order) throws Exception {
         Connection connection = connectionFactory.createConnection();
         connection.setClientID(UUID.randomUUID().toString());
 
@@ -52,6 +52,7 @@ public final class MessageHelper {
         Queue responseQueue = session.createQueue(TEST_RESPONSE_QUEUE);
         createTextMessage.setJMSReplyTo(responseQueue);
         createTextMessage.setStringProperty("JMSXGroupID", asset);
+        createTextMessage.setIntProperty("JMSXGroupSeq", order);
         messageProducer.send(createTextMessage);
 
         connection.close();
