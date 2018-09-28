@@ -405,6 +405,14 @@ public class MovementHelper extends AbstractHelper {
 		return unMarshallCreateMovementResponse(messageResponse);
 	}
 
+	public String createMovementDontWaitForResponse(Asset testAsset, MobileTerminalType mobileTerminalType,
+												 CreateMovementRequest createMovementRequest) throws Exception {
+
+		String messageId =
+				MessageHelper.sendMessageAndReturnMessageId(UVMS_MOVEMENT_REQUEST_QUEUE, marshall(createMovementRequest), testAsset.getId().toString());
+		return messageId;
+	}
+
 	public static List<MovementType> getListByQuery(MovementQuery movementQuery) throws Exception {
 
 		final HttpResponse response = Request.Post(getBaseUrl() + "movement/rest/movement/list")
