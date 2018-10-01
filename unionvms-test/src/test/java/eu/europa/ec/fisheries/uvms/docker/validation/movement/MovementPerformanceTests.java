@@ -26,6 +26,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class MovementPerformanceTests extends AbstractRestServiceTest {
 
@@ -114,124 +115,35 @@ public class MovementPerformanceTests extends AbstractRestServiceTest {
     @Test
     @Ignore
     public void createRouteTestTitanic1000PositionsAsync() throws Exception {
-        Asset testAsset = AssetTestHelper.createTestAsset();
-        MobileTerminalType mobileTerminalType = MobileTerminalTestHelper.createMobileTerminalType();
-        MobileTerminalTestHelper.assignMobileTerminal(testAsset, mobileTerminalType);
-        List<LatLong> route = movementHelper.createRuttCobhNewYork(1000, 0.06f);                //0.1F = 654 pos    0.01 = 6543     0.07 = 934   0.06 = 1090
 
-        CreateMovementResponse createMovementResponse = null;
-        int i = 0;
-        Instant b4 = Instant.now();
-        Instant lastIteration = Instant.now();
-        List<Duration> averageDurations = new ArrayList<>();
-        List<String> corrId = new ArrayList<>();
+        Long l = new Long(50);
+        l.intValue();
 
-        for (LatLong position : route) {
-            final CreateMovementRequest createMovementRequest = movementHelper.createMovementRequest(testAsset,
-                    mobileTerminalType, position);
-            corrId.add(movementHelper.createMovementDontWaitForResponse(testAsset, mobileTerminalType,
-                    createMovementRequest, i));
+        BigInteger b = new BigInteger(System.currentTimeMillis()+ "");
 
-            i++;
-            if ((i % 10) == 0) {
-                System.out.println("Sent movement number: " + i + " Time so far: " + humanReadableFormat(Duration.between(b4, Instant.now())) + " Time since last 10: " + humanReadableFormat(Duration.between(lastIteration, Instant.now())));
-                averageDurations.add(Duration.between(lastIteration, Instant.now()));
-                lastIteration = Instant.now();
+        System.out.println(b.intValue());
+        b.intValue();
 
-            }
-        }
-
-        //assertEquals(1, corrId.size());
-        i = 0;
-        //start listening for the returns
-        for (String id: corrId){
-
-            Message m = MessageHelper.listenOnTestResponseQueue(id, 60000);
-            try {
-                createMovementResponse = movementHelper.unMarshallCreateMovementResponse(m);
-            }catch(UnmarshalException e){
-                System.out.println(unMarshallErrorResponse(m).toString());
-                fail(e.getMessage() + " Number: " + i);
-            }
-            assertNotNull(createMovementResponse);
-
-            i++;
-            if ((i % 10) == 0) {
-                System.out.println("Recived movement number: " + i + " Time so far: " + humanReadableFormat(Duration.between(b4, Instant.now())) + " Time since last 10: " + humanReadableFormat(Duration.between(lastIteration, Instant.now())));
-                //System.out.println("Time for 10 movement for last iteration: " + Duration.between(lastIteration,Instant.now()).toString());
-                averageDurations.add(Duration.between(lastIteration, Instant.now()));
-                lastIteration = Instant.now();
-
-            }
-        }
+        AtomicInteger ai = new AtomicInteger();
+        ai.incrementAndGet();
 
 
-        averageDurations.stream().forEach(dur -> System.out.print(humanReadableFormat(dur) + ", "));
-        System.out.println();
+        createRouteTestTitanic1000OnXShipsPositionsAsync(1);
     }
 
     @Test
     @Ignore
+    public void createRouteTestTitanic1000PositionsAnd8ShipsAsync() throws Exception {
+
+
+        createRouteTestTitanic1000OnXShipsPositionsAsync(8);
+    }
+
+
+    @Test
+    @Ignore
     public void createRouteTestTitanic1000PositionsAndShipsAsync() throws Exception {
-        List<LatLong> route = movementHelper.createRuttCobhNewYork(1000, 0.06f);                //0.1F = 654 pos    0.01 = 6543     0.07 = 934   0.06 = 1090
-
-        CreateMovementResponse createMovementResponse = null;
-        int i = 0;
-        Instant b4 = Instant.now();
-        Instant lastIteration = Instant.now();
-        List<Duration> averageDurations = new ArrayList<>();
-        List<String> corrId = new ArrayList<>();
-
-
-        i = 0;
-        for (LatLong position : route) {
-
-            Asset testAsset = new Asset();
-            testAsset.setId(UUID.randomUUID());
-            testAsset.setHistoryId(UUID.randomUUID());
-            MobileTerminalType mobileTerminalType = new MobileTerminalType();
-
-            final CreateMovementRequest createMovementRequest = movementHelper.createMovementRequest(testAsset,
-                    mobileTerminalType, position);
-            corrId.add(movementHelper.createMovementDontWaitForResponse(testAsset, mobileTerminalType,
-                    createMovementRequest, i));
-
-            i++;
-            if ((i % 10) == 0) {
-                System.out.println("Sent movement number: " + i + " Time so far: " + humanReadableFormat(Duration.between(b4, Instant.now())) + " Time since last 10: " + humanReadableFormat(Duration.between(lastIteration, Instant.now())));
-                averageDurations.add(Duration.between(lastIteration, Instant.now()));
-                lastIteration = Instant.now();
-
-            }
-        }
-
-        //assertEquals(1000, corrId.size());
-        i = 0;
-        //start listening for the returns
-        for (String id: corrId){
-
-            Message m = MessageHelper.listenOnTestResponseQueue(id, 60000);
-            try {
-                createMovementResponse = movementHelper.unMarshallCreateMovementResponse(m);
-            }catch(UnmarshalException e){
-                System.out.println(unMarshallErrorResponse(m).toString());
-                fail(e.getMessage() + " Number: " + i);
-            }
-            assertNotNull(createMovementResponse);
-
-            i++;
-            if ((i % 10) == 0) {
-                System.out.println("Recived movement number: " + i + " Time so far: " + humanReadableFormat(Duration.between(b4, Instant.now())) + " Time since last 10: " + humanReadableFormat(Duration.between(lastIteration, Instant.now())));
-                //System.out.println("Time for 10 movement for last iteration: " + Duration.between(lastIteration,Instant.now()).toString());
-                averageDurations.add(Duration.between(lastIteration, Instant.now()));
-                lastIteration = Instant.now();
-
-            }
-        }
-
-
-        averageDurations.stream().forEach(dur -> System.out.print(humanReadableFormat(dur) + ", "));
-        System.out.println();
+        createRouteTestTitanic1000OnXShipsPositionsAsync(1000);
     }
 
     @Test
@@ -300,6 +212,71 @@ public class MovementPerformanceTests extends AbstractRestServiceTest {
         String areaInWKT = "POLYGON((-24.565429687500007 51.672555148396754,-20.7421875 52.776185688961704,-15.161132812500004 53.09402405506327,-11.250000000000002 52.509534770327264,-6.328125000000003 50.31740811261869,-6.547851562500004 53.06762664238738,-10.810546875000007 50.00773901463688,-14.853515625000004 49.32512199104002,-20.346679687500004 50.205033264943324,-23.466796875000004 50.81981826215653,-24.565429687500007 51.672555148396754))";
 
         buildAndSendQuery(areaInWKT);
+    }
+
+    private void createRouteTestTitanic1000OnXShipsPositionsAsync(int nrOfShips) throws Exception {
+        List<LatLong> route = movementHelper.createRuttCobhNewYork(10, 0.06f);                //0.1F = 654 pos    0.01 = 6543     0.07 = 934   0.06 = 1090
+        List<Asset> assetList = new ArrayList<>();
+        for(int i = 0; i < nrOfShips; i++){
+            Asset testAsset = new Asset();
+            testAsset.setId(UUID.randomUUID());
+            testAsset.setHistoryId(UUID.randomUUID());
+
+            assetList.add(testAsset);
+        }
+
+        CreateMovementResponse createMovementResponse = null;
+        int i = 0;
+        Instant b4 = Instant.now();
+        Instant lastIteration = Instant.now();
+        List<Duration> averageDurations = new ArrayList<>();
+        List<String> corrId = new ArrayList<>();
+
+
+
+        i = 0;
+        for (LatLong position : route) {
+
+            Asset testAsset = assetList.get((int)Math.random() * nrOfShips);
+            MobileTerminalType mobileTerminalType = new MobileTerminalType();
+
+            final CreateMovementRequest createMovementRequest = movementHelper.createMovementRequest(testAsset,
+                    mobileTerminalType, position);
+            corrId.add(movementHelper.createMovementDontWaitForResponse(testAsset, mobileTerminalType,
+                    createMovementRequest, i));
+
+            i++;
+            if ((i % 10) == 0) {
+                System.out.println("Sent movement number: " + i + " Time so far: " + humanReadableFormat(Duration.between(b4, Instant.now())) + " Time since last 10: " + humanReadableFormat(Duration.between(lastIteration, Instant.now())));
+                averageDurations.add(Duration.between(lastIteration, Instant.now()));
+                lastIteration = Instant.now();
+
+            }
+        }
+
+        //assertEquals(1000, corrId.size());
+        i = 0;
+        //start listening for the returns
+        for (String id : corrId) {
+
+            Message m = MessageHelper.listenOnTestResponseQueue(id, 90000);
+            try {
+                createMovementResponse = movementHelper.unMarshallCreateMovementResponse(m);
+            } catch (UnmarshalException e) {
+                System.out.println(unMarshallErrorResponse(m).toString());
+                fail(e.getMessage() + " Number: " + i);
+            }
+            assertNotNull(createMovementResponse);
+
+            i++;
+            if ((i % 10) == 0) {
+                System.out.println("Recived movement number: " + i + " Time so far: " + humanReadableFormat(Duration.between(b4, Instant.now())) + " Time since last 10: " + humanReadableFormat(Duration.between(lastIteration, Instant.now())));
+                //System.out.println("Time for 10 movement for last iteration: " + Duration.between(lastIteration,Instant.now()).toString());
+                averageDurations.add(Duration.between(lastIteration, Instant.now()));
+                lastIteration = Instant.now();
+
+            }
+        }
     }
 
     private void buildAndSendQuery(String areaInWKT) throws Exception{
