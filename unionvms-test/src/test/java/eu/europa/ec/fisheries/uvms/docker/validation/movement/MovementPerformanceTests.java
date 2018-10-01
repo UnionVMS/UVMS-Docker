@@ -47,10 +47,8 @@ public class MovementPerformanceTests extends AbstractRestServiceTest {
         List<Duration> averageDurations = new ArrayList<>();
 
         for (LatLong position : route) {
-            final CreateMovementRequest createMovementRequest = movementHelper.createMovementRequest(testAsset,
-                    mobileTerminalType, position);
-            createMovementResponse = movementHelper.createMovement(testAsset, mobileTerminalType,
-                    createMovementRequest);
+            final CreateMovementRequest createMovementRequest = movementHelper.createMovementRequest(testAsset, position);
+            createMovementResponse = movementHelper.createMovement(createMovementRequest);
             assertNotNull(createMovementResponse);
             i++;
             if((i % 10) == 0){
@@ -90,13 +88,11 @@ public class MovementPerformanceTests extends AbstractRestServiceTest {
         List<CreateMovementRequest> createMovementList = new ArrayList<>();
 
         for (LatLong position : route) {
-            createMovementList.add(movementHelper.createMovementRequest(testAsset,
-                    mobileTerminalType, position));
+            createMovementList.add(movementHelper.createMovementRequest(testAsset, position));
         }
         Collections.reverse(createMovementList);
         for (CreateMovementRequest createMovementRequest : createMovementList){
-            createMovementResponse = movementHelper.createMovement(testAsset, mobileTerminalType,
-                    createMovementRequest);
+            createMovementResponse = movementHelper.createMovement(createMovementRequest);
             assertNotNull(createMovementResponse);
             i++;
             if ((i % 10) == 0) {
@@ -240,10 +236,8 @@ public class MovementPerformanceTests extends AbstractRestServiceTest {
             Asset testAsset = assetList.get((int)Math.random() * nrOfShips);
             MobileTerminalType mobileTerminalType = new MobileTerminalType();
 
-            final CreateMovementRequest createMovementRequest = movementHelper.createMovementRequest(testAsset,
-                    mobileTerminalType, position);
-            corrId.add(movementHelper.createMovementDontWaitForResponse(testAsset, mobileTerminalType,
-                    createMovementRequest, i));
+            final CreateMovementRequest createMovementRequest = movementHelper.createMovementRequest(testAsset, position);
+            corrId.add(movementHelper.createMovementDontWaitForResponse(testAsset, createMovementRequest, i));
 
             i++;
             if ((i % 10) == 0) {
