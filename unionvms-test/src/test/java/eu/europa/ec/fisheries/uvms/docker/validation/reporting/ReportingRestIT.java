@@ -77,10 +77,8 @@ public class ReportingRestIT extends AbstractRestServiceTest {
 		List<LatLong> route = movementHelper.createRuttVarbergGrena(-1);
 
 		for (LatLong position : route) {
-			final CreateMovementRequest createMovementRequest = movementHelper.createMovementRequest(testAsset,
-					mobileTerminalType, position);
-			CreateMovementResponse createMovementResponse = movementHelper.createMovement(testAsset, mobileTerminalType,
-					createMovementRequest);
+			final CreateMovementRequest createMovementRequest = movementHelper.createMovementRequest(testAsset, position);
+			CreateMovementResponse createMovementResponse = movementHelper.createMovement(createMovementRequest);
 			assertNotNull(createMovementResponse);
 		}		
 

@@ -56,8 +56,7 @@ public class SetMovementReportRequestJmsIT extends AbstractRestServiceTest {
 		MobileTerminalTestHelper.assignMobileTerminal(testAsset, mobileTerminalType);
 
 		LatLong latLong = movementHelper.createRutt(1).get(0);
-		final CreateMovementRequest createMovementRequest = movementHelper.createMovementRequest(testAsset,
-				mobileTerminalType, latLong);
+		final CreateMovementRequest createMovementRequest = movementHelper.createMovementRequest(testAsset, latLong);
 
 		MessageHelper.sendMessage("UVMSExchangeEvent",
 				marshall(createSetReportMovementType(testAsset, mobileTerminalType, createMovementRequest)));
@@ -78,8 +77,7 @@ public class SetMovementReportRequestJmsIT extends AbstractRestServiceTest {
 		List<LatLong> latLongList = movementHelper.createRutt(2);
 
 		for (LatLong latLong : latLongList) {
-			final CreateMovementRequest createMovementRequest = movementHelper.createMovementRequest(testAsset,
-					mobileTerminalType, latLong);
+			final CreateMovementRequest createMovementRequest = movementHelper.createMovementRequest(testAsset, latLong);
 			MessageHelper.sendMessage("UVMSExchangeEvent",
 					marshall(createSetReportMovementType(testAsset, mobileTerminalType, createMovementRequest)));
 		}

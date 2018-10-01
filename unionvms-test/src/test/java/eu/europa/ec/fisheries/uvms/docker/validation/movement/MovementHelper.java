@@ -1,12 +1,10 @@
 package eu.europa.ec.fisheries.uvms.docker.validation.movement;
 
 import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.CoreMatchers.notNullValue;
 import java.io.IOException;
 import java.io.StringReader;
 import java.io.StringWriter;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -26,8 +24,6 @@ import org.apache.http.client.fluent.Request;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import eu.europa.ec.fisheries.schema.mobileterminal.types.v1.MobileTerminalType;
 import eu.europa.ec.fisheries.schema.movement.asset.v1.AssetId;
 import eu.europa.ec.fisheries.schema.movement.asset.v1.AssetIdType;
@@ -48,7 +44,6 @@ import eu.europa.ec.fisheries.schema.movement.v1.MovementTypeType;
 import eu.europa.ec.fisheries.uvms.asset.client.model.Asset;
 import eu.europa.ec.fisheries.uvms.docker.validation.common.AbstractHelper;
 import eu.europa.ec.fisheries.uvms.docker.validation.common.MessageHelper;
-import io.jsonwebtoken.lang.Collections;
 
 public class MovementHelper extends AbstractHelper {
 
@@ -56,11 +51,8 @@ public class MovementHelper extends AbstractHelper {
 
 	private Random rnd = new Random();
 
-	public CreateMovementRequest createMovementRequest(Asset testAsset, MobileTerminalType mobileTerminalType,
-			LatLong latlong) throws IOException, ClientProtocolException, JsonProcessingException, JsonParseException,
-			JsonMappingException {
+	public CreateMovementRequest createMovementRequest(Asset testAsset, LatLong latlong) {
 
-		// Date positionTime = new Date(System.currentTimeMillis());
 		final CreateMovementRequest createMovementRequest1 = new CreateMovementRequest();
 		final MovementBaseType movementBaseType = new MovementBaseType();
 		AssetId assetId = new AssetId();
@@ -95,10 +87,8 @@ public class MovementHelper extends AbstractHelper {
 	}
 
 	public CreateMovementBatchRequest createMovementBatchRequest(Asset testAsset, MobileTerminalType mobileTerminalType,
-			List<LatLong> route) throws IOException, ClientProtocolException, JsonProcessingException,
-			JsonParseException, JsonMappingException {
+			List<LatLong> route) {
 
-		// Date positionTime = new Date(System.currentTimeMillis());
 		final CreateMovementBatchRequest createMovementBatchRequest = new CreateMovementBatchRequest();
 
 		AssetId assetId = new AssetId();
@@ -397,16 +387,14 @@ public class MovementHelper extends AbstractHelper {
 				.unmarshal(new StringReader(textMessage.getText()));
 	}
 
-	public CreateMovementResponse createMovement(Asset testAsset, MobileTerminalType mobileTerminalType,
-			CreateMovementRequest createMovementRequest) throws Exception {
+	public CreateMovementResponse createMovement(CreateMovementRequest createMovementRequest) throws Exception {
 
 		Message messageResponse =
 				MessageHelper.getMessageResponse(UVMS_MOVEMENT_REQUEST_QUEUE, marshall(createMovementRequest));
 		return unMarshallCreateMovementResponse(messageResponse);
 	}
 
-	public String createMovementDontWaitForResponse(Asset testAsset, MobileTerminalType mobileTerminalType,
-												 CreateMovementRequest createMovementRequest, int order) throws Exception {
+	public String createMovementDontWaitForResponse(Asset testAsset,CreateMovementRequest createMovementRequest, int order) throws Exception {
 
 		String messageId =
 				MessageHelper.sendMessageAndReturnMessageId(UVMS_MOVEMENT_REQUEST_QUEUE, marshall(createMovementRequest), testAsset.getId().toString(), order);
@@ -433,8 +421,7 @@ public class MovementHelper extends AbstractHelper {
 		return dataMap;
 	}
 
-	public CreateMovementBatchResponse createMovementBatch(Asset testAsset, MobileTerminalType mobileTerminalType,
-			CreateMovementBatchRequest createMovementBatchRequest) throws JAXBException, Exception {
+	public CreateMovementBatchResponse createMovementBatch(CreateMovementBatchRequest createMovementBatchRequest) throws Exception {
 
 		Message messageResponse =
 				MessageHelper.getMessageResponse(UVMS_MOVEMENT_REQUEST_QUEUE, marshall(createMovementBatchRequest));
@@ -585,7 +572,7 @@ public class MovementHelper extends AbstractHelper {
 		return rutt;
 	}
 	
-	public static void pollMovementCreated() throws ClientProtocolException, IOException {
+	public static void pollMovementCreated() throws IOException {
         final HttpResponse response = Request.Get(getBaseUrl() + "movement/activity/movement")
                 .setHeader("Content-Type", "application/json")
                 .execute().returnResponse();
