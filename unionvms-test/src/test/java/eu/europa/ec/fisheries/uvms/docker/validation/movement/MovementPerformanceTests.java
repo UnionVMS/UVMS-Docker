@@ -123,23 +123,31 @@ public class MovementPerformanceTests extends AbstractRestServiceTest {
         AtomicInteger ai = new AtomicInteger();
         ai.incrementAndGet();
 
-
-        createRouteTestTitanic1000OnXShipsPositionsAsync(1);
+        List<LatLong> route = movementHelper.createRuttCobhNewYork(1000, 0.06f);                //0.1F = 654 pos    0.01 = 6543     0.07 = 934   0.06 = 1090
+        createRouteTestTitanic1000OnXShipsPositionsAsync(1, route);
     }
 
     @Test
     @Ignore
     public void createRouteTestTitanic1000PositionsAnd8ShipsAsync() throws Exception {
 
-
-        createRouteTestTitanic1000OnXShipsPositionsAsync(8);
+        List<LatLong> route = movementHelper.createRuttCobhNewYork(1000, 0.06f);                //0.1F = 654 pos    0.01 = 6543     0.07 = 934   0.06 = 1090
+        createRouteTestTitanic1000OnXShipsPositionsAsync(8, route);
     }
 
 
     @Test
     @Ignore
     public void createRouteTestTitanic1000PositionsAndShipsAsync() throws Exception {
-        createRouteTestTitanic1000OnXShipsPositionsAsync(1000);
+        List<LatLong> route = movementHelper.createRuttCobhNewYork(1000, 0.06f);                //0.1F = 654 pos    0.01 = 6543     0.07 = 934   0.06 = 1090
+        createRouteTestTitanic1000OnXShipsPositionsAsync(1000, route);
+    }
+
+    @Test
+    @Ignore
+    public void createRouteTestTitanic6000PositionsAnd8ShipsAsync() throws Exception {
+        List<LatLong> route = movementHelper.createRuttCobhNewYork(6000, 0.01f);                //0.1F = 654 pos    0.01 = 6543     0.07 = 934   0.06 = 1090
+        createRouteTestTitanic1000OnXShipsPositionsAsync(8, route);
     }
 
     @Test
@@ -210,8 +218,8 @@ public class MovementPerformanceTests extends AbstractRestServiceTest {
         buildAndSendQuery(areaInWKT);
     }
 
-    private void createRouteTestTitanic1000OnXShipsPositionsAsync(int nrOfShips) throws Exception {
-        List<LatLong> route = movementHelper.createRuttCobhNewYork(1000, 0.06f);                //0.1F = 654 pos    0.01 = 6543     0.07 = 934   0.06 = 1090
+
+    private void createRouteTestTitanic1000OnXShipsPositionsAsync(int nrOfShips, List<LatLong> route) throws Exception {
         List<Asset> assetList = new ArrayList<>();
         for(int i = 0; i < nrOfShips; i++){
             Asset testAsset = new Asset();
