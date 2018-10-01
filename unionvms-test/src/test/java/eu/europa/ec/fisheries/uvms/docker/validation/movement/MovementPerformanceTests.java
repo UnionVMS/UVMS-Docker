@@ -215,7 +215,7 @@ public class MovementPerformanceTests extends AbstractRestServiceTest {
     }
 
     private void createRouteTestTitanic1000OnXShipsPositionsAsync(int nrOfShips) throws Exception {
-        List<LatLong> route = movementHelper.createRuttCobhNewYork(10, 0.06f);                //0.1F = 654 pos    0.01 = 6543     0.07 = 934   0.06 = 1090
+        List<LatLong> route = movementHelper.createRuttCobhNewYork(1000, 0.06f);                //0.1F = 654 pos    0.01 = 6543     0.07 = 934   0.06 = 1090
         List<Asset> assetList = new ArrayList<>();
         for(int i = 0; i < nrOfShips; i++){
             Asset testAsset = new Asset();
@@ -237,7 +237,7 @@ public class MovementPerformanceTests extends AbstractRestServiceTest {
         i = 0;
         for (LatLong position : route) {
 
-            Asset testAsset = assetList.get((int)Math.random() * nrOfShips);
+            Asset testAsset = assetList.get((int)(Math.random() * nrOfShips));
             MobileTerminalType mobileTerminalType = new MobileTerminalType();
 
             final CreateMovementRequest createMovementRequest = movementHelper.createMovementRequest(testAsset,

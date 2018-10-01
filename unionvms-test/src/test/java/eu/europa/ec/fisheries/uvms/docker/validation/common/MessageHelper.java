@@ -52,7 +52,7 @@ public final class MessageHelper {
         Queue responseQueue = session.createQueue(TEST_RESPONSE_QUEUE);
         createTextMessage.setJMSReplyTo(responseQueue);
         createTextMessage.setStringProperty("JMSXGroupID", asset);
-        createTextMessage.setIntProperty("JMSXGroupSeq", order);
+        //createTextMessage.setIntProperty("JMSXGroupSeq", order);
         messageProducer.send(createTextMessage);
 
         connection.close();
