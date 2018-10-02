@@ -124,7 +124,7 @@ public class MovementPerformanceTests extends AbstractRestServiceTest {
         ai.incrementAndGet();
 
         List<LatLong> route = movementHelper.createRuttCobhNewYork(1000, 0.06f);                //0.1F = 654 pos    0.01 = 6543     0.07 = 934   0.06 = 1090
-        createRouteTestTitanic1000OnXShipsPositionsAsync(1, route);
+        sendRouteToMovementOnXShipsAsync(1, route);
     }
 
     @Test
@@ -132,7 +132,7 @@ public class MovementPerformanceTests extends AbstractRestServiceTest {
     public void createRouteTestTitanic1000PositionsAnd8ShipsAsync() throws Exception {
 
         List<LatLong> route = movementHelper.createRuttCobhNewYork(1000, 0.06f);                //0.1F = 654 pos    0.01 = 6543     0.07 = 934   0.06 = 1090
-        createRouteTestTitanic1000OnXShipsPositionsAsync(8, route);
+        sendRouteToMovementOnXShipsAsync(8, route);
     }
 
 
@@ -140,14 +140,21 @@ public class MovementPerformanceTests extends AbstractRestServiceTest {
     @Ignore
     public void createRouteTestTitanic1000PositionsAndShipsAsync() throws Exception {
         List<LatLong> route = movementHelper.createRuttCobhNewYork(1000, 0.06f);                //0.1F = 654 pos    0.01 = 6543     0.07 = 934   0.06 = 1090
-        createRouteTestTitanic1000OnXShipsPositionsAsync(1000, route);
+        sendRouteToMovementOnXShipsAsync(1000, route);
     }
 
     @Test
     @Ignore
     public void createRouteTestTitanic6000PositionsAnd8ShipsAsync() throws Exception {
         List<LatLong> route = movementHelper.createRuttCobhNewYork(6000, 0.01f);                //0.1F = 654 pos    0.01 = 6543     0.07 = 934   0.06 = 1090
-        createRouteTestTitanic1000OnXShipsPositionsAsync(8, route);
+        sendRouteToMovementOnXShipsAsync(8, route);
+    }
+
+    @Test
+    @Ignore
+    public void createRouteTestTitanic6000PositionsAnd1100ShipsAsync() throws Exception {
+        List<LatLong> route = movementHelper.createRuttCobhNewYork(6000, 0.01f);                //0.1F = 654 pos    0.01 = 6543     0.07 = 934   0.06 = 1090
+        sendRouteToMovementOnXShipsAsync(1100, route);
     }
 
     @Test
@@ -219,9 +226,18 @@ public class MovementPerformanceTests extends AbstractRestServiceTest {
     }
 
 
-    private void createRouteTestTitanic1000OnXShipsPositionsAsync(int nrOfShips, List<LatLong> route) throws Exception {
+    private void sendRouteToMovementOnXShipsAsync(int nrOfShips, List<LatLong> route) throws Exception {
         List<Asset> assetList = new ArrayList<>();
+
+
         for(int i = 0; i < nrOfShips; i++){
+
+            /*      //Code for if one wants an actual correct ship to be able to plot the positions on the map from frontend
+            Asset testAsset = AssetTestHelper.createTestAsset();
+            MobileTerminalType mobileTerminalType = MobileTerminalTestHelper.createMobileTerminalType();
+            MobileTerminalTestHelper.assignMobileTerminal(testAsset, mobileTerminalType);
+             */
+
             Asset testAsset = new Asset();
             testAsset.setId(UUID.randomUUID());
             testAsset.setHistoryId(UUID.randomUUID());
@@ -241,8 +257,8 @@ public class MovementPerformanceTests extends AbstractRestServiceTest {
         i = 0;
         for (LatLong position : route) {
 
+            //(int)(Math.random() * nrOfShips)
             Asset testAsset = assetList.get((int)(Math.random() * nrOfShips));
-            MobileTerminalType mobileTerminalType = new MobileTerminalType();
 
             final CreateMovementRequest createMovementRequest = movementHelper.createMovementRequest(testAsset, position);
             corrId.add(movementHelper.createMovementDontWaitForResponse(testAsset, createMovementRequest, i));

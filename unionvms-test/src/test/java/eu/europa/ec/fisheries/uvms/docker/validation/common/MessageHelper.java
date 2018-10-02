@@ -65,7 +65,7 @@ public final class MessageHelper {
         try {
             connection.start();
             Session session = connection.createSession(false, Session.AUTO_ACKNOWLEDGE);
-            Queue responseQueue = session.createQueue(TEST_RESPONSE_QUEUE + "?consumer.prefetchSize=3000");
+            Queue responseQueue = session.createQueue(TEST_RESPONSE_QUEUE + "?consumer.prefetchSize=4000");
             return session.createConsumer(responseQueue, "JMSCorrelationID='" + correlationId + "'").receive(timeoutInMillis);
         } finally {
             connection.close();

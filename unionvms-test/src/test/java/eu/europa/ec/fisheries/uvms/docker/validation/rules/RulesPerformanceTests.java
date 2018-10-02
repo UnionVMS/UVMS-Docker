@@ -107,83 +107,33 @@ public class RulesPerformanceTests {
     @Ignore
     public void createRouteTestTitanic1000PositionsAsync() throws Exception{   //Needs a special version of rules that respond on the test queue to work!!!!
 
-        Asset testAsset = AssetTestHelper.createTestAsset();
-        MobileTerminalType mobileTerminalType = MobileTerminalTestHelper.createMobileTerminalType();
-        MobileTerminalTestHelper.assignMobileTerminal(testAsset, mobileTerminalType);
         List<LatLong> route = movementHelper.createRuttCobhNewYork(1000, 0.06f);                //0.1F = 654 pos    0.01 = 6543     0.07 = 934   0.06 = 1090
+        sendRouteToRulesOnXShipsAsync(1, route);
 
-
-        AssetId assetId = new AssetId();
-        assetId.setAssetType(AssetType.VESSEL);
-        AssetIdList assetIdList = new AssetIdList();
-        assetIdList.setIdType(AssetIdType.IRCS);
-        assetIdList.setValue(testAsset.getIrcs());
-        assetId.getAssetIdList().add(assetIdList);
-
-        assetIdList = new AssetIdList();
-        assetIdList.setIdType(AssetIdType.CFR);
-        assetIdList.setValue(testAsset.getCfr());
-        assetId.getAssetIdList().add(assetIdList);
-
-
-        int i = 0;
-        Instant b4 = Instant.now();
-        Instant lastIteration = Instant.now();
-        List<Duration> averageDurations = new ArrayList<>();
-        List<String> corrList = new ArrayList<>();
-
-        for(LatLong pos : route) {
-            RawMovementType move = createBasicMovement(assetId, testAsset.getName(), pos);
-            String request = createSetMovementReportRequest(PluginType.FLUX, move, "PerformanceTester");
-
-            String corrId = sendMessageToRules(request, RulesModuleMethod.SET_MOVEMENT_REPORT.value());
-            corrList.add(corrId);
-
-
-            i++;
-            if((i % 10) == 0){
-                System.out.println("Created movement number: " + i + " Time so far: " + humanReadableFormat(Duration.between(b4, Instant.now())) + " Time since last 10: " + humanReadableFormat(Duration.between(lastIteration, Instant.now())));
-                //System.out.println("Time for 10 movement for last iteration: " + Duration.between(lastIteration,Instant.now()).toString());
-                averageDurations.add(Duration.between(lastIteration, Instant.now()));
-                lastIteration = Instant.now();
-
-            }
-
-
-        }
-
-        Instant middle = Instant.now();
-        i = 0;
-        for(String corr : corrList){
-            Message message = /*MessageHelper.*/listenForResponseOnQueue("PerformanceTester", "IntegrationTestsResponseQueue");
-            ProcessedMovementResponse movementResponse = JAXBMarshaller.unmarshallTextMessage((TextMessage) message, ProcessedMovementResponse.class);
-            if(movementResponse.getMovementRefType().getType().equals(MovementRefTypeType.ALARM)){
-                System.out.println("Alarm: " + i + ", ");
-            }
-            i++;
-
-            if((i % 10) == 0){
-                System.out.println("Recieved movement number: " + i + " Time so far: " + humanReadableFormat(Duration.between(b4, Instant.now())) + " Time since last 10: " + humanReadableFormat(Duration.between(lastIteration, Instant.now())));
-                //System.out.println("Time for 10 movement for last iteration: " + Duration.between(lastIteration,Instant.now()).toString());
-                averageDurations.add(Duration.between(lastIteration, Instant.now()));
-                lastIteration = Instant.now();
-
-            }
-        }
-
-        averageDurations.stream().forEach(dur -> System.out.print(humanReadableFormat(dur) + ", "));
-        System.out.println();
     }
 
     @Test
     @Ignore
     public void createRouteTestTitanic10ships100PositionsEachAsync() throws Exception{   //Needs a special version of rules that respond on the test queue to work!!!!
+        List<LatLong> route = movementHelper.createRuttCobhNewYork(1000, 0.06f);                //0.1F = 654 pos    0.01 = 6543     0.07 = 934   0.06 = 1090
+        sendRouteToRulesOnXShipsAsync(10, route);
+
+    }
+
+    @Test
+    @Ignore
+    public void createRouteTestTitanic10ships600PositionsEachAsync() throws Exception{   //Needs a special version of rules that respond on the test queue to work!!!!
+        List<LatLong> route = movementHelper.createRuttCobhNewYork(6000, 0.01f);                //0.1F = 654 pos    0.01 = 6543     0.07 = 934   0.06 = 1090
+        sendRouteToRulesOnXShipsAsync(10, route);
+    }
+
+    public void sendRouteToRulesOnXShipsAsync(int nrOfShips, List<LatLong> route) throws Exception{   //Needs a special version of rules that respond on the test queue to work!!!!
 
         List<AssetId> assetList = new ArrayList<>();
         List<String> nameList = new ArrayList<>();
 
         System.out.println("Start creating assets");
-        for(int i = 0; i < 10; i++ ){
+        for(int i = 0; i < nrOfShips; i++ ){
             Asset testAsset = AssetTestHelper.createTestAsset();
             MobileTerminalType mobileTerminalType = MobileTerminalTestHelper.createMobileTerminalType();
             MobileTerminalTestHelper.assignMobileTerminal(testAsset, mobileTerminalType);
@@ -207,7 +157,6 @@ public class RulesPerformanceTests {
         }
         System.out.println("Done with creating assets");
 
-        List<LatLong> route = movementHelper.createRuttCobhNewYork(1000, 0.06f);                //0.1F = 654 pos    0.01 = 6543     0.07 = 934   0.06 = 1090
 
         int i = 0;
         Instant b4 = Instant.now();
@@ -216,7 +165,7 @@ public class RulesPerformanceTests {
         List<String> corrList = new ArrayList<>();
 
         for(LatLong pos : route) {
-            AssetId assetId = assetList.get(i % 10);
+            AssetId assetId = assetList.get(i % nrOfShips);
 
             RawMovementType move = createBasicMovement(assetId, nameList.get(i % 10), pos);
             String request = createSetMovementReportRequest(PluginType.FLUX, move, "PerformanceTester");
@@ -259,7 +208,6 @@ public class RulesPerformanceTests {
         averageDurations.stream().forEach(dur -> System.out.print(humanReadableFormat(dur) + ", "));
         System.out.println();
     }
-
 
     public String sendMessageToRules(String text, String requestType) throws Exception {
         Connection connection = connectionFactory.createConnection();
