@@ -30,11 +30,9 @@ import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
 import javax.xml.transform.stream.StreamSource;
 import java.io.StringReader;
-import java.math.BigInteger;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.*;
-import java.util.concurrent.atomic.AtomicInteger;
 
 public class RulesPerformanceTests {
 
@@ -127,7 +125,7 @@ public class RulesPerformanceTests {
         sendRouteToRulesOnXShipsAsync(10, route);
     }
 
-    public void sendRouteToRulesOnXShipsAsync(int nrOfShips, List<LatLong> route) throws Exception{   //Needs a special version of rules that respond on the test queue to work!!!!
+    public void sendRouteToRulesOnXShipsAsync(int nrOfShips, List<LatLong> route) throws Exception{   //Needs a special version of rules that respond on the test queue to work!!!! See ExchangeServiceBean in Movement-Rules
 
         List<AssetId> assetList = new ArrayList<>();
         List<String> nameList = new ArrayList<>();

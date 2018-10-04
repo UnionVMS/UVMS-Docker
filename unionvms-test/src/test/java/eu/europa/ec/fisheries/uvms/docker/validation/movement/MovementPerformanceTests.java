@@ -74,7 +74,7 @@ public class MovementPerformanceTests extends AbstractRestServiceTest {
 
     @Test
     @Ignore
-    public void createRouteTestTitanic1000PositionsReverseOrder() throws Exception {
+    public void createRouteTestTitanic1000PositionsReverseOrderSync() throws Exception {
         Asset testAsset = AssetTestHelper.createTestAsset();
         MobileTerminalType mobileTerminalType = MobileTerminalTestHelper.createMobileTerminalType();
         MobileTerminalTestHelper.assignMobileTerminal(testAsset, mobileTerminalType);
@@ -147,6 +147,14 @@ public class MovementPerformanceTests extends AbstractRestServiceTest {
     @Ignore
     public void createRouteTestTitanic6000PositionsAnd8ShipsAsync() throws Exception {
         List<LatLong> route = movementHelper.createRuttCobhNewYork(6000, 0.01f);                //0.1F = 654 pos    0.01 = 6543     0.07 = 934   0.06 = 1090
+        sendRouteToMovementOnXShipsAsync(8, route);
+    }
+
+    @Test
+    @Ignore
+    public void createRouteTestTitanic6000PositionsAnd8ShipsAsyncReverseOrder() throws Exception {
+        List<LatLong> route = movementHelper.createRuttCobhNewYork(6000, 0.01f);                //0.1F = 654 pos    0.01 = 6543     0.07 = 934   0.06 = 1090
+        Collections.reverse(route);
         sendRouteToMovementOnXShipsAsync(8, route);
     }
 
@@ -225,6 +233,24 @@ public class MovementPerformanceTests extends AbstractRestServiceTest {
         buildAndSendQuery(areaInWKT);
     }
 
+    @Test
+    public void sphereOverIrelandTest () throws Exception{
+
+        //sphere with missing parts over southern ireland
+        String areaInWKT = "POLYGON((-9.887695312499996 52.48278022207825,-11.777343749999996 51.563412328675895,-12.260742187499998 49.75287993415023,-10.151367187500007 48.1367666796927,-7.031250000000009 48.341646172374595,-5.449218750000001 49.837982453084834,-5.581054687499998 51.699799849741936,-7.338867187499999 52.48278022207825,-10.722656250000007 52.935396658623205,-13.315429687500004 51.12421275782688,-13.403320312500002 49.26780455063752,-10.986328125000002 47.5172006978394,-6.416015625000009 47.5172006978394,-4.350585937499998 49.86631672953868,-4.306640625 52.02545860348815,-6.679687500000002 53.409531853086435,-2.592773437499996 50.56928286558244,-6.020507812500003 46.31658418182218,-11.821289062499995 46.73986059969266,-14.458007812499996 48.86471476180279,-14.765624999999998 51.34433866059925,-11.118164062499996 53.72271667491847,-9.887695312499996 52.48278022207825))";
+
+        buildAndSendQuery(areaInWKT);
+    }
+
+    @Test
+    public void hollowSphereOverIrelandTest () throws Exception{
+
+        //hollow "sphere" over southern ireland
+        String areaInWKT = "POLYGON((-10.283203125000004 52.321910885947716,-12.216796875 50.98609893339352,-11.865234374999995 49.582226044621706,-10.195312500000005 48.74894534343292,-7.382812499999999 48.661942846070076,-5.141601562499994 49.32512199104002,-4.2626953125 50.98609893339352,-5.6689453124999964 52.02545860348815,-7.514648437499995 52.69636107827449,-9.711914062500002 52.456009392640766,-7.4707031249999964 52.2143386082582,-5.888671875000006 51.59072264312016,-5.4052734375000036 50.68079714532166,-6.020507812500003 49.75287993415023,-7.426757812499998 49.239120832466966,-9.843749999999998 49.26780455063752,-11.0302734375 49.92293545449576,-11.162109374999996 50.93073802371819,-8.657226562499998 52.509534770327264,-10.283203125000004 52.321910885947716))";
+
+        buildAndSendQuery(areaInWKT);
+    }
+
 
     private void sendRouteToMovementOnXShipsAsync(int nrOfShips, List<LatLong> route) throws Exception {
         List<Asset> assetList = new ArrayList<>();
@@ -251,7 +277,6 @@ public class MovementPerformanceTests extends AbstractRestServiceTest {
         Instant lastIteration = Instant.now();
         List<Duration> averageDurations = new ArrayList<>();
         List<String> corrId = new ArrayList<>();
-
 
 
         i = 0;
@@ -305,7 +330,7 @@ public class MovementPerformanceTests extends AbstractRestServiceTest {
         MovementQuery movementQuery = new MovementQuery();
         movementQuery.setExcludeFirstAndLastSegment(false);
         ListPagination page = new ListPagination();
-        page.setListSize(BigInteger.valueOf(1000L));
+        page.setListSize(BigInteger.valueOf(10000L));
         page.setPage(BigInteger.ONE);
         movementQuery.setPagination(page);
         ListCriteria listCriteria = new ListCriteria();
