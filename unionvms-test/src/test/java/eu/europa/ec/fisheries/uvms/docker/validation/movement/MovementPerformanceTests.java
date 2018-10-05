@@ -32,9 +32,78 @@ public class MovementPerformanceTests extends AbstractRestServiceTest {
 
     private static MovementHelper movementHelper = new MovementHelper();
 
+
     @Test
     @Ignore
-    public void createRouteTestTitanic1000Positions() throws Exception {
+    public void runEveryAreaTest20TimesAndGetAverageTime() throws Exception{
+
+        Instant b4 = Instant.now();
+        Instant start = Instant.now();
+        for (int i = 0; i < 20; i++){
+            spikyThingOverIrelandTest();
+        }
+        System.out.println("Done with spikyThingOverIrelandTest. Total time: " + humanReadableFormat(Duration.between(start, Instant.now())) + " Average time: " + humanReadableFormat(Duration.between(start,Instant.now()).dividedBy(20l)));
+
+        start = Instant.now();
+        for (int i = 0; i < 20; i++){
+            multipointPolygonInAVeryRoughCircleTest();
+        }
+        System.out.println("Done with multipointPolygonInAVeryRoughCircleTest. Total time: " + humanReadableFormat(Duration.between(start, Instant.now())) + " Average time: " + humanReadableFormat(Duration.between(start,Instant.now()).dividedBy(20l)));
+
+        start = Instant.now();
+        for (int i = 0; i < 20; i++){
+            sphereOverIrelandTest();
+        }
+        System.out.println("Done with sphereOverIrelandTest. Total time: " + humanReadableFormat(Duration.between(start, Instant.now())) + " Average time: " + humanReadableFormat(Duration.between(start,Instant.now()).dividedBy(20l)));
+
+        start = Instant.now();
+        for (int i = 0; i < 20; i++){
+            triangleAroundSouthernIrelandTest();
+        }
+        System.out.println("Done with triangleAroundSouthernIrelandTest. Total time: " + humanReadableFormat(Duration.between(start, Instant.now())) + " Average time: " + humanReadableFormat(Duration.between(start,Instant.now()).dividedBy(20l)));
+
+        start = Instant.now();
+        for (int i = 0; i < 20; i++){
+            spikyBallOverIrelandTest();
+        }
+        System.out.println("Done with spikyBallOverIrelandTest. Total time: " + humanReadableFormat(Duration.between(start, Instant.now())) + " Average time: " + humanReadableFormat(Duration.between(start,Instant.now()).dividedBy(20l)));
+
+        start = Instant.now();
+        for (int i = 0; i < 20; i++){
+            hollowSphereOverIrelandTest();
+        }
+        System.out.println("Done with hollowSphereOverIrelandTest. Total time: " + humanReadableFormat(Duration.between(start, Instant.now())) + " Average time: " + humanReadableFormat(Duration.between(start,Instant.now()).dividedBy(20l)));
+
+        start = Instant.now();
+        for (int i = 0; i < 20; i++){
+            squareInTheMiddleOfSpainTest();
+        }
+        System.out.println("Done with squareInTheMiddleOfSpainTest. Total time: " + humanReadableFormat(Duration.between(start, Instant.now())) + " Average time: " + humanReadableFormat(Duration.between(start,Instant.now()).dividedBy(20l)));
+
+        start = Instant.now();
+        for (int i = 0; i < 20; i++){
+            fishOverIrelandTest();
+        }
+        System.out.println("Done with fishOverIrelandTest. Total time: " + humanReadableFormat(Duration.between(start, Instant.now())) + " Average time: " + humanReadableFormat(Duration.between(start,Instant.now()).dividedBy(20l)));
+
+        start = Instant.now();
+        for (int i = 0; i < 20; i++){
+            pentagramOverIrelandTest();
+        }
+        System.out.println("Done with pentagramOverIrelandTest. Total time: " + humanReadableFormat(Duration.between(start, Instant.now())) + " Average time: " + humanReadableFormat(Duration.between(start,Instant.now()).dividedBy(20l)));
+
+        start = Instant.now();
+        for (int i = 0; i < 20; i++){
+            twoTrianglesAroundIrelandTest();
+        }
+        System.out.println("Done with twoTrianglesAroundIrelandTest. Total time: " + humanReadableFormat(Duration.between(start, Instant.now())) + " Average time: " + humanReadableFormat(Duration.between(start,Instant.now()).dividedBy(20l)));
+
+        System.out.println("All done. Total time: " + humanReadableFormat(Duration.between(b4, Instant.now())));
+    }
+
+    @Test
+    @Ignore
+    public void createRouteTestTitanic1000PositionsSync() throws Exception {
         Asset testAsset = AssetTestHelper.createTestAsset();
         MobileTerminalType mobileTerminalType = MobileTerminalTestHelper.createMobileTerminalType();
         MobileTerminalTestHelper.assignMobileTerminal(testAsset, mobileTerminalType);
@@ -129,6 +198,18 @@ public class MovementPerformanceTests extends AbstractRestServiceTest {
 
     @Test
     @Ignore
+    public void camelErrorHandlingTest() throws Exception {
+        Message message = MessageHelper.getMessageResponse("UVMSMovementEvent","");
+
+
+        ExceptionType response = unMarshallErrorResponse(message);
+
+        assertNotNull(response);
+        assertEquals("Error when processing message in movement. All redeliveries exhausted: ", response.getFault());
+    }
+
+    @Test
+    @Ignore
     public void createRouteTestTitanic1000PositionsAnd8ShipsAsync() throws Exception {
 
         List<LatLong> route = movementHelper.createRuttCobhNewYork(1000, 0.06f);                //0.1F = 654 pos    0.01 = 6543     0.07 = 934   0.06 = 1090
@@ -164,6 +245,9 @@ public class MovementPerformanceTests extends AbstractRestServiceTest {
         List<LatLong> route = movementHelper.createRuttCobhNewYork(6000, 0.01f);                //0.1F = 654 pos    0.01 = 6543     0.07 = 934   0.06 = 1090
         sendRouteToMovementOnXShipsAsync(1100, route);
     }
+
+
+
 
     @Test
     public void twoTrianglesAroundIrelandTest() throws Exception{
