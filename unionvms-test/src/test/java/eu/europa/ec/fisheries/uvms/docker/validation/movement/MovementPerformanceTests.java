@@ -241,6 +241,13 @@ public class MovementPerformanceTests extends AbstractRestServiceTest {
 
     @Test
     @Ignore
+    public void createRouteTestTitanic6000PositionsAnd20ShipsAsync() throws Exception {
+        List<LatLong> route = movementHelper.createRuttCobhNewYork(6000, 0.01f);                //0.1F = 654 pos    0.01 = 6543     0.07 = 934   0.06 = 1090
+        sendRouteToMovementOnXShipsAsync(20, route);
+    }
+
+    @Test
+    @Ignore
     public void createRouteTestTitanic6000PositionsAnd1100ShipsAsync() throws Exception {
         List<LatLong> route = movementHelper.createRuttCobhNewYork(6000, 0.01f);                //0.1F = 654 pos    0.01 = 6543     0.07 = 934   0.06 = 1090
         sendRouteToMovementOnXShipsAsync(1100, route);
@@ -381,7 +388,6 @@ public class MovementPerformanceTests extends AbstractRestServiceTest {
             }
         }
 
-        //assertEquals(1000, corrId.size());
         i = 0;
         //start listening for the returns
         for (String id : corrId) {
@@ -391,7 +397,10 @@ public class MovementPerformanceTests extends AbstractRestServiceTest {
                 createMovementResponse = movementHelper.unMarshallCreateMovementResponse(m);
             } catch (UnmarshalException e) {
                 System.out.println(unMarshallErrorResponse(m).toString());
-                fail(e.getMessage() + " Number: " + i);
+                fail(e.getMessage() + " Number: " + i + " CorrId: " + id);
+            }  catch (NullPointerException e) {
+                System.out.println(e);
+                fail(e.getMessage() + " Number: " + i + " CorrId: " + id);
             }
             assertNotNull(createMovementResponse);
 

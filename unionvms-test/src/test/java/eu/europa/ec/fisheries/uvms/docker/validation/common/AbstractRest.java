@@ -31,6 +31,7 @@ public abstract class AbstractRest extends Assert {
 
 	/** The Constant BASE_URL. */
 	protected static final String BASE_URL = "http://localhost:28080/unionvms/";
+	//protected static final String BASE_URL = "http://livm73u.havochvatten.se:28080/unionvms/";
 
 	/** The valid jwt token. */
 	private static String validJwtToken;

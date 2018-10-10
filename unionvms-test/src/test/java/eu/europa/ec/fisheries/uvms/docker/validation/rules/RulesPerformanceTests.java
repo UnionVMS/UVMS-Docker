@@ -37,6 +37,7 @@ import java.util.*;
 public class RulesPerformanceTests {
 
     private ConnectionFactory connectionFactory = new ActiveMQConnectionFactory("tcp://localhost:61616");
+    //private ConnectionFactory connectionFactory = new ActiveMQConnectionFactory("tcp://livm73u.havochvatten.se:61616");
     private static final String MOVEMENTRULES_QUEUE = "UVMSMovementRulesEvent";
     private static final String RESPONSE_QUEUE = "IntegrationTestsResponseQueue";
 
@@ -125,6 +126,20 @@ public class RulesPerformanceTests {
         sendRouteToRulesOnXShipsAsync(10, route);
     }
 
+    @Test
+    @Ignore
+    public void createRouteTestTitanic10ships6000PositionsEachAsync() throws Exception{   //Needs a special version of rules that respond on the test queue to work!!!!
+        List<LatLong> route = movementHelper.createRuttCobhNewYork(60000, 0.001f);                //0.1F = 654 pos    0.01 = 6543     0.07 = 934   0.06 = 1090
+        sendRouteToRulesOnXShipsAsync(10, route);
+    }
+
+    @Test
+    @Ignore
+    public void createRouteTestTitanic60ships100PositionsEachAsync() throws Exception{   //Needs a special version of rules that respond on the test queue to work!!!!
+        List<LatLong> route = movementHelper.createRuttCobhNewYork(6000, 0.01f);                //0.1F = 654 pos    0.01 = 6543     0.07 = 934   0.06 = 1090
+        sendRouteToRulesOnXShipsAsync(60, route);
+    }
+
     public void sendRouteToRulesOnXShipsAsync(int nrOfShips, List<LatLong> route) throws Exception{   //Needs a special version of rules that respond on the test queue to work!!!! See ExchangeServiceBean in Movement-Rules
 
         List<AssetId> assetList = new ArrayList<>();
@@ -165,7 +180,7 @@ public class RulesPerformanceTests {
         for(LatLong pos : route) {
             AssetId assetId = assetList.get(i % nrOfShips);
 
-            RawMovementType move = createBasicMovement(assetId, nameList.get(i % 10), pos);
+            RawMovementType move = createBasicMovement(assetId, nameList.get(i % nrOfShips), pos);
             String request = createSetMovementReportRequest(PluginType.FLUX, move, "PerformanceTester");
 
             String corrId = sendMessageToRules(request, RulesModuleMethod.SET_MOVEMENT_REPORT.value());
