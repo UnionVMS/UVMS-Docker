@@ -31,7 +31,7 @@ import eu.europa.ec.fisheries.schema.exchange.v1.ExchangeListPagination;
 import eu.europa.ec.fisheries.schema.exchange.v1.ExchangeListQuery;
 import eu.europa.ec.fisheries.schema.exchange.v1.ExchangeLogStatusTypeType;
 import eu.europa.ec.fisheries.schema.exchange.v1.SearchField;
-import eu.europa.ec.fisheries.uvms.asset.client.model.Asset;
+import eu.europa.ec.fisheries.uvms.asset.client.model.AssetDTO;
 import eu.europa.ec.fisheries.uvms.docker.validation.asset.AssetTestHelper;
 import eu.europa.ec.fisheries.uvms.docker.validation.common.AbstractRestServiceTest;
 import eu.europa.ec.fisheries.uvms.docker.validation.mobileterminal.MobileTerminalTestHelper;
@@ -111,7 +111,7 @@ public class ExchangeLogRestIT extends AbstractRestServiceTest {
 	 */
 	@Test
 	public void getPollStatusRefGuidTest() throws Exception {
-		Asset testAsset = AssetTestHelper.createTestAsset();
+		AssetDTO testAsset = AssetTestHelper.createTestAsset();
 		Map<String, Object> programPollDataMap = MobileTerminalTestHelper.createPoll_Helper(testAsset);
 		ArrayList sendPolls = (ArrayList) programPollDataMap.get("sentPolls");
 		String uid = (String) sendPolls.get(0);
@@ -135,7 +135,7 @@ public class ExchangeLogRestIT extends AbstractRestServiceTest {
 	public void getExchangeLogByGuidTest() throws Exception {
 		String guid=null;
 		{
-			Asset testAsset = AssetTestHelper.createTestAsset();
+			AssetDTO testAsset = AssetTestHelper.createTestAsset();
 			Map<String, Object> programPollDataMap = MobileTerminalTestHelper.createPoll_Helper(testAsset);
 			ArrayList sendPolls = (ArrayList) programPollDataMap.get("sentPolls");
 			String uid = (String) sendPolls.get(0);

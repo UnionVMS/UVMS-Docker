@@ -13,7 +13,7 @@ import eu.europa.ec.fisheries.schema.movement.module.v1.CreateMovementBatchReque
 import eu.europa.ec.fisheries.schema.movement.module.v1.CreateMovementBatchResponse;
 import eu.europa.ec.fisheries.schema.movement.module.v1.CreateMovementRequest;
 import eu.europa.ec.fisheries.schema.movement.module.v1.CreateMovementResponse;
-import eu.europa.ec.fisheries.uvms.asset.client.model.Asset;
+import eu.europa.ec.fisheries.uvms.asset.client.model.AssetDTO;
 import eu.europa.ec.fisheries.uvms.docker.validation.asset.AssetTestHelper;
 import eu.europa.ec.fisheries.uvms.docker.validation.common.AbstractRestServiceTest;
 import eu.europa.ec.fisheries.uvms.docker.validation.common.MessageHelper;
@@ -30,7 +30,7 @@ public class MovementJmsIT extends AbstractRestServiceTest {
 
 	@Test
 	public void createMovementBatchRequestTest() throws Exception {
-		Asset testAsset = AssetTestHelper.createTestAsset();
+		AssetDTO testAsset = AssetTestHelper.createTestAsset();
 		MobileTerminalType mobileTerminalType = MobileTerminalTestHelper.createMobileTerminalType();
 		MobileTerminalTestHelper.assignMobileTerminal(testAsset, mobileTerminalType);
 		List<LatLong> latLongList = movementHelper.createRuttCobhNewYork(50, 0.4f);
@@ -59,7 +59,7 @@ public class MovementJmsIT extends AbstractRestServiceTest {
 	@Test(timeout = 10000)
 	public void createMovementRequestTest() throws Exception {
 
-		Asset testAsset = AssetTestHelper.createTestAsset();
+		AssetDTO testAsset = AssetTestHelper.createTestAsset();
 		MobileTerminalType mobileTerminalType = MobileTerminalTestHelper.createMobileTerminalType();
 		MobileTerminalTestHelper.assignMobileTerminal(testAsset, mobileTerminalType);
 
@@ -83,7 +83,7 @@ public class MovementJmsIT extends AbstractRestServiceTest {
 
 	@Test(timeout = 720000)
 	public void createRouteTest() throws Exception {
-		Asset testAsset = AssetTestHelper.createTestAsset();
+		AssetDTO testAsset = AssetTestHelper.createTestAsset();
 		MobileTerminalType mobileTerminalType = MobileTerminalTestHelper.createMobileTerminalType();
 		MobileTerminalTestHelper.assignMobileTerminal(testAsset, mobileTerminalType);
 		List<LatLong> route = movementHelper.createRutt(24);
@@ -103,7 +103,7 @@ public class MovementJmsIT extends AbstractRestServiceTest {
 
 	@Test
 	public void createRouteTestVarbergGrena() throws Exception {
-		Asset testAsset = AssetTestHelper.createTestAsset();
+		AssetDTO testAsset = AssetTestHelper.createTestAsset();
 		MobileTerminalType mobileTerminalType = MobileTerminalTestHelper.createMobileTerminalType();
 		MobileTerminalTestHelper.assignMobileTerminal(testAsset, mobileTerminalType);
 		List<LatLong> route = movementHelper.createRuttVarbergGrena(-1);
@@ -119,7 +119,7 @@ public class MovementJmsIT extends AbstractRestServiceTest {
 
 	@Test
 	public void createRouteTestTitanic() throws Exception {
-		Asset testAsset = AssetTestHelper.createTestAsset();
+		AssetDTO testAsset = AssetTestHelper.createTestAsset();
 		MobileTerminalType mobileTerminalType = MobileTerminalTestHelper.createMobileTerminalType();
 		MobileTerminalTestHelper.assignMobileTerminal(testAsset, mobileTerminalType);
 		List<LatLong> route = movementHelper.createRuttCobhNewYork(100, 0.4f);
@@ -142,7 +142,7 @@ public class MovementJmsIT extends AbstractRestServiceTest {
 
 		int NUMBER_OF_POSITIONS = 5;
 
-		Asset testAsset = AssetTestHelper.createTestAsset();
+		AssetDTO testAsset = AssetTestHelper.createTestAsset();
 		MobileTerminalType mobileTerminalType = MobileTerminalTestHelper.createMobileTerminalType();
 		MobileTerminalTestHelper.assignMobileTerminal(testAsset, mobileTerminalType);
 		List<LatLong> route = movementHelper.createRuttVarbergGrena(NUMBER_OF_POSITIONS);
@@ -171,7 +171,7 @@ public class MovementJmsIT extends AbstractRestServiceTest {
 
 
 
-		Asset testAsset = AssetTestHelper.createTestAsset();
+		AssetDTO testAsset = AssetTestHelper.createTestAsset();
 		MobileTerminalType mobileTerminalType = MobileTerminalTestHelper.createMobileTerminalType();
 		MobileTerminalTestHelper.assignMobileTerminal(testAsset, mobileTerminalType);
 		List<LatLong> route = movementHelper.createSmallFishingTourFromVarberg();

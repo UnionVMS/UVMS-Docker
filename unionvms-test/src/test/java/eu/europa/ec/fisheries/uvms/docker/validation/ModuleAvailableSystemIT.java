@@ -13,8 +13,10 @@ copy of the GNU General Public License along with the IFDM Suite. If not, see <h
 */
 package eu.europa.ec.fisheries.uvms.docker.validation;
 
+import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
 import org.apache.http.client.fluent.Request;
+import org.apache.http.client.fluent.Response;
 import org.junit.Test;
 
 import eu.europa.ec.fisheries.uvms.docker.validation.common.AbstractRest;
@@ -150,12 +152,22 @@ public class ModuleAvailableSystemIT extends AbstractRest {
 	 */
 	@Test
 	public void checkMobileterminalAccessTest() throws Exception {
-		assertEquals(HttpStatus.SC_FORBIDDEN,
-				Request.Get(getBaseUrl() + "mobileterminal/").execute().returnResponse().getStatusLine().getStatusCode());
-		assertEquals(HttpStatus.SC_FORBIDDEN, Request.Get(getBaseUrl() + "mobileterminal/rest").execute().returnResponse()
-				.getStatusLine().getStatusCode());
-		assertEquals(HttpStatus.SC_OK, Request.Get(getBaseUrl() + "mobileterminal/monitoring").execute().returnResponse()
-				.getStatusLine().getStatusCode());
+
+		String endpoint = getBaseUrl() + "asset/rest/asset/";
+		HttpResponse resp = Request.Get(endpoint).execute().returnResponse();
+		assertEquals(HttpStatus.SC_FORBIDDEN, Request.Get(endpoint).execute().returnResponse().getStatusLine().getStatusCode());
+		assertEquals(HttpStatus.SC_FORBIDDEN, Request.Get(endpoint).execute().returnResponse().getStatusLine().getStatusCode());
+		assertEquals(HttpStatus.SC_OK, Request.Get(getBaseUrl() + "asset/monitoring").execute().returnResponse().getStatusLine().getStatusCode());
+
+	}
+
+	@Test
+	public void checkMobileterminalAccess2Test() throws Exception {
+
+		String endpoint = getBaseUrl() + "asset/rest/mobileterminal/blabla";
+		HttpResponse resp = Request.Get(endpoint).execute().returnResponse();
+		assertEquals(HttpStatus.SC_FORBIDDEN, Request.Get(endpoint).execute().returnResponse().getStatusLine().getStatusCode());
+		assertEquals(HttpStatus.SC_OK, Request.Get(getBaseUrl() + "asset/monitoring").execute().returnResponse().getStatusLine().getStatusCode());
 
 	}
 

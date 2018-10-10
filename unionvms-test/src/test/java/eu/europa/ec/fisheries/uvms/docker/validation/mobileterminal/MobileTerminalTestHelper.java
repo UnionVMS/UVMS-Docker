@@ -24,13 +24,13 @@ import eu.europa.ec.fisheries.schema.mobileterminal.types.v1.MobileTerminalAttri
 import eu.europa.ec.fisheries.schema.mobileterminal.types.v1.MobileTerminalSource;
 import eu.europa.ec.fisheries.schema.mobileterminal.types.v1.MobileTerminalType;
 import eu.europa.ec.fisheries.schema.mobileterminal.types.v1.Plugin;
-import eu.europa.ec.fisheries.uvms.asset.client.model.Asset;
+import eu.europa.ec.fisheries.uvms.asset.client.model.AssetDTO;
 import eu.europa.ec.fisheries.uvms.docker.validation.asset.AssetTestHelper;
 import eu.europa.ec.fisheries.uvms.docker.validation.common.AbstractHelper;
 
 public final class MobileTerminalTestHelper extends AbstractHelper {
 
-	public static Map<String, Object> createPoll_Helper(Asset testAsset) throws Exception {
+	public static Map<String, Object> createPoll_Helper(AssetDTO testAsset) throws Exception {
 		MobileTerminalType createdMobileTerminalType = createMobileTerminalType();
 
 		{
@@ -39,7 +39,7 @@ public final class MobileTerminalTestHelper extends AbstractHelper {
 			mobileTerminalAssignQuery.setConnectId(testAsset.getId().toString());
 			// Assign first
 			final HttpResponse response = Request
-					.Post(getBaseUrl() + "mobileterminal/rest/mobileterminal/assign?comment=comment")
+					.Post(getBaseUrl() + "asset/rest/mobileterminal/assign?comment=comment")
 					.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken())
 					.bodyByteArray(writeValueAsString(mobileTerminalAssignQuery).getBytes()).execute().returnResponse();
 
@@ -93,7 +93,7 @@ public final class MobileTerminalTestHelper extends AbstractHelper {
 
 		pollRequestType.getMobileTerminals().add(pollMobileTerminal);
 
-		final HttpResponse response = Request.Post(getBaseUrl() + "mobileterminal/rest/poll")
+		final HttpResponse response = Request.Post(getBaseUrl() + "asset/rest/poll")
 				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken())
 				.bodyByteArray(writeValueAsString(pollRequestType).getBytes()).execute().returnResponse();
 
@@ -140,7 +140,9 @@ public final class MobileTerminalTestHelper extends AbstractHelper {
 
 		mobileTerminalRequest.setPlugin(plugin);
 
-		final HttpResponse response = Request.Post(getBaseUrl() + "mobileterminal/rest/mobileterminal")
+		String ep = getBaseUrl() + "asset/rest/mobileterminal/";
+		String jwt = getValidJwtToken();
+		final HttpResponse response = Request.Post(getBaseUrl() + "asset/rest/mobileterminal")
 				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken())
 				.bodyByteArray(writeValueAsString(mobileTerminalRequest).getBytes()).execute().returnResponse();
 
@@ -169,7 +171,7 @@ public final class MobileTerminalTestHelper extends AbstractHelper {
 		attributes.add(serialNumberMobileTerminalAttribute);
 	}
 
-	public static Map<String, Object> assignMobileTerminal(Asset testAsset, MobileTerminalType createdMobileTerminalType)
+	public static Map<String, Object> assignMobileTerminal(AssetDTO testAsset, MobileTerminalType createdMobileTerminalType)
 			throws Exception {
 
 		MobileTerminalAssignQuery mobileTerminalAssignQuery = new MobileTerminalAssignQuery();
@@ -178,7 +180,7 @@ public final class MobileTerminalTestHelper extends AbstractHelper {
 		createdMobileTerminalType.setConnectId(testAsset.getId().toString());
 		
 		final HttpResponse response = Request
-				.Post(getBaseUrl() + "mobileterminal/rest/mobileterminal/assign?comment=comment")
+				.Post(getBaseUrl() + "asset/rest/mobileterminal/assign?comment=comment")
 				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken())
 				.bodyByteArray(writeValueAsString(mobileTerminalAssignQuery).getBytes()).execute().returnResponse();
 

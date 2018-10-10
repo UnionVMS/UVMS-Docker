@@ -156,8 +156,8 @@ public class AssetJMSHelper {
         return asset;
     }
     
-    public static eu.europa.ec.fisheries.uvms.asset.client.model.Asset createBasicAsset() {
-        eu.europa.ec.fisheries.uvms.asset.client.model.Asset asset = new eu.europa.ec.fisheries.uvms.asset.client.model.Asset();
+    public static eu.europa.ec.fisheries.uvms.asset.client.model.AssetDTO createBasicAsset() {
+        eu.europa.ec.fisheries.uvms.asset.client.model.AssetDTO asset = new eu.europa.ec.fisheries.uvms.asset.client.model.AssetDTO();
 
         asset.setActive(true);
 

@@ -25,7 +25,7 @@ import eu.europa.ec.fisheries.schema.mobileterminal.polltypes.v1.PollListQuery;
 import eu.europa.ec.fisheries.schema.mobileterminal.polltypes.v1.PollSearchCriteria;
 import eu.europa.ec.fisheries.schema.mobileterminal.polltypes.v1.PollableQuery;
 import eu.europa.ec.fisheries.schema.mobileterminal.types.v1.ListPagination;
-import eu.europa.ec.fisheries.uvms.asset.client.model.Asset;
+import eu.europa.ec.fisheries.uvms.asset.client.model.AssetDTO;
 import eu.europa.ec.fisheries.uvms.docker.validation.asset.AssetTestHelper;
 
 /**
@@ -43,7 +43,7 @@ public class PollRestIT extends AbstractMobileTerminalTest {
 	 */
 	@Test
 	public void getRunningProgramPollsTest() throws Exception {
-		final HttpResponse response = Request.Get(getBaseUrl() + "mobileterminal/rest/poll/running")
+		final HttpResponse response = Request.Get(getBaseUrl() + "asset/rest/poll/running")
 				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken()).execute()
 				.returnResponse();
 		List dataList = checkSuccessResponseReturnType(response, List.class);
@@ -57,7 +57,7 @@ public class PollRestIT extends AbstractMobileTerminalTest {
 	 */
 	@Test
 	public void createPollTest() throws Exception {
-		Asset testAsset = AssetTestHelper.createTestAsset();
+		AssetDTO testAsset = AssetTestHelper.createTestAsset();
 		Map<String, Object> programPollDataMap = MobileTerminalTestHelper.createPoll_Helper(testAsset);
 	}
 
@@ -69,12 +69,12 @@ public class PollRestIT extends AbstractMobileTerminalTest {
 	 */
 	@Test
 	public void startProgramPollTest() throws Exception {
-		Asset testAsset = AssetTestHelper.createTestAsset();
+		AssetDTO testAsset = AssetTestHelper.createTestAsset();
 		Map<String, Object> programPollDataMap = MobileTerminalTestHelper.createPoll_Helper(testAsset);
 		ArrayList sendPolls = (ArrayList) programPollDataMap.get("sentPolls");
 		String uid = (String) sendPolls.get(0);
 
-		final HttpResponse response = Request.Put(getBaseUrl() + "mobileterminal/rest/poll/start/" + uid)
+		final HttpResponse response = Request.Get(getBaseUrl() + "asset/rest/poll/start/" + uid)
 				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken()).execute()
 				.returnResponse();
 		Map<String, Object> dataMap = checkSuccessResponseReturnMap(response);
@@ -93,21 +93,21 @@ public class PollRestIT extends AbstractMobileTerminalTest {
 	 */
 	@Test
 	public void stopProgramPollTest() throws Exception {
-		Asset testAsset = AssetTestHelper.createTestAsset();
+		AssetDTO testAsset = AssetTestHelper.createTestAsset();
 		Map<String, Object> programPollDataMap = MobileTerminalTestHelper.createPoll_Helper(testAsset);
 		ArrayList sendPolls = (ArrayList) programPollDataMap.get("sentPolls");
 		String uid = (String) sendPolls.get(0);
 
 		// start it
 		{
-			final HttpResponse response = Request.Put(getBaseUrl() + "mobileterminal/rest/poll/start/" + uid)
+			final HttpResponse response = Request.Get(getBaseUrl() + "asset/rest/poll/start/" + uid)
 					.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken())
 					.execute().returnResponse();
 			Map<String, Object> dataMap = checkSuccessResponseReturnMap(response);
 		}
 
 		// stop it
-		final HttpResponse response = Request.Put(getBaseUrl() + "mobileterminal/rest/poll/stop/" + uid)
+		final HttpResponse response = Request.Get(getBaseUrl() + "asset/rest/poll/stop/" + uid)
 				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken()).execute()
 				.returnResponse();
 		Map<String, Object> dataMap = checkSuccessResponseReturnMap(response);
@@ -125,14 +125,14 @@ public class PollRestIT extends AbstractMobileTerminalTest {
 	 */
 	@Test
 	public void inactivateProgramPollTest() throws Exception {
-		Asset testAsset = AssetTestHelper.createTestAsset();
+		AssetDTO testAsset = AssetTestHelper.createTestAsset();
 		Map<String, Object> programPollDataMap = MobileTerminalTestHelper.createPoll_Helper(testAsset);
 		ArrayList sendPolls = (ArrayList) programPollDataMap.get("sentPolls");
 		String uid = (String) sendPolls.get(0);
 
 		// start it
 		{
-			final HttpResponse response = Request.Put(getBaseUrl() + "mobileterminal/rest/poll/start/" + uid)
+			final HttpResponse response = Request.Get(getBaseUrl() + "asset/rest/poll/start/" + uid)
 					.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken())
 					.execute().returnResponse();
 			Map<String, Object> dataMap = checkSuccessResponseReturnMap(response);
@@ -140,7 +140,7 @@ public class PollRestIT extends AbstractMobileTerminalTest {
 
 
 		// inactivate it
-		final HttpResponse response = Request.Put(getBaseUrl() + "mobileterminal/rest/poll/inactivate/" + uid)
+		final HttpResponse response = Request.Get(getBaseUrl() + "asset/rest/poll/inactivate/" + uid)
 				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken()).execute()
 				.returnResponse();
 		Map<String, Object> dataMap = checkSuccessResponseReturnMap(response);
@@ -168,7 +168,7 @@ public class PollRestIT extends AbstractMobileTerminalTest {
 		pollListQuery.setPollSearchCriteria(pollSearchCriteria);
 		pollSearchCriteria.setIsDynamic(true);
 
-		final HttpResponse response = Request.Post(getBaseUrl() + "mobileterminal/rest/poll/list")
+		final HttpResponse response = Request.Post(getBaseUrl() + "asset/rest/poll/list")
 				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken())
 				.bodyByteArray(writeValueAsString(pollListQuery).getBytes()).execute().returnResponse();
 
@@ -189,9 +189,9 @@ public class PollRestIT extends AbstractMobileTerminalTest {
 		listPagination.setListSize(100);
 		listPagination.setPage(1);
 		pollableQuery.setPagination(listPagination);
-		pollableQuery.getConnectIdList().add("connectId");
+		pollableQuery.getConnectIdList().add("00000000-0000-0000-0000-000000000001");
 
-		final HttpResponse response = Request.Post(getBaseUrl() + "mobileterminal/rest/poll/pollable")
+		final HttpResponse response = Request.Post(getBaseUrl() + "asset/rest/poll/pollable")
 				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken())
 				.bodyByteArray(writeValueAsString(pollableQuery).getBytes()).execute().returnResponse();
 

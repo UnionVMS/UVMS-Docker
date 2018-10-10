@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
@@ -27,7 +28,7 @@ public abstract class AbstractRest extends Assert {
 	private static final String DOCKER_RELEASE_TEST_BASE_URL_PROPERTY = "docker.release.test.base.url";
 
 	/** The Constant OBJECT_MAPPER. */
-	private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper().registerModule(new JavaTimeModule());
+	private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper().configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false).registerModule(new JavaTimeModule());
 
 	/** The Constant BASE_URL. */
 	protected static final String BASE_URL = "http://localhost:28080/unionvms/";
@@ -100,7 +101,7 @@ public abstract class AbstractRest extends Assert {
 
 	public static Map<String, Object> checkSuccessResponseReturnDataMap(final HttpResponse response)
 			throws IOException {
-		assertEquals(HttpStatus.SC_OK, response.getStatusLine().getStatusCode());
+		assertEquals(EntityUtils.toString(response.getEntity()),HttpStatus.SC_OK, response.getStatusLine().getStatusCode());
 		final Map<String, Object> data = getJsonMap(response);
 		assertFalse(data.isEmpty());
 		assertNotNull(data.get("data"));
@@ -136,7 +137,7 @@ public abstract class AbstractRest extends Assert {
 	
 	protected static <T> T checkSuccessResponseAndReturnType(final HttpResponse response, Class<T> classCast)
             throws IOException {
-	    assertEquals(HttpStatus.SC_OK, response.getStatusLine().getStatusCode());
+	    assertEquals("Response Body: " + EntityUtils.toString(response.getEntity()), HttpStatus.SC_OK, response.getStatusLine().getStatusCode());
         HttpEntity entity = response.getEntity();
         T dataValue = OBJECT_MAPPER.readValue(EntityUtils.toString(entity), classCast);
         assertNotNull(dataValue);

@@ -28,7 +28,7 @@ import eu.europa.ec.fisheries.schema.movementrules.customrule.v1.ConditionType;
 import eu.europa.ec.fisheries.schema.movementrules.customrule.v1.CriteriaType;
 import eu.europa.ec.fisheries.schema.movementrules.customrule.v1.CustomRuleType;
 import eu.europa.ec.fisheries.schema.movementrules.customrule.v1.SubCriteriaType;
-import eu.europa.ec.fisheries.uvms.asset.client.model.Asset;
+import eu.europa.ec.fisheries.uvms.asset.client.model.AssetDTO;
 import eu.europa.ec.fisheries.uvms.docker.validation.asset.AssetTestHelper;
 import eu.europa.ec.fisheries.uvms.docker.validation.common.AbstractRestServiceTest;
 import eu.europa.ec.fisheries.uvms.docker.validation.common.MessageHelper;
@@ -54,7 +54,7 @@ public class VMSSystemIT extends AbstractRestServiceTest {
         LocalDateTime timestamp = LocalDateTime.now(ZoneOffset.UTC);
 
 
-        Asset asset = AssetTestHelper.createTestAsset();
+        AssetDTO asset = AssetTestHelper.createTestAsset();
         MobileTerminalType mobileTerminalType = MobileTerminalTestHelper.createMobileTerminalType();
         MobileTerminalTestHelper.assignMobileTerminal(asset, mobileTerminalType);
         
@@ -94,7 +94,7 @@ public class VMSSystemIT extends AbstractRestServiceTest {
     public void sendFlagStateAndAreaDNKToFLUXDNKTest() throws Exception {
         LocalDateTime timestamp = LocalDateTime.now(ZoneOffset.UTC);
 
-        Asset asset = AssetTestHelper.createTestAsset();
+        AssetDTO asset = AssetTestHelper.createTestAsset();
         MobileTerminalType mobileTerminalType = MobileTerminalTestHelper.createMobileTerminalType();
         MobileTerminalTestHelper.assignMobileTerminal(asset, mobileTerminalType);
         
@@ -135,8 +135,8 @@ public class VMSSystemIT extends AbstractRestServiceTest {
     @Test
     public void sendFlagStateToFLUXDNKWithRuleIntervalTest() throws Exception {
         LocalDateTime timestamp = LocalDateTime.now(ZoneOffset.UTC);
-        
-        Asset asset = AssetTestHelper.createTestAsset();
+
+        AssetDTO asset = AssetTestHelper.createTestAsset();
         MobileTerminalType mobileTerminalType = MobileTerminalTestHelper.createMobileTerminalType();
         MobileTerminalTestHelper.assignMobileTerminal(asset, mobileTerminalType);
         
@@ -184,8 +184,8 @@ public class VMSSystemIT extends AbstractRestServiceTest {
     @Test
     public void sendFlagStateToFLUXDNKWithPastValidRuleIntervalTest() throws Exception {
         LocalDateTime timestamp = LocalDateTime.now(ZoneOffset.UTC);
-        
-        Asset asset = AssetTestHelper.createTestAsset();
+
+        AssetDTO asset = AssetTestHelper.createTestAsset();
         MobileTerminalType mobileTerminalType = MobileTerminalTestHelper.createMobileTerminalType();
         MobileTerminalTestHelper.assignMobileTerminal(asset, mobileTerminalType);
         
@@ -235,7 +235,7 @@ public class VMSSystemIT extends AbstractRestServiceTest {
     public void sendFlagStateToFLUXDNKWithFutureValidRuleIntervalTest() throws Exception {
         LocalDateTime timestamp = LocalDateTime.now(ZoneOffset.UTC);
 
-        Asset asset = AssetTestHelper.createTestAsset();
+        AssetDTO asset = AssetTestHelper.createTestAsset();
         MobileTerminalType mobileTerminalType = MobileTerminalTestHelper.createMobileTerminalType();
         MobileTerminalTestHelper.assignMobileTerminal(asset, mobileTerminalType);
         

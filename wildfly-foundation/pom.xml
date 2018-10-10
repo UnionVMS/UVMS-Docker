@@ -76,12 +76,6 @@
 			<version>${unionvms.project.exchange.module}</version>
 		</dependency>
 		<dependency>
-			<groupId>eu.europa.ec.fisheries.uvms.mobileterminal</groupId>
-			<artifactId>mobileterminal-module</artifactId>
-			<type>ear</type>
-			<version>${unionvms.project.mobileterminal.module}</version>
-		</dependency>
-		<dependency>
 			<groupId>eu.europa.ec.fisheries.uvms.movement</groupId>
 			<artifactId>movement-module</artifactId>
 			<type>ear</type>
@@ -246,10 +240,7 @@
 									<jar destfile="${project.basedir}/target/dockerfile/deployments/exchange-module-${unionvms.project.exchange.module}.ear" update="true">
 										<zipfileset dir="${project.basedir}/target/dockerfile/jboss-deployment/exchange" includes="*.xml" prefix="META-INF" />
 									</jar>
-	
-									<jar destfile="${project.basedir}/target/dockerfile/deployments/mobileterminal-module-${unionvms.project.mobileterminal.module}.ear" update="true">
-										<zipfileset dir="${project.basedir}/target/dockerfile/jboss-deployment/mobile" includes="*.xml" prefix="META-INF" />
-									</jar>
+
 		
 									<jar destfile="${project.basedir}/target/dockerfile/deployments/gs-web-app-${unionvms.project.geoserver.version}.war" update="true">
 										<zipfileset dir="${project.basedir}/target/dockerfile/jboss-deployment/web-app" includes="*.xml" prefix="WEB-INF" />

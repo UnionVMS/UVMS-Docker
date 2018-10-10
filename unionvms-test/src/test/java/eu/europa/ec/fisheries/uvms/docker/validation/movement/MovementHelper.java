@@ -45,7 +45,7 @@ import eu.europa.ec.fisheries.schema.movement.v1.MovementBaseType;
 import eu.europa.ec.fisheries.schema.movement.v1.MovementPoint;
 import eu.europa.ec.fisheries.schema.movement.v1.MovementType;
 import eu.europa.ec.fisheries.schema.movement.v1.MovementTypeType;
-import eu.europa.ec.fisheries.uvms.asset.client.model.Asset;
+import eu.europa.ec.fisheries.uvms.asset.client.model.AssetDTO;
 import eu.europa.ec.fisheries.uvms.docker.validation.common.AbstractHelper;
 import eu.europa.ec.fisheries.uvms.docker.validation.common.MessageHelper;
 import io.jsonwebtoken.lang.Collections;
@@ -56,7 +56,7 @@ public class MovementHelper extends AbstractHelper {
 
 	private Random rnd = new Random();
 
-	public CreateMovementRequest createMovementRequest(Asset testAsset, MobileTerminalType mobileTerminalType,
+	public CreateMovementRequest createMovementRequest(AssetDTO testAsset, MobileTerminalType mobileTerminalType,
 			LatLong latlong) throws IOException, ClientProtocolException, JsonProcessingException, JsonParseException,
 			JsonMappingException {
 
@@ -94,7 +94,7 @@ public class MovementHelper extends AbstractHelper {
 
 	}
 
-	public CreateMovementBatchRequest createMovementBatchRequest(Asset testAsset, MobileTerminalType mobileTerminalType,
+	public CreateMovementBatchRequest createMovementBatchRequest(AssetDTO testAsset, MobileTerminalType mobileTerminalType,
 			List<LatLong> route) throws IOException, ClientProtocolException, JsonProcessingException,
 			JsonParseException, JsonMappingException {
 
@@ -397,7 +397,7 @@ public class MovementHelper extends AbstractHelper {
 				.unmarshal(new StringReader(textMessage.getText()));
 	}
 
-	public CreateMovementResponse createMovement(Asset testAsset, MobileTerminalType mobileTerminalType,
+	public CreateMovementResponse createMovement(AssetDTO testAsset, MobileTerminalType mobileTerminalType,
 			CreateMovementRequest createMovementRequest) throws Exception {
 
 		Message messageResponse =
@@ -425,7 +425,7 @@ public class MovementHelper extends AbstractHelper {
 		return dataMap;
 	}
 
-	public CreateMovementBatchResponse createMovementBatch(Asset testAsset, MobileTerminalType mobileTerminalType,
+	public CreateMovementBatchResponse createMovementBatch(AssetDTO testAsset, MobileTerminalType mobileTerminalType,
 			CreateMovementBatchRequest createMovementBatchRequest) throws JAXBException, Exception {
 
 		Message messageResponse =
