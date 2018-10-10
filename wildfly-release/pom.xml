@@ -4,12 +4,12 @@
 	<parent>
 		<groupId>eu.europa.ec.fisheries.uvms.docker</groupId>
 		<artifactId>uvms-docker</artifactId>
-		<version>3.26.1.w14-SNAPSHOT</version>
+		<version>3.26.7.w14-SNAPSHOT</version>
 		<relativePath>../pom.xml</relativePath>
 	</parent>
 	<groupId>eu.europa.ec.fisheries.uvms.docker</groupId>
 	<artifactId>uvms-docker-wildfly-release</artifactId>
-	<version>3.26.1.w14-SNAPSHOT</version>
+	<version>3.26.7.w14-SNAPSHOT</version>
 	<packaging>pom</packaging>
 	<name>uvms-docker-wildfly-release</name>
 	<repositories>
@@ -34,13 +34,6 @@
     </distributionManagement>
 
     <dependencies>
-        <!-- frontend modules -->
-        <dependency>
-            <groupId>eu.europa.ec.fisheries.uvms</groupId>
-            <artifactId>unionvms-web</artifactId>
-            <type>war</type>
-            <version>${unionvms.project.unionvms.web.version}</version>
-        </dependency>
 
         <!-- app modules -->
         <dependency>
@@ -67,33 +60,7 @@
             <type>ear</type>
             <version>${unionvms.project.subscription.module}</version>
         </dependency>
-        <dependency>
-            <groupId>eu.europa.ec.fisheries.uvms.reporting</groupId>
-            <artifactId>reporting-module</artifactId>
-            <type>ear</type>
-            <version>${unionvms.project.reporting.module}</version>
-        </dependency>
 
-        <!-- plugin modules -->
-        <dependency>
-            <groupId>eu.europa.ec.fisheries.uvms.plugins</groupId>
-            <artifactId>naf-module</artifactId>
-            <type>ear</type>
-            <version>${unionvms.project.plugins.naf}</version>
-        </dependency>
-        <dependency>
-            <groupId>eu.europa.ec.fisheries.uvms.plugins</groupId>
-            <artifactId>flux-module</artifactId>
-            <type>ear</type>
-            <version>${unionvms.project.plugins.flux}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>eu.europa.ec.fisheries.uvms.plugins.iridium</groupId>
-            <artifactId>siriusone-module</artifactId>
-            <type>ear</type>
-            <version>${unionvms.project.plugins.siriusone}</version>
-        </dependency>
     </dependencies>
     <build>
         <pluginManagement>
@@ -205,11 +172,6 @@
                                     <not><equals arg1="${docker.dependency.skip}" arg2="true" /></not>
                                     <then>
                                         <echo message="Modify ear/war:s to define startup order!" />
-
-                                        <jar destfile="${project.basedir}/target/dockerfile/deployments/reporting-module-${unionvms.project.reporting.module}.ear" update="true">
-                                            <zipfileset dir="${project.basedir}/target/dockerfile/jboss-deployment/reporting" includes="*.xml" prefix="META-INF" />
-                                        </jar>
-
                                         <jar destfile="${project.basedir}/target/dockerfile/deployments/rules-module-${unionvms.project.rules.module}.ear" update="true">
                                             <zipfileset dir="${project.basedir}/target/dockerfile/jboss-deployment/rules" includes="*.xml" prefix="META-INF" />
                                         </jar>
@@ -224,22 +186,6 @@
 
                                         <jar destfile="${project.basedir}/target/dockerfile/deployments/subscription-module-${unionvms.project.subscription.module}.ear" update="true">
                                             <zipfileset dir="${project.basedir}/target/dockerfile/jboss-deployment/subscription" includes="*.xml" prefix="META-INF" />
-                                        </jar>
-
-                                        <jar destfile="${project.basedir}/target/dockerfile/deployments/naf-module-${unionvms.project.plugins.naf}.ear" update="true">
-                                            <zipfileset dir="${project.basedir}/target/dockerfile/jboss-deployment/plugins" includes="*.xml" prefix="META-INF" />
-                                        </jar>
-
-                                        <jar destfile="${project.basedir}/target/dockerfile/deployments/flux-module-${unionvms.project.plugins.flux}.ear" update="true">
-                                            <zipfileset dir="${project.basedir}/target/dockerfile/jboss-deployment/plugins" includes="*.xml" prefix="META-INF" />
-                                        </jar>
-
-                                        <jar destfile="${project.basedir}/target/dockerfile/deployments/siriusone-module-${unionvms.project.plugins.siriusone}.ear" update="true">
-                                            <zipfileset dir="${project.basedir}/target/dockerfile/jboss-deployment/plugins" includes="*.xml" prefix="META-INF" />
-                                        </jar>
-
-                                        <jar destfile="${project.basedir}/target/dockerfile/deployments/unionvms-web-${unionvms.project.unionvms.web.version}.war" update="true">
-                                            <zipfileset dir="${project.basedir}/target/dockerfile/jboss-deployment/web-app" includes="*.xml" prefix="WEB-INF" />
                                         </jar>
                                     </then>
                                     <else>

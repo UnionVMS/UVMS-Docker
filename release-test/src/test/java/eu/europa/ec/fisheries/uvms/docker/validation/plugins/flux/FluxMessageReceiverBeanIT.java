@@ -15,6 +15,7 @@ import java.util.GregorianCalendar;
 import java.util.List;
 
 import eu.europa.ec.fisheries.schema.mobileterminal.types.v1.MobileTerminalType;
+import eu.europa.ec.fisheries.uvms.asset.client.model.AssetDTO;
 import eu.europa.ec.fisheries.uvms.docker.validation.asset.AssetTestHelper;
 import eu.europa.ec.fisheries.uvms.docker.validation.common.AbstractRestServiceTest;
 import eu.europa.ec.fisheries.uvms.docker.validation.mobileterminal.MobileTerminalTestHelper;
@@ -118,7 +119,7 @@ public class FluxMessageReceiverBeanIT extends AbstractRestServiceTest {
 	 */
 	@Test
 	public void postRequestTypeRequestSuccessTest() throws Exception {		
-		Asset testAsset = AssetTestHelper.createTestAsset();
+		AssetDTO testAsset = AssetTestHelper.createTestAsset();
 		MobileTerminalType mobileTerminalType = MobileTerminalTestHelper.createMobileTerminalType();
 		MobileTerminalTestHelper.assignMobileTerminal(testAsset, mobileTerminalType);
 
@@ -222,7 +223,7 @@ public class FluxMessageReceiverBeanIT extends AbstractRestServiceTest {
 		Thread.sleep(15000);
 		
 		List<String> connectIds = new ArrayList<>();
-		connectIds.add(testAsset.getEventHistory().getEventId());		
+		connectIds.add(testAsset.getHistoryId().toString());
 		
 		final HttpResponse response = Request.Post(getBaseUrl() + "movement/rest/movement/latest")
 				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken())
