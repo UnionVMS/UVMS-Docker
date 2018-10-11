@@ -8,10 +8,10 @@
 		<relativePath>../pom.xml</relativePath>
 	</parent>
 	<groupId>eu.europa.ec.fisheries.uvms.docker</groupId>
-	<artifactId>uvms-docker-wildfly-release</artifactId>
+	<artifactId>uvms-docker-wildfly-fluxfmc</artifactId>
 	<version>3.26.7.w14-SNAPSHOT</version>
 	<packaging>pom</packaging>
-	<name>uvms-docker-wildfly-release</name>
+	<name>uvms-docker-wildfly-fluxfmc</name>
 	<repositories>
 		<repository>
 			<id>focus-repo</id>
