@@ -11,7 +11,7 @@ copy of the GNU General Public License along with the IFDM Suite. If not, see <h
  */
 package eu.europa.ec.fisheries.uvms.docker.validation.system.helper;
 
-import eu.europa.ec.fisheries.uvms.asset.client.model.Asset;
+import eu.europa.ec.fisheries.uvms.asset.client.model.AssetDTO;
 import eu.europa.ec.fisheries.uvms.docker.validation.common.AbstractHelper;
 import eu.europa.ec.fisheries.uvms.docker.validation.movement.LatLong;
 import org.w3c.dom.Document;
@@ -38,7 +38,7 @@ import java.util.GregorianCalendar;
 
 public class FLUXHelper extends AbstractHelper {
 
-    public static void sendPositionToFluxPlugin(Asset asset, LatLong position) throws Exception {
+    public static void sendPositionToFluxPlugin(AssetDTO asset, LatLong position) throws Exception {
         RequestType vesselReport = createVesselReport(asset, position);
         sendVesselReportToFluxPlugin(vesselReport);
     }
@@ -50,7 +50,7 @@ public class FLUXHelper extends AbstractHelper {
         assertEquals("OK", responseType.getStatus());
     }
 
-    public static RequestType createVesselReport(Asset testAsset, LatLong latLong) throws DatatypeConfigurationException, JAXBException, ParserConfigurationException {
+    public static RequestType createVesselReport(AssetDTO testAsset, LatLong latLong) throws DatatypeConfigurationException, JAXBException, ParserConfigurationException {
         FLUXVesselPositionMessage fluxVesselPositionMessage = createFluxMessage(testAsset, latLong);
         return createVesselReport(fluxVesselPositionMessage);
     }
@@ -70,7 +70,7 @@ public class FLUXHelper extends AbstractHelper {
         return requestType;
     }
     
-    public static FLUXVesselPositionMessage createFluxMessage(Asset testAsset, LatLong latLong) throws DatatypeConfigurationException {
+    public static FLUXVesselPositionMessage createFluxMessage(AssetDTO testAsset, LatLong latLong) throws DatatypeConfigurationException {
         FLUXVesselPositionMessage fluxVesselPositionMessage = new FLUXVesselPositionMessage();
         VesselTransportMeansType vesselTransportMeansType = new VesselTransportMeansType();
         

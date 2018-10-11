@@ -155,17 +155,16 @@ public class ModuleAvailableSystemIT extends AbstractRest {
 
 	/**
 	 * Check mobileterminal access test.
-	 *
 	 * @throws Exception
 	 *             the exception
 	 */
 	@Test
 	public void checkMobileterminalAccessTest() throws Exception {
 		assertEquals(HttpStatus.SC_FORBIDDEN,
-				Request.Get(getBaseUrl() + "mobileterminal/").execute().returnResponse().getStatusLine().getStatusCode());
-		assertEquals(HttpStatus.SC_FORBIDDEN, Request.Get(getBaseUrl() + "mobileterminal/rest").execute().returnResponse()
+				Request.Get(getBaseUrl() + "asset/rest/asset").execute().returnResponse().getStatusLine().getStatusCode());
+		assertEquals(HttpStatus.SC_FORBIDDEN, Request.Get(getBaseUrl() + "asset/rest/asset").execute().returnResponse()
 				.getStatusLine().getStatusCode());
-		assertEquals(HttpStatus.SC_OK, Request.Get(getBaseUrl() + "mobileterminal/monitoring").execute().returnResponse()
+		assertEquals(HttpStatus.SC_OK, Request.Get(getBaseUrl() + "asset/monitoring").execute().returnResponse()
 				.getStatusLine().getStatusCode());
 
 	}

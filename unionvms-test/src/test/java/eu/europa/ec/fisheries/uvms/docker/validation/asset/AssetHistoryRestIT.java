@@ -14,12 +14,13 @@ copy of the GNU General Public License along with the IFDM Suite. If not, see <h
 package eu.europa.ec.fisheries.uvms.docker.validation.asset;
 
 import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 import java.time.ZoneId;
 import java.util.List;
 import java.util.UUID;
 import org.junit.Assert;
 import org.junit.Test;
-import eu.europa.ec.fisheries.uvms.asset.client.model.Asset;
+import eu.europa.ec.fisheries.uvms.asset.client.model.AssetDTO;
 import eu.europa.ec.fisheries.uvms.docker.validation.common.AbstractRestServiceTest;
 import eu.europa.ec.fisheries.wsdl.asset.types.AssetIdType;
 
@@ -38,8 +39,8 @@ public class AssetHistoryRestIT extends AbstractRestServiceTest {
 	 */
 	@Test
 	public void getAssetHistoryListByAssetIdNumberOfHistoriesTest() throws Exception {
-		Asset asset = AssetTestHelper.createTestAsset();
-		List<Asset> assetHistories = AssetTestHelper.getAssetHistoryFromAssetGuid(asset.getId());
+		AssetDTO asset = AssetTestHelper.createTestAsset();
+		List<AssetDTO> assetHistories = AssetTestHelper.getAssetHistoryFromAssetGuid(asset.getId());
 		assertTrue(assetHistories.size() == 1);
 		
 		asset.setName(asset.getName() + "Updated");
@@ -56,17 +57,17 @@ public class AssetHistoryRestIT extends AbstractRestServiceTest {
 	@Test
 	public void getAssetHistoryListByAssetIdHistoriesIsRetainedTest() throws Exception {
 		// Create asset versions
-		Asset asset1 = AssetTestHelper.createTestAsset();
-		
-		Asset asset2 = AssetTestHelper.getAssetByGuid(asset1.getId());
+		AssetDTO asset1 = AssetTestHelper.createTestAsset();
+
+		AssetDTO asset2 = AssetTestHelper.getAssetByGuid(asset1.getId());
 		asset2.setName(asset2.getName() + "1");
-		Asset createdAsset2 = AssetTestHelper.updateAsset(asset2);
-		
-		Asset asset3 = AssetTestHelper.getAssetByGuid(asset2.getId());
+		AssetDTO createdAsset2 = AssetTestHelper.updateAsset(asset2);
+
+		AssetDTO asset3 = AssetTestHelper.getAssetByGuid(asset2.getId());
 		asset3.setName(asset3.getName() + "2");
-		Asset createdAsset3 = AssetTestHelper.updateAsset(asset3);
+		AssetDTO createdAsset3 = AssetTestHelper.updateAsset(asset3);
 		
-		List<Asset> assetHistories = AssetTestHelper.getAssetHistoryFromAssetGuid(createdAsset3.getId());
+		List<AssetDTO> assetHistories = AssetTestHelper.getAssetHistoryFromAssetGuid(createdAsset3.getId());
 		assertTrue(assetHistories.size() == 3);
 		
 		assertTrue(assetHistories.stream().anyMatch(a -> a.getId().equals(asset1.getId()) && a.getName().equals(asset1.getName())));
@@ -83,33 +84,33 @@ public class AssetHistoryRestIT extends AbstractRestServiceTest {
 	 */
 	@Test
 	public void getAssetHistoryByAssetHistGuidTest() throws Exception {
-		Asset asset = AssetTestHelper.createTestAsset();		
-		Asset assetFromHistory = AssetTestHelper.getAssetHistoryFromHistoryGuid(asset.getHistoryId());
+		AssetDTO asset = AssetTestHelper.createTestAsset();
+		AssetDTO assetFromHistory = AssetTestHelper.getAssetHistoryFromHistoryGuid(asset.getHistoryId());
 		assertEquals(asset.getId(), assetFromHistory.getId());
 	}
 	
 	@Test
 	public void getAssetHistoryByAssetHistGuidHistortyIsRetained() throws Exception {
 		// Create asset versions
-		Asset asset1 = AssetTestHelper.createTestAsset();
+		AssetDTO asset1 = AssetTestHelper.createTestAsset();
 
-		Asset asset2 = AssetTestHelper.getAssetByGuid(asset1.getId());
+		AssetDTO asset2 = AssetTestHelper.getAssetByGuid(asset1.getId());
 		asset2.setName(asset2.getName() + "1");
-		Asset createdAsset2 = AssetTestHelper.updateAsset(asset2);
+		AssetDTO createdAsset2 = AssetTestHelper.updateAsset(asset2);
 
-		Asset asset3 = AssetTestHelper.getAssetByGuid(asset2.getId());
+		AssetDTO asset3 = AssetTestHelper.getAssetByGuid(asset2.getId());
 		asset3.setName(asset3.getName() + "2");
-		Asset createdAsset3 = AssetTestHelper.updateAsset(asset3);
-		
-		Asset assetHistory1 = AssetTestHelper.getAssetHistoryFromHistoryGuid(asset1.getHistoryId());
+		AssetDTO createdAsset3 = AssetTestHelper.updateAsset(asset3);
+
+		AssetDTO assetHistory1 = AssetTestHelper.getAssetHistoryFromHistoryGuid(asset1.getHistoryId());
 		assertEquals(asset1.getId(), assetHistory1.getId());
 		assertEquals(asset1.getName(), assetHistory1.getName());
-		
-		Asset assetHistory2 = AssetTestHelper.getAssetHistoryFromHistoryGuid(createdAsset2.getHistoryId());
+
+		AssetDTO assetHistory2 = AssetTestHelper.getAssetHistoryFromHistoryGuid(createdAsset2.getHistoryId());
 		assertEquals(asset2.getId(), assetHistory2.getId());
 		assertEquals(asset2.getName(), assetHistory2.getName());
-        
-		Asset assetHistory3 = AssetTestHelper.getAssetHistoryFromHistoryGuid(createdAsset3.getHistoryId());
+
+		AssetDTO assetHistory3 = AssetTestHelper.getAssetHistoryFromHistoryGuid(createdAsset3.getHistoryId());
 		assertEquals(asset3.getId(), assetHistory3.getId());
         assertEquals(asset3.getName(), assetHistory3.getName());
 	}
@@ -117,10 +118,10 @@ public class AssetHistoryRestIT extends AbstractRestServiceTest {
     @Test
     public void getAssetFromAssetIdAndDate() throws Exception {
         // Create asset
-        Asset asset = AssetTestHelper.createTestAsset();
+		AssetDTO asset = AssetTestHelper.createTestAsset();
         String value = asset.getCfr();
         String type = "cfr";
-        Asset fetchedAsset = AssetTestHelper.getAssetFromAssetIdAndDate(type, value, LocalDateTime.now(ZoneId.of("UTC")));
+		AssetDTO fetchedAsset = AssetTestHelper.getAssetFromAssetIdAndDate(type, value, OffsetDateTime.now(ZoneId.of("UTC")));
 
         assertEquals(asset.getId(), fetchedAsset.getId());
         assertEquals(asset.getCfr(), fetchedAsset.getCfr());

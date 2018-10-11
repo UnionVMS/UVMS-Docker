@@ -4,12 +4,12 @@
 	<parent>
 		<groupId>eu.europa.ec.fisheries.uvms.docker</groupId>
 		<artifactId>uvms-docker</artifactId>
-		<version>3.26.3.w14-SNAPSHOT</version>
+		<version>3.27.2.w14-SNAPSHOT</version>
 		<relativePath>../pom.xml</relativePath>
 	</parent>
 	<groupId>eu.europa.ec.fisheries.uvms.docker</groupId>
 	<artifactId>uvms-docker-postgres-release</artifactId>
-	<version>3.26.3.w14-SNAPSHOT</version>
+	<version>3.27.2.w14-SNAPSHOT</version>
 	<packaging>pom</packaging>
 	<name>uvms-docker-postgres-release</name>
 	<dependencies>
@@ -48,17 +48,6 @@
 		</dependency>
 		<dependency>
 			<groupId>eu.europa.ec.fisheries.uvms.exchange</groupId>
-			<artifactId>liquibase</artifactId>
-			<type>sql</type>
-			<exclusions>
-				<exclusion>
-					<groupId>com.oracle</groupId>
-					<artifactId>ojdbc6</artifactId>
-				</exclusion>
-			</exclusions>			
-		</dependency>
-		<dependency>
-			<groupId>eu.europa.ec.fisheries.uvms.mobileterminal</groupId>
 			<artifactId>liquibase</artifactId>
 			<type>sql</type>
 			<exclusions>

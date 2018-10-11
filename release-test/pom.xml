@@ -5,21 +5,21 @@
 	<parent>
 		<groupId>eu.europa.ec.fisheries.uvms.docker</groupId>
 		<artifactId>uvms-docker</artifactId>
-		<version>3.26.1.w14-SNAPSHOT</version>
+		<version>3.26.7.w14-SNAPSHOT</version>
 		<relativePath>../pom.xml</relativePath>
 	</parent>
 
 	<groupId>eu.europa.ec.fisheries.uvms.docker</groupId>
-	<version>3.26.1.w14-SNAPSHOT</version>
+	<version>3.26.7.w14-SNAPSHOT</version>
 	<artifactId>uvms-release-test</artifactId>
 	<packaging>jar</packaging>
 	<name>uvms-release-test</name>
 	<dependencies>
 		<dependency>
 			<groupId>eu.europa.ec.fisheries.uvms.docker</groupId>
-			<artifactId>uvms-foundation-test</artifactId>
+			<artifactId>uvms-unionvms-test</artifactId>
 			<type>test-jar</type>
-			<version>3.25.0.w12-SNAPSHOT</version>
+			<version>3.26.7.w14-SNAPSHOT</version>
 			<scope>test</scope>
 		</dependency>	
 		<dependency>
@@ -37,6 +37,12 @@
 			<groupId>eu.europa.ec.fisheries.uvms.reporting</groupId>
 			<artifactId>service</artifactId>
 			<version>${unionvms.project.reporting.module}</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>eu.europa.ec.fisheries.uvms.rules</groupId>
+			<artifactId>rules-model</artifactId>
+			<version>${unionvms.project.rules.module}</version>
 			<scope>test</scope>
 		</dependency>
 	</dependencies>

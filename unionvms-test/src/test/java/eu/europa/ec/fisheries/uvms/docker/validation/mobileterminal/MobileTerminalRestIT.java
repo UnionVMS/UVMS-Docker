@@ -15,16 +15,12 @@ package eu.europa.ec.fisheries.uvms.docker.validation.mobileterminal;
 
 import java.util.Map;
 
+import eu.europa.ec.fisheries.schema.mobileterminal.types.v1.*;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.fluent.Request;
 import org.junit.Test;
 
-import eu.europa.ec.fisheries.schema.mobileterminal.types.v1.ListPagination;
-import eu.europa.ec.fisheries.schema.mobileterminal.types.v1.MobileTerminalAssignQuery;
-import eu.europa.ec.fisheries.schema.mobileterminal.types.v1.MobileTerminalListQuery;
-import eu.europa.ec.fisheries.schema.mobileterminal.types.v1.MobileTerminalSearchCriteria;
-import eu.europa.ec.fisheries.schema.mobileterminal.types.v1.MobileTerminalType;
-import eu.europa.ec.fisheries.uvms.asset.client.model.Asset;
+import eu.europa.ec.fisheries.uvms.asset.client.model.AssetDTO;
 import eu.europa.ec.fisheries.uvms.docker.validation.asset.AssetTestHelper;
 
 /**
@@ -55,7 +51,7 @@ public class MobileTerminalRestIT extends AbstractMobileTerminalTest {
 	public void getMobileTerminalByIdTest() throws Exception {
 		MobileTerminalType createdMobileTerminalType = MobileTerminalTestHelper.createMobileTerminalType();
 		
-		final HttpResponse response = Request.Get(getBaseUrl() + "mobileterminal/rest/mobileterminal/" + createdMobileTerminalType.getMobileTerminalId().getGuid())
+		final HttpResponse response = Request.Get(getBaseUrl() + "asset/rest/mobileterminal/" + createdMobileTerminalType.getMobileTerminalId().getGuid())
 				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken()).execute()
 				.returnResponse();
 		Map<String, Object> dataMap = checkSuccessResponseReturnMap(response);
@@ -73,7 +69,7 @@ public class MobileTerminalRestIT extends AbstractMobileTerminalTest {
 		
 		createdMobileTerminalType.setArchived(true);
 		
-		final HttpResponse response = Request.Put(getBaseUrl() + "mobileterminal/rest/mobileterminal?comment=comment")
+		final HttpResponse response = Request.Put(getBaseUrl() + "asset/rest/mobileterminal?comment=comment")
 				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken())
 				.bodyByteArray(writeValueAsString(createdMobileTerminalType).getBytes()).execute().returnResponse();
 
@@ -95,10 +91,16 @@ public class MobileTerminalRestIT extends AbstractMobileTerminalTest {
 		pagination.setPage(1);
 		queryRequest.setPagination(pagination);
 		MobileTerminalSearchCriteria criteria = new MobileTerminalSearchCriteria();
+
+		ListCriteria cr = new ListCriteria();
+		cr.setKey(SearchKey.TRANSPONDER_TYPE);
+		cr.setValue("dummy");
+
+		criteria.getCriterias().add(cr);
 		criteria.setIsDynamic(true);
 		queryRequest.setMobileTerminalSearchCriteria(criteria);
 		
-		final HttpResponse response = Request.Post(getBaseUrl() + "mobileterminal/rest/mobileterminal/list")
+		final HttpResponse response = Request.Post(getBaseUrl() + "asset/rest/mobileterminal/list")
 				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken())
 				.bodyByteArray(writeValueAsString(queryRequest).getBytes()).execute().returnResponse();
 
@@ -113,7 +115,7 @@ public class MobileTerminalRestIT extends AbstractMobileTerminalTest {
 	 */
 	@Test
 	public void assignMobileTerminalTest() throws Exception {
-		Asset testAsset = AssetTestHelper.createTestAsset();
+		AssetDTO testAsset = AssetTestHelper.createTestAsset();
 		MobileTerminalType createdMobileTerminalType = MobileTerminalTestHelper.createMobileTerminalType();
 
 		Map<String, Object> dataMap = MobileTerminalTestHelper.assignMobileTerminal(testAsset, createdMobileTerminalType);
@@ -127,7 +129,7 @@ public class MobileTerminalRestIT extends AbstractMobileTerminalTest {
 	 */
 	@Test
 	public void unAssignMobileTerminalTest() throws Exception {
-		Asset testAsset = AssetTestHelper.createTestAsset();
+		AssetDTO testAsset = AssetTestHelper.createTestAsset();
 		MobileTerminalType createdMobileTerminalType = MobileTerminalTestHelper.createMobileTerminalType();
 
 		MobileTerminalAssignQuery mobileTerminalAssignQuery = new MobileTerminalAssignQuery();
@@ -136,7 +138,7 @@ public class MobileTerminalRestIT extends AbstractMobileTerminalTest {
 		{
 			// Assign first
 			final HttpResponse response = Request
-					.Post(getBaseUrl() + "mobileterminal/rest/mobileterminal/assign?comment=comment")
+					.Post(getBaseUrl() + "asset/rest/mobileterminal/assign?comment=comment")
 					.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken())
 					.bodyByteArray(writeValueAsString(mobileTerminalAssignQuery).getBytes()).execute()
 					.returnResponse();
@@ -144,7 +146,7 @@ public class MobileTerminalRestIT extends AbstractMobileTerminalTest {
 			Map<String, Object> dataMap = checkSuccessResponseReturnMap(response);
 		}
 		final HttpResponse response = Request
-				.Post(getBaseUrl() + "mobileterminal/rest/mobileterminal/unassign?comment=comment")
+				.Post(getBaseUrl() + "asset/rest/mobileterminal/unassign?comment=comment")
 				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken())
 				.bodyByteArray(writeValueAsString(mobileTerminalAssignQuery).getBytes()).execute()
 				.returnResponse();
@@ -163,7 +165,7 @@ public class MobileTerminalRestIT extends AbstractMobileTerminalTest {
 		MobileTerminalType createdMobileTerminalType = MobileTerminalTestHelper.createMobileTerminalType();
 
 		final HttpResponse response = Request
-				.Put(getBaseUrl() + "mobileterminal/rest/mobileterminal/status/activate?comment=comment")
+				.Put(getBaseUrl() + "asset/rest/mobileterminal/status/activate?comment=comment")
 				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken())
 				.bodyByteArray(writeValueAsString(createdMobileTerminalType.getMobileTerminalId()).getBytes()).execute().returnResponse();
 
@@ -180,8 +182,10 @@ public class MobileTerminalRestIT extends AbstractMobileTerminalTest {
 	public void setStatusInactiveTest() throws Exception {
 		MobileTerminalType createdMobileTerminalType = MobileTerminalTestHelper.createMobileTerminalType();
 
+		String endpoint = getBaseUrl() + "asset/rest/mobileterminal/";
+
 		final HttpResponse response = Request
-				.Put(getBaseUrl() + "mobileterminal/rest/mobileterminal/status/inactivate?comment=comment")
+				.Put(endpoint + "status/inactivate?comment=comment")
 				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken())
 				.bodyByteArray(writeValueAsString(createdMobileTerminalType.getMobileTerminalId()).getBytes()).execute().returnResponse();
 
@@ -199,7 +203,7 @@ public class MobileTerminalRestIT extends AbstractMobileTerminalTest {
 		MobileTerminalType createdMobileTerminalType = MobileTerminalTestHelper.createMobileTerminalType();
 
 		final HttpResponse response = Request
-				.Put(getBaseUrl() + "mobileterminal/rest/mobileterminal/status/remove?comment=comment")
+				.Put(getBaseUrl() + "asset/rest/mobileterminal/status/remove?comment=comment")
 				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken())
 				.bodyByteArray(writeValueAsString(createdMobileTerminalType.getMobileTerminalId()).getBytes()).execute().returnResponse();
 
@@ -217,7 +221,7 @@ public class MobileTerminalRestIT extends AbstractMobileTerminalTest {
 	public void getMobileTerminalHistoryListByMobileTerminalIdTest() throws Exception {
 		MobileTerminalType createdMobileTerminalType = MobileTerminalTestHelper.createMobileTerminalType();
 
-		final HttpResponse response = Request.Get(getBaseUrl() + "mobileterminal/rest/mobileterminal/history/" + createdMobileTerminalType.getMobileTerminalId().getGuid())
+		final HttpResponse response = Request.Get(getBaseUrl() + "asset/rest/mobileterminal/history/" + createdMobileTerminalType.getMobileTerminalId().getGuid())
 				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken()).execute()
 				.returnResponse();
 		Map<String, Object> dataMap = checkSuccessResponseReturnMap(response);

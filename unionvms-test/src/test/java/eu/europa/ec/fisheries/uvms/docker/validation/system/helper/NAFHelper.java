@@ -11,7 +11,7 @@ copy of the GNU General Public License along with the IFDM Suite. If not, see <h
  */
 package eu.europa.ec.fisheries.uvms.docker.validation.system.helper;
 
-import eu.europa.ec.fisheries.uvms.asset.client.model.Asset;
+import eu.europa.ec.fisheries.uvms.asset.client.model.AssetDTO;
 import eu.europa.ec.fisheries.uvms.docker.validation.common.AbstractHelper;
 import eu.europa.ec.fisheries.uvms.docker.validation.movement.LatLong;
 import org.apache.http.HttpResponse;
@@ -28,7 +28,7 @@ import java.util.TimeZone;
 
 public class NAFHelper extends AbstractHelper {
 
-    public static void sendPositionToNAFPlugin(LatLong position, Asset asset) throws ClientProtocolException, IOException {
+    public static void sendPositionToNAFPlugin(LatLong position, AssetDTO asset) throws ClientProtocolException, IOException {
         String nafString = convertToNafString(position, asset);
 //        String requestPath = getBaseUrl() + "naf/rest/message/" + nafString;
         String requestPath = "http://localhost:28080/naf/rest/message/" + nafString;
@@ -36,7 +36,7 @@ public class NAFHelper extends AbstractHelper {
         assertEquals(200, response.getStatusLine().getStatusCode());
     }
     
-    private static String convertToNafString(LatLong position, Asset asset) throws UnsupportedEncodingException {
+    private static String convertToNafString(LatLong position, AssetDTO asset) throws UnsupportedEncodingException {
         SimpleDateFormat dateFormatter = new SimpleDateFormat("yyyyMMdd");
         dateFormatter.setTimeZone(TimeZone.getTimeZone(ZoneId.of("UTC")));
         SimpleDateFormat timeFormatter = new SimpleDateFormat("HHmm");

@@ -18,7 +18,7 @@ import java.util.List;
 import java.util.UUID;
 import org.junit.Ignore;
 import org.junit.Test;
-import eu.europa.ec.fisheries.uvms.asset.client.model.Asset;
+import eu.europa.ec.fisheries.uvms.asset.client.model.AssetDTO;
 import eu.europa.ec.fisheries.uvms.asset.client.model.AssetGroup;
 import eu.europa.ec.fisheries.uvms.asset.client.model.AssetGroupField;
 import eu.europa.ec.fisheries.uvms.asset.model.constants.AuditOperationEnum;
@@ -43,21 +43,21 @@ public class AssetGroupRestIT extends AbstractRestServiceTest {
 		// Create Group
 	    AssetGroup assetGroup = AssetTestHelper.createBasicAssetGroup();
 	    AssetGroup createdAssetGroup = AssetTestHelper.createAssetGroup(assetGroup);
-		
-		Asset asset1 = AssetTestHelper.createTestAsset();
-		Asset asset2 = AssetTestHelper.createTestAsset();
+
+		AssetDTO asset1 = AssetTestHelper.createTestAsset();
+		AssetDTO asset2 = AssetTestHelper.createTestAsset();
 		
 		// Add assets to group
 		AssetGroupField assetGroupField1 = new AssetGroupField();
 		assetGroupField1.setField("GUID");
 		assetGroupField1.setValue(asset1.getId().toString());
-		assetGroupField1.setAssetGroup(createdAssetGroup.getId());
+		assetGroupField1.setAssetGroup(createdAssetGroup);
 		AssetGroupField createdAssetGroupField1 = AssetTestHelper.createAssetGroupField(createdAssetGroup.getId(), assetGroupField1);
 	
 		AssetGroupField assetGroupField2 = new AssetGroupField();
 		assetGroupField2.setField("GUID");
 		assetGroupField2.setValue(asset2.getId().toString());
-		assetGroupField2.setAssetGroup(createdAssetGroup.getId());
+		assetGroupField2.setAssetGroup(createdAssetGroup);
 		AssetGroupField createdAssetGroupField2 = AssetTestHelper.createAssetGroupField(createdAssetGroup.getId(), assetGroupField2);
 	
 		List<AssetGroupField> fetchedAssetGroups = AssetTestHelper.getAssetGroupFieldByAssetGroup(createdAssetGroup.getId());

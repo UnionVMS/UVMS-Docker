@@ -37,7 +37,7 @@ import eu.europa.ec.fisheries.schema.movement.v1.MovementBaseType;
 import eu.europa.ec.fisheries.schema.movement.v1.MovementPoint;
 import eu.europa.ec.fisheries.schema.movement.v1.MovementType;
 import eu.europa.ec.fisheries.schema.movement.v1.MovementTypeType;
-import eu.europa.ec.fisheries.uvms.asset.client.model.Asset;
+import eu.europa.ec.fisheries.uvms.asset.client.model.AssetDTO;
 import eu.europa.ec.fisheries.uvms.docker.validation.common.AbstractHelper;
 import eu.europa.ec.fisheries.uvms.docker.validation.common.MessageHelper;
 
@@ -82,7 +82,7 @@ public class MovementHelper extends AbstractHelper {
 
 	}
 
-	public CreateMovementBatchRequest createMovementBatchRequest(Asset testAsset, MobileTerminalType mobileTerminalType,
+	public CreateMovementBatchRequest createMovementBatchRequest(AssetDTO testAsset, MobileTerminalType mobileTerminalType,
 			List<LatLong> route) {
 
 		final CreateMovementBatchRequest createMovementBatchRequest = new CreateMovementBatchRequest();

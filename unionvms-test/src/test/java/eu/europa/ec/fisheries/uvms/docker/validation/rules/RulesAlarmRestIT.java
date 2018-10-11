@@ -31,7 +31,7 @@ import eu.europa.ec.fisheries.schema.movementrules.search.v1.AlarmListCriteria;
 import eu.europa.ec.fisheries.schema.movementrules.search.v1.AlarmQuery;
 import eu.europa.ec.fisheries.schema.movementrules.search.v1.AlarmSearchKey;
 import eu.europa.ec.fisheries.schema.movementrules.search.v1.ListPagination;
-import eu.europa.ec.fisheries.uvms.asset.client.model.Asset;
+import eu.europa.ec.fisheries.uvms.asset.client.model.AssetDTO;
 import eu.europa.ec.fisheries.uvms.docker.validation.asset.AssetTestHelper;
 import eu.europa.ec.fisheries.uvms.docker.validation.common.AbstractRestServiceTest;
 import eu.europa.ec.fisheries.uvms.docker.validation.movement.LatLong;
@@ -132,7 +132,7 @@ public class RulesAlarmRestIT extends AbstractRestServiceTest {
 	public void getAlarmReportVerifyRawMovementDataTest() throws Exception {
         ZonedDateTime timestamp = ZonedDateTime.now(ZoneOffset.UTC);
 
-        Asset asset = AssetTestHelper.createBasicAsset();
+		AssetDTO asset = AssetTestHelper.createBasicAsset();
         NAFHelper.sendPositionToNAFPlugin(new LatLong(56d, 11d, new Date()), asset);
 
         SanityRuleHelper.pollAlarmReportCreated();

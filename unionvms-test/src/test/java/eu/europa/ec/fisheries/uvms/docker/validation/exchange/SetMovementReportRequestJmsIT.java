@@ -27,7 +27,7 @@ import eu.europa.ec.fisheries.schema.exchange.movement.v1.SetReportMovementType;
 import eu.europa.ec.fisheries.schema.exchange.plugin.types.v1.PluginType;
 import eu.europa.ec.fisheries.schema.mobileterminal.types.v1.MobileTerminalType;
 import eu.europa.ec.fisheries.schema.movement.module.v1.CreateMovementRequest;
-import eu.europa.ec.fisheries.uvms.asset.client.model.Asset;
+import eu.europa.ec.fisheries.uvms.asset.client.model.AssetDTO;
 import eu.europa.ec.fisheries.uvms.docker.validation.asset.AssetTestHelper;
 import eu.europa.ec.fisheries.uvms.docker.validation.common.AbstractRestServiceTest;
 import eu.europa.ec.fisheries.uvms.docker.validation.common.MessageHelper;
@@ -51,7 +51,7 @@ public class SetMovementReportRequestJmsIT extends AbstractRestServiceTest {
 	 */
 	@Test(timeout = 5000)
 	public void setMovementReportRequestTest() throws Exception {
-		Asset testAsset = AssetTestHelper.createTestAsset();
+		AssetDTO testAsset = AssetTestHelper.createTestAsset();
 		MobileTerminalType mobileTerminalType = MobileTerminalTestHelper.createMobileTerminalType();
 		MobileTerminalTestHelper.assignMobileTerminal(testAsset, mobileTerminalType);
 
@@ -70,7 +70,7 @@ public class SetMovementReportRequestJmsIT extends AbstractRestServiceTest {
 	 */
 	@Test(timeout = 25000)
 	public void setMovementReportRequestRouteTest() throws Exception {
-		Asset testAsset = AssetTestHelper.createTestAsset();
+		AssetDTO testAsset = AssetTestHelper.createTestAsset();
 		MobileTerminalType mobileTerminalType = MobileTerminalTestHelper.createMobileTerminalType();
 		MobileTerminalTestHelper.assignMobileTerminal(testAsset, mobileTerminalType);
 
@@ -110,7 +110,7 @@ public class SetMovementReportRequestJmsIT extends AbstractRestServiceTest {
 	 *            the create movement request
 	 * @return the sets the movement report request
 	 */
-	private SetMovementReportRequest createSetReportMovementType(Asset testAsset, MobileTerminalType mobileTerminalType,
+	private SetMovementReportRequest createSetReportMovementType(AssetDTO testAsset, MobileTerminalType mobileTerminalType,
 			CreateMovementRequest createMovementRequest) {
 		final SetMovementReportRequest request = new SetMovementReportRequest();
 		request.setUsername("vms_admin_com");

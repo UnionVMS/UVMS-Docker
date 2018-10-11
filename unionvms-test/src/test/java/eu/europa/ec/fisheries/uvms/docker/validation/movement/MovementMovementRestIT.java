@@ -37,7 +37,7 @@ import eu.europa.ec.fisheries.schema.movement.search.v1.RangeCriteria;
 import eu.europa.ec.fisheries.schema.movement.search.v1.RangeKeyType;
 import eu.europa.ec.fisheries.schema.movement.search.v1.SearchKey;
 import eu.europa.ec.fisheries.schema.movement.v1.MovementType;
-import eu.europa.ec.fisheries.uvms.asset.client.model.Asset;
+import eu.europa.ec.fisheries.uvms.asset.client.model.AssetDTO;
 import eu.europa.ec.fisheries.uvms.docker.validation.asset.AssetTestHelper;
 import eu.europa.ec.fisheries.uvms.docker.validation.common.AbstractRestServiceTest;
 import eu.europa.ec.fisheries.uvms.docker.validation.mobileterminal.MobileTerminalTestHelper;
@@ -147,9 +147,9 @@ public class MovementMovementRestIT extends AbstractRestServiceTest {
 	 */
 	@Test
 	public void getLatestMovementsByConnectIdsTest() throws Exception {
-		
-		
-		Asset testAsset = AssetTestHelper.createTestAsset();
+
+
+		AssetDTO testAsset = AssetTestHelper.createTestAsset();
 		MobileTerminalType mobileTerminalType = MobileTerminalTestHelper.createMobileTerminalType();
 		MobileTerminalTestHelper.assignMobileTerminal(testAsset, mobileTerminalType);
 		LatLong latLong = new LatLong(16.9, 32.6333333, new Date(System.currentTimeMillis()));
@@ -188,9 +188,9 @@ public class MovementMovementRestIT extends AbstractRestServiceTest {
 	 */
 	@Test
 	public void getLatestMovementsTest() throws Exception {
-		
-		
-		Asset testAsset = AssetTestHelper.createTestAsset();
+
+
+		AssetDTO testAsset = AssetTestHelper.createTestAsset();
 		MobileTerminalType mobileTerminalType = MobileTerminalTestHelper.createMobileTerminalType();
 		Map<String, Object> assignedMap = MobileTerminalTestHelper.assignMobileTerminal(testAsset, mobileTerminalType);
 		
@@ -218,8 +218,8 @@ public class MovementMovementRestIT extends AbstractRestServiceTest {
 	 */
 	@Test
 	public void getByIdTest() throws Exception {
-		
-		Asset testAsset = AssetTestHelper.createTestAsset();
+
+		AssetDTO testAsset = AssetTestHelper.createTestAsset();
 		MobileTerminalType mobileTerminalType = MobileTerminalTestHelper.createMobileTerminalType();
 		MobileTerminalTestHelper.assignMobileTerminal(testAsset, mobileTerminalType);
 		
