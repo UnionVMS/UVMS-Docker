@@ -402,14 +402,11 @@
 		<module>postgres-release</module>
 		<module>hibernate-spatial-4x-to-5x-wrapper</module>
 		<module>wildfly-base</module>
-		<!--module>wildfly-foundation</module-->
 		<module>wildfly-unionvms</module>
-		<!--module>foundation-test</module-->
 		<module>unionvms-test</module>
-		<!--module>wildfly-release</module-->
+		<module>wildfly-fluxfmc</module>
 		<module>docker-compose</module>
 		<!--module>release-test</module-->
-		<module>unionvms-wildfly-dist</module>
 	</modules>
 
 	<profiles>
