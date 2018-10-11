@@ -11,7 +11,7 @@ import eu.europa.ec.fisheries.schema.movementrules.exchange.v1.PluginType;
 import eu.europa.ec.fisheries.schema.movementrules.module.v1.RulesModuleMethod;
 import eu.europa.ec.fisheries.schema.movementrules.module.v1.SetMovementReportRequest;
 import eu.europa.ec.fisheries.schema.movementrules.movement.v1.*;
-import eu.europa.ec.fisheries.uvms.asset.client.model.Asset;
+import eu.europa.ec.fisheries.uvms.asset.client.model.AssetDTO;
 import eu.europa.ec.fisheries.uvms.docker.validation.asset.AssetTestHelper;
 import eu.europa.ec.fisheries.uvms.docker.validation.mobileterminal.MobileTerminalTestHelper;
 import eu.europa.ec.fisheries.uvms.docker.validation.movement.LatLong;
@@ -50,7 +50,7 @@ public class RulesPerformanceTests {
     @Ignore
     public void createRouteTestTitanic1000PositionsSync() throws Exception{   //Needs a special version of rules that respond on the test queue to work!!!!
 
-        Asset testAsset = AssetTestHelper.createTestAsset();
+        AssetDTO testAsset = AssetTestHelper.createTestAsset();
         MobileTerminalType mobileTerminalType = MobileTerminalTestHelper.createMobileTerminalType();
         MobileTerminalTestHelper.assignMobileTerminal(testAsset, mobileTerminalType);
         List<LatLong> route = movementHelper.createRuttCobhNewYork(1000, 0.06f);                //0.1F = 654 pos    0.01 = 6543     0.07 = 934   0.06 = 1090
@@ -147,7 +147,7 @@ public class RulesPerformanceTests {
 
         System.out.println("Start creating assets");
         for(int i = 0; i < nrOfShips; i++ ){
-            Asset testAsset = AssetTestHelper.createTestAsset();
+            AssetDTO testAsset = AssetTestHelper.createTestAsset();
             MobileTerminalType mobileTerminalType = MobileTerminalTestHelper.createMobileTerminalType();
             MobileTerminalTestHelper.assignMobileTerminal(testAsset, mobileTerminalType);
 

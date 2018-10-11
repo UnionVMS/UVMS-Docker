@@ -4,7 +4,7 @@ import eu.europa.ec.fisheries.schema.mobileterminal.types.v1.MobileTerminalType;
 import eu.europa.ec.fisheries.schema.movement.common.v1.ExceptionType;
 import eu.europa.ec.fisheries.schema.movement.module.v1.*;
 import eu.europa.ec.fisheries.schema.movement.search.v1.*;
-import eu.europa.ec.fisheries.uvms.asset.client.model.Asset;
+import eu.europa.ec.fisheries.uvms.asset.client.model.AssetDTO;
 import eu.europa.ec.fisheries.uvms.docker.validation.asset.AssetTestHelper;
 import eu.europa.ec.fisheries.uvms.docker.validation.common.AbstractRestServiceTest;
 import eu.europa.ec.fisheries.uvms.docker.validation.common.MessageHelper;
@@ -104,7 +104,7 @@ public class MovementPerformanceTests extends AbstractRestServiceTest {
     @Test
     @Ignore
     public void createRouteTestTitanic1000PositionsSync() throws Exception {
-        Asset testAsset = AssetTestHelper.createTestAsset();
+        AssetDTO testAsset = AssetTestHelper.createTestAsset();
         MobileTerminalType mobileTerminalType = MobileTerminalTestHelper.createMobileTerminalType();
         MobileTerminalTestHelper.assignMobileTerminal(testAsset, mobileTerminalType);
         List<LatLong> route = movementHelper.createRuttCobhNewYork(1000, 0.06f);                //0.1F = 654 pos    0.01 = 6543     0.07 = 934   0.06 = 1090
@@ -144,7 +144,7 @@ public class MovementPerformanceTests extends AbstractRestServiceTest {
     @Test
     @Ignore
     public void createRouteTestTitanic1000PositionsReverseOrderSync() throws Exception {
-        Asset testAsset = AssetTestHelper.createTestAsset();
+        AssetDTO testAsset = AssetTestHelper.createTestAsset();
         MobileTerminalType mobileTerminalType = MobileTerminalTestHelper.createMobileTerminalType();
         MobileTerminalTestHelper.assignMobileTerminal(testAsset, mobileTerminalType);
         List<LatLong> route = movementHelper.createRuttCobhNewYork(1000, 0.06f);                //0.1F = 654 pos    0.01 = 6543     0.07 = 934   0.06 = 1090
@@ -344,7 +344,7 @@ public class MovementPerformanceTests extends AbstractRestServiceTest {
 
 
     private void sendRouteToMovementOnXShipsAsync(int nrOfShips, List<LatLong> route) throws Exception {
-        List<Asset> assetList = new ArrayList<>();
+        List<AssetDTO> assetList = new ArrayList<>();
 
 
         for(int i = 0; i < nrOfShips; i++){
@@ -355,7 +355,7 @@ public class MovementPerformanceTests extends AbstractRestServiceTest {
             MobileTerminalTestHelper.assignMobileTerminal(testAsset, mobileTerminalType);
              */
 
-            Asset testAsset = new Asset();
+            AssetDTO testAsset = new AssetDTO();
             testAsset.setId(UUID.randomUUID());
             testAsset.setHistoryId(UUID.randomUUID());
 
@@ -374,7 +374,7 @@ public class MovementPerformanceTests extends AbstractRestServiceTest {
         for (LatLong position : route) {
 
             //(int)(Math.random() * nrOfShips)
-            Asset testAsset = assetList.get((int)(Math.random() * nrOfShips));
+            AssetDTO testAsset = assetList.get((int)(Math.random() * nrOfShips));
 
             final CreateMovementRequest createMovementRequest = movementHelper.createMovementRequest(testAsset, position);
             corrId.add(movementHelper.createMovementDontWaitForResponse(testAsset, createMovementRequest, i));

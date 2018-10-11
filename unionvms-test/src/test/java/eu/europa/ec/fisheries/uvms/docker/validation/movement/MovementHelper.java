@@ -47,7 +47,7 @@ public class MovementHelper extends AbstractHelper {
 
 	private Random rnd = new Random();
 
-	public CreateMovementRequest createMovementRequest(Asset testAsset, LatLong latlong) {
+	public CreateMovementRequest createMovementRequest(AssetDTO testAsset, LatLong latlong) {
 
 		final CreateMovementRequest createMovementRequest1 = new CreateMovementRequest();
 		final MovementBaseType movementBaseType = new MovementBaseType();
@@ -390,7 +390,7 @@ public class MovementHelper extends AbstractHelper {
 		return unMarshallCreateMovementResponse(messageResponse);
 	}
 
-	public String createMovementDontWaitForResponse(Asset testAsset,CreateMovementRequest createMovementRequest, int order) throws Exception {
+	public String createMovementDontWaitForResponse(AssetDTO testAsset,CreateMovementRequest createMovementRequest, int order) throws Exception {
 
 		String messageId =
 				MessageHelper.sendMessageAndReturnMessageId(UVMS_MOVEMENT_REQUEST_QUEUE, marshall(createMovementRequest), testAsset.getId().toString(), order);
