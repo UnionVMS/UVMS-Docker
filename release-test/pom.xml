@@ -11,9 +11,9 @@
 
 	<groupId>eu.europa.ec.fisheries.uvms.docker</groupId>
 	<version>3.26.7.w14-SNAPSHOT</version>
-	<artifactId>uvms-fluxfmc-test</artifactId>
+	<artifactId>uvms-release-test</artifactId>
 	<packaging>jar</packaging>
-	<name>uvms-fluxfmc-test</name>
+	<name>uvms-release-test</name>
 	<dependencies>
 		<dependency>
 			<groupId>eu.europa.ec.fisheries.uvms.docker</groupId>
