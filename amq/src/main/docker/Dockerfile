@@ -2,9 +2,10 @@ FROM openjdk:8-jre-alpine
 
 ENV ACTIVEMQ_VERSION 5.15.6
 ENV ACTIVEMQ apache-activemq-$ACTIVEMQ_VERSION
-ENV ACTIVEMQ_TCP=61616 ACTIVEMQ_AMQP=5672 ACTIVEMQ_STOMP=61613 ACTIVEMQ_MQTT=1883 ACTIVEMQ_WS=61614 ACTIVEMQ_UI=8161
+ENV ACTIVEMQ_TCP=61616 ACTIVEMQ_AMQP=5672 ACTIVEMQ_STOMP=61613 ACTIVEMQ_MQTT=1883 ACTIVEMQ_WS=61614 ACTIVEMQ_UI=8161 HAWTIO=8080
 
 ENV ACTIVEMQ_HOME /opt/activemq
+ENV HAWTIO_HOME /opt/hawtio
 
 RUN set -x && \
     mkdir -p /opt && \
@@ -13,16 +14,23 @@ RUN set -x && \
     ln -s /opt/$ACTIVEMQ $ACTIVEMQ_HOME && \
     addgroup -S activemq && adduser -S -H -G activemq -h $ACTIVEMQ_HOME activemq && \
     chown -R activemq:activemq /opt/$ACTIVEMQ && \
-    chown -h activemq:activemq $ACTIVEMQ_HOME && \
+    chown -h activemq:activemq $ACTIVEMQ_HOME
+
+RUN set -x && \
+    mkdir -p $HAWTIO_HOME
+
+RUN set -x && \
+    curl -s -S https://oss.sonatype.org/content/repositories/public/io/hawt/hawtio-app/2.1.0/hawtio-app-2.1.0.jar > $HAWTIO_HOME/hawtio-app-2.1.0.jar && \
+    chown activemq:activemq $HAWTIO_HOME/hawtio-app-2.1.0.jar && \
     apk del build-dependencies && \
     rm -rf /var/cache/apk/*
 
 USER activemq
 
 WORKDIR $ACTIVEMQ_HOME
-EXPOSE $ACTIVEMQ_TCP $ACTIVEMQ_AMQP $ACTIVEMQ_STOMP $ACTIVEMQ_MQTT $ACTIVEMQ_WS $ACTIVEMQ_UI
+EXPOSE $ACTIVEMQ_TCP $ACTIVEMQ_AMQP $ACTIVEMQ_STOMP $ACTIVEMQ_MQTT $ACTIVEMQ_WS $ACTIVEMQ_UI $HAWTIO
 
-CMD ["/bin/sh", "-c", "bin/activemq console"]
+CMD ["/bin/sh", "-c", "bin/activemq start && java -jar $HAWTIO_HOME/hawtio-app-2.1.0.jar"]
 
 COPY activemq.xml users.properties env /opt/$ACTIVEMQ/conf/
 
