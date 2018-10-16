@@ -112,9 +112,17 @@ public class ModuleAvailableSystemIT extends AbstractRest {
 		assertEquals(HttpStatus.SC_OK,
 				Request.Get(getBaseUrl() + "movement/monitoring").execute().returnResponse().getStatusLine().getStatusCode());		
 		assertEquals(HttpStatus.SC_FORBIDDEN,
-				Request.Get(getBaseUrl() + "movement/rest").execute().returnResponse().getStatusLine().getStatusCode());
-		assertEquals(HttpStatus.SC_OK, Request.Get(getBaseUrl() + "movement/monitoring").execute().returnResponse()
-				.getStatusLine().getStatusCode());
+				Request.Get(getBaseUrl() + "movement/rest/areas").execute().returnResponse().getStatusLine().getStatusCode());
+		assertEquals(HttpStatus.SC_FORBIDDEN,
+                Request.Get(getBaseUrl() + "movement/rest/config").execute().returnResponse().getStatusLine().getStatusCode());
+		assertEquals(HttpStatus.SC_FORBIDDEN,
+                Request.Get(getBaseUrl() + "movement/rest/movement").execute().returnResponse().getStatusLine().getStatusCode());
+		assertEquals(HttpStatus.SC_FORBIDDEN,
+                Request.Get(getBaseUrl() + "movement/rest/search").execute().returnResponse().getStatusLine().getStatusCode());
+		assertEquals(HttpStatus.SC_FORBIDDEN,
+                Request.Get(getBaseUrl() + "movement/rest/tempmovement").execute().returnResponse().getStatusLine().getStatusCode());
+		assertEquals(HttpStatus.SC_OK, 
+		        Request.Get(getBaseUrl() + "movement/monitoring").execute().returnResponse().getStatusLine().getStatusCode());
 	}
 
 	/**
@@ -151,22 +159,8 @@ public class ModuleAvailableSystemIT extends AbstractRest {
 		        Request.Get(getBaseUrl() + "asset/rest/asset").execute().returnResponse().getStatusLine().getStatusCode());
 		assertEquals(HttpStatus.SC_FORBIDDEN,
 		        Request.Get(getBaseUrl() + "asset/rest/group").execute().returnResponse().getStatusLine().getStatusCode());
-	}
-
-	/**
-	 * Check mobileterminal access test.
-	 * @throws Exception
-	 *             the exception
-	 */
-	@Test
-	public void checkMobileterminalAccessTest() throws Exception {
 		assertEquals(HttpStatus.SC_FORBIDDEN,
-				Request.Get(getBaseUrl() + "asset/rest/asset").execute().returnResponse().getStatusLine().getStatusCode());
-		assertEquals(HttpStatus.SC_FORBIDDEN, Request.Get(getBaseUrl() + "asset/rest/asset").execute().returnResponse()
-				.getStatusLine().getStatusCode());
-		assertEquals(HttpStatus.SC_OK, Request.Get(getBaseUrl() + "asset/monitoring").execute().returnResponse()
-				.getStatusLine().getStatusCode());
-
+		        Request.Get(getBaseUrl() + "asset/rest/mobileterminal").execute().returnResponse().getStatusLine().getStatusCode());
 	}
 
 	/**

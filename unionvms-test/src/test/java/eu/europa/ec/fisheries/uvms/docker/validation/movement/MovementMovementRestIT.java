@@ -19,6 +19,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 import java.util.Map.Entry;
 
 import org.apache.http.HttpResponse;
@@ -85,7 +86,7 @@ public class MovementMovementRestIT extends AbstractRestServiceTest {
 		movementQuery.setPagination(listPagination);
 		ListCriteria listCriteria = new ListCriteria();
 		listCriteria.setKey(SearchKey.CONNECT_ID);
-		listCriteria.setValue("Some connectId");
+		listCriteria.setValue(UUID.randomUUID().toString());
 		movementQuery.getMovementSearchCriteria().add(listCriteria);
 
 		return movementQuery;
