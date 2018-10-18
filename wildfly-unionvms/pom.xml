@@ -130,7 +130,7 @@
 		</dependency>
 		<dependency>
 			<groupId>eu.europa.ec.fisheries.uvms.plugins</groupId>
-			<artifactId>flux-module</artifactId>
+			<artifactId>flux-movement-plugin-module</artifactId>
 			<type>ear</type>
 			<version>${unionvms.project.plugins.flux}</version>
 		</dependency>
@@ -304,7 +304,7 @@
 										<zipfileset dir="${project.basedir}/target/dockerfile/jboss-deployment/plugins" includes="*.xml" prefix="META-INF" />
 									</jar>
 
-									<jar destfile="${project.basedir}/target/dockerfile/deployments/flux-module-${unionvms.project.plugins.flux}.ear" update="true">
+									<jar destfile="${project.basedir}/target/dockerfile/deployments/flux-movement-plugin-module-${unionvms.project.plugins.flux}.ear" update="true">
 										<zipfileset dir="${project.basedir}/target/dockerfile/jboss-deployment/plugins" includes="*.xml" prefix="META-INF" />
 									</jar>
 

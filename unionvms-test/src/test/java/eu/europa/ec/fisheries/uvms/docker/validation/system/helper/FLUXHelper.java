@@ -11,30 +11,39 @@ copy of the GNU General Public License along with the IFDM Suite. If not, see <h
  */
 package eu.europa.ec.fisheries.uvms.docker.validation.system.helper;
 
-import eu.europa.ec.fisheries.uvms.asset.client.model.AssetDTO;
-import eu.europa.ec.fisheries.uvms.docker.validation.common.AbstractHelper;
-import eu.europa.ec.fisheries.uvms.docker.validation.movement.LatLong;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import un.unece.uncefact.data.standard.fluxvesselpositionmessage._4.FLUXVesselPositionMessage;
-import un.unece.uncefact.data.standard.reusableaggregatebusinessinformationentity._18.*;
-import un.unece.uncefact.data.standard.unqualifieddatatype._18.*;
-import xeu.bridge_connector.v1.RequestType;
-import xeu.bridge_connector.v1.ResponseType;
-import xeu.bridge_connector.wsdl.v1.BridgeConnectorPortType;
-import xeu.bridge_connector.wsdl.v1.MovementService;
-
+import java.math.BigDecimal;
+import java.util.GregorianCalendar;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
 import javax.xml.datatype.DatatypeConfigurationException;
 import javax.xml.datatype.DatatypeFactory;
+import javax.xml.namespace.QName;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.ws.BindingProvider;
-import java.math.BigDecimal;
-import java.util.GregorianCalendar;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import eu.europa.ec.fisheries.uvms.asset.client.model.AssetDTO;
+import eu.europa.ec.fisheries.uvms.docker.validation.common.AbstractHelper;
+import eu.europa.ec.fisheries.uvms.docker.validation.movement.LatLong;
+import un.unece.uncefact.data.standard.fluxvesselpositionmessage._4.FLUXVesselPositionMessage;
+import un.unece.uncefact.data.standard.reusableaggregatebusinessinformationentity._18.FLUXPartyType;
+import un.unece.uncefact.data.standard.reusableaggregatebusinessinformationentity._18.FLUXReportDocumentType;
+import un.unece.uncefact.data.standard.reusableaggregatebusinessinformationentity._18.VesselCountryType;
+import un.unece.uncefact.data.standard.reusableaggregatebusinessinformationentity._18.VesselGeographicalCoordinateType;
+import un.unece.uncefact.data.standard.reusableaggregatebusinessinformationentity._18.VesselPositionEventType;
+import un.unece.uncefact.data.standard.reusableaggregatebusinessinformationentity._18.VesselTransportMeansType;
+import un.unece.uncefact.data.standard.unqualifieddatatype._18.CodeType;
+import un.unece.uncefact.data.standard.unqualifieddatatype._18.DateTimeType;
+import un.unece.uncefact.data.standard.unqualifieddatatype._18.IDType;
+import un.unece.uncefact.data.standard.unqualifieddatatype._18.MeasureType;
+import un.unece.uncefact.data.standard.unqualifieddatatype._18.TextType;
+import xeu.bridge_connector.v1.RequestType;
+import xeu.bridge_connector.v1.ResponseType;
+import xeu.bridge_connector.wsdl.v1.BridgeConnectorPortType;
+import xeu.bridge_connector.wsdl.v1.MovementService;
 
 public class FLUXHelper extends AbstractHelper {
 
@@ -65,6 +74,8 @@ public class FLUXHelper extends AbstractHelper {
         requestType.setDF("df");
         requestType.setON("on");
         requestType.setTO(1234);
+        requestType.getOtherAttributes().put(new QName("USER"), "FLUX");
+        requestType.getOtherAttributes().put(new QName("FR"), "FLUX Test");
         requestType.setTODT(DatatypeFactory.newInstance().newXMLGregorianCalendar(calendar));
         
         return requestType;
@@ -169,7 +180,7 @@ public class FLUXHelper extends AbstractHelper {
 
         BindingProvider bp = (BindingProvider) bridgeConnectorPortType;
         bp.getRequestContext().put(BindingProvider.ENDPOINT_ADDRESS_PROPERTY,
-                getBaseUrl() + "flux-service/MovementService/FluxMessageReceiverBean");
+                getBaseUrl() + "/movement-service/MovementPositionService/FluxMovementPositionReceiverBean");
         return bridgeConnectorPortType;
     }
     
