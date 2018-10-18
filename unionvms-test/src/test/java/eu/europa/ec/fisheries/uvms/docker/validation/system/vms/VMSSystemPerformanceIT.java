@@ -40,7 +40,7 @@ import static org.hamcrest.CoreMatchers.notNullValue;
 
 public class VMSSystemPerformanceIT extends AbstractRestServiceTest {
 
-    private static final String SELECTOR = "ServiceName='eu.europa.ec.fisheries.uvms.plugins.flux'";
+    private static final String SELECTOR = "ServiceName='eu.europa.ec.fisheries.uvms.plugins.flux.movement'";
     private static final long TIMEOUT = 10000;
 
     private static final int NUMBER_OF_POSITIONS = 10;

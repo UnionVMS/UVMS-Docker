@@ -86,7 +86,8 @@ public class TempMovementRestIT extends AbstractRestServiceTest {
     @Test
     public void getTempMovementNullGuidShouldFail() throws Exception {
         HttpResponse response = TempMovementRestHelper.getTempMovementResponse(null);
-        checkErrorResponse(response);
+        String responseCode = returnErrorResponse(response);
+        assertEquals("409", responseCode);
     }
 
     @Test
@@ -108,7 +109,8 @@ public class TempMovementRestIT extends AbstractRestServiceTest {
     @Test
     public void removeTempMovementNullGuidShouldFail() throws Exception {
         HttpResponse response = TempMovementRestHelper.removeTempMovementResponse(null);
-        checkErrorResponse(response);
+        String responseCode = returnErrorResponse(response);
+        assertEquals("409", responseCode);
     }
 
     @Test

@@ -41,7 +41,7 @@ import eu.europa.ec.fisheries.uvms.exchange.model.mapper.JAXBMarshaller;
 
 public class VMSSystemIT extends AbstractRestServiceTest {
 
-    private static final String SELECTOR = "ServiceName='eu.europa.ec.fisheries.uvms.plugins.flux'";
+    private static final String SELECTOR = "ServiceName='eu.europa.ec.fisheries.uvms.plugins.flux.movement'";
     private static final long TIMEOUT = 10000;
 
     @After
