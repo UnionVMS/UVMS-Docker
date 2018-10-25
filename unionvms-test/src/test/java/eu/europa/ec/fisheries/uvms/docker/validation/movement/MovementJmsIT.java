@@ -37,8 +37,7 @@ public class MovementJmsIT extends AbstractRestServiceTest {
 
 		final CreateMovementBatchRequest createMovementBatchRequest = movementHelper
 				.createMovementBatchRequest(testAsset, mobileTerminalType, latLongList);
-		CreateMovementBatchResponse createMovementResponse = movementHelper.createMovementBatch(testAsset,
-				mobileTerminalType, createMovementBatchRequest);
+		CreateMovementBatchResponse createMovementResponse = movementHelper.createMovementBatch(createMovementBatchRequest);
 
 
 		Assert.assertNotNull(createMovementResponse);
@@ -64,11 +63,9 @@ public class MovementJmsIT extends AbstractRestServiceTest {
 		MobileTerminalTestHelper.assignMobileTerminal(testAsset, mobileTerminalType);
 
 		LatLong latLong = movementHelper.createRutt(1).get(0);
-		final CreateMovementRequest createMovementRequest = movementHelper.createMovementRequest(testAsset,
-				mobileTerminalType, latLong);
+		final CreateMovementRequest createMovementRequest = movementHelper.createMovementRequest(testAsset, latLong);
 
-		CreateMovementResponse createMovementResponse = movementHelper.createMovement(testAsset, mobileTerminalType,
-				createMovementRequest);
+		CreateMovementResponse createMovementResponse = movementHelper.createMovement(createMovementRequest);
 
 		assertNotNull(createMovementResponse);
 		assertEquals(null, createMovementResponse.getMovement().getCalculatedCourse());
@@ -90,11 +87,9 @@ public class MovementJmsIT extends AbstractRestServiceTest {
 
 		for (LatLong position : route) {
 
-			final CreateMovementRequest createMovementRequest = movementHelper.createMovementRequest(testAsset,
-					mobileTerminalType, position);
+			final CreateMovementRequest createMovementRequest = movementHelper.createMovementRequest(testAsset, position);
 
-			CreateMovementResponse createMovementResponse = movementHelper.createMovement(testAsset, mobileTerminalType,
-					createMovementRequest);
+			CreateMovementResponse createMovementResponse = movementHelper.createMovement(createMovementRequest);
 			assertNotNull(createMovementResponse);
 
 		}
@@ -109,10 +104,8 @@ public class MovementJmsIT extends AbstractRestServiceTest {
 		List<LatLong> route = movementHelper.createRuttVarbergGrena(-1);
 
 		for (LatLong position : route) {
-			final CreateMovementRequest createMovementRequest = movementHelper.createMovementRequest(testAsset,
-					mobileTerminalType, position);
-			CreateMovementResponse createMovementResponse = movementHelper.createMovement(testAsset, mobileTerminalType,
-					createMovementRequest);
+			final CreateMovementRequest createMovementRequest = movementHelper.createMovementRequest(testAsset, position);
+			CreateMovementResponse createMovementResponse = movementHelper.createMovement(createMovementRequest);
 			assertNotNull(createMovementResponse);
 		}
 	}
@@ -125,10 +118,8 @@ public class MovementJmsIT extends AbstractRestServiceTest {
 		List<LatLong> route = movementHelper.createRuttCobhNewYork(100, 0.4f);
 
 		for (LatLong position : route) {
-			final CreateMovementRequest createMovementRequest = movementHelper.createMovementRequest(testAsset,
-					mobileTerminalType, position);
-			CreateMovementResponse createMovementResponse = movementHelper.createMovement(testAsset, mobileTerminalType,
-					createMovementRequest);
+			final CreateMovementRequest createMovementRequest = movementHelper.createMovementRequest(testAsset, position);
+			CreateMovementResponse createMovementResponse = movementHelper.createMovement(createMovementRequest);
 			assertNotNull(createMovementResponse);
 		}
 	}
@@ -153,10 +144,8 @@ public class MovementJmsIT extends AbstractRestServiceTest {
 
 		List<CreateMovementResponse> fromAPI = new ArrayList<>();
 		for (LatLong position : route) {
-			final CreateMovementRequest createMovementRequest = movementHelper.createMovementRequest(testAsset,
-					mobileTerminalType, position);
-			CreateMovementResponse createMovementResponse = movementHelper.createMovement(testAsset, mobileTerminalType,
-					createMovementRequest);
+			final CreateMovementRequest createMovementRequest = movementHelper.createMovementRequest(testAsset, position);
+			CreateMovementResponse createMovementResponse = movementHelper.createMovement(createMovementRequest);
 			assertNotNull(createMovementResponse);
 			assertNotNull(createMovementResponse.getMovement());
 			assertNotNull(createMovementResponse.getMovement().getPosition());
@@ -179,10 +168,8 @@ public class MovementJmsIT extends AbstractRestServiceTest {
 
 		List<CreateMovementResponse> fromAPI = new ArrayList<>();
 		for (LatLong position : route) {
-			final CreateMovementRequest createMovementRequest = movementHelper.createMovementRequest(testAsset,
-					mobileTerminalType, position);
-			CreateMovementResponse createMovementResponse = movementHelper.createMovement(testAsset, mobileTerminalType,
-					createMovementRequest);
+			final CreateMovementRequest createMovementRequest = movementHelper.createMovementRequest(testAsset, position);
+			CreateMovementResponse createMovementResponse = movementHelper.createMovement(createMovementRequest);
 			assertNotNull(createMovementResponse);
 			assertNotNull(createMovementResponse.getMovement());
 			assertNotNull(createMovementResponse.getMovement().getPosition());
