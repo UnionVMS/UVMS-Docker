@@ -57,6 +57,11 @@
 			<type>rar</type>
 			<version>${wildfly.activemq.rar.version}</version>
 		</dependency>
+		<dependency>
+			<groupId>org.eclipse</groupId>
+			<artifactId>yasson</artifactId>
+			<version>1.0.2</version>
+		</dependency>
 	</dependencies>
 	<build>
 		<pluginManagement>
