@@ -13,6 +13,7 @@
 	<packaging>pom</packaging>
 	<name>uvms-docker-wildfly-base</name>
 	<properties>
+		<focus-pom.java.version>1.9</focus-pom.java.version>
 		<wildfly.hibernate.module.spatial.version>5.3.6.Final</wildfly.hibernate.module.spatial.version>
 		<wildfly.hibernate.module.geolatte.version>1.2.0</wildfly.hibernate.module.geolatte.version>
 		<wildfly.hibernate.module.jts.version>1.13</wildfly.hibernate.module.jts.version>
@@ -56,6 +57,11 @@
 			<artifactId>activemq-rar</artifactId>
 			<type>rar</type>
 			<version>${wildfly.activemq.rar.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse</groupId>
+			<artifactId>yasson</artifactId>
+			<version>1.0.2</version>
 		</dependency>
 	</dependencies>
 	<build>
