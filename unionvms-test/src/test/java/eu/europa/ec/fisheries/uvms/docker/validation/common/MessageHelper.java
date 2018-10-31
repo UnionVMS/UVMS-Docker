@@ -39,13 +39,33 @@ public final class MessageHelper {
 
         return listenOnTestResponseQueue(createTextMessage.getJMSMessageID(), TIMEOUT);
     }
+
+    public static String sendMessageAndReturnMessageId(String queueName, final String msg, String asset, int order) throws Exception {
+        Connection connection = connectionFactory.createConnection();
+        connection.setClientID(UUID.randomUUID().toString());
+
+        Session session = connection.createSession(false, Session.AUTO_ACKNOWLEDGE);
+        Queue queue = session.createQueue(queueName);
+
+        MessageProducer messageProducer = session.createProducer(queue);
+        TextMessage createTextMessage = session.createTextMessage(msg);
+        Queue responseQueue = session.createQueue(TEST_RESPONSE_QUEUE);
+        createTextMessage.setJMSReplyTo(responseQueue);
+        createTextMessage.setStringProperty("JMSXGroupID", asset);
+        //createTextMessage.setIntProperty("JMSXGroupSeq", order);
+        messageProducer.send(createTextMessage);
+
+        connection.close();
+
+        return createTextMessage.getJMSMessageID();
+    }
     
-    private static Message listenOnTestResponseQueue(String correlationId, long timeoutInMillis) throws JMSException {
+    public static Message listenOnTestResponseQueue(String correlationId, long timeoutInMillis) throws JMSException {
         Connection connection = connectionFactory.createConnection();
         try {
             connection.start();
             Session session = connection.createSession(false, Session.AUTO_ACKNOWLEDGE);
-            Queue responseQueue = session.createQueue(TEST_RESPONSE_QUEUE);
+            Queue responseQueue = session.createQueue(TEST_RESPONSE_QUEUE + "?consumer.prefetchSize=5000");
             return session.createConsumer(responseQueue, "JMSCorrelationID='" + correlationId + "'").receive(timeoutInMillis);
         } finally {
             connection.close();
@@ -129,6 +149,20 @@ public final class MessageHelper {
             if (connection != null) {
                 connection.close();
             }
+        }
+    }
+
+    public static Message listenForResponseOnQueue(String correlationId, String queue) throws Exception {
+        Connection connection = connectionFactory.createConnection();
+        try {
+            connection.start();
+            Session session = connection.createSession(false, Session.AUTO_ACKNOWLEDGE);
+            Queue responseQueue = session.createQueue(queue);
+
+            //return session.createConsumer(responseQueue).receive(TIMEOUT);
+            return session.createConsumer(responseQueue, "JMSCorrelationID='" + correlationId + "'").receive(TIMEOUT);
+        } finally {
+            connection.close();
         }
     }
 }

@@ -154,8 +154,8 @@ public class MovementMovementRestIT extends AbstractRestServiceTest {
 		MobileTerminalType mobileTerminalType = MobileTerminalTestHelper.createMobileTerminalType();
 		MobileTerminalTestHelper.assignMobileTerminal(testAsset, mobileTerminalType);
 		LatLong latLong = new LatLong(16.9, 32.6333333, new Date(System.currentTimeMillis()));
-		CreateMovementRequest createMovementRequest = movementHelper.createMovementRequest(testAsset, mobileTerminalType, latLong);		
-		CreateMovementResponse createMovementResponse = movementHelper.createMovement(testAsset, mobileTerminalType, createMovementRequest);
+		CreateMovementRequest createMovementRequest = movementHelper.createMovementRequest(testAsset, latLong);
+		CreateMovementResponse createMovementResponse = movementHelper.createMovement(createMovementRequest);
 
 		List<String> connectIds = new ArrayList<>();
 		
@@ -196,8 +196,8 @@ public class MovementMovementRestIT extends AbstractRestServiceTest {
 		Map<String, Object> assignedMap = MobileTerminalTestHelper.assignMobileTerminal(testAsset, mobileTerminalType);
 		
 		LatLong latLong = new LatLong(16.9, 32.6333333, new Date(System.currentTimeMillis()));
-		CreateMovementRequest createMovementRequest = movementHelper.createMovementRequest(testAsset, mobileTerminalType, latLong);		
-		CreateMovementResponse createMovementResponse = movementHelper.createMovement(testAsset, mobileTerminalType, createMovementRequest);
+		CreateMovementRequest createMovementRequest = movementHelper.createMovementRequest(testAsset, latLong);
+		CreateMovementResponse createMovementResponse = movementHelper.createMovement(createMovementRequest);
 
 		// give it some time to execute before retrieving. TODO: Remove the functionality and this horrible test
 		Thread.sleep(10000);
@@ -226,8 +226,8 @@ public class MovementMovementRestIT extends AbstractRestServiceTest {
 		
 		LatLong latLong = movementHelper.createRutt(1).get(0);
 
-		CreateMovementRequest createMovementRequest = movementHelper.createMovementRequest(testAsset, mobileTerminalType, latLong);		
-		CreateMovementResponse createMovementResponse = movementHelper.createMovement(testAsset, mobileTerminalType, createMovementRequest);
+		CreateMovementRequest createMovementRequest = movementHelper.createMovementRequest(testAsset, latLong);
+		CreateMovementResponse createMovementResponse = movementHelper.createMovement(createMovementRequest);
 		
 		assertNotNull(createMovementResponse);
 		assertNotNull(createMovementResponse.getMovement());
