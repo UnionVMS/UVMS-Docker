@@ -31,7 +31,10 @@ import javax.jms.JMSException;
 import javax.jms.TextMessage;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
+import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.List;
+import java.util.TimeZone;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.notNullValue;
@@ -40,6 +43,8 @@ public class InmarsatSanityIT extends AbstractRestServiceTest {
 
     private static final String SELECTOR = "ServiceName='eu.europa.ec.fisheries.uvms.plugins.flux.movement'";
     private static final long TIMEOUT = 10000;
+
+    private MessageHelper messageHelper = new MessageHelper();
 
 
 
@@ -113,8 +118,7 @@ public class InmarsatSanityIT extends AbstractRestServiceTest {
                         "TWOSTAGE",
                         null);
 
-        // TODO DO THE CALL TO EXCHANGE  (JMS)
-        sendMovementReportToExchange(text);
+        messageHelper.sendMessage("UVMSExchangeEvent", text);
         // WAITFOR AND CHECK RESULTS
         TextMessage message = (TextMessage) MessageHelper.listenOnEventBus(SELECTOR, TIMEOUT);
         assertThat(message, is(notNullValue()));
@@ -132,13 +136,6 @@ public class InmarsatSanityIT extends AbstractRestServiceTest {
     }
 
 
-    public void sendMovementReportToExchange(String text) {
-        try {
-            String messageId = producer.sendModuleMessage(text, ModuleQueue.EXCHANGE);
-        } catch (ExchangeModelMarshallException e) {
-        } catch (JMSException e) {
-        }
-    }
 
 
     private SetReportMovementType createReportType(String theDnid, String theMemberNumber) {
@@ -158,10 +155,32 @@ public class InmarsatSanityIT extends AbstractRestServiceTest {
         mobileTerminalId.getMobileTerminalIdList().add(memberNumber);
 
 
-        MovementBaseType movementBaseType = new MovementBaseType();
-        movementBaseType.setMobileTerminalId(mobileTerminalId);
+        MovementBaseType movement = new MovementBaseType();
+        movement.setMobileTerminalId(mobileTerminalId);
+        movement.setComChannelType(MovementComChannelType.MOBILE_TERMINAL);
+        movement.setMobileTerminalId(mobileTerminalId);
+        movement.setMovementType(MovementTypeType.POS);
 
-        reportType.setMovement(movementBaseType);
+        MovementPoint mp = new MovementPoint();
+        mp.setAltitude(0.0);
+        mp.setLatitude(1d);
+        mp.setLongitude(1d);
+        movement.setPosition(mp);
+
+        movement.setPositionTime(new Date());
+        movement.setReportedCourse(42d);
+        movement.setReportedSpeed(43d);
+        movement.setSource(MovementSourceType.INMARSAT_C);
+        movement.setStatus("11");
+
+        reportType.setMovement(movement);
+        GregorianCalendar gcal =
+                (GregorianCalendar) GregorianCalendar.getInstance(TimeZone.getTimeZone("UTC"));
+        reportType.setTimestamp(gcal.getTime());
+        reportType.setPluginName("eu.europa.ec.fisheries.uvms.plugins.inmarsat");
+        reportType.setPluginType(PluginType.SATELLITE_RECEIVER);
+
+        reportType.setMovement(movement);
         return reportType;
 
 
