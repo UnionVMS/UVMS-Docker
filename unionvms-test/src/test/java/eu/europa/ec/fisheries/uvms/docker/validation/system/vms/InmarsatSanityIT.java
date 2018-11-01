@@ -24,6 +24,7 @@ import eu.europa.ec.fisheries.uvms.docker.validation.system.helper.CustomRuleHel
 import eu.europa.ec.fisheries.uvms.exchange.model.exception.ExchangeModelMarshallException;
 import eu.europa.ec.fisheries.uvms.exchange.model.mapper.ExchangeModuleRequestMapper;
 import eu.europa.ec.fisheries.uvms.exchange.model.mapper.JAXBMarshaller;
+import org.junit.After;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -56,6 +57,12 @@ public class InmarsatSanityIT extends AbstractRestServiceTest {
         // configure as necessary
         OBJECT_MAPPER.registerModule(module);
     }
+
+    @After
+    public void removeCustomRules() throws Exception {
+        CustomRuleHelper.removeCustomRulesByDefaultUser();
+    }
+
 
 
     @Test
