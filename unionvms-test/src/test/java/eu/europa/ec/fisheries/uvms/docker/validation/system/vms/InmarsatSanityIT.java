@@ -14,21 +14,18 @@ import eu.europa.ec.fisheries.schema.mobileterminal.types.v1.MobileTerminalType;
 import eu.europa.ec.fisheries.schema.movementrules.customrule.v1.*;
 import eu.europa.ec.fisheries.uvms.asset.client.model.AssetDTO;
 import eu.europa.ec.fisheries.uvms.commons.date.DateUtils;
-import eu.europa.ec.fisheries.uvms.commons.message.api.MessageProducer;
 import eu.europa.ec.fisheries.uvms.docker.validation.asset.AssetTestHelper;
 import eu.europa.ec.fisheries.uvms.docker.validation.common.AbstractRestServiceTest;
 import eu.europa.ec.fisheries.uvms.docker.validation.common.MessageHelper;
 import eu.europa.ec.fisheries.uvms.docker.validation.mobileterminal.MobileTerminalTestHelper;
 import eu.europa.ec.fisheries.uvms.docker.validation.system.helper.CustomRuleBuilder;
 import eu.europa.ec.fisheries.uvms.docker.validation.system.helper.CustomRuleHelper;
-import eu.europa.ec.fisheries.uvms.exchange.model.exception.ExchangeModelMarshallException;
 import eu.europa.ec.fisheries.uvms.exchange.model.mapper.ExchangeModuleRequestMapper;
 import eu.europa.ec.fisheries.uvms.exchange.model.mapper.JAXBMarshaller;
 import org.junit.After;
 import org.junit.Assert;
+import org.junit.Ignore;
 import org.junit.Test;
-
-import javax.jms.JMSException;
 import javax.jms.TextMessage;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
@@ -44,11 +41,7 @@ public class InmarsatSanityIT extends AbstractRestServiceTest {
 
     private static final String SELECTOR = "ServiceName='eu.europa.ec.fisheries.uvms.plugins.flux.movement'";
     private static final long TIMEOUT = 10000;
-
     private MessageHelper messageHelper = new MessageHelper();
-
-
-
 
     protected static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
 
@@ -101,7 +94,6 @@ public class InmarsatSanityIT extends AbstractRestServiceTest {
 
             String type = attr.getType();
             String val = attr.getValue();
-            System.out.println(type + "    " + val);
             switch (type) {
                 case "DNID":
                     dnid = val;
@@ -148,19 +140,22 @@ public class InmarsatSanityIT extends AbstractRestServiceTest {
     private SetReportMovementType createReportType(String theDnid, String theMemberNumber) {
 
         SetReportMovementType reportType = new SetReportMovementType();
-
-        IdList dnid = new IdList();
-        dnid.setType(IdType.DNID);
-        dnid.setValue(theDnid);
-
-        IdList memberNumber = new IdList();
-        memberNumber.setType(IdType.MEMBER_NUMBER);
-        memberNumber.setValue(theMemberNumber);
-
         MobileTerminalId mobileTerminalId = new MobileTerminalId();
-        mobileTerminalId.getMobileTerminalIdList().add(dnid);
-        mobileTerminalId.getMobileTerminalIdList().add(memberNumber);
 
+
+        if(theDnid != null) {
+            IdList dnid = new IdList();
+            dnid.setType(IdType.DNID);
+            dnid.setValue(theDnid);
+            mobileTerminalId.getMobileTerminalIdList().add(dnid);
+        }
+
+        if(theMemberNumber != null) {
+            IdList memberNumber = new IdList();
+            memberNumber.setType(IdType.MEMBER_NUMBER);
+            memberNumber.setValue(theMemberNumber);
+            mobileTerminalId.getMobileTerminalIdList().add(memberNumber);
+        }
 
         MovementBaseType movement = new MovementBaseType();
         movement.setMobileTerminalId(mobileTerminalId);
