@@ -244,7 +244,7 @@ public class AssetTestHelper extends AbstractHelper {
         asset.setActive(true);
 
         asset.setName("Ship" + generateARandomStringWithMaxLength(10));
-        asset.setCfr(UUID.randomUUID().toString().substring(0, 12));
+        asset.setCfr("CFR" + generateARandomStringWithMaxLength(9));
         asset.setFlagStateCode("SWE");
         asset.setIrcsIndicator(true);
         asset.setIrcs("F" + generateARandomStringWithMaxLength(7));
