@@ -18,18 +18,18 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.TimeZone;
 import java.util.UUID;
-import org.apache.http.HttpResponse;
 import org.junit.Test;
 import eu.europa.ec.fisheries.schema.movement.asset.v1.VesselType;
 import eu.europa.ec.fisheries.schema.movement.v1.MovementPoint;
 import eu.europa.ec.fisheries.schema.movement.v1.TempMovementStateEnum;
 import eu.europa.ec.fisheries.schema.movement.v1.TempMovementType;
-import eu.europa.ec.fisheries.uvms.docker.validation.common.AbstractRestServiceTest;
+import eu.europa.ec.fisheries.uvms.commons.rest.dto.ResponseDto;
+import eu.europa.ec.fisheries.uvms.docker.validation.common.AbstractRest;
 
 /**
  * The Class TempMovementRestIT.
  */
-public class TempMovementRestIT extends AbstractRestServiceTest {
+public class TempMovementRestIT extends AbstractRest {
 
     /**
      * Creates the temp test.
@@ -53,7 +53,7 @@ public class TempMovementRestIT extends AbstractRestServiceTest {
 
     @Test
     public void createTempMovementNullInputShouldFail() throws Exception {
-        HttpResponse response = TempMovementRestHelper.createTempMovementResponse(null);
+        ResponseDto<?> response = TempMovementRestHelper.createTempMovementResponse(new TempMovementType());
         checkErrorResponse(response);
     }
 
@@ -62,7 +62,7 @@ public class TempMovementRestIT extends AbstractRestServiceTest {
         TempMovementType tempMovement = getTempMovement();
         tempMovement.getPosition().setLatitude(null);
         tempMovement.getPosition().setLongitude(null);
-        HttpResponse response = TempMovementRestHelper.createTempMovementResponse(tempMovement);
+        ResponseDto<?> response = TempMovementRestHelper.createTempMovementResponse(tempMovement);
         checkErrorResponse(response);
     }
 
@@ -70,7 +70,7 @@ public class TempMovementRestIT extends AbstractRestServiceTest {
     public void createTempMovementNoValidLatitudeShouldFail() throws Exception {
         TempMovementType tempMovement = getTempMovement();
         tempMovement.getPosition().setLatitude(100d);
-        HttpResponse response = TempMovementRestHelper.createTempMovementResponse(tempMovement);
+        ResponseDto<?> response = TempMovementRestHelper.createTempMovementResponse(tempMovement);
         checkErrorResponse(response);
     }
 
@@ -85,14 +85,13 @@ public class TempMovementRestIT extends AbstractRestServiceTest {
 
     @Test
     public void getTempMovementNullGuidShouldFail() throws Exception {
-        HttpResponse response = TempMovementRestHelper.getTempMovementResponse(null);
-        String responseCode = returnErrorResponse(response);
-        assertEquals("409", responseCode);
+        ResponseDto<?> response = TempMovementRestHelper.getTempMovementResponse(null);
+        assertEquals("409", String.valueOf(response.getCode()));
     }
 
     @Test
     public void getTempMovementNonExistingGuidShouldFail() throws Exception {
-        HttpResponse response = TempMovementRestHelper.getTempMovementResponse(UUID.randomUUID().toString());
+        ResponseDto<?> response = TempMovementRestHelper.getTempMovementResponse(UUID.randomUUID().toString());
         checkErrorResponse(response);
     }
 
@@ -108,9 +107,8 @@ public class TempMovementRestIT extends AbstractRestServiceTest {
 
     @Test
     public void removeTempMovementNullGuidShouldFail() throws Exception {
-        HttpResponse response = TempMovementRestHelper.removeTempMovementResponse(null);
-        String responseCode = returnErrorResponse(response);
-        assertEquals("409", responseCode);
+        ResponseDto<?> response = TempMovementRestHelper.removeTempMovementResponse(null);
+        assertEquals("409", String.valueOf(response.getCode()));
     }
 
     @Test

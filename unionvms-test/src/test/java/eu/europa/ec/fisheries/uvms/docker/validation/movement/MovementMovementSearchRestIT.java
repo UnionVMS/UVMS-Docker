@@ -18,23 +18,21 @@ import java.net.URLEncoder;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
-
 import org.apache.http.HttpResponse;
 import org.apache.http.client.fluent.Request;
 import org.junit.Test;
-
 import eu.europa.ec.fisheries.schema.movement.search.v1.GroupListCriteria;
 import eu.europa.ec.fisheries.schema.movement.search.v1.MovementSearchGroup;
 import eu.europa.ec.fisheries.schema.movement.search.v1.SearchKeyType;
 import eu.europa.ec.fisheries.uvms.asset.client.model.AssetDTO;
 import eu.europa.ec.fisheries.uvms.docker.validation.asset.AssetTestHelper;
-import eu.europa.ec.fisheries.uvms.docker.validation.common.AbstractRestServiceTest;
+import eu.europa.ec.fisheries.uvms.docker.validation.common.AbstractRest;
 
 /**
  * The Class MovementPerformanceIT.
  */
 
-public class MovementMovementSearchRestIT extends AbstractRestServiceTest {
+public class MovementMovementSearchRestIT extends AbstractRest {
 
 	/**
 	 * Creates the movement search group test.

@@ -6,22 +6,27 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
-
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.DeserializationFeature;
+import javax.ws.rs.client.Client;
+import javax.ws.rs.client.ClientBuilder;
+import javax.ws.rs.client.Entity;
+import javax.ws.rs.client.WebTarget;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.ext.ContextResolver;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
 import org.apache.http.client.ClientProtocolException;
-import org.apache.http.client.fluent.Request;
 import org.apache.http.util.EntityUtils;
 import org.junit.Assert;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.type.MapType;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import eu.europa.ec.fisheries.uvms.commons.rest.dto.ResponseDto;
 
 public abstract class AbstractRest extends Assert {
 
@@ -36,11 +41,21 @@ public abstract class AbstractRest extends Assert {
 
 	/** The valid jwt token. */
 	private static String validJwtToken;
-
+	
 	protected static final String getBaseUrl() {
 		return BASE_URL;
 	}	
 	
+    protected static WebTarget getWebTarget() {
+        Client client = ClientBuilder.newClient();
+        client.register(new ContextResolver<ObjectMapper>() {
+            @Override
+            public ObjectMapper getContext(Class<?> type) {
+                return OBJECT_MAPPER;
+            }
+        });
+        return client.target(getBaseUrl());
+    }
 
 	/**
 	 * Aquire jwt token for test.
@@ -79,15 +94,13 @@ public abstract class AbstractRest extends Assert {
 	}
 
 	public static final String aquireJwtToken(final String username, final String password) throws Exception {
-		final HttpResponse response = Request.Post(getBaseUrl() + "usm-administration/rest/authenticate")
-				.setHeader("Content-Type", "application/json")
-				.bodyByteArray(("{\"userName\":\"" + username + "\",\"password\":\"" + password + "\"}").getBytes())
-				.execute().returnResponse();
+		AuthenticationResponse response = getWebTarget()
+		    .path("usm-administration/rest/authenticate")
+		    .request(MediaType.APPLICATION_JSON)
+		    .post(Entity.json(new AuthenticationRequest(username, password)), AuthenticationResponse.class);
 
-		assertEquals(HttpStatus.SC_OK, response.getStatusLine().getStatusCode());
-		final Map<String, Object> data = getJsonMap(response);
-		assertEquals(true, data.get("authenticated"));
-		return (String) data.get("jwtoken");
+		assertEquals(true, response.isAuthenticated());
+		return response.getJwtoken();
 	}
 
 
@@ -172,6 +185,10 @@ public abstract class AbstractRest extends Assert {
         final Map<String, Object> data = getJsonMap(response);
         assertFalse(data.isEmpty());
         assertEquals("500", "" + data.get("code"));
+    }
+	
+	protected static void checkErrorResponse(ResponseDto<?> response) {
+        assertEquals("500", String.valueOf(response.getCode()));
     }
 	
 	protected static String returnErrorResponse(final HttpResponse response)

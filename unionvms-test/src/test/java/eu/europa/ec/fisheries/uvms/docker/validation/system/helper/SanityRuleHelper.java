@@ -11,39 +11,38 @@ copy of the GNU General Public License along with the IFDM Suite. If not, see <h
  */
 package eu.europa.ec.fisheries.uvms.docker.validation.system.helper;
 
-import eu.europa.ec.fisheries.schema.movementrules.customrule.v1.SanityRuleType;
-import eu.europa.ec.fisheries.uvms.docker.validation.common.AbstractHelper;
-import org.apache.http.HttpResponse;
-import org.apache.http.client.ClientProtocolException;
-import org.apache.http.client.fluent.Request;
-
-import java.io.IOException;
 import java.util.List;
-
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.CoreMatchers.notNullValue;
+import javax.ws.rs.core.GenericType;
+import javax.ws.rs.core.HttpHeaders;
+import javax.ws.rs.core.MediaType;
+import eu.europa.ec.fisheries.schema.movementrules.customrule.v1.SanityRuleType;
+import eu.europa.ec.fisheries.uvms.commons.rest.dto.ResponseDto;
+import eu.europa.ec.fisheries.uvms.docker.validation.common.AbstractHelper;
 
 public class SanityRuleHelper extends AbstractHelper {
 
-    public static List<SanityRuleType> getAllSanityRules() throws ClientProtocolException, IOException {
-        final HttpResponse response = Request.Get(getBaseUrl() + "movement-rules/rest/sanityrules/listAll")
-                .setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken())
-                .execute().returnResponse();
-        return checkSuccessResponseReturnList(response, SanityRuleType.class);
+    public static List<SanityRuleType> getAllSanityRules() {
+        ResponseDto<List<SanityRuleType>> responseDto = getWebTarget()
+                .path("movement-rules/rest/sanityrules/listAll")
+                .request(MediaType.APPLICATION_JSON)
+                .header(HttpHeaders.AUTHORIZATION, getValidJwtToken())
+                .get(new GenericType<ResponseDto<List<SanityRuleType>>>() {});
+        return responseDto.getData();
     }
     
-    public static int countOpenAlarms() throws ClientProtocolException, IOException {
-        final HttpResponse response = Request.Get(getBaseUrl() + "movement-rules/rest/alarms/countopen")
-                .setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken())
-                .execute().returnResponse();
-        return checkSuccessResponseReturnInt(response);
+    public static int countOpenAlarms() {
+        ResponseDto<Integer> responseDto = getWebTarget()
+                .path("movement-rules/rest/alarms/countopen")
+                .request(MediaType.APPLICATION_JSON)
+                .header(HttpHeaders.AUTHORIZATION, getValidJwtToken())
+                .get(new GenericType<ResponseDto<Integer>>() {});
+        return responseDto.getData();
     }
     
-    public static void pollAlarmReportCreated() throws ClientProtocolException, IOException {
-        final HttpResponse response = Request.Get(getBaseUrl() + "movement-rules/activity/alarm")
-                .setHeader("Content-Type", "application/json")
-                .execute().returnResponse();
-        
-        assertThat(response, is(notNullValue()));
+    public static void pollAlarmReportCreated() {
+        getWebTarget()
+            .path("movement-rules/activity/alarm")
+            .request(MediaType.APPLICATION_JSON)
+            .get();
     }
 }

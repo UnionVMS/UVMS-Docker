@@ -27,12 +27,13 @@ import eu.europa.ec.fisheries.schema.mobileterminal.polltypes.v1.PollableQuery;
 import eu.europa.ec.fisheries.schema.mobileterminal.types.v1.ListPagination;
 import eu.europa.ec.fisheries.uvms.asset.client.model.AssetDTO;
 import eu.europa.ec.fisheries.uvms.docker.validation.asset.AssetTestHelper;
+import eu.europa.ec.fisheries.uvms.docker.validation.common.AbstractRest;
 
 /**
  * The Class PollRestIT.
  */
 
-public class PollRestIT extends AbstractMobileTerminalTest {
+public class PollRestIT extends AbstractRest {
 
 	/**
 	 * Gets the areas test.

@@ -22,12 +22,13 @@ import org.junit.Test;
 
 import eu.europa.ec.fisheries.uvms.asset.client.model.AssetDTO;
 import eu.europa.ec.fisheries.uvms.docker.validation.asset.AssetTestHelper;
+import eu.europa.ec.fisheries.uvms.docker.validation.common.AbstractRest;
 
 /**
  * The Class MobileTerminalRestIT.
  */
 
-public class MobileTerminalRestIT extends AbstractMobileTerminalTest {
+public class MobileTerminalRestIT extends AbstractRest {
 
 	/**
 	 * Creates the mobile terminal test.

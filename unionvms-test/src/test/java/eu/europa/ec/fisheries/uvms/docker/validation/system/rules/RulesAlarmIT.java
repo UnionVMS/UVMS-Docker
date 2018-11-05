@@ -42,7 +42,7 @@ import eu.europa.ec.fisheries.schema.movementrules.customrule.v1.SubCriteriaType
 import eu.europa.ec.fisheries.uvms.asset.client.model.AssetDTO;
 import eu.europa.ec.fisheries.uvms.commons.message.api.MessageConstants;
 import eu.europa.ec.fisheries.uvms.docker.validation.asset.AssetTestHelper;
-import eu.europa.ec.fisheries.uvms.docker.validation.common.AbstractRestServiceTest;
+import eu.europa.ec.fisheries.uvms.docker.validation.common.AbstractRest;
 import eu.europa.ec.fisheries.uvms.docker.validation.common.MessageHelper;
 import eu.europa.ec.fisheries.uvms.docker.validation.movement.LatLong;
 import eu.europa.ec.fisheries.uvms.docker.validation.movement.MovementHelper;
@@ -53,7 +53,7 @@ import eu.europa.ec.fisheries.uvms.exchange.model.constant.ExchangeModelConstant
 import eu.europa.ec.fisheries.uvms.exchange.model.mapper.ExchangeModuleRequestMapper;
 import eu.europa.ec.fisheries.uvms.exchange.model.mapper.JAXBMarshaller;
 
-public class RulesAlarmIT extends AbstractRestServiceTest {
+public class RulesAlarmIT extends AbstractRest {
 
     private static final long TIMEOUT = 10000;
     private static final String SELECTOR_FLUX = "ServiceName='eu.europa.ec.fisheries.uvms.plugins.flux.movement'";

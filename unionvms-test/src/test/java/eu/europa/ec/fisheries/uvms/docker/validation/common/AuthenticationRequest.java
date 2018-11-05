@@ -9,22 +9,31 @@ the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the impl
 FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more details. You should have received a
 copy of the GNU General Public License along with the IFDM Suite. If not, see <http://www.gnu.org/licenses/>.
  */
-package eu.europa.ec.fisheries.uvms.docker.validation.asset;
+package eu.europa.ec.fisheries.uvms.docker.validation.common;
 
-import org.apache.http.HttpResponse;
-import org.apache.http.HttpStatus;
-import org.apache.http.client.fluent.Request;
-import org.junit.Test;
-import eu.europa.ec.fisheries.uvms.docker.validation.common.AbstractRest;
+public class AuthenticationRequest {
 
-public class AssetCustomCodesRestIT extends AbstractRest {
-    
-    @Test
-    public void listConstantsTest() throws Exception {
-        HttpResponse response = Request.Get(getBaseUrl() + "asset/rest/customcodes/listconstants")
-                .setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken()).execute()
-                .returnResponse();
-        assertEquals(HttpStatus.SC_OK, response.getStatusLine().getStatusCode());
+    private String userName;
+    private String password;
+
+    public AuthenticationRequest() {
     }
-
+    
+    public AuthenticationRequest(String userName, String password) {
+        this.userName = userName;
+        this.password = password;
+    }
+    
+    public String getUserName() {
+        return userName;
+    }
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
+    public String getPassword() {
+        return password;
+    }
+    public void setPassword(String password) {
+        this.password = password;
+    }
 }
