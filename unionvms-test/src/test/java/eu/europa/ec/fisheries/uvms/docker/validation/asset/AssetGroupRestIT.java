@@ -23,13 +23,13 @@ import eu.europa.ec.fisheries.uvms.asset.client.model.AssetGroup;
 import eu.europa.ec.fisheries.uvms.asset.client.model.AssetGroupField;
 import eu.europa.ec.fisheries.uvms.asset.model.constants.AuditOperationEnum;
 import eu.europa.ec.fisheries.uvms.commons.date.DateUtils;
-import eu.europa.ec.fisheries.uvms.docker.validation.common.AbstractRestServiceTest;
+import eu.europa.ec.fisheries.uvms.docker.validation.common.AbstractRest;
 
 /**
  * The Class AssetGroupRestIT.
  */
 
-public class AssetGroupRestIT extends AbstractRestServiceTest {
+public class AssetGroupRestIT extends AbstractRest {
 
 	/**
 	 * Gets the asset group list by user test.

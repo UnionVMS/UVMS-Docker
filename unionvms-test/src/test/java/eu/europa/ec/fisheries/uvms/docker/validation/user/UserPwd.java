@@ -13,12 +13,12 @@ copy of the GNU General Public License along with the IFDM Suite. If not, see <h
 */
 package eu.europa.ec.fisheries.uvms.docker.validation.user;
 
-import eu.europa.ec.fisheries.uvms.docker.validation.common.AbstractRestServiceTest;
+import eu.europa.ec.fisheries.uvms.docker.validation.common.AbstractRest;
 
 /**
  * For Json so it will be easier to get a descent json via ObjectMapper
  */
-public class UserPwd extends AbstractRestServiceTest {
+public class UserPwd extends AbstractRest {
 
 	public String userName;
 	public String password;

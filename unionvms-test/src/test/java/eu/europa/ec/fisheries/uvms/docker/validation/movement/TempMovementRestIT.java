@@ -24,12 +24,12 @@ import eu.europa.ec.fisheries.schema.movement.asset.v1.VesselType;
 import eu.europa.ec.fisheries.schema.movement.v1.MovementPoint;
 import eu.europa.ec.fisheries.schema.movement.v1.TempMovementStateEnum;
 import eu.europa.ec.fisheries.schema.movement.v1.TempMovementType;
-import eu.europa.ec.fisheries.uvms.docker.validation.common.AbstractRestServiceTest;
+import eu.europa.ec.fisheries.uvms.docker.validation.common.AbstractRest;
 
 /**
  * The Class TempMovementRestIT.
  */
-public class TempMovementRestIT extends AbstractRestServiceTest {
+public class TempMovementRestIT extends AbstractRest {
 
     /**
      * Creates the temp test.

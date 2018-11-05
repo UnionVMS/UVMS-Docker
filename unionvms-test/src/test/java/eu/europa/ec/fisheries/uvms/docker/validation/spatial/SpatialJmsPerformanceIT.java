@@ -2,14 +2,12 @@ package eu.europa.ec.fisheries.uvms.docker.validation.spatial;
 
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
-
 import org.databene.contiperf.PerfTest;
 import org.databene.contiperf.Required;
 import org.databene.contiperf.junit.ContiPerfRule;
 import org.junit.Rule;
 import org.junit.Test;
-
-import eu.europa.ec.fisheries.uvms.docker.validation.common.AbstractRestServiceTest;
+import eu.europa.ec.fisheries.uvms.docker.validation.common.AbstractRest;
 import eu.europa.ec.fisheries.uvms.docker.validation.movement.LatLong;
 import eu.europa.ec.fisheries.uvms.docker.validation.movement.MovementHelper;
 import eu.europa.ec.fisheries.uvms.spatial.model.schemas.AreaType;
@@ -25,7 +23,7 @@ import eu.europa.ec.fisheries.uvms.spatial.model.schemas.UnitType;
 /**
  * The Class SpatialJmsPerformanceIT.
  */
-public class SpatialJmsPerformanceIT extends AbstractRestServiceTest {
+public class SpatialJmsPerformanceIT extends AbstractRest {
 
 	/** The i. */
 	@Rule

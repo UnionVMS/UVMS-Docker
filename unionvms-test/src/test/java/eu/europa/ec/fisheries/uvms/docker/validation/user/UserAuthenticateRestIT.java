@@ -15,21 +15,18 @@ package eu.europa.ec.fisheries.uvms.docker.validation.user;
 
 import java.util.Map;
 import java.util.UUID;
-
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
 import org.apache.http.client.fluent.Request;
 import org.junit.Ignore;
 import org.junit.Test;
-
 import com.fasterxml.jackson.databind.ObjectMapper;
-
-import eu.europa.ec.fisheries.uvms.docker.validation.common.AbstractRestServiceTest;
+import eu.europa.ec.fisheries.uvms.docker.validation.common.AbstractRest;
 
 /**
  * The Class UserAuthenticateRestIT.
  */
-public class UserAuthenticateRestIT extends AbstractRestServiceTest {
+public class UserAuthenticateRestIT extends AbstractRest {
 
 	private ObjectMapper MAPPER = new ObjectMapper();
 

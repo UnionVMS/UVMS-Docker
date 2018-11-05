@@ -13,54 +13,61 @@ package eu.europa.ec.fisheries.uvms.docker.validation.system.helper;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.nullValue;
-import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
-import org.apache.http.HttpResponse;
-import org.apache.http.client.ClientProtocolException;
-import org.apache.http.client.fluent.Request;
-import com.fasterxml.jackson.core.JsonProcessingException;
+import javax.ws.rs.client.Entity;
+import javax.ws.rs.core.GenericType;
+import javax.ws.rs.core.HttpHeaders;
+import javax.ws.rs.core.MediaType;
 import eu.europa.ec.fisheries.schema.movementrules.customrule.v1.CustomRuleType;
+import eu.europa.ec.fisheries.uvms.commons.rest.dto.ResponseDto;
 import eu.europa.ec.fisheries.uvms.docker.validation.common.AbstractHelper;
 
 public class CustomRuleHelper extends AbstractHelper {
 
-    public static CustomRuleType createCustomRule(CustomRuleType customRule) throws ClientProtocolException, JsonProcessingException, IOException {
-        final HttpResponse response = Request.Post(getBaseUrl() + "movement-rules/rest/customrules")
-                .setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken())
-                .bodyByteArray(writeValueAsString(customRule).getBytes()).execute().returnResponse();
-
-        return checkSuccessResponseReturnObject(response, CustomRuleType.class);
+    public static CustomRuleType createCustomRule(CustomRuleType customRule) {
+         ResponseDto<CustomRuleType> responseDto = getWebTarget()
+                .path("movement-rules/rest/customrules")
+                .request(MediaType.APPLICATION_JSON)
+                .header(HttpHeaders.AUTHORIZATION, getValidJwtToken())
+                .post(Entity.json(customRule), new GenericType<ResponseDto<CustomRuleType>>() {});
+         return responseDto.getData();
     }
     
-    public static void removeCustomRule(String guid) throws Exception {
-        HttpResponse response = Request.Delete(getBaseUrl() + "movement-rules/rest/customrules/" + guid)
-                .setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken())
-                .execute().returnResponse();
-        
-        checkSuccessResponseReturnDataMap(response);
+    public static void removeCustomRule(String guid) {
+        getWebTarget()
+            .path("movement-rules/rest/customrules")
+            .path(guid)
+            .request(MediaType.APPLICATION_JSON)
+            .header(HttpHeaders.AUTHORIZATION, getValidJwtToken())
+            .delete();
     }
 
-    public static void removeCustomRulesByDefaultUser() throws Exception {
-        HttpResponse response = Request.Get(getBaseUrl() + "movement-rules/rest/customrules/listAll/" + CustomRuleBuilder.DEFAULT_USER)
-                .setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken()).execute()
-                .returnResponse();
+    public static void removeCustomRulesByDefaultUser() {
+        ResponseDto<List<CustomRuleType>> responseDto = getWebTarget()
+                .path("movement-rules/rest/customrules/listAll")
+                .path(CustomRuleBuilder.DEFAULT_USER)
+                .request(MediaType.APPLICATION_JSON)
+                .header(HttpHeaders.AUTHORIZATION, getValidJwtToken())
+                .get(new GenericType<ResponseDto<List<CustomRuleType>>>() {});
+        List<CustomRuleType> customRules = responseDto.getData();
         
-        List<CustomRuleType> customRules = checkSuccessResponseReturnList(response, CustomRuleType.class);
         for (CustomRuleType customRuleType : customRules) {
             removeCustomRule(customRuleType.getGuid());
         }
     }
     
-    public static void assertRuleTriggered(CustomRuleType rule, LocalDateTime dateFrom) throws Exception {
-        HttpResponse response = Request.Get(getBaseUrl() + "movement-rules/rest/customrules/" + rule.getGuid())
-                .setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken()).execute()
-                .returnResponse();
-
-        CustomRuleType fetchedCustomRule = checkSuccessResponseReturnObject(response, CustomRuleType.class);
-
+    public static void assertRuleTriggered(CustomRuleType rule, LocalDateTime dateFrom) {
+        ResponseDto<CustomRuleType> responseDto = getWebTarget()
+                .path("movement-rules/rest/customrules")
+                .path(rule.getGuid())
+                .request(MediaType.APPLICATION_JSON)
+                .header(HttpHeaders.AUTHORIZATION, getValidJwtToken())
+                .get(new GenericType<ResponseDto<CustomRuleType>>() {});
+        CustomRuleType fetchedCustomRule = responseDto.getData();
+        
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss Z");
         LocalDateTime lastTriggered = LocalDateTime.parse(fetchedCustomRule.getLastTriggered(), formatter);
         lastTriggered.atOffset(ZoneOffset.UTC);
@@ -74,13 +81,14 @@ public class CustomRuleHelper extends AbstractHelper {
                 a.getHour() == b.getHour() && a.getMinute() == b.getMinute() && a.getSecond() == b.getSecond();
     }
     
-    public static void assertRuleNotTriggered(CustomRuleType rule) throws Exception {
-        HttpResponse response = Request.Get(getBaseUrl() + "movement-rules/rest/customrules/" + rule.getGuid())
-                .setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken()).execute()
-                .returnResponse();
-
-        CustomRuleType fetchedCustomRule = checkSuccessResponseReturnObject(response, CustomRuleType.class);
-        
+    public static void assertRuleNotTriggered(CustomRuleType rule) {
+        ResponseDto<CustomRuleType> responseDto = getWebTarget()
+                .path("movement-rules/rest/customrules")
+                .path(rule.getGuid())
+                .request(MediaType.APPLICATION_JSON)
+                .header(HttpHeaders.AUTHORIZATION, getValidJwtToken())
+                .get(new GenericType<ResponseDto<CustomRuleType>>() {});
+        CustomRuleType fetchedCustomRule = responseDto.getData();
         assertThat(fetchedCustomRule.getLastTriggered(), is(nullValue()));
     }
 

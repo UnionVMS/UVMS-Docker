@@ -15,9 +15,9 @@ import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
 import org.apache.http.client.fluent.Request;
 import org.junit.Test;
-import eu.europa.ec.fisheries.uvms.docker.validation.common.AbstractRestServiceTest;
+import eu.europa.ec.fisheries.uvms.docker.validation.common.AbstractRest;
 
-public class AssetCustomCodesRestIT extends AbstractRestServiceTest {
+public class AssetCustomCodesRestIT extends AbstractRest {
     
     @Test
     public void listConstantsTest() throws Exception {

@@ -1,7 +1,5 @@
 package eu.europa.ec.fisheries.uvms.docker.validation.asset;
 
-import java.io.IOException;
-import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
@@ -9,14 +7,10 @@ import java.util.Date;
 import java.util.List;
 import java.util.Random;
 import java.util.UUID;
-import org.apache.http.HttpResponse;
-import org.apache.http.HttpStatus;
-import org.apache.http.client.ClientProtocolException;
-import org.apache.http.client.fluent.Request;
-import org.apache.http.util.EntityUtils;
-import com.fasterxml.jackson.core.JsonParseException;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonMappingException;
+import javax.ws.rs.client.Entity;
+import javax.ws.rs.core.GenericType;
+import javax.ws.rs.core.HttpHeaders;
+import javax.ws.rs.core.MediaType;
 import eu.europa.ec.fisheries.schema.audit.search.v1.AuditLogListQuery;
 import eu.europa.ec.fisheries.schema.audit.search.v1.ListCriteria;
 import eu.europa.ec.fisheries.schema.audit.search.v1.SearchKey;
@@ -40,145 +34,177 @@ public class AssetTestHelper extends AbstractHelper {
 	//  AssetResource
 	// ************************************************
 
-	public static AssetDTO createTestAsset() throws IOException, ClientProtocolException, JsonProcessingException,
-			JsonParseException, JsonMappingException {
+	public static AssetDTO createTestAsset() {
 		AssetDTO asset = createBasicAsset();
-		final HttpResponse response = Request.Post(getBaseUrl() + "asset/rest/asset")
-				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken())
-				.bodyByteArray(writeValueAsString(asset).getBytes()).execute().returnResponse();
-
-		return checkSuccessResponseAndReturnType(response, AssetDTO.class);
+		return createAsset(asset);
 	}
 
-	public static AssetDTO getAssetByGuid(UUID assetGuid) throws ClientProtocolException, IOException {
-		final HttpResponse response = Request.Get(getBaseUrl() + "asset/rest/asset/" + assetGuid)
-				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken()).execute()
-				.returnResponse();
-		return checkSuccessResponseAndReturnType(response, AssetDTO.class);
+	public static AssetDTO getAssetByGuid(UUID assetGuid) {
+		return getWebTarget()
+		        .path("asset/rest/asset")
+                .path(assetGuid.toString())
+                .request(MediaType.APPLICATION_JSON)
+                .header(HttpHeaders.AUTHORIZATION, getValidJwtToken())
+                .get(AssetDTO.class);
 	}
 
-	public static AssetDTO createAsset(AssetDTO asset) throws ClientProtocolException, JsonProcessingException, IOException {
-		final HttpResponse response = Request.Post(getBaseUrl() + "asset/rest/asset")
-				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken())
-				.bodyByteArray(writeValueAsString(asset).getBytes()).execute().returnResponse();
-		return checkSuccessResponseAndReturnType(response, AssetDTO.class);
+	public static AssetDTO createAsset(AssetDTO asset) {
+	    return getWebTarget()
+                .path("asset/rest/asset")
+                .request(MediaType.APPLICATION_JSON)
+                .header(HttpHeaders.AUTHORIZATION, getValidJwtToken())
+                .post(Entity.json(asset), AssetDTO.class);
 	}
 
-	public static AssetDTO updateAsset(AssetDTO asset) throws ClientProtocolException, JsonProcessingException, IOException {
-		final HttpResponse response = Request.Put(getBaseUrl() + "asset/rest/asset?comment=UpdatedAsset")
-				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken())
-				.bodyByteArray(writeValueAsString(asset).getBytes()).execute().returnResponse();
-		return checkSuccessResponseAndReturnType(response, AssetDTO.class);
+	public static AssetDTO updateAsset(AssetDTO asset) {
+		return getWebTarget()
+                .path("asset/rest/asset")
+                .queryParam("comment", "UpdatedAsset")
+                .request(MediaType.APPLICATION_JSON)
+                .header(HttpHeaders.AUTHORIZATION, getValidJwtToken())
+                .put(Entity.json(asset), AssetDTO.class);
 	}
 
-	public static AssetDTO archiveAsset(AssetDTO asset) throws ClientProtocolException, JsonProcessingException, IOException {
-		final HttpResponse response = Request.Put(getBaseUrl() + "asset/rest/asset/archive?comment=Archive")
-				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken())
-				.bodyByteArray(writeValueAsString(asset).getBytes()).execute().returnResponse();
-		return checkSuccessResponseAndReturnType(response, AssetDTO.class);
+	public static AssetDTO archiveAsset(AssetDTO asset) {
+		return getWebTarget()
+                .path("asset/rest/asset/archive")
+                .queryParam("comment", "Archive")
+                .request(MediaType.APPLICATION_JSON)
+                .header(HttpHeaders.AUTHORIZATION, getValidJwtToken())
+                .put(Entity.json(asset), AssetDTO.class);
 	}
 	
-	public static AssetListResponse assetListQuery(AssetQuery query) throws ClientProtocolException, JsonProcessingException, IOException {
-		final HttpResponse response = Request.Post(getBaseUrl() + "asset/rest/asset/list")
-				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken())
-				.bodyByteArray(writeValueAsString(query).getBytes()).execute().returnResponse();
-		return checkSuccessResponseAndReturnType(response, AssetListResponse.class);
+	public static AssetListResponse assetListQuery(AssetQuery query) {
+		return getWebTarget()
+                .path("asset/rest/asset/list")
+                .request(MediaType.APPLICATION_JSON)
+                .header(HttpHeaders.AUTHORIZATION, getValidJwtToken())
+                .post(Entity.json(query), AssetListResponse.class);
 	}
 
-	public static Integer assetListQueryCount(AssetQuery query) throws ClientProtocolException, JsonProcessingException, IOException {
-		final HttpResponse response = Request.Post(getBaseUrl() + "asset/rest/asset/listcount")
-				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken())
-				.bodyByteArray(writeValueAsString(query).getBytes()).execute().returnResponse();
-		return checkSuccessResponseAndReturnType(response, Integer.class);
+	public static Integer assetListQueryCount(AssetQuery query) {
+		return getWebTarget()
+                .path("asset/rest/asset/listcount")
+                .request(MediaType.APPLICATION_JSON)
+                .header(HttpHeaders.AUTHORIZATION, getValidJwtToken())
+                .post(Entity.json(query), Integer.class);
 	}
 
-	public static List<AssetDTO> getAssetHistoryFromAssetGuid(UUID assetId) throws ClientProtocolException, IOException {
-		final HttpResponse response = Request.Get(getBaseUrl() + "asset/rest/asset/history/asset/" + assetId)
-				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken()).execute()
-				.returnResponse();
-		return checkSuccessResponseAndReturnList(response, AssetDTO.class);
+	public static List<AssetDTO> getAssetHistoryFromAssetGuid(UUID assetId) {
+		return getWebTarget()
+                .path("asset/rest/asset/history/asset/")
+                .path(assetId.toString())
+                .request(MediaType.APPLICATION_JSON)
+                .header(HttpHeaders.AUTHORIZATION, getValidJwtToken())
+                .get(new GenericType<List<AssetDTO>>() {});
 	}
 	
-	public static AssetDTO getAssetHistoryFromHistoryGuid(UUID historyId) throws ClientProtocolException, IOException {
-		final HttpResponse response = Request.Get(getBaseUrl() + "asset/rest/asset/history/" + historyId)
-				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken()).execute()
-				.returnResponse();
-		return checkSuccessResponseAndReturnType(response, AssetDTO.class);
+	public static AssetDTO getAssetHistoryFromHistoryGuid(UUID historyId) {
+		return getWebTarget()
+                .path("asset/rest/asset/history")
+                .path(historyId.toString())
+                .request(MediaType.APPLICATION_JSON)
+                .header(HttpHeaders.AUTHORIZATION, getValidJwtToken())
+                .get(AssetDTO.class);
 	}
 
-	public static AssetDTO getAssetFromAssetIdAndDate(String type, String value, OffsetDateTime date) throws ClientProtocolException, IOException {
+	public static AssetDTO getAssetFromAssetIdAndDate(String type, String value, OffsetDateTime date) {
 		String dateStr = date.format(DateTimeFormatter.ISO_OFFSET_DATE_TIME);
-		final HttpResponse response = Request.Get(getBaseUrl() + "asset/rest/asset/history/" + type + "/" + value + "/" + dateStr)
-				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken()).execute()
-				.returnResponse();
-		return checkSuccessResponseAndReturnType(response, AssetDTO.class);
+		return getWebTarget()
+                .path("asset/rest/asset/history")
+                .path(type)
+                .path(value)
+                .path(dateStr)
+                .request(MediaType.APPLICATION_JSON)
+                .header(HttpHeaders.AUTHORIZATION, getValidJwtToken())
+                .get(AssetDTO.class);
 	}
 	
-	public static ContactInfo createContactInfoForAsset(AssetDTO asset, ContactInfo contact) throws ClientProtocolException, JsonProcessingException, IOException {
-	    HttpResponse response = Request.Post(getBaseUrl() + "asset/rest/asset/" + asset.getId() + "/contacts")
-                .setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken())
-                .bodyByteArray(writeValueAsString(contact).getBytes()).execute().returnResponse();
-        return checkSuccessResponseAndReturnType(response, ContactInfo.class);
+	public static ContactInfo createContactInfoForAsset(AssetDTO asset, ContactInfo contact) {
+        return getWebTarget()
+                .path("asset/rest/asset/")
+                .path(asset.getId().toString())
+                .path("contacts")
+                .request(MediaType.APPLICATION_JSON)
+                .header(HttpHeaders.AUTHORIZATION, getValidJwtToken())
+                .post(Entity.json(contact), ContactInfo.class);
 	}
 	
-	public static Note createNoteForAsset(AssetDTO asset, Note contact) throws ClientProtocolException, JsonProcessingException, IOException {
-        HttpResponse response = Request.Post(getBaseUrl() + "asset/rest/asset/" + asset.getId() + "/notes")
-                .setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken())
-                .bodyByteArray(writeValueAsString(contact).getBytes()).execute().returnResponse();
-        return checkSuccessResponseAndReturnType(response, Note.class);
+	public static Note createNoteForAsset(AssetDTO asset, Note note) {
+        return getWebTarget()
+                .path("asset/rest/asset/")
+                .path(asset.getId().toString())
+                .path("notes")
+                .request(MediaType.APPLICATION_JSON)
+                .header(HttpHeaders.AUTHORIZATION, getValidJwtToken())
+                .post(Entity.json(note), Note.class);
     }
 
 		// ************************************************
 	//  AssetGroupResource
 	// ************************************************
 		
-	public static AssetGroup createAssetGroup(AssetGroup assetGroup) throws ClientProtocolException, JsonProcessingException, IOException {
-		final HttpResponse response = Request.Post(getBaseUrl() + "asset/rest/group")
-				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken())
-				.bodyByteArray(writeValueAsString(assetGroup).getBytes()).execute().returnResponse();
-		return checkSuccessResponseAndReturnType(response, AssetGroup.class);
+	public static AssetGroup createAssetGroup(AssetGroup assetGroup) {
+		return getWebTarget()
+                .path("asset/rest/group")
+                .request(MediaType.APPLICATION_JSON)
+                .header(HttpHeaders.AUTHORIZATION, getValidJwtToken())
+                .post(Entity.json(assetGroup), AssetGroup.class);
 	}
 	
-	public static AssetGroup updateAssetGroup(AssetGroup assetGroup) throws ClientProtocolException, JsonProcessingException, IOException {
-		final HttpResponse response = Request.Put(getBaseUrl() + "asset/rest/group")
-				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken())
-				.bodyByteArray(writeValueAsString(assetGroup).getBytes()).execute().returnResponse();
-		return checkSuccessResponseAndReturnType(response, AssetGroup.class);
+	public static AssetGroup updateAssetGroup(AssetGroup assetGroup) {
+	    return getWebTarget()
+	            .path("asset/rest/group")
+	            .request(MediaType.APPLICATION_JSON)
+	            .header(HttpHeaders.AUTHORIZATION, getValidJwtToken())
+	            .put(Entity.json(assetGroup), AssetGroup.class);
 	}
 	
-	public static void deleteAssetGroup(AssetGroup assetGroup) throws ClientProtocolException, IOException {
-		final HttpResponse response = Request.Delete(getBaseUrl() + "asset/rest/group/" + assetGroup.getId())
-				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken()).execute()
-				.returnResponse();
-		assertEquals(HttpStatus.SC_OK, response.getStatusLine().getStatusCode());
+	public static void deleteAssetGroup(AssetGroup assetGroup) {
+	    getWebTarget()
+	        .path("asset/rest/group")
+	        .path(assetGroup.getId().toString())
+	        .request(MediaType.APPLICATION_JSON)
+	        .header(HttpHeaders.AUTHORIZATION, getValidJwtToken())
+	        .delete();
 	}
 	
-	public static AssetGroup getAssetGroupById(UUID assetGroupId) throws ClientProtocolException, IOException {
-		final HttpResponse response = Request.Get(getBaseUrl() + "asset/rest/group/" + assetGroupId)
-				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken()).execute()
-				.returnResponse();
-		return checkSuccessResponseAndReturnType(response, AssetGroup.class);
+	public static AssetGroup getAssetGroupById(UUID assetGroupId) {
+		return getWebTarget()
+		        .path("asset/rest/group")
+		        .path(assetGroupId.toString())
+	            .request(MediaType.APPLICATION_JSON)
+	            .header(HttpHeaders.AUTHORIZATION, getValidJwtToken())
+	            .get(AssetGroup.class);
 	}
 	
-	public static List<AssetGroup> getAssetGroupListByUser(String user) throws ClientProtocolException, IOException {
-		final HttpResponse response = Request.Get(getBaseUrl() + "asset/rest/group/list?user=" + user)
-				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken()).execute()
-				.returnResponse();
-		return checkSuccessResponseAndReturnList(response, AssetGroup.class);
+	public static List<AssetGroup> getAssetGroupListByUser(String user) {
+        return getWebTarget()
+                .path("asset/rest/group/list")
+                .queryParam("user", user)
+                .request(MediaType.APPLICATION_JSON)
+                .header(HttpHeaders.AUTHORIZATION, getValidJwtToken())
+                .get(new GenericType<List<AssetGroup>>() {});
 	}
 	
-	public static AssetGroupField createAssetGroupField(UUID assetGroupId, AssetGroupField assetGroupField) throws ClientProtocolException, JsonProcessingException, IOException {
-	    final HttpResponse response = Request.Post(getBaseUrl() + "asset/rest/group/" + assetGroupId + "/field")
-                .setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken())
-                .bodyByteArray(writeValueAsString(assetGroupField).getBytes()).execute().returnResponse();
-        return checkSuccessResponseAndReturnType(response, AssetGroupField.class);
+	public static AssetGroupField createAssetGroupField(UUID assetGroupId, AssetGroupField assetGroupField) {
+        return getWebTarget()
+                .path("asset/rest/group")
+                .path(assetGroupId.toString())
+                .path("field")
+                .request(MediaType.APPLICATION_JSON)
+                .header(HttpHeaders.AUTHORIZATION, getValidJwtToken())
+                .post(Entity.json(assetGroupField), AssetGroupField.class);
 	}
 	
-	public static List<AssetGroupField> getAssetGroupFieldByAssetGroup(UUID assetGroupId) throws ClientProtocolException, IOException {
-        final HttpResponse response = Request.Get(getBaseUrl() + "asset/rest/group/" + assetGroupId + "/fieldsForGroup")
-                .setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken()).execute()
-                .returnResponse();
-        return checkSuccessResponseAndReturnList(response, AssetGroupField.class);
+	public static List<AssetGroupField> getAssetGroupFieldByAssetGroup(UUID assetGroupId) {
+        return getWebTarget()
+                .path("asset/rest/group")
+                .path(assetGroupId.toString())
+                .path("fieldsForGroup")
+                .request(MediaType.APPLICATION_JSON)
+                .header(HttpHeaders.AUTHORIZATION, getValidJwtToken())
+                .get(new GenericType<List<AssetGroupField>>() {});
     }
 	
 	// ************************************************
@@ -229,13 +255,10 @@ public class AssetTestHelper extends AbstractHelper {
 	//  Misc
 	// ************************************************
 	
-	public static Integer getAssetCountSweden() throws ClientProtocolException, JsonProcessingException, IOException {
+	public static Integer getAssetCountSweden() {
 	    AssetQuery assetQuery = getBasicAssetQuery();
 	    assetQuery.setFlagState(Arrays.asList("SWE"));
-		final HttpResponse response = Request.Post(getBaseUrl() + "asset/rest/asset/listcount")
-				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken())
-				.bodyByteArray(writeValueAsString(assetQuery).getBytes()).execute().returnResponse();
-		return checkSuccessResponseReturnInt(response);
+	    return assetListQueryCount(assetQuery);
 	}
 	
 	public static eu.europa.ec.fisheries.uvms.asset.client.model.AssetDTO createBasicAsset() {

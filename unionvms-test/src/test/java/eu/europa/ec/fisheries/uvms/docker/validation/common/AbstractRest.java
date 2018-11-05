@@ -6,9 +6,10 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
-
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.DeserializationFeature;
+import javax.ws.rs.client.Client;
+import javax.ws.rs.client.ClientBuilder;
+import javax.ws.rs.client.WebTarget;
+import javax.ws.rs.ext.ContextResolver;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
@@ -18,6 +19,8 @@ import org.apache.http.util.EntityUtils;
 import org.junit.Assert;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.type.MapType;
@@ -36,11 +39,21 @@ public abstract class AbstractRest extends Assert {
 
 	/** The valid jwt token. */
 	private static String validJwtToken;
-
+	
 	protected static final String getBaseUrl() {
 		return BASE_URL;
 	}	
 	
+    protected static WebTarget getWebTarget() {
+        Client client = ClientBuilder.newClient();
+        client.register(new ContextResolver<ObjectMapper>() {
+            @Override
+            public ObjectMapper getContext(Class<?> type) {
+                return OBJECT_MAPPER;
+            }
+        });
+        return client.target(getBaseUrl());
+    }
 
 	/**
 	 * Aquire jwt token for test.

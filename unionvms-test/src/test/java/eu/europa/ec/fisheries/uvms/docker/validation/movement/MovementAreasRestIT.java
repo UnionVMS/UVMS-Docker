@@ -14,17 +14,15 @@ copy of the GNU General Public License along with the IFDM Suite. If not, see <h
 package eu.europa.ec.fisheries.uvms.docker.validation.movement;
 
 import java.util.List;
-
 import org.apache.http.HttpResponse;
 import org.apache.http.client.fluent.Request;
 import org.junit.Test;
-
-import eu.europa.ec.fisheries.uvms.docker.validation.common.AbstractRestServiceTest;
+import eu.europa.ec.fisheries.uvms.docker.validation.common.AbstractRest;
 
 /**
  * The Class MovementAreasRestIT.
  */
-public class MovementAreasRestIT extends AbstractRestServiceTest {
+public class MovementAreasRestIT extends AbstractRest {
 
 	/**
 	 * Gets the areas test.
