@@ -24,7 +24,6 @@ import eu.europa.ec.fisheries.uvms.exchange.model.mapper.ExchangeModuleRequestMa
 import eu.europa.ec.fisheries.uvms.exchange.model.mapper.JAXBMarshaller;
 import org.junit.After;
 import org.junit.Assert;
-import org.junit.Ignore;
 import org.junit.Test;
 import javax.jms.TextMessage;
 import java.time.LocalDateTime;
@@ -133,6 +132,137 @@ public class InmarsatSanityIT extends AbstractRestServiceTest {
         assertThat(movement.getIrcs(), is(asset.getIrcs()));
 
     }
+
+
+
+
+    @Test
+    public void inmarsatPosition_MEMBER_NUMBER_only() throws Exception {
+
+        LocalDateTime timestamp = LocalDateTime.now(ZoneOffset.UTC);
+
+        // create testdata
+        AssetDTO asset = AssetTestHelper.createTestAsset();
+        MobileTerminalType mobileTerminalType = MobileTerminalTestHelper.createMobileTerminalType();
+        MobileTerminalTestHelper.assignMobileTerminal(asset, mobileTerminalType);
+
+        //
+        String fluxEndpoint = "DNK";
+
+        CustomRuleType flagStateRule = CustomRuleBuilder.getBuilder()
+                .setName("Flag state => FLUX DNK")
+                .rule(CriteriaType.ASSET, SubCriteriaType.FLAG_STATE,
+                        ConditionType.EQ, asset.getFlagStateCode())
+                .action(ActionType.SEND_TO_FLUX, fluxEndpoint)
+                .build();
+
+        CustomRuleType createdCustomRule = CustomRuleHelper.createCustomRule(flagStateRule);
+        assertNotNull(createdCustomRule);
+
+
+        // extract DNID and MEMBERNUMBER from testdata created above
+        List<ComChannelType> channels = mobileTerminalType.getChannels();
+        Assert.assertEquals(1, channels.size());
+        ComChannelType channel = channels.get(0);
+        List<ComChannelAttribute> attributes = channel.getAttributes();
+
+        String memberNumber = "";
+        for (ComChannelAttribute attr : attributes) {
+
+            String type = attr.getType();
+            String val = attr.getValue();
+            switch (type) {
+                case "MEMBER_NUMBER":
+                    memberNumber = val;
+                    break;
+            }
+        }
+
+        // create the positionreport only containing DNID and MEMBER_NUMBER  OBS NO ASSET REFERENCES AT ALL
+        SetReportMovementType reportType = createReportType(null, memberNumber);
+        String text =
+                ExchangeModuleRequestMapper.createSetMovementReportRequest(
+                        reportType,
+                        "TWOSTAGE",
+                        null,
+                        DateUtils.nowUTC().toDate(),
+                        null,
+                        PluginType.SATELLITE_RECEIVER,
+                        "TWOSTAGE",
+                        null);
+
+        messageHelper.sendMessage("UVMSExchangeEvent", text);
+        // WAITFOR AND CHECK RESULTS
+        TextMessage message = (TextMessage) MessageHelper.listenOnEventBus(SELECTOR, TIMEOUT);
+        Assert.assertTrue(message == null);
+
+
+    }
+
+
+
+    @Test
+    public void inmarsatPosition_DNID_only() throws Exception {
+
+        LocalDateTime timestamp = LocalDateTime.now(ZoneOffset.UTC);
+
+        // create testdata
+        AssetDTO asset = AssetTestHelper.createTestAsset();
+        MobileTerminalType mobileTerminalType = MobileTerminalTestHelper.createMobileTerminalType();
+        MobileTerminalTestHelper.assignMobileTerminal(asset, mobileTerminalType);
+
+        //
+        String fluxEndpoint = "DNK";
+
+        CustomRuleType flagStateRule = CustomRuleBuilder.getBuilder()
+                .setName("Flag state => FLUX DNK")
+                .rule(CriteriaType.ASSET, SubCriteriaType.FLAG_STATE,
+                        ConditionType.EQ, asset.getFlagStateCode())
+                .action(ActionType.SEND_TO_FLUX, fluxEndpoint)
+                .build();
+
+        CustomRuleType createdCustomRule = CustomRuleHelper.createCustomRule(flagStateRule);
+        assertNotNull(createdCustomRule);
+
+
+        // extract DNID and MEMBERNUMBER from testdata created above
+        List<ComChannelType> channels = mobileTerminalType.getChannels();
+        Assert.assertEquals(1, channels.size());
+        ComChannelType channel = channels.get(0);
+        List<ComChannelAttribute> attributes = channel.getAttributes();
+
+        String dnid = "";
+        for (ComChannelAttribute attr : attributes) {
+
+            String type = attr.getType();
+            String val = attr.getValue();
+            switch (type) {
+                case "DNID":
+                    dnid = val;
+                    break;
+            }
+        }
+
+        // create the positionreport only containing DNID and MEMBER_NUMBER  OBS NO ASSET REFERENCES AT ALL
+        SetReportMovementType reportType = createReportType(dnid, null);
+        String text =
+                ExchangeModuleRequestMapper.createSetMovementReportRequest(
+                        reportType,
+                        "TWOSTAGE",
+                        null,
+                        DateUtils.nowUTC().toDate(),
+                        null,
+                        PluginType.SATELLITE_RECEIVER,
+                        "TWOSTAGE",
+                        null);
+
+        messageHelper.sendMessage("UVMSExchangeEvent", text);
+        // WAITFOR AND CHECK RESULTS
+        TextMessage message = (TextMessage) MessageHelper.listenOnEventBus(SELECTOR, TIMEOUT);
+        Assert.assertTrue(message == null);
+
+    }
+
 
 
 
