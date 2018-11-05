@@ -16,13 +16,13 @@ package eu.europa.ec.fisheries.uvms.docker.validation.movement;
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
 import java.util.UUID;
-import org.apache.http.HttpResponse;
-import org.apache.http.client.fluent.Request;
+import javax.ws.rs.client.Entity;
+import javax.ws.rs.core.GenericType;
+import javax.ws.rs.core.HttpHeaders;
+import javax.ws.rs.core.MediaType;
+import org.hamcrest.CoreMatchers;
 import org.junit.Test;
 import eu.europa.ec.fisheries.schema.mobileterminal.types.v1.MobileTerminalType;
 import eu.europa.ec.fisheries.schema.movement.module.v1.CreateMovementRequest;
@@ -32,12 +32,13 @@ import eu.europa.ec.fisheries.schema.movement.search.v1.ListPagination;
 import eu.europa.ec.fisheries.schema.movement.search.v1.MovementAreaAndTimeIntervalCriteria;
 import eu.europa.ec.fisheries.schema.movement.search.v1.MovementQuery;
 import eu.europa.ec.fisheries.schema.movement.search.v1.SearchKey;
+import eu.europa.ec.fisheries.schema.movement.source.v1.GetMovementListByAreaAndTimeIntervalResponse;
 import eu.europa.ec.fisheries.schema.movement.v1.MovementType;
 import eu.europa.ec.fisheries.uvms.asset.client.model.AssetDTO;
+import eu.europa.ec.fisheries.uvms.commons.rest.dto.ResponseDto;
 import eu.europa.ec.fisheries.uvms.docker.validation.asset.AssetTestHelper;
 import eu.europa.ec.fisheries.uvms.docker.validation.common.AbstractRest;
 import eu.europa.ec.fisheries.uvms.docker.validation.mobileterminal.MobileTerminalTestHelper;
-import eu.europa.ec.fisheries.uvms.reporting.service.dto.MovementDTO;
 
 /**
  * The Class MovementMovementRestIT.
@@ -59,7 +60,7 @@ public class MovementMovementRestIT extends AbstractRest {
 	 */
 	@Test
 	public void getListByQueryTest() throws Exception {		
-	    List<MovementType> dataMap = movementHelper.getListByQuery(createMovementQuery());
+	    List<MovementType> dataMap = MovementHelper.getListByQuery(createMovementQuery());
 		assertNotNull(dataMap);
 	}
 
@@ -87,36 +88,6 @@ public class MovementMovementRestIT extends AbstractRest {
 		return movementQuery;
 	}
 
-
-
-	/**
-	 * Validate number movement posisitions per ship.
-	 *
-	 * @param numberPositions the number positions
-	 * @param dataMap the data map
-	 */
-	private void validateNumberMovementPosisitionsPerShip(int numberPositions, Map<String, Object> dataMap) {
-		List<Map<String,Object>> movementDataMap = (List<Map<String,Object>>) dataMap.get("movement");
-		assertNotNull(movementDataMap);
-		
-		Map<String,Integer> positionsPerShip = new HashMap<>();
-		
-		for (Map<String, Object> map : movementDataMap) {
-			String connectId = (String) map.get("connectId");			
-			if (positionsPerShip.get(connectId) == null) {
-				positionsPerShip.put(connectId, 1);
-			} else {
-				positionsPerShip.put(connectId, 1 +positionsPerShip.get(connectId));
-			}
-		}
-
-		for (Entry<String, Integer> map : positionsPerShip.entrySet()) {
-			assertEquals("Ship do not contain 4 positions:" + map.getKey(),new Integer(numberPositions),map.getValue());
-		}
-		
-		assertTrue("Does not contain all ships",positionsPerShip.keySet().size()> 1);
-	}
-
 	/**
 	 * Gets the minimal list by query test.
 	 *
@@ -125,12 +96,8 @@ public class MovementMovementRestIT extends AbstractRest {
 	 */
 	@Test
 	public void getMinimalListByQueryTest() throws Exception {
-		final HttpResponse response = Request.Post(getBaseUrl() + "movement/rest/movement/list/minimal")
-				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken())
-				.bodyByteArray(writeValueAsString(createMovementQuery()).getBytes()).execute().returnResponse();
-
-		Map<String, Object> dataMap = checkSuccessResponseReturnMap(response);
-		assertNotNull(dataMap);
+		List<MovementType> response = MovementHelper.getMinimalListByQuery(createMovementQuery());
+		assertThat(response, CoreMatchers.is(CoreMatchers.notNullValue()));
 	}
 
 	
@@ -162,17 +129,8 @@ public class MovementMovementRestIT extends AbstractRest {
 		
 		connectIds.add(connectId);
 		
-		// give it some time to execute before retrieving TODO: Remove the functionality and this horrible test
-		Thread.sleep(10000);
-		
-		
-		final HttpResponse response = Request.Post(getBaseUrl() + "movement/rest/movement/latest")
-				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken())
-				.bodyByteArray(writeValueAsString(connectIds).getBytes()).execute().returnResponse();
-
-		List<MovementDTO> dataList = checkSuccessResponseReturnType(response, ArrayList.class);
-		
-		assertTrue(dataList.size() > 0);
+		List<MovementDto> latestMovements = MovementHelper.getLatestMovements(connectIds);
+		assertTrue(latestMovements.size() > 0);
 	}
 
 	/**
@@ -184,25 +142,16 @@ public class MovementMovementRestIT extends AbstractRest {
 	 */
 	@Test
 	public void getLatestMovementsTest() throws Exception {
-
-
 		AssetDTO testAsset = AssetTestHelper.createTestAsset();
 		MobileTerminalType mobileTerminalType = MobileTerminalTestHelper.createMobileTerminalType();
-		Map<String, Object> assignedMap = MobileTerminalTestHelper.assignMobileTerminal(testAsset, mobileTerminalType);
+		MobileTerminalTestHelper.assignMobileTerminal(testAsset, mobileTerminalType);
 		
 		LatLong latLong = new LatLong(16.9, 32.6333333, new Date(System.currentTimeMillis()));
 		CreateMovementRequest createMovementRequest = movementHelper.createMovementRequest(testAsset, latLong);
 		CreateMovementResponse createMovementResponse = movementHelper.createMovement(createMovementRequest);
 
-		// give it some time to execute before retrieving. TODO: Remove the functionality and this horrible test
-		Thread.sleep(10000);
-
-		final HttpResponse response = Request.Get(getBaseUrl() + "movement/rest/movement/latest/100")
-				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken()).execute()
-				.returnResponse();
-
-		List dataList = checkSuccessResponseReturnType(response, List.class);
-		assertTrue(dataList.size() > 0);
+		List<MovementDto> latestMovements = MovementHelper.getLatestMovements(100);
+		assertTrue(latestMovements.size() > 0);
 	}
 
 	/**
@@ -229,15 +178,8 @@ public class MovementMovementRestIT extends AbstractRest {
 		assertNotNull(createMovementResponse.getMovement().getGuid());
 		String id = createMovementResponse.getMovement().getGuid();
 
-		// give it some time to execute before retrieving
-		Thread.sleep(10000);
-		
-		final HttpResponse response = Request.Get(getBaseUrl() + "movement/rest/movement/" + id)
-				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken()).execute()
-				.returnResponse();
-
-		Map<String, Object> map = checkSuccessResponseReturnMap(response);
-		assertNotNull(map);
+		MovementType movementById = MovementHelper.getMovementById(id);
+		assertNotNull(movementById);
 	}
 
 	/**
@@ -249,13 +191,13 @@ public class MovementMovementRestIT extends AbstractRest {
 	 */
 	@Test
 	public void getListMovementByAreaAndTimeIntervalTest() throws Exception {
-		final HttpResponse response = Request.Post(getBaseUrl() + "movement/rest/movement/listByAreaAndTimeInterval")
-				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken())
-				.bodyByteArray(writeValueAsString(new MovementAreaAndTimeIntervalCriteria()).getBytes()).execute()
-				.returnResponse();
-
-		Map<String, Object> dataMap = checkSuccessResponseReturnMap(response);
-		assertNotNull(dataMap);
+		ResponseDto<GetMovementListByAreaAndTimeIntervalResponse> response = getWebTarget()
+		        .path("movement/rest/movement/listByAreaAndTimeInterval")
+		        .request(MediaType.APPLICATION_JSON)
+		        .header(HttpHeaders.AUTHORIZATION, getValidJwtToken())
+		        .post(Entity.json(new MovementAreaAndTimeIntervalCriteria()), new GenericType<ResponseDto<GetMovementListByAreaAndTimeIntervalResponse>>() {});
+		
+		assertNotNull(response);
 	}
 
 }

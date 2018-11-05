@@ -14,10 +14,19 @@ copy of the GNU General Public License along with the IFDM Suite. If not, see <h
 package eu.europa.ec.fisheries.uvms.docker.validation.movement;
 
 import java.util.List;
-import java.util.Map;
-import org.apache.http.HttpResponse;
-import org.apache.http.client.fluent.Request;
+import javax.ws.rs.core.GenericType;
+import javax.ws.rs.core.HttpHeaders;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
+import javax.ws.rs.core.Response.Status;
+import org.hamcrest.CoreMatchers;
 import org.junit.Test;
+import eu.europa.ec.fisheries.schema.exchange.movement.v1.MovementActivityTypeType;
+import eu.europa.ec.fisheries.schema.movement.search.v1.SearchKeyType;
+import eu.europa.ec.fisheries.schema.movement.v1.MovementSourceType;
+import eu.europa.ec.fisheries.schema.movement.v1.MovementTypeType;
+import eu.europa.ec.fisheries.schema.movement.v1.SegmentCategoryType;
+import eu.europa.ec.fisheries.uvms.commons.rest.dto.ResponseDto;
 import eu.europa.ec.fisheries.uvms.docker.validation.common.AbstractRest;
 
 /**
@@ -35,11 +44,12 @@ public class MovementConfigRestIT extends AbstractRest {
 	 */
 	@Test
 	public void getMovementTypesTest() throws Exception {
-		final HttpResponse response = Request.Get(getBaseUrl() + "movement/rest/config/movementTypes")
-				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken()).execute()
-				.returnResponse();
-
-		List dataList = checkSuccessResponseReturnType(response,List.class);
+		ResponseDto<List<MovementTypeType>> response = getWebTarget()
+		        .path("movement/rest/config/movementTypes")
+		        .request(MediaType.APPLICATION_JSON)
+		        .header(HttpHeaders.AUTHORIZATION, getValidJwtToken())
+		        .get(new GenericType<ResponseDto<List<MovementTypeType>>>() {});
+		assertThat(response.getData(), CoreMatchers.is(CoreMatchers.notNullValue()));
 	}
 
 	/**
@@ -51,12 +61,12 @@ public class MovementConfigRestIT extends AbstractRest {
 	 */
 	@Test
 	public void getSegmentTypesTest() throws Exception {
-		final HttpResponse response = Request.Get(getBaseUrl() + "movement/rest/config/segmentCategoryTypes")
-				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken()).execute()
-				.returnResponse();
-
-		List dataList = checkSuccessResponseReturnType(response,List.class);
-
+		ResponseDto<List<SegmentCategoryType>> response = getWebTarget()
+                .path("movement/rest/config/segmentCategoryTypes")
+                .request(MediaType.APPLICATION_JSON)
+                .header(HttpHeaders.AUTHORIZATION, getValidJwtToken())
+                .get(new GenericType<ResponseDto<List<SegmentCategoryType>>>() {});
+        assertThat(response.getData(), CoreMatchers.is(CoreMatchers.notNullValue()));
 	}
 
 	/**
@@ -68,11 +78,12 @@ public class MovementConfigRestIT extends AbstractRest {
 	 */
 	@Test
 	public void getMovementSearchKeysTest() throws Exception {
-		final HttpResponse response = Request.Get(getBaseUrl() + "movement/rest/config/searchKeys")
-				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken()).execute()
-				.returnResponse();
-
-		List dataList = checkSuccessResponseReturnType(response,List.class);
+		ResponseDto<List<SearchKeyType>> response = getWebTarget()
+                .path("movement/rest/config/searchKeys")
+                .request(MediaType.APPLICATION_JSON)
+                .header(HttpHeaders.AUTHORIZATION, getValidJwtToken())
+                .get(new GenericType<ResponseDto<List<SearchKeyType>>>() {});
+        assertThat(response.getData(), CoreMatchers.is(CoreMatchers.notNullValue()));
 	}
 
 	/**
@@ -84,11 +95,12 @@ public class MovementConfigRestIT extends AbstractRest {
 	 */
 	@Test
 	public void getMovementSourceTypesTest() throws Exception {
-		final HttpResponse response = Request.Get(getBaseUrl() + "movement/rest/config/movementSourceTypes")
-				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken()).execute()
-				.returnResponse();
-
-		List dataList = checkSuccessResponseReturnType(response,List.class);
+		ResponseDto<List<MovementSourceType>> response = getWebTarget()
+                .path("movement/rest/config/movementSourceTypes")
+                .request(MediaType.APPLICATION_JSON)
+                .header(HttpHeaders.AUTHORIZATION, getValidJwtToken())
+                .get(new GenericType<ResponseDto<List<MovementSourceType>>>() {});
+        assertThat(response.getData(), CoreMatchers.is(CoreMatchers.notNullValue()));
 	}
 
 	/**
@@ -100,11 +112,12 @@ public class MovementConfigRestIT extends AbstractRest {
 	 */
 	@Test
 	public void getActivityTypesTest() throws Exception {
-		final HttpResponse response = Request.Get(getBaseUrl() + "movement/rest/config/activityTypes")
-				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken()).execute()
-				.returnResponse();
-
-		List dataList = checkSuccessResponseReturnType(response,List.class);
+		ResponseDto<List<MovementActivityTypeType>> response = getWebTarget()
+                .path("movement/rest/config/activityTypes")
+                .request(MediaType.APPLICATION_JSON)
+                .header(HttpHeaders.AUTHORIZATION, getValidJwtToken())
+                .get(new GenericType<ResponseDto<List<MovementActivityTypeType>>>() {});
+        assertThat(response.getData(), CoreMatchers.is(CoreMatchers.notNullValue()));
 	}
 
 	/**
@@ -116,11 +129,13 @@ public class MovementConfigRestIT extends AbstractRest {
 	 */
 	@Test
 	public void getConfigurationTest() throws Exception {
-		final HttpResponse response = Request.Get(getBaseUrl() + "movement/rest/config/")
-				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken()).execute()
-				.returnResponse();
-
-		Map<String, Object> dataMap = checkSuccessResponseReturnMap(response);
+		Response response = getWebTarget()
+                .path("movement/rest/config/")
+                .request(MediaType.APPLICATION_JSON)
+                .header(HttpHeaders.AUTHORIZATION, getValidJwtToken())
+                .get();
+        assertThat(response, CoreMatchers.is(CoreMatchers.notNullValue()));
+        assertThat(response.getStatus(), CoreMatchers.is(Status.OK.getStatusCode()));
 	}
 
 }

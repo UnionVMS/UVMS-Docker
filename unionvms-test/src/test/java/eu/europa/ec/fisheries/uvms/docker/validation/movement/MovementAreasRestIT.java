@@ -14,9 +14,13 @@ copy of the GNU General Public License along with the IFDM Suite. If not, see <h
 package eu.europa.ec.fisheries.uvms.docker.validation.movement;
 
 import java.util.List;
-import org.apache.http.HttpResponse;
-import org.apache.http.client.fluent.Request;
+import javax.ws.rs.core.GenericType;
+import javax.ws.rs.core.HttpHeaders;
+import javax.ws.rs.core.MediaType;
+import org.hamcrest.CoreMatchers;
 import org.junit.Test;
+import eu.europa.ec.fisheries.schema.movement.area.v1.AreaType;
+import eu.europa.ec.fisheries.uvms.commons.rest.dto.ResponseDto;
 import eu.europa.ec.fisheries.uvms.docker.validation.common.AbstractRest;
 
 /**
@@ -33,10 +37,12 @@ public class MovementAreasRestIT extends AbstractRest {
 	 */
 	@Test
 	public void getAreasTest() throws Exception {
-		final HttpResponse response = Request.Get(getBaseUrl() + "movement/rest/areas")
-				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken()).execute()
-				.returnResponse();
-		List dataList = checkSuccessResponseReturnType(response,List.class);
+		ResponseDto<List<AreaType>> response = getWebTarget()
+                .path("movement/rest/areas")
+                .request(MediaType.APPLICATION_JSON)
+                .header(HttpHeaders.AUTHORIZATION, getValidJwtToken())
+                .get(new GenericType<ResponseDto<List<AreaType>>>() {});
+        assertThat(response.getData(), CoreMatchers.is(CoreMatchers.notNullValue()));
 	}
 
 }

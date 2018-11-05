@@ -11,12 +11,10 @@ copy of the GNU General Public License along with the IFDM Suite. If not, see <h
  */
 package eu.europa.ec.fisheries.uvms.docker.validation.system.helper;
 
-import java.io.IOException;
 import java.util.List;
 import javax.ws.rs.core.GenericType;
 import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
-import org.apache.http.client.ClientProtocolException;
 import eu.europa.ec.fisheries.schema.movementrules.customrule.v1.SanityRuleType;
 import eu.europa.ec.fisheries.uvms.commons.rest.dto.ResponseDto;
 import eu.europa.ec.fisheries.uvms.docker.validation.common.AbstractHelper;
