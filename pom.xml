@@ -27,15 +27,15 @@
         <unionvms.project.audit.module>4.0.11-WILDFLY14</unionvms.project.audit.module>
         <unionvms.project.asset.module>4.0.19-WILDFLY14</unionvms.project.asset.module>
         <unionvms.project.mdr.module>1.0.16-WILDFLY14</unionvms.project.mdr.module>
-        <unionvms.project.rules.module>3.0.45-WILDFLY14</unionvms.project.rules.module>
-        <unionvms.project.subscription.module>1.4-WILDFLY14</unionvms.project.subscription.module>
+        <unionvms.project.rules.module>3.0.45-1-WILDFLY14</unionvms.project.rules.module>
+        <unionvms.project.subscription.module>1.4-1-WILDFLY14</unionvms.project.subscription.module>
         <unionvms.project.exchange.module>4.0.34-WILDFLY14</unionvms.project.exchange.module>
         <unionvms.project.activity.module>1.1.11-WILDFLY14</unionvms.project.activity.module>
 
         <unionvms.project.movementrules.module>1.0.2</unionvms.project.movementrules.module>
         <unionvms.project.movement.module>5.0.3-WILDFLY14</unionvms.project.movement.module>
         <unionvms.project.reporting.db.module>1.0.4</unionvms.project.reporting.db.module>
-        <unionvms.project.reporting.module>1.1.6-WILDFLY14</unionvms.project.reporting.module>
+        <unionvms.project.reporting.module>1.1.6-1-WILDFLY14</unionvms.project.reporting.module>
         <unionvms.project.spatial.db.module>1.0.5</unionvms.project.spatial.db.module>
         <unionvms.project.spatial.module>1.1.10-WILDFLY14</unionvms.project.spatial.module>
 
