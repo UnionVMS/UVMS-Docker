@@ -5,12 +5,12 @@
         <parent>
 			<groupId>eu.europa.ec.fisheries.uvms.docker</groupId>
 			<artifactId>uvms-docker</artifactId>
-			<version>3.29.2.w14-SNAPSHOT</version>
+			<version>3.29.2.w14</version>
 			<relativePath>../pom.xml</relativePath>
         </parent>
 
 	<groupId>eu.europa.ec.fisheries.uvms.docker</groupId>
-	<version>3.29.2.w14-SNAPSHOT</version>
+	<version>3.29.2.w14</version>
 	<packaging>jar</packaging>
 	<name>docker-compose</name>
 	<artifactId>docker-compose</artifactId>
