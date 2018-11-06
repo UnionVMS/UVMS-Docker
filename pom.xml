@@ -15,11 +15,6 @@
 	<version>3.29.3.w14-SNAPSHOT</version>
 	<packaging>pom</packaging>
 	<name>uvms-docker</name>
-    <groupId>eu.europa.ec.fisheries.uvms.docker</groupId>
-    <artifactId>uvms-docker</artifactId>
-    <version>3.29.2.w14-SNAPSHOT</version>
-    <packaging>pom</packaging>
-    <name>uvms-docker</name>
 
 	<properties>
 		<project.scm.id>github</project.scm.id>
