@@ -15,17 +15,15 @@ package eu.europa.ec.fisheries.uvms.docker.validation.exchange;
 
 import java.util.List;
 import java.util.Map;
-
 import org.apache.http.HttpResponse;
 import org.apache.http.client.fluent.Request;
 import org.junit.Test;
-
-import eu.europa.ec.fisheries.uvms.docker.validation.common.AbstractRestServiceTest;
+import eu.europa.ec.fisheries.uvms.docker.validation.common.AbstractRest;
 
 /**
  * The Class ExchangeConfigRestIT.
  */
-public class ExchangeConfigRestIT extends AbstractRestServiceTest {
+public class ExchangeConfigRestIT extends AbstractRest {
 
 	/**
 	 * Gets the config search fields test.

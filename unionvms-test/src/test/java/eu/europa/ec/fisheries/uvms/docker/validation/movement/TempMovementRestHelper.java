@@ -10,71 +10,75 @@ copy of the GNU General Public License along with the IFDM Suite. If not, see <h
  */
 package eu.europa.ec.fisheries.uvms.docker.validation.movement;
 
-import java.io.IOException;
-import org.apache.http.HttpResponse;
-import org.apache.http.client.ClientProtocolException;
-import org.apache.http.client.fluent.Request;
-import com.fasterxml.jackson.core.JsonProcessingException;
+import javax.ws.rs.client.Entity;
+import javax.ws.rs.core.GenericType;
+import javax.ws.rs.core.HttpHeaders;
+import javax.ws.rs.core.MediaType;
 import eu.europa.ec.fisheries.schema.movement.v1.TempMovementType;
+import eu.europa.ec.fisheries.uvms.commons.rest.dto.ResponseDto;
 import eu.europa.ec.fisheries.uvms.docker.validation.common.AbstractHelper;
 
 public class TempMovementRestHelper extends AbstractHelper {
 
-    public static TempMovementType createTempMovement(TempMovementType tempMovement) throws ClientProtocolException,
-            JsonProcessingException, IOException {
-        final HttpResponse response = Request.Post(getBaseUrl() + "movement/rest/tempmovement").setHeader(
-                "Content-Type", "application/json").setHeader("Authorization", getValidJwtToken()).bodyByteArray(
-                        writeValueAsString(tempMovement).getBytes()).execute().returnResponse();
-
-        return checkSuccessResponseReturnObject(response, TempMovementType.class);
+    public static TempMovementType createTempMovement(TempMovementType tempMovement) {
+        ResponseDto<TempMovementType> response = getWebTarget()
+                .path("movement/rest/tempmovement")
+                .request(MediaType.APPLICATION_JSON)
+                .header(HttpHeaders.AUTHORIZATION, getValidJwtToken())
+                .post(Entity.json(tempMovement), new GenericType<ResponseDto<TempMovementType>>() {});
+        return response.getData();
     }
 
-    public static HttpResponse createTempMovementResponse(TempMovementType tempMovement) throws ClientProtocolException,
-            JsonProcessingException, IOException {
-        return Request.Post(getBaseUrl() + "movement/rest/tempmovement").setHeader("Content-Type", "application/json")
-                .setHeader("Authorization", getValidJwtToken()).bodyByteArray(writeValueAsString(tempMovement)
-                        .getBytes()).execute().returnResponse();
+    public static ResponseDto<?> createTempMovementResponse(TempMovementType tempMovement) {
+        return getWebTarget()
+                .path("movement/rest/tempmovement")
+                .request(MediaType.APPLICATION_JSON)
+                .header(HttpHeaders.AUTHORIZATION, getValidJwtToken())
+                .post(Entity.json(tempMovement), new GenericType<ResponseDto<?>>() {});
     }
 
-    public static TempMovementType getTempMovement(String guid) throws ClientProtocolException, IOException {
-        final HttpResponse response = Request.Get(getBaseUrl() + "movement/rest/tempmovement/" + guid).setHeader(
-                "Content-Type", "application/json").setHeader("Authorization", getValidJwtToken()).execute()
-                .returnResponse();
-
-        return checkSuccessResponseReturnObject(response, TempMovementType.class);
+    public static TempMovementType getTempMovement(String guid) {
+        ResponseDto<TempMovementType> response = getWebTarget()
+                .path("movement/rest/tempmovement/")
+                .path(guid)
+                .request(MediaType.APPLICATION_JSON)
+                .header(HttpHeaders.AUTHORIZATION, getValidJwtToken())
+                .get(new GenericType<ResponseDto<TempMovementType>>() {});
+        return response.getData();
     }
 
-    public static HttpResponse getTempMovementResponse(String guid) throws ClientProtocolException, IOException {
-        return Request.Get(getBaseUrl() + "movement/rest/tempmovement/" + guid).setHeader("Content-Type",
-                "application/json").setHeader("Authorization", getValidJwtToken()).execute().returnResponse();
+    public static ResponseDto<?> getTempMovementResponse(String guid) {
+        return getWebTarget()
+                .path("movement/rest/tempmovement/" + guid)
+                .request(MediaType.APPLICATION_JSON)
+                .header(HttpHeaders.AUTHORIZATION, getValidJwtToken())
+                .get(new GenericType<ResponseDto<?>>() {});
     }
 
-    public static TempMovementType removeTempMovement(String guid) throws ClientProtocolException, IOException {
-        final HttpResponse response = Request.Put(getBaseUrl() + "movement/rest/tempmovement/remove/" + guid).setHeader(
-                "Content-Type", "application/json").setHeader("Authorization", getValidJwtToken()).execute()
-                .returnResponse();
-
-        return checkSuccessResponseReturnObject(response, TempMovementType.class);
+    public static TempMovementType removeTempMovement(String guid) {
+        ResponseDto<TempMovementType> response = getWebTarget()
+                .path("movement/rest/tempmovement/remove")
+                .path(guid)
+                .request(MediaType.APPLICATION_JSON)
+                .header(HttpHeaders.AUTHORIZATION, getValidJwtToken())
+                .put(null, new GenericType<ResponseDto<TempMovementType>>() {});
+        return response.getData();
     }
 
-    public static HttpResponse removeTempMovementResponse(String guid) throws ClientProtocolException, IOException {
-        return Request.Put(getBaseUrl() + "movement/rest/tempmovement/remove/" + guid).setHeader("Content-Type",
-                "application/json").setHeader("Authorization", getValidJwtToken()).execute().returnResponse();
+    public static ResponseDto<?> removeTempMovementResponse(String guid) {
+        return getWebTarget()
+                .path("movement/rest/tempmovement/remove/" + guid)
+                .request(MediaType.APPLICATION_JSON)
+                .header(HttpHeaders.AUTHORIZATION, getValidJwtToken())
+                .put(null, new GenericType<ResponseDto<?>>() {});
     }
 
-    public static TempMovementType updateTempMovement(TempMovementType tempMovement) throws ClientProtocolException,
-            JsonProcessingException, IOException {
-        final HttpResponse response = Request.Put(getBaseUrl() + "movement/rest/tempmovement").setHeader("Content-Type",
-                "application/json").setHeader("Authorization", getValidJwtToken()).bodyByteArray(writeValueAsString(
-                        tempMovement).getBytes()).execute().returnResponse();
-
-        return checkSuccessResponseReturnObject(response, TempMovementType.class);
-    }
-
-    public static HttpResponse updateTempMovementResponse(TempMovementType tempMovement) throws ClientProtocolException,
-            JsonProcessingException, IOException {
-        return Request.Put(getBaseUrl() + "movement/rest/tempmovement").setHeader("Content-Type", "application/json")
-                .setHeader("Authorization", getValidJwtToken()).bodyByteArray(writeValueAsString(tempMovement)
-                        .getBytes()).execute().returnResponse();
+    public static TempMovementType updateTempMovement(TempMovementType tempMovement) {
+        ResponseDto<TempMovementType> response = getWebTarget()
+                .path("movement/rest/tempmovement")
+                .request(MediaType.APPLICATION_JSON)
+                .header(HttpHeaders.AUTHORIZATION, getValidJwtToken())
+                .put(Entity.json(tempMovement), new GenericType<ResponseDto<TempMovementType>>() {});
+        return response.getData();
     }
 }

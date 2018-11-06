@@ -15,20 +15,17 @@ package eu.europa.ec.fisheries.uvms.docker.validation.user;
 
 import java.io.IOException;
 import java.util.Map;
-
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.fluent.Request;
-
 import com.fasterxml.jackson.databind.ObjectMapper;
-
-import eu.europa.ec.fisheries.uvms.docker.validation.common.AbstractRestServiceTest;
+import eu.europa.ec.fisheries.uvms.docker.validation.common.AbstractRest;
 
 /**
  * UserHelper
  */
-public class UserHelper extends AbstractRestServiceTest {
+public class UserHelper extends AbstractRest {
 
 	private ObjectMapper MAPPER = new ObjectMapper();
 

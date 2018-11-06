@@ -3,12 +3,9 @@ package eu.europa.ec.fisheries.uvms.docker.validation.exchange;
 import java.io.StringWriter;
 import java.util.Date;
 import java.util.List;
-
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
-
 import org.junit.Test;
-
 import eu.europa.ec.fisheries.schema.exchange.module.v1.ExchangeModuleMethod;
 import eu.europa.ec.fisheries.schema.exchange.module.v1.SetMovementReportRequest;
 import eu.europa.ec.fisheries.schema.exchange.movement.asset.v1.AssetId;
@@ -29,7 +26,7 @@ import eu.europa.ec.fisheries.schema.mobileterminal.types.v1.MobileTerminalType;
 import eu.europa.ec.fisheries.schema.movement.module.v1.CreateMovementRequest;
 import eu.europa.ec.fisheries.uvms.asset.client.model.AssetDTO;
 import eu.europa.ec.fisheries.uvms.docker.validation.asset.AssetTestHelper;
-import eu.europa.ec.fisheries.uvms.docker.validation.common.AbstractRestServiceTest;
+import eu.europa.ec.fisheries.uvms.docker.validation.common.AbstractRest;
 import eu.europa.ec.fisheries.uvms.docker.validation.common.MessageHelper;
 import eu.europa.ec.fisheries.uvms.docker.validation.mobileterminal.MobileTerminalTestHelper;
 import eu.europa.ec.fisheries.uvms.docker.validation.movement.LatLong;
@@ -38,7 +35,7 @@ import eu.europa.ec.fisheries.uvms.docker.validation.movement.MovementHelper;
 /**
  * The Class SetMovementReportRequestJmsIT.
  */
-public class SetMovementReportRequestJmsIT extends AbstractRestServiceTest {
+public class SetMovementReportRequestJmsIT extends AbstractRest {
 
 	/** The movement helper. */
 	private static MovementHelper movementHelper = new MovementHelper();
