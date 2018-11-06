@@ -13,18 +13,35 @@ copy of the GNU General Public License along with the IFDM Suite. If not, see <h
 */
 package eu.europa.ec.fisheries.uvms.docker.validation.reporting;
 
+import static org.hamcrest.CoreMatchers.is;
+import java.math.BigInteger;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import javax.ws.rs.client.Entity;
+import javax.ws.rs.core.GenericType;
+import javax.ws.rs.core.HttpHeaders;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
+import javax.ws.rs.core.Response.Status;
+import org.hamcrest.CoreMatchers;
+import org.junit.Test;
 import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import eu.europa.ec.fisheries.schema.movement.search.v1.ListCriteria;
 import eu.europa.ec.fisheries.schema.movement.search.v1.ListPagination;
 import eu.europa.ec.fisheries.schema.movement.search.v1.MovementQuery;
 import eu.europa.ec.fisheries.schema.movement.search.v1.SearchKey;
 import eu.europa.ec.fisheries.schema.movement.v1.MovementType;
-import eu.europa.ec.fisheries.schema.movementrules.customrule.v1.*;
+import eu.europa.ec.fisheries.schema.movementrules.customrule.v1.AvailabilityType;
+import eu.europa.ec.fisheries.schema.movementrules.customrule.v1.ConditionType;
+import eu.europa.ec.fisheries.schema.movementrules.customrule.v1.CriteriaType;
+import eu.europa.ec.fisheries.schema.movementrules.customrule.v1.CustomRuleType;
+import eu.europa.ec.fisheries.schema.movementrules.customrule.v1.SubCriteriaType;
 import eu.europa.ec.fisheries.uvms.asset.client.model.AssetDTO;
+import eu.europa.ec.fisheries.uvms.commons.rest.dto.ResponseDto;
 import eu.europa.ec.fisheries.uvms.docker.validation.asset.AssetTestHelper;
-import eu.europa.ec.fisheries.uvms.docker.validation.common.AbstractRestServiceTest;
+import eu.europa.ec.fisheries.uvms.docker.validation.common.AbstractRest;
 import eu.europa.ec.fisheries.uvms.docker.validation.movement.LatLong;
 import eu.europa.ec.fisheries.uvms.docker.validation.movement.MovementHelper;
 import eu.europa.ec.fisheries.uvms.docker.validation.system.helper.CustomRuleBuilder;
@@ -32,23 +49,12 @@ import eu.europa.ec.fisheries.uvms.docker.validation.system.helper.CustomRuleHel
 import eu.europa.ec.fisheries.uvms.docker.validation.system.helper.NAFHelper;
 import eu.europa.ec.fisheries.uvms.reporting.service.dto.rules.AlarmMovement;
 import eu.europa.ec.fisheries.uvms.reporting.service.dto.rules.AlarmMovementList;
-import org.apache.http.HttpResponse;
-import org.apache.http.HttpStatus;
-import org.apache.http.client.fluent.Request;
-import org.junit.Test;
-
-import java.math.BigInteger;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-
-import static org.hamcrest.CoreMatchers.is;
 
 /**
  * The Class AlarmRestIT.
  */
 
-public class AlarmRestIT extends AbstractRestServiceTest {
+public class AlarmRestIT extends AbstractRest {
 
 	@Test
 	public void getAlarmsTest() throws Exception {
@@ -62,10 +68,12 @@ public class AlarmRestIT extends AbstractRestServiceTest {
 		
 		alarmMovementList.setAlarmMovementList(alarmMovementListContent);
 
-		final HttpResponse response = Request.Post(getBaseUrl() + "reporting/rest/alarms")
-				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken())
-				.bodyByteArray(writeValueAsString(alarmMovementList).getBytes()).execute().returnResponse();
-		assertEquals(HttpStatus.SC_OK, response.getStatusLine().getStatusCode());
+		Response response = getWebTarget()
+		        .path("reporting/rest/alarms")
+		        .request(MediaType.APPLICATION_JSON)
+		        .header(HttpHeaders.AUTHORIZATION, getValidJwtToken())
+		        .post(Entity.json(alarmMovementList));
+		assertThat(response.getStatus(), CoreMatchers.is(Status.OK.getStatusCode()));
 	}
 	
 	@Test
@@ -107,14 +115,14 @@ public class AlarmRestIT extends AbstractRestServiceTest {
 			alarmMovement.setyCoordinate("1");
 			alarmMovementListContent.add(alarmMovement);
 			alarmMovementList.setAlarmMovementList(alarmMovementListContent);
+			
+			ResponseDto<ObjectNode> response = getWebTarget()
+	                .path("reporting/rest/alarms")
+	                .request(MediaType.APPLICATION_JSON)
+	                .header(HttpHeaders.AUTHORIZATION, getValidJwtToken())
+	                .post(Entity.json(alarmMovementList), new GenericType<ResponseDto<ObjectNode>>() {});
 
-			final HttpResponse response = Request.Post(getBaseUrl() + "reporting/rest/alarms")
-					.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken())
-					.bodyByteArray(writeValueAsString(alarmMovementList).getBytes()).execute().returnResponse();
-			assertEquals(HttpStatus.SC_OK, response.getStatusLine().getStatusCode());
-
-			ObjectNode value = new ObjectMapper().readValue(response.getEntity().getContent(), ObjectNode.class);
-			JsonNode data = value.get("data");
+			JsonNode data = response.getData();
 			JsonNode alarms = data.get("alarms");
 			JsonNode features = alarms.get("features");
 			assertThat(features.size(), is(1));
@@ -122,5 +130,4 @@ public class AlarmRestIT extends AbstractRestServiceTest {
 			CustomRuleHelper.removeCustomRulesByDefaultUser();
 		}
     }
-
 }

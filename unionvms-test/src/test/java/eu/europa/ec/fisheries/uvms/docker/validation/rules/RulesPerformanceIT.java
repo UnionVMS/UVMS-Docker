@@ -34,7 +34,7 @@ import java.time.Duration;
 import java.time.Instant;
 import java.util.*;
 
-public class RulesPerformanceTests {
+public class RulesPerformanceIT {
 
     private ConnectionFactory connectionFactory = new ActiveMQConnectionFactory("tcp://localhost:61616");
     //private ConnectionFactory connectionFactory = new ActiveMQConnectionFactory("tcp://livm73u.havochvatten.se:61616");

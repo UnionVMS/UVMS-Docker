@@ -1,22 +1,5 @@
 package eu.europa.ec.fisheries.uvms.docker.validation.movement;
 
-import eu.europa.ec.fisheries.schema.mobileterminal.types.v1.MobileTerminalType;
-import eu.europa.ec.fisheries.schema.movement.common.v1.ExceptionType;
-import eu.europa.ec.fisheries.schema.movement.module.v1.*;
-import eu.europa.ec.fisheries.schema.movement.search.v1.*;
-import eu.europa.ec.fisheries.uvms.asset.client.model.AssetDTO;
-import eu.europa.ec.fisheries.uvms.docker.validation.asset.AssetTestHelper;
-import eu.europa.ec.fisheries.uvms.docker.validation.common.AbstractRestServiceTest;
-import eu.europa.ec.fisheries.uvms.docker.validation.common.MessageHelper;
-import eu.europa.ec.fisheries.uvms.docker.validation.mobileterminal.MobileTerminalTestHelper;
-
-import org.junit.Ignore;
-import org.junit.Test;
-
-import javax.jms.*;
-import javax.xml.bind.JAXBContext;
-import javax.xml.bind.JAXBException;
-import javax.xml.bind.UnmarshalException;
 import java.io.StringReader;
 import java.io.StringWriter;
 import java.math.BigInteger;
@@ -27,8 +10,31 @@ import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicInteger;
+import javax.jms.Message;
+import javax.jms.TextMessage;
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBException;
+import javax.xml.bind.UnmarshalException;
+import org.junit.Ignore;
+import org.junit.Test;
+import eu.europa.ec.fisheries.schema.mobileterminal.types.v1.MobileTerminalType;
+import eu.europa.ec.fisheries.schema.movement.common.v1.ExceptionType;
+import eu.europa.ec.fisheries.schema.movement.module.v1.CreateMovementRequest;
+import eu.europa.ec.fisheries.schema.movement.module.v1.CreateMovementResponse;
+import eu.europa.ec.fisheries.schema.movement.module.v1.GetMovementListByQueryRequest;
+import eu.europa.ec.fisheries.schema.movement.module.v1.GetMovementListByQueryResponse;
+import eu.europa.ec.fisheries.schema.movement.module.v1.MovementModuleMethod;
+import eu.europa.ec.fisheries.schema.movement.search.v1.ListCriteria;
+import eu.europa.ec.fisheries.schema.movement.search.v1.ListPagination;
+import eu.europa.ec.fisheries.schema.movement.search.v1.MovementQuery;
+import eu.europa.ec.fisheries.schema.movement.search.v1.SearchKey;
+import eu.europa.ec.fisheries.uvms.asset.client.model.AssetDTO;
+import eu.europa.ec.fisheries.uvms.docker.validation.asset.AssetTestHelper;
+import eu.europa.ec.fisheries.uvms.docker.validation.common.AbstractRest;
+import eu.europa.ec.fisheries.uvms.docker.validation.common.MessageHelper;
+import eu.europa.ec.fisheries.uvms.docker.validation.mobileterminal.MobileTerminalTestHelper;
 
-public class MovementPerformanceTests extends AbstractRestServiceTest {
+public class MovementPerformanceIT extends AbstractRest {
 
     private static MovementHelper movementHelper = new MovementHelper();
 

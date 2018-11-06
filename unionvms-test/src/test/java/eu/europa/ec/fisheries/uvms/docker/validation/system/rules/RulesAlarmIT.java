@@ -14,7 +14,6 @@ package eu.europa.ec.fisheries.uvms.docker.validation.system.rules;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.notNullValue;
 import java.time.LocalDateTime;
-import java.time.ZoneId;
 import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
@@ -27,8 +26,10 @@ import org.junit.After;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import eu.europa.ec.fisheries.schema.exchange.module.v1.GetServiceListResponse;
+import eu.europa.ec.fisheries.schema.exchange.movement.v1.MovementType;
 import eu.europa.ec.fisheries.schema.exchange.plugin.types.v1.PluginType;
 import eu.europa.ec.fisheries.schema.exchange.plugin.v1.SetCommandRequest;
+import eu.europa.ec.fisheries.schema.exchange.plugin.v1.SetReportRequest;
 import eu.europa.ec.fisheries.schema.exchange.service.v1.CapabilityListType;
 import eu.europa.ec.fisheries.schema.exchange.service.v1.ServiceResponseType;
 import eu.europa.ec.fisheries.schema.exchange.service.v1.ServiceType;
@@ -41,9 +42,10 @@ import eu.europa.ec.fisheries.schema.movementrules.customrule.v1.SubCriteriaType
 import eu.europa.ec.fisheries.uvms.asset.client.model.AssetDTO;
 import eu.europa.ec.fisheries.uvms.commons.message.api.MessageConstants;
 import eu.europa.ec.fisheries.uvms.docker.validation.asset.AssetTestHelper;
-import eu.europa.ec.fisheries.uvms.docker.validation.common.AbstractRestServiceTest;
+import eu.europa.ec.fisheries.uvms.docker.validation.common.AbstractRest;
 import eu.europa.ec.fisheries.uvms.docker.validation.common.MessageHelper;
 import eu.europa.ec.fisheries.uvms.docker.validation.movement.LatLong;
+import eu.europa.ec.fisheries.uvms.docker.validation.movement.MovementHelper;
 import eu.europa.ec.fisheries.uvms.docker.validation.system.helper.CustomRuleBuilder;
 import eu.europa.ec.fisheries.uvms.docker.validation.system.helper.CustomRuleHelper;
 import eu.europa.ec.fisheries.uvms.docker.validation.system.helper.FLUXHelper;
@@ -51,9 +53,10 @@ import eu.europa.ec.fisheries.uvms.exchange.model.constant.ExchangeModelConstant
 import eu.europa.ec.fisheries.uvms.exchange.model.mapper.ExchangeModuleRequestMapper;
 import eu.europa.ec.fisheries.uvms.exchange.model.mapper.JAXBMarshaller;
 
-public class RulesAlarmIT extends AbstractRestServiceTest {
+public class RulesAlarmIT extends AbstractRest {
 
     private static final long TIMEOUT = 10000;
+    private static final String SELECTOR_FLUX = "ServiceName='eu.europa.ec.fisheries.uvms.plugins.flux.movement'";
     private static final String SERVICE_NAME = "eu.europa.ec.fisheries.uvms.docker.validation.system.rules.EMAIL";
     private static String emailSelector = "ServiceName='" + SERVICE_NAME + "'";
     
@@ -683,4 +686,125 @@ public class RulesAlarmIT extends AbstractRestServiceTest {
         
         CustomRuleHelper.assertRuleTriggered(createdCustomRule, timestamp.toLocalDateTime());
     }
+    
+    @Test
+    public void triggerAreaEntryRule() throws Exception {
+        ZonedDateTime timestamp = ZonedDateTime.now(ZoneOffset.UTC);
+
+        AssetDTO asset = AssetTestHelper.createTestAsset();
+        
+        LatLong positionSwe = new LatLong(57.670176, 11.799626, new Date());
+        FLUXHelper.sendPositionToFluxPlugin(asset, positionSwe);
+        MovementHelper.pollMovementCreated();
+        
+        String fluxEndpoint = "DNK";
+        CustomRuleType areaEntryRule = CustomRuleBuilder.getBuilder()
+                .setName("Area entry DNK")
+                .rule(CriteriaType.AREA, SubCriteriaType.AREA_CODE_ENT, 
+                        ConditionType.EQ, "DNK")
+                .action(ActionType.SEND_TO_FLUX, fluxEndpoint)
+                .build();
+        
+        CustomRuleType createdAreaRule = CustomRuleHelper.createCustomRule(areaEntryRule);
+        assertNotNull(createdAreaRule);
+        
+        LatLong positionDnk = new LatLong(56d, 10.5, new Date());
+        FLUXHelper.sendPositionToFluxPlugin(asset, positionDnk);
+        
+        TextMessage message = (TextMessage) MessageHelper.listenOnEventBus(SELECTOR_FLUX, TIMEOUT);
+        assertThat(message, is(notNullValue()));
+        
+        SetReportRequest setReportRequest = JAXBMarshaller.unmarshallTextMessage(message, SetReportRequest.class);
+        assertThat(setReportRequest.getReport().getRecipient(), is(fluxEndpoint));
+        
+        MovementType movement = setReportRequest.getReport().getMovement();
+        assertThat(movement.getAssetName(), is(asset.getName()));
+        assertThat(movement.getIrcs(), is(asset.getIrcs()));
+        
+        CustomRuleHelper.assertRuleTriggered(createdAreaRule, timestamp.toLocalDateTime());
+    }
+    
+    @Test
+    public void doNotTriggerAreaEntryRule() throws Exception {
+        ZonedDateTime timestamp = ZonedDateTime.now(ZoneOffset.UTC);
+
+        AssetDTO asset = AssetTestHelper.createTestAsset();
+        
+        LatLong positionSwe = new LatLong(57.670176, 11.799626, new Date());
+        FLUXHelper.sendPositionToFluxPlugin(asset, positionSwe);
+        MovementHelper.pollMovementCreated();
+        
+        String fluxEndpoint = "DNK";
+        CustomRuleType areaEntryRule = CustomRuleBuilder.getBuilder()
+                .setName("Area entry SWE")
+                .rule(CriteriaType.AREA, SubCriteriaType.AREA_CODE_ENT, 
+                        ConditionType.EQ, "SWE")
+                .action(ActionType.SEND_TO_FLUX, fluxEndpoint)
+                .build();
+        
+        CustomRuleType createdAreaRule = CustomRuleHelper.createCustomRule(areaEntryRule);
+        assertNotNull(createdAreaRule);
+        
+        String email = System.currentTimeMillis() + "@mail.com";
+        CustomRuleType fsRule = CustomRuleBuilder.getBuilder()
+                .setName("Flag state => Send email")
+                .rule(CriteriaType.ASSET, SubCriteriaType.FLAG_STATE, 
+                        ConditionType.EQ, asset.getFlagStateCode())
+                .action(ActionType.EMAIL, email)
+                .build();
+        
+        CustomRuleType createdFsRule = CustomRuleHelper.createCustomRule(fsRule);
+        assertNotNull(createdFsRule);
+        
+        LatLong positionSwe2 = new LatLong(57.670176, 11.799626, new Date());
+        FLUXHelper.sendPositionToFluxPlugin(asset, positionSwe2);
+        
+        TextMessage message = (TextMessage) MessageHelper.listenOnEventBus(emailSelector, TIMEOUT);
+        assertThat(message, is(notNullValue()));
+        
+        SetCommandRequest setCommandRequest = JAXBMarshaller.unmarshallTextMessage(message, SetCommandRequest.class);
+        assertThat(setCommandRequest.getCommand().getEmail().getTo(), is(email));
+        assertThat(setCommandRequest.getCommand().getFwdRule(), is(createdFsRule.getName()));
+        
+        CustomRuleHelper.assertRuleNotTriggered(createdAreaRule);
+        CustomRuleHelper.assertRuleTriggered(createdFsRule, timestamp.toLocalDateTime());
+    }
+    
+    @Test
+    public void triggerAreaExitRule() throws Exception {
+        ZonedDateTime timestamp = ZonedDateTime.now(ZoneOffset.UTC);
+
+        AssetDTO asset = AssetTestHelper.createTestAsset();
+        
+        LatLong positionSwe = new LatLong(57.670176, 11.799626, new Date());
+        FLUXHelper.sendPositionToFluxPlugin(asset, positionSwe);
+        MovementHelper.pollMovementCreated();
+        
+        String fluxEndpoint = "DNK";
+        CustomRuleType areaEntryRule = CustomRuleBuilder.getBuilder()
+                .setName("Area exit SWE")
+                .rule(CriteriaType.AREA, SubCriteriaType.AREA_CODE_EXT, 
+                        ConditionType.EQ, "SWE")
+                .action(ActionType.SEND_TO_FLUX, fluxEndpoint)
+                .build();
+        
+        CustomRuleType createdAreaRule = CustomRuleHelper.createCustomRule(areaEntryRule);
+        assertNotNull(createdAreaRule);
+        
+        LatLong positionDnk = new LatLong(56d, 10.5, new Date());
+        FLUXHelper.sendPositionToFluxPlugin(asset, positionDnk);
+        
+        TextMessage message = (TextMessage) MessageHelper.listenOnEventBus(SELECTOR_FLUX, TIMEOUT);
+        assertThat(message, is(notNullValue()));
+        
+        SetReportRequest setReportRequest = JAXBMarshaller.unmarshallTextMessage(message, SetReportRequest.class);
+        assertThat(setReportRequest.getReport().getRecipient(), is(fluxEndpoint));
+        
+        MovementType movement = setReportRequest.getReport().getMovement();
+        assertThat(movement.getAssetName(), is(asset.getName()));
+        assertThat(movement.getIrcs(), is(asset.getIrcs()));
+        
+        CustomRuleHelper.assertRuleTriggered(createdAreaRule, timestamp.toLocalDateTime());
+    }
+
 }

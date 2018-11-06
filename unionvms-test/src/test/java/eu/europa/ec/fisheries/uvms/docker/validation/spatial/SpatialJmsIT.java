@@ -1,10 +1,8 @@
 package eu.europa.ec.fisheries.uvms.docker.validation.spatial;
 
 import java.util.List;
-
 import org.junit.Test;
-
-import eu.europa.ec.fisheries.uvms.docker.validation.common.AbstractRestServiceTest;
+import eu.europa.ec.fisheries.uvms.docker.validation.common.AbstractRest;
 import eu.europa.ec.fisheries.uvms.docker.validation.common.MessageHelper;
 import eu.europa.ec.fisheries.uvms.docker.validation.movement.LatLong;
 import eu.europa.ec.fisheries.uvms.docker.validation.movement.MovementHelper;
@@ -21,7 +19,7 @@ import eu.europa.ec.fisheries.uvms.spatial.model.schemas.UnitType;
 /**
  * The Class SpatialJmsIT.
  */
-public class SpatialJmsIT extends AbstractRestServiceTest {
+public class SpatialJmsIT extends AbstractRest {
 
 	/** The spatial helper. */
 	private SpatialHelper spatialHelper = new SpatialHelper();

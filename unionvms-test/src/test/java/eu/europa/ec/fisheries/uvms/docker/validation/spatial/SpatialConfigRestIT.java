@@ -16,24 +16,17 @@ package eu.europa.ec.fisheries.uvms.docker.validation.spatial;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
-
-import eu.europa.ec.fisheries.uvms.asset.remote.dto.ConfigurationDto;
-import eu.europa.ec.fisheries.wsdl.asset.config.Config;
-import eu.europa.ec.fisheries.wsdl.asset.config.ConfigField;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
 import org.apache.http.client.fluent.Request;
-import org.junit.Ignore;
 import org.junit.Test;
-
 import com.fasterxml.jackson.databind.ObjectMapper;
-
-import eu.europa.ec.fisheries.uvms.docker.validation.common.AbstractRestServiceTest;
+import eu.europa.ec.fisheries.uvms.docker.validation.common.AbstractRest;
 
 /**
  * The Class SpatialConfigRestIT.
  */
-public class SpatialConfigRestIT extends AbstractRestServiceTest {
+public class SpatialConfigRestIT extends AbstractRest {
 
 	private ObjectMapper mapper = new ObjectMapper();
 

@@ -17,20 +17,18 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
-
 import org.apache.http.HttpResponse;
 import org.apache.http.client.fluent.Request;
 import org.junit.Test;
-
 import eu.europa.ec.fisheries.schema.config.types.v1.SettingType;
 import eu.europa.ec.fisheries.schema.config.types.v1.SettingsCreateQuery;
-import eu.europa.ec.fisheries.uvms.docker.validation.common.AbstractRestServiceTest;
+import eu.europa.ec.fisheries.uvms.docker.validation.common.AbstractRest;
 
 /**
  * The Class SettingsRestIT.
  */
 
-public class SettingsRestIT extends AbstractRestServiceTest {
+public class SettingsRestIT extends AbstractRest {
 
 	/**
 	 * Gets the by module name test.

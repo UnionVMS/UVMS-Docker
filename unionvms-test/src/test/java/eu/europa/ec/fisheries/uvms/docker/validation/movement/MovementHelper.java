@@ -1,25 +1,25 @@
 package eu.europa.ec.fisheries.uvms.docker.validation.movement;
 
-import static org.hamcrest.CoreMatchers.is;
 import java.io.IOException;
 import java.io.StringReader;
 import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
 import java.util.Random;
 import java.util.UUID;
 import javax.jms.Message;
 import javax.jms.TextMessage;
+import javax.ws.rs.client.Entity;
+import javax.ws.rs.core.GenericType;
+import javax.ws.rs.core.HttpHeaders;
+import javax.ws.rs.core.MediaType;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import com.peertopark.java.geocalc.Coordinate;
 import com.peertopark.java.geocalc.DegreeCoordinate;
 import com.peertopark.java.geocalc.EarthCalc;
 import com.peertopark.java.geocalc.Point;
-import org.apache.http.HttpResponse;
-import org.apache.http.client.fluent.Request;
 import eu.europa.ec.fisheries.schema.mobileterminal.types.v1.MobileTerminalType;
 import eu.europa.ec.fisheries.schema.movement.asset.v1.AssetId;
 import eu.europa.ec.fisheries.schema.movement.asset.v1.AssetIdType;
@@ -38,6 +38,7 @@ import eu.europa.ec.fisheries.schema.movement.v1.MovementPoint;
 import eu.europa.ec.fisheries.schema.movement.v1.MovementType;
 import eu.europa.ec.fisheries.schema.movement.v1.MovementTypeType;
 import eu.europa.ec.fisheries.uvms.asset.client.model.AssetDTO;
+import eu.europa.ec.fisheries.uvms.commons.rest.dto.ResponseDto;
 import eu.europa.ec.fisheries.uvms.docker.validation.common.AbstractHelper;
 import eu.europa.ec.fisheries.uvms.docker.validation.common.MessageHelper;
 
@@ -397,25 +398,52 @@ public class MovementHelper extends AbstractHelper {
 		return messageId;
 	}
 
-	public static List<MovementType> getListByQuery(MovementQuery movementQuery) throws Exception {
-
-		final HttpResponse response = Request.Post(getBaseUrl() + "movement/rest/movement/list")
-				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken())
-				.bodyByteArray(writeValueAsString(movementQuery).getBytes()).execute().returnResponse();
-
-		GetMovementListByQueryResponse movementList = checkSuccessResponseReturnObject(response, GetMovementListByQueryResponse.class);
-		return movementList.getMovement();
+	public static MovementType getMovementById(String guid) {
+	    ResponseDto<MovementType> response = getWebTarget()
+                .path("movement/rest/movement/")
+                .path(guid)
+                .request(MediaType.APPLICATION_JSON)
+                .header(HttpHeaders.AUTHORIZATION, getValidJwtToken())
+                .get(new GenericType<ResponseDto<MovementType>>() {});
+        return response.getData();
+	}
+	
+	public static List<MovementType> getListByQuery(MovementQuery movementQuery) {
+		ResponseDto<GetMovementListByQueryResponse> response = getWebTarget()
+		        .path("movement/rest/movement/list")
+		        .request(MediaType.APPLICATION_JSON)
+		        .header(HttpHeaders.AUTHORIZATION, getValidJwtToken())
+		        .post(Entity.json(movementQuery), new GenericType<ResponseDto<GetMovementListByQueryResponse>>() {});
+		return response.getData().getMovement();
 	}
 
-	public Map<String, Object> getMinimalListByQuery(MovementQuery movementQuery) throws Exception {
-
-		final HttpResponse response = Request.Post(getBaseUrl() + "movement/rest/movement/list/minimal")
-				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken())
-				.bodyByteArray(writeValueAsString(movementQuery).getBytes()).execute().returnResponse();
-
-		Map<String, Object> dataMap = checkSuccessResponseReturnMap(response);
-		return dataMap;
+	public static List<MovementType> getMinimalListByQuery(MovementQuery movementQuery) {
+		ResponseDto<GetMovementListByQueryResponse> response = getWebTarget()
+                .path("movement/rest/movement/list/minimal")
+                .request(MediaType.APPLICATION_JSON)
+                .header(HttpHeaders.AUTHORIZATION, getValidJwtToken())
+                .post(Entity.json(movementQuery), new GenericType<ResponseDto<GetMovementListByQueryResponse>>() {});
+        return response.getData().getMovement();
 	}
+	
+	
+	public static List<MovementDto> getLatestMovements(List<String> connectIds) {
+	    ResponseDto<List<MovementDto>> response = getWebTarget()
+                .path("movement/rest/movement/latest/")
+                .request(MediaType.APPLICATION_JSON)
+                .header(HttpHeaders.AUTHORIZATION, getValidJwtToken())
+                .post(Entity.json(connectIds), new GenericType<ResponseDto<List<MovementDto>>>() {});
+        return response.getData();
+    }
+	
+	public static List<MovementDto> getLatestMovements(Integer amount) {
+        ResponseDto<List<MovementDto>> response = getWebTarget()
+                .path("movement/rest/movement/latest/" + amount)
+                .request(MediaType.APPLICATION_JSON)
+                .header(HttpHeaders.AUTHORIZATION, getValidJwtToken())
+                .get(new GenericType<ResponseDto<List<MovementDto>>>() {});
+        return response.getData();
+    }
 
 	public CreateMovementBatchResponse createMovementBatch(CreateMovementBatchRequest createMovementBatchRequest) throws Exception {
 
@@ -529,8 +557,6 @@ public class MovementHelper extends AbstractHelper {
 
 		double latitude = 57.110 + randomFactorLat;
 		double longitude = 12.244 + randomFactorLong;
-		double HARBOUR_LATITUDE = latitude;
-		double HARBOUR_LONGITUDE = longitude;
 
 		// these will never be reached but still good to have to steer on
 		double END_LATITUDE = 56.408;
@@ -569,11 +595,10 @@ public class MovementHelper extends AbstractHelper {
 	}
 	
 	public static void pollMovementCreated() throws IOException {
-        final HttpResponse response = Request.Get(getBaseUrl() + "movement/activity/movement")
-                .setHeader("Content-Type", "application/json")
-                .execute().returnResponse();
-        
-        assertThat(response.getStatusLine().getStatusCode(), is(200));
+        getWebTarget()
+            .path("movement/activity/movement")
+            .request(MediaType.APPLICATION_JSON)
+            .get();
     }
 	
 }
