@@ -146,6 +146,18 @@
 			<type>ear</type>
 			<version>${unionvms.project.plugins.siriusone}</version>
 		</dependency>
+		<dependency>
+			<groupId>eu.europa.ec.fisheries.uvms.plugins</groupId>
+			<artifactId>flux-activity-plugin-module</artifactId>
+			<type>ear</type>
+			<version>${unionvms.project.plugins.flux.activity}</version>
+		</dependency>
+		<dependency>
+			<groupId>eu.europa.ec.fisheries.uvms.plugins</groupId>
+			<artifactId>mdr-plugin-module</artifactId>
+			<type>ear</type>
+			<version>${unionvms.project.plugins.mdr}</version>
+		</dependency>
 	</dependencies>
 	<build>
 		<pluginManagement>
@@ -322,6 +334,14 @@
 										<zipfileset dir="${project.basedir}/target/dockerfile/jboss-deployment/plugins" includes="*.xml" prefix="META-INF" />
 									</jar>
 
+									<jar destfile="${project.basedir}/target/dockerfile/deployments/flux-activity-plugin-module-${unionvms.project.plugins.siriusone}.ear" update="true">
+										<zipfileset dir="${project.basedir}/target/dockerfile/jboss-deployment/plugins" includes="*.xml" prefix="META-INF" />
+									</jar>
+
+									<jar destfile="${project.basedir}/target/dockerfile/deployments/mdr-plugin-module-${unionvms.project.plugins.siriusone}.ear" update="true">
+										<zipfileset dir="${project.basedir}/target/dockerfile/jboss-deployment/plugins" includes="*.xml" prefix="META-INF" />
+									</jar>
+
 									<jar destfile="${project.basedir}/target/dockerfile/deployments/unionvms-web-${unionvms.project.unionvms.web.version}.war" update="true">
 										<zipfileset dir="${project.basedir}/target/dockerfile/jboss-deployment/web-app" includes="*.xml" prefix="WEB-INF" />
 									</jar>
@@ -332,7 +352,7 @@
 
 								</then>
 								<else>
-								        <echo message="Ignore dependency order at startup, no ear/war:s is modified " />
+									<echo message="Ignore dependency order at startup, no ear/war:s is modified " />
 								</else>
 							</if>
 
