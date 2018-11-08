@@ -39,7 +39,7 @@
         <unionvms.project.spatial.db.module>1.0.5</unionvms.project.spatial.db.module>
         <unionvms.project.spatial.module>1.1.10-5-WILDFLY14</unionvms.project.spatial.module>
 
-        <unionvms.project.unionvms.web.version>3.0.36-UVMS</unionvms.project.unionvms.web.version>
+        <unionvms.project.unionvms.web.version>3.0.26</unionvms.project.unionvms.web.version>
         <unionvms.project.mapfishprint.version>3.5</unionvms.project.mapfishprint.version>
         <unionvms.project.geoserver.version>2.12.3</unionvms.project.geoserver.version>
 

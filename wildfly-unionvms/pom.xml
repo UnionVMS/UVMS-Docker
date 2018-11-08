@@ -334,11 +334,11 @@
 										<zipfileset dir="${project.basedir}/target/dockerfile/jboss-deployment/plugins" includes="*.xml" prefix="META-INF" />
 									</jar>
 
-									<jar destfile="${project.basedir}/target/dockerfile/deployments/flux-activity-plugin-module-${unionvms.project.plugins.siriusone}.ear" update="true">
+									<jar destfile="${project.basedir}/target/dockerfile/deployments/flux-activity-plugin-module-${unionvms.project.plugins.flux.activity}.ear" update="true">
 										<zipfileset dir="${project.basedir}/target/dockerfile/jboss-deployment/plugins" includes="*.xml" prefix="META-INF" />
 									</jar>
 
-									<jar destfile="${project.basedir}/target/dockerfile/deployments/mdr-plugin-module-${unionvms.project.plugins.siriusone}.ear" update="true">
+									<jar destfile="${project.basedir}/target/dockerfile/deployments/mdr-plugin-module-${unionvms.project.plugins.mdr}.ear" update="true">
 										<zipfileset dir="${project.basedir}/target/dockerfile/jboss-deployment/plugins" includes="*.xml" prefix="META-INF" />
 									</jar>
 
