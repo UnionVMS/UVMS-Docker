@@ -156,7 +156,7 @@
 			<groupId>eu.europa.ec.fisheries.uvms.plugins</groupId>
 			<artifactId>mdr-plugin-module</artifactId>
 			<type>ear</type>
-			<version>${unionvms.project.plugins.mdr}</version>
+			<version>${unionvms.project.plugins.flux.mdr}</version>
 		</dependency>
 	</dependencies>
 	<build>
@@ -338,7 +338,7 @@
 										<zipfileset dir="${project.basedir}/target/dockerfile/jboss-deployment/plugins" includes="*.xml" prefix="META-INF" />
 									</jar>
 
-									<jar destfile="${project.basedir}/target/dockerfile/deployments/mdr-plugin-module-${unionvms.project.plugins.mdr}.ear" update="true">
+									<jar destfile="${project.basedir}/target/dockerfile/deployments/mdr-plugin-module-${unionvms.project.plugins.flux.mdr}.ear" update="true">
 										<zipfileset dir="${project.basedir}/target/dockerfile/jboss-deployment/plugins" includes="*.xml" prefix="META-INF" />
 									</jar>
 
