@@ -22,12 +22,12 @@
         <scm.url>scm:git:https://github.com/UnionVMS/UVMS-Docker.git</scm.url>
         <focus-pom.java.version>1.8</focus-pom.java.version>
 
-        <unionvms.project.user.module>2.0.12-5-WILDFLY14</unionvms.project.user.module>
-        <unionvms.project.config.module>4.0.11-5-WILDFLY14</unionvms.project.config.module>
+        <unionvms.project.user.module>2.0.12-6-WILDFLY14</unionvms.project.user.module>
+        <unionvms.project.config.module>4.0.11-7-WILDFLY14</unionvms.project.config.module>
         <unionvms.project.audit.module>4.0.11-5-WILDFLY14</unionvms.project.audit.module>
-        <unionvms.project.asset.module>4.0.19-5-WILDFLY14</unionvms.project.asset.module>
-        <unionvms.project.mdr.module>1.0.16-5-WILDFLY14</unionvms.project.mdr.module>
-        <unionvms.project.rules.module>3.0.46-5-WILDFLY14</unionvms.project.rules.module>
+        <unionvms.project.asset.module>4.0.19-7-WILDFLY14</unionvms.project.asset.module>
+        <unionvms.project.mdr.module>1.0.16-6-WILDFLY14</unionvms.project.mdr.module>
+        <unionvms.project.rules.module>3.0.46-6-WILDFLY14</unionvms.project.rules.module>
         <unionvms.project.subscription.module>1.4-5-WILDFLY14</unionvms.project.subscription.module>
         <unionvms.project.exchange.module>4.0.36-5-WILDFLY14</unionvms.project.exchange.module>
         <unionvms.project.activity.module>1.1.11-5-WILDFLY14</unionvms.project.activity.module>
@@ -47,6 +47,7 @@
         <unionvms.project.plugins.naf>3.0.9</unionvms.project.plugins.naf>
         <unionvms.project.plugins.inmarsat>3.0.7</unionvms.project.plugins.inmarsat>
         <unionvms.project.plugins.siriusone>3.0.7</unionvms.project.plugins.siriusone>
+
         <unionvms.project.plugins.flux.movement>3.0.15-5-WILDFLY14</unionvms.project.plugins.flux.movement>
         <unionvms.project.plugins.flux.activity>1.0.17-5-WILDFLY14</unionvms.project.plugins.flux.activity>
         <unionvms.project.plugins.flux.mdr>1.0.4-5-WILDFLY14</unionvms.project.plugins.flux.mdr>
@@ -358,7 +359,7 @@
             </dependency>
             <dependency>
                 <groupId>eu.europa.ec.fisheries.uvms.plugins</groupId>
-                <artifactId>mdr-plugin-module</artifactId>
+                <artifactId>flux-mdr-plugin-module</artifactId>
                 <type>ear</type>
                 <version>${unionvms.project.plugins.flux.mdr}</version>
             </dependency>

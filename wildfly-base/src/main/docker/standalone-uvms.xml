@@ -46,7 +46,6 @@
         <property name="hibernate.spatial.dialect" value="org.hibernate.spatial.dialect.postgis.Postgis43WrapperDialect"/>
     </system-properties>
 
-
     <management>
         <security-realms>
             <security-realm name="ManagementRealm">
@@ -102,6 +101,7 @@
             </role-mapping>
         </access-control>
     </management>
+
     <profile>
         <subsystem xmlns="urn:jboss:domain:logging:6.0">
             <console-handler name="CONSOLE">
@@ -654,7 +654,6 @@
 	        <global-modules>
 	        	<module name="javax.jms.api" slot="main"/>
 	    	</global-modules>
-
             <spec-descriptor-property-replacement>false</spec-descriptor-property-replacement>
             <concurrent>
                 <context-services>
