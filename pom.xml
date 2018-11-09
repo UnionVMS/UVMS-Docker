@@ -53,7 +53,6 @@
         <unionvms.project.plugins.flux.mdr>1.0.4-WILDFLY14-JEE8</unionvms.project.plugins.flux.mdr>
     </properties>
 
-
     <scm>
         <connection>${scm.connection}</connection>
         <tag>HEAD</tag>

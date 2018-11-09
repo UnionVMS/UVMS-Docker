@@ -291,7 +291,7 @@
 										<zipfileset dir="${project.basedir}/target/dockerfile/jboss-deployment/exchange" includes="*.xml" prefix="META-INF" />
 									</jar>
 
-									<jar destfile="${project.basedir}/target/dockerfile/deployments/mdr-mRulesKieContainerInitializerodule-${unionvms.project.mdr.module}.ear" update="true">
+									<jar destfile="${project.basedir}/target/dockerfile/deployments/mdr-module-${unionvms.project.mdr.module}.ear" update="true">
 										<zipfileset dir="${project.basedir}/target/dockerfile/jboss-deployment/mdr" includes="*.xml" prefix="META-INF" />
 									</jar>
 
