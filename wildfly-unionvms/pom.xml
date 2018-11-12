@@ -149,7 +149,7 @@
 			<type>ear</type>
 			<version>${unionvms.project.plugins.flux.activity}</version>
 		</dependency>
-		<dependency>
+<!--		<dependency>
 			<groupId>eu.europa.ec.fisheries.uvms.plugins</groupId>
 			<artifactId>inmarsat-module</artifactId>
   			<type>ear</type>
@@ -166,7 +166,7 @@
 			<artifactId>siriusone-module</artifactId>
 			<type>ear</type>
 			<version>${unionvms.project.plugins.siriusone}</version>
-		</dependency>
+		</dependency>-->
 
 	</dependencies>
 	<build>
@@ -326,7 +326,7 @@
 										<zipfileset dir="${project.basedir}/target/dockerfile/jboss-deployment/web-app" includes="*.xml" prefix="WEB-INF" />
 									</jar>
 
-									<jar destfile="${project.basedir}/target/dockerfile/deployments/inmarsat-module-${unionvms.project.plugins.inmarsat}.ear" update="true">
+									<!--<jar destfile="${project.basedir}/target/dockerfile/deployments/inmarsat-module-${unionvms.project.plugins.inmarsat}.ear" update="true">
 										<zipfileset dir="${project.basedir}/target/dockerfile/jboss-deployment/plugins" includes="*.xml" prefix="META-INF" />
 									</jar>
 
@@ -340,7 +340,7 @@
 
 									<jar destfile="${project.basedir}/target/dockerfile/deployments/flux-mdr-plugin-module-${unionvms.project.plugins.flux.mdr}.ear" update="true">
 										<zipfileset dir="${project.basedir}/target/dockerfile/jboss-deployment/plugins" includes="*.xml" prefix="META-INF" />
-									</jar>
+									</jar>-->
 
 									<jar destfile="${project.basedir}/target/dockerfile/deployments/flux-activity-plugin-module-${unionvms.project.plugins.flux.activity}.ear" update="true">
 										<zipfileset dir="${project.basedir}/target/dockerfile/jboss-deployment/plugins" includes="*.xml" prefix="META-INF" />

@@ -60,6 +60,12 @@
             <type>ear</type>
             <version>${unionvms.project.subscription.module}</version>
         </dependency>
+        <dependency>
+            <groupId>eu.europa.ec.fisheries.uvms.rules</groupId>
+            <artifactId>rules-module</artifactId>
+            <type>ear</type>
+            <version>${unionvms.project.rules.module}</version>
+        </dependency>
     </dependencies>
 
     <build>
@@ -181,12 +187,16 @@
                                              <zipfileset dir="${project.basedir}/target/dockerfile/jboss-deployment/config" includes="*.xml" prefix="META-INF" />
                                          </jar>
 
+                                         <jar destfile="${project.basedir}/target/dockerfile/deployments/subscription-module-${unionvms.project.subscription.module}.ear" update="true">
+                                            <zipfileset dir="${project.basedir}/target/dockerfile/jboss-deployment/subscription" includes="*.xml" prefix="META-INF" />
+                                         </jar>
+
                                          <jar destfile="${project.basedir}/target/dockerfile/deployments/mdr-module-${unionvms.project.mdr.module}.ear" update="true">
                                              <zipfileset dir="${project.basedir}/target/dockerfile/jboss-deployment/mdr" includes="*.xml" prefix="META-INF" />
                                          </jar>
 
-                                         <jar destfile="${project.basedir}/target/dockerfile/deployments/subscription-module-${unionvms.project.subscription.module}.ear" update="true">
-                                             <zipfileset dir="${project.basedir}/target/dockerfile/jboss-deployment/subscription" includes="*.xml" prefix="META-INF" />
+                                         <jar destfile="${project.basedir}/target/dockerfile/deployments/rules-module-${unionvms.project.rules.module}.ear" update="true">
+                                             <zipfileset dir="${project.basedir}/target/dockerfile/jboss-deployment/rules" includes="*.xml" prefix="META-INF" />
                                          </jar>
                                     </then>
                                     <else>
