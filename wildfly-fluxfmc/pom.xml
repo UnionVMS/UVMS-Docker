@@ -40,14 +40,14 @@
             <type>ear</type>
             <version>${unionvms.project.user.module}</version>
         </dependency>
+        <dependency>
+            <groupId>eu.europa.ec.fisheries.uvms.config</groupId>
+            <artifactId>config-module</artifactId>
+            <type>ear</type>
+            <version>${unionvms.project.config.module}</version>
+        </dependency>
 
         <!-- app modules -->
-        <dependency>
-            <groupId>eu.europa.ec.fisheries.uvms.activity</groupId>
-            <artifactId>activity-module</artifactId>
-            <type>ear</type>
-            <version>${unionvms.project.activity.module}</version>
-        </dependency>
         <dependency>
             <groupId>eu.europa.ec.fisheries.uvms.mdr</groupId>
             <artifactId>mdr-module</artifactId>
@@ -59,18 +59,6 @@
             <artifactId>subscription-module</artifactId>
             <type>ear</type>
             <version>${unionvms.project.subscription.module}</version>
-        </dependency>
-        <dependency>
-            <groupId>eu.europa.ec.fisheries.uvms.rules</groupId>
-            <artifactId>rules-module</artifactId>
-            <type>ear</type>
-            <version>${unionvms.project.rules.module}</version>
-        </dependency>
-        <dependency>
-            <groupId>eu.europa.ec.fisheries.uvms.config</groupId>
-            <artifactId>config-module</artifactId>
-            <type>ear</type>
-            <version>${unionvms.project.config.module}</version>
         </dependency>
     </dependencies>
 
@@ -197,16 +185,8 @@
                                              <zipfileset dir="${project.basedir}/target/dockerfile/jboss-deployment/mdr" includes="*.xml" prefix="META-INF" />
                                          </jar>
 
-                                         <jar destfile="${project.basedir}/target/dockerfile/deployments/activity-module-postgres-${unionvms.project.activity.module}.ear" update="true">
-                                             <zipfileset dir="${project.basedir}/target/dockerfile/jboss-deployment/activity" includes="*.xml" prefix="META-INF" />
-                                         </jar>
-
                                          <jar destfile="${project.basedir}/target/dockerfile/deployments/subscription-module-${unionvms.project.subscription.module}.ear" update="true">
                                              <zipfileset dir="${project.basedir}/target/dockerfile/jboss-deployment/subscription" includes="*.xml" prefix="META-INF" />
-                                         </jar>
-
-                                         <jar destfile="${project.basedir}/target/dockerfile/deployments/rules-module-${unionvms.project.rules.module}.ear" update="true">
-                                             <zipfileset dir="${project.basedir}/target/dockerfile/jboss-deployment/rules" includes="*.xml" prefix="META-INF" />
                                          </jar>
                                     </then>
                                     <else>

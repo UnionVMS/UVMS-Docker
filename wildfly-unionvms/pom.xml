@@ -36,7 +36,9 @@
 	</distributionManagement>
 
 	<dependencies>
-		<!-- frontend modules -->
+
+		<!-- Frontend modules -->
+
 		<dependency>
 			<groupId>eu.europa.ec.fisheries.uvms</groupId>
 			<artifactId>unionvms-web</artifactId>
@@ -58,8 +60,8 @@
 			<version>${unionvms.project.geoserver.version}</version>
 		</dependency>
 
+		<!-- App modules -->
 
-		<!-- app modules -->
 		<dependency>
 			<groupId>eu.europa.ec.fisheries.uvms.asset</groupId>
 			<artifactId>asset-module</artifactId>
@@ -120,32 +122,20 @@
 			<type>ear</type>
 			<version>${unionvms.project.reporting.module}</version>
 		</dependency>
+		<dependency>
+			<groupId>eu.europa.ec.fisheries.uvms.activity</groupId>
+			<artifactId>activity-module</artifactId>
+			<type>ear</type>
+			<version>${unionvms.project.activity.module}</version>
+		</dependency>
 
-		<!-- plugin modules -->
+		<!-- Plugin modules -->
+
 		<dependency>
 			<groupId>eu.europa.ec.fisheries.uvms.plugins</groupId>
-			<artifactId>inmarsat-module</artifactId>
-  			<type>ear</type>
-			<version>${unionvms.project.plugins.inmarsat}</version>
-		</dependency>
-		<!--		<dependency>
-                    <groupId>eu.europa.ec.fisheries.uvms.plugins</groupId>
-                    <artifactId>naf-module</artifactId>
-                    <type>ear</type>
-                    <version>${unionvms.project.plugins.naf}</version>
-                </dependency>-->
-<!--		<dependency>
-			<groupId>eu.europa.ec.fisheries.uvms.plugins</groupId>
-			<artifactId>
-			</artifactId>
+			<artifactId>flux-movement-plugin-module</artifactId>
 			<type>ear</type>
 			<version>${unionvms.project.plugins.flux.movement}</version>
-		</dependency>-->
-<!--		<dependency>
-			<groupId>eu.europa.ec.fisheries.uvms.plugins.iridium</groupId>
-			<artifactId>siriusone-module</artifactId>
-			<type>ear</type>
-			<version>${unionvms.project.plugins.siriusone}</version>
 		</dependency>
 		<dependency>
 			<groupId>eu.europa.ec.fisheries.uvms.plugins</groupId>
@@ -153,12 +143,29 @@
 			<type>ear</type>
 			<version>${unionvms.project.plugins.flux.mdr}</version>
 		</dependency>
-		-->
 		<dependency>
 			<groupId>eu.europa.ec.fisheries.uvms.plugins</groupId>
 			<artifactId>flux-activity-plugin-module</artifactId>
 			<type>ear</type>
 			<version>${unionvms.project.plugins.flux.activity}</version>
+		</dependency>
+		<dependency>
+			<groupId>eu.europa.ec.fisheries.uvms.plugins</groupId>
+			<artifactId>inmarsat-module</artifactId>
+  			<type>ear</type>
+			<version>${unionvms.project.plugins.inmarsat}</version>
+		</dependency>
+		<dependency>
+			<groupId>eu.europa.ec.fisheries.uvms.plugins</groupId>
+			<artifactId>naf-module</artifactId>
+			<type>ear</type>
+			<version>${unionvms.project.plugins.naf}</version>
+		</dependency>
+		<dependency>
+			<groupId>eu.europa.ec.fisheries.uvms.plugins.iridium</groupId>
+			<artifactId>siriusone-module</artifactId>
+			<type>ear</type>
+			<version>${unionvms.project.plugins.siriusone}</version>
 		</dependency>
 
 	</dependencies>
@@ -295,10 +302,6 @@
 										<zipfileset dir="${project.basedir}/target/dockerfile/jboss-deployment/mdr" includes="*.xml" prefix="META-INF" />
 									</jar>
 
-									<jar destfile="${project.basedir}/target/dockerfile/deployments/inmarsat-module-${unionvms.project.plugins.inmarsat}.ear" update="true">
-										<zipfileset dir="${project.basedir}/target/dockerfile/jboss-deployment/plugins" includes="*.xml" prefix="META-INF" />
-									</jar>
-
 									<jar destfile="${project.basedir}/target/dockerfile/deployments/reporting-module-${unionvms.project.reporting.module}.ear" update="true">
 										<zipfileset dir="${project.basedir}/target/dockerfile/jboss-deployment/reporting" includes="*.xml" prefix="META-INF" />
 									</jar>
@@ -315,10 +318,6 @@
 										<zipfileset dir="${project.basedir}/target/dockerfile/jboss-deployment/movement" includes="*.xml" prefix="META-INF" />
 									</jar>
 
-									<jar destfile="${project.basedir}/target/dockerfile/deployments/asset-module-${unionvms.project.asset.module}.ear" update="true">
-										<zipfileset dir="${project.basedir}/target/dockerfile/jboss-deployment/asset" includes="*.xml" prefix="META-INF" />
-									</jar>
-
 									<jar destfile="${project.basedir}/target/dockerfile/deployments/gs-web-app-${unionvms.project.geoserver.version}.war" update="true">
 										<zipfileset dir="${project.basedir}/target/dockerfile/jboss-deployment/web-app" includes="*.xml" prefix="WEB-INF" />
 									</jar>
@@ -327,15 +326,15 @@
 										<zipfileset dir="${project.basedir}/target/dockerfile/jboss-deployment/web-app" includes="*.xml" prefix="WEB-INF" />
 									</jar>
 
+									<jar destfile="${project.basedir}/target/dockerfile/deployments/inmarsat-module-${unionvms.project.plugins.inmarsat}.ear" update="true">
+										<zipfileset dir="${project.basedir}/target/dockerfile/jboss-deployment/plugins" includes="*.xml" prefix="META-INF" />
+									</jar>
+
 									<jar destfile="${project.basedir}/target/dockerfile/deployments/naf-module-${unionvms.project.plugins.naf}.ear" update="true">
 										<zipfileset dir="${project.basedir}/target/dockerfile/jboss-deployment/plugins" includes="*.xml" prefix="META-INF" />
 									</jar>
 
 									<jar destfile="${project.basedir}/target/dockerfile/deployments/siriusone-module-${unionvms.project.plugins.siriusone}.ear" update="true">
-										<zipfileset dir="${project.basedir}/target/dockerfile/jboss-deployment/plugins" includes="*.xml" prefix="META-INF" />
-									</jar>
-
-									<jar destfile="${project.basedir}/target/dockerfile/deployments/flux-movement-plugin-module-${unionvms.project.plugins.flux.movement}.ear" update="true">
 										<zipfileset dir="${project.basedir}/target/dockerfile/jboss-deployment/plugins" includes="*.xml" prefix="META-INF" />
 									</jar>
 
@@ -347,8 +346,20 @@
 										<zipfileset dir="${project.basedir}/target/dockerfile/jboss-deployment/plugins" includes="*.xml" prefix="META-INF" />
 									</jar>
 
+									<jar destfile="${project.basedir}/target/dockerfile/deployments/flux-movement-plugin-module-${unionvms.project.plugins.flux.movement}.ear" update="true">
+										<zipfileset dir="${project.basedir}/target/dockerfile/jboss-deployment/plugins" includes="*.xml" prefix="META-INF" />
+									</jar>
+
 									<jar destfile="${project.basedir}/target/dockerfile/deployments/unionvms-web-${unionvms.project.unionvms.web.version}.war" update="true">
 										<zipfileset dir="${project.basedir}/target/dockerfile/jboss-deployment/web-app" includes="*.xml" prefix="WEB-INF" />
+									</jar>
+
+									<jar destfile="${project.basedir}/target/dockerfile/deployments/activity-module-${unionvms.project.activity.module}.ear" update="true">
+										<zipfileset dir="${project.basedir}/target/dockerfile/jboss-deployment/activity" includes="*.xml" prefix="META-INF" />
+									</jar>
+
+									<jar destfile="${project.basedir}/target/dockerfile/deployments/asset-module-${unionvms.project.asset.module}.ear" update="true">
+										<zipfileset dir="${project.basedir}/target/dockerfile/jboss-deployment/asset" includes="*.xml" prefix="META-INF" />
 									</jar>
 
 									<jar destfile="${project.basedir}/target/dockerfile/deployments/rules-module-${unionvms.project.rules.module}.ear" update="true">

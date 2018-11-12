@@ -23,34 +23,35 @@
         <focus-pom.java.version>1.8</focus-pom.java.version>
 
         <unionvms.project.user.module>2.0.12-WILDFLY14-JEE8</unionvms.project.user.module>
-        <unionvms.project.config.module>4.0.11-1-WILDFLY14-JEE8</unionvms.project.config.module>
-        <unionvms.project.audit.module>4.0.11-WILDFLY14-JEE8</unionvms.project.audit.module>
-        <unionvms.project.asset.module>4.0.19-WILDFLY14-JEE8</unionvms.project.asset.module>
-        <unionvms.project.mdr.module>1.0.16-WILDFLY14-JEE8</unionvms.project.mdr.module>
-        <unionvms.project.rules.module>3.0.46-WILDFLY14-JEE8</unionvms.project.rules.module>
-        <unionvms.project.subscription.module>1.4-WILDFLY14-JEE8</unionvms.project.subscription.module>
-        <unionvms.project.exchange.module>4.0.36-WILDFLY14-JEE8</unionvms.project.exchange.module>
-        <unionvms.project.activity.module>1.1.11-WILDFLY14-JEE8</unionvms.project.activity.module>
+        <unionvms.project.config.module>4.0.11-1-WILDFLY14-JEE8.FINAL</unionvms.project.config.module>
+        <unionvms.project.audit.module>4.0.11-WILDFLY14-JEE8.FINAL</unionvms.project.audit.module>
+        <unionvms.project.asset.module>4.0.19-WILDFLY14-JEE8.FINAL</unionvms.project.asset.module>
+        <unionvms.project.mdr.module>1.0.16-1-WILDFLY14-JEE8.FINAL</unionvms.project.mdr.module>
+        <unionvms.project.rules.module>3.0.46-1-WILDFLY14-JEE8.FINAL</unionvms.project.rules.module>
+        <unionvms.project.subscription.module>1.4-WILDFLY14-JEE8.FINAL</unionvms.project.subscription.module>
+        <unionvms.project.exchange.module>4.0.36-WILDFLY14-JEE8.FINAL</unionvms.project.exchange.module>
+        <unionvms.project.activity.module>1.1.11-WILDFLY14-JEE8.FINAL</unionvms.project.activity.module>
 
-        <unionvms.project.movementrules.module>1.0.3-WILDFLY14-JEE8</unionvms.project.movementrules.module>
-        <unionvms.project.movement.module>5.0.4-WILDFLY14-JEE8</unionvms.project.movement.module>
+        <unionvms.project.movementrules.module>1.0.3-WILDFLY14-JEE8.FINAL</unionvms.project.movementrules.module>
+        <unionvms.project.movement.module>5.0.4-WILDFLY14-JEE8.FINAL</unionvms.project.movement.module>
         <unionvms.project.reporting.db.module>1.0.4</unionvms.project.reporting.db.module>
-        <unionvms.project.reporting.module>1.1.6-WILDFLY14-JEE8</unionvms.project.reporting.module>
+        <unionvms.project.reporting.module>1.1.6-WILDFLY14-JEE8.FINAL</unionvms.project.reporting.module>
         <unionvms.project.spatial.db.module>1.0.5</unionvms.project.spatial.db.module>
-        <unionvms.project.spatial.module>1.1.10-WILDFLY14-JEE8</unionvms.project.spatial.module>
+        <unionvms.project.spatial.module>1.1.10-WILDFLY14-JEE8.FINAL</unionvms.project.spatial.module>
 
         <unionvms.project.unionvms.web.version>3.0.26</unionvms.project.unionvms.web.version>
         <unionvms.project.mapfishprint.version>3.5</unionvms.project.mapfishprint.version>
         <unionvms.project.geoserver.version>2.12.3</unionvms.project.geoserver.version>
 
         <!-- Plugins Dependencies -->
+        <unionvms.project.plugins.flux.movement>3.0.15-WILDFLY14-JEE8</unionvms.project.plugins.flux.movement>
+        <unionvms.project.plugins.flux.activity>1.0.17-WILDFLY14-JEE8.FINAL</unionvms.project.plugins.flux.activity>
+        <unionvms.project.plugins.flux.mdr>1.0.4-WILDFLY14-JEE8</unionvms.project.plugins.flux.mdr>
+
         <unionvms.project.plugins.naf>3.0.9</unionvms.project.plugins.naf>
         <unionvms.project.plugins.inmarsat>3.0.7</unionvms.project.plugins.inmarsat>
         <unionvms.project.plugins.siriusone>3.0.7</unionvms.project.plugins.siriusone>
 
-        <unionvms.project.plugins.flux.movement>3.0.15-WILDFLY14-JEE8</unionvms.project.plugins.flux.movement>
-        <unionvms.project.plugins.flux.activity>1.0.17-WILDFLY14-JEE8</unionvms.project.plugins.flux.activity>
-        <unionvms.project.plugins.flux.mdr>1.0.4-WILDFLY14-JEE8</unionvms.project.plugins.flux.mdr>
     </properties>
 
     <scm>
@@ -342,14 +343,30 @@
                 <type>ear</type>
                 <version>${unionvms.project.sales.module}</version>
             </dependency>
+            <dependency>
+                <groupId>eu.europa.ec.fisheries.uvms.activity</groupId>
+                <artifactId>activity-module</artifactId>
+                <type>ear</type>
+                <version>${unionvms.project.activity.module}</version>
+            </dependency>
+            <dependency>
+                <groupId>eu.europa.ec.fisheries.uvms.reporting</groupId>
+                <artifactId>reporting-module</artifactId>
+                <type>ear</type>
+                <version>${unionvms.project.reporting.module}</version>
+            </dependency>
+
+
+            <!-- frontend modules -->
+            <dependency>
+                <groupId>eu.europa.ec.fisheries.uvms</groupId>
+                <artifactId>unionvms-web</artifactId>
+                <type>war</type>
+                <version>${unionvms.project.unionvms.web.version}</version>
+            </dependency>
 
             <!-- plugin modules -->
-            <dependency>
-                <groupId>eu.europa.ec.fisheries.uvms.plugins</groupId>
-                <artifactId>inmarsat-module</artifactId>
-                <type>ear</type>
-                <version>${unionvms.project.plugins.inmarsat}</version>
-            </dependency>
+
             <dependency>
                 <groupId>eu.europa.ec.fisheries.uvms.plugins</groupId>
                 <artifactId>flux-activity-plugin-module</artifactId>
@@ -362,43 +379,24 @@
                 <type>ear</type>
                 <version>${unionvms.project.plugins.flux.mdr}</version>
             </dependency>
-
-
-            <!-- frontend modules -->
-            <dependency>
-                <groupId>eu.europa.ec.fisheries.uvms</groupId>
-                <artifactId>unionvms-web</artifactId>
-                <type>war</type>
-                <version>${unionvms.project.unionvms.web.version}</version>
-            </dependency>
-
-            <!-- app modules -->
-            <dependency>
-                <groupId>eu.europa.ec.fisheries.uvms.activity</groupId>
-                <artifactId>activity-module</artifactId>
-                <type>ear</type>
-                <version>${unionvms.project.activity.module}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>eu.europa.ec.fisheries.uvms.reporting</groupId>
-                <artifactId>reporting-module</artifactId>
-                <type>ear</type>
-                <version>${unionvms.project.reporting.module}</version>
-            </dependency>
-
-            <!-- plugin modules -->
-            <dependency>
-                <groupId>eu.europa.ec.fisheries.uvms.plugins</groupId>
-                <artifactId>naf-module</artifactId>
-                <type>ear</type>
-                <version>${unionvms.project.plugins.naf}</version>
-            </dependency>
             <dependency>
                 <groupId>eu.europa.ec.fisheries.uvms.plugins</groupId>
                 <artifactId>flux-movement-plugin-module</artifactId>
                 <type>ear</type>
                 <version>${unionvms.project.plugins.flux.movement}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>eu.europa.ec.fisheries.uvms.plugins</groupId>
+                <artifactId>inmarsat-module</artifactId>
+                <type>ear</type>
+                <version>${unionvms.project.plugins.inmarsat}</version>
+            </dependency>
+            <dependency>
+                <groupId>eu.europa.ec.fisheries.uvms.plugins</groupId>
+                <artifactId>naf-module</artifactId>
+                <type>ear</type>
+                <version>${unionvms.project.plugins.naf}</version>
             </dependency>
             <dependency>
                 <groupId>eu.europa.ec.fisheries.uvms.plugins.iridium</groupId>
