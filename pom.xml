@@ -22,22 +22,22 @@
         <scm.url>scm:git:https://github.com/UnionVMS/UVMS-Docker.git</scm.url>
         <focus-pom.java.version>1.8</focus-pom.java.version>
 
-        <unionvms.project.user.module>2.0.12-WILDFLY14-JEE8</unionvms.project.user.module>
-        <unionvms.project.config.module>4.0.11-1-WILDFLY14-JEE8.FINAL</unionvms.project.config.module>
-        <unionvms.project.audit.module>4.0.11-WILDFLY14-JEE8.FINAL</unionvms.project.audit.module>
-        <unionvms.project.asset.module>4.0.19-WILDFLY14-JEE8.FINAL</unionvms.project.asset.module>
-        <unionvms.project.mdr.module>1.0.16-6-WILDFLY14-JEE8.FINAL</unionvms.project.mdr.module>
-        <unionvms.project.rules.module>3.0.46-6-WILDFLY14-JEE8.FINAL</unionvms.project.rules.module>
-        <unionvms.project.subscription.module>1.4-WILDFLY14-JEE8.FINAL</unionvms.project.subscription.module>
-        <unionvms.project.exchange.module>4.0.36-WILDFLY14-JEE8.FINAL</unionvms.project.exchange.module>
-        <unionvms.project.activity.module>1.1.11-WILDFLY14-JEE8.FINAL</unionvms.project.activity.module>
+        <unionvms.project.user.module>2.0.12-W14-J8</unionvms.project.user.module>
+        <unionvms.project.config.module>4.0.11-W14-J8</unionvms.project.config.module>
+        <unionvms.project.audit.module>4.0.11-W14-J8</unionvms.project.audit.module>
+        <unionvms.project.asset.module>4.0.19--W14-J8</unionvms.project.asset.module>
+        <unionvms.project.mdr.module>1.0.16-6-W14-J8</unionvms.project.mdr.module>
+        <unionvms.project.rules.module>3.0.46-6-W14-J8</unionvms.project.rules.module>
+        <unionvms.project.subscription.module>1.4-W14-J8</unionvms.project.subscription.module>
+        <unionvms.project.exchange.module>4.0.36-W14-J8</unionvms.project.exchange.module>
+        <unionvms.project.activity.module>1.1.11-W14-J8</unionvms.project.activity.module>
 
-        <unionvms.project.movementrules.module>1.0.3-WILDFLY14-JEE8.FINAL</unionvms.project.movementrules.module>
-        <unionvms.project.movement.module>5.0.4-WILDFLY14-JEE8.FINAL</unionvms.project.movement.module>
+        <unionvms.project.movementrules.module>1.0.3-W14-J8</unionvms.project.movementrules.module>
+        <unionvms.project.movement.module>5.0.4-W14-J8</unionvms.project.movement.module>
         <unionvms.project.reporting.db.module>1.0.4</unionvms.project.reporting.db.module>
-        <unionvms.project.reporting.module>1.1.6-WILDFLY14-JEE8.FINAL</unionvms.project.reporting.module>
+        <unionvms.project.reporting.module>1.1.7-W14-J8</unionvms.project.reporting.module>
         <unionvms.project.spatial.db.module>1.0.5</unionvms.project.spatial.db.module>
-        <unionvms.project.spatial.module>1.1.10-WILDFLY14-JEE8.FINAL</unionvms.project.spatial.module>
+        <unionvms.project.spatial.module>1.1.10-W14-J8</unionvms.project.spatial.module>
 
         <unionvms.project.unionvms.web.version>3.0.26</unionvms.project.unionvms.web.version>
         <unionvms.project.mapfishprint.version>3.5</unionvms.project.mapfishprint.version>
@@ -45,7 +45,7 @@
 
         <!-- Plugins Dependencies -->
         <unionvms.project.plugins.flux.movement>3.0.15-WILDFLY14-JEE8</unionvms.project.plugins.flux.movement>
-        <unionvms.project.plugins.flux.activity>1.0.17-WILDFLY14-JEE8.FINAL</unionvms.project.plugins.flux.activity>
+        <unionvms.project.plugins.flux.activity>1.0.17-W14-J8</unionvms.project.plugins.flux.activity>
         <unionvms.project.plugins.flux.mdr>1.0.4-WILDFLY14-JEE8</unionvms.project.plugins.flux.mdr>
 
         <unionvms.project.plugins.naf>3.0.9</unionvms.project.plugins.naf>
