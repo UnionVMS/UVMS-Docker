@@ -48,9 +48,9 @@
         <unionvms.project.plugins.flux.activity>1.0.17-W14-J8</unionvms.project.plugins.flux.activity>
         <unionvms.project.plugins.flux.mdr>1.0.4-WILDFLY14-JEE8</unionvms.project.plugins.flux.mdr>
 
-        <unionvms.project.plugins.naf>3.0.9</unionvms.project.plugins.naf>
-        <unionvms.project.plugins.inmarsat>3.0.7</unionvms.project.plugins.inmarsat>
-        <unionvms.project.plugins.siriusone>3.0.7</unionvms.project.plugins.siriusone>
+        <unionvms.project.plugins.naf>3.0.10-W14J8</unionvms.project.plugins.naf>
+        <unionvms.project.plugins.inmarsat>3.0.10-W14J8</unionvms.project.plugins.inmarsat>
+        <unionvms.project.plugins.siriusone>3.0.8-W14J8</unionvms.project.plugins.siriusone>
 
     </properties>
 
