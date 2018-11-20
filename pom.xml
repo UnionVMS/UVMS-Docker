@@ -12,12 +12,12 @@
 
 	<groupId>eu.europa.ec.fisheries.uvms.docker</groupId>
 	<artifactId>uvms-docker</artifactId>
-	<version>3.29.4.w14-SNAPSHOT</version>
+	<version>3.29.5.w14-SNAPSHOT</version>
 	<packaging>pom</packaging>
 	<name>uvms-docker</name>
 
       <properties>
-        
+
         <focus-pom.java.version>1.8</focus-pom.java.version>
         <project.scm.id>github</project.scm.id>
         <scm.connection>scm:git:https://github.com/UnionVMS/UVMS-Docker.git</scm.connection>
