@@ -47,7 +47,7 @@
 		<dependency>
 			<groupId>eu.europa.ec.fisheries.uvms.asset</groupId>
 			<artifactId>asset-client</artifactId>
-			<version>${unionvms.project.asset.module}</version>
+			<version>${unionvms.project.asset.client.jar}</version>
 		</dependency>
 		<dependency>
 			<groupId>eu.europa.ec.fisheries.uvms.user</groupId>

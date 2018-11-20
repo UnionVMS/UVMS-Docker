@@ -28,6 +28,7 @@
         <unionvms.project.config.module>4.0.11-W14J8</unionvms.project.config.module>
         <unionvms.project.audit.module>4.0.11-W14J8</unionvms.project.audit.module>
         <unionvms.project.asset.module>4.0.19-W14J8</unionvms.project.asset.module>
+        <unionvms.project.asset.client.jar>6.0.17</unionvms.project.asset.client.jar>
         <unionvms.project.mdr.module>1.0.16-W14J8</unionvms.project.mdr.module>
         <unionvms.project.rules.module>3.0.46-W14J8</unionvms.project.rules.module>
         <unionvms.project.subscription.module>1.4-W14J8</unionvms.project.subscription.module>
