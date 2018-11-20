@@ -19,6 +19,8 @@ import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
+import org.apache.http.HttpResponse;
+import org.apache.http.client.fluent.Request;
 import org.hamcrest.CoreMatchers;
 import org.junit.Test;
 import eu.europa.ec.fisheries.schema.exchange.movement.v1.MovementActivityTypeType;
@@ -138,4 +140,17 @@ public class MovementConfigRestIT extends AbstractRest {
         assertThat(response.getStatus(), CoreMatchers.is(Status.OK.getStatusCode()));
 	}
 
+	   
+    /**
+     * Gets the alarm statuses test.
+     *
+     * @return the alarm statuses test
+     * @throws Exception the exception
+     */
+    @Test
+    public void getAlarmStatusesTest() throws Exception {
+        final HttpResponse response = Request.Get(getBaseUrl() + "movement/rest/config/alarmstatus")
+                .setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken()).execute().returnResponse();
+        List dataList = checkSuccessResponseReturnType(response,List.class);
+    }
 }

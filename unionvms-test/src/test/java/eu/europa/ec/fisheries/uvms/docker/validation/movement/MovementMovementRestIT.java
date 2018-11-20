@@ -18,10 +18,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
-import javax.ws.rs.client.Entity;
-import javax.ws.rs.core.GenericType;
-import javax.ws.rs.core.HttpHeaders;
-import javax.ws.rs.core.MediaType;
 import org.hamcrest.CoreMatchers;
 import org.junit.Test;
 import eu.europa.ec.fisheries.schema.mobileterminal.types.v1.MobileTerminalType;
@@ -29,13 +25,10 @@ import eu.europa.ec.fisheries.schema.movement.module.v1.CreateMovementRequest;
 import eu.europa.ec.fisheries.schema.movement.module.v1.CreateMovementResponse;
 import eu.europa.ec.fisheries.schema.movement.search.v1.ListCriteria;
 import eu.europa.ec.fisheries.schema.movement.search.v1.ListPagination;
-import eu.europa.ec.fisheries.schema.movement.search.v1.MovementAreaAndTimeIntervalCriteria;
 import eu.europa.ec.fisheries.schema.movement.search.v1.MovementQuery;
 import eu.europa.ec.fisheries.schema.movement.search.v1.SearchKey;
-import eu.europa.ec.fisheries.schema.movement.source.v1.GetMovementListByAreaAndTimeIntervalResponse;
 import eu.europa.ec.fisheries.schema.movement.v1.MovementType;
 import eu.europa.ec.fisheries.uvms.asset.client.model.AssetDTO;
-import eu.europa.ec.fisheries.uvms.commons.rest.dto.ResponseDto;
 import eu.europa.ec.fisheries.uvms.docker.validation.asset.AssetTestHelper;
 import eu.europa.ec.fisheries.uvms.docker.validation.common.AbstractRest;
 import eu.europa.ec.fisheries.uvms.docker.validation.mobileterminal.MobileTerminalTestHelper;
@@ -180,24 +173,6 @@ public class MovementMovementRestIT extends AbstractRest {
 
 		MovementType movementById = MovementHelper.getMovementById(id);
 		assertNotNull(movementById);
-	}
-
-	/**
-	 * Gets the list movement by area and time interval test.
-	 *
-	 * @return the list movement by area and time interval test
-	 * @throws Exception
-	 *             the exception
-	 */
-	@Test
-	public void getListMovementByAreaAndTimeIntervalTest() throws Exception {
-		ResponseDto<GetMovementListByAreaAndTimeIntervalResponse> response = getWebTarget()
-		        .path("movement/rest/movement/listByAreaAndTimeInterval")
-		        .request(MediaType.APPLICATION_JSON)
-		        .header(HttpHeaders.AUTHORIZATION, getValidJwtToken())
-		        .post(Entity.json(new MovementAreaAndTimeIntervalCriteria()), new GenericType<ResponseDto<GetMovementListByAreaAndTimeIntervalResponse>>() {});
-		
-		assertNotNull(response);
 	}
 
 }

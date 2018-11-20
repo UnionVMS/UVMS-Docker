@@ -9,26 +9,36 @@ the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the impl
 FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more details. You should have received a
 copy of the GNU General Public License along with the IFDM Suite. If not, see <http://www.gnu.org/licenses/>.
  */
-package eu.europa.ec.fisheries.uvms.docker.validation.system.helper;
+package eu.europa.ec.fisheries.uvms.docker.validation.movement.model;
 
-import javax.ws.rs.core.HttpHeaders;
-import javax.ws.rs.core.MediaType;
-import eu.europa.ec.fisheries.uvms.docker.validation.common.AbstractHelper;
+import java.util.List;
 
-public class SanityRuleHelper extends AbstractHelper {
-    
-    public static long countOpenAlarms() {
-        return getWebTarget()
-                .path("movement/rest/alarms/countopen")
-                .request(MediaType.APPLICATION_JSON)
-                .header(HttpHeaders.AUTHORIZATION, getValidJwtToken())
-                .get(long.class);
+public class AlarmListResponseDto {
+    private List<AlarmReport> alarmList;
+    private int totalNumberOfPages;
+    private int currentPage;
+
+    public List<AlarmReport> getAlarmList() {
+        return alarmList;
     }
-    
-    public static void pollAlarmReportCreated() {
-        getWebTarget()
-            .path("movement/activity/alarm")
-            .request(MediaType.APPLICATION_JSON)
-            .get();
+
+    public void setAlarmList(List<AlarmReport> alarmList) {
+        this.alarmList = alarmList;
+    }
+
+    public int getTotalNumberOfPages() {
+        return totalNumberOfPages;
+    }
+
+    public void setTotalNumberOfPages(int totalNumberOfPages) {
+        this.totalNumberOfPages = totalNumberOfPages;
+    }
+
+    public int getCurrentPage() {
+        return currentPage;
+    }
+
+    public void setCurrentPage(int currentPage) {
+        this.currentPage = currentPage;
     }
 }

@@ -68,7 +68,6 @@ public class MovementJmsIT extends AbstractRest {
 		assertNotNull(createMovementResponse);
 		assertEquals(null, createMovementResponse.getMovement().getCalculatedCourse());
 		assertEquals(null, createMovementResponse.getMovement().getCalculatedSpeed());
-		assertFalse(createMovementResponse.getMovement().getMetaData().getAreas().isEmpty());
 		assertEquals(createMovementRequest.getMovement().getPosition().getLongitude(),
 				createMovementResponse.getMovement().getPosition().getLongitude());
 		assertEquals(createMovementRequest.getMovement().getPosition().getLatitude(),

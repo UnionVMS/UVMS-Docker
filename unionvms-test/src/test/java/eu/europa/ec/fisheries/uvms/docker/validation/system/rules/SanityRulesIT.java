@@ -14,9 +14,7 @@ package eu.europa.ec.fisheries.uvms.docker.validation.system.rules;
 import static org.hamcrest.CoreMatchers.is;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.List;
 import org.junit.Test;
-import eu.europa.ec.fisheries.schema.movementrules.customrule.v1.SanityRuleType;
 import eu.europa.ec.fisheries.uvms.asset.client.model.AssetDTO;
 import eu.europa.ec.fisheries.uvms.docker.validation.asset.AssetTestHelper;
 import eu.europa.ec.fisheries.uvms.docker.validation.common.AbstractRest;
@@ -29,12 +27,6 @@ import xeu.bridge_connector.v1.RequestType;
 
 public class SanityRulesIT extends AbstractRest {
     
-    @Test
-    public void getSanityRulesTest() throws Exception{
-        List<SanityRuleType> allSanityRules = SanityRuleHelper.getAllSanityRules();
-        assertTrue(!allSanityRules.isEmpty());
-    }
-
     /*
     <column name="sanityrule_description" value="An asset must exist"/>
     <column name="sanityrule_expression" value="assetGuid == null"/>
