@@ -66,6 +66,12 @@
             <type>ear</type>
             <version>${unionvms.project.rules.module}</version>
         </dependency>
+        <dependency>
+            <groupId>eu.europa.ec.fisheries.uvms.exchange</groupId>
+            <artifactId>exchange-module</artifactId>
+            <type>ear</type>
+            <version>${unionvms.project.exchange.module}</version>
+        </dependency>
     </dependencies>
 
     <build>
@@ -198,6 +204,10 @@
                                          <jar destfile="${project.basedir}/target/dockerfile/deployments/rules-module-${unionvms.project.rules.module}.ear" update="true">
                                              <zipfileset dir="${project.basedir}/target/dockerfile/jboss-deployment/rules" includes="*.xml" prefix="META-INF" />
                                          </jar>
+
+                                          <jar destfile="${project.basedir}/target/dockerfile/deployments/exchange-module-${unionvms.project.exchange.module}.ear" update="true">
+                                            <zipfileset dir="${project.basedir}/target/dockerfile/jboss-deployment/exchange" includes="*.xml" prefix="META-INF" />
+                                          </jar>
                                     </then>
                                     <else>
                                         <echo message="Ignore dependency order at startup, no ear/war:s is modified " />
