@@ -81,4 +81,14 @@ public class TempMovementRestHelper extends AbstractHelper {
                 .put(Entity.json(tempMovement), new GenericType<ResponseDto<TempMovementType>>() {});
         return response.getData();
     }
+    
+    public static TempMovementType sendTempMovement(String guid) {
+        ResponseDto<TempMovementType> response = getWebTarget()
+                .path("movement/rest/tempmovement/send")
+                .path(guid)
+                .request(MediaType.APPLICATION_JSON)
+                .header(HttpHeaders.AUTHORIZATION, getValidJwtToken())
+                .put(Entity.json(guid), new GenericType<ResponseDto<TempMovementType>>() {});
+        return response.getData();
+    }
 }

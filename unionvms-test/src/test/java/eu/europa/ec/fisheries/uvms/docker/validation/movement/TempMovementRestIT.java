@@ -13,9 +13,12 @@ copy of the GNU General Public License along with the IFDM Suite. If not, see <h
 */
 package eu.europa.ec.fisheries.uvms.docker.validation.movement;
 
+import static org.hamcrest.CoreMatchers.is;
 import java.text.SimpleDateFormat;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 import java.util.TimeZone;
 import java.util.UUID;
 import org.junit.Test;
@@ -23,7 +26,9 @@ import eu.europa.ec.fisheries.schema.movement.asset.v1.VesselType;
 import eu.europa.ec.fisheries.schema.movement.v1.MovementPoint;
 import eu.europa.ec.fisheries.schema.movement.v1.TempMovementStateEnum;
 import eu.europa.ec.fisheries.schema.movement.v1.TempMovementType;
+import eu.europa.ec.fisheries.uvms.asset.client.model.AssetDTO;
 import eu.europa.ec.fisheries.uvms.commons.rest.dto.ResponseDto;
+import eu.europa.ec.fisheries.uvms.docker.validation.asset.AssetTestHelper;
 import eu.europa.ec.fisheries.uvms.docker.validation.common.AbstractRest;
 
 /**
@@ -129,6 +134,33 @@ public class TempMovementRestIT extends AbstractRest {
         assertEquals(createdTempMovement.getSpeed(), updatedTempMovement.getSpeed());
         assertEquals(createdTempMovement.getState(), updatedTempMovement.getState());
         assertEquals(createdTempMovement.getTime(), updatedTempMovement.getTime());
+    }
+    
+    @Test
+    public void sendTempMovementTest() throws Exception {
+        Double latitude = 10d;
+        Double longitude = 11d;
+        AssetDTO asset = AssetTestHelper.createTestAsset();
+        TempMovementType tempMovement = getTempMovement();
+        tempMovement.getAsset().setCfr(asset.getCfr());
+        tempMovement.getAsset().setIrcs(asset.getIrcs());
+        tempMovement.getAsset().setExtMarking(asset.getExternalMarking());
+        tempMovement.getAsset().setFlagState(asset.getFlagStateCode());
+        tempMovement.getAsset().setName(asset.getName());
+        tempMovement.getPosition().setLatitude(latitude);
+        tempMovement.getPosition().setLongitude(longitude);
+        TempMovementType createdTempMovement = TempMovementRestHelper.createTempMovement(tempMovement);
+        
+        TempMovementRestHelper.sendTempMovement(createdTempMovement.getGuid());
+        
+        MovementHelper.pollMovementCreated();
+        
+        List<MovementDto> latestMovements = MovementHelper.getLatestMovements(Arrays.asList(asset.getHistoryId().toString()));
+        assertThat(latestMovements.size(), is(1));
+        
+        MovementDto createdMovement = latestMovements.get(0);
+        assertThat(createdMovement.getLatitude(), is(latitude));
+        assertThat(createdMovement.getLongitude(), is(longitude));
     }
 
     /**
