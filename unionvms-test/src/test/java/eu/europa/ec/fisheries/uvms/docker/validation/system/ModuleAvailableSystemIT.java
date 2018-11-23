@@ -121,6 +121,12 @@ public class ModuleAvailableSystemIT extends AbstractRest {
                 Request.Get(getBaseUrl() + "movement/rest/search").execute().returnResponse().getStatusLine().getStatusCode());
 		assertEquals(HttpStatus.SC_FORBIDDEN,
                 Request.Get(getBaseUrl() + "movement/rest/tempmovement").execute().returnResponse().getStatusLine().getStatusCode());
+		assertEquals(HttpStatus.SC_FORBIDDEN,
+                Request.Get(getBaseUrl() + "movement/rest/sse").execute().returnResponse().getStatusLine().getStatusCode());
+		assertEquals(HttpStatus.SC_FORBIDDEN,
+                Request.Get(getBaseUrl() + "movement/rest/segment").execute().returnResponse().getStatusLine().getStatusCode());
+		assertEquals(HttpStatus.SC_FORBIDDEN,
+                Request.Get(getBaseUrl() + "movement/rest/track").execute().returnResponse().getStatusLine().getStatusCode());
 		assertEquals(HttpStatus.SC_OK, 
 		        Request.Get(getBaseUrl() + "movement/monitoring").execute().returnResponse().getStatusLine().getStatusCode());
 	}

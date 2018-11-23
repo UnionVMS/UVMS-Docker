@@ -32,6 +32,7 @@ import eu.europa.ec.fisheries.uvms.asset.client.model.AssetDTO;
 import eu.europa.ec.fisheries.uvms.docker.validation.asset.AssetTestHelper;
 import eu.europa.ec.fisheries.uvms.docker.validation.common.AbstractRest;
 import eu.europa.ec.fisheries.uvms.docker.validation.mobileterminal.MobileTerminalTestHelper;
+import eu.europa.ec.fisheries.uvms.docker.validation.movement.model.IncomingMovement;
 
 /**
  * The Class MovementMovementRestIT.
@@ -109,16 +110,15 @@ public class MovementMovementRestIT extends AbstractRest {
 		MobileTerminalType mobileTerminalType = MobileTerminalTestHelper.createMobileTerminalType();
 		MobileTerminalTestHelper.assignMobileTerminal(testAsset, mobileTerminalType);
 		LatLong latLong = new LatLong(16.9, 32.6333333, new Date(System.currentTimeMillis()));
-		CreateMovementRequest createMovementRequest = movementHelper.createMovementRequest(testAsset, latLong);
-		CreateMovementResponse createMovementResponse = movementHelper.createMovement(createMovementRequest);
+		IncomingMovement createMovementRequest = movementHelper.createIncomingMovement(testAsset, latLong);
+		MovementDto createMovementResponse = movementHelper.createMovement(createMovementRequest);
 
 		List<String> connectIds = new ArrayList<>();
 		
 		assertNotNull(createMovementResponse);
-		assertNotNull(createMovementResponse.getMovement());
-		assertNotNull(createMovementResponse.getMovement().getConnectId());	
+		assertNotNull(createMovementResponse.getConnectId());	
 		
-		String connectId = createMovementResponse.getMovement().getConnectId();
+		String connectId = createMovementResponse.getConnectId();
 		
 		connectIds.add(connectId);
 		
@@ -140,8 +140,8 @@ public class MovementMovementRestIT extends AbstractRest {
 		MobileTerminalTestHelper.assignMobileTerminal(testAsset, mobileTerminalType);
 		
 		LatLong latLong = new LatLong(16.9, 32.6333333, new Date(System.currentTimeMillis()));
-		CreateMovementRequest createMovementRequest = movementHelper.createMovementRequest(testAsset, latLong);
-		CreateMovementResponse createMovementResponse = movementHelper.createMovement(createMovementRequest);
+		IncomingMovement createMovementRequest = movementHelper.createIncomingMovement(testAsset, latLong);
+		movementHelper.createMovement(createMovementRequest);
 
 		List<MovementDto> latestMovements = MovementHelper.getLatestMovements(100);
 		assertTrue(latestMovements.size() > 0);
@@ -163,13 +163,12 @@ public class MovementMovementRestIT extends AbstractRest {
 		
 		LatLong latLong = movementHelper.createRutt(1).get(0);
 
-		CreateMovementRequest createMovementRequest = movementHelper.createMovementRequest(testAsset, latLong);
-		CreateMovementResponse createMovementResponse = movementHelper.createMovement(createMovementRequest);
+		IncomingMovement incomingMovement = movementHelper.createIncomingMovement(testAsset, latLong);
+		MovementDto createMovementResponse = movementHelper.createMovement(incomingMovement);
 		
 		assertNotNull(createMovementResponse);
-		assertNotNull(createMovementResponse.getMovement());
-		assertNotNull(createMovementResponse.getMovement().getGuid());
-		String id = createMovementResponse.getMovement().getGuid();
+		assertNotNull(createMovementResponse.getMovementGUID());
+		String id = createMovementResponse.getMovementGUID();
 
 		MovementType movementById = MovementHelper.getMovementById(id);
 		assertNotNull(movementById);

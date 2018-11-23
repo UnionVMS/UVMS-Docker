@@ -173,7 +173,7 @@ public class SanityRulesIT extends AbstractRest {
         LatLong position = new LatLong(11d, 56d, new Date());
         FLUXVesselPositionMessage fluxMessage = FLUXHelper.createFluxMessage(asset, position);
         fluxMessage.getVesselTransportMeans().getSpecifiedVesselPositionEvents().get(0).getSpecifiedVesselGeographicalCoordinate().setLongitudeMeasure(null);
-        fluxMessage.getVesselTransportMeans().getSpecifiedVesselPositionEvents().get(0).getSpecifiedVesselGeographicalCoordinate().setLatitudeMeasure(null);;
+        fluxMessage.getVesselTransportMeans().getSpecifiedVesselPositionEvents().get(0).getSpecifiedVesselGeographicalCoordinate().setLatitudeMeasure(null);
         RequestType report = FLUXHelper.createVesselReport(fluxMessage);
         FLUXHelper.sendVesselReportToFluxPlugin(report);
 

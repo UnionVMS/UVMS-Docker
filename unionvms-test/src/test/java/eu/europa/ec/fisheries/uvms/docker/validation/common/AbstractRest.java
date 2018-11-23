@@ -30,10 +30,8 @@ import eu.europa.ec.fisheries.uvms.commons.rest.dto.ResponseDto;
 
 public abstract class AbstractRest extends Assert {
 
-	private static final String DOCKER_RELEASE_TEST_BASE_URL_PROPERTY = "docker.release.test.base.url";
-
 	/** The Constant OBJECT_MAPPER. */
-	private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper().configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false).registerModule(new JavaTimeModule());
+	protected static final ObjectMapper OBJECT_MAPPER = new ObjectMapper().configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false).registerModule(new JavaTimeModule());
 
 	/** The Constant BASE_URL. */
 	protected static final String BASE_URL = "http://localhost:28080/unionvms/";

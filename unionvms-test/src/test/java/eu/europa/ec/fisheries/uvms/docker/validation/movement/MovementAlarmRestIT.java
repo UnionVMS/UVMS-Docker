@@ -178,8 +178,6 @@ public class MovementAlarmRestIT extends AbstractRest {
                 .header(HttpHeaders.AUTHORIZATION, getValidJwtToken())
                 .post(Entity.json(Arrays.asList(alarmReport.getGuid())), Response.class);
         
-        MovementHelper.pollMovementCreated();
-        
         AlarmReport alarmReportAfter = getAlarmReportByGuid(alarmReport.getGuid());
         assertThat(alarmReportAfter.getStatus(), CoreMatchers.is("REPROCESSED"));
         
@@ -206,8 +204,6 @@ public class MovementAlarmRestIT extends AbstractRest {
                 .request(MediaType.APPLICATION_JSON)
                 .header(HttpHeaders.AUTHORIZATION, getValidJwtToken())
                 .post(Entity.json(Arrays.asList(alarmReport.getGuid())), Response.class);
-        
-        SanityRuleHelper.pollAlarmReportCreated();
         
         AlarmReport alarmReportAfter = getAlarmReportByGuid(alarmReport.getGuid());
         assertThat(alarmReportAfter.getStatus(), CoreMatchers.is("REPROCESSED"));
