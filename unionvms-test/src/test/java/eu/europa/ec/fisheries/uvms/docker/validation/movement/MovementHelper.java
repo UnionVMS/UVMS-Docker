@@ -14,6 +14,7 @@ import javax.ws.rs.client.Entity;
 import javax.ws.rs.core.GenericType;
 import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import com.peertopark.java.geocalc.Coordinate;
@@ -167,7 +168,7 @@ public class MovementHelper extends AbstractHelper {
 
 		int movementTimeDeltaInMillis = 30000;
 		List<LatLong> rutt = new ArrayList<>();
-		long ts = System.currentTimeMillis();
+		long ts = System.currentTimeMillis() - 1000L * 60L * 60L * 24L * 365L;
 
 
 		double divideramed = 50;
@@ -444,6 +445,15 @@ public class MovementHelper extends AbstractHelper {
                 .get(new GenericType<ResponseDto<List<MovementDto>>>() {});
         return response.getData();
     }
+
+	public static String getMicroMovements(String date) {
+		String response = getWebTarget()
+				.path("movement/rest/movement/microMovementList/" + date)
+				.request(MediaType.APPLICATION_JSON)
+				.header(HttpHeaders.AUTHORIZATION, getValidJwtToken())
+				.get(String.class);
+		return response;
+	}
 
 	public CreateMovementBatchResponse createMovementBatch(CreateMovementBatchRequest createMovementBatchRequest) throws Exception {
 

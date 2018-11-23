@@ -14,6 +14,7 @@ copy of the GNU General Public License along with the IFDM Suite. If not, see <h
 package eu.europa.ec.fisheries.uvms.docker.validation.movement;
 
 import java.math.BigInteger;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -22,6 +23,9 @@ import javax.ws.rs.client.Entity;
 import javax.ws.rs.core.GenericType;
 import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
+
+import eu.europa.ec.fisheries.uvms.movement.model.util.DateUtil;
 import org.hamcrest.CoreMatchers;
 import org.junit.Test;
 import eu.europa.ec.fisheries.schema.mobileterminal.types.v1.MobileTerminalType;
@@ -153,7 +157,6 @@ public class MovementMovementRestIT extends AbstractRest {
 		List<MovementDto> latestMovements = MovementHelper.getLatestMovements(100);
 		assertTrue(latestMovements.size() > 0);
 	}
-
 	/**
 	 * Gets the by id test.
 	 *
@@ -199,5 +202,22 @@ public class MovementMovementRestIT extends AbstractRest {
 		
 		assertNotNull(response);
 	}
+
+	@Test
+    public void countMovementsForAsset() throws Exception{
+	    String asset = "4f87e873-214c-4ebd-b161-5a934904f4fc";
+        Instant now = Instant.now();
+
+        long response = getWebTarget()
+                .path("movement/rest/internal/countMovementsInTheLastDayForAsset/" + asset)
+                .queryParam("after", DateUtil.parseUTCDateToString(now))    //yyyy-MM-dd HH:mm:ss Z
+                .request(MediaType.APPLICATION_JSON)
+                //.header(HttpHeaders.AUTHORIZATION, getValidJwtToken())
+                .get(long.class);
+
+        assertNotNull(response);
+        System.out.println(response);
+
+    }
 
 }
