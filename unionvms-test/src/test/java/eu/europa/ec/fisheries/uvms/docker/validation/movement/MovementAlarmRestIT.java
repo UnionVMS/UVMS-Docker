@@ -15,7 +15,6 @@ package eu.europa.ec.fisheries.uvms.docker.validation.movement;
 
 import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
@@ -33,7 +32,6 @@ import eu.europa.ec.fisheries.schema.movementrules.search.v1.ListPagination;
 import eu.europa.ec.fisheries.uvms.asset.client.model.AssetDTO;
 import eu.europa.ec.fisheries.uvms.docker.validation.asset.AssetTestHelper;
 import eu.europa.ec.fisheries.uvms.docker.validation.common.AbstractRest;
-import eu.europa.ec.fisheries.uvms.docker.validation.movement.model.AlarmListResponseDto;
 import eu.europa.ec.fisheries.uvms.docker.validation.movement.model.AlarmReport;
 import eu.europa.ec.fisheries.uvms.docker.validation.system.helper.NAFHelper;
 import eu.europa.ec.fisheries.uvms.docker.validation.system.helper.SanityRuleHelper;
@@ -146,7 +144,7 @@ public class MovementAlarmRestIT extends AbstractRest {
         AssetDTO asset = AssetTestHelper.createBasicAsset();
         NAFHelper.sendPositionToNAFPlugin(new LatLong(56d, 11d, new Date()), asset);
 	    
-        AlarmReport alarmReport = getLatestAlarmReportSince(timestamp);
+        AlarmReport alarmReport = SanityRuleHelper.getLatestOpenAlarmReportSince(timestamp);
 	    assertThat(alarmReport.getStatus(), CoreMatchers.is("OPEN"));
         
 	    Response response = getWebTarget()
@@ -160,6 +158,67 @@ public class MovementAlarmRestIT extends AbstractRest {
 	}
 	
 	@Test
+    public void reprocessAlarmSuccessTest() throws Exception {
+        ZonedDateTime timestamp = ZonedDateTime.now(ZoneOffset.UTC);
+
+        // Asset does not exist
+        AssetDTO asset = AssetTestHelper.createBasicAsset();
+        LatLong position = new LatLong(42d, 41d, new Date());
+        NAFHelper.sendPositionToNAFPlugin(position, asset);
+        
+        AlarmReport alarmReport = SanityRuleHelper.getLatestOpenAlarmReportSince(timestamp);
+        assertThat(alarmReport.getStatus(), CoreMatchers.is("OPEN"));
+        
+        // Create asset
+        AssetDTO createdAsset = AssetTestHelper.createAsset(asset);
+        
+        Response response = getWebTarget()
+                .path("movement/rest/alarms/reprocess")
+                .request(MediaType.APPLICATION_JSON)
+                .header(HttpHeaders.AUTHORIZATION, getValidJwtToken())
+                .post(Entity.json(Arrays.asList(alarmReport.getGuid())), Response.class);
+        
+        MovementHelper.pollMovementCreated();
+        
+        AlarmReport alarmReportAfter = getAlarmReportByGuid(alarmReport.getGuid());
+        assertThat(alarmReportAfter.getStatus(), CoreMatchers.is("REPROCESSED"));
+        
+        List<MovementDto> latestMovements = MovementHelper.getLatestMovements(Arrays.asList(createdAsset.getHistoryId().toString()));
+        assertThat(latestMovements.size(), CoreMatchers.is(1));
+        assertThat(latestMovements.get(0).getLatitude(), CoreMatchers.is(position.latitude));
+        assertThat(latestMovements.get(0).getLongitude(), CoreMatchers.is(position.longitude));
+    }
+	
+	@Test
+    public void reprocessAlarmFailureTest() throws Exception {
+        ZonedDateTime timestamp = ZonedDateTime.now(ZoneOffset.UTC);
+
+        // Asset does not exist
+        AssetDTO asset = AssetTestHelper.createBasicAsset();
+        LatLong position = new LatLong(42d, 41d, new Date());
+        NAFHelper.sendPositionToNAFPlugin(position, asset);
+        
+        AlarmReport alarmReport = SanityRuleHelper.getLatestOpenAlarmReportSince(timestamp);
+        assertThat(alarmReport.getStatus(), CoreMatchers.is("OPEN"));
+        
+        Response response = getWebTarget()
+                .path("movement/rest/alarms/reprocess")
+                .request(MediaType.APPLICATION_JSON)
+                .header(HttpHeaders.AUTHORIZATION, getValidJwtToken())
+                .post(Entity.json(Arrays.asList(alarmReport.getGuid())), Response.class);
+        
+        SanityRuleHelper.pollAlarmReportCreated();
+        
+        AlarmReport alarmReportAfter = getAlarmReportByGuid(alarmReport.getGuid());
+        assertThat(alarmReportAfter.getStatus(), CoreMatchers.is("REPROCESSED"));
+
+        AlarmReport latestAlarmReport = SanityRuleHelper.getLatestOpenAlarmReportSince(timestamp);
+        
+        assertThat(latestAlarmReport.getGuid(), CoreMatchers.is(CoreMatchers.not(alarmReport.getGuid())));
+        assertThat(latestAlarmReport.getStatus(), CoreMatchers.is("OPEN"));
+    }
+	
+	@Test
 	public void getAlarmReportVerifyRawMovementDataTest() throws Exception {
         ZonedDateTime timestamp = ZonedDateTime.now(ZoneOffset.UTC);
 
@@ -168,7 +227,7 @@ public class MovementAlarmRestIT extends AbstractRest {
 
         SanityRuleHelper.pollAlarmReportCreated();
         
-        AlarmReport alarm = getLatestAlarmReportSince(timestamp);
+        AlarmReport alarm = SanityRuleHelper.getLatestOpenAlarmReportSince(timestamp);
         assertThat(alarm.getIncomingMovement(), CoreMatchers.is(CoreMatchers.notNullValue()));
         assertThat(alarm.getIncomingMovement().getAssetName(), CoreMatchers.is(asset.getName()));
 	}
@@ -180,30 +239,5 @@ public class MovementAlarmRestIT extends AbstractRest {
                 .request(MediaType.APPLICATION_JSON)
                 .header(HttpHeaders.AUTHORIZATION, getValidJwtToken())
                 .get(AlarmReport.class);
-	}
-	
-	private AlarmReport getLatestAlarmReportSince(ZonedDateTime timestamp) {
-	    AlarmQuery query = new AlarmQuery();
-        ListPagination pagination = new ListPagination();
-        pagination.setListSize(100);
-        pagination.setPage(1);
-        query.setPagination(pagination);
-        query.setDynamic(true);
-        AlarmListCriteria criteria = new AlarmListCriteria();
-        criteria.setKey(AlarmSearchKey.FROM_DATE);
-        criteria.setValue(timestamp.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss Z")));
-        query.getAlarmSearchCriteria().add(criteria);
-
-        AlarmListResponseDto alarmResponse = getWebTarget()
-                .path("movement/rest/alarms/list")
-                .request(MediaType.APPLICATION_JSON)
-                .header(HttpHeaders.AUTHORIZATION, getValidJwtToken())
-                .post(Entity.json(query), AlarmListResponseDto.class);
-        
-
-        assertThat(alarmResponse, CoreMatchers.is(CoreMatchers.notNullValue()));
-        List<AlarmReport> alarms = alarmResponse.getAlarmList();
-        alarms.sort((a1, a2) -> a1.getUpdated().compareTo(a2.getUpdated()));
-        return alarms.get(0);
 	}
 }
