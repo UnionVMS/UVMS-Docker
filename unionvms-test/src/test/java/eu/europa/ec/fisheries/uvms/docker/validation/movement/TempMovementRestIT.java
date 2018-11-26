@@ -91,7 +91,7 @@ public class TempMovementRestIT extends AbstractRest {
     @Test
     public void getTempMovementNullGuidShouldFail() throws Exception {
         ResponseDto<?> response = TempMovementRestHelper.getTempMovementResponse(null);
-        assertEquals("409", String.valueOf(response.getCode()));
+        checkErrorResponse(response);
     }
 
     @Test
@@ -113,7 +113,7 @@ public class TempMovementRestIT extends AbstractRest {
     @Test
     public void removeTempMovementNullGuidShouldFail() throws Exception {
         ResponseDto<?> response = TempMovementRestHelper.removeTempMovementResponse(null);
-        assertEquals("409", String.valueOf(response.getCode()));
+        checkErrorResponse(response);
     }
 
     @Test
