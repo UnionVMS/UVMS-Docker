@@ -12,15 +12,19 @@ copy of the GNU General Public License along with the IFDM Suite. If not, see <h
 package eu.europa.ec.fisheries.uvms.docker.validation.system.rules;
 
 import static org.hamcrest.CoreMatchers.is;
+import java.time.ZoneOffset;
+import java.time.ZonedDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.List;
+import org.hamcrest.CoreMatchers;
+import org.joda.time.Instant;
 import org.junit.Test;
-import eu.europa.ec.fisheries.schema.movementrules.customrule.v1.SanityRuleType;
 import eu.europa.ec.fisheries.uvms.asset.client.model.AssetDTO;
 import eu.europa.ec.fisheries.uvms.docker.validation.asset.AssetTestHelper;
 import eu.europa.ec.fisheries.uvms.docker.validation.common.AbstractRest;
 import eu.europa.ec.fisheries.uvms.docker.validation.movement.LatLong;
+import eu.europa.ec.fisheries.uvms.docker.validation.movement.model.AlarmReport;
 import eu.europa.ec.fisheries.uvms.docker.validation.system.helper.FLUXHelper;
 import eu.europa.ec.fisheries.uvms.docker.validation.system.helper.NAFHelper;
 import eu.europa.ec.fisheries.uvms.docker.validation.system.helper.SanityRuleHelper;
@@ -29,12 +33,6 @@ import xeu.bridge_connector.v1.RequestType;
 
 public class SanityRulesIT extends AbstractRest {
     
-    @Test
-    public void getSanityRulesTest() throws Exception{
-        List<SanityRuleType> allSanityRules = SanityRuleHelper.getAllSanityRules();
-        assertTrue(!allSanityRules.isEmpty());
-    }
-
     /*
     <column name="sanityrule_description" value="An asset must exist"/>
     <column name="sanityrule_expression" value="assetGuid == null"/>
@@ -166,4 +164,47 @@ public class SanityRulesIT extends AbstractRest {
         assertThat(openAlarmsAfter, is(openAlarmsBefore + 1));
     }
     
+    @Test
+    public void triggerTwoSanityRulesTest() throws Exception {
+        ZonedDateTime timestamp = ZonedDateTime.now(ZoneOffset.UTC);
+        
+        AssetDTO asset = AssetTestHelper.createTestAsset();
+
+        LatLong position = new LatLong(11d, 56d, new Date());
+        FLUXVesselPositionMessage fluxMessage = FLUXHelper.createFluxMessage(asset, position);
+        fluxMessage.getVesselTransportMeans().getSpecifiedVesselPositionEvents().get(0).getSpecifiedVesselGeographicalCoordinate().setLongitudeMeasure(null);
+        fluxMessage.getVesselTransportMeans().getSpecifiedVesselPositionEvents().get(0).getSpecifiedVesselGeographicalCoordinate().setLatitudeMeasure(null);
+        RequestType report = FLUXHelper.createVesselReport(fluxMessage);
+        FLUXHelper.sendVesselReportToFluxPlugin(report);
+
+        SanityRuleHelper.pollAlarmReportCreated();
+        
+        AlarmReport latestOpenAlarmReportSince = SanityRuleHelper.getLatestOpenAlarmReportSince(timestamp);
+        
+        assertThat(latestOpenAlarmReportSince, CoreMatchers.is(CoreMatchers.notNullValue()));
+        assertThat(latestOpenAlarmReportSince.getAlarmItemList(), CoreMatchers.is(CoreMatchers.notNullValue()));
+        assertThat(latestOpenAlarmReportSince.getAlarmItemList().size(), CoreMatchers.is(2));
+    }
+    
+    @Test
+    public void triggerThreeSanityRulesTest() throws Exception {
+        ZonedDateTime timestamp = ZonedDateTime.now(ZoneOffset.UTC);
+        
+        AssetDTO asset = AssetTestHelper.createTestAsset();
+
+        LatLong position = new LatLong(11d, 56d, Date.from(timestamp.plus(1, ChronoUnit.HOURS).toInstant()));
+        FLUXVesselPositionMessage fluxMessage = FLUXHelper.createFluxMessage(asset, position);
+        fluxMessage.getVesselTransportMeans().getSpecifiedVesselPositionEvents().get(0).getSpecifiedVesselGeographicalCoordinate().setLongitudeMeasure(null);
+        fluxMessage.getVesselTransportMeans().getSpecifiedVesselPositionEvents().get(0).getSpecifiedVesselGeographicalCoordinate().setLatitudeMeasure(null);;
+        RequestType report = FLUXHelper.createVesselReport(fluxMessage);
+        FLUXHelper.sendVesselReportToFluxPlugin(report);
+
+        SanityRuleHelper.pollAlarmReportCreated();
+        
+        AlarmReport latestOpenAlarmReportSince = SanityRuleHelper.getLatestOpenAlarmReportSince(timestamp);
+        
+        assertThat(latestOpenAlarmReportSince, CoreMatchers.is(CoreMatchers.notNullValue()));
+        assertThat(latestOpenAlarmReportSince.getAlarmItemList(), CoreMatchers.is(CoreMatchers.notNullValue()));
+        assertThat(latestOpenAlarmReportSince.getAlarmItemList().size(), CoreMatchers.is(3));
+    }
 }

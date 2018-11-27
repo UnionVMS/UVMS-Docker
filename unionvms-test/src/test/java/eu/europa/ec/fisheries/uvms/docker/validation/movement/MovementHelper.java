@@ -3,7 +3,11 @@ package eu.europa.ec.fisheries.uvms.docker.validation.movement;
 import java.io.IOException;
 import java.io.StringReader;
 import java.io.StringWriter;
+import java.math.BigInteger;
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.Random;
@@ -11,37 +15,34 @@ import java.util.UUID;
 import javax.jms.Message;
 import javax.jms.TextMessage;
 import javax.ws.rs.client.Entity;
+import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.GenericType;
 import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import javax.ws.rs.sse.SseEventSource;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
+import org.hamcrest.CoreMatchers;
 import com.peertopark.java.geocalc.Coordinate;
 import com.peertopark.java.geocalc.DegreeCoordinate;
 import com.peertopark.java.geocalc.EarthCalc;
 import com.peertopark.java.geocalc.Point;
-import eu.europa.ec.fisheries.schema.mobileterminal.types.v1.MobileTerminalType;
-import eu.europa.ec.fisheries.schema.movement.asset.v1.AssetId;
-import eu.europa.ec.fisheries.schema.movement.asset.v1.AssetIdType;
-import eu.europa.ec.fisheries.schema.movement.asset.v1.AssetType;
 import eu.europa.ec.fisheries.schema.movement.module.v1.CreateMovementBatchRequest;
 import eu.europa.ec.fisheries.schema.movement.module.v1.CreateMovementBatchResponse;
 import eu.europa.ec.fisheries.schema.movement.module.v1.CreateMovementRequest;
 import eu.europa.ec.fisheries.schema.movement.module.v1.CreateMovementResponse;
-import eu.europa.ec.fisheries.schema.movement.module.v1.MovementModuleMethod;
+import eu.europa.ec.fisheries.schema.movement.search.v1.ListPagination;
 import eu.europa.ec.fisheries.schema.movement.search.v1.MovementQuery;
 import eu.europa.ec.fisheries.schema.movement.source.v1.GetMovementListByQueryResponse;
-import eu.europa.ec.fisheries.schema.movement.v1.MovementActivityType;
 import eu.europa.ec.fisheries.schema.movement.v1.MovementActivityTypeType;
-import eu.europa.ec.fisheries.schema.movement.v1.MovementBaseType;
-import eu.europa.ec.fisheries.schema.movement.v1.MovementPoint;
 import eu.europa.ec.fisheries.schema.movement.v1.MovementType;
 import eu.europa.ec.fisheries.schema.movement.v1.MovementTypeType;
 import eu.europa.ec.fisheries.uvms.asset.client.model.AssetDTO;
 import eu.europa.ec.fisheries.uvms.commons.rest.dto.ResponseDto;
 import eu.europa.ec.fisheries.uvms.docker.validation.common.AbstractHelper;
 import eu.europa.ec.fisheries.uvms.docker.validation.common.MessageHelper;
+import eu.europa.ec.fisheries.uvms.docker.validation.movement.model.IncomingMovement;
 
 public class MovementHelper extends AbstractHelper {
 
@@ -49,78 +50,43 @@ public class MovementHelper extends AbstractHelper {
 
 	private Random rnd = new Random();
 
-	public CreateMovementRequest createMovementRequest(AssetDTO testAsset, LatLong latlong) {
+	public IncomingMovement createIncomingMovement(AssetDTO testAsset, LatLong latlong) {
 
-		final CreateMovementRequest createMovementRequest1 = new CreateMovementRequest();
-		final MovementBaseType movementBaseType = new MovementBaseType();
-		AssetId assetId = new AssetId();
-		assetId.setAssetType(AssetType.VESSEL);
-		assetId.setIdType(AssetIdType.GUID);
-		assetId.setValue(testAsset.getId().toString());
-		movementBaseType.setAssetId(assetId);
-		movementBaseType.setConnectId(testAsset.getHistoryId().toString());
+	    IncomingMovement incomingMovement = new IncomingMovement();
+	    
+	    // Used later in tests
+	    incomingMovement.setAssetHistoryId(testAsset.getHistoryId().toString());
+	    
+		incomingMovement.setAssetCFR(testAsset.getCfr());
+		incomingMovement.setAssetIRCS(testAsset.getIrcs());
+		incomingMovement.setAssetName(testAsset.getName());
 
-		MovementActivityType movementActivityType = new MovementActivityType();
-		movementBaseType.setActivity(movementActivityType);
-		movementActivityType.setMessageId(UUID.randomUUID().toString());
-		movementActivityType.setMessageType(MovementActivityTypeType.ANC);
+		incomingMovement.setActivityMessageId(UUID.randomUUID().toString());
+		incomingMovement.setActivityMessageType(MovementActivityTypeType.ANC.value());
 
-		createMovementRequest1.setMovement(movementBaseType);
-		createMovementRequest1.setMethod(MovementModuleMethod.CREATE);
-		createMovementRequest1.setUsername("vms_admin_com");
+		incomingMovement.setLatitude(latlong.latitude);
+		incomingMovement.setLongitude(latlong.longitude);
+		incomingMovement.setAltitude((double) 5);
+		incomingMovement.setPositionTime(latlong.positionTime.toInstant());
 
-		MovementPoint movementPoint = new MovementPoint();
-		movementPoint.setLongitude(latlong.longitude);
-		movementPoint.setLatitude(latlong.latitude);
-		movementPoint.setAltitude((double) 5);
-
-		movementBaseType.setPosition(movementPoint);
-		movementBaseType.setPositionTime(latlong.positionTime);
-
-		movementBaseType.setMovementType(MovementTypeType.POS);
-		movementBaseType.setReportedCourse(latlong.bearing);
-		movementBaseType.setReportedSpeed(latlong.speed);
-		return createMovementRequest1;
-
+		incomingMovement.setMovementType(MovementTypeType.POS.value());
+		incomingMovement.setReportedCourse(latlong.bearing);
+		incomingMovement.setReportedSpeed(latlong.speed);
+		
+		incomingMovement.setUpdatedBy("Test");
+		
+		incomingMovement.setPluginType("NAF");
+		
+		return incomingMovement;
 	}
 
-	public CreateMovementBatchRequest createMovementBatchRequest(AssetDTO testAsset, MobileTerminalType mobileTerminalType,
-			List<LatLong> route) {
-
-		final CreateMovementBatchRequest createMovementBatchRequest = new CreateMovementBatchRequest();
-
-		AssetId assetId = new AssetId();
-		assetId.setAssetType(AssetType.VESSEL);
-		assetId.setIdType(AssetIdType.GUID);
-		assetId.setValue(testAsset.getId().toString());
-
-		MovementActivityType movementActivityType = new MovementActivityType();
-		movementActivityType.setMessageId(UUID.randomUUID().toString());
-		movementActivityType.setMessageType(MovementActivityTypeType.ANC);
-
-		createMovementBatchRequest.setMethod(MovementModuleMethod.CREATE_BATCH);
-		createMovementBatchRequest.setUsername("vms_admin_com");
+	public List<IncomingMovement> createMovementBatchRequest(AssetDTO testAsset, List<LatLong> route) {
+	    List<IncomingMovement> incomingMovements = new ArrayList<>();
 
 		for (LatLong latlong : route) {
-
-			MovementBaseType movementBaseType = new MovementBaseType();
-			movementBaseType.setAssetId(assetId);
-			movementBaseType.setConnectId(mobileTerminalType.getConnectId());
-			movementBaseType.setActivity(movementActivityType);
-
-			MovementPoint movementPoint = new MovementPoint();
-			movementPoint.setLongitude(latlong.longitude);
-			movementPoint.setLatitude(latlong.latitude);
-			movementPoint.setAltitude((double) 5);
-
-			movementBaseType.setPosition(movementPoint);
-			movementBaseType.setPositionTime(latlong.positionTime);
-			movementBaseType.setMovementType(MovementTypeType.POS);
-			movementBaseType.setReportedCourse(latlong.bearing);
-			movementBaseType.setReportedSpeed(latlong.speed);
-			createMovementBatchRequest.getMovement().add(movementBaseType);
+		    incomingMovements.add(createIncomingMovement(testAsset, latlong));
 		}
-		return createMovementBatchRequest;
+		return incomingMovements;
 	}
 
 	public List<LatLong> createRutt(int numberPositions) {
@@ -131,7 +97,8 @@ public class MovementHelper extends AbstractHelper {
 
 		int movementTimeDeltaInMillis = 30000;
 		List<LatLong> rutt = new ArrayList<>();
-		long ts = System.currentTimeMillis();
+		long ts = Instant.now().minus(1, ChronoUnit.DAYS).getEpochSecond();
+		
 
 		double divideramed = 50;
 		double randomFactorLat = rnd.nextDouble() / divideramed;
@@ -168,7 +135,7 @@ public class MovementHelper extends AbstractHelper {
 
 		int movementTimeDeltaInMillis = 30000;
 		List<LatLong> rutt = new ArrayList<>();
-		long ts = System.currentTimeMillis() - 1000L * 60L * 60L * 24L * 365L * 35L;
+		long ts = System.currentTimeMillis() - numberPositions * movementTimeDeltaInMillis;
 
 
 		double divideramed = 50;
@@ -238,7 +205,7 @@ public class MovementHelper extends AbstractHelper {
 
 
 		List<LatLong> rutt = new ArrayList<>();
-		long ts = System.currentTimeMillis();
+		long ts = System.currentTimeMillis() - movementTimeDeltaInMillis * numberPositions;
 		rutt.add(new LatLong(57.715434 + randomFactorLat, 11.970012 + randomFactorLong,
 				getDate(ts += movementTimeDeltaInMillis)));
 		rutt.add(new LatLong(57.714735 + randomFactorLat, 11.968242, getDate(ts += movementTimeDeltaInMillis)));
@@ -331,72 +298,16 @@ public class MovementHelper extends AbstractHelper {
 		return new Date(millis);
 	}
 
-	/**
-	 * Marshall.
-	 *
-	 * @param createMovementRequest the create movement request
-	 * @return the string
-	 * @throws JAXBException the JAXB exception
-	 */
-
-	public String marshall(final CreateMovementRequest createMovementRequest) throws JAXBException {
-		final StringWriter sw = new StringWriter();
-		JAXBContext.newInstance(CreateMovementRequest.class).createMarshaller().marshal(createMovementRequest, sw);
-		return sw.toString();
+	public MovementDto createMovement(IncomingMovement incomingMovement) throws Exception {
+		MessageHelper.sendMessageWithFunction(UVMS_MOVEMENT_REQUEST_QUEUE, OBJECT_MAPPER.writeValueAsString(incomingMovement), "CREATE");
+		MovementHelper.pollMovementCreated();
+		List<MovementDto> latestMovements = MovementHelper.getLatestMovements(Arrays.asList(incomingMovement.getAssetHistoryId()));
+		assertThat(latestMovements.size(), CoreMatchers.is(1));
+		return latestMovements.get(0);
 	}
 
-	/**
-	 * 
-	 * @param createMovementBatchRequest
-	 * @return
-	 * @throws JAXBException
-	 */
-	public String marshall(final CreateMovementBatchRequest createMovementBatchRequest) throws JAXBException {
-		final StringWriter sw = new StringWriter();
-		JAXBContext.newInstance(CreateMovementBatchRequest.class).createMarshaller().marshal(createMovementBatchRequest,
-				sw);
-		return sw.toString();
-	}
-
-	/**
-	 * Un marshall create movement response.
-	 *
-	 * @param response the response
-	 * @return the creates the movement response
-	 * @throws Exception the exception
-	 */
-	public CreateMovementResponse unMarshallCreateMovementResponse(final Message response) throws Exception {
-		TextMessage textMessage = (TextMessage) response;
-		JAXBContext jaxbContext = JAXBContext.newInstance(CreateMovementResponse.class);
-		return (CreateMovementResponse) jaxbContext.createUnmarshaller()
-				.unmarshal(new StringReader(textMessage.getText()));
-	}
-
-	/**
-	 * 
-	 * @param response
-	 * @return
-	 * @throws Exception
-	 */
-	public CreateMovementBatchResponse unMarshallCreateMovementBatchResponse(final Message response) throws Exception {
-		TextMessage textMessage = (TextMessage) response;
-		JAXBContext jaxbContext = JAXBContext.newInstance(CreateMovementBatchResponse.class);
-		return (CreateMovementBatchResponse) jaxbContext.createUnmarshaller()
-				.unmarshal(new StringReader(textMessage.getText()));
-	}
-
-	public CreateMovementResponse createMovement(CreateMovementRequest createMovementRequest) throws Exception {
-
-		Message messageResponse =
-				MessageHelper.getMessageResponse(UVMS_MOVEMENT_REQUEST_QUEUE, marshall(createMovementRequest));
-		return unMarshallCreateMovementResponse(messageResponse);
-	}
-
-	public String createMovementDontWaitForResponse(AssetDTO testAsset,CreateMovementRequest createMovementRequest, int order) throws Exception {
-
-		String messageId =
-				MessageHelper.sendMessageAndReturnMessageId(UVMS_MOVEMENT_REQUEST_QUEUE, marshall(createMovementRequest), testAsset.getId().toString(), order);
-		return messageId;
+	public void createMovementDontWaitForResponse(AssetDTO testAsset, IncomingMovement incomingMovement) throws Exception {
+	    MessageHelper.sendMessageAndReturnMessageId(UVMS_MOVEMENT_REQUEST_QUEUE, OBJECT_MAPPER.writeValueAsString(incomingMovement), testAsset.getId().toString(), "CREATE");
 	}
 
 	public static MovementType getMovementById(String guid) {
@@ -446,6 +357,11 @@ public class MovementHelper extends AbstractHelper {
         return response.getData();
     }
 
+	public void createMovementBatch(List<IncomingMovement> createMovementBatchRequest) throws Exception {
+        MessageHelper.sendMessageWithFunction(UVMS_MOVEMENT_REQUEST_QUEUE, OBJECT_MAPPER.writeValueAsString(createMovementBatchRequest), "CREATE_BATCH");
+    }
+
+
 	public static String getMicroMovements(String date) {
 		String response = getWebTarget()
 				.path("movement/rest/movement/microMovementList/" + date)
@@ -454,15 +370,6 @@ public class MovementHelper extends AbstractHelper {
 				.get(String.class);
 		return response;
 	}
-
-	public CreateMovementBatchResponse createMovementBatch(CreateMovementBatchRequest createMovementBatchRequest) throws Exception {
-
-		Message messageResponse =
-				MessageHelper.getMessageResponse(UVMS_MOVEMENT_REQUEST_QUEUE, marshall(createMovementBatchRequest));
-		return unMarshallCreateMovementBatchResponse(messageResponse);
-	}
-
-
 
 	List<LatLong> calculateReportedDataForRoute(List<LatLong> route) {
 
@@ -559,7 +466,7 @@ public class MovementHelper extends AbstractHelper {
 		// int numberPositions = 25;
 		int movementTimeDeltaInMillis = 30000;
 		List<LatLong> rutt = new ArrayList<>();
-		long ts = System.currentTimeMillis();
+		long ts = Instant.now().minus(1, ChronoUnit.DAYS).getEpochSecond();
 
 		double divideramed = 50;
 		double randomFactorLat = rnd.nextDouble() / divideramed;
@@ -611,4 +518,20 @@ public class MovementHelper extends AbstractHelper {
             .get();
     }
 	
+	public static SseEventSource getSseStream() {
+	    WebTarget target = getWebTarget().path("movement/rest/sse/subscribe");
+	    AuthorizationHeaderWebTarget jwtTarget = new AuthorizationHeaderWebTarget(target, getValidJwtToken());
+        return SseEventSource.
+	            target(jwtTarget).build();
+	}
+	
+	public static MovementQuery getBasicMovementQuery() {
+	    MovementQuery movementQuery = new MovementQuery();
+        movementQuery.setExcludeFirstAndLastSegment(false);
+        ListPagination listPagination = new ListPagination();
+        listPagination.setListSize(BigInteger.valueOf(100));
+        listPagination.setPage(BigInteger.valueOf(1));
+        movementQuery.setPagination(listPagination);
+        return movementQuery;
+	}
 }

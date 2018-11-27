@@ -8,27 +8,21 @@ import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Consumer;
 import javax.jms.Message;
 import javax.jms.TextMessage;
-import javax.ws.rs.client.Client;
-import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.sse.InboundSseEvent;
 import javax.ws.rs.sse.SseEventSource;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
-import javax.xml.bind.UnmarshalException;
 
 import org.jboss.resteasy.client.jaxrs.internal.ClientWebTarget;
 import org.junit.Ignore;
 import org.junit.Test;
 import eu.europa.ec.fisheries.schema.mobileterminal.types.v1.MobileTerminalType;
 import eu.europa.ec.fisheries.schema.movement.common.v1.ExceptionType;
-import eu.europa.ec.fisheries.schema.movement.module.v1.CreateMovementRequest;
-import eu.europa.ec.fisheries.schema.movement.module.v1.CreateMovementResponse;
 import eu.europa.ec.fisheries.schema.movement.module.v1.GetMovementListByQueryRequest;
 import eu.europa.ec.fisheries.schema.movement.module.v1.GetMovementListByQueryResponse;
 import eu.europa.ec.fisheries.schema.movement.module.v1.MovementModuleMethod;
@@ -41,11 +35,11 @@ import eu.europa.ec.fisheries.uvms.docker.validation.asset.AssetTestHelper;
 import eu.europa.ec.fisheries.uvms.docker.validation.common.AbstractRest;
 import eu.europa.ec.fisheries.uvms.docker.validation.common.MessageHelper;
 import eu.europa.ec.fisheries.uvms.docker.validation.mobileterminal.MobileTerminalTestHelper;
+import eu.europa.ec.fisheries.uvms.docker.validation.movement.model.IncomingMovement;
 
 public class MovementPerformanceIT extends AbstractRest {
 
     private static MovementHelper movementHelper = new MovementHelper();
-
 
     @Test
     @Ignore
@@ -123,14 +117,14 @@ public class MovementPerformanceIT extends AbstractRest {
         MobileTerminalTestHelper.assignMobileTerminal(testAsset, mobileTerminalType);
         List<LatLong> route = movementHelper.createRuttCobhNewYork(1000, 0.06f);                //0.1F = 654 pos    0.01 = 6543     0.07 = 934   0.06 = 1090
 
-        CreateMovementResponse createMovementResponse = null;
+        MovementDto createMovementResponse = null;
         int i = 0;
         Instant b4 = Instant.now();
         Instant lastIteration = Instant.now();
         List<Duration> averageDurations = new ArrayList<>();
 
         for (LatLong position : route) {
-            final CreateMovementRequest createMovementRequest = movementHelper.createMovementRequest(testAsset, position);
+            final IncomingMovement createMovementRequest = movementHelper.createIncomingMovement(testAsset, position);
             createMovementResponse = movementHelper.createMovement(createMovementRequest);
             assertNotNull(createMovementResponse);
             i++;
@@ -163,18 +157,18 @@ public class MovementPerformanceIT extends AbstractRest {
         MobileTerminalTestHelper.assignMobileTerminal(testAsset, mobileTerminalType);
         List<LatLong> route = movementHelper.createRuttCobhNewYork(1000, 0.06f);                //0.1F = 654 pos    0.01 = 6543     0.07 = 934   0.06 = 1090
 
-        CreateMovementResponse createMovementResponse = null;
+        MovementDto createMovementResponse = null;
         int i = 0;
         Instant b4 = Instant.now();
         Instant lastIteration = Instant.now();
         List<Duration> averageDurations = new ArrayList<>();
-        List<CreateMovementRequest> createMovementList = new ArrayList<>();
+        List<IncomingMovement> createMovementList = new ArrayList<>();
 
         for (LatLong position : route) {
-            createMovementList.add(movementHelper.createMovementRequest(testAsset, position));
+            createMovementList.add(movementHelper.createIncomingMovement(testAsset, position));
         }
         Collections.reverse(createMovementList);
-        for (CreateMovementRequest createMovementRequest : createMovementList){
+        for (IncomingMovement createMovementRequest : createMovementList){
             createMovementResponse = movementHelper.createMovement(createMovementRequest);
             assertNotNull(createMovementResponse);
             i++;
@@ -361,47 +355,37 @@ public class MovementPerformanceIT extends AbstractRest {
         List<AssetDTO> assetList = new ArrayList<>();
 
 
-        for(int i = 0; i < nrOfShips; i++){
+        for (int i = 0; i < nrOfShips; i++) {
 
-            /*      //Code for if one wants an actual correct ship to be able to plot the positions on the map from frontend
-            Asset testAsset = AssetTestHelper.createTestAsset();
+            //Code for if one wants an actual correct ship to be able to plot the positions on the map from frontend
+            AssetDTO testAsset = AssetTestHelper.createTestAsset();
             MobileTerminalType mobileTerminalType = MobileTerminalTestHelper.createMobileTerminalType();
             MobileTerminalTestHelper.assignMobileTerminal(testAsset, mobileTerminalType);
-             */
-
-            AssetDTO testAsset = new AssetDTO();
-            testAsset.setId(UUID.randomUUID());
-            testAsset.setHistoryId(UUID.randomUUID());
 
             assetList.add(testAsset);
         }
 
-        CreateMovementResponse createMovementResponse = null;
         int i = 0;
         Instant b4 = Instant.now();
         Instant lastIteration = Instant.now();
         List<Duration> averageDurations = new ArrayList<>();
-        List<String> corrId = new ArrayList<>();
 
-
-        Client client = org.jboss.resteasy.client.jaxrs.ResteasyClientBuilder.newClient();
-        ClientWebTarget target = (ClientWebTarget)client.target("http://localhost:28080/unionvms/movement/rest/sse/subscribe");
-        AuthorizationHeaderWebTarget iHateSSEHeaders = new AuthorizationHeaderWebTarget(target, getValidJwtToken());
-
-        try (SseEventSource source = SseEventSource.target(iHateSSEHeaders).reconnectingEvery(10, TimeUnit.SECONDS).build()) {
-            source.register((inboundSseEvent) -> System.out.println(inboundSseEvent));
-            //source.register(onEvent, onError, onComplete);
+        List<String> movements = new ArrayList<>();
+        try (SseEventSource source = MovementHelper.getSseStream()) {
+            source.register((inboundSseEvent) -> {
+                if (inboundSseEvent.getComment() != null && inboundSseEvent.getComment().equals("New Movement")) {
+                    movements.add(inboundSseEvent.readData());
+                    if ((movements.size() % 10) == 0) {
+                        System.out.println("Received " + movements.size() + "/" + route.size());
+                    }
+                }
+            });
             source.open();
 
-
-            i = 0;
             for (LatLong position : route) {
-
-                //(int)(Math.random() * nrOfShips)
-                AssetDTO testAsset = assetList.get((int) (Math.random() * nrOfShips));
-
-                final CreateMovementRequest createMovementRequest = movementHelper.createMovementRequest(testAsset, position);
-                corrId.add(movementHelper.createMovementDontWaitForResponse(testAsset, createMovementRequest, i));
+                AssetDTO testAsset = assetList.get((int)(Math.random()* (double)nrOfShips));
+                final IncomingMovement createMovementRequest = movementHelper.createIncomingMovement(testAsset, position);
+                movementHelper.createMovementDontWaitForResponse(testAsset, createMovementRequest);
 
                 i++;
                 if ((i % 10) == 0) {
@@ -409,36 +393,14 @@ public class MovementPerformanceIT extends AbstractRest {
                     averageDurations.add(Duration.between(lastIteration, Instant.now()));
                     lastIteration = Instant.now();
 
-                }
-            }
+                    while (movements.size() < route.size()) {
+                        Thread.sleep(100);
+                    }
 
-            i = 0;
-            //start listening for the returns
-            for (String id : corrId) {
-
-                Message m = MessageHelper.listenOnTestResponseQueue(id, 90000);
-                try {
-                    createMovementResponse = movementHelper.unMarshallCreateMovementResponse(m);
-                } catch (UnmarshalException e) {
-                    System.out.println(unMarshallErrorResponse(m).toString());
-                    fail(e.getMessage() + " Number: " + i + " CorrId: " + id);
-                } catch (NullPointerException e) {
-                    System.out.println(e);
-                    fail(e.getMessage() + " Number: " + i + " CorrId: " + id);
-                }
-                assertNotNull(createMovementResponse);
-
-                i++;
-                if ((i % 10) == 0) {
-                    System.out.println("Recived movement number: " + i + " Time so far: " + humanReadableFormat(Duration.between(b4, Instant.now())) + " Time since last 10: " + humanReadableFormat(Duration.between(lastIteration, Instant.now())));
-                    //System.out.println("Time for 10 movement for last iteration: " + Duration.between(lastIteration,Instant.now()).toString());
-                    averageDurations.add(Duration.between(lastIteration, Instant.now()));
-                    lastIteration = Instant.now();
 
                 }
             }
         }
-        client.close();
     }
 
 

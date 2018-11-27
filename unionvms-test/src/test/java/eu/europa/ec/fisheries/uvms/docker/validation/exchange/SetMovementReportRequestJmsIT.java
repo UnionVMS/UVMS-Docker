@@ -31,6 +31,7 @@ import eu.europa.ec.fisheries.uvms.docker.validation.common.MessageHelper;
 import eu.europa.ec.fisheries.uvms.docker.validation.mobileterminal.MobileTerminalTestHelper;
 import eu.europa.ec.fisheries.uvms.docker.validation.movement.LatLong;
 import eu.europa.ec.fisheries.uvms.docker.validation.movement.MovementHelper;
+import eu.europa.ec.fisheries.uvms.docker.validation.movement.model.IncomingMovement;
 
 /**
  * The Class SetMovementReportRequestJmsIT.
@@ -53,7 +54,7 @@ public class SetMovementReportRequestJmsIT extends AbstractRest {
 		MobileTerminalTestHelper.assignMobileTerminal(testAsset, mobileTerminalType);
 
 		LatLong latLong = movementHelper.createRutt(1).get(0);
-		final CreateMovementRequest createMovementRequest = movementHelper.createMovementRequest(testAsset, latLong);
+		IncomingMovement createMovementRequest = movementHelper.createIncomingMovement(testAsset, latLong);
 
 		MessageHelper.sendMessage("UVMSExchangeEvent",
 				marshall(createSetReportMovementType(testAsset, mobileTerminalType, createMovementRequest)));
@@ -74,7 +75,7 @@ public class SetMovementReportRequestJmsIT extends AbstractRest {
 		List<LatLong> latLongList = movementHelper.createRutt(2);
 
 		for (LatLong latLong : latLongList) {
-			final CreateMovementRequest createMovementRequest = movementHelper.createMovementRequest(testAsset, latLong);
+			IncomingMovement createMovementRequest = movementHelper.createIncomingMovement(testAsset, latLong);
 			MessageHelper.sendMessage("UVMSExchangeEvent",
 					marshall(createSetReportMovementType(testAsset, mobileTerminalType, createMovementRequest)));
 		}
@@ -108,7 +109,7 @@ public class SetMovementReportRequestJmsIT extends AbstractRest {
 	 * @return the sets the movement report request
 	 */
 	private SetMovementReportRequest createSetReportMovementType(AssetDTO testAsset, MobileTerminalType mobileTerminalType,
-			CreateMovementRequest createMovementRequest) {
+			IncomingMovement createMovementRequest) {
 		final SetMovementReportRequest request = new SetMovementReportRequest();
 		request.setUsername("vms_admin_com");
 		request.setDate(new Date());
@@ -147,9 +148,9 @@ public class SetMovementReportRequestJmsIT extends AbstractRest {
 		movementBaseType.setMobileTerminalId(mobileTerminalId);
 		movementBaseType.setMovementType(MovementTypeType.POS);
 		MovementPoint movementPoint = new MovementPoint();
-		movementPoint.setLongitude(createMovementRequest.getMovement().getPosition().getLongitude());
-		movementPoint.setLatitude(createMovementRequest.getMovement().getPosition().getLatitude());
-		movementPoint.setAltitude(createMovementRequest.getMovement().getPosition().getAltitude());
+		movementPoint.setLongitude(createMovementRequest.getLongitude());
+		movementPoint.setLatitude(createMovementRequest.getLatitude());
+		movementPoint.setAltitude(createMovementRequest.getAltitude());
 
 		movementBaseType.setPosition(movementPoint);
 		movementBaseType.setPositionTime(new Date());
