@@ -49,7 +49,7 @@ public class NAFExchangePerformanceTests {
 
         @Test
         @Ignore
-        public void createRouteTestTitanic1000PositionsSync() throws Exception{   //Needs a special version of exchange that respond on the test queue to work!!!!
+        public void createRouteTestTitanic1000PositionsSync() throws Exception{   //Needs a special version of exchange that respond on the sales queue to work!!!!
 
             AssetDTO testAsset = AssetTestHelper.createTestAsset();
             MobileTerminalType mobileTerminalType = MobileTerminalTestHelper.createMobileTerminalType();
@@ -105,14 +105,14 @@ public class NAFExchangePerformanceTests {
 
     @Test
     @Ignore
-    public void createRouteTestTitanic10ships10PositionsAsync() throws Exception {   //Needs a special version of rules that respond on the test queue to work!!!!
+    public void createRouteTestTitanic10ships10PositionsAsync() throws Exception {   //Needs a special version of exchange that respond on the sales queue to work!!!!
         List<LatLong> route = movementHelper.createRuttCobhNewYork(10, 0.06f);                //0.1F = 654 pos    0.01 = 6543     0.07 = 934   0.06 = 1090
         sendRouteToNAFOnXShipsAsync(10, route);
     }
 
     @Test
     @Ignore
-    public void createRouteTestTitanic1000PositionsAsync() throws Exception{   //Needs a special version of rules that respond on the test queue to work!!!!
+    public void createRouteTestTitanic1000PositionsAsync() throws Exception{   //Needs a special version of exchange that respond on the sales queue to work!!!!
 
         List<LatLong> route = movementHelper.createRuttCobhNewYork(1000, 0.06f);                //0.1F = 654 pos    0.01 = 6543     0.07 = 934   0.06 = 1090
         sendRouteToNAFOnXShipsAsync(1, route);
@@ -121,7 +121,7 @@ public class NAFExchangePerformanceTests {
 
     @Test
     @Ignore
-    public void createRouteTestTitanic10ships1000PositionsAsync() throws Exception{   //Needs a special version of rules that respond on the test queue to work!!!!
+    public void createRouteTestTitanic10ships1000PositionsAsync() throws Exception{   //Needs a special version of exchange that respond on the sales queue to work!!!!
         List<LatLong> route = movementHelper.createRuttCobhNewYork(1000, 0.06f);                //0.1F = 654 pos    0.01 = 6543     0.07 = 934   0.06 = 1090
         sendRouteToNAFOnXShipsAsync(10, route);
 
@@ -129,26 +129,40 @@ public class NAFExchangePerformanceTests {
 
     @Test
     @Ignore
-    public void createRouteTestTitanic10ships6000PositionsAsync() throws Exception{   //Needs a special version of rules that respond on the test queue to work!!!!
+    public void createRouteTestTitanic10ships6000PositionsAsync() throws Exception{   //Needs a special version of exchange that respond on the sales queue to work!!!!
         List<LatLong> route = movementHelper.createRuttCobhNewYork(6000, 0.01f);                //0.1F = 654 pos    0.01 = 6543     0.07 = 934   0.06 = 1090
         sendRouteToNAFOnXShipsAsync(10, route);
     }
 
     @Test
     @Ignore
-    public void createRouteTestTitanic10ships60000PositionsAsync() throws Exception{   //Needs a special version of rules that respond on the test queue to work!!!!
+    public void createRouteTestTitanic10ships60000PositionsAsync() throws Exception{   //Needs a special version of exchange that respond on the sales queue to work!!!!
         List<LatLong> route = movementHelper.createRuttCobhNewYork(60000, 0.001f);                //0.1F = 654 pos    0.01 = 6543     0.07 = 934   0.06 = 1090
         sendRouteToNAFOnXShipsAsync(10, route);
     }
 
     @Test
     @Ignore
-    public void createRouteTestTitanic60ships6000PositionsAsync() throws Exception{   //Needs a special version of rules that respond on the test queue to work!!!!
+    public void createRouteTestTitanic10ships600000PositionsAsync() throws Exception{   //Needs a special version of exchange that respond on the sales queue to work!!!!
+        List<LatLong> route = movementHelper.createRuttCobhNewYork(600000, 0.0001f);                //0.1F = 654 pos    0.01 = 6543     0.07 = 934   0.06 = 1090
+        sendRouteToNAFOnXShipsAsync(10, route);
+    }
+
+    @Test
+    @Ignore
+    public void createRouteTestTitanic10ships100000PositionsAsync() throws Exception{   //Needs a special version of exchange that respond on the sales queue to work!!!!
+        List<LatLong> route = movementHelper.createRuttCobhNewYork(100000, 0.0006f);                //0.1F = 654 pos    0.01 = 6543     0.07 = 934   0.06 = 1090
+        sendRouteToNAFOnXShipsAsync(10, route);
+    }
+
+    @Test
+    @Ignore
+    public void createRouteTestTitanic60ships6000PositionsAsync() throws Exception{   //Needs a special version of exchange that respond on the sales queue to work!!!!
         List<LatLong> route = movementHelper.createRuttCobhNewYork(6000, 0.01f);                //0.1F = 654 pos    0.01 = 6543     0.07 = 934   0.06 = 1090
         sendRouteToNAFOnXShipsAsync(60, route);
     }
 
-    public void sendRouteToNAFOnXShipsAsync(int nrOfShips, List<LatLong> route) throws Exception{   //Needs a special version of exchange that respond on the test queue to work!!!! See ExchangeServiceBean in Movement-Rules
+    public void sendRouteToNAFOnXShipsAsync(int nrOfShips, List<LatLong> route) throws Exception{   //Needs a special version of exchange that respond on the sales queue to work!!!! 
 
         List<AssetId> assetList = new ArrayList<>();
         List<AssetDTO> assetDTOList = new ArrayList<>();
