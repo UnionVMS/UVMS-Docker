@@ -60,9 +60,7 @@ public class VMSSystemPerformanceIT extends AbstractRest {
     @PerfTest(threads = 1)
     @Required(max = 45000)
     public void createPositionAndTriggerRulePerformanceTest() throws Exception {
-        TopicListener topicListener = new TopicListener();
-        MessageConsumer durableSubscriber = topicListener.registerDurableSubscriber(SELECTOR);
-        
+       
         AssetDTO asset = AssetTestHelper.createTestAsset();
         MobileTerminalType mobileTerminalType = MobileTerminalTestHelper.createMobileTerminalType();
         MobileTerminalTestHelper.assignMobileTerminal(asset, mobileTerminalType);
@@ -81,34 +79,32 @@ public class VMSSystemPerformanceIT extends AbstractRest {
 
         List<LatLong> postitions = new MovementHelper().createRuttGeneric(57d, 11d, 58d, 1d, NUMBER_OF_POSITIONS);
 
-        for (LatLong position : postitions) {
-            FLUXHelper.sendPositionToFluxPlugin(asset, position);
-        }
-        
-        int receivedReports = 0;
-        while (receivedReports < postitions.size()) {
-            TextMessage message = (TextMessage) topicListener.listenOnEventBusWithSubscriber(durableSubscriber);
-            assertThat(message, is(notNullValue()));
-        
-            SetReportRequest setReportRequest = JAXBMarshaller.unmarshallTextMessage(message, SetReportRequest.class);
-        
-            assertThat(setReportRequest.getReport().getRecipient(), is(fluxEndpoint));
-            assertThat(setReportRequest.getReport().getMovement().getAssetName(), is(asset.getName()));
-            assertThat(setReportRequest.getReport().getMovement().getIrcs(), is(asset.getIrcs()));
-            receivedReports++;
-        }
-        
+        try (TopicListener topicListener = new TopicListener(SELECTOR)) {
+
+            for (LatLong position : postitions) {
+                FLUXHelper.sendPositionToFluxPlugin(asset, position);
+            }
+
+            int receivedReports = 0;
+            while (receivedReports < postitions.size()) {
+                TextMessage message = (TextMessage) topicListener.listenOnEventBus();
+                assertThat(message, is(notNullValue()));
+
+                SetReportRequest setReportRequest = JAXBMarshaller.unmarshallTextMessage(message, SetReportRequest.class);
+
+                assertThat(setReportRequest.getReport().getRecipient(), is(fluxEndpoint));
+                assertThat(setReportRequest.getReport().getMovement().getAssetName(), is(asset.getName()));
+                assertThat(setReportRequest.getReport().getMovement().getIrcs(), is(asset.getIrcs()));
+                receivedReports++;
+            }
+        }      
         CustomRuleHelper.removeCustomRule(createdCustomRule.getGuid());
-        durableSubscriber.close();
-        topicListener.close();
     }
     
     @Ignore
     @Test
     @PerfTest(threads = 1)
     public void createPositionAndTriggerRulePerformanceTestTenShips() throws Exception {
-        TopicListener topicListener = new TopicListener();
-        MessageConsumer durableSubscriber = topicListener.registerDurableSubscriber(SELECTOR);
         
         // Create rule
         String flagStateCode = "SWE";
@@ -124,32 +120,33 @@ public class VMSSystemPerformanceIT extends AbstractRest {
         CustomRuleType createdCustomRule = CustomRuleHelper.createCustomRule(flagStateRule);
         assertNotNull(createdCustomRule);
 
-        int numberOfShips = 10;
-        for (int i = 0; i < numberOfShips; i++) {
-            AssetDTO asset = AssetTestHelper.createBasicAsset();
-            asset.setFlagStateCode(flagStateCode);
-            AssetDTO createdAsset = AssetTestHelper.createAsset(asset);
+        try (TopicListener topicListener = new TopicListener(SELECTOR)) {
 
-            List<LatLong> postitions = new MovementHelper().createRuttGeneric(57d, 11d, 58d, 1d, NUMBER_OF_POSITIONS);
+            int numberOfShips = 10;
+            for (int i = 0; i < numberOfShips; i++) {
+                AssetDTO asset = AssetTestHelper.createBasicAsset();
+                asset.setFlagStateCode(flagStateCode);
+                AssetDTO createdAsset = AssetTestHelper.createAsset(asset);
 
-            for (LatLong position : postitions) {
-                FLUXHelper.sendPositionToFluxPlugin(createdAsset, position);
+                List<LatLong> postitions = new MovementHelper().createRuttGeneric(57d, 11d, 58d, 1d, NUMBER_OF_POSITIONS);
+
+                for (LatLong position : postitions) {
+                    FLUXHelper.sendPositionToFluxPlugin(createdAsset, position);
+                }
             }
+
+            int receivedReports = 0;
+            while (receivedReports < numberOfShips * NUMBER_OF_POSITIONS) {
+                TextMessage message = (TextMessage) topicListener.listenOnEventBus();
+                assertThat(message, is(notNullValue()));
+
+                SetReportRequest setReportRequest = JAXBMarshaller.unmarshallTextMessage(message, SetReportRequest.class);
+
+                assertThat(setReportRequest.getReport().getRecipient(), is(fluxEndpoint));
+                receivedReports++;
+            }
+
         }
-        
-        int receivedReports = 0;
-        while (receivedReports < numberOfShips * NUMBER_OF_POSITIONS) {
-            TextMessage message = (TextMessage) topicListener.listenOnEventBusWithSubscriber(durableSubscriber);
-            assertThat(message, is(notNullValue()));
-        
-            SetReportRequest setReportRequest = JAXBMarshaller.unmarshallTextMessage(message, SetReportRequest.class);
-        
-            assertThat(setReportRequest.getReport().getRecipient(), is(fluxEndpoint));
-            receivedReports++;
-        }
-        
         CustomRuleHelper.removeCustomRule(createdCustomRule.getGuid());
-        durableSubscriber.close();
-        topicListener.close();
     }
 }
