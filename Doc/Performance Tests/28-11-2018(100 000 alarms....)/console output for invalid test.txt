@@ -2,6 +2,8 @@ Most if not all caused an alarm from time in the future, so invalid test
 
 took 1.31 hours
 
+Also missing 7 positions
+
 : 0.013s
 Created movement number: 94170 Time so far: 5m 33.409s Time since last 10: 0.018s
 Created movement number: 94180 Time so far: 5m 33.425s Time since last 10: 0.015s

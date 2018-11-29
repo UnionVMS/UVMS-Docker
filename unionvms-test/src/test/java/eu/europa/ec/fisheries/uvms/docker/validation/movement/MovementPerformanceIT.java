@@ -13,6 +13,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Consumer;
 import javax.jms.Message;
 import javax.jms.TextMessage;
+import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.sse.InboundSseEvent;
 import javax.ws.rs.sse.SseEventSource;
 import javax.xml.bind.JAXBContext;
@@ -490,5 +491,12 @@ public class MovementPerformanceIT extends AbstractRest {
         JAXBContext jaxbContext = JAXBContext.newInstance(ExceptionType.class);
         return (ExceptionType) jaxbContext.createUnmarshaller()
                 .unmarshal(new StringReader(textMessage.getText()));
+    }
+
+    public static SseEventSource getSseStream() {
+        WebTarget target = getWebTarget().path("exchange/unsecured/rest/sse/subscribe");
+        AuthorizationHeaderWebTarget jwtTarget = new AuthorizationHeaderWebTarget(target, getValidJwtToken());
+        return SseEventSource.
+                target(jwtTarget).build();
     }
 }

@@ -228,10 +228,9 @@ public class NAFExchangePerformanceTests {
         i = 0;
         for(LatLong pos : route){
             Message message = /*MessageHelper.*/listenForResponseOnQueue("PerformanceTester", "UVMSSalesEvent");
-            /*ProcessedMovementResponse movementResponse = JAXBMarshaller.unmarshallTextMessage((TextMessage) message, ProcessedMovementResponse.class);
-            if(movementResponse.getMovementRefType().getType().equals(MovementRefTypeType.ALARM)){
-                System.out.println("Alarm: " + i + ", ");
-            }*/
+            if(message == null){
+                throw new NullPointerException("Test timed out after " + humanReadableFormat(Duration.between(b4, Instant.now())) + " on message nr: " + i);
+            }
             i++;
 
             if((i % 10) == 0){
