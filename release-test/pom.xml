@@ -5,21 +5,30 @@
 	<parent>
 		<groupId>eu.europa.ec.fisheries.uvms.docker</groupId>
 		<artifactId>uvms-docker</artifactId>
-		<version>3.28.3.w14-SNAPSHOT</version>
+		<version>3.29.18.w14-SNAPSHOT</version>
 		<relativePath>../pom.xml</relativePath>
 	</parent>
 
-	<groupId>eu.europa.ec.fisheries.uvms.docker</groupId>
-	<version>3.28.3.w14-SNAPSHOT</version>
 	<artifactId>uvms-release-test</artifactId>
 	<packaging>jar</packaging>
 	<name>uvms-release-test</name>
+	
+	<properties>
+		<skipITs>true</skipITs>
+	</properties>
+	
 	<dependencies>
 		<dependency>
 			<groupId>eu.europa.ec.fisheries.uvms.docker</groupId>
 			<artifactId>uvms-unionvms-test</artifactId>
+			<version>${project.version}</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>eu.europa.ec.fisheries.uvms.docker</groupId>
+			<artifactId>uvms-unionvms-test</artifactId>
+			<version>${project.version}</version>
 			<type>test-jar</type>
-			<version>3.26.7.w14-SNAPSHOT</version>
 			<scope>test</scope>
 		</dependency>	
 		<dependency>
@@ -57,117 +66,6 @@
 			</plugins>
 		</pluginManagement>
 		<plugins>
-		   <plugin>
-                <groupId>org.apache.cxf</groupId>
-                <artifactId>cxf-codegen-plugin</artifactId>
-                <version>3.1.13</version>
-                <executions>
-                    <execution>
-                        <id>wsdl-services</id>
-                        <phase>generate-sources</phase>
-                        <configuration>
-                            <wsdlOptions>
-                                <wsdlOption>
-                                    <wsdl>${basedir}/src/main/wsdl/FluxMessageReceiverBean.wsdl</wsdl>
-                                    <serviceName>MovementService</serviceName>
-                                    <bindingFiles>
-                                        <bindingFile>${basedir}/src/main/wsdl/binding.xml</bindingFile>
-                                    </bindingFiles>
-                                </wsdlOption>
-                            </wsdlOptions>
-                        </configuration>
-                        <goals>
-                            <goal>wsdl2java</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>		
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-dependency-plugin</artifactId>
-				<executions>
-					<execution>
-						<id>unpack</id>
-						<phase>process-resources</phase>
-						<goals>
-							<goal>unpack</goal>
-						</goals>
-						<configuration>
-							<artifactItems>
-								<artifactItem>
-									<artifactId>movement-rest</artifactId>
-									<groupId>eu.europa.ec.fisheries.uvms.movement</groupId>
-									<type>war</type>
-									<version>4.0.7</version>
-									<overWrite>false</overWrite>
-									<outputDirectory>${project.build.directory}/warclasses/</outputDirectory>
-									<includes>WEB-INF/classes/**/*.*</includes>
-								</artifactItem>
-								<artifactItem>
-									<artifactId>exchange-rest</artifactId>
-									<groupId>eu.europa.ec.fisheries.uvms.exchange</groupId>
-									<type>war</type>
-									<version>4.0.6</version>
-									<overWrite>false</overWrite>
-									<outputDirectory>${project.build.directory}/warclasses/</outputDirectory>
-									<includes>WEB-INF/classes/**/*.*</includes>
-								</artifactItem>
-							</artifactItems>
-							<overWriteReleases>false</overWriteReleases>
-							<overWriteSnapshots>true</overWriteSnapshots>
-						</configuration>
-					</execution>
-				</executions>
-			</plugin>
-			<plugin>
-				<artifactId>maven-resources-plugin</artifactId>
-				<executions>
-					<execution>
-						<id>copy-resources</id>
-						<phase>compile</phase>
-						<goals>
-							<goal>copy-resources</goal>
-						</goals>
-						<configuration>
-							<outputDirectory>${project.build.directory}/classes/</outputDirectory>
-							<resources>
-								<resource>
-									<directory>${project.build.directory}/warclasses/WEB-INF/classes/</directory>
-									<filtering>false</filtering>
-									<includes>
-										<include>**/*.class</include>
-									</includes>
-								</resource>
-							</resources>
-						</configuration>
-					</execution>
-				</executions>
-			</plugin>
-            <plugin>
-                <artifactId>maven-assembly-plugin</artifactId>
-                <version>3.1.0</version>
-                <configuration>
-					<descriptors>
-						<descriptor>src/main/assembly/assembly.xml</descriptor>
-					</descriptors>
-                </configuration>
-                <executions>
-                    <execution>
-                        <id>make-test-assembly</id>
-                        <phase>test</phase>
-                        <goals>
-                            <goal>single</goal>
-                        </goals>
-                        <configuration>
-                            <archive>
-                                <manifest>
-                                    <mainClass>eu.europa.ec.fisheries.uvms.docker.validation.external.TestRunner</mainClass>
-                                </manifest>
-                            </archive>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-failsafe-plugin</artifactId>
@@ -186,76 +84,10 @@
 				<version>1.8</version>
 				<executions>
 					<execution>
-						<id>downloadRegressionSuite</id>
-						<phase>test</phase>
-						<configuration>
-							<tasks>
-								<!-- Get the regression-suite-selenium front-end -->
-								<get src="https://github.com/UnionVMS/UVMS-SeleniumTests/raw/swe-dev/Python-regression-suite-selenium.py" dest="target/Python-regression-suite-selenium.py" verbose="true" usetimestamp="true" />
-								<get src="https://github.com/UnionVMS/UVMS-SeleniumTests/raw/swe-dev/DockerUnionVMSparameters.py" dest="target/UnionVMSparameters.py" verbose="true" usetimestamp="true" />
-
-								<get src="https://github.com/UnionVMS/UVMS-SeleniumTests/raw/swe-dev/asset1.csv" dest="target/asset1.csv" verbose="true" usetimestamp="true" />
-								<get src="https://github.com/UnionVMS/UVMS-SeleniumTests/raw/swe-dev/mobileterminal1.csv" dest="target/mobileterminal1.csv" verbose="true" usetimestamp="true" />
-								<get src="https://github.com/UnionVMS/UVMS-SeleniumTests/raw/swe-dev/trip1.csv" dest="target/trip1.csv" verbose="true" usetimestamp="true" />
-								<get src="https://github.com/UnionVMS/UVMS-SeleniumTests/raw/swe-dev/asset2.csv" dest="target/asset2.csv" verbose="true" usetimestamp="true" />
-								<get src="https://github.com/UnionVMS/UVMS-SeleniumTests/raw/swe-dev/mobileterminal2.csv" dest="target/mobileterminal2.csv" verbose="true" usetimestamp="true" />
-								<get src="https://github.com/UnionVMS/UVMS-SeleniumTests/raw/swe-dev/trip2.csv" dest="target/trip2.csv" verbose="true" usetimestamp="true" />
-								<get src="https://github.com/UnionVMS/UVMS-SeleniumTests/raw/swe-dev/asset3.csv" dest="target/asset3.csv" verbose="true" usetimestamp="true" />
-								<get src="https://github.com/UnionVMS/UVMS-SeleniumTests/raw/swe-dev/mobileterminal3.csv" dest="target/mobileterminal3.csv" verbose="true" usetimestamp="true" />
-								<get src="https://github.com/UnionVMS/UVMS-SeleniumTests/raw/swe-dev/trip3.csv" dest="target/trip3.csv" verbose="true" usetimestamp="true" />
-								<get src="https://github.com/UnionVMS/UVMS-SeleniumTests/raw/swe-dev/asset4.csv" dest="target/asset4.csv" verbose="true" usetimestamp="true" />
-								<get src="https://github.com/UnionVMS/UVMS-SeleniumTests/raw/swe-dev/mobileterminal4.csv" dest="target/mobileterminal4.csv" verbose="true" usetimestamp="true" />
-								<get src="https://github.com/UnionVMS/UVMS-SeleniumTests/raw/swe-dev/trip4.csv" dest="target/trip4.csv" verbose="true" usetimestamp="true" />
-								<get src="https://github.com/UnionVMS/UVMS-SeleniumTests/raw/swe-dev/asset5.csv" dest="target/asset5.csv" verbose="true" usetimestamp="true" />
-								<get src="https://github.com/UnionVMS/UVMS-SeleniumTests/raw/swe-dev/mobileterminal5.csv" dest="target/mobileterminal5.csv" verbose="true" usetimestamp="true" />
-								<get src="https://github.com/UnionVMS/UVMS-SeleniumTests/raw/swe-dev/trip5.csv" dest="target/trip5.csv" verbose="true" usetimestamp="true" />
-								<get src="https://github.com/UnionVMS/UVMS-SeleniumTests/raw/swe-dev/asset6.csv" dest="target/asset6.csv" verbose="true" usetimestamp="true" />
-								<get src="https://github.com/UnionVMS/UVMS-SeleniumTests/raw/swe-dev/mobileterminal6.csv" dest="target/mobileterminal6.csv" verbose="true" usetimestamp="true" />
-								<get src="https://github.com/UnionVMS/UVMS-SeleniumTests/raw/swe-dev/trip6.csv" dest="target/trip6.csv" verbose="true" usetimestamp="true" />
-								<get src="https://github.com/UnionVMS/UVMS-SeleniumTests/raw/swe-dev/asset7.csv" dest="target/asset7.csv" verbose="true" usetimestamp="true" />
-								<get src="https://github.com/UnionVMS/UVMS-SeleniumTests/raw/swe-dev/mobileterminal7.csv" dest="target/mobileterminal7.csv" verbose="true" usetimestamp="true" />
-								<get src="https://github.com/UnionVMS/UVMS-SeleniumTests/raw/swe-dev/trip7.csv" dest="target/trip7.csv" verbose="true" usetimestamp="true" />
-								<get src="https://github.com/UnionVMS/UVMS-SeleniumTests/raw/swe-dev/asset8.csv" dest="target/asset8.csv" verbose="true" usetimestamp="true" />
-								<get src="https://github.com/UnionVMS/UVMS-SeleniumTests/raw/swe-dev/mobileterminal8.csv" dest="target/mobileterminal8.csv" verbose="true" usetimestamp="true" />
-								<get src="https://github.com/UnionVMS/UVMS-SeleniumTests/raw/swe-dev/trip8.csv" dest="target/trip8.csv" verbose="true" usetimestamp="true" />
-								<get src="https://github.com/UnionVMS/UVMS-SeleniumTests/raw/swe-dev/asset9.csv" dest="target/asset9.csv" verbose="true" usetimestamp="true" />
-								<get src="https://github.com/UnionVMS/UVMS-SeleniumTests/raw/swe-dev/mobileterminal9.csv" dest="target/mobileterminal9.csv" verbose="true" usetimestamp="true" />
-								<get src="https://github.com/UnionVMS/UVMS-SeleniumTests/raw/swe-dev/trip9.csv" dest="target/trip9.csv" verbose="true" usetimestamp="true" />
-								<get src="https://github.com/UnionVMS/UVMS-SeleniumTests/raw/swe-dev/assetreal1.csv" dest="target/assetreal1.csv" verbose="true" usetimestamp="true" />
-								<get src="https://github.com/UnionVMS/UVMS-SeleniumTests/raw/swe-dev/mobileterminalreal1.csv" dest="target/mobileterminalreal1.csv" verbose="true" usetimestamp="true" />
-								<get src="https://github.com/UnionVMS/UVMS-SeleniumTests/raw/swe-dev/tripreal1.csv" dest="target/tripreal1.csv" verbose="true" usetimestamp="true" />
-								<get src="https://github.com/UnionVMS/UVMS-SeleniumTests/raw/swe-dev/assetreal2.csv" dest="target/assetreal2.csv" verbose="true" usetimestamp="true" />
-								<get src="https://github.com/UnionVMS/UVMS-SeleniumTests/raw/swe-dev/mobileterminalreal2.csv" dest="target/mobileterminalreal2.csv" verbose="true" usetimestamp="true" />
-								<get src="https://github.com/UnionVMS/UVMS-SeleniumTests/raw/swe-dev/tripreal2.csv" dest="target/tripreal2.csv" verbose="true" usetimestamp="true" />
-								<get src="https://github.com/UnionVMS/UVMS-SeleniumTests/raw/swe-dev/assetreal3.csv" dest="target/assetreal3.csv" verbose="true" usetimestamp="true" />
-								<get src="https://github.com/UnionVMS/UVMS-SeleniumTests/raw/swe-dev/mobileterminalreal3.csv" dest="target/mobileterminalreal3.csv" verbose="true" usetimestamp="true" />
-								<get src="https://github.com/UnionVMS/UVMS-SeleniumTests/raw/swe-dev/tripreal3.csv" dest="target/tripreal3.csv" verbose="true" usetimestamp="true" />
-								<get src="https://github.com/UnionVMS/UVMS-SeleniumTests/raw/swe-dev/assetreal4.csv" dest="target/assetreal4.csv" verbose="true" usetimestamp="true" />
-								<get src="https://github.com/UnionVMS/UVMS-SeleniumTests/raw/swe-dev/mobileterminalreal4.csv" dest="target/mobileterminalreal4.csv" verbose="true" usetimestamp="true" />
-								<get src="https://github.com/UnionVMS/UVMS-SeleniumTests/raw/swe-dev/tripreal4a.csv" dest="target/tripreal4a.csv" verbose="true" usetimestamp="true" />
-								<get src="https://github.com/UnionVMS/UVMS-SeleniumTests/raw/swe-dev/tripreal4b.csv" dest="target/tripreal4b.csv" verbose="true" usetimestamp="true" />
-								<get src="https://github.com/UnionVMS/UVMS-SeleniumTests/raw/swe-dev/assetreal5.csv" dest="target/assetreal5.csv" verbose="true" usetimestamp="true" />
-								<get src="https://github.com/UnionVMS/UVMS-SeleniumTests/raw/swe-dev/mobileterminalreal5.csv" dest="target/mobileterminalreal5.csv" verbose="true" usetimestamp="true" />
-								<get src="https://github.com/UnionVMS/UVMS-SeleniumTests/raw/swe-dev/tripreal5.csv" dest="target/tripreal5.csv" verbose="true" usetimestamp="true" />
-								<get src="https://github.com/UnionVMS/UVMS-SeleniumTests/raw/swe-dev/assetreal6.csv" dest="target/assetreal6.csv" verbose="true" usetimestamp="true" />
-								<get src="https://github.com/UnionVMS/UVMS-SeleniumTests/raw/swe-dev/mobileterminalreal6.csv" dest="target/mobileterminalreal6.csv" verbose="true" usetimestamp="true" />
-								<get src="https://github.com/UnionVMS/UVMS-SeleniumTests/raw/swe-dev/tripreal6.csv" dest="target/tripreal6.csv" verbose="true" usetimestamp="true" />
-								<get src="https://github.com/UnionVMS/UVMS-SeleniumTests/raw/swe-dev/assetreal7.csv" dest="target/assetreal7.csv" verbose="true" usetimestamp="true" />
-								<get src="https://github.com/UnionVMS/UVMS-SeleniumTests/raw/swe-dev/mobileterminalreal7.csv" dest="target/mobileterminalreal7.csv" verbose="true" usetimestamp="true" />
-								<get src="https://github.com/UnionVMS/UVMS-SeleniumTests/raw/swe-dev/tripreal7.csv" dest="target/tripreal7.csv" verbose="true" usetimestamp="true" />
-								<get src="https://github.com/UnionVMS/UVMS-SeleniumTests/raw/swe-dev/assetreal8.csv" dest="target/assetreal8.csv" verbose="true" usetimestamp="true" />
-								<get src="https://github.com/UnionVMS/UVMS-SeleniumTests/raw/swe-dev/mobileterminalreal8.csv" dest="target/mobileterminalreal8.csv" verbose="true" usetimestamp="true" />
-								<get src="https://github.com/UnionVMS/UVMS-SeleniumTests/raw/swe-dev/tripreal8.csv" dest="target/tripreal8.csv" verbose="true" usetimestamp="true" />
-							</tasks>
-						</configuration>
-						<goals>
-							<goal>run</goal>
-						</goals>
-					</execution>
-					<execution>
 						<id>downloadMonitoringMetrics</id>
 						<phase>post-integration-test</phase>
 						<configuration>
+							<skip>${skipITs}</skip>
 							<tasks>
 								<get src="http://localhost:28080/unionvms/audit/monitoring?format=pdf" dest="target/audit_monitoring.pdf" verbose="true" usetimestamp="true" />
 								<get src="http://localhost:28080/unionvms/config/monitoring?format=pdf" dest="target/config_monitoring.pdf" verbose="true" usetimestamp="true" />
@@ -316,6 +148,7 @@
 					</execution>
 				</executions>
 				<configuration>
+					<skip>${skipITs}</skip>
 					<images>
 						<image>
 							<alias>activemq</alias>
@@ -538,6 +371,12 @@
 					</plugin>
 				</plugins>
 			</build>
+		</profile>
+		<profile>
+			<id>flux-fmc</id>
+			<properties>
+				<skipITs>false</skipITs>
+			</properties>
 		</profile>
 	</profiles>
 </project>

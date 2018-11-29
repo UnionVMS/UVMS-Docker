@@ -405,8 +405,8 @@
 		<module>wildfly-unionvms</module>
 		<module>unionvms-test</module>
 		<module>wildfly-fluxfmc</module>
+		<module>release-test</module>
 		<module>docker-compose</module>
-		<!--module>release-test</module-->
 	</modules>
 
 	<profiles>
