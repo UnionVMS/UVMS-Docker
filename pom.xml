@@ -11,7 +11,7 @@
 
 	<groupId>eu.europa.ec.fisheries.uvms.docker</groupId>
 	<artifactId>uvms-docker</artifactId>
-	<version>3.29.3.w14-SNAPSHOT</version>
+	<version>3.29.17.w14-SNAPSHOT</version>
 	<packaging>pom</packaging>
 	<name>uvms-docker</name>
 
@@ -28,7 +28,7 @@
 		<unionvms.project.user.module>2.0.11</unionvms.project.user.module>
 		<unionvms.project.rules.module>3.0.31</unionvms.project.rules.module>
 		<unionvms.project.movementrules.module>2.0.1</unionvms.project.movementrules.module>
-		<unionvms.project.movement.module>5.1.4-UVMS</unionvms.project.movement.module>
+		<unionvms.project.movement.module>5.1.5-UVMS</unionvms.project.movement.module>
 		<unionvms.project.exchange.module>4.0.33-UVMS</unionvms.project.exchange.module>
 		<unionvms.project.reporting.module>1.1.5-UVMS</unionvms.project.reporting.module>
 		<unionvms.project.spatial.module>1.1.10</unionvms.project.spatial.module>
@@ -40,7 +40,7 @@
 		<unionvms.project.mdr.module>1.0.10</unionvms.project.mdr.module>
 		<unionvms.project.plugins.naf>3.0.9</unionvms.project.plugins.naf>
 		<unionvms.project.plugins.flux>3.0.14</unionvms.project.plugins.flux>
-		<unionvms.project.plugins.inmarsat>3.0.7</unionvms.project.plugins.inmarsat>
+		<unionvms.project.plugins.inmarsat>3.0.27</unionvms.project.plugins.inmarsat>
 		<unionvms.project.plugins.siriusone>3.0.7</unionvms.project.plugins.siriusone>
 		<unionvms.project.plugins.fluxActivity>1.0.6</unionvms.project.plugins.fluxActivity>
 		<unionvms.project.plugins.mdr>1.0.2</unionvms.project.plugins.mdr>
