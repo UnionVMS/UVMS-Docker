@@ -5,15 +5,19 @@
 	<parent>
 		<groupId>eu.europa.ec.fisheries.uvms.docker</groupId>
 		<artifactId>uvms-docker</artifactId>
-		<version>3.29.3.w14-SNAPSHOT</version>
+		<version>3.29.17.w14-SNAPSHOT</version>
 		<relativePath>../pom.xml</relativePath>
 	</parent>
 	
 	<groupId>eu.europa.ec.fisheries.uvms.docker</groupId>
-	<version>3.29.3.w14-SNAPSHOT</version>
+	<version>3.29.17.w14-SNAPSHOT</version>
 	<artifactId>uvms-unionvms-test</artifactId>
 	<packaging>jar</packaging>
 	<name>uvms-unionvms-test</name>
+
+	<properties>
+		<docker.skip>${skipITs}</docker.skip>
+	</properties>
 
 	<dependencies>
 		<dependency>
@@ -201,6 +205,7 @@
 						<id>downloadRegressionSuite</id>
 						<phase>test</phase>
 						<configuration>
+							<skip>${docker.skip}</skip>
 							<tasks>
 								<!-- Get the regression-suite-selenium front-end -->
 								<get src="https://github.com/UnionVMS/UVMS-SeleniumTests/raw/swe-dev/UVMS-SeleniumRegressionTests.zip" dest="target/UVMS-SeleniumRegressionTests.zip" verbose="true" usetimestamp="true" />
@@ -216,6 +221,7 @@
 						<id>downloadMonitoringMetrics</id>
 						<phase>post-integration-test</phase>
 						<configuration>
+							<skip>${docker.skip}</skip>
 							<tasks>
 								<get src="http://localhost:28080/unionvms/audit/monitoring?format=pdf" dest="target/audit_monitoring.pdf" verbose="true" usetimestamp="true" />
 								<get src="http://localhost:28080/unionvms/config/monitoring?format=pdf" dest="target/config_monitoring.pdf" verbose="true" usetimestamp="true" />
@@ -271,6 +277,7 @@
 					</execution>
 				</executions>
 				<configuration>
+					<skip>${docker.skip}</skip>
 					<images>
 						<image>
 							<alias>activemq</alias>

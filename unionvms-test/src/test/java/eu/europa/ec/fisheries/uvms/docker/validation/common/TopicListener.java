@@ -11,16 +11,19 @@ copy of the GNU General Public License along with the IFDM Suite. If not, see <h
  */
 package eu.europa.ec.fisheries.uvms.docker.validation.common;
 
+import java.io.Closeable;
+import java.io.IOException;
 import java.util.UUID;
 import javax.jms.Connection;
 import javax.jms.ConnectionFactory;
+import javax.jms.JMSException;
 import javax.jms.Message;
 import javax.jms.MessageConsumer;
 import javax.jms.Session;
 import javax.jms.Topic;
 import org.apache.activemq.ActiveMQConnectionFactory;
 
-public class TopicListener {
+public class TopicListener implements Closeable {
 
     private final long TIMEOUT = 10000;
 
@@ -28,23 +31,39 @@ public class TopicListener {
     private Connection connection;
     private Session session;
     private Topic eventBus;
+    private MessageConsumer durableSubscriber;
     
-    public MessageConsumer registerDurableSubscriber(String selector) throws Exception {
+    public TopicListener(String selector) throws Exception {
+        registerDurableSubscriber(selector);
+    }
+    
+    public void registerDurableSubscriber(String selector) throws Exception {
         connection = connectionFactory.createConnection();
         connection.setClientID(UUID.randomUUID().toString());
         connection.start();
         session = connection.createSession(false, Session.AUTO_ACKNOWLEDGE);
         eventBus = session.createTopic("EventBus");
-        return session.createDurableSubscriber(eventBus, "TestSubscriber", selector, true);
+        durableSubscriber = session.createDurableSubscriber(eventBus, "TestSubscriber", selector, true);
     }
     
-    public Message listenOnEventBusWithSubscriber(MessageConsumer messageConsumer) throws Exception {
-        return messageConsumer.receive(TIMEOUT);
+    public Message listenOnEventBus() throws Exception {
+        return durableSubscriber.receive(TIMEOUT);
     }
-    
-    public void close() throws Exception {
-        if (connection != null) {
-            connection.close();
+
+    @Override
+    public void close() throws IOException {
+        try {
+            durableSubscriber.close();
+            if (session != null) {
+                session.unsubscribe("TestSubscriber");
+                session.close();
+            }
+            if (connection != null) {
+                connection.close();
+            }
+        } catch (JMSException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
         }
     }
 }
