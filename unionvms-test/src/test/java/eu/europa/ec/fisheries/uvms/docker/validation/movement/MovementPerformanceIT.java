@@ -492,7 +492,6 @@ public class MovementPerformanceIT extends AbstractRest {
         return (ExceptionType) jaxbContext.createUnmarshaller()
                 .unmarshal(new StringReader(textMessage.getText()));
     }
-
     public static SseEventSource getSseStream() {
         WebTarget target = getWebTarget().path("exchange/unsecured/rest/sse/subscribe");
         AuthorizationHeaderWebTarget jwtTarget = new AuthorizationHeaderWebTarget(target, getValidJwtToken());

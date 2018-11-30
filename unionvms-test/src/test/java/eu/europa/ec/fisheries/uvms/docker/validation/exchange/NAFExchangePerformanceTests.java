@@ -13,7 +13,9 @@ import eu.europa.ec.fisheries.schema.movementrules.module.v1.SetMovementReportRe
 import eu.europa.ec.fisheries.schema.movementrules.movement.v1.*;
 import eu.europa.ec.fisheries.uvms.asset.client.model.AssetDTO;
 import eu.europa.ec.fisheries.uvms.docker.validation.asset.AssetTestHelper;
+import eu.europa.ec.fisheries.uvms.docker.validation.common.AbstractRest;
 import eu.europa.ec.fisheries.uvms.docker.validation.mobileterminal.MobileTerminalTestHelper;
+import eu.europa.ec.fisheries.uvms.docker.validation.movement.AuthorizationHeaderWebTarget;
 import eu.europa.ec.fisheries.uvms.docker.validation.movement.LatLong;
 import eu.europa.ec.fisheries.uvms.docker.validation.movement.MovementHelper;
 import eu.europa.ec.fisheries.uvms.docker.validation.system.helper.NAFHelper;
@@ -26,6 +28,8 @@ import org.junit.Test;
 
 import javax.jms.*;
 import javax.jms.Queue;
+import javax.ws.rs.client.WebTarget;
+import javax.ws.rs.sse.SseEventSource;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
@@ -33,9 +37,12 @@ import javax.xml.transform.stream.StreamSource;
 import java.io.StringReader;
 import java.time.Duration;
 import java.time.Instant;
+import java.time.temporal.ChronoUnit;
 import java.util.*;
+import java.util.concurrent.TimeUnit;
+import java.util.function.Consumer;
 
-public class NAFExchangePerformanceTests {
+public class NAFExchangePerformanceTests extends AbstractRest {
 
         private ConnectionFactory connectionFactory = new ActiveMQConnectionFactory("tcp://localhost:61616");
         //private ConnectionFactory connectionFactory = new ActiveMQConnectionFactory("tcp://livm73u.havochvatten.se:61616");
@@ -162,7 +169,7 @@ public class NAFExchangePerformanceTests {
         sendRouteToNAFOnXShipsAsync(60, route);
     }
 
-    public void sendRouteToNAFOnXShipsAsync(int nrOfShips, List<LatLong> route) throws Exception{   //Needs a special version of exchange that respond on the sales queue to work!!!! 
+    public void sendRouteToNAFOnXShipsAsync(int nrOfShips, List<LatLong> route) throws Exception{   //Needs a special version of exchange that respond on the sales queue to work!!!!
 
         List<AssetId> assetList = new ArrayList<>();
         List<AssetDTO> assetDTOList = new ArrayList<>();
@@ -196,55 +203,80 @@ public class NAFExchangePerformanceTests {
 
         int i = 0;
         Instant b4 = Instant.now();
-        Instant lastIteration = Instant.now();
+        Instant lastSent = Instant.now();
+        Instant lastReceived = Instant.now();
         List<Duration> averageDurations = new ArrayList<>();
         List<String> corrList = new ArrayList<>();
+        List<String> movements = new ArrayList<>();
 
-        for(LatLong pos : route) {
-            AssetDTO asset = assetDTOList.get(i % nrOfShips);
+        try (SseEventSource source = getSseStream()) {
+            source.register((inboundSseEvent) -> {
+                if (inboundSseEvent.getComment() != null) {
+                    movements.add(inboundSseEvent.readData());
+                    if ((movements.size() % 10) == 0) {
+                        System.out.println("Received number " + movements.size() + " Time so far: " + humanReadableFormat(Duration.between(b4, Instant.now())) + " Time since last 10 received: " + humanReadableFormat(Duration.between(lastReceived, Instant.now())));
+                    }
+                }
+            }, onError);
+            source.open();
+            for (LatLong pos : route) {
+                AssetDTO asset = assetDTOList.get(i % nrOfShips);
 
-            NAFHelper.sendPositionToNAFPlugin(pos, asset);
+                NAFHelper.sendPositionToNAFPlugin(pos, asset);
 
-            //RawMovementType move = createBasicMovement(assetId, nameList.get(i % nrOfShips), pos);
-            //String request = createSetMovementReportRequest(PluginType.FLUX, move, "PerformanceTester");
+                //RawMovementType move = createBasicMovement(assetId, nameList.get(i % nrOfShips), pos);
+                //String request = createSetMovementReportRequest(PluginType.FLUX, move, "PerformanceTester");
 
-            //String corrId = sendMessageToRules(request, RulesModuleMethod.SET_MOVEMENT_REPORT.value());
-            //corrList.add(corrId);
+                //String corrId = sendMessageToRules(request, RulesModuleMethod.SET_MOVEMENT_REPORT.value());
+                //corrList.add(corrId);
 
 
-            i++;
-            if((i % 10) == 0){
-                System.out.println("Created movement number: " + i + " Time so far: " + humanReadableFormat(Duration.between(b4, Instant.now())) + " Time since last 10: " + humanReadableFormat(Duration.between(lastIteration, Instant.now())));
-                //System.out.println("Time for 10 movement for last iteration: " + Duration.between(lastIteration,Instant.now()).toString());
-                averageDurations.add(Duration.between(lastIteration, Instant.now()));
-                lastIteration = Instant.now();
+                i++;
+                if ((i % 10) == 0) {
+                    System.out.println("Created movement number: " + i + " Time so far: " + humanReadableFormat(Duration.between(b4, Instant.now())) + " Time since last 10 sent: " + humanReadableFormat(Duration.between(lastSent, Instant.now())));
+                    //System.out.println("Time for 10 movement for last iteration: " + Duration.between(lastIteration,Instant.now()).toString());
+                    averageDurations.add(Duration.between(lastSent, Instant.now()));
+                    lastSent = Instant.now();
+
+                }
+
 
             }
 
-
-        }
-
-        Instant middle = Instant.now();
-        i = 0;
-        for(LatLong pos : route){
-            Message message = /*MessageHelper.*/listenForResponseOnQueue("PerformanceTester", "UVMSSalesEvent");
+           /* Instant middle = Instant.now();
+            i = 0;
+            for (LatLong pos : route) {
+            Message message = listenForResponseOnQueue("PerformanceTester", "UVMSSalesEvent");            //Since this does not check the whole flow this is out
             if(message == null){
                 throw new NullPointerException("Test timed out after " + humanReadableFormat(Duration.between(b4, Instant.now())) + " on message nr: " + i);
             }
             i++;
 
-            if((i % 10) == 0){
-                System.out.println("Recieved movement number: " + i + " Time so far: " + humanReadableFormat(Duration.between(b4, Instant.now())) + " Time since last 10: " + humanReadableFormat(Duration.between(lastIteration, Instant.now())));
-                //System.out.println("Time for 10 movement for last iteration: " + Duration.between(lastIteration,Instant.now()).toString());
-                averageDurations.add(Duration.between(lastIteration, Instant.now()));
-                lastIteration = Instant.now();
+                if ((i % 10) == 0) {
+                    System.out.println("Recieved movement number: " + i + " Time so far: " + humanReadableFormat(Duration.between(b4, Instant.now())) + " Time since last 10: " + humanReadableFormat(Duration.between(lastIteration, Instant.now())));
+                    //System.out.println("Time for 10 movement for last iteration: " + Duration.between(lastIteration,Instant.now()).toString());
+                    averageDurations.add(Duration.between(lastIteration, Instant.now()));
+                    lastIteration = Instant.now();
 
+                }
+            }*/
+            while (movements.size() < route.size()) {
+                Thread.sleep(100);
             }
         }
-
         averageDurations.stream().forEach(dur -> System.out.print(humanReadableFormat(dur) + ", "));
         System.out.println();
     }
+
+    //Error
+    private static Consumer<Throwable> onError = (throwable) -> {
+        throwable.printStackTrace();
+    };
+
+    //Connection close and there is nothing to receive
+    private static Runnable onComplete = () -> {
+        System.out.println("Done!");
+    };
 
     public String sendMessageToRules(String text, String requestType) throws Exception {
         Connection connection = connectionFactory.createConnection();
@@ -337,6 +369,13 @@ public class NAFExchangePerformanceTests {
                 .substring(2)
                 .replaceAll("(\\d[HMS])(?!$)", "$1 ")
                 .toLowerCase();
+    }
+
+    public static SseEventSource getSseStream() {
+        WebTarget target = getWebTarget().path("movement-rules/rest/sse/subscribe");
+        AuthorizationHeaderWebTarget jwtTarget = new AuthorizationHeaderWebTarget(target, getValidJwtToken());
+        return SseEventSource.
+                target(jwtTarget).reconnectingEvery(1, TimeUnit.SECONDS).build();
     }
 }
 

@@ -143,12 +143,7 @@
 			<artifactId>geocalc</artifactId>
 			<version>1.1.0</version>
 		</dependency>
-		<dependency>
-			<groupId>org.jboss.resteasy</groupId>
-			<artifactId>resteasy-client</artifactId>
-			<version>3.5.0.Final</version>
-			<scope>test</scope>
-		</dependency>
+
 	</dependencies>
 	<build>
 		<pluginManagement>
