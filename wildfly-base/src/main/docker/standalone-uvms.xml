@@ -1,6 +1,6 @@
 <?xml version='1.0' encoding='UTF-8'?>
 
-<server xmlns="urn:jboss:domain:8.0">
+<server xmlns="urn:jboss:domain:9.0">
     <extensions>
         <extension module="org.jboss.as.clustering.infinispan"/>
         <extension module="org.jboss.as.connector"/>
@@ -12,6 +12,7 @@
         <extension module="org.jboss.as.jmx"/>
         <extension module="org.jboss.as.jpa"/>
         <extension module="org.jboss.as.jsf"/>
+        <extension module="org.jboss.as.jsr77"/>
         <extension module="org.jboss.as.logging"/>
         <extension module="org.jboss.as.mail"/>
         <extension module="org.jboss.as.naming"/>
@@ -29,15 +30,17 @@
         <extension module="org.wildfly.extension.ee-security"/>
         <extension module="org.wildfly.extension.elytron"/>
         <extension module="org.wildfly.extension.io"/>
+        <extension module="org.wildfly.extension.messaging-activemq"/>
         <extension module="org.wildfly.extension.microprofile.config-smallrye"/>
         <extension module="org.wildfly.extension.microprofile.health-smallrye"/>
+        <extension module="org.wildfly.extension.microprofile.metrics-smallrye"/>
         <extension module="org.wildfly.extension.microprofile.opentracing-smallrye"/>
         <extension module="org.wildfly.extension.request-controller"/>
         <extension module="org.wildfly.extension.security.manager"/>
         <extension module="org.wildfly.extension.undertow"/>
-        <!--  <extension module="org.wildfly.iiop-openjdk"/> -->
+        <extension module="org.wildfly.iiop-openjdk"/>
     </extensions>
-
+    
     <system-properties>
     	<property name="jboss.as.management.blocking.timeout" value="1200"/>
         <property name="db.dialect" value="postgres"/>
@@ -725,7 +728,7 @@
             <default-missing-method-permissions-deny-access value="true"/>
             <log-system-exceptions value="true"/>
         </subsystem>
-        <subsystem xmlns="urn:wildfly:elytron:4.0" final-providers="combined-providers" disallowed-providers="OracleUcrypto">
+        <subsystem xmlns="urn:wildfly:elytron:5.0" final-providers="combined-providers" disallowed-providers="OracleUcrypto">
             <providers>
                 <aggregate-providers name="combined-providers">
                     <providers name="elytron"/>
@@ -762,15 +765,11 @@
                 <simple-permission-mapper name="default-permission-mapper" mapping-mode="first">
                     <permission-mapping>
                         <principal name="anonymous"/>
-                        <permission class-name="org.wildfly.extension.batch.jberet.deployment.BatchPermission" module="org.wildfly.extension.batch.jberet" target-name="*"/>
-                        <permission class-name="org.wildfly.transaction.client.RemoteTransactionPermission" module="org.wildfly.transaction.client"/>
-                        <permission class-name="org.jboss.ejb.client.RemoteEJBPermission" module="org.jboss.ejb-client"/>
+                        <permission-set name="default-permissions"/>
                     </permission-mapping>
                     <permission-mapping match-all="true">
-                        <permission class-name="org.wildfly.security.auth.permission.LoginPermission"/>
-                        <permission class-name="org.wildfly.extension.batch.jberet.deployment.BatchPermission" module="org.wildfly.extension.batch.jberet" target-name="*"/>
-                        <permission class-name="org.wildfly.transaction.client.RemoteTransactionPermission" module="org.wildfly.transaction.client"/>
-                        <permission class-name="org.jboss.ejb.client.RemoteEJBPermission" module="org.jboss.ejb-client"/>
+                        <permission-set name="login-permission"/>
+                        <permission-set name="default-permissions"/>
                     </permission-mapping>
                 </simple-permission-mapper>
                 <constant-realm-mapper name="local" realm-name="local"/>
@@ -779,38 +778,40 @@
                     <role name="SuperUser"/>
                 </constant-role-mapper>
             </mappers>
+            <permission-sets>
+                <permission-set name="login-permission">
+                    <permission class-name="org.wildfly.security.auth.permission.LoginPermission"/>
+                </permission-set>
+                <permission-set name="default-permissions">
+                    <permission class-name="org.wildfly.extension.batch.jberet.deployment.BatchPermission" module="org.wildfly.extension.batch.jberet" target-name="*"/>
+                    <permission class-name="org.wildfly.transaction.client.RemoteTransactionPermission" module="org.wildfly.transaction.client"/>
+                    <permission class-name="org.jboss.ejb.client.RemoteEJBPermission" module="org.jboss.ejb-client"/>
+                </permission-set>
+            </permission-sets>
             <http>
-                <http-authentication-factory name="management-http-authentication" http-server-mechanism-factory="global" security-domain="ManagementDomain">
+                <http-authentication-factory name="management-http-authentication" security-domain="ManagementDomain" http-server-mechanism-factory="global">
                     <mechanism-configuration>
                         <mechanism mechanism-name="DIGEST">
                             <mechanism-realm realm-name="ManagementRealm"/>
                         </mechanism>
                     </mechanism-configuration>
                 </http-authentication-factory>
-                <http-authentication-factory name="application-http-authentication" http-server-mechanism-factory="global" security-domain="ApplicationDomain">
-                    <mechanism-configuration>
-                        <mechanism mechanism-name="BASIC">
-                            <mechanism-realm realm-name="Application Realm"/>
-                        </mechanism>
-                        <mechanism mechanism-name="FORM"/>
-                    </mechanism-configuration>
-                </http-authentication-factory>
                 <provider-http-server-mechanism-factory name="global"/>
             </http>
             <sasl>
-                <sasl-authentication-factory name="management-sasl-authentication" sasl-server-factory="configured" security-domain="ManagementDomain">
-                    <mechanism-configuration>
-                        <mechanism mechanism-name="JBOSS-LOCAL-USER" realm-mapper="local"/>
-                        <mechanism mechanism-name="DIGEST-MD5">
-                            <mechanism-realm realm-name="ManagementRealm"/>
-                        </mechanism>
-                    </mechanism-configuration>
-                </sasl-authentication-factory>
                 <sasl-authentication-factory name="application-sasl-authentication" sasl-server-factory="configured" security-domain="ApplicationDomain">
                     <mechanism-configuration>
                         <mechanism mechanism-name="JBOSS-LOCAL-USER" realm-mapper="local"/>
                         <mechanism mechanism-name="DIGEST-MD5">
                             <mechanism-realm realm-name="ApplicationRealm"/>
+                        </mechanism>
+                    </mechanism-configuration>
+                </sasl-authentication-factory>
+                <sasl-authentication-factory name="management-sasl-authentication" sasl-server-factory="configured" security-domain="ManagementDomain">
+                    <mechanism-configuration>
+                        <mechanism mechanism-name="JBOSS-LOCAL-USER" realm-mapper="local"/>
+                        <mechanism mechanism-name="DIGEST-MD5">
+                            <mechanism-realm realm-name="ManagementRealm"/>
                         </mechanism>
                     </mechanism-configuration>
                 </sasl-authentication-factory>
@@ -826,6 +827,11 @@
                 </mechanism-provider-filtering-sasl-server-factory>
                 <provider-sasl-server-factory name="global"/>
             </sasl>
+        </subsystem>
+        <subsystem xmlns="urn:jboss:domain:iiop-openjdk:2.1">
+            <orb socket-binding="iiop"/>
+            <initializers security="identity" transactions="spec"/>
+            <security server-requires-ssl="false" client-requires-ssl="false"/>
         </subsystem>
         <subsystem xmlns="urn:jboss:domain:io:3.0">
             <worker name="default"/>
@@ -864,12 +870,6 @@
                 <local-cache name="timestamps"/>
             </cache-container>
         </subsystem>
-        <!-- <subsystem xmlns="urn:jboss:domain:iiop-openjdk:2.0">
-            <orb socket-binding="iiop"/>
-            <initializers security="identity" transactions="spec"/>
-            <security server-requires-ssl="false" client-requires-ssl="false"/>
-        </subsystem>
-         -->
         <subsystem xmlns="urn:jboss:domain:jaxrs:1.0"/>
         <subsystem xmlns="urn:jboss:domain:jca:5.0">
             <archive-validation enabled="true" fail-on-error="true" fail-on-warn="false"/>
@@ -900,13 +900,45 @@
             <jpa default-datasource="" default-extended-persistence-inheritance="DEEP"/>
         </subsystem>
         <subsystem xmlns="urn:jboss:domain:jsf:1.1"/>
+        <subsystem xmlns="urn:jboss:domain:jsr77:1.0"/>
         <subsystem xmlns="urn:jboss:domain:mail:3.0">
             <mail-session name="default" jndi-name="java:jboss/mail/Default">
                 <smtp-server outbound-socket-binding-ref="mail-smtp"/>
             </mail-session>
         </subsystem>
+        <subsystem xmlns="urn:jboss:domain:messaging-activemq:5.0">
+        <!-- 
+            <server name="default">
+                <security-setting name="#">
+                    <role name="guest" send="true" consume="true" create-non-durable-queue="true" delete-non-durable-queue="true"/>
+                </security-setting>
+                <address-setting name="#" dead-letter-address="jms.queue.DLQ" expiry-address="jms.queue.ExpiryQueue" max-size-bytes="10485760" page-size-bytes="2097152" message-counter-history-day-limit="10"/>
+                <http-connector name="http-connector" socket-binding="http" endpoint="http-acceptor"/>
+                <http-connector name="http-connector-throughput" socket-binding="http" endpoint="http-acceptor-throughput">
+                    <param name="batch-delay" value="50"/>
+                </http-connector>
+                <in-vm-connector name="in-vm" server-id="0">
+                    <param name="buffer-pooling" value="false"/>
+                </in-vm-connector>
+                <http-acceptor name="http-acceptor" http-listener="default"/>
+                <http-acceptor name="http-acceptor-throughput" http-listener="default">
+                    <param name="batch-delay" value="50"/>
+                    <param name="direct-deliver" value="false"/>
+                </http-acceptor>
+                <in-vm-acceptor name="in-vm" server-id="0">
+                    <param name="buffer-pooling" value="false"/>
+                </in-vm-acceptor>
+                <jms-queue name="ExpiryQueue" entries="java:/jms/queue/ExpiryQueue"/>
+                <jms-queue name="DLQ" entries="java:/jms/queue/DLQ"/>
+                <connection-factory name="InVmConnectionFactory" entries="java:/ConnectionFactory" connectors="in-vm"/>
+                <connection-factory name="RemoteConnectionFactory" entries="java:jboss/exported/jms/RemoteConnectionFactory" connectors="http-connector"/>
+                <pooled-connection-factory name="activemq-ra" entries="java:/JmsXA java:jboss/DefaultJMSConnectionFactory" connectors="in-vm" transaction="xa"/>
+            </server>
+             -->
+        </subsystem>
         <subsystem xmlns="urn:wildfly:microprofile-config-smallrye:1.0"/>
         <subsystem xmlns="urn:wildfly:microprofile-health-smallrye:1.0" security-enabled="false"/>
+        <subsystem xmlns="urn:wildfly:microprofile-metrics-smallrye:1.0" security-enabled="false" exposed-subsystems="*"/>
         <subsystem xmlns="urn:wildfly:microprofile-opentracing-smallrye:1.0"/>
         <subsystem xmlns="urn:jboss:domain:naming:2.0">
             <remote-naming/>
@@ -939,6 +971,20 @@
                     </config-property>
                     <connection-definitions>
                         <connection-definition class-name="org.apache.activemq.ra.ActiveMQManagedConnectionFactory" jndi-name="java:/ConnectionFactory" enabled="true" pool-name="ConnectionFactory">
+                            <xa-pool>
+                                <min-pool-size>8</min-pool-size>
+                                <max-pool-size>64</max-pool-size>
+                                <prefill>false</prefill>
+                                <is-same-rm-override>false</is-same-rm-override>
+                            </xa-pool>
+                            <recovery>
+                                <recover-credential>
+                                    <user-name>defaultUser</user-name>
+                                    <password>defaultPassword</password>
+                                </recover-credential>
+                            </recovery>
+                        </connection-definition>
+                        <connection-definition class-name="org.apache.activemq.ra.ActiveMQManagedConnectionFactory" jndi-name="java:jboss/DefaultJMSConnectionFactory" enabled="true" pool-name="DefaultJMSConnectionFactory">
                             <xa-pool>
                                 <min-pool-size>8</min-pool-size>
                                 <max-pool-size>64</max-pool-size>
@@ -1254,7 +1300,7 @@
             <recovery-environment socket-binding="txn-recovery-environment" status-socket-binding="txn-status-manager"/>
             <object-store path="tx-object-store" relative-to="jboss.server.data.dir"/>
         </subsystem>
-        <subsystem xmlns="urn:jboss:domain:undertow:7.0" default-server="default-server" default-virtual-host="default-host" default-servlet-container="default" default-security-domain="other">
+        <subsystem xmlns="urn:jboss:domain:undertow:8.0" default-server="default-server" default-virtual-host="default-host" default-servlet-container="default" default-security-domain="other">
             <buffer-cache name="default"/>
             <server name="default-server">
                 <http-listener name="default" socket-binding="http" redirect-socket="https" enable-http2="true"/>
