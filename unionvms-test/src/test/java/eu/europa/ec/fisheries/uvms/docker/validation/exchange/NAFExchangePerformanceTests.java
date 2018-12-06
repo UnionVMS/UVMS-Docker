@@ -169,6 +169,8 @@ public class NAFExchangePerformanceTests extends AbstractRest {
         sendRouteToNAFOnXShipsAsync(60, route);
     }
 
+    static Instant lastRec;
+    static Instant last10;
     public void sendRouteToNAFOnXShipsAsync(int nrOfShips, List<LatLong> route) throws Exception{   //Needs a special version of exchange that respond on the sales queue to work!!!!
 
         List<AssetId> assetList = new ArrayList<>();
@@ -204,18 +206,20 @@ public class NAFExchangePerformanceTests extends AbstractRest {
         int i = 0;
         Instant b4 = Instant.now();
         Instant lastSent = Instant.now();
-        Instant lastReceived = Instant.now();
         List<Duration> averageDurations = new ArrayList<>();
         List<String> corrList = new ArrayList<>();
         List<String> movements = new ArrayList<>();
-
+        lastRec = Instant.now();
+        last10 = Instant.now();
         try (SseEventSource source = getSseStream()) {
             source.register((inboundSseEvent) -> {
                 if (inboundSseEvent.getComment() != null) {
                     movements.add(inboundSseEvent.readData());
                     if ((movements.size() % 10) == 0) {
-                        System.out.println("Received number " + movements.size() + " Time so far: " + humanReadableFormat(Duration.between(b4, Instant.now())) + " Time since last 10 received: " + humanReadableFormat(Duration.between(lastReceived, Instant.now())));
+                        System.out.println("Received number " + movements.size() + " Time so far: " + humanReadableFormat(Duration.between(b4, Instant.now())) + " Time since last 10 received: " + humanReadableFormat(Duration.between(last10, Instant.now())));
+                        last10 = Instant.now();
                     }
+                    lastRec = Instant.now();
                 }
             }, onError);
             source.open();
@@ -262,6 +266,9 @@ public class NAFExchangePerformanceTests extends AbstractRest {
             }*/
             while (movements.size() < route.size()) {
                 Thread.sleep(100);
+                if(Duration.between(lastRec, Instant.now()).getSeconds() > 90){
+                    throw new RuntimeException("More then 30 seconds since last received. Received so far: " + movements.size() + " Time of death: " + humanReadableFormat(Duration.between(b4, Instant.now())));
+                }
             }
         }
         averageDurations.stream().forEach(dur -> System.out.print(humanReadableFormat(dur) + ", "));
