@@ -4,12 +4,12 @@
 	<parent>
 		<groupId>eu.europa.ec.fisheries.uvms.docker</groupId>
 		<artifactId>uvms-docker</artifactId>
-		<version>3.29.22.w14</version>
+		<version>3.29.23.w14-SNAPSHOT</version>
 		<relativePath>../pom.xml</relativePath>
 	</parent>
 	<groupId>eu.europa.ec.fisheries.uvms.docker</groupId>
 	<artifactId>uvms-docker-amq</artifactId>
-	<version>3.29.22.w14</version>
+	<version>3.29.23.w14-SNAPSHOT</version>
 	<packaging>pom</packaging>
 	<name>uvms-docker-amq</name>
 	<build>
@@ -91,6 +91,6 @@
 		</profile>
 	</profiles>
 	<scm>
-		<tag>uvms-docker-3.29.22.w14</tag>
+		<tag>HEAD</tag>
 	</scm>
 </project>
