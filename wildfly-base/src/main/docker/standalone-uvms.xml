@@ -677,7 +677,7 @@
                     <managed-scheduled-executor-service name="UvmsVesselCacheProxyExecutorService" jndi-name="java:/UvmsVesselCacheProxyExecutorService" hung-task-threshold="50000" core-threads="4" keepalive-time="5000" reject-policy="RETRY_ABORT"/>
                 </managed-scheduled-executor-services>
             </concurrent>
-            <default-bindings context-service="java:jboss/ee/concurrency/context/default" datasource="java:jboss/datasources/ExampleDS" jms-connection-factory="java:jboss/DefaultJMSConnectionFactory" managed-executor-service="java:jboss/ee/concurrency/executor/default" managed-scheduled-executor-service="java:jboss/ee/concurrency/scheduler/default" managed-thread-factory="java:jboss/ee/concurrency/factory/default"/>
+            <default-bindings context-service="java:jboss/ee/concurrency/context/default" datasource="java:jboss/datasources/ExampleDS" jms-connection-factory="java:/ConnectionFactory" managed-executor-service="java:jboss/ee/concurrency/executor/default" managed-scheduled-executor-service="java:jboss/ee/concurrency/scheduler/default" managed-thread-factory="java:jboss/ee/concurrency/factory/default"/>
         </subsystem>
         <subsystem xmlns="urn:jboss:domain:ee-security:1.0"/>
         <subsystem xmlns="urn:jboss:domain:ejb3:5.0">
@@ -971,20 +971,6 @@
                     </config-property>
                     <connection-definitions>
                         <connection-definition class-name="org.apache.activemq.ra.ActiveMQManagedConnectionFactory" jndi-name="java:/ConnectionFactory" enabled="true" pool-name="ConnectionFactory">
-                            <xa-pool>
-                                <min-pool-size>8</min-pool-size>
-                                <max-pool-size>64</max-pool-size>
-                                <prefill>false</prefill>
-                                <is-same-rm-override>false</is-same-rm-override>
-                            </xa-pool>
-                            <recovery>
-                                <recover-credential>
-                                    <user-name>defaultUser</user-name>
-                                    <password>defaultPassword</password>
-                                </recover-credential>
-                            </recovery>
-                        </connection-definition>
-                        <connection-definition class-name="org.apache.activemq.ra.ActiveMQManagedConnectionFactory" jndi-name="java:jboss/DefaultJMSConnectionFactory" enabled="true" pool-name="DefaultJMSConnectionFactory">
                             <xa-pool>
                                 <min-pool-size>8</min-pool-size>
                                 <max-pool-size>64</max-pool-size>
