@@ -18,6 +18,7 @@ import java.time.ZonedDateTime;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
@@ -80,7 +81,7 @@ public class MovementAlarmRestIT extends AbstractRest {
 		alarmQuery.setDynamic(true);
 		AlarmListCriteria alc = new AlarmListCriteria();
 		alc.setKey(AlarmSearchKey.ALARM_GUID);
-		alc.setValue("dummyguid");
+		alc.setValue(UUID.randomUUID().toString());
 		alarmQuery.getAlarmSearchCriteria().add(alc);
 
 		Response response = getWebTarget()
@@ -151,9 +152,9 @@ public class MovementAlarmRestIT extends AbstractRest {
                 .path("movement/rest/alarms/reprocess")
                 .request(MediaType.APPLICATION_JSON)
                 .header(HttpHeaders.AUTHORIZATION, getValidJwtToken())
-                .post(Entity.json(Arrays.asList(alarmReport.getGuid())), Response.class);
+                .post(Entity.json(Arrays.asList(alarmReport.getId())), Response.class);
         
-	    AlarmReport alarmReportAfter = getAlarmReportByGuid(alarmReport.getGuid());
+	    AlarmReport alarmReportAfter = getAlarmReportByGuid(alarmReport.getId().toString());
         assertThat(alarmReportAfter.getStatus(), CoreMatchers.is("REPROCESSED"));
 	}
 	
@@ -176,9 +177,9 @@ public class MovementAlarmRestIT extends AbstractRest {
                 .path("movement/rest/alarms/reprocess")
                 .request(MediaType.APPLICATION_JSON)
                 .header(HttpHeaders.AUTHORIZATION, getValidJwtToken())
-                .post(Entity.json(Arrays.asList(alarmReport.getGuid())), Response.class);
+                .post(Entity.json(Arrays.asList(alarmReport.getId())), Response.class);
         
-        AlarmReport alarmReportAfter = getAlarmReportByGuid(alarmReport.getGuid());
+        AlarmReport alarmReportAfter = getAlarmReportByGuid(alarmReport.getId().toString());
         assertThat(alarmReportAfter.getStatus(), CoreMatchers.is("REPROCESSED"));
         
         List<MovementDto> latestMovements = MovementHelper.getLatestMovements(Arrays.asList(createdAsset.getHistoryId().toString()));
@@ -203,14 +204,14 @@ public class MovementAlarmRestIT extends AbstractRest {
                 .path("movement/rest/alarms/reprocess")
                 .request(MediaType.APPLICATION_JSON)
                 .header(HttpHeaders.AUTHORIZATION, getValidJwtToken())
-                .post(Entity.json(Arrays.asList(alarmReport.getGuid())), Response.class);
+                .post(Entity.json(Arrays.asList(alarmReport.getId())), Response.class);
         
-        AlarmReport alarmReportAfter = getAlarmReportByGuid(alarmReport.getGuid());
+        AlarmReport alarmReportAfter = getAlarmReportByGuid(alarmReport.getId().toString());
         assertThat(alarmReportAfter.getStatus(), CoreMatchers.is("REPROCESSED"));
 
         AlarmReport latestAlarmReport = SanityRuleHelper.getLatestOpenAlarmReportSince(timestamp);
         
-        assertThat(latestAlarmReport.getGuid(), CoreMatchers.is(CoreMatchers.not(alarmReport.getGuid())));
+        assertThat(latestAlarmReport.getId(), CoreMatchers.is(CoreMatchers.not(alarmReport.getId())));
         assertThat(latestAlarmReport.getStatus(), CoreMatchers.is("OPEN"));
     }
 	

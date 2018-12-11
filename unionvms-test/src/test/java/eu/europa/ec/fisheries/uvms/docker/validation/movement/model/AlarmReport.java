@@ -13,12 +13,12 @@ package eu.europa.ec.fisheries.uvms.docker.validation.movement.model;
 
 import java.time.Instant;
 import java.util.List;
+import java.util.UUID;
 
 public class AlarmReport {
 
-    private Long id;
+    private UUID id;
     private String pluginType;
-    private String guid;
     private String assetGuid;
     private String status;
     private String recipient;
@@ -30,11 +30,11 @@ public class AlarmReport {
 
     private List<AlarmItem> alarmItemList;
 
-    public Long getId() {
+    public UUID getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(UUID id) {
         this.id = id;
     }
 
@@ -44,14 +44,6 @@ public class AlarmReport {
 
     public void setPluginType(String pluginType) {
         this.pluginType = pluginType;
-    }
-
-    public String getGuid() {
-        return guid;
-    }
-
-    public void setGuid(String guid) {
-        this.guid = guid;
     }
 
     public String getAssetGuid() {
