@@ -77,6 +77,10 @@ public final class MessageHelper {
     }
     
     public static void sendMessageWithFunction(String queueName, final String msg, String function) throws Exception {
+        sendMessageWithFunctionAndGroup(queueName, msg, function, null);
+    }
+    
+    public static void sendMessageWithFunctionAndGroup(String queueName, final String msg, String function, String group) throws Exception {
         String responseQueueName = queueName + "Response" + UUID.randomUUID().toString().replaceAll("-", "");
 
         Connection connection = connectionFactory.createConnection();
@@ -93,6 +97,7 @@ public final class MessageHelper {
         TextMessage createTextMessage = session.createTextMessage(msg);
         createTextMessage.setJMSReplyTo(responseQueue);
         createTextMessage.setStringProperty("FUNCTION", function);
+        createTextMessage.setStringProperty("JMSXGroupID", group);
         messageProducer.send(createTextMessage);
         session.close();
         connection.close();

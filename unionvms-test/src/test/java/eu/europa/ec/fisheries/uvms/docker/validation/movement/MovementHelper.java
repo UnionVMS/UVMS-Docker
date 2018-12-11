@@ -63,7 +63,8 @@ public class MovementHelper extends AbstractHelper {
 
 		incomingMovement.setActivityMessageId(UUID.randomUUID().toString());
 		incomingMovement.setActivityMessageType(MovementActivityTypeType.ANC.value());
-
+		incomingMovement.setActivityCallback("callback");
+		
 		incomingMovement.setLatitude(latlong.latitude);
 		incomingMovement.setLongitude(latlong.longitude);
 		incomingMovement.setAltitude((double) 5);
@@ -180,9 +181,9 @@ public class MovementHelper extends AbstractHelper {
 		while (true) {
 
 			if (START_LATITUDE >= END_LATITUDE)
-				START_LATITUDE = START_LATITUDE - 0.5;
+				START_LATITUDE = START_LATITUDE - 0.01;
 			if (START_LONGITUDE >= END_LONGITUDE)
-				START_LONGITUDE = START_LONGITUDE - 0.5;
+				START_LONGITUDE = START_LONGITUDE - 0.01;
 			if (START_LATITUDE < END_LATITUDE && START_LONGITUDE < END_LONGITUDE)
 				break;
 			rutt.add(new LatLong(START_LATITUDE, START_LONGITUDE, getDate(ts += movementTimeDeltaInMillis)));
@@ -299,7 +300,7 @@ public class MovementHelper extends AbstractHelper {
 	}
 
 	public MovementDto createMovement(IncomingMovement incomingMovement) throws Exception {
-		MessageHelper.sendMessageWithFunction(UVMS_MOVEMENT_REQUEST_QUEUE, OBJECT_MAPPER.writeValueAsString(incomingMovement), "CREATE");
+		MessageHelper.sendMessageWithFunctionAndGroup(UVMS_MOVEMENT_REQUEST_QUEUE, OBJECT_MAPPER.writeValueAsString(incomingMovement), "CREATE", incomingMovement.getAssetCFR());
 		MovementHelper.pollMovementCreated();
 		List<MovementDto> latestMovements = MovementHelper.getLatestMovements(Arrays.asList(incomingMovement.getAssetHistoryId()));
 		assertThat(latestMovements.size(), CoreMatchers.is(1));
