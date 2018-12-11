@@ -208,7 +208,7 @@ public class NAFExchangePerformanceTests extends AbstractRest {
         Instant lastSent = Instant.now();
         List<Duration> averageDurations = new ArrayList<>();
         List<String> corrList = new ArrayList<>();
-        List<String> movements = new ArrayList<>();
+        List<String> movements = Collections.synchronizedList(new ArrayList<String>());
         lastRec = Instant.now();
         last10 = Instant.now();
         try (SseEventSource source = getSseStream()) {
