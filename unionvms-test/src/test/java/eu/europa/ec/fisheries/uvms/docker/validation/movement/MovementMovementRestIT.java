@@ -184,7 +184,7 @@ public class MovementMovementRestIT extends AbstractRest {
         Instant now = Instant.now();
 
         long response = getWebTarget()
-                .path("movement/rest/internal/countMovementsInTheLastDayForAsset/" + asset)
+                .path("movement/rest/internal/countMovementsInDateAndTheDayBeforeForAsset/" + asset)
                 .queryParam("after", DateUtil.parseUTCDateToString(now))    //yyyy-MM-dd HH:mm:ss Z
                 .request(MediaType.APPLICATION_JSON)
                 //.header(HttpHeaders.AUTHORIZATION, getValidJwtToken())
