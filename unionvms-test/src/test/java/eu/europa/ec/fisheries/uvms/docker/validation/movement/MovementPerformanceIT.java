@@ -1,5 +1,25 @@
 package eu.europa.ec.fisheries.uvms.docker.validation.movement;
 
+import eu.europa.ec.fisheries.schema.movement.common.v1.ExceptionType;
+import eu.europa.ec.fisheries.schema.movement.module.v1.*;
+import eu.europa.ec.fisheries.schema.movement.search.v1.ListCriteria;
+import eu.europa.ec.fisheries.schema.movement.search.v1.ListPagination;
+import eu.europa.ec.fisheries.schema.movement.search.v1.MovementQuery;
+import eu.europa.ec.fisheries.schema.movement.search.v1.SearchKey;
+import eu.europa.ec.fisheries.uvms.asset.client.model.AssetDTO;
+import eu.europa.ec.fisheries.uvms.docker.validation.asset.AssetTestHelper;
+import eu.europa.ec.fisheries.uvms.docker.validation.common.AbstractRest;
+import eu.europa.ec.fisheries.uvms.docker.validation.common.MessageHelper;
+import eu.europa.ec.fisheries.uvms.docker.validation.mobileterminal.MobileTerminalTestHelper;
+import eu.europa.ec.fisheries.uvms.docker.validation.mobileterminal.dto.MobileTerminalDto;
+import org.junit.Ignore;
+import org.junit.Test;
+
+import javax.jms.Message;
+import javax.jms.TextMessage;
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBException;
+import javax.xml.bind.UnmarshalException;
 import java.io.StringReader;
 import java.io.StringWriter;
 import java.math.BigInteger;
@@ -10,29 +30,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicInteger;
-import javax.jms.Message;
-import javax.jms.TextMessage;
-import javax.xml.bind.JAXBContext;
-import javax.xml.bind.JAXBException;
-import javax.xml.bind.UnmarshalException;
-import org.junit.Ignore;
-import org.junit.Test;
-import eu.europa.ec.fisheries.schema.mobileterminal.types.v1.MobileTerminalType;
-import eu.europa.ec.fisheries.schema.movement.common.v1.ExceptionType;
-import eu.europa.ec.fisheries.schema.movement.module.v1.CreateMovementRequest;
-import eu.europa.ec.fisheries.schema.movement.module.v1.CreateMovementResponse;
-import eu.europa.ec.fisheries.schema.movement.module.v1.GetMovementListByQueryRequest;
-import eu.europa.ec.fisheries.schema.movement.module.v1.GetMovementListByQueryResponse;
-import eu.europa.ec.fisheries.schema.movement.module.v1.MovementModuleMethod;
-import eu.europa.ec.fisheries.schema.movement.search.v1.ListCriteria;
-import eu.europa.ec.fisheries.schema.movement.search.v1.ListPagination;
-import eu.europa.ec.fisheries.schema.movement.search.v1.MovementQuery;
-import eu.europa.ec.fisheries.schema.movement.search.v1.SearchKey;
-import eu.europa.ec.fisheries.uvms.asset.client.model.AssetDTO;
-import eu.europa.ec.fisheries.uvms.docker.validation.asset.AssetTestHelper;
-import eu.europa.ec.fisheries.uvms.docker.validation.common.AbstractRest;
-import eu.europa.ec.fisheries.uvms.docker.validation.common.MessageHelper;
-import eu.europa.ec.fisheries.uvms.docker.validation.mobileterminal.MobileTerminalTestHelper;
 
 public class MovementPerformanceIT extends AbstractRest {
 
@@ -111,8 +108,8 @@ public class MovementPerformanceIT extends AbstractRest {
     @Ignore
     public void createRouteTestTitanic1000PositionsSync() throws Exception {
         AssetDTO testAsset = AssetTestHelper.createTestAsset();
-        MobileTerminalType mobileTerminalType = MobileTerminalTestHelper.createMobileTerminalType();
-        MobileTerminalTestHelper.assignMobileTerminal(testAsset, mobileTerminalType);
+        MobileTerminalDto mobileTerminal = MobileTerminalTestHelper.createMobileTerminal();
+        MobileTerminalTestHelper.assignMobileTerminal(testAsset, mobileTerminal);
         List<LatLong> route = movementHelper.createRuttCobhNewYork(1000, 0.06f);                //0.1F = 654 pos    0.01 = 6543     0.07 = 934   0.06 = 1090
 
         CreateMovementResponse createMovementResponse = null;
@@ -151,8 +148,8 @@ public class MovementPerformanceIT extends AbstractRest {
     @Ignore
     public void createRouteTestTitanic1000PositionsReverseOrderSync() throws Exception {
         AssetDTO testAsset = AssetTestHelper.createTestAsset();
-        MobileTerminalType mobileTerminalType = MobileTerminalTestHelper.createMobileTerminalType();
-        MobileTerminalTestHelper.assignMobileTerminal(testAsset, mobileTerminalType);
+        MobileTerminalDto mobileTerminal = MobileTerminalTestHelper.createMobileTerminal();
+        MobileTerminalTestHelper.assignMobileTerminal(testAsset, mobileTerminal);
         List<LatLong> route = movementHelper.createRuttCobhNewYork(1000, 0.06f);                //0.1F = 654 pos    0.01 = 6543     0.07 = 934   0.06 = 1090
 
         CreateMovementResponse createMovementResponse = null;
@@ -357,7 +354,7 @@ public class MovementPerformanceIT extends AbstractRest {
 
             /*      //Code for if one wants an actual correct ship to be able to plot the positions on the map from frontend
             Asset testAsset = AssetTestHelper.createTestAsset();
-            MobileTerminalType mobileTerminalType = MobileTerminalTestHelper.createMobileTerminalType();
+            MobileTerminalType mobileTerminalType = MobileTerminalTestHelper.createMobileTerminal();
             MobileTerminalTestHelper.assignMobileTerminal(testAsset, mobileTerminalType);
              */
 

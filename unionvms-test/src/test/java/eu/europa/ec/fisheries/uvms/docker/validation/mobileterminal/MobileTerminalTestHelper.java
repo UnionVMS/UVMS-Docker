@@ -1,52 +1,41 @@
 package eu.europa.ec.fisheries.uvms.docker.validation.mobileterminal;
 
-import java.io.IOException;
+import eu.europa.ec.fisheries.schema.mobileterminal.polltypes.v1.*;
+import eu.europa.ec.fisheries.schema.mobileterminal.types.v1.MobileTerminalListQuery;
+import eu.europa.ec.fisheries.uvms.asset.client.model.AssetDTO;
+import eu.europa.ec.fisheries.uvms.docker.validation.common.AbstractHelper;
+import eu.europa.ec.fisheries.uvms.docker.validation.mobileterminal.dto.ChannelDto;
+import eu.europa.ec.fisheries.uvms.docker.validation.mobileterminal.dto.CreatePollResultDto;
+import eu.europa.ec.fisheries.uvms.docker.validation.mobileterminal.dto.MobileTerminalDto;
+import eu.europa.ec.fisheries.uvms.docker.validation.mobileterminal.dto.MobileTerminalPluginDto;
+
+import javax.ws.rs.client.Entity;
+import javax.ws.rs.core.GenericType;
+import javax.ws.rs.core.HttpHeaders;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 import java.util.Calendar;
 import java.util.List;
-import java.util.Map;
+import java.util.Random;
 import java.util.UUID;
-import org.apache.http.HttpResponse;
-import org.apache.http.client.ClientProtocolException;
-import org.apache.http.client.fluent.Request;
-import com.fasterxml.jackson.core.JsonParseException;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonMappingException;
-import eu.europa.ec.fisheries.schema.mobileterminal.polltypes.v1.PollAttribute;
-import eu.europa.ec.fisheries.schema.mobileterminal.polltypes.v1.PollAttributeType;
-import eu.europa.ec.fisheries.schema.mobileterminal.polltypes.v1.PollMobileTerminal;
-import eu.europa.ec.fisheries.schema.mobileterminal.polltypes.v1.PollRequestType;
-import eu.europa.ec.fisheries.schema.mobileterminal.polltypes.v1.PollType;
-import eu.europa.ec.fisheries.schema.mobileterminal.types.v1.ComChannelAttribute;
-import eu.europa.ec.fisheries.schema.mobileterminal.types.v1.ComChannelCapability;
-import eu.europa.ec.fisheries.schema.mobileterminal.types.v1.ComChannelType;
-import eu.europa.ec.fisheries.schema.mobileterminal.types.v1.MobileTerminalAssignQuery;
-import eu.europa.ec.fisheries.schema.mobileterminal.types.v1.MobileTerminalAttribute;
-import eu.europa.ec.fisheries.schema.mobileterminal.types.v1.MobileTerminalSource;
-import eu.europa.ec.fisheries.schema.mobileterminal.types.v1.MobileTerminalType;
-import eu.europa.ec.fisheries.schema.mobileterminal.types.v1.Plugin;
-import eu.europa.ec.fisheries.uvms.asset.client.model.AssetDTO;
-import eu.europa.ec.fisheries.uvms.docker.validation.asset.AssetTestHelper;
-import eu.europa.ec.fisheries.uvms.docker.validation.common.AbstractHelper;
 
 public final class MobileTerminalTestHelper extends AbstractHelper {
 
-	public static Map<String, Object> createPoll_Helper(AssetDTO testAsset) throws Exception {
-		MobileTerminalType createdMobileTerminalType = createMobileTerminalType();
+	private static String serialNumber;
 
-		{
-			MobileTerminalAssignQuery mobileTerminalAssignQuery = new MobileTerminalAssignQuery();
-			mobileTerminalAssignQuery.setMobileTerminalId(createdMobileTerminalType.getMobileTerminalId());
-			mobileTerminalAssignQuery.setConnectId(testAsset.getId().toString());
-			// Assign first
-			final HttpResponse response = Request
-					.Post(getBaseUrl() + "asset/rest/mobileterminal/assign?comment=comment")
-					.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken())
-					.bodyByteArray(writeValueAsString(mobileTerminalAssignQuery).getBytes()).execute().returnResponse();
+	public static CreatePollResultDto createPoll_Helper(AssetDTO testAsset) {
 
-			Map<String, Object> dataMap = checkSuccessResponseReturnMap(response);
-		}
+		MobileTerminalDto createdTerminal = createMobileTerminal();
 
-		String comChannelId = createdMobileTerminalType.getChannels().get(0).getGuid();
+		assertNotNull(createdTerminal);
+		assertNull(createdTerminal.getAsset());
+
+		// Assign first
+		createdTerminal = assignMobileTerminal(testAsset, createdTerminal);
+
+		assertNotNull(createdTerminal.getAsset());
+
+		String comChannelId = createdTerminal.getChannels().iterator().next().getId().toString();
 
 		PollRequestType pollRequestType = new PollRequestType();
 		pollRequestType.setPollType(PollType.PROGRAM_POLL);
@@ -56,24 +45,9 @@ public final class MobileTerminalTestHelper extends AbstractHelper {
 		PollMobileTerminal pollMobileTerminal = new PollMobileTerminal();
 		pollMobileTerminal.setComChannelId(comChannelId);
 		pollMobileTerminal.setConnectId(testAsset.getId().toString());
-		pollMobileTerminal.setMobileTerminalId(createdMobileTerminalType.getMobileTerminalId().getGuid());
+		pollMobileTerminal.setMobileTerminalId(createdTerminal.getId().toString());
 
-		List<MobileTerminalAttribute> mobileTerminalAttributes = createdMobileTerminalType.getAttributes();
 		List<PollAttribute> pollAttributes = pollRequestType.getAttributes();
-
-		for (MobileTerminalAttribute mobileTerminalAttribute : mobileTerminalAttributes) {
-			String type = mobileTerminalAttribute.getType();
-			String value = mobileTerminalAttribute.getValue();
-			PollAttribute pollAttribute = new PollAttribute();
-			try {
-				PollAttributeType pollAttributeType = PollAttributeType.valueOf(type);
-				pollAttribute.setKey(pollAttributeType);
-				pollAttribute.setValue(value);
-				pollAttributes.add(pollAttribute);
-			} catch (RuntimeException rte) {
-				// ignore
-			}
-		}
 
 		PollAttribute frequency = new PollAttribute();
 		PollAttribute startDate = new PollAttribute();
@@ -93,100 +67,166 @@ public final class MobileTerminalTestHelper extends AbstractHelper {
 
 		pollRequestType.getMobileTerminals().add(pollMobileTerminal);
 
-		final HttpResponse response = Request.Post(getBaseUrl() + "asset/rest/poll")
-				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken())
-				.bodyByteArray(writeValueAsString(pollRequestType).getBytes()).execute().returnResponse();
+		CreatePollResultDto response = getWebTarget()
+				.path("asset/rest/poll")
+				.request(MediaType.APPLICATION_JSON)
+				.header(HttpHeaders.AUTHORIZATION, getValidJwtToken())
+				.post(Entity.json(pollRequestType), CreatePollResultDto.class);
 
-		Map<String, Object> dataMap = checkSuccessResponseReturnMap(response);
-
-		return dataMap;
+		assertNotNull(response);
+		return response;
 	}
 
-	public static MobileTerminalType createMobileTerminalType() throws IOException, ClientProtocolException,
-			JsonProcessingException, JsonParseException, JsonMappingException {
-		MobileTerminalType mobileTerminalRequest = new MobileTerminalType();
-		mobileTerminalRequest.setSource(MobileTerminalSource.INTERNAL);
-		mobileTerminalRequest.setType("INMARSAT_C");
-		List<MobileTerminalAttribute> attributes = mobileTerminalRequest.getAttributes();
-		addAttribute(attributes, "SERIAL_NUMBER", AssetTestHelper.generateARandomStringWithMaxLength(10));
-		addAttribute(attributes, "SATELLITE_NUMBER", "S" + AssetTestHelper.generateARandomStringWithMaxLength(4));
-		addAttribute(attributes, "ANTENNA", "A");
-		addAttribute(attributes, "TRANSCEIVER_TYPE", "A");
-		addAttribute(attributes, "SOFTWARE_VERSION", "A");
+	public static MobileTerminalDto createMobileTerminal() {
+        MobileTerminalDto terminal = createBasicMobileTerminal();
+		MobileTerminalDto createdTerminal = getWebTarget()
+				.path("asset/rest/mobileterminal")
+				.request(MediaType.APPLICATION_JSON)
+				.header(HttpHeaders.AUTHORIZATION, getValidJwtToken())
+				.post(Entity.json(terminal), MobileTerminalDto.class);
 
-		List<ComChannelType> channels = mobileTerminalRequest.getChannels();
-		ComChannelType comChannelType = new ComChannelType();
-		channels.add(comChannelType);
-		comChannelType.setGuid(UUID.randomUUID().toString());
-		comChannelType.setName("VMS");
-
-		addChannelAttribute(comChannelType, "FREQUENCY_GRACE_PERIOD", "54000");
-		addChannelAttribute(comChannelType, "MEMBER_NUMBER", "100");
-		addChannelAttribute(comChannelType, "FREQUENCY_EXPECTED", "7200");
-		addChannelAttribute(comChannelType, "FREQUENCY_IN_PORT", "10800");
-		addChannelAttribute(comChannelType, "LES_DESCRIPTION", "Thrane&Thrane");
-		addChannelAttribute(comChannelType, "DNID", "1" + AssetTestHelper.generateARandomStringWithMaxLength(3));
-		addChannelAttribute(comChannelType, "INSTALLED_BY", "Mike Great");
-
-		addChannelCapability(comChannelType, "POLLABLE", true);
-		addChannelCapability(comChannelType, "CONFIGURABLE", true);
-		addChannelCapability(comChannelType, "DEFAULT_REPORTING", true);
-
-		Plugin plugin = new Plugin();
-		plugin.setServiceName("eu.europa.ec.fisheries.uvms.plugins.inmarsat");
-		plugin.setLabelName("Thrane&Thrane");
-		plugin.setSatelliteType("INMARSAT_C");
-		plugin.setInactive(false);
-
-		mobileTerminalRequest.setPlugin(plugin);
-
-		String ep = getBaseUrl() + "asset/rest/mobileterminal/";
-		String jwt = getValidJwtToken();
-		final HttpResponse response = Request.Post(getBaseUrl() + "asset/rest/mobileterminal")
-				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken())
-				.bodyByteArray(writeValueAsString(mobileTerminalRequest).getBytes()).execute().returnResponse();
-
-		return checkSuccessResponseReturnObject(response, MobileTerminalType.class);
+		assertNotNull(createdTerminal);
+		return createdTerminal;
 	}
 
-	private static void addChannelCapability(ComChannelType comChannelType, String type, boolean value) {
-		ComChannelCapability channelCapability = new ComChannelCapability();
-
-		channelCapability.setType(type);
-		channelCapability.setValue(value);
-		comChannelType.getCapabilities().add(channelCapability);
+	public static MobileTerminalDto getMobileTerminalById(UUID uuid) {
+		return getWebTarget()
+				.path("asset/rest/mobileterminal")
+				.path(uuid.toString())
+				.request(MediaType.APPLICATION_JSON)
+				.header(HttpHeaders.AUTHORIZATION, getValidJwtToken())
+				.get(MobileTerminalDto.class);
 	}
 
-	private static void addChannelAttribute(ComChannelType comChannelType, String type, String value) {
-		ComChannelAttribute channelAttribute = new ComChannelAttribute();
-		channelAttribute.setType(type);
-		channelAttribute.setValue(value);
-		comChannelType.getAttributes().add(channelAttribute);
+	public static MobileTerminalDto updateMobileTerminal(MobileTerminalDto mobileTerminal) {
+		return getWebTarget()
+				.path("asset/rest/mobileterminal")
+				.queryParam("comment", "MobileTerminal is Archived")
+				.request(MediaType.APPLICATION_JSON)
+				.header(HttpHeaders.AUTHORIZATION, getValidJwtToken())
+				.put(Entity.json(mobileTerminal), MobileTerminalDto.class);
 	}
 
-	private static void addAttribute(List<MobileTerminalAttribute> attributes, String type, String value) {
-		MobileTerminalAttribute serialNumberMobileTerminalAttribute = new MobileTerminalAttribute();
-		serialNumberMobileTerminalAttribute.setType(type);
-		serialNumberMobileTerminalAttribute.setValue(value);
-		attributes.add(serialNumberMobileTerminalAttribute);
+	public static Response getMobileTerminalList(MobileTerminalListQuery queryRequest) {
+		return getWebTarget()
+				.path("asset/rest/mobileterminal/list")
+				.request(MediaType.APPLICATION_JSON)
+				.header(HttpHeaders.AUTHORIZATION, getValidJwtToken())
+				.post(Entity.json(queryRequest));
 	}
 
-	public static Map<String, Object> assignMobileTerminal(AssetDTO testAsset, MobileTerminalType createdMobileTerminalType)
-			throws Exception {
-
-		MobileTerminalAssignQuery mobileTerminalAssignQuery = new MobileTerminalAssignQuery();
-		mobileTerminalAssignQuery.setMobileTerminalId(createdMobileTerminalType.getMobileTerminalId());
-		mobileTerminalAssignQuery.setConnectId(testAsset.getId().toString());
-		createdMobileTerminalType.setConnectId(testAsset.getId().toString());
-		
-		final HttpResponse response = Request
-				.Post(getBaseUrl() + "asset/rest/mobileterminal/assign?comment=comment")
-				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken())
-				.bodyByteArray(writeValueAsString(mobileTerminalAssignQuery).getBytes()).execute().returnResponse();
-
-		Map<String, Object> dataMap = checkSuccessResponseReturnMap(response);
-
-		return dataMap;
+	public static MobileTerminalDto activateMobileTerminal(UUID uuid) {
+		return getWebTarget()
+				.path("asset/rest/mobileterminal/status/activate")
+				.queryParam("comment", "Activate MobileTerminal")
+				.request(MediaType.APPLICATION_JSON)
+				.header(HttpHeaders.AUTHORIZATION, getValidJwtToken())
+				.put(Entity.json(uuid), MobileTerminalDto.class);
 	}
 
+	public static MobileTerminalDto removeMobileTerminal(UUID uuid) {
+		return getWebTarget()
+				.path("asset/rest/mobileterminal/status/remove")
+				.queryParam("comment", "Remove MobileTerminal")
+				.request(MediaType.APPLICATION_JSON)
+				.header(HttpHeaders.AUTHORIZATION, getValidJwtToken())
+				.put(Entity.json(uuid), MobileTerminalDto.class);
+	}
+
+	public static MobileTerminalDto inactivateMobileTerminal(UUID uuid) {
+		return getWebTarget()
+				.path("asset/rest/mobileterminal/status/inactivate")
+				.queryParam("comment", "InActivate MobileTerminal")
+				.request(MediaType.APPLICATION_JSON)
+				.header(HttpHeaders.AUTHORIZATION, getValidJwtToken())
+				.put(Entity.json(uuid), MobileTerminalDto.class);
+	}
+
+	public static MobileTerminalDto assignMobileTerminal(AssetDTO asset, MobileTerminalDto mobileTerminal) {
+
+		return getWebTarget()
+				.path("asset/rest/mobileterminal/assign")
+				.queryParam("comment", "comment")
+				.queryParam("connectId", asset.getId())
+				.request(MediaType.APPLICATION_JSON)
+				.header(HttpHeaders.AUTHORIZATION, getValidJwtToken())
+				.put(Entity.json(mobileTerminal.getId()), MobileTerminalDto.class);
+	}
+
+	public static MobileTerminalDto unAssignMobileTerminal(AssetDTO asset, MobileTerminalDto mobileTerminal) {
+
+		return getWebTarget()
+				.path("asset/rest/mobileterminal/unassign")
+				.queryParam("comment", "MobileTerminal Unassigned")
+				.queryParam("connectId", asset.getId())
+				.request(MediaType.APPLICATION_JSON)
+				.header(HttpHeaders.AUTHORIZATION, getValidJwtToken())
+				.put(Entity.json(mobileTerminal.getId()), MobileTerminalDto.class);
+	}
+
+	public static List<MobileTerminalDto> getMobileTerminalHistoryList(UUID uuid) {
+		return getWebTarget()
+				.path("asset/rest/mobileterminal/history")
+				.path(uuid.toString())
+				.request(MediaType.APPLICATION_JSON)
+				.header(HttpHeaders.AUTHORIZATION, getValidJwtToken())
+				.get(new GenericType<List<MobileTerminalDto>>(){});
+	}
+
+	private static MobileTerminalDto createBasicMobileTerminal() {
+		MobileTerminalDto mobileTerminal = new MobileTerminalDto();
+		mobileTerminal.setSource("INTERNAL");
+		mobileTerminal.setMobileTerminalType("INMARSAT_C");
+		serialNumber = generateARandomStringWithMaxLength(10);
+		mobileTerminal.setSerialNo(serialNumber);
+		mobileTerminal.setArchived(false);
+		mobileTerminal.setInactivated(false);
+
+		mobileTerminal.setSatelliteNumber("S" + generateARandomStringWithMaxLength(4));
+		mobileTerminal.setAntenna("A");
+		mobileTerminal.setTransceiverType("A");
+		mobileTerminal.setSoftwareVersion("A");
+
+		ChannelDto channel = new ChannelDto();
+		channel.setName("VMS");
+		channel.setFrequencyGracePeriod("54000");
+		channel.setMemberNumber(generateARandomStringWithMaxLength(3));
+		channel.setExpectedFrequency("7200");
+		channel.setExpectedFrequencyInPort("10800");
+		channel.setLesDescription("Thrane&Thrane");
+		channel.setDNID("1" + generateARandomStringWithMaxLength(3));
+		channel.setInstalledBy("Mike Great");
+		channel.setArchived(false);
+		channel.setActive(false);
+		channel.setConfigChannel(true);
+		channel.setDefaultChannel(true);
+		channel.setPollChannel(true);
+		channel.setMobileTerminal(mobileTerminal);
+
+		mobileTerminal.setConfigChannel(channel);
+		mobileTerminal.setDefaultChannel(channel);
+		mobileTerminal.setPollChannel(channel);
+
+		mobileTerminal.getChannels().clear();
+		mobileTerminal.getChannels().add(channel);
+
+		MobileTerminalPluginDto plugin = new MobileTerminalPluginDto();
+		plugin.setPluginServiceName("eu.europa.ec.fisheries.uvms.plugins.inmarsat");
+		plugin.setName("Thrane&Thrane");
+		plugin.setPluginSatelliteType("INMARSAT_C");
+		plugin.setPluginInactive(false);
+		mobileTerminal.setPlugin(plugin);
+
+		return mobileTerminal;
+	}
+
+	private static String generateARandomStringWithMaxLength(int len) {
+		Random random = new Random();
+		StringBuilder ret = new StringBuilder();
+		for (int i = 0; i < len; i++) {
+			int val = random.nextInt(10);
+			ret.append(String.valueOf(val));
+		}
+		return ret.toString();
+	}
 }

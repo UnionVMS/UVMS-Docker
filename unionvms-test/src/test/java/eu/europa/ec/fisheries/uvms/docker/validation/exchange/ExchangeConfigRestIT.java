@@ -20,17 +20,8 @@ import org.apache.http.client.fluent.Request;
 import org.junit.Test;
 import eu.europa.ec.fisheries.uvms.docker.validation.common.AbstractRest;
 
-/**
- * The Class ExchangeConfigRestIT.
- */
 public class ExchangeConfigRestIT extends AbstractRest {
 
-	/**
-	 * Gets the config search fields test.
-	 *
-	 * @return the config search fields test
-	 * @throws Exception the exception
-	 */
 	@Test
 	public void getConfigSearchFieldsTest() throws Exception {
 		final HttpResponse response = Request.Get(getBaseUrl() + "exchange/rest/config/searchfields")
@@ -40,12 +31,6 @@ public class ExchangeConfigRestIT extends AbstractRest {
 		List dataList = checkSuccessResponseReturnType(response,List.class);
 	}
 
-	/**
-	 * Gets the configuration test.
-	 *
-	 * @return the configuration test
-	 * @throws Exception the exception
-	 */
 	@Test
 	public void getConfigurationTest() throws Exception {
 		final HttpResponse response = Request.Get(getBaseUrl() + "exchange/rest/config")
@@ -54,6 +39,4 @@ public class ExchangeConfigRestIT extends AbstractRest {
 
 		Map<String,Object> dataMap = checkSuccessResponseReturnMap(response);
 	}
-
-
 }

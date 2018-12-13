@@ -13,33 +13,32 @@ copy of the GNU General Public License along with the IFDM Suite. If not, see <h
 */
 package eu.europa.ec.fisheries.uvms.docker.validation.exchange;
 
-import java.util.List;
-import org.apache.http.HttpResponse;
-import org.apache.http.client.fluent.Request;
-import org.junit.Test;
+import eu.europa.ec.fisheries.uvms.commons.rest.dto.ResponseDto;
 import eu.europa.ec.fisheries.uvms.docker.validation.common.AbstractRest;
+import org.junit.Test;
 
-/**
- * The Class ExchangeRegistryRestIT.
- */
+import javax.ws.rs.core.HttpHeaders;
+import javax.ws.rs.core.MediaType;
+import java.util.ArrayList;
+
 public class ExchangeRegistryRestIT extends AbstractRest {
 
-	
-	
-	/**
-	 * Gets the list test.
-	 *
-	 * @return the list test
-	 * @throws Exception the exception
-	 */
 	@Test
-	public void getListTest() throws Exception {
-		final HttpResponse response = Request.Get(getBaseUrl() + "exchange/rest/plugin/list")
-				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken()).execute()
-				.returnResponse();
+	public void getListTest() {
 
-		List dataList = checkSuccessResponseReturnType(response,List.class);
+		ResponseDto response = getWebTarget()
+				.path("exchange/rest/plugin/list")
+				.request(MediaType.APPLICATION_JSON)
+				.header(HttpHeaders.AUTHORIZATION, getValidJwtToken())
+				.get(ResponseDto.class);
+
+		assertEquals(200, response.getCode());
+
+		ArrayList list = (ArrayList) response.getData();
+		assertNotNull(list);
+		assertFalse(list.isEmpty());
 	}
-    //removed two tests that started and stopped the service sweagencyemail. Since sweagency is specific to swe (and thus other are not supposed to have that plugin) and since sweagencyemail is not in a working order, the test where removed.
-	
+
+    // Removed two tests that started and stopped the service sweagencyemail. Since sweagency is specific to swe
+	// (and thus other are not supposed to have that plugin) and since sweagencyemail is not in a working order, the test where removed.
 }
