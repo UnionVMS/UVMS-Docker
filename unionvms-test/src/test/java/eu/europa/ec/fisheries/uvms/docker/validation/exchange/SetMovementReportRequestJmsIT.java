@@ -23,7 +23,6 @@ import eu.europa.ec.fisheries.schema.exchange.movement.v1.MovementTypeType;
 import eu.europa.ec.fisheries.schema.exchange.movement.v1.SetReportMovementType;
 import eu.europa.ec.fisheries.schema.exchange.plugin.types.v1.PluginType;
 import eu.europa.ec.fisheries.schema.mobileterminal.types.v1.MobileTerminalType;
-import eu.europa.ec.fisheries.schema.movement.module.v1.CreateMovementRequest;
 import eu.europa.ec.fisheries.uvms.asset.client.model.AssetDTO;
 import eu.europa.ec.fisheries.uvms.docker.validation.asset.AssetTestHelper;
 import eu.europa.ec.fisheries.uvms.docker.validation.common.AbstractRest;
@@ -125,6 +124,8 @@ public class SetMovementReportRequestJmsIT extends AbstractRest {
 		movementType.setMovement(movementBaseType);
 		MovementActivityType movementActivityType = new MovementActivityType();
 		movementActivityType.setMessageType(MovementActivityTypeType.CAN);
+		movementActivityType.setMessageId(createMovementRequest.getActivityMessageId());
+		movementActivityType.setCallback(createMovementRequest.getActivityCallback());
 		movementBaseType.setActivity(movementActivityType);
 		AssetId assetId = new AssetId();
 		movementBaseType.setAssetId(assetId);

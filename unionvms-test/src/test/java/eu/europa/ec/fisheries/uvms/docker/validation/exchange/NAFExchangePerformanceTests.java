@@ -19,8 +19,6 @@ import eu.europa.ec.fisheries.uvms.docker.validation.movement.AuthorizationHeade
 import eu.europa.ec.fisheries.uvms.docker.validation.movement.LatLong;
 import eu.europa.ec.fisheries.uvms.docker.validation.movement.MovementHelper;
 import eu.europa.ec.fisheries.uvms.docker.validation.system.helper.NAFHelper;
-import eu.europa.ec.fisheries.uvms.movementrules.model.exception.MovementRulesModelMapperException;
-import eu.europa.ec.fisheries.uvms.movementrules.model.exception.MovementRulesModelMarshallException;
 import eu.europa.ec.fisheries.uvms.movementrules.model.mapper.JAXBMarshaller;
 import org.apache.activemq.ActiveMQConnectionFactory;
 import org.junit.Ignore;
@@ -37,7 +35,6 @@ import javax.xml.transform.stream.StreamSource;
 import java.io.StringReader;
 import java.time.Duration;
 import java.time.Instant;
-import java.time.temporal.ChronoUnit;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Consumer;
@@ -328,7 +325,7 @@ public class NAFExchangePerformanceTests extends AbstractRest {
         return movement;
     }
 
-    public static String createSetMovementReportRequest(PluginType type, RawMovementType rawMovementType, String username) throws MovementRulesModelMapperException {
+    public static String createSetMovementReportRequest(PluginType type, RawMovementType rawMovementType, String username) throws JAXBException {
         SetMovementReportRequest request = new SetMovementReportRequest();
         request.setMethod(RulesModuleMethod.SET_MOVEMENT_REPORT);
         request.setType(type);
@@ -337,7 +334,7 @@ public class NAFExchangePerformanceTests extends AbstractRest {
         return JAXBMarshaller.marshallJaxBObjectToString(request);
     }
 
-    public static <R> R unmarshallTextMessage(TextMessage textMessage, Class clazz) throws MovementRulesModelMarshallException {
+    public static <R> R unmarshallTextMessage(TextMessage textMessage, Class clazz) {
         try {
             JAXBContext jc = contexts.get(clazz.getName());
             if (jc == null) {
@@ -353,7 +350,7 @@ public class NAFExchangePerformanceTests extends AbstractRest {
             R object = (R) unmarshaller.unmarshal(source);
             return object;
         } catch (JMSException | JAXBException ex) {
-            throw new MovementRulesModelMarshallException("[Error when unmarshalling response in ResponseMapper. Expected class was " + clazz.getName() + " ]", ex);
+            throw new IllegalArgumentException("[Error when unmarshalling response in ResponseMapper. Expected class was " + clazz.getName() + " ]", ex);
         }
     }
 
