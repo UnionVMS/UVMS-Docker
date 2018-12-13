@@ -8,12 +8,18 @@ import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.function.Consumer;
 import javax.jms.Message;
 import javax.jms.TextMessage;
+import javax.ws.rs.client.WebTarget;
+import javax.ws.rs.sse.InboundSseEvent;
 import javax.ws.rs.sse.SseEventSource;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
+
+import org.jboss.resteasy.client.jaxrs.internal.ClientWebTarget;
 import org.junit.Ignore;
 import org.junit.Test;
 import eu.europa.ec.fisheries.schema.mobileterminal.types.v1.MobileTerminalType;
@@ -215,7 +221,7 @@ public class MovementPerformanceIT extends AbstractRest {
     @Ignore
     public void createRouteTestTitanic1000PositionsAnd8ShipsAsync() throws Exception {
 
-        List<LatLong> route = movementHelper.createRuttCobhNewYork(1000, 0.06f);                //0.1F = 654 pos    0.01 = 6543     0.07 = 934   0.06 = 1090
+        List<LatLong> route = movementHelper.createRuttCobhNewYork(10, 0.06f);                //0.1F = 654 pos    0.01 = 6543     0.07 = 934   0.06 = 1090
         sendRouteToMovementOnXShipsAsync(8, route);
     }
 
@@ -350,7 +356,7 @@ public class MovementPerformanceIT extends AbstractRest {
         List<AssetDTO> assetList = new ArrayList<>();
 
 
-        for(int i = 0; i < nrOfShips; i++){
+        for (int i = 0; i < nrOfShips; i++) {
 
             //Code for if one wants an actual correct ship to be able to plot the positions on the map from frontend
             AssetDTO testAsset = AssetTestHelper.createTestAsset();
@@ -376,12 +382,9 @@ public class MovementPerformanceIT extends AbstractRest {
                 }
             });
             source.open();
-            
+
             for (LatLong position : route) {
-
-                //(int)(Math.random() * nrOfShips)
-                AssetDTO testAsset = assetList.get((int)(Math.random() * nrOfShips));
-
+                AssetDTO testAsset = assetList.get((int)(Math.random()* (double)nrOfShips));
                 final IncomingMovement createMovementRequest = movementHelper.createIncomingMovement(testAsset, position);
                 movementHelper.createMovementDontWaitForResponse(testAsset, createMovementRequest);
 
@@ -391,14 +394,34 @@ public class MovementPerformanceIT extends AbstractRest {
                     averageDurations.add(Duration.between(lastIteration, Instant.now()));
                     lastIteration = Instant.now();
 
+                    while (movements.size() < route.size()) {
+                        Thread.sleep(100);
+                    }
+
+
                 }
             }
-            while(movements.size() < route.size()) {
-                Thread.sleep(100);
-            }
-            System.out.println("Recived all movements. Time: " + humanReadableFormat(Duration.between(b4, Instant.now())));
         }
     }
+
+
+    private static Consumer<InboundSseEvent> onEvent = (inboundSseEvent) -> {
+        String data = inboundSseEvent.readData();
+        System.out.println(data);
+    };
+
+    //Error
+    private static Consumer<Throwable> onError = (throwable) -> {
+        throwable.printStackTrace();
+    };
+
+    //Connection close and there is nothing to receive
+    private static Runnable onComplete = () -> {
+        System.out.println("Done!");
+    };
+
+
+
 
     private void buildAndSendQuery(String areaInWKT) throws Exception{
         Instant start = Instant.now();
@@ -468,5 +491,11 @@ public class MovementPerformanceIT extends AbstractRest {
         JAXBContext jaxbContext = JAXBContext.newInstance(ExceptionType.class);
         return (ExceptionType) jaxbContext.createUnmarshaller()
                 .unmarshal(new StringReader(textMessage.getText()));
+    }
+    public static SseEventSource getSseStream() {
+        WebTarget target = getWebTarget().path("exchange/unsecured/rest/sse/subscribe");
+        AuthorizationHeaderWebTarget jwtTarget = new AuthorizationHeaderWebTarget(target, getValidJwtToken());
+        return SseEventSource.
+                target(jwtTarget).build();
     }
 }

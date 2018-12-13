@@ -19,6 +19,7 @@ import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.GenericType;
 import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 import javax.ws.rs.sse.SseEventSource;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
@@ -135,7 +136,7 @@ public class MovementHelper extends AbstractHelper {
 
 		int movementTimeDeltaInMillis = 30000;
 		List<LatLong> rutt = new ArrayList<>();
-		long ts = System.currentTimeMillis() - numberPositions * movementTimeDeltaInMillis;
+		long ts = System.currentTimeMillis() - (long)numberPositions * (long)movementTimeDeltaInMillis;
 
 
 		double divideramed = 50;
@@ -358,7 +359,17 @@ public class MovementHelper extends AbstractHelper {
     }
 
 	public void createMovementBatch(List<IncomingMovement> createMovementBatchRequest) throws Exception {
-	    MessageHelper.sendMessageWithFunction(UVMS_MOVEMENT_REQUEST_QUEUE, OBJECT_MAPPER.writeValueAsString(createMovementBatchRequest), "CREATE_BATCH");
+        MessageHelper.sendMessageWithFunction(UVMS_MOVEMENT_REQUEST_QUEUE, OBJECT_MAPPER.writeValueAsString(createMovementBatchRequest), "CREATE_BATCH");
+    }
+
+
+	public static String getMicroMovements(String date) {
+		String response = getWebTarget()
+				.path("movement/rest/movement/microMovementList/" + date)
+				.request(MediaType.APPLICATION_JSON)
+				.header(HttpHeaders.AUTHORIZATION, getValidJwtToken())
+				.get(String.class);
+		return response;
 	}
 
 	List<LatLong> calculateReportedDataForRoute(List<LatLong> route) {
