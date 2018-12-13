@@ -1,23 +1,5 @@
 package eu.europa.ec.fisheries.uvms.docker.validation.movement;
 
-import java.io.IOException;
-import java.math.BigInteger;
-import java.time.Instant;
-import java.time.temporal.ChronoUnit;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.List;
-import java.util.Random;
-import java.util.UUID;
-import javax.ws.rs.client.Entity;
-import javax.ws.rs.client.WebTarget;
-import javax.ws.rs.core.GenericType;
-import javax.ws.rs.core.HttpHeaders;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.sse.SseEventSource;
-
-import org.hamcrest.CoreMatchers;
 import com.peertopark.java.geocalc.Coordinate;
 import com.peertopark.java.geocalc.DegreeCoordinate;
 import com.peertopark.java.geocalc.EarthCalc;
@@ -33,11 +15,23 @@ import eu.europa.ec.fisheries.uvms.commons.rest.dto.ResponseDto;
 import eu.europa.ec.fisheries.uvms.docker.validation.common.AbstractHelper;
 import eu.europa.ec.fisheries.uvms.docker.validation.common.MessageHelper;
 import eu.europa.ec.fisheries.uvms.docker.validation.movement.model.IncomingMovement;
+import org.hamcrest.CoreMatchers;
+
+import javax.ws.rs.client.Entity;
+import javax.ws.rs.client.WebTarget;
+import javax.ws.rs.core.GenericType;
+import javax.ws.rs.core.HttpHeaders;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.sse.SseEventSource;
+import java.math.BigInteger;
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
+import java.util.*;
 
 public class MovementHelper extends AbstractHelper {
 
 	private static final String UVMS_MOVEMENT_REQUEST_QUEUE = "UVMSMovementEvent";
-	public static final String TEST_ACK_IGNORE_EXCHANGE_LOG = "Test"; //Exchange is set so that it ignores messages with this response
+	private static final String TEST_ACK_IGNORE_EXCHANGE_LOG = "Test"; //Exchange is set so that it ignores messages with this response
 
 	private Random rnd = new Random();
 
@@ -131,14 +125,12 @@ public class MovementHelper extends AbstractHelper {
 		List<LatLong> rutt = new ArrayList<>();
 		long ts = System.currentTimeMillis() - (long)numberPositions * (long)movementTimeDeltaInMillis;
 
-
 		double divideramed = 50;
 		double randomFactorLat = rnd.nextDouble() / divideramed;
 		double randomFactorLong = rnd.nextDouble() / divideramed;
 
 		double latitude = 51.844 + randomFactorLat;
 		double longitude = -8.311 + randomFactorLong;
-
 
 		double END_LATITUDE = 40.313;
 		double END_LONGITUDE = -73.740;
@@ -191,12 +183,9 @@ public class MovementHelper extends AbstractHelper {
 
 	public List<LatLong> createRutt(int movementTimeDeltaInMillis, int numberPositions) {
 
-
 		double divideramed = 50;
 		double randomFactorLat = rnd.nextDouble() / divideramed;
 		double randomFactorLong = rnd.nextDouble() / divideramed;
-
-
 
 		List<LatLong> rutt = new ArrayList<>();
 		long ts = System.currentTimeMillis() - movementTimeDeltaInMillis * numberPositions;
@@ -285,7 +274,6 @@ public class MovementHelper extends AbstractHelper {
 		} else {
 			return rutt.subList(0, numberPositions);
 		}
-
 	}
 
 	private Date getDate(Long millis) {
@@ -331,7 +319,6 @@ public class MovementHelper extends AbstractHelper {
                 .post(Entity.json(movementQuery), new GenericType<ResponseDto<GetMovementListByQueryResponse>>() {});
         return response.getData().getMovement();
 	}
-	
 	
 	public static List<MovementDto> getLatestMovements(List<String> connectIds) {
 	    ResponseDto<List<MovementDto>> response = getWebTarget()
@@ -398,7 +385,6 @@ public class MovementHelper extends AbstractHelper {
 		// double speed = calcSpeed(previousPosition, currentPosition);
 		route.get(i - 1).speed = 0d;
 		return route;
-
 	}
 
 	private Double bearing(LatLong src, LatLong dst) {
@@ -411,9 +397,7 @@ public class MovementHelper extends AbstractHelper {
 		Coordinate lngTo = new DegreeCoordinate(dst.longitude);
 		Point to = new Point(latTo, lngTo);
 
-		double bearing = EarthCalc.getBearing(from, to); // in decimal degrees
-		return bearing;
-
+		return EarthCalc.getBearing(from, to);
 	}
 
 	private Double distance(LatLong src, LatLong dst) {
@@ -426,16 +410,11 @@ public class MovementHelper extends AbstractHelper {
 		Coordinate lngTo = new DegreeCoordinate(dst.longitude);
 		Point to = new Point(latTo, lngTo);
 
-		double distanceInMeters = EarthCalc.getDistance(from, to);
-		return distanceInMeters;
-
+		return EarthCalc.getDistance(from, to);
 	}
 
-
 	private double calcSpeed(LatLong src, LatLong dst) {
-
 		try {
-
 			if (src.positionTime == null)
 				return 0;
 			if (dst.positionTime == null)
@@ -453,7 +432,6 @@ public class MovementHelper extends AbstractHelper {
 			return 0.0;
 		}
 	}
-
 
 	public List<LatLong> createSmallFishingTourFromVarberg() {
 
@@ -499,13 +477,12 @@ public class MovementHelper extends AbstractHelper {
 		}
 		
 		rutt.addAll(ruttHome);
-
 		rutt = calculateReportedDataForRoute(rutt);
 
 		return rutt;
 	}
 	
-	public static void pollMovementCreated() throws IOException {
+	public static void pollMovementCreated() {
         getWebTarget()
             .path("movement/activity/movement")
             .request(MediaType.APPLICATION_JSON)

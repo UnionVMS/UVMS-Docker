@@ -13,21 +13,6 @@ copy of the GNU General Public License along with the IFDM Suite. If not, see <h
 */
 package eu.europa.ec.fisheries.uvms.docker.validation.movement;
 
-import java.math.BigInteger;
-import java.time.Instant;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.UUID;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
-
-import eu.europa.ec.fisheries.uvms.movement.model.util.DateUtil;
-import org.hamcrest.CoreMatchers;
-import org.junit.Test;
-import eu.europa.ec.fisheries.schema.mobileterminal.types.v1.MobileTerminalType;
-import eu.europa.ec.fisheries.schema.movement.module.v1.CreateMovementRequest;
-import eu.europa.ec.fisheries.schema.movement.module.v1.CreateMovementResponse;
 import eu.europa.ec.fisheries.schema.movement.search.v1.ListCriteria;
 import eu.europa.ec.fisheries.schema.movement.search.v1.ListPagination;
 import eu.europa.ec.fisheries.schema.movement.search.v1.MovementQuery;
@@ -37,42 +22,34 @@ import eu.europa.ec.fisheries.uvms.asset.client.model.AssetDTO;
 import eu.europa.ec.fisheries.uvms.docker.validation.asset.AssetTestHelper;
 import eu.europa.ec.fisheries.uvms.docker.validation.common.AbstractRest;
 import eu.europa.ec.fisheries.uvms.docker.validation.mobileterminal.MobileTerminalTestHelper;
+import eu.europa.ec.fisheries.uvms.docker.validation.mobileterminal.dto.MobileTerminalDto;
 import eu.europa.ec.fisheries.uvms.docker.validation.movement.model.IncomingMovement;
+import eu.europa.ec.fisheries.uvms.movement.model.util.DateUtil;
+import org.hamcrest.CoreMatchers;
+import org.junit.Test;
 
-/**
- * The Class MovementMovementRestIT.
- */
-
+import javax.ws.rs.core.MediaType;
+import java.math.BigInteger;
+import java.time.Instant;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.UUID;
 
 public class MovementMovementRestIT extends AbstractRest {
-	
-	/** The movement helper. */
+
 	private MovementHelper movementHelper = new MovementHelper();
 
-
-	/**
-	 * Gets the list by query test.
-	 *
-	 * @return the list by query test
-	 * @throws Exception
-	 *             the exception
-	 */
 	@Test
-	public void getListByQueryTest() throws Exception {		
+	public void getListByQueryTest() {
 	    List<MovementType> dataMap = MovementHelper.getListByQuery(createMovementQuery());
 		assertNotNull(dataMap);
 	}
 
-	//Two tests (and an unused helper function) removed since they assumed that some specific data where already in the database. Since the DB is empty, the test would never pass.
+	// Two tests (and an unused helper function) removed since they assumed that some specific data where
+	// already in the database. Since the DB is empty, the test would never pass.
 
-	
-	/**
-	 * Creates the movement query.
-	 *
-	 * @return the movement query
-	 */
 	private MovementQuery createMovementQuery() {
-
 		MovementQuery movementQuery = new MovementQuery();
 		movementQuery.setExcludeFirstAndLastSegment(false);
 		ListPagination listPagination = new ListPagination();
@@ -87,33 +64,18 @@ public class MovementMovementRestIT extends AbstractRest {
 		return movementQuery;
 	}
 
-	/**
-	 * Gets the minimal list by query test.
-	 *
-	 * @return the minimal list by query test
-	 * @throws Exception the exception
-	 */
 	@Test
-	public void getMinimalListByQueryTest() throws Exception {
+	public void getMinimalListByQueryTest() {
 		List<MovementType> response = MovementHelper.getMinimalListByQuery(createMovementQuery());
 		assertThat(response, CoreMatchers.is(CoreMatchers.notNullValue()));
 	}
 
-	
-	/**
-	 * Gets the latest movements by connect ids test.
-	 *
-	 * @return the latest movements by connect ids test
-	 * @throws Exception
-	 *             the exception
-	 */
 	@Test
 	public void getLatestMovementsByConnectIdsTest() throws Exception {
 
-
 		AssetDTO testAsset = AssetTestHelper.createTestAsset();
-		MobileTerminalType mobileTerminalType = MobileTerminalTestHelper.createMobileTerminalType();
-		MobileTerminalTestHelper.assignMobileTerminal(testAsset, mobileTerminalType);
+		MobileTerminalDto mobileTerminal = MobileTerminalTestHelper.createMobileTerminal();
+		MobileTerminalTestHelper.assignMobileTerminal(testAsset, mobileTerminal);
 		LatLong latLong = new LatLong(16.9, 32.6333333, new Date(System.currentTimeMillis()));
 		IncomingMovement createMovementRequest = movementHelper.createIncomingMovement(testAsset, latLong);
 		MovementDto createMovementResponse = movementHelper.createMovement(createMovementRequest);
@@ -131,18 +93,11 @@ public class MovementMovementRestIT extends AbstractRest {
 		assertTrue(latestMovements.size() > 0);
 	}
 
-	/**
-	 * Gets the latest movements test.
-	 *
-	 * @return the latest movements test
-	 * @throws Exception
-	 *             the exception
-	 */
 	@Test
 	public void getLatestMovementsTest() throws Exception {
 		AssetDTO testAsset = AssetTestHelper.createTestAsset();
-		MobileTerminalType mobileTerminalType = MobileTerminalTestHelper.createMobileTerminalType();
-		MobileTerminalTestHelper.assignMobileTerminal(testAsset, mobileTerminalType);
+		MobileTerminalDto mobileTerminal = MobileTerminalTestHelper.createMobileTerminal();
+		MobileTerminalTestHelper.assignMobileTerminal(testAsset, mobileTerminal);
 		
 		LatLong latLong = new LatLong(16.9, 32.6333333, new Date(System.currentTimeMillis()));
 		IncomingMovement createMovementRequest = movementHelper.createIncomingMovement(testAsset, latLong);
@@ -151,19 +106,13 @@ public class MovementMovementRestIT extends AbstractRest {
 		List<MovementDto> latestMovements = MovementHelper.getLatestMovements(100);
 		assertTrue(latestMovements.size() > 0);
 	}
-	/**
-	 * Gets the by id test.
-	 *
-	 * @return the by id test
-	 * @throws Exception
-	 *             the exception
-	 */
+
 	@Test
 	public void getByIdTest() throws Exception {
 
 		AssetDTO testAsset = AssetTestHelper.createTestAsset();
-		MobileTerminalType mobileTerminalType = MobileTerminalTestHelper.createMobileTerminalType();
-		MobileTerminalTestHelper.assignMobileTerminal(testAsset, mobileTerminalType);
+		MobileTerminalDto mobileTerminal = MobileTerminalTestHelper.createMobileTerminal();
+		MobileTerminalTestHelper.assignMobileTerminal(testAsset, mobileTerminal);
 		
 		LatLong latLong = movementHelper.createRutt(1).get(0);
 
@@ -179,7 +128,7 @@ public class MovementMovementRestIT extends AbstractRest {
 	}
 
 	@Test
-    public void countMovementsForAsset() throws Exception{
+    public void countMovementsForAsset() {
 	    String asset = "4f87e873-214c-4ebd-b161-5a934904f4fc";
         Instant now = Instant.now();
 
@@ -194,5 +143,4 @@ public class MovementMovementRestIT extends AbstractRest {
         System.out.println(response);
 
     }
-
 }

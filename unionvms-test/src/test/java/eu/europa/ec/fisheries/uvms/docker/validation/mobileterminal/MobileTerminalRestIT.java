@@ -13,79 +13,56 @@ copy of the GNU General Public License along with the IFDM Suite. If not, see <h
 */
 package eu.europa.ec.fisheries.uvms.docker.validation.mobileterminal;
 
-import java.util.Map;
-
 import eu.europa.ec.fisheries.schema.mobileterminal.types.v1.*;
+import eu.europa.ec.fisheries.uvms.asset.client.model.AssetDTO;
+import eu.europa.ec.fisheries.uvms.commons.rest.dto.ResponseDto;
+import eu.europa.ec.fisheries.uvms.docker.validation.asset.AssetTestHelper;
+import eu.europa.ec.fisheries.uvms.docker.validation.common.AbstractRest;
+import eu.europa.ec.fisheries.uvms.docker.validation.mobileterminal.dto.MobileTerminalDto;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.fluent.Request;
 import org.junit.Test;
 
-import eu.europa.ec.fisheries.uvms.asset.client.model.AssetDTO;
-import eu.europa.ec.fisheries.uvms.docker.validation.asset.AssetTestHelper;
-import eu.europa.ec.fisheries.uvms.docker.validation.common.AbstractRest;
-
-/**
- * The Class MobileTerminalRestIT.
- */
+import javax.ws.rs.client.Entity;
+import javax.ws.rs.core.GenericType;
+import javax.ws.rs.core.HttpHeaders;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
+import java.util.List;
+import java.util.Map;
 
 public class MobileTerminalRestIT extends AbstractRest {
 
-	/**
-	 * Creates the mobile terminal test.
-	 *
-	 * @throws Exception
-	 *             the exception
-	 */
 	@Test
-	public void createMobileTerminalTest() throws Exception {
-		MobileTerminalTestHelper.createMobileTerminalType();
+	public void createMobileTerminalTest() {
+		MobileTerminalDto mobileTerminal = MobileTerminalTestHelper.createMobileTerminal();
+		assertNotNull(mobileTerminal);
+		assertNotNull(mobileTerminal.getId());
 	}
 
-	/**
-	 * Gets the mobile terminal by id test.
-	 *
-	 * @return the mobile terminal by id test
-	 * @throws Exception
-	 *             the exception
-	 */
 	@Test
-	public void getMobileTerminalByIdTest() throws Exception {
-		MobileTerminalType createdMobileTerminalType = MobileTerminalTestHelper.createMobileTerminalType();
-		
-		final HttpResponse response = Request.Get(getBaseUrl() + "asset/rest/mobileterminal/" + createdMobileTerminalType.getMobileTerminalId().getGuid())
-				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken()).execute()
-				.returnResponse();
-		Map<String, Object> dataMap = checkSuccessResponseReturnMap(response);
+	public void getMobileTerminalByIdTest() {
+		MobileTerminalDto mobileTerminal = MobileTerminalTestHelper.createMobileTerminal();
+
+		MobileTerminalDto fetchedMobileTerminal = MobileTerminalTestHelper.getMobileTerminalById(mobileTerminal.getId());
+
+		assertNotNull(fetchedMobileTerminal);
 	}
 
-	/**
-	 * Update mobile terminal test.
-	 *
-	 * @throws Exception
-	 *             the exception
-	 */
 	@Test
-	public void updateMobileTerminalTest() throws Exception {
-		MobileTerminalType createdMobileTerminalType = MobileTerminalTestHelper.createMobileTerminalType();
-		
-		createdMobileTerminalType.setArchived(true);
-		
-		final HttpResponse response = Request.Put(getBaseUrl() + "asset/rest/mobileterminal?comment=comment")
-				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken())
-				.bodyByteArray(writeValueAsString(createdMobileTerminalType).getBytes()).execute().returnResponse();
+	public void updateMobileTerminalTest() {
+		MobileTerminalDto mobileTerminal = MobileTerminalTestHelper.createMobileTerminal();
+		assertFalse(mobileTerminal.getArchived());
+		mobileTerminal.setArchived(true);
 
-		Map<String, Object> dataMap = checkSuccessResponseReturnMap(response);
+		MobileTerminalDto updatedMobileTerminal = MobileTerminalTestHelper.updateMobileTerminal(mobileTerminal);
+
+		assertNotNull(updatedMobileTerminal);
+		assertTrue(mobileTerminal.getArchived());
 	}
 
-	/**
-	 * Gets the mobile terminal list test.
-	 *
-	 * @return the mobile terminal list test
-	 * @throws Exception
-	 *             the exception
-	 */
 	@Test
-	public void getMobileTerminalListTest() throws Exception {
+	public void getMobileTerminalListTest() {
 		MobileTerminalListQuery queryRequest = new MobileTerminalListQuery();
 		ListPagination pagination = new ListPagination();
 		pagination.setListSize(100);
@@ -100,132 +77,75 @@ public class MobileTerminalRestIT extends AbstractRest {
 		criteria.getCriterias().add(cr);
 		criteria.setIsDynamic(true);
 		queryRequest.setMobileTerminalSearchCriteria(criteria);
-		
-		final HttpResponse response = Request.Post(getBaseUrl() + "asset/rest/mobileterminal/list")
-				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken())
-				.bodyByteArray(writeValueAsString(queryRequest).getBytes()).execute().returnResponse();
 
-		Map<String, Object> dataMap = checkSuccessResponseReturnMap(response);
+		Response response = MobileTerminalTestHelper.getMobileTerminalList(queryRequest);
+
+		assertNotNull(response);
+		assertEquals(Response.Status.OK.getStatusCode(), response.getStatus());
 	}
 
-	/**
-	 * Assign mobile terminal test.
-	 *
-	 * @throws Exception
-	 *             the exception
-	 */
 	@Test
-	public void assignMobileTerminalTest() throws Exception {
+	public void assignMobileTerminalTest() {
 		AssetDTO testAsset = AssetTestHelper.createTestAsset();
-		MobileTerminalType createdMobileTerminalType = MobileTerminalTestHelper.createMobileTerminalType();
+		MobileTerminalDto createdMobileTerminalType = MobileTerminalTestHelper.createMobileTerminal();
 
-		Map<String, Object> dataMap = MobileTerminalTestHelper.assignMobileTerminal(testAsset, createdMobileTerminalType);
+		MobileTerminalDto mobileTerminalDto = MobileTerminalTestHelper.assignMobileTerminal(testAsset, createdMobileTerminalType);
+		assertNotNull(mobileTerminalDto);
+		assertNotNull(mobileTerminalDto.getAsset().getId());
 	}
 
-	/**
-	 * Un assign mobile terminal test.
-	 *
-	 * @throws Exception
-	 *             the exception
-	 */
 	@Test
-	public void unAssignMobileTerminalTest() throws Exception {
+	public void unAssignMobileTerminalTest() {
 		AssetDTO testAsset = AssetTestHelper.createTestAsset();
-		MobileTerminalType createdMobileTerminalType = MobileTerminalTestHelper.createMobileTerminalType();
+		MobileTerminalDto createdMobileTerminalType = MobileTerminalTestHelper.createMobileTerminal();
 
-		MobileTerminalAssignQuery mobileTerminalAssignQuery = new MobileTerminalAssignQuery();
-		mobileTerminalAssignQuery.setMobileTerminalId(createdMobileTerminalType.getMobileTerminalId());
-		mobileTerminalAssignQuery.setConnectId(testAsset.getId().toString());
-		{
-			// Assign first
-			final HttpResponse response = Request
-					.Post(getBaseUrl() + "asset/rest/mobileterminal/assign?comment=comment")
-					.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken())
-					.bodyByteArray(writeValueAsString(mobileTerminalAssignQuery).getBytes()).execute()
-					.returnResponse();
-	
-			Map<String, Object> dataMap = checkSuccessResponseReturnMap(response);
-		}
-		final HttpResponse response = Request
-				.Post(getBaseUrl() + "asset/rest/mobileterminal/unassign?comment=comment")
-				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken())
-				.bodyByteArray(writeValueAsString(mobileTerminalAssignQuery).getBytes()).execute()
-				.returnResponse();
+		MobileTerminalDto mobileTerminalDto = MobileTerminalTestHelper.assignMobileTerminal(testAsset, createdMobileTerminalType);
+		assertNotNull(mobileTerminalDto);
+		assertNotNull(mobileTerminalDto.getAsset().getId());
 
-		Map<String, Object> dataMap = checkSuccessResponseReturnMap(response);
+		MobileTerminalDto unAssignMobileTerminal = MobileTerminalTestHelper.unAssignMobileTerminal(testAsset, createdMobileTerminalType);
+		assertNotNull(unAssignMobileTerminal);
+		assertNull(unAssignMobileTerminal.getAsset());
 	}
 
-	/**
-	 * Sets the status active test.
-	 *
-	 * @throws Exception
-	 *             the exception
-	 */
 	@Test
-	public void setStatusActiveTest() throws Exception {
-		MobileTerminalType createdMobileTerminalType = MobileTerminalTestHelper.createMobileTerminalType();
+	public void setStatusActiveTest() {
+		MobileTerminalDto mobileTerminal = MobileTerminalTestHelper.createMobileTerminal();
 
-		final HttpResponse response = Request
-				.Put(getBaseUrl() + "asset/rest/mobileterminal/status/activate?comment=comment")
-				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken())
-				.bodyByteArray(writeValueAsString(createdMobileTerminalType.getMobileTerminalId()).getBytes()).execute().returnResponse();
+		MobileTerminalDto activated = MobileTerminalTestHelper.activateMobileTerminal(mobileTerminal.getId());
 
-		Map<String, Object> dataMap = checkSuccessResponseReturnMap(response);
+		assertNotNull(activated);
+		assertFalse(activated.getInactivated());
 	}
 
-	/**
-	 * Sets the status inactive test.
-	 *
-	 * @throws Exception
-	 *             the exception
-	 */
 	@Test
-	public void setStatusInactiveTest() throws Exception {
-		MobileTerminalType createdMobileTerminalType = MobileTerminalTestHelper.createMobileTerminalType();
+	public void setStatusInactiveTest() {
+		MobileTerminalDto mobileTerminal = MobileTerminalTestHelper.createMobileTerminal();
 
-		String endpoint = getBaseUrl() + "asset/rest/mobileterminal/";
+		MobileTerminalDto inActivated = MobileTerminalTestHelper.inactivateMobileTerminal(mobileTerminal.getId());
 
-		final HttpResponse response = Request
-				.Put(endpoint + "status/inactivate?comment=comment")
-				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken())
-				.bodyByteArray(writeValueAsString(createdMobileTerminalType.getMobileTerminalId()).getBytes()).execute().returnResponse();
-
-		Map<String, Object> dataMap = checkSuccessResponseReturnMap(response);
+		assertNotNull(inActivated);
+		assertTrue(inActivated.getInactivated());
 	}
 
-	/**
-	 * Sets the status removed test.
-	 *
-	 * @throws Exception
-	 *             the exception
-	 */
 	@Test
-	public void setStatusRemovedTest() throws Exception {
-		MobileTerminalType createdMobileTerminalType = MobileTerminalTestHelper.createMobileTerminalType();
+	public void setStatusRemovedTest() {
+		MobileTerminalDto mobileTerminal = MobileTerminalTestHelper.createMobileTerminal();
 
-		final HttpResponse response = Request
-				.Put(getBaseUrl() + "asset/rest/mobileterminal/status/remove?comment=comment")
-				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken())
-				.bodyByteArray(writeValueAsString(createdMobileTerminalType.getMobileTerminalId()).getBytes()).execute().returnResponse();
+		MobileTerminalDto removed = MobileTerminalTestHelper.removeMobileTerminal(mobileTerminal.getId());
 
-		Map<String, Object> dataMap = checkSuccessResponseReturnMap(response);
+		assertNotNull(removed);
+		assertTrue(removed.getInactivated());
+		assertTrue(removed.getArchived());
 	}
 
-	/**
-	 * Gets the mobile terminal history list by mobile terminal id test.
-	 *
-	 * @return the mobile terminal history list by mobile terminal id test
-	 * @throws Exception
-	 *             the exception
-	 */
 	@Test
-	public void getMobileTerminalHistoryListByMobileTerminalIdTest() throws Exception {
-		MobileTerminalType createdMobileTerminalType = MobileTerminalTestHelper.createMobileTerminalType();
+	public void getMobileTerminalHistoryListByMobileTerminalIdTest() {
+		MobileTerminalDto mobileTerminal = MobileTerminalTestHelper.createMobileTerminal();
 
-		final HttpResponse response = Request.Get(getBaseUrl() + "asset/rest/mobileterminal/history/" + createdMobileTerminalType.getMobileTerminalId().getGuid())
-				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken()).execute()
-				.returnResponse();
-		Map<String, Object> dataMap = checkSuccessResponseReturnMap(response);
+		List<MobileTerminalDto> historyList = MobileTerminalTestHelper.getMobileTerminalHistoryList(mobileTerminal.getId());
+
+		assertNotNull(historyList);
+		assertFalse(historyList.isEmpty());
 	}
-
 }

@@ -24,7 +24,6 @@ import org.junit.Ignore;
 import org.junit.Test;
 import eu.europa.ec.fisheries.schema.exchange.module.v1.ProcessedMovementResponse;
 import eu.europa.ec.fisheries.schema.exchange.movement.v1.MovementRefTypeType;
-import eu.europa.ec.fisheries.schema.mobileterminal.types.v1.MobileTerminalType;
 import eu.europa.ec.fisheries.schema.movementrules.asset.v1.AssetId;
 import eu.europa.ec.fisheries.schema.movementrules.asset.v1.AssetIdList;
 import eu.europa.ec.fisheries.schema.movementrules.asset.v1.AssetIdType;
@@ -40,6 +39,7 @@ import eu.europa.ec.fisheries.schema.movementrules.movement.v1.RawMovementType;
 import eu.europa.ec.fisheries.uvms.asset.client.model.AssetDTO;
 import eu.europa.ec.fisheries.uvms.docker.validation.asset.AssetTestHelper;
 import eu.europa.ec.fisheries.uvms.docker.validation.mobileterminal.MobileTerminalTestHelper;
+import eu.europa.ec.fisheries.uvms.docker.validation.mobileterminal.dto.MobileTerminalDto;
 import eu.europa.ec.fisheries.uvms.docker.validation.movement.LatLong;
 import eu.europa.ec.fisheries.uvms.docker.validation.movement.MovementHelper;
 import eu.europa.ec.fisheries.uvms.movementrules.model.mapper.JAXBMarshaller;
@@ -61,8 +61,8 @@ public class RulesPerformanceIT {
     public void createRouteTestTitanic1000PositionsSync() throws Exception{   //Needs a special version of rules that respond on the test queue to work!!!!
 
         AssetDTO testAsset = AssetTestHelper.createTestAsset();
-        MobileTerminalType mobileTerminalType = MobileTerminalTestHelper.createMobileTerminalType();
-        MobileTerminalTestHelper.assignMobileTerminal(testAsset, mobileTerminalType);
+        MobileTerminalDto mobileTerminal = MobileTerminalTestHelper.createMobileTerminal();
+        MobileTerminalTestHelper.assignMobileTerminal(testAsset, mobileTerminal);
         List<LatLong> route = movementHelper.createRuttCobhNewYork(1000, 0.06f);                //0.1F = 654 pos    0.01 = 6543     0.07 = 934   0.06 = 1090
 
 
@@ -158,8 +158,8 @@ public class RulesPerformanceIT {
         System.out.println("Start creating assets");
         for(int i = 0; i < nrOfShips; i++ ){
             AssetDTO testAsset = AssetTestHelper.createTestAsset();
-            MobileTerminalType mobileTerminalType = MobileTerminalTestHelper.createMobileTerminalType();
-            MobileTerminalTestHelper.assignMobileTerminal(testAsset, mobileTerminalType);
+            MobileTerminalDto mobileTerminal = MobileTerminalTestHelper.createMobileTerminal();
+            MobileTerminalTestHelper.assignMobileTerminal(testAsset, mobileTerminal);
 
 
 
