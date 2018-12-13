@@ -13,14 +13,6 @@ copy of the GNU General Public License along with the IFDM Suite. If not, see <h
 */
 package eu.europa.ec.fisheries.uvms.docker.validation.mobileterminal;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-
-import org.apache.http.HttpResponse;
-import org.apache.http.client.fluent.Request;
-import org.junit.Test;
-
 import eu.europa.ec.fisheries.schema.mobileterminal.polltypes.v1.PollListQuery;
 import eu.europa.ec.fisheries.schema.mobileterminal.polltypes.v1.PollSearchCriteria;
 import eu.europa.ec.fisheries.schema.mobileterminal.polltypes.v1.PollableQuery;
@@ -28,137 +20,157 @@ import eu.europa.ec.fisheries.schema.mobileterminal.types.v1.ListPagination;
 import eu.europa.ec.fisheries.uvms.asset.client.model.AssetDTO;
 import eu.europa.ec.fisheries.uvms.docker.validation.asset.AssetTestHelper;
 import eu.europa.ec.fisheries.uvms.docker.validation.common.AbstractRest;
+import eu.europa.ec.fisheries.uvms.docker.validation.mobileterminal.dto.*;
+import org.apache.http.HttpResponse;
+import org.apache.http.client.fluent.Request;
+import org.junit.Test;
 
-/**
- * The Class PollRestIT.
- */
+import javax.ws.rs.client.Entity;
+import javax.ws.rs.core.GenericType;
+import javax.ws.rs.core.HttpHeaders;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 
 public class PollRestIT extends AbstractRest {
 
-	/**
-	 * Gets the areas test.
-	 *
-	 * @return the areas test
-	 * @throws Exception
-	 *             the exception
-	 */
 	@Test
-	public void getRunningProgramPollsTest() throws Exception {
-		final HttpResponse response = Request.Get(getBaseUrl() + "asset/rest/poll/running")
-				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken()).execute()
-				.returnResponse();
-		List dataList = checkSuccessResponseReturnType(response, List.class);
+	public void getRunningProgramPollsTest() {
+
+		Response response = getWebTarget()
+				.path("asset/rest/poll/running")
+				.request(MediaType.APPLICATION_JSON)
+				.header(HttpHeaders.AUTHORIZATION, getValidJwtToken())
+				.get();
+
+		assertEquals(Response.Status.OK.getStatusCode(), response.getStatus());
+
+		List<PollDto> pollDtos = response.readEntity(new GenericType<List<PollDto>>() {});
+		assertNotNull(pollDtos);
+		assertFalse(pollDtos.isEmpty());
 	}
 
-	/**
-	 * Creates the poll test.
-	 *
-	 * @throws Exception
-	 *             the exception
-	 */
 	@Test
-	public void createPollTest() throws Exception {
+	public void createPollTest() {
 		AssetDTO testAsset = AssetTestHelper.createTestAsset();
-		Map<String, Object> programPollDataMap = MobileTerminalTestHelper.createPoll_Helper(testAsset);
+		CreatePollResultDto resultDto = MobileTerminalTestHelper.createPoll_Helper(testAsset);
+		assertNotNull(resultDto);
+		assertEquals(1, resultDto.getSentPolls().size());
 	}
 
-	/**
-	 * Start program poll test.
-	 *
-	 * @throws Exception
-	 *             the exception
-	 */
 	@Test
-	public void startProgramPollTest() throws Exception {
+	public void startProgramPollTest() {
 		AssetDTO testAsset = AssetTestHelper.createTestAsset();
-		Map<String, Object> programPollDataMap = MobileTerminalTestHelper.createPoll_Helper(testAsset);
-		ArrayList sendPolls = (ArrayList) programPollDataMap.get("sentPolls");
-		String uid = (String) sendPolls.get(0);
+		CreatePollResultDto resultDto = MobileTerminalTestHelper.createPoll_Helper(testAsset);
+		List<String> sentPolls = resultDto.getSentPolls();
+		String uid = sentPolls.get(0);
 
-		final HttpResponse response = Request.Get(getBaseUrl() + "asset/rest/poll/start/" + uid)
-				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken()).execute()
-				.returnResponse();
-		Map<String, Object> dataMap = checkSuccessResponseReturnMap(response);
-		
-		ArrayList values = (ArrayList)dataMap.get("value");
-		assertNotNull(values);
-		assertTrue(values.size() == 10);
-		
+		Response response = getWebTarget()
+				.path("asset/rest/poll/start")
+				.path(uid)
+				.request(MediaType.APPLICATION_JSON)
+				.header(HttpHeaders.AUTHORIZATION, getValidJwtToken())
+				.get();
+
+		assertEquals(Response.Status.OK.getStatusCode(), response.getStatus());
+		PollDto pollDto = response.readEntity(PollDto.class);
+		assertNotNull(pollDto);
+		assertEquals(10, pollDto.getValue().size());
 	}
 
-	/**
-	 * Stop program poll test.
-	 *
-	 * @throws Exception
-	 *             the exception
-	 */
 	@Test
-	public void stopProgramPollTest() throws Exception {
+	public void stopProgramPollTest() {
 		AssetDTO testAsset = AssetTestHelper.createTestAsset();
-		Map<String, Object> programPollDataMap = MobileTerminalTestHelper.createPoll_Helper(testAsset);
-		ArrayList sendPolls = (ArrayList) programPollDataMap.get("sentPolls");
-		String uid = (String) sendPolls.get(0);
+		CreatePollResultDto resultDto = MobileTerminalTestHelper.createPoll_Helper(testAsset);
+		List<String> sentPolls = resultDto.getSentPolls();
+		String uid = sentPolls.get(0);
 
 		// start it
-		{
-			final HttpResponse response = Request.Get(getBaseUrl() + "asset/rest/poll/start/" + uid)
-					.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken())
-					.execute().returnResponse();
-			Map<String, Object> dataMap = checkSuccessResponseReturnMap(response);
-		}
+		Response started = getWebTarget()
+				.path("asset/rest/poll/start")
+				.path(uid)
+				.request(MediaType.APPLICATION_JSON)
+				.header(HttpHeaders.AUTHORIZATION, getValidJwtToken())
+				.get();
+
+		assertEquals(Response.Status.OK.getStatusCode(), started.getStatus());
+		PollDto startedPollDto = started.readEntity(PollDto.class);
+		assertNotNull(startedPollDto);
+		assertEquals(10, startedPollDto.getValue().size());
 
 		// stop it
-		final HttpResponse response = Request.Get(getBaseUrl() + "asset/rest/poll/stop/" + uid)
-				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken()).execute()
-				.returnResponse();
-		Map<String, Object> dataMap = checkSuccessResponseReturnMap(response);
+		Response stopped = getWebTarget()
+				.path("asset/rest/poll/stop")
+				.path(uid)
+				.request(MediaType.APPLICATION_JSON)
+				.header(HttpHeaders.AUTHORIZATION, getValidJwtToken())
+				.get();
 
-		ArrayList values = (ArrayList)dataMap.get("value");
-		assertNotNull(values);
-		assertTrue(values.size() == 10);
+		assertEquals(Response.Status.OK.getStatusCode(), stopped.getStatus());
+		PollDto stoppedPollDto = stopped.readEntity(PollDto.class);
+		assertNotNull(stoppedPollDto);
+		assertEquals(10, stoppedPollDto.getValue().size());
+
+		List<PollValue> pollValues = stoppedPollDto.getValue();
+
+		Optional<String> pollKeyOptional = pollValues
+				.stream()
+				.filter(pollValue -> pollValue.getKey().equals(PollKey.PROGRAM_RUNNING))
+				.map(PollValue::getValue)
+				.findFirst();
+
+		pollKeyOptional.ifPresent(value -> assertTrue(value.equalsIgnoreCase("false")));
 	}
 
-	/**
-	 * Inactivate program poll test.
-	 *
-	 * @throws Exception
-	 *             the exception
-	 */
 	@Test
-	public void inactivateProgramPollTest() throws Exception {
+	public void inactivateProgramPollTest() {
 		AssetDTO testAsset = AssetTestHelper.createTestAsset();
-		Map<String, Object> programPollDataMap = MobileTerminalTestHelper.createPoll_Helper(testAsset);
-		ArrayList sendPolls = (ArrayList) programPollDataMap.get("sentPolls");
-		String uid = (String) sendPolls.get(0);
+		CreatePollResultDto resultDto = MobileTerminalTestHelper.createPoll_Helper(testAsset);
+		List<String> sentPolls = resultDto.getSentPolls();
+		String uid = sentPolls.get(0);
 
 		// start it
-		{
-			final HttpResponse response = Request.Get(getBaseUrl() + "asset/rest/poll/start/" + uid)
-					.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken())
-					.execute().returnResponse();
-			Map<String, Object> dataMap = checkSuccessResponseReturnMap(response);
-		}
+		Response started = getWebTarget()
+				.path("asset/rest/poll/start")
+				.path(uid)
+				.request(MediaType.APPLICATION_JSON)
+				.header(HttpHeaders.AUTHORIZATION, getValidJwtToken())
+				.get();
 
+		assertEquals(Response.Status.OK.getStatusCode(), started.getStatus());
+		PollDto startedPollDto = started.readEntity(PollDto.class);
+		assertNotNull(startedPollDto);
+		assertEquals(10, startedPollDto.getValue().size());
 
 		// inactivate it
-		final HttpResponse response = Request.Get(getBaseUrl() + "asset/rest/poll/inactivate/" + uid)
-				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken()).execute()
-				.returnResponse();
-		Map<String, Object> dataMap = checkSuccessResponseReturnMap(response);
-		ArrayList values = (ArrayList)dataMap.get("value");
-		assertNotNull(values);
-		assertTrue(values.size() == 10);
+		Response inactivated = getWebTarget()
+				.path("asset/rest/poll/inactivate")
+				.path(uid)
+				.request(MediaType.APPLICATION_JSON)
+				.header(HttpHeaders.AUTHORIZATION, getValidJwtToken())
+				.get();
+
+		assertEquals(Response.Status.OK.getStatusCode(), inactivated.getStatus());
+		PollDto inactivatedPollDto = inactivated.readEntity(PollDto.class);
+		assertNotNull(inactivatedPollDto);
+		assertEquals(10, inactivatedPollDto.getValue().size());
+
+		List<PollValue> pollValues = inactivatedPollDto.getValue();
+
+		Optional<String> pollKeyOptional = pollValues
+				.stream()
+				.filter(pollValue -> pollValue.getKey().equals(PollKey.PROGRAM_RUNNING))
+				.map(PollValue::getValue)
+				.findFirst();
+
+		pollKeyOptional.ifPresent(value -> assertTrue(value.equalsIgnoreCase("false")));
 	}
 
-	/**
-	 * Gets the poll by search criteria test.
-	 *
-	 * @return the poll by search criteria test
-	 * @throws Exception
-	 *             the exception
-	 */
 	@Test
-	public void getPollBySearchCriteriaTest() throws Exception {
+	public void getPollBySearchCriteriaTest() {
 		PollListQuery pollListQuery = new PollListQuery();
 		ListPagination pagination = new ListPagination();
 		pollListQuery.setPagination(pagination);
@@ -169,22 +181,17 @@ public class PollRestIT extends AbstractRest {
 		pollListQuery.setPollSearchCriteria(pollSearchCriteria);
 		pollSearchCriteria.setIsDynamic(true);
 
-		final HttpResponse response = Request.Post(getBaseUrl() + "asset/rest/poll/list")
-				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken())
-				.bodyByteArray(writeValueAsString(pollListQuery).getBytes()).execute().returnResponse();
+		Response response = getWebTarget()
+				.path("asset/rest/poll/list")
+				.request(MediaType.APPLICATION_JSON)
+				.header(HttpHeaders.AUTHORIZATION, getValidJwtToken())
+				.post(Entity.json(pollListQuery));
 
-		Map<String, Object> dataMap = checkSuccessResponseReturnMap(response);
+		assertEquals(Response.Status.OK.getStatusCode(), response.getStatus());
 	}
 
-	/**
-	 * Gets the pollable channels test.
-	 *
-	 * @return the pollable channels test
-	 * @throws Exception
-	 *             the exception
-	 */
 	@Test
-	public void getPollableChannelsTest() throws Exception {
+	public void getPollableChannelsTest() {
 		PollableQuery pollableQuery = new PollableQuery();
 		ListPagination listPagination = new ListPagination();
 		listPagination.setListSize(100);
@@ -192,11 +199,12 @@ public class PollRestIT extends AbstractRest {
 		pollableQuery.setPagination(listPagination);
 		pollableQuery.getConnectIdList().add("00000000-0000-0000-0000-000000000001");
 
-		final HttpResponse response = Request.Post(getBaseUrl() + "asset/rest/poll/pollable")
-				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken())
-				.bodyByteArray(writeValueAsString(pollableQuery).getBytes()).execute().returnResponse();
+		Response response = getWebTarget()
+				.path("asset/rest/poll/pollable")
+				.request(MediaType.APPLICATION_JSON)
+				.header(HttpHeaders.AUTHORIZATION, getValidJwtToken())
+				.post(Entity.json(pollableQuery));
 
-		Map<String, Object> dataMap = checkSuccessResponseReturnMap(response);
+		assertEquals(Response.Status.OK.getStatusCode(), response.getStatus());
 	}
-
 }

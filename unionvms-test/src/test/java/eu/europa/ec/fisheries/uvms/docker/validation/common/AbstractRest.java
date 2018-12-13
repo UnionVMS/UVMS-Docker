@@ -36,15 +36,15 @@ public abstract class AbstractRest extends Assert {
 	private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper().configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false).registerModule(new JavaTimeModule());
 
 	/** The Constant BASE_URL. */
-	protected static final String BASE_URL = "http://localhost:28080/unionvms/";
+	private static final String BASE_URL = "http://localhost:28080/unionvms/";
 	//protected static final String BASE_URL = "http://livm73u.havochvatten.se:28080/unionvms/";
 
 	/** The valid jwt token. */
 	private static String validJwtToken;
 	
-	protected static final String getBaseUrl() {
+	protected static String getBaseUrl() {
 		return BASE_URL;
-	}	
+	}
 	
     protected static WebTarget getWebTarget() {
         Client client = ClientBuilder.newClient();

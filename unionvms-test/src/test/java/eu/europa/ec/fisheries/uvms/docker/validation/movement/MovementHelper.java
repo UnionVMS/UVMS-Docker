@@ -1,13 +1,22 @@
 package eu.europa.ec.fisheries.uvms.docker.validation.movement;
 
-import java.io.IOException;
-import java.io.StringReader;
-import java.io.StringWriter;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Random;
-import java.util.UUID;
+import com.peertopark.java.geocalc.Coordinate;
+import com.peertopark.java.geocalc.DegreeCoordinate;
+import com.peertopark.java.geocalc.EarthCalc;
+import com.peertopark.java.geocalc.Point;
+import eu.europa.ec.fisheries.schema.movement.asset.v1.AssetId;
+import eu.europa.ec.fisheries.schema.movement.asset.v1.AssetIdType;
+import eu.europa.ec.fisheries.schema.movement.asset.v1.AssetType;
+import eu.europa.ec.fisheries.schema.movement.module.v1.*;
+import eu.europa.ec.fisheries.schema.movement.search.v1.MovementQuery;
+import eu.europa.ec.fisheries.schema.movement.source.v1.GetMovementListByQueryResponse;
+import eu.europa.ec.fisheries.schema.movement.v1.*;
+import eu.europa.ec.fisheries.uvms.asset.client.model.AssetDTO;
+import eu.europa.ec.fisheries.uvms.commons.rest.dto.ResponseDto;
+import eu.europa.ec.fisheries.uvms.docker.validation.common.AbstractHelper;
+import eu.europa.ec.fisheries.uvms.docker.validation.common.MessageHelper;
+import eu.europa.ec.fisheries.uvms.docker.validation.mobileterminal.dto.MobileTerminalDto;
+
 import javax.jms.Message;
 import javax.jms.TextMessage;
 import javax.ws.rs.client.Entity;
@@ -16,31 +25,9 @@ import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
-import com.peertopark.java.geocalc.Coordinate;
-import com.peertopark.java.geocalc.DegreeCoordinate;
-import com.peertopark.java.geocalc.EarthCalc;
-import com.peertopark.java.geocalc.Point;
-import eu.europa.ec.fisheries.schema.mobileterminal.types.v1.MobileTerminalType;
-import eu.europa.ec.fisheries.schema.movement.asset.v1.AssetId;
-import eu.europa.ec.fisheries.schema.movement.asset.v1.AssetIdType;
-import eu.europa.ec.fisheries.schema.movement.asset.v1.AssetType;
-import eu.europa.ec.fisheries.schema.movement.module.v1.CreateMovementBatchRequest;
-import eu.europa.ec.fisheries.schema.movement.module.v1.CreateMovementBatchResponse;
-import eu.europa.ec.fisheries.schema.movement.module.v1.CreateMovementRequest;
-import eu.europa.ec.fisheries.schema.movement.module.v1.CreateMovementResponse;
-import eu.europa.ec.fisheries.schema.movement.module.v1.MovementModuleMethod;
-import eu.europa.ec.fisheries.schema.movement.search.v1.MovementQuery;
-import eu.europa.ec.fisheries.schema.movement.source.v1.GetMovementListByQueryResponse;
-import eu.europa.ec.fisheries.schema.movement.v1.MovementActivityType;
-import eu.europa.ec.fisheries.schema.movement.v1.MovementActivityTypeType;
-import eu.europa.ec.fisheries.schema.movement.v1.MovementBaseType;
-import eu.europa.ec.fisheries.schema.movement.v1.MovementPoint;
-import eu.europa.ec.fisheries.schema.movement.v1.MovementType;
-import eu.europa.ec.fisheries.schema.movement.v1.MovementTypeType;
-import eu.europa.ec.fisheries.uvms.asset.client.model.AssetDTO;
-import eu.europa.ec.fisheries.uvms.commons.rest.dto.ResponseDto;
-import eu.europa.ec.fisheries.uvms.docker.validation.common.AbstractHelper;
-import eu.europa.ec.fisheries.uvms.docker.validation.common.MessageHelper;
+import java.io.StringReader;
+import java.io.StringWriter;
+import java.util.*;
 
 public class MovementHelper extends AbstractHelper {
 
@@ -80,10 +67,9 @@ public class MovementHelper extends AbstractHelper {
 		movementBaseType.setReportedCourse(latlong.bearing);
 		movementBaseType.setReportedSpeed(latlong.speed);
 		return createMovementRequest1;
-
 	}
 
-	public CreateMovementBatchRequest createMovementBatchRequest(AssetDTO testAsset, MobileTerminalType mobileTerminalType,
+	public CreateMovementBatchRequest createMovementBatchRequest(AssetDTO testAsset, MobileTerminalDto mobileTerminal,
 			List<LatLong> route) {
 
 		final CreateMovementBatchRequest createMovementBatchRequest = new CreateMovementBatchRequest();
@@ -104,7 +90,7 @@ public class MovementHelper extends AbstractHelper {
 
 			MovementBaseType movementBaseType = new MovementBaseType();
 			movementBaseType.setAssetId(assetId);
-			movementBaseType.setConnectId(mobileTerminalType.getConnectId());
+			movementBaseType.setConnectId(mobileTerminal.getAsset().getId().toString());
 			movementBaseType.setActivity(movementActivityType);
 
 			MovementPoint movementPoint = new MovementPoint();
@@ -169,14 +155,12 @@ public class MovementHelper extends AbstractHelper {
 		List<LatLong> rutt = new ArrayList<>();
 		long ts = System.currentTimeMillis();
 
-
 		double divideramed = 50;
 		double randomFactorLat = rnd.nextDouble() / divideramed;
 		double randomFactorLong = rnd.nextDouble() / divideramed;
 
 		double latitude = 51.844 + randomFactorLat;
 		double longitude = -8.311 + randomFactorLong;
-
 
 		double END_LATITUDE = 40.313;
 		double END_LONGITUDE = -73.740;
@@ -229,12 +213,9 @@ public class MovementHelper extends AbstractHelper {
 
 	public List<LatLong> createRutt(int movementTimeDeltaInMillis, int numberPositions) {
 
-
 		double divideramed = 50;
 		double randomFactorLat = rnd.nextDouble() / divideramed;
 		double randomFactorLong = rnd.nextDouble() / divideramed;
-
-
 
 		List<LatLong> rutt = new ArrayList<>();
 		long ts = System.currentTimeMillis();
@@ -323,20 +304,11 @@ public class MovementHelper extends AbstractHelper {
 		} else {
 			return rutt.subList(0, numberPositions);
 		}
-
 	}
 
 	private Date getDate(Long millis) {
 		return new Date(millis);
 	}
-
-	/**
-	 * Marshall.
-	 *
-	 * @param createMovementRequest the create movement request
-	 * @return the string
-	 * @throws JAXBException the JAXB exception
-	 */
 
 	public String marshall(final CreateMovementRequest createMovementRequest) throws JAXBException {
 		final StringWriter sw = new StringWriter();
@@ -344,12 +316,6 @@ public class MovementHelper extends AbstractHelper {
 		return sw.toString();
 	}
 
-	/**
-	 * 
-	 * @param createMovementBatchRequest
-	 * @return
-	 * @throws JAXBException
-	 */
 	public String marshall(final CreateMovementBatchRequest createMovementBatchRequest) throws JAXBException {
 		final StringWriter sw = new StringWriter();
 		JAXBContext.newInstance(CreateMovementBatchRequest.class).createMarshaller().marshal(createMovementBatchRequest,
@@ -357,13 +323,6 @@ public class MovementHelper extends AbstractHelper {
 		return sw.toString();
 	}
 
-	/**
-	 * Un marshall create movement response.
-	 *
-	 * @param response the response
-	 * @return the creates the movement response
-	 * @throws Exception the exception
-	 */
 	public CreateMovementResponse unMarshallCreateMovementResponse(final Message response) throws Exception {
 		TextMessage textMessage = (TextMessage) response;
 		JAXBContext jaxbContext = JAXBContext.newInstance(CreateMovementResponse.class);
@@ -371,12 +330,6 @@ public class MovementHelper extends AbstractHelper {
 				.unmarshal(new StringReader(textMessage.getText()));
 	}
 
-	/**
-	 * 
-	 * @param response
-	 * @return
-	 * @throws Exception
-	 */
 	public CreateMovementBatchResponse unMarshallCreateMovementBatchResponse(final Message response) throws Exception {
 		TextMessage textMessage = (TextMessage) response;
 		JAXBContext jaxbContext = JAXBContext.newInstance(CreateMovementBatchResponse.class);
@@ -426,7 +379,6 @@ public class MovementHelper extends AbstractHelper {
         return response.getData().getMovement();
 	}
 	
-	
 	public static List<MovementDto> getLatestMovements(List<String> connectIds) {
 	    ResponseDto<List<MovementDto>> response = getWebTarget()
                 .path("movement/rest/movement/latest/")
@@ -446,13 +398,10 @@ public class MovementHelper extends AbstractHelper {
     }
 
 	public CreateMovementBatchResponse createMovementBatch(CreateMovementBatchRequest createMovementBatchRequest) throws Exception {
-
 		Message messageResponse =
 				MessageHelper.getMessageResponse(UVMS_MOVEMENT_REQUEST_QUEUE, marshall(createMovementBatchRequest));
 		return unMarshallCreateMovementBatchResponse(messageResponse);
 	}
-
-
 
 	List<LatLong> calculateReportedDataForRoute(List<LatLong> route) {
 
@@ -487,7 +436,6 @@ public class MovementHelper extends AbstractHelper {
 		// double speed = calcSpeed(previousPosition, currentPosition);
 		route.get(i - 1).speed = 0d;
 		return route;
-
 	}
 
 	private Double bearing(LatLong src, LatLong dst) {
@@ -500,9 +448,7 @@ public class MovementHelper extends AbstractHelper {
 		Coordinate lngTo = new DegreeCoordinate(dst.longitude);
 		Point to = new Point(latTo, lngTo);
 
-		double bearing = EarthCalc.getBearing(from, to); // in decimal degrees
-		return bearing;
-
+		return EarthCalc.getBearing(from, to);
 	}
 
 	private Double distance(LatLong src, LatLong dst) {
@@ -515,16 +461,11 @@ public class MovementHelper extends AbstractHelper {
 		Coordinate lngTo = new DegreeCoordinate(dst.longitude);
 		Point to = new Point(latTo, lngTo);
 
-		double distanceInMeters = EarthCalc.getDistance(from, to);
-		return distanceInMeters;
-
+		return EarthCalc.getDistance(from, to);
 	}
 
-
 	private double calcSpeed(LatLong src, LatLong dst) {
-
 		try {
-
 			if (src.positionTime == null)
 				return 0;
 			if (dst.positionTime == null)
@@ -542,7 +483,6 @@ public class MovementHelper extends AbstractHelper {
 			return 0.0;
 		}
 	}
-
 
 	public List<LatLong> createSmallFishingTourFromVarberg() {
 
@@ -588,17 +528,15 @@ public class MovementHelper extends AbstractHelper {
 		}
 		
 		rutt.addAll(ruttHome);
-
 		rutt = calculateReportedDataForRoute(rutt);
 
 		return rutt;
 	}
 	
-	public static void pollMovementCreated() throws IOException {
+	public static void pollMovementCreated() {
         getWebTarget()
             .path("movement/activity/movement")
             .request(MediaType.APPLICATION_JSON)
             .get();
     }
-	
 }

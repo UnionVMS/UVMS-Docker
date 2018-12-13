@@ -13,38 +13,19 @@ copy of the GNU General Public License along with the IFDM Suite. If not, see <h
 */
 package eu.europa.ec.fisheries.uvms.docker.validation.reporting;
 
-import java.io.IOException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
-import java.util.TimeZone;
-import org.apache.http.HttpResponse;
-import org.apache.http.HttpStatus;
-import org.apache.http.client.ClientProtocolException;
-import org.apache.http.client.fluent.Request;
-import org.junit.BeforeClass;
-import org.junit.Ignore;
-import org.junit.Test;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
-import eu.europa.ec.fisheries.schema.mobileterminal.types.v1.MobileTerminalType;
 import eu.europa.ec.fisheries.schema.movement.module.v1.CreateMovementRequest;
 import eu.europa.ec.fisheries.schema.movement.module.v1.CreateMovementResponse;
 import eu.europa.ec.fisheries.uvms.asset.client.model.AssetDTO;
 import eu.europa.ec.fisheries.uvms.docker.validation.asset.AssetTestHelper;
 import eu.europa.ec.fisheries.uvms.docker.validation.common.AbstractRest;
 import eu.europa.ec.fisheries.uvms.docker.validation.mobileterminal.MobileTerminalTestHelper;
+import eu.europa.ec.fisheries.uvms.docker.validation.mobileterminal.dto.MobileTerminalDto;
 import eu.europa.ec.fisheries.uvms.docker.validation.movement.LatLong;
 import eu.europa.ec.fisheries.uvms.docker.validation.movement.MovementHelper;
-import eu.europa.ec.fisheries.uvms.reporting.service.dto.AssetFilterDTO;
-import eu.europa.ec.fisheries.uvms.reporting.service.dto.CommonFilterDTO;
-import eu.europa.ec.fisheries.uvms.reporting.service.dto.DisplayFormat;
-import eu.europa.ec.fisheries.uvms.reporting.service.dto.LengthType;
-import eu.europa.ec.fisheries.uvms.reporting.service.dto.PositionSelectorDTO;
+import eu.europa.ec.fisheries.uvms.reporting.service.dto.*;
 import eu.europa.ec.fisheries.uvms.reporting.service.dto.report.ReportDTO;
 import eu.europa.ec.fisheries.uvms.reporting.service.dto.report.VisibilityEnum;
 import eu.europa.ec.fisheries.uvms.reporting.service.entities.FilterType;
@@ -52,12 +33,28 @@ import eu.europa.ec.fisheries.uvms.reporting.service.entities.Position;
 import eu.europa.ec.fisheries.uvms.reporting.service.entities.Selector;
 import eu.europa.ec.fisheries.uvms.reporting.service.enums.ReportTypeEnum;
 import eu.europa.ec.fisheries.uvms.reporting.service.enums.VelocityType;
+import org.apache.http.HttpResponse;
+import org.apache.http.HttpStatus;
+import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.fluent.Request;
+import org.junit.BeforeClass;
+import org.junit.Ignore;
+import org.junit.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.*;
+import java.util.Map.Entry;
 
 /**
  * The Class ReportingRestIT.
  */
 
 public class ReportingRestIT extends AbstractRest {
+
+	private static final Logger LOG  = LoggerFactory.getLogger(ReportingRestIT.class.getSimpleName());
 
 	/** The movement helper. */
 	private static MovementHelper movementHelper = new MovementHelper();
@@ -71,20 +68,18 @@ public class ReportingRestIT extends AbstractRest {
 	@BeforeClass
 	public static void createTestAssetWithTerminalAndPositions() {
 		try {
-		testAsset = AssetTestHelper.createTestAsset();
-		MobileTerminalType mobileTerminalType = MobileTerminalTestHelper.createMobileTerminalType();
-		MobileTerminalTestHelper.assignMobileTerminal(testAsset, mobileTerminalType);
-		List<LatLong> route = movementHelper.createRuttVarbergGrena(-1);
+			testAsset = AssetTestHelper.createTestAsset();
+			MobileTerminalDto mobileTerminal = MobileTerminalTestHelper.createMobileTerminal();
+			MobileTerminalTestHelper.assignMobileTerminal(testAsset, mobileTerminal);
+			List<LatLong> route = movementHelper.createRuttVarbergGrena(-1);
 
-		for (LatLong position : route) {
-			final CreateMovementRequest createMovementRequest = movementHelper.createMovementRequest(testAsset, position);
-			CreateMovementResponse createMovementResponse = movementHelper.createMovement(createMovementRequest);
-			assertNotNull(createMovementResponse);
-		}		
-
+			for (LatLong position : route) {
+				final CreateMovementRequest createMovementRequest = movementHelper.createMovementRequest(testAsset, position);
+				CreateMovementResponse createMovementResponse = movementHelper.createMovement(createMovementRequest);
+				assertNotNull(createMovementResponse);
+			}
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			LOG.error(e.getMessage(), e);
 		}
 	}
 	

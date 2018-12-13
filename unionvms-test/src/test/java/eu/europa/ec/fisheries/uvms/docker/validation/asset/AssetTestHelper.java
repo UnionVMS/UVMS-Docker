@@ -261,8 +261,8 @@ public class AssetTestHelper extends AbstractHelper {
 	    return assetListQueryCount(assetQuery);
 	}
 	
-	public static eu.europa.ec.fisheries.uvms.asset.client.model.AssetDTO createBasicAsset() {
-        eu.europa.ec.fisheries.uvms.asset.client.model.AssetDTO asset = new eu.europa.ec.fisheries.uvms.asset.client.model.AssetDTO();
+	public static AssetDTO createBasicAsset() {
+        AssetDTO asset = new AssetDTO();
 
         asset.setActive(true);
 
