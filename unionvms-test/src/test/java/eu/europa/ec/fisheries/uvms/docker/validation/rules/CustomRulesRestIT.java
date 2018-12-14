@@ -14,6 +14,7 @@ copy of the GNU General Public License along with the IFDM Suite. If not, see <h
 package eu.europa.ec.fisheries.uvms.docker.validation.rules;
 
 import java.util.Map;
+import java.util.UUID;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
 import org.apache.http.client.fluent.Request;
@@ -86,7 +87,7 @@ public class CustomRulesRestIT extends AbstractRest {
 		CustomRuleQuery.setPagination(lp);
 		CustomRuleListCriteria crlc = new CustomRuleListCriteria();
 		crlc.setKey(CustomRuleSearchKey.GUID);
-		crlc.setValue("dummyguid");
+		crlc.setValue(UUID.randomUUID().toString());
 		CustomRuleQuery.getCustomRuleSearchCriteria().add(crlc);
 		CustomRuleQuery.setDynamic(true);
 		final HttpResponse response = Request.Post(getBaseUrl() + "movement-rules/rest/customrules/listByQuery")

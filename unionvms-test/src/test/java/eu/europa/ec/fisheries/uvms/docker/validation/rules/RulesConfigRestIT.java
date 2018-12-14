@@ -41,19 +41,6 @@ public class RulesConfigRestIT extends AbstractRest {
 
 	
 	/**
-	 * Gets the alarm statuses test.
-	 *
-	 * @return the alarm statuses test
-	 * @throws Exception the exception
-	 */
-	@Test
-	public void getAlarmStatusesTest() throws Exception {
-		final HttpResponse response = Request.Get(getBaseUrl() + "movement-rules/rest/config/alarmstatus")
-				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken()).execute().returnResponse();
-		List dataList = checkSuccessResponseReturnType(response,List.class);
-	}
-	
-	/**
 	 * Gets the ticket statuses test.
 	 *
 	 * @return the ticket statuses test

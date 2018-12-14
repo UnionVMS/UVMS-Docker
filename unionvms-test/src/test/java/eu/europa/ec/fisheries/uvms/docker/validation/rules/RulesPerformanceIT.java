@@ -1,5 +1,27 @@
 package eu.europa.ec.fisheries.uvms.docker.validation.rules;
 
+import java.io.StringReader;
+import java.time.Duration;
+import java.time.Instant;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import javax.jms.Connection;
+import javax.jms.ConnectionFactory;
+import javax.jms.JMSException;
+import javax.jms.Message;
+import javax.jms.Queue;
+import javax.jms.Session;
+import javax.jms.TextMessage;
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBException;
+import javax.xml.bind.Unmarshaller;
+import javax.xml.transform.stream.StreamSource;
+import org.apache.activemq.ActiveMQConnectionFactory;
+import org.junit.Ignore;
+import org.junit.Test;
 import eu.europa.ec.fisheries.schema.exchange.module.v1.ProcessedMovementResponse;
 import eu.europa.ec.fisheries.schema.exchange.movement.v1.MovementRefTypeType;
 import eu.europa.ec.fisheries.schema.mobileterminal.types.v1.MobileTerminalType;
@@ -10,29 +32,17 @@ import eu.europa.ec.fisheries.schema.movementrules.asset.v1.AssetType;
 import eu.europa.ec.fisheries.schema.movementrules.exchange.v1.PluginType;
 import eu.europa.ec.fisheries.schema.movementrules.module.v1.RulesModuleMethod;
 import eu.europa.ec.fisheries.schema.movementrules.module.v1.SetMovementReportRequest;
-import eu.europa.ec.fisheries.schema.movementrules.movement.v1.*;
+import eu.europa.ec.fisheries.schema.movementrules.movement.v1.MovementComChannelType;
+import eu.europa.ec.fisheries.schema.movementrules.movement.v1.MovementPoint;
+import eu.europa.ec.fisheries.schema.movementrules.movement.v1.MovementSourceType;
+import eu.europa.ec.fisheries.schema.movementrules.movement.v1.MovementTypeType;
+import eu.europa.ec.fisheries.schema.movementrules.movement.v1.RawMovementType;
 import eu.europa.ec.fisheries.uvms.asset.client.model.AssetDTO;
 import eu.europa.ec.fisheries.uvms.docker.validation.asset.AssetTestHelper;
 import eu.europa.ec.fisheries.uvms.docker.validation.mobileterminal.MobileTerminalTestHelper;
 import eu.europa.ec.fisheries.uvms.docker.validation.movement.LatLong;
 import eu.europa.ec.fisheries.uvms.docker.validation.movement.MovementHelper;
-import eu.europa.ec.fisheries.uvms.movementrules.model.exception.MovementRulesModelMapperException;
-import eu.europa.ec.fisheries.uvms.movementrules.model.exception.MovementRulesModelMarshallException;
 import eu.europa.ec.fisheries.uvms.movementrules.model.mapper.JAXBMarshaller;
-import org.apache.activemq.ActiveMQConnectionFactory;
-import org.junit.Ignore;
-import org.junit.Test;
-
-import javax.jms.*;
-import javax.jms.Queue;
-import javax.xml.bind.JAXBContext;
-import javax.xml.bind.JAXBException;
-import javax.xml.bind.Unmarshaller;
-import javax.xml.transform.stream.StreamSource;
-import java.io.StringReader;
-import java.time.Duration;
-import java.time.Instant;
-import java.util.*;
 
 public class RulesPerformanceIT {
 
@@ -265,7 +275,7 @@ public class RulesPerformanceIT {
         return movement;
     }
 
-    public static String createSetMovementReportRequest(PluginType type, RawMovementType rawMovementType, String username) throws MovementRulesModelMapperException {
+    public static String createSetMovementReportRequest(PluginType type, RawMovementType rawMovementType, String username) throws JAXBException {
         SetMovementReportRequest request = new SetMovementReportRequest();
         request.setMethod(RulesModuleMethod.SET_MOVEMENT_REPORT);
         request.setType(type);
@@ -274,7 +284,7 @@ public class RulesPerformanceIT {
         return JAXBMarshaller.marshallJaxBObjectToString(request);
     }
 
-    public static <R> R unmarshallTextMessage(TextMessage textMessage, Class clazz) throws MovementRulesModelMarshallException {
+    public static <R> R unmarshallTextMessage(TextMessage textMessage, Class clazz) {
         try {
             JAXBContext jc = contexts.get(clazz.getName());
             if (jc == null) {
@@ -290,7 +300,7 @@ public class RulesPerformanceIT {
             R object = (R) unmarshaller.unmarshal(source);
             return object;
         } catch (JMSException | JAXBException ex) {
-            throw new MovementRulesModelMarshallException("[Error when unmarshalling response in ResponseMapper. Expected class was " + clazz.getName() + " ]", ex);
+            throw new IllegalArgumentException("[Error when unmarshalling response in ResponseMapper. Expected class was " + clazz.getName() + " ]", ex);
         }
     }
 
