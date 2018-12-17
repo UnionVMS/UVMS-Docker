@@ -23,6 +23,8 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.sse.SseEventSource;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
+
+import eu.europa.ec.fisheries.uvms.exchange.constant.ExchangeConstants;
 import org.hamcrest.CoreMatchers;
 import com.peertopark.java.geocalc.Coordinate;
 import com.peertopark.java.geocalc.DegreeCoordinate;
@@ -73,7 +75,9 @@ public class MovementHelper extends AbstractHelper {
 		incomingMovement.setMovementType(MovementTypeType.POS.value());
 		incomingMovement.setReportedCourse(latlong.bearing);
 		incomingMovement.setReportedSpeed(latlong.speed);
-		
+
+		incomingMovement.setAckResponseMessageId(ExchangeConstants.TEST_ACK_IGNORE_EXCHANGE_LOG);   //Exchange is set so that it ignores messages with this response
+
 		incomingMovement.setUpdatedBy("Test");
 		
 		incomingMovement.setPluginType("NAF");

@@ -160,6 +160,7 @@ public class MovementAlarmRestIT extends AbstractRest {
 	
 	@Test
     public void reprocessAlarmSuccessTest() throws Exception {
+		Thread.sleep(5000);			//otherwise it gets the alarm report for some other movement.
         ZonedDateTime timestamp = ZonedDateTime.now(ZoneOffset.UTC);
 
         // Asset does not exist
