@@ -1,8 +1,6 @@
 package eu.europa.ec.fisheries.uvms.docker.validation.movement;
 
 import java.io.IOException;
-import java.io.StringReader;
-import java.io.StringWriter;
 import java.math.BigInteger;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
@@ -12,28 +10,18 @@ import java.util.Date;
 import java.util.List;
 import java.util.Random;
 import java.util.UUID;
-import javax.jms.Message;
-import javax.jms.TextMessage;
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.GenericType;
 import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
 import javax.ws.rs.sse.SseEventSource;
-import javax.xml.bind.JAXBContext;
-import javax.xml.bind.JAXBException;
 
-import eu.europa.ec.fisheries.uvms.exchange.constant.ExchangeConstants;
 import org.hamcrest.CoreMatchers;
 import com.peertopark.java.geocalc.Coordinate;
 import com.peertopark.java.geocalc.DegreeCoordinate;
 import com.peertopark.java.geocalc.EarthCalc;
 import com.peertopark.java.geocalc.Point;
-import eu.europa.ec.fisheries.schema.movement.module.v1.CreateMovementBatchRequest;
-import eu.europa.ec.fisheries.schema.movement.module.v1.CreateMovementBatchResponse;
-import eu.europa.ec.fisheries.schema.movement.module.v1.CreateMovementRequest;
-import eu.europa.ec.fisheries.schema.movement.module.v1.CreateMovementResponse;
 import eu.europa.ec.fisheries.schema.movement.search.v1.ListPagination;
 import eu.europa.ec.fisheries.schema.movement.search.v1.MovementQuery;
 import eu.europa.ec.fisheries.schema.movement.source.v1.GetMovementListByQueryResponse;
@@ -49,6 +37,7 @@ import eu.europa.ec.fisheries.uvms.docker.validation.movement.model.IncomingMove
 public class MovementHelper extends AbstractHelper {
 
 	private static final String UVMS_MOVEMENT_REQUEST_QUEUE = "UVMSMovementEvent";
+	public static final String TEST_ACK_IGNORE_EXCHANGE_LOG = "Test"; //Exchange is set so that it ignores messages with this response
 
 	private Random rnd = new Random();
 
@@ -76,7 +65,7 @@ public class MovementHelper extends AbstractHelper {
 		incomingMovement.setReportedCourse(latlong.bearing);
 		incomingMovement.setReportedSpeed(latlong.speed);
 
-		incomingMovement.setAckResponseMessageId(ExchangeConstants.TEST_ACK_IGNORE_EXCHANGE_LOG);   //Exchange is set so that it ignores messages with this response
+		incomingMovement.setAckResponseMessageId(TEST_ACK_IGNORE_EXCHANGE_LOG);   //Exchange is set so that it ignores messages with this response
 
 		incomingMovement.setUpdatedBy("Test");
 		
