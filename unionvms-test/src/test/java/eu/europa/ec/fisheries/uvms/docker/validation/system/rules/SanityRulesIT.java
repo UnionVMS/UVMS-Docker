@@ -166,6 +166,7 @@ public class SanityRulesIT extends AbstractRest {
     
     @Test
     public void triggerTwoSanityRulesTest() throws Exception {
+        Thread.sleep(5000);  //otherwise it takes the alarm report of the movement from the previous test
         ZonedDateTime timestamp = ZonedDateTime.now(ZoneOffset.UTC);
         
         AssetDTO asset = AssetTestHelper.createTestAsset();

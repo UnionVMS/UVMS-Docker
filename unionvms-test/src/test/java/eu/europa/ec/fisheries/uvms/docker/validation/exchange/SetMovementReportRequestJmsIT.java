@@ -40,6 +40,8 @@ public class SetMovementReportRequestJmsIT extends AbstractRest {
 	/** The movement helper. */
 	private static MovementHelper movementHelper = new MovementHelper();
 
+
+	//TODO: Make theses tests actually do something and not just send a message on the queue
 	/**
 	 * Creates the movement request test.
 	 *
@@ -114,6 +116,7 @@ public class SetMovementReportRequestJmsIT extends AbstractRest {
 		request.setDate(new Date());
 		request.setMethod(ExchangeModuleMethod.SET_MOVEMENT_REPORT);
 		request.setPluginType(PluginType.NAF);
+		request.setSenderOrReceiver("NAF");
 		final SetReportMovementType movementType = new SetReportMovementType();
 		request.setRequest(movementType);
 
