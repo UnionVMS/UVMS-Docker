@@ -231,11 +231,6 @@
 								<get src="http://localhost:28080/unionvms/asset/monitoring?format=pdf" dest="target/asset_monitoring.pdf" verbose="true" usetimestamp="true" />
 								<get src="http://localhost:28080/unionvms/movement/monitoring?format=pdf" dest="target/movement_monitoring.pdf" verbose="true" usetimestamp="true" />
 								<get src="http://localhost:28080/unionvms/user/monitoring?format=pdf" dest="target/user_monitoring.pdf" verbose="true" usetimestamp="true" />
-									
-								<get username="admin" password="admin" src="http://localhost:18161/admin/xml/subscribers.jsp" dest="target/activemq-subscribers.xml" verbose="true" usetimestamp="true" />
-								<get username="admin" password="admin" src="http://localhost:18161/admin/xml/topics.jsp" dest="target/activemq-topics.xml" verbose="true" usetimestamp="true" />
-								<get username="admin" password="admin" src="http://localhost:18161/admin/xml/queues.jsp" dest="target/activemq-queues.xml" verbose="true" usetimestamp="true" />
-								<get username="admin" password="admin" src="http://localhost:18161/admin/connections.jsp" dest="target/activemq-connections.html" verbose="true" usetimestamp="true" />
 							</tasks>
 						</configuration>
 						<goals>
@@ -281,35 +276,6 @@
 					<skip>${docker.skip}</skip>
 					<images>
 						<image>
-							<alias>activemq</alias>
-							<name>uvms/activemq:${project.version}</name>
-							<run>
-								<net>bridge</net>
-								<namingStrategy>none</namingStrategy>
-								<ports>
-									<port>18161:8161</port>
-									<port>61616:61616</port>
-									<port>18080:8080</port>
-								</ports>
-								<wait>
-									<tcp>
-										<host>127.0.0.1</host>
-										<ports>
-											<port>8161</port>
-										</ports>
-									</tcp>
-									<kill>15000</kill>
-									<shutdown>15000</shutdown>
-									<time>15000</time>
-								</wait>
-								<log>
-									<enabled>true</enabled>
-									<color>yellow</color>
-								</log>
-								<hostname>activemq</hostname>
-							</run>
-						</image>
-						<image>
 							<alias>postgres</alias>
 							<name>uvms/postgres-release:${project.version}</name>
 							<run>
@@ -324,12 +290,6 @@
 									<kill>15000</kill>
 									<shutdown>15000</shutdown>
 								</wait>
-								<dependsOn>
-									<container>activemq</container>
-								</dependsOn>
-								<links>
-									<link>activemq:activemq</link>
-								</links>
 								<log>
 									<enabled>true</enabled>
 									<color>green</color>
@@ -345,7 +305,6 @@
 								<namingStrategy>none</namingStrategy>
 								<links>
 									<link>postgres:postgres</link>
-									<link>activemq:activemq</link>
 								</links>
 								<ports>
 									<port>29990:9990</port>
@@ -369,7 +328,6 @@
 								</cmd>
 								<dependsOn>
 									<container>postgres</container>
-									<container>activemq</container>
 								</dependsOn>
 								<volumes>
 									<bind>

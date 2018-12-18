@@ -58,11 +58,6 @@
 			<type>rar</type>
 			<version>${wildfly.activemq.rar.version}</version>
 		</dependency>
-		<dependency>
-			<groupId>org.eclipse</groupId>
-			<artifactId>yasson</artifactId>
-			<version>1.0.2</version>
-		</dependency>
 	</dependencies>
 	<build>
 		<pluginManagement>
@@ -231,34 +226,6 @@
 				<configuration>
 					<images>
 						<image>
-						<alias>activemq</alias>
-							<name>uvms/activemq:${project.version}</name>
-							<run>
-								<net>bridge</net>
-								<namingStrategy>none</namingStrategy>
-								<ports>
-									<port>18161:8161</port>
-									<port>61616:61616</port>
-								</ports>
-								<wait>
-									<tcp>
-										<host>127.0.0.1</host>
-										<ports>
-											<port>8161</port>
-										</ports>
-									</tcp>
-									<kill>15000</kill>
-									<shutdown>15000</shutdown>
-									<time>15000</time>
-								</wait>
-								<log>
-									<enabled>true</enabled>
-									<color>yellow</color>
-								</log>
-								<hostname>activemq</hostname>
-							</run>
-						</image>
-						<image>
 							<alias>postgres</alias>
 							<name>uvms/postgres-release:${project.version}</name>
 							<run>
@@ -273,12 +240,6 @@
 									<kill>15000</kill>
 									<shutdown>15000</shutdown>
 								</wait>
-								<dependsOn>
-									<container>activemq</container>
-								</dependsOn>
-								<links>
-									<link>activemq:activemq</link>
-								</links>
 								<log>
 									<enabled>true</enabled>
 									<color>green</color>

@@ -208,7 +208,7 @@ public class NAFExchangePerformanceTests extends AbstractRest {
         List<String> movements = Collections.synchronizedList(new ArrayList<String>());
         lastRec = Instant.now();
         last10 = Instant.now();
-        try (SseEventSource source = getSseStream()) {
+        /*try (SseEventSource source = getSseStream()) {
             source.register((inboundSseEvent) -> {
                 if (inboundSseEvent.getComment() != null) {
                     movements.add(inboundSseEvent.readData());
@@ -220,6 +220,7 @@ public class NAFExchangePerformanceTests extends AbstractRest {
                 }
             }, onError);
             source.open();
+            */
             for (LatLong pos : route) {
                 AssetDTO asset = assetDTOList.get(i % nrOfShips);
 
@@ -267,7 +268,7 @@ public class NAFExchangePerformanceTests extends AbstractRest {
                     throw new RuntimeException("More then 30 seconds since last received. Received so far: " + movements.size() + " Time of death: " + humanReadableFormat(Duration.between(b4, Instant.now())));
                 }
             }
-        }
+        //}
         averageDurations.stream().forEach(dur -> System.out.print(humanReadableFormat(dur) + ", "));
         System.out.println();
     }

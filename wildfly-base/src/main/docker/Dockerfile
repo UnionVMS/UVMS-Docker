@@ -1,4 +1,4 @@
-FROM njmittet/alpine-openjdk:jdk8
+FROM adoptopenjdk/openjdk8-openj9:jdk8u181-b13_openj9-0.9.0-alpine-slim
 
 MAINTAINER Nils Jørgen Mittet <njmittet@gmail.com>
 
@@ -6,13 +6,13 @@ ENV WILDFLY_VERSION 14.0.1.Final
 ENV JBOSS_HOME /opt/jboss/wildfly
 
 USER root
-RUN mkdir -p /opt/jboss && adduser -D -h /opt/jboss jboss && apk update && apk add curl && rm -rf /var/cache/apk/*
+RUN mkdir -p /opt/jboss && adduser -D -h /opt/jboss jboss && apk update && apk add curl && apk add libaio && rm -rf /var/cache/apk/*
 
 USER jboss
 WORKDIR /opt/jboss
 RUN curl -O http://download.jboss.org/wildfly/$WILDFLY_VERSION/wildfly-$WILDFLY_VERSION.zip && unzip wildfly-$WILDFLY_VERSION.zip && mv $HOME/wildfly-$WILDFLY_VERSION $HOME/wildfly && rm wildfly-$WILDFLY_VERSION.zip
 
-EXPOSE 8080 9990
+EXPOSE 8080 9990 5445 5455
 
 CMD ["/opt/jboss/start.sh", "/opt/jboss/wildfly/bin/standalone.sh", "-c", "standalone-uvms.xml", "-b", "0.0.0.0", "-bmanagement", "0.0.0.0", "--debug"]
 
@@ -28,11 +28,11 @@ ENV PGPASSWORD=postgres
 RUN mkdir -p $JBOSS_HOME/modules/org/postgresql/main && \
     mkdir -p /opt/jboss/wildfly/standalone/deployments/hibernatesearch/eu.europa.ec.fisheries.uvms.entity.model.AssetHistory
 
-    
-COPY dependencies/activemq-rar-${wildfly.activemq.rar.version}.rar $DEPLOYMENTS/activemq-rar.rar
+
+#COPY dependencies/activemq-rar-${wildfly.activemq.rar.version}.rar $DEPLOYMENTS/activemq-rar.rar
 
 COPY postgres/module.xml $POSTGRES_MODULE
-COPY dependencies/postgresql-${wildfly.postgres.module.postgres.version}.jar $POSTGRES_MODULE 
+COPY dependencies/postgresql-${wildfly.postgres.module.postgres.version}.jar $POSTGRES_MODULE
 COPY dependencies/postgis-jdbc-${wildfly.postgres.module.postgis.version}.jar $POSTGRES_MODULE
 
 COPY hibernate/module.xml $HIBERNATE_MODULE
@@ -40,10 +40,6 @@ COPY dependencies/hibernate-spatial-${wildfly.hibernate.module.spatial.version}.
 COPY dependencies/jts-${wildfly.hibernate.module.jts.version}.jar $HIBERNATE_MODULE
 COPY dependencies/geolatte-geom-${wildfly.hibernate.module.geolatte.version}.jar $HIBERNATE_MODULE
 COPY dependencies/hibernate-spatial-4x-to-5x-wrapper-${project.version}.jar $HIBERNATE_MODULE
-
-ENV YASSON_MODULE $JBOSS_HOME/modules/system/layers/base/org/eclipse/yasson/main
-COPY yasson/module.xml $YASSON_MODULE
-COPY dependencies/yasson-1.0.2.jar $YASSON_MODULE
 
 # Standalone config
 COPY standalone.conf $JBOSS_HOME/bin/
@@ -79,6 +75,7 @@ RUN echo "@edge http://nl.alpinelinux.org/alpine/edge/main" >> /etc/apk/reposito
 USER jboss
 
 RUN $JBOSS_HOME/bin/add-user.sh -u 'admin' -p 'Wildfly4ever!'
+RUN $JBOSS_HOME/bin/add-user.sh -a 'test' -p 'test' -g guest
 
 # Expose stuff to outside world
 EXPOSE 8787
