@@ -1,54 +1,58 @@
 package eu.europa.ec.fisheries.uvms.docker.validation.spatial;
 
-import com.fasterxml.jackson.databind.DeserializationFeature;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-import com.fasterxml.jackson.module.jaxb.JaxbAnnotationModule;
-import eu.europa.ec.fisheries.uvms.spatial.model.exception.SpatialModelMarshallException;
-import eu.europa.ec.fisheries.uvms.spatial.model.schemas.*;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Ignore;
-import org.junit.Test;
-
-import javax.ws.rs.client.Client;
-import javax.ws.rs.client.ClientBuilder;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.GenericType;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import javax.ws.rs.ext.ContextResolver;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import org.junit.Assert;
+import org.junit.Test;
+import eu.europa.ec.fisheries.uvms.docker.validation.common.AbstractRest;
+import eu.europa.ec.fisheries.uvms.spatial.model.exception.SpatialModelMarshallException;
+import eu.europa.ec.fisheries.uvms.spatial.model.schemas.AllAreaTypesRequest;
+import eu.europa.ec.fisheries.uvms.spatial.model.schemas.Area;
+import eu.europa.ec.fisheries.uvms.spatial.model.schemas.AreaByCodeRequest;
+import eu.europa.ec.fisheries.uvms.spatial.model.schemas.AreaByCodeResponse;
+import eu.europa.ec.fisheries.uvms.spatial.model.schemas.AreaByLocationSpatialRQ;
+import eu.europa.ec.fisheries.uvms.spatial.model.schemas.AreaExtendedIdentifierType;
+import eu.europa.ec.fisheries.uvms.spatial.model.schemas.AreaIdentifierType;
+import eu.europa.ec.fisheries.uvms.spatial.model.schemas.AreaSimpleType;
+import eu.europa.ec.fisheries.uvms.spatial.model.schemas.AreaType;
+import eu.europa.ec.fisheries.uvms.spatial.model.schemas.BatchSpatialEnrichmentRQ;
+import eu.europa.ec.fisheries.uvms.spatial.model.schemas.BatchSpatialEnrichmentRS;
+import eu.europa.ec.fisheries.uvms.spatial.model.schemas.ClosestAreaSpatialRQ;
+import eu.europa.ec.fisheries.uvms.spatial.model.schemas.ClosestLocationSpatialRQ;
+import eu.europa.ec.fisheries.uvms.spatial.model.schemas.CoordinatesFormat;
+import eu.europa.ec.fisheries.uvms.spatial.model.schemas.FilterAreasSpatialRQ;
+import eu.europa.ec.fisheries.uvms.spatial.model.schemas.FilterAreasSpatialRS;
+import eu.europa.ec.fisheries.uvms.spatial.model.schemas.GeometryByPortCodeRequest;
+import eu.europa.ec.fisheries.uvms.spatial.model.schemas.GeometryByPortCodeResponse;
+import eu.europa.ec.fisheries.uvms.spatial.model.schemas.Location;
+import eu.europa.ec.fisheries.uvms.spatial.model.schemas.LocationType;
+import eu.europa.ec.fisheries.uvms.spatial.model.schemas.MapConfigurationType;
+import eu.europa.ec.fisheries.uvms.spatial.model.schemas.PingRQ;
+import eu.europa.ec.fisheries.uvms.spatial.model.schemas.PingRS;
+import eu.europa.ec.fisheries.uvms.spatial.model.schemas.PointType;
+import eu.europa.ec.fisheries.uvms.spatial.model.schemas.ScopeAreasType;
+import eu.europa.ec.fisheries.uvms.spatial.model.schemas.SpatialDeleteMapConfigurationRQ;
+import eu.europa.ec.fisheries.uvms.spatial.model.schemas.SpatialEnrichmentRQ;
+import eu.europa.ec.fisheries.uvms.spatial.model.schemas.SpatialEnrichmentRQListElement;
+import eu.europa.ec.fisheries.uvms.spatial.model.schemas.SpatialEnrichmentRS;
+import eu.europa.ec.fisheries.uvms.spatial.model.schemas.SpatialEnrichmentRSListElement;
+import eu.europa.ec.fisheries.uvms.spatial.model.schemas.SpatialGetMapConfigurationRQ;
+import eu.europa.ec.fisheries.uvms.spatial.model.schemas.SpatialModuleMethod;
+import eu.europa.ec.fisheries.uvms.spatial.model.schemas.SpatialSaveOrUpdateMapConfigurationRQ;
+import eu.europa.ec.fisheries.uvms.spatial.model.schemas.UnitType;
+import eu.europa.ec.fisheries.uvms.spatial.model.schemas.UserAreasType;
 
-public class SpatialRestIT {
+public class SpatialRestIT extends AbstractRest {
     int batchSize = 10;
     private Integer crs = 4326;
     private Double latitude = 57.715523;
     private Double longitude = 11.973965;
-    private String BASE_URL = "";
-    private WebTarget webTarget;
-
-    @Before
-    public void before() {
-        BASE_URL = "http://localhost:28080/unionvms/";
-        BASE_URL += "spatial/spatialnonsecure/json/";
-
-        Client client = ClientBuilder.newClient();
-        client.register(new ContextResolver<ObjectMapper>() {
-            @Override
-            public ObjectMapper getContext(Class<?> type) {
-                ObjectMapper mapper = new ObjectMapper();
-                mapper.registerModule(new JavaTimeModule());
-                mapper.registerModule(new JaxbAnnotationModule());
-                mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-                return mapper;
-            }
-        });
-        webTarget = client.target(BASE_URL);
-    }
 
     @Test
     public void getAreaByLocation() throws Exception {
@@ -62,8 +66,8 @@ public class SpatialRestIT {
         areaByLocationSpatialRQ.setPoint(point);
         areaByLocationSpatialRQ.setMethod(SpatialModuleMethod.GET_AREA_BY_LOCATION);
         // @formatter:off
-        Response ret =  webTarget
-                .path("getAreaByLocation")
+        Response ret = getWebTarget() 
+                .path("spatial/spatialnonsecure/json/getAreaByLocation")
                 .request(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON)
                 .post(Entity.json(areaByLocationSpatialRQ), Response.class);
@@ -89,8 +93,8 @@ public class SpatialRestIT {
         AllAreaTypesRequest request = createAllAreaTypesRequest();
 
         // @formatter:off
-        Response ret =  webTarget
-                .path("getAreaTypes")
+        Response ret =  getWebTarget() 
+                .path("spatial/spatialnonsecure/json/getAreaTypes")
                 .request(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON)
                 .post(Entity.json(request), Response.class);
@@ -118,8 +122,8 @@ public class SpatialRestIT {
         ClosestAreaSpatialRQ request = createClosestAreaRequest(point, UnitType.METERS, Arrays.asList(AreaType.EEZ));
 
         // @formatter:off
-        Response ret =  webTarget
-                .path("getClosestArea")
+        Response ret =  getWebTarget() 
+                .path("spatial/spatialnonsecure/json/getClosestArea")
                 .request(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON)
                 .post(Entity.json(request), Response.class);
@@ -147,8 +151,8 @@ public class SpatialRestIT {
 
 
         // @formatter:off
-        Response ret =  webTarget
-                .path("getClosestLocation")
+        Response ret =  getWebTarget() 
+                .path("spatial/spatialnonsecure/json/getClosestLocation")
                 .request(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON)
                 .post(Entity.json(request), Response.class);
@@ -180,8 +184,8 @@ public class SpatialRestIT {
         SpatialEnrichmentRQ request = createSpatialEnrichmentRequest(point, UnitType.NAUTICAL_MILES, locationTypes, areaTypes);
 
         // @formatter:off
-        Response ret =  webTarget
-                .path("getEnrichment")
+        Response ret = getWebTarget() 
+                .path("spatial/spatialnonsecure/json/getEnrichment")
                 .request(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON)
                 .post(Entity.json(request), Response.class);
@@ -210,8 +214,8 @@ public class SpatialRestIT {
 
 
         // @formatter:off
-        Response ret =  webTarget
-                .path("getFilterArea")
+        Response ret = getWebTarget() 
+                .path("spatial/spatialnonsecure/json/getFilterArea")
                 .request(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON)
                 .post(Entity.json(request), Response.class);
@@ -221,7 +225,6 @@ public class SpatialRestIT {
         FilterAreasSpatialRS rs = ret.readEntity(new GenericType<FilterAreasSpatialRS>() {
         });
         String geometry = rs.getGeometry();
-        System.out.println();
 
         Assert.assertTrue(geometry.contains("POLYGON"));
     }
@@ -233,8 +236,8 @@ public class SpatialRestIT {
         request.setReportId(1);
 
         // @formatter:off
-        Response ret =  webTarget
-                .path("getMapConfiguration")
+        Response ret = getWebTarget() 
+                .path("spatial/spatialnonsecure/json/getMapConfiguration")
                 .request(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON)
                 .post(Entity.json(request), Response.class);
@@ -257,8 +260,8 @@ public class SpatialRestIT {
 
         PingRQ request = new PingRQ();
         // @formatter:off
-        Response ret =  webTarget
-                .path("ping")
+        Response ret = getWebTarget() 
+                .path("spatial/spatialnonsecure/json/ping")
                 .request(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON)
                 .post(Entity.json(request), Response.class);
@@ -275,8 +278,8 @@ public class SpatialRestIT {
 
         AreaByCodeRequest request = createAreaByCodeRequest();
         // @formatter:off
-        Response ret =  webTarget
-                .path("getAreaByCode")
+        Response ret = getWebTarget() 
+                .path("spatial/spatialnonsecure/json/getAreaByCode")
                 .request(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON)
                 .post(Entity.json(request), Response.class);
@@ -302,8 +305,8 @@ public class SpatialRestIT {
 
         GeometryByPortCodeRequest request = createToGeometryByPortCodeRequest("AOLAD");
         // @formatter:off
-        Response ret =  webTarget
-                .path("getGeometryByPortCode")
+        Response ret = getWebTarget() 
+                .path("spatial/spatialnonsecure/json/getGeometryByPortCode")
                 .request(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON)
                 .post(Entity.json(request), Response.class);
@@ -342,8 +345,8 @@ public class SpatialRestIT {
 
         // @formatter:off
         long then = System.currentTimeMillis();
-        Response ret =  webTarget
-                .path("getEnrichmentBatch")
+        Response ret = getWebTarget() 
+                .path("spatial/spatialnonsecure/json/getEnrichmentBatch")
                 .request(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON)
                 .post(Entity.json(request), Response.class);
@@ -392,8 +395,8 @@ public class SpatialRestIT {
          long then = System.currentTimeMillis();
         for(int i = 0 ; i < batchSize ; i++) {
              SpatialEnrichmentRQ request = requests.get(i);
-          Response ret =  webTarget
-                .path("getEnrichment")
+          Response ret = getWebTarget() 
+                .path("spatial/spatialnonsecure/json/getEnrichment")
                 .request(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON)
                 .post(Entity.json(request), Response.class);

@@ -39,7 +39,9 @@ import eu.europa.ec.fisheries.uvms.docker.validation.asset.AssetTestHelper;
 import eu.europa.ec.fisheries.uvms.docker.validation.common.AbstractRest;
 import eu.europa.ec.fisheries.uvms.docker.validation.mobileterminal.MobileTerminalTestHelper;
 import eu.europa.ec.fisheries.uvms.docker.validation.movement.LatLong;
+import eu.europa.ec.fisheries.uvms.docker.validation.movement.MovementDto;
 import eu.europa.ec.fisheries.uvms.docker.validation.movement.MovementHelper;
+import eu.europa.ec.fisheries.uvms.docker.validation.movement.model.IncomingMovement;
 import eu.europa.ec.fisheries.uvms.reporting.service.dto.AssetFilterDTO;
 import eu.europa.ec.fisheries.uvms.reporting.service.dto.CommonFilterDTO;
 import eu.europa.ec.fisheries.uvms.reporting.service.dto.DisplayFormat;
@@ -77,8 +79,8 @@ public class ReportingRestIT extends AbstractRest {
 		List<LatLong> route = movementHelper.createRuttVarbergGrena(-1);
 
 		for (LatLong position : route) {
-			final CreateMovementRequest createMovementRequest = movementHelper.createMovementRequest(testAsset, position);
-			CreateMovementResponse createMovementResponse = movementHelper.createMovement(createMovementRequest);
+			IncomingMovement createMovementRequest = movementHelper.createIncomingMovement(testAsset, position);
+			MovementDto createMovementResponse = movementHelper.createMovement(createMovementRequest);
 			assertNotNull(createMovementResponse);
 		}		
 

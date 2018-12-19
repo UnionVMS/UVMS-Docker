@@ -274,9 +274,9 @@
 
                     <driver>postgresql</driver>
                     <xa-pool>
-				        <min-pool-size>2</min-pool-size>
-				        <initial-pool-size>2</initial-pool-size>
-				        <max-pool-size>20</max-pool-size>
+				        <min-pool-size>10</min-pool-size>
+				        <initial-pool-size>10</initial-pool-size>
+				        <max-pool-size>40</max-pool-size>
 				        <prefill>true</prefill>
 				    </xa-pool>
 				    <statement>
@@ -935,7 +935,7 @@
                         defaultUser
                     </config-property>
                     <config-property name="ServerUrl">
-                        tcp://activemq:61616?jms.rmIdFromConnectionId=true&amp;socketBufferSize=131072
+                        failover:(tcp://activemq:61616?socketBufferSize=131072)?jms.rmIdFromConnectionId=true&amp;maxReconnectAttempts=-1
                     </config-property>
                     <connection-definitions>
                         <connection-definition class-name="org.apache.activemq.ra.ActiveMQManagedConnectionFactory" jndi-name="java:/ConnectionFactory" enabled="true" pool-name="ConnectionFactory">
