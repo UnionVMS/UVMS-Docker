@@ -13,6 +13,8 @@ package eu.europa.ec.fisheries.uvms.docker.validation.common;
 
 import java.io.Closeable;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.UUID;
 import javax.jms.Connection;
 import javax.jms.ConnectionFactory;
@@ -21,26 +23,33 @@ import javax.jms.Message;
 import javax.jms.MessageConsumer;
 import javax.jms.Session;
 import javax.jms.Topic;
-import org.apache.activemq.ActiveMQConnectionFactory;
+import org.apache.activemq.artemis.api.core.TransportConfiguration;
+import org.apache.activemq.artemis.api.jms.ActiveMQJMSClient;
+import org.apache.activemq.artemis.api.jms.JMSFactoryType;
+import org.apache.activemq.artemis.core.remoting.impl.netty.NettyConnectorFactory;
 
 public class TopicListener implements Closeable {
 
     private final long TIMEOUT = 10000;
 
-    private final ConnectionFactory connectionFactory = new ActiveMQConnectionFactory("tcp://localhost:61616");
+    private final ConnectionFactory connectionFactory;
     private Connection connection;
     private Session session;
     private Topic eventBus;
     private MessageConsumer durableSubscriber;
     
     public TopicListener(String selector) throws Exception {
+        Map<String, Object> params = new HashMap<>();
+        params.put("host", "localhost");
+        params.put("port", 5445);
+        TransportConfiguration transportConfiguration = new TransportConfiguration(NettyConnectorFactory.class.getName(), params);
+        connectionFactory = ActiveMQJMSClient.createConnectionFactoryWithoutHA(JMSFactoryType.CF,transportConfiguration);
+        connection = connectionFactory.createConnection("test", "test");
+        connection.start();
         registerDurableSubscriber(selector);
     }
     
     public void registerDurableSubscriber(String selector) throws Exception {
-        connection = connectionFactory.createConnection();
-        connection.setClientID(UUID.randomUUID().toString());
-        connection.start();
         session = connection.createSession(false, Session.AUTO_ACKNOWLEDGE);
         eventBus = session.createTopic("EventBus");
         durableSubscriber = session.createDurableSubscriber(eventBus, "TestSubscriber", selector, true);

@@ -21,10 +21,13 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.TimeZone;
+
+import eu.europa.ec.fisheries.uvms.docker.validation.common.MessageHelper;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.fluent.Request;
+import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -55,15 +58,25 @@ import eu.europa.ec.fisheries.uvms.reporting.service.entities.Selector;
 import eu.europa.ec.fisheries.uvms.reporting.service.enums.ReportTypeEnum;
 import eu.europa.ec.fisheries.uvms.reporting.service.enums.VelocityType;
 
+import javax.jms.JMSException;
+
 /**
  * The Class ReportingRestIT.
  */
 
 public class ReportingRestIT extends AbstractRest {
 
-	/** The movement helper. */
-	private static MovementHelper movementHelper = new MovementHelper();
+	private static MovementHelper movementHelper;
 
+	@BeforeClass
+	public static void setup() throws JMSException {
+		movementHelper = new MovementHelper();
+	}
+
+	@AfterClass
+	public static void cleanup() {
+		movementHelper.close();
+	}
 	/** The test asset. */
 	private static AssetDTO testAsset =null;
 	

@@ -4,8 +4,11 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
+import javax.jms.JMSException;
 import javax.ws.rs.sse.SseEventSource;
 import org.hamcrest.CoreMatchers;
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import eu.europa.ec.fisheries.schema.mobileterminal.types.v1.MobileTerminalType;
 import eu.europa.ec.fisheries.schema.movement.search.v1.ListCriteria;
@@ -26,7 +29,20 @@ public class MovementJmsIT extends AbstractRest {
 	
 	public static  int ALL = -1;
 	
-	private static MovementHelper movementHelper = new MovementHelper();
+	private static MovementHelper movementHelper;
+	private static MessageHelper messageHelper;
+
+	@BeforeClass
+	public static void setup() throws JMSException {
+		movementHelper = new MovementHelper();
+		messageHelper = new MessageHelper();
+	}
+
+	@AfterClass
+	public static void cleanup() {
+		movementHelper.close();
+		messageHelper.close();
+	}
 
 	@Test(timeout = 20000)
 	public void createMovementBatchRequestTest() throws Exception {
@@ -189,7 +205,7 @@ public class MovementJmsIT extends AbstractRest {
 	 */
     @Test
     public void checkAllMovementsRequestProcessedOnQueue() throws Exception {
-        assertFalse(MessageHelper.checkQueueHasElements("UVMSMovementEvent"));
+        assertFalse(messageHelper.checkQueueHasElements("UVMSMovementEvent"));
     }
 
     @Test(timeout = 10000)
@@ -206,7 +222,7 @@ public class MovementJmsIT extends AbstractRest {
                 }
             });
             source.open();
-            MessageHelper.sendMessageWithFunction("UVMSMovementEvent", OBJECT_MAPPER.writeValueAsString(
+            messageHelper.sendMessageWithFunction("UVMSMovementEvent", OBJECT_MAPPER.writeValueAsString(
                     incomingMovement), "CREATE");
             
             while(movements.size() < 1) {

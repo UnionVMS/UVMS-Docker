@@ -1,6 +1,9 @@
 package eu.europa.ec.fisheries.uvms.docker.validation.spatial;
 
 import java.util.List;
+
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import eu.europa.ec.fisheries.uvms.docker.validation.common.AbstractRest;
 import eu.europa.ec.fisheries.uvms.docker.validation.common.MessageHelper;
@@ -16,16 +19,34 @@ import eu.europa.ec.fisheries.uvms.spatial.model.schemas.SpatialEnrichmentRS;
 import eu.europa.ec.fisheries.uvms.spatial.model.schemas.SpatialModuleMethod;
 import eu.europa.ec.fisheries.uvms.spatial.model.schemas.UnitType;
 
+import javax.jms.JMSException;
+
 /**
  * The Class SpatialJmsIT.
  */
 public class SpatialJmsIT extends AbstractRest {
 
 	/** The spatial helper. */
-	private SpatialHelper spatialHelper = new SpatialHelper();
+	private static SpatialHelper spatialHelper;
 
-	private MovementHelper movementHelper= new MovementHelper();
-	
+	private static MovementHelper movementHelper;
+
+	private static MessageHelper messageHelper;
+
+	@BeforeClass
+	public static void setup() throws JMSException {
+		spatialHelper = new SpatialHelper();
+		movementHelper = new MovementHelper();
+		messageHelper = new MessageHelper();
+	}
+
+	@AfterClass
+	public static void cleanup() {
+		spatialHelper.close();
+		movementHelper.close();
+		messageHelper.close();
+	}
+
 	/**
 	 * Creates the spatial enrichment request test.
 	 *
@@ -40,7 +61,7 @@ public class SpatialJmsIT extends AbstractRest {
 		areaTypes.getAreaTypes().add(AreaType.COUNTRY);
 		areaTypes.getAreaTypes().add(AreaType.PORT);
 		areaTypes.getAreaTypes().add(AreaType.FMZ);
-		
+
 
 		spatialEnrichmentRQ.setAreaTypes(areaTypes);
 		LocationTypes locationTypes = new LocationTypes();
@@ -58,7 +79,7 @@ public class SpatialJmsIT extends AbstractRest {
 		SpatialEnrichmentRS spatialEnrichmentRS = spatialHelper.createSpatialEnrichment(spatialEnrichmentRQ);
 		assertNotNull(spatialEnrichmentRS);
 	}
-	
+
 
 
 	@Test(timeout = 40000)
@@ -87,7 +108,7 @@ public class SpatialJmsIT extends AbstractRest {
 
 			SpatialEnrichmentRS spatialEnrichmentRS = spatialHelper.createSpatialEnrichment(spatialEnrichmentRQ);
 			assertNotNull(spatialEnrichmentRS);
-			
+
 		}
 	}
 
@@ -98,7 +119,7 @@ public class SpatialJmsIT extends AbstractRest {
 	 */
 	@Test
 	public void checkAllSpatialRequestProcessedOnQueue() throws Exception {
-		assertFalse(MessageHelper.checkQueueHasElements("UVMSSpatialEvent"));
+		assertFalse(messageHelper.checkQueueHasElements("UVMSSpatialEvent"));
 	}
 
 }

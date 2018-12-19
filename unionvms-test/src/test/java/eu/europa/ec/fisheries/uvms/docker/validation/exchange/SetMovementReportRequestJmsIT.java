@@ -3,8 +3,12 @@ package eu.europa.ec.fisheries.uvms.docker.validation.exchange;
 import java.io.StringWriter;
 import java.util.Date;
 import java.util.List;
+import javax.jms.JMSException;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
+
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import eu.europa.ec.fisheries.schema.exchange.module.v1.ExchangeModuleMethod;
 import eu.europa.ec.fisheries.schema.exchange.module.v1.SetMovementReportRequest;
@@ -38,9 +42,20 @@ import eu.europa.ec.fisheries.uvms.docker.validation.movement.model.IncomingMove
 public class SetMovementReportRequestJmsIT extends AbstractRest {
 
 	/** The movement helper. */
-	private static MovementHelper movementHelper = new MovementHelper();
+	private static MovementHelper movementHelper;
+	private static MessageHelper messageHelper;
 
+	@BeforeClass
+	public static void setup() throws JMSException {
+		movementHelper = new MovementHelper();
+		messageHelper = new MessageHelper();
+	}
 
+	@AfterClass
+	public static void cleanup() {
+		movementHelper.close();
+		messageHelper.close();
+	}
 	//TODO: Make theses tests actually do something and not just send a message on the queue
 	/**
 	 * Creates the movement request test.
@@ -57,7 +72,7 @@ public class SetMovementReportRequestJmsIT extends AbstractRest {
 		LatLong latLong = movementHelper.createRutt(1).get(0);
 		IncomingMovement createMovementRequest = movementHelper.createIncomingMovement(testAsset, latLong);
 
-		MessageHelper.sendMessage("UVMSExchangeEvent",
+		messageHelper.sendMessage("UVMSExchangeEvent",
 				marshall(createSetReportMovementType(testAsset, mobileTerminalType, createMovementRequest)));
 	}
 
@@ -77,7 +92,7 @@ public class SetMovementReportRequestJmsIT extends AbstractRest {
 
 		for (LatLong latLong : latLongList) {
 			IncomingMovement createMovementRequest = movementHelper.createIncomingMovement(testAsset, latLong);
-			MessageHelper.sendMessage("UVMSExchangeEvent",
+			messageHelper.sendMessage("UVMSExchangeEvent",
 					marshall(createSetReportMovementType(testAsset, mobileTerminalType, createMovementRequest)));
 		}
 	}

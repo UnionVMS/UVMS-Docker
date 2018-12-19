@@ -37,8 +37,8 @@
 		</dependency>
 		<dependency>
 			<groupId>org.apache.activemq</groupId>
-			<artifactId>activemq-client</artifactId>
-			<version>5.15.6</version>
+			<artifactId>artemis-jms-client-all</artifactId>
+			<version>2.6.3</version>
 		</dependency>
 		<dependency>
 			<groupId>eu.europa.ec.fisheries.uvms.exchange</groupId>
@@ -311,6 +311,8 @@
 									<port>28787:8787</port>
 									<port>28080:8080</port>
 									<port>28443:8443</port>
+									<port>5445:5445</port>
+									<port>5455:5455</port>
 								</ports>
 								<wait>
 									<http>

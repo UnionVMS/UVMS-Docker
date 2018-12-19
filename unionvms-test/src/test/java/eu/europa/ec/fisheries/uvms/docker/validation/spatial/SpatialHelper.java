@@ -3,6 +3,7 @@ package eu.europa.ec.fisheries.uvms.docker.validation.spatial;
 import java.io.StringReader;
 import java.io.StringWriter;
 
+import javax.jms.JMSException;
 import javax.jms.Message;
 import javax.jms.TextMessage;
 import javax.xml.bind.JAXBContext;
@@ -21,6 +22,17 @@ public class SpatialHelper extends AbstractHelper {
 	/** The Constant UVMS_SPATIAL_REQUEST_QUEUE. */
 	private static final String UVMS_SPATIAL_REQUEST_QUEUE = "UVMSSpatialEvent";
 
+	private final MessageHelper messageHelper;
+
+	public SpatialHelper() throws JMSException {
+		messageHelper = new MessageHelper();
+	}
+
+	public void close() {
+		messageHelper.close();
+	}
+
+
 	public String marshall(final SpatialEnrichmentRQ request) throws JAXBException {
 		final StringWriter sw = new StringWriter();
 		JAXBContext.newInstance(SpatialEnrichmentRQ.class).createMarshaller().marshal(request, sw);
@@ -35,8 +47,8 @@ public class SpatialHelper extends AbstractHelper {
 	}
 
 	public SpatialEnrichmentRS createSpatialEnrichment(SpatialEnrichmentRQ request) throws Exception {
-		Message messageResponse = MessageHelper.getMessageResponse(UVMS_SPATIAL_REQUEST_QUEUE, marshall(request));
+		Message messageResponse = messageHelper.getMessageResponse(UVMS_SPATIAL_REQUEST_QUEUE, marshall(request));
 		return unMarshall(messageResponse);
 	}
-	
+
 }

@@ -19,11 +19,15 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
+import javax.jms.JMSException;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import eu.europa.ec.fisheries.uvms.docker.validation.common.MessageHelper;
 import eu.europa.ec.fisheries.uvms.movement.model.util.DateUtil;
 import org.hamcrest.CoreMatchers;
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import eu.europa.ec.fisheries.schema.mobileterminal.types.v1.MobileTerminalType;
 import eu.europa.ec.fisheries.schema.movement.module.v1.CreateMovementRequest;
@@ -47,8 +51,17 @@ import eu.europa.ec.fisheries.uvms.docker.validation.movement.model.IncomingMove
 public class MovementMovementRestIT extends AbstractRest {
 	
 	/** The movement helper. */
-	private MovementHelper movementHelper = new MovementHelper();
+	private static MovementHelper movementHelper;
 
+	@BeforeClass
+	public static void setup() throws JMSException {
+		movementHelper = new MovementHelper();
+	}
+
+	@AfterClass
+	public static void cleanup() {
+		movementHelper.close();
+	}
 
 	/**
 	 * Gets the list by query test.

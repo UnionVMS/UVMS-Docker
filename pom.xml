@@ -35,7 +35,7 @@
 		<unionvms.project.subscription.module>1.3</unionvms.project.subscription.module>
 		<unionvms.project.config.module>4.0.10</unionvms.project.config.module>
 		<unionvms.project.audit.module>4.0.9</unionvms.project.audit.module>
-		<unionvms.project.asset.module>6.0.18</unionvms.project.asset.module>
+		<unionvms.project.asset.module>6.0.17</unionvms.project.asset.module>
 		<unionvms.project.activity.module>1.1.6</unionvms.project.activity.module>
 		<unionvms.project.mdr.module>1.0.10</unionvms.project.mdr.module>
 		<unionvms.project.plugins.naf>3.0.11</unionvms.project.plugins.naf>
