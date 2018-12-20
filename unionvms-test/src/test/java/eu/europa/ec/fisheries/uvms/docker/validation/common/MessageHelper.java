@@ -130,7 +130,7 @@ public class MessageHelper {
     }
 
     public void sendToEventBus(String text, String selector) throws Exception {
-        Topic eventBus = session.createTopic("EventBus");
+        Topic eventBus = session.createTopic("jms.topic.EventBus");
         TextMessage message = session.createTextMessage(text);
         message.setStringProperty(SERVICE_NAME, selector);
         MessageProducer producer = session.createProducer(eventBus);
@@ -139,10 +139,11 @@ public class MessageHelper {
         } finally {
             producer.close();
         }
+
     }
 
     public Message listenOnEventBus(String selector, Long timeoutInMillis) throws Exception {
-        Topic eventBus = session.createTopic("EventBus");
+        Topic eventBus = session.createTopic("jms.topic.EventBus");
         MessageConsumer messageConsumer = session.createConsumer(eventBus, selector);
         try {
             return messageConsumer.receive(timeoutInMillis);
