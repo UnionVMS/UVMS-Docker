@@ -36,6 +36,14 @@
 	</distributionManagement>
 
 	<dependencies>
+		<!-- Admin -->
+		<dependency>
+			<groupId>org.apache.activemq</groupId>
+			<artifactId>artemis-console</artifactId>
+			<version>${unionvms.project.artemis-console}</version>
+			<type>war</type>
+		</dependency>
+
 		<!-- frontend modules -->
 		<dependency>
 			<groupId>eu.europa.ec.fisheries.uvms</groupId>
@@ -324,7 +332,8 @@
 								
 							<move file="${project.basedir}/target/dockerfile/deployments/mapfish-print-${unionvms.project.mapfishprint.version}.war" tofile="${project.basedir}/target/dockerfile/deployments/mapfish-print.war" />
 							<move file="${project.basedir}/target/dockerfile/deployments/gs-web-app-${unionvms.project.geoserver.version}.war" tofile="${project.basedir}/target/dockerfile/deployments/geoserver.war" />
-												
+							<move file="${project.basedir}/target/dockerfile/deployments/artemis-console-${unionvms.project.artemis-console}.war" tofile="${project.basedir}/target/dockerfile/deployments/artemis-console.war" />
+
 							</tasks>
 						</configuration>
 						<goals>

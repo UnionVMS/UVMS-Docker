@@ -19,7 +19,6 @@
 		<wildfly.hibernate.module.jts.version>1.13</wildfly.hibernate.module.jts.version>
 		<wildfly.postgres.module.postgis.version>1.5.3</wildfly.postgres.module.postgis.version>
 		<wildfly.postgres.module.postgres.version>42.1.4.jre7</wildfly.postgres.module.postgres.version>
-		<wildfly.activemq.rar.version>5.15.5</wildfly.activemq.rar.version>
 	</properties>
 	<dependencies>
 		<dependency>
@@ -51,12 +50,6 @@
 			<groupId>org.postgis</groupId>
 			<artifactId>postgis-jdbc</artifactId>
 			<version>${wildfly.postgres.module.postgis.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.apache.activemq</groupId>
-			<artifactId>activemq-rar</artifactId>
-			<type>rar</type>
-			<version>${wildfly.activemq.rar.version}</version>
 		</dependency>
 	</dependencies>
 	<build>
@@ -257,7 +250,6 @@
 								<namingStrategy>none</namingStrategy>
 								<links>
 									<link>postgres:postgres</link>
-									<link>activemq:activemq</link>
 								</links>
 								<ports>
 									<port>29990:9990</port>
@@ -281,7 +273,6 @@
 								</cmd>
 								<dependsOn>
 									<container>postgres</container>
-									<container>activemq</container>
 								</dependsOn>
 								<volumes>
 									<bind>

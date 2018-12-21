@@ -164,7 +164,7 @@ public class NAFExchangePerformanceTests extends AbstractRest {
     @Ignore
     public void createRouteTestTitanic10ships6000PositionsAsync() throws Exception{   //Needs a special version of exchange that respond on the sales queue to work!!!!
         List<LatLong> route = movementHelper.createRuttCobhNewYork(6000, 0.01f);                //0.1F = 654 pos    0.01 = 6543     0.07 = 934   0.06 = 1090
-        sendRouteToNAFOnXShipsAsync(10, route);
+        sendRouteToNAFOnXShipsAsync(20, route);
     }
 
     @Test
