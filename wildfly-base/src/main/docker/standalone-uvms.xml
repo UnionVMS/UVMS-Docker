@@ -1200,6 +1200,12 @@
 								UVMSFAPluginEvent
 							</config-property>
 						</admin-object>
+                        <admin-object class-name="org.apache.activemq.command.ActiveMQQueue"
+                                      jndi-name="java:/jms/queue/UVMSInmarsatCFailedReport"
+                                      use-java-context="true"
+                                      pool-name="UVMSInmarsatCFailedReport">
+                            <config-property name="PhysicalName">UVMSInmarsatCFailedReport</config-property>
+                        </admin-object>
                     </admin-objects>
                 </resource-adapter>
             </resource-adapters>
