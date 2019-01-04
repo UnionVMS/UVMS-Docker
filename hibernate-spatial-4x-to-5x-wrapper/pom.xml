@@ -5,12 +5,12 @@
 	<parent>
 		<groupId>eu.europa.ec.fisheries.uvms.docker</groupId>
 		<artifactId>uvms-docker</artifactId>
-		<version>3.30.4.w14-SNAPSHOT</version>
+		<version>3.30.4.w14</version>
 		<relativePath>../pom.xml</relativePath>
 	</parent>
 
 	<groupId>eu.europa.ec.fisheries.uvms.docker</groupId>
-	<version>3.30.4.w14-SNAPSHOT</version>
+	<version>3.30.4.w14</version>
 	<artifactId>hibernate-spatial-4x-to-5x-wrapper</artifactId>
 	<packaging>jar</packaging>
 	<name>hibernate-spatial-4x-to-5x-wrapper</name>
