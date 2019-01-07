@@ -112,15 +112,21 @@ public class ModuleAvailableSystemIT extends AbstractRest {
 		assertEquals(HttpStatus.SC_OK,
 				Request.Get(getBaseUrl() + "movement/monitoring").execute().returnResponse().getStatusLine().getStatusCode());		
 		assertEquals(HttpStatus.SC_FORBIDDEN,
-				Request.Get(getBaseUrl() + "movement/rest/areas").execute().returnResponse().getStatusLine().getStatusCode());
-		assertEquals(HttpStatus.SC_FORBIDDEN,
                 Request.Get(getBaseUrl() + "movement/rest/config").execute().returnResponse().getStatusLine().getStatusCode());
+		assertEquals(HttpStatus.SC_FORBIDDEN,
+                Request.Get(getBaseUrl() + "movement/rest/alarms").execute().returnResponse().getStatusLine().getStatusCode());
 		assertEquals(HttpStatus.SC_FORBIDDEN,
                 Request.Get(getBaseUrl() + "movement/rest/movement").execute().returnResponse().getStatusLine().getStatusCode());
 		assertEquals(HttpStatus.SC_FORBIDDEN,
                 Request.Get(getBaseUrl() + "movement/rest/search").execute().returnResponse().getStatusLine().getStatusCode());
 		assertEquals(HttpStatus.SC_FORBIDDEN,
                 Request.Get(getBaseUrl() + "movement/rest/tempmovement").execute().returnResponse().getStatusLine().getStatusCode());
+		assertEquals(HttpStatus.SC_FORBIDDEN,
+                Request.Get(getBaseUrl() + "movement/rest/sse").execute().returnResponse().getStatusLine().getStatusCode());
+		assertEquals(HttpStatus.SC_FORBIDDEN,
+                Request.Get(getBaseUrl() + "movement/rest/segment").execute().returnResponse().getStatusLine().getStatusCode());
+		assertEquals(HttpStatus.SC_FORBIDDEN,
+                Request.Get(getBaseUrl() + "movement/rest/track").execute().returnResponse().getStatusLine().getStatusCode());
 		assertEquals(HttpStatus.SC_OK, 
 		        Request.Get(getBaseUrl() + "movement/monitoring").execute().returnResponse().getStatusLine().getStatusCode());
 	}
@@ -176,11 +182,7 @@ public class ModuleAvailableSystemIT extends AbstractRest {
 		assertEquals(HttpStatus.SC_OK,
 				Request.Get(getBaseUrl() + "movement-rules/monitoring").execute().returnResponse().getStatusLine().getStatusCode());		
 		assertEquals(HttpStatus.SC_FORBIDDEN,
-				Request.Get(getBaseUrl() + "movement-rules/rest/alarms").execute().returnResponse().getStatusLine().getStatusCode());
-		assertEquals(HttpStatus.SC_FORBIDDEN,
 				Request.Get(getBaseUrl() + "movement-rules/rest/customrules").execute().returnResponse().getStatusLine().getStatusCode());
-		assertEquals(HttpStatus.SC_FORBIDDEN,
-				Request.Get(getBaseUrl() + "movement-rules/rest/sanityrules").execute().returnResponse().getStatusLine().getStatusCode());
 		assertEquals(HttpStatus.SC_FORBIDDEN,
 				Request.Get(getBaseUrl() + "movement-rules/rest/tickets").execute().returnResponse().getStatusLine().getStatusCode());
 	}
