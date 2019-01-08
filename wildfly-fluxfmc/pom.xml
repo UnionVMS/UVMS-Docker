@@ -4,12 +4,12 @@
 	<parent>
 		<groupId>eu.europa.ec.fisheries.uvms.docker</groupId>
 		<artifactId>uvms-docker</artifactId>
-		<version>3.30.5.w14-SNAPSHOT</version>
+		<version>3.30.6.w14-SNAPSHOT</version>
 		<relativePath>../pom.xml</relativePath>
 	</parent>
 	<groupId>eu.europa.ec.fisheries.uvms.docker</groupId>
 	<artifactId>uvms-docker-wildfly-fluxfmc</artifactId>
-	<version>3.30.5.w14-SNAPSHOT</version>
+	<version>3.30.6.w14-SNAPSHOT</version>
 	<packaging>pom</packaging>
 	<name>uvms-docker-wildfly-fluxfmc</name>
 	<repositories>
