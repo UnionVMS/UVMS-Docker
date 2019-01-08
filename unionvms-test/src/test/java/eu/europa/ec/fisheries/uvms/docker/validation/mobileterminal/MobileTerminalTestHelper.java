@@ -107,6 +107,7 @@ public final class MobileTerminalTestHelper extends AbstractHelper {
 		MobileTerminalType mobileTerminalRequest = new MobileTerminalType();
 		mobileTerminalRequest.setSource(MobileTerminalSource.INTERNAL);
 		mobileTerminalRequest.setType("INMARSAT_C");
+
 		List<MobileTerminalAttribute> attributes = mobileTerminalRequest.getAttributes();
 		addAttribute(attributes, "SERIAL_NUMBER", AssetTestHelper.generateARandomStringWithMaxLength(10));
 		addAttribute(attributes, "SATELLITE_NUMBER", "S" + AssetTestHelper.generateARandomStringWithMaxLength(4));

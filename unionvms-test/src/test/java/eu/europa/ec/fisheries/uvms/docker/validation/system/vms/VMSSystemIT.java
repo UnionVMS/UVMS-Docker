@@ -17,8 +17,11 @@ import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.util.Calendar;
 import java.util.Date;
+import javax.jms.JMSException;
 import javax.jms.TextMessage;
 import org.junit.After;
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import eu.europa.ec.fisheries.schema.exchange.movement.v1.MovementType;
 import eu.europa.ec.fisheries.schema.exchange.plugin.v1.SetReportRequest;
@@ -43,6 +46,18 @@ public class VMSSystemIT extends AbstractRest {
 
     private static final String SELECTOR = "ServiceName='eu.europa.ec.fisheries.uvms.plugins.flux.movement'";
     private static final long TIMEOUT = 10000;
+
+    private static MessageHelper messageHelper;
+
+    @BeforeClass
+    public static void setup() throws JMSException {
+        messageHelper = new MessageHelper();
+    }
+
+    @AfterClass
+    public static void cleanup() {
+        messageHelper.close();
+    }
 
     @After
     public void removeCustomRules() throws Exception {
@@ -74,7 +89,7 @@ public class VMSSystemIT extends AbstractRest {
         
         FLUXHelper.sendPositionToFluxPlugin(asset, position);
         
-        TextMessage message = (TextMessage) MessageHelper.listenOnEventBus(SELECTOR, TIMEOUT);
+        TextMessage message = (TextMessage) messageHelper.listenOnEventBus(SELECTOR, TIMEOUT);
         assertThat(message, is(notNullValue()));
         
         CustomRuleHelper.assertRuleTriggered(createdCustomRule, timestamp);
@@ -116,7 +131,7 @@ public class VMSSystemIT extends AbstractRest {
         
         FLUXHelper.sendPositionToFluxPlugin(asset, position);
         
-        TextMessage message = (TextMessage) MessageHelper.listenOnEventBus(SELECTOR, TIMEOUT);
+        TextMessage message = (TextMessage) messageHelper.listenOnEventBus(SELECTOR, TIMEOUT);
         assertThat(message, is(notNullValue()));
         
         CustomRuleHelper.assertRuleTriggered(createdCustomRule, timestamp);
@@ -165,7 +180,7 @@ public class VMSSystemIT extends AbstractRest {
         
         FLUXHelper.sendPositionToFluxPlugin(asset, position);
         
-        TextMessage message = (TextMessage) MessageHelper.listenOnEventBus(SELECTOR, TIMEOUT);
+        TextMessage message = (TextMessage) messageHelper.listenOnEventBus(SELECTOR, TIMEOUT);
         assertThat(message, is(notNullValue()));
         
         CustomRuleHelper.assertRuleTriggered(createdCustomRule, timestamp);
@@ -224,7 +239,7 @@ public class VMSSystemIT extends AbstractRest {
         
         FLUXHelper.sendPositionToFluxPlugin(asset, position);
         
-        TextMessage message = (TextMessage) MessageHelper.listenOnEventBus(SELECTOR, TIMEOUT);
+        TextMessage message = (TextMessage) messageHelper.listenOnEventBus(SELECTOR, TIMEOUT);
         assertThat(message, is(notNullValue()));
         
         CustomRuleHelper.assertRuleNotTriggered(createdCustomRuleWithInterval);
@@ -274,7 +289,7 @@ public class VMSSystemIT extends AbstractRest {
         
         FLUXHelper.sendPositionToFluxPlugin(asset, position);
         
-        TextMessage message = (TextMessage) MessageHelper.listenOnEventBus(SELECTOR, TIMEOUT);
+        TextMessage message = (TextMessage) messageHelper.listenOnEventBus(SELECTOR, TIMEOUT);
         assertThat(message, is(notNullValue()));
         
         CustomRuleHelper.assertRuleNotTriggered(createdCustomRuleWithInterval);

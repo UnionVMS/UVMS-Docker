@@ -19,7 +19,6 @@
 		<wildfly.hibernate.module.jts.version>1.13</wildfly.hibernate.module.jts.version>
 		<wildfly.postgres.module.postgis.version>1.5.3</wildfly.postgres.module.postgis.version>
 		<wildfly.postgres.module.postgres.version>42.1.4.jre7</wildfly.postgres.module.postgres.version>
-		<wildfly.activemq.rar.version>5.15.5</wildfly.activemq.rar.version>
 	</properties>
 	<dependencies>
 		<dependency>
@@ -51,12 +50,6 @@
 			<groupId>org.postgis</groupId>
 			<artifactId>postgis-jdbc</artifactId>
 			<version>${wildfly.postgres.module.postgis.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.apache.activemq</groupId>
-			<artifactId>activemq-rar</artifactId>
-			<type>rar</type>
-			<version>${wildfly.activemq.rar.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse</groupId>
@@ -231,34 +224,6 @@
 				<configuration>
 					<images>
 						<image>
-						<alias>activemq</alias>
-							<name>uvms/activemq:${project.version}</name>
-							<run>
-								<net>bridge</net>
-								<namingStrategy>none</namingStrategy>
-								<ports>
-									<port>18161:8161</port>
-									<port>61616:61616</port>
-								</ports>
-								<wait>
-									<tcp>
-										<host>127.0.0.1</host>
-										<ports>
-											<port>8161</port>
-										</ports>
-									</tcp>
-									<kill>15000</kill>
-									<shutdown>15000</shutdown>
-									<time>15000</time>
-								</wait>
-								<log>
-									<enabled>true</enabled>
-									<color>yellow</color>
-								</log>
-								<hostname>activemq</hostname>
-							</run>
-						</image>
-						<image>
 							<alias>postgres</alias>
 							<name>uvms/postgres-release:${project.version}</name>
 							<run>
@@ -273,12 +238,6 @@
 									<kill>15000</kill>
 									<shutdown>15000</shutdown>
 								</wait>
-								<dependsOn>
-									<container>activemq</container>
-								</dependsOn>
-								<links>
-									<link>activemq:activemq</link>
-								</links>
 								<log>
 									<enabled>true</enabled>
 									<color>green</color>
@@ -296,7 +255,6 @@
 								<namingStrategy>none</namingStrategy>
 								<links>
 									<link>postgres:postgres</link>
-									<link>activemq:activemq</link>
 								</links>
 								<ports>
 									<port>29990:9990</port>
@@ -320,7 +278,6 @@
 								</cmd>
 								<dependsOn>
 									<container>postgres</container>
-									<container>activemq</container>
 								</dependsOn>
 								<volumes>
 									<bind>

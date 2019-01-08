@@ -2,9 +2,13 @@ package eu.europa.ec.fisheries.uvms.docker.validation.spatial;
 
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
+
+import eu.europa.ec.fisheries.uvms.docker.validation.common.MessageHelper;
 import org.databene.contiperf.PerfTest;
 import org.databene.contiperf.Required;
 import org.databene.contiperf.junit.ContiPerfRule;
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
 import org.junit.Rule;
 import org.junit.Test;
 import eu.europa.ec.fisheries.uvms.docker.validation.common.AbstractRest;
@@ -20,6 +24,8 @@ import eu.europa.ec.fisheries.uvms.spatial.model.schemas.SpatialEnrichmentRS;
 import eu.europa.ec.fisheries.uvms.spatial.model.schemas.SpatialModuleMethod;
 import eu.europa.ec.fisheries.uvms.spatial.model.schemas.UnitType;
 
+import javax.jms.JMSException;
+
 /**
  * The Class SpatialJmsPerformanceIT.
  */
@@ -30,10 +36,22 @@ public class SpatialJmsPerformanceIT extends AbstractRest {
 	public ContiPerfRule i = new ContiPerfRule();
 
 	/** The spatial helper. */
-	private SpatialHelper spatialHelper = new SpatialHelper();
 
-	/** The movement helper. */
-	private MovementHelper movementHelper= new MovementHelper();
+	private static MovementHelper movementHelper;
+	private static SpatialHelper spatialHelper;
+
+	@BeforeClass
+	public static void setup() throws JMSException {
+		movementHelper = new MovementHelper();
+		spatialHelper = new SpatialHelper();
+	}
+
+	@AfterClass
+	public static void cleanup() {
+		movementHelper.close();
+		spatialHelper.close();
+	}
+
 
 	/** The create rutt. */
 	private List<LatLong> createRutt = movementHelper.createRutt(30);
