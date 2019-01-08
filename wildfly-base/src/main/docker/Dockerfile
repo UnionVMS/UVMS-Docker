@@ -29,8 +29,6 @@ RUN mkdir -p $JBOSS_HOME/modules/org/postgresql/main && \
     mkdir -p /opt/jboss/wildfly/standalone/deployments/hibernatesearch/eu.europa.ec.fisheries.uvms.entity.model.AssetHistory
 
 
-#COPY dependencies/activemq-rar-${wildfly.activemq.rar.version}.rar $DEPLOYMENTS/activemq-rar.rar
-
 COPY postgres/module.xml $POSTGRES_MODULE
 COPY dependencies/postgresql-${wildfly.postgres.module.postgres.version}.jar $POSTGRES_MODULE
 COPY dependencies/postgis-jdbc-${wildfly.postgres.module.postgis.version}.jar $POSTGRES_MODULE
@@ -40,6 +38,11 @@ COPY dependencies/hibernate-spatial-${wildfly.hibernate.module.spatial.version}.
 COPY dependencies/jts-${wildfly.hibernate.module.jts.version}.jar $HIBERNATE_MODULE
 COPY dependencies/geolatte-geom-${wildfly.hibernate.module.geolatte.version}.jar $HIBERNATE_MODULE
 COPY dependencies/hibernate-spatial-4x-to-5x-wrapper-${project.version}.jar $HIBERNATE_MODULE
+
+ENV YASSON_MODULE $JBOSS_HOME/modules/system/layers/base/org/eclipse/yasson/main
+
+COPY yasson/module.xml $YASSON_MODULE
+COPY dependencies/yasson-1.0.2.jar $YASSON_MODULE
 
 # Standalone config
 COPY standalone.conf $JBOSS_HOME/bin/
