@@ -977,6 +977,7 @@
                 <jms-queue name="UVMSMdrPluginEvent" entries="jms/queue/UVMSMdrPluginEvent java:jboss/exported/jms/queue/UVMSMdrPluginEvent" />
                 <jms-queue name="UVMSActivityPluginEvent" entries="jms/queue/UVMSActivityPluginEvent java:jboss/exported/jms/queue/UVMSActivityPluginEvent" />
                 <jms-queue name="IntegrationTestsResponseQueue" entries="jms/queue/IntegrationTestsResponseQueue java:jboss/exported/jms/queue/IntegrationTestsResponseQueue" />
+                <jms-queue name="UVMSInmarsatCFailedReport" entries="jms/queue/UVMSInmarsatCFailedReport java:jboss/exported/jms/queue/UVMSInmarsatCFailedReport" />
                 <jms-topic name="ConfigStatus" entries="jms/topic/ConfigStatus java:jboss/exported/jms/topic/ConfigStatus" />
                 <jms-topic name="EventBus" entries="jms/topic/EventBus java:jboss/exported/jms/topic/EventBus" />
 
