@@ -1002,6 +1002,7 @@
             <http-connector name="http-remoting-connector" connector-ref="default" security-realm="ApplicationRealm"/>
         </subsystem>
         <subsystem xmlns="urn:jboss:domain:request-controller:1.0"/>
+        <subsystem xmlns="urn:jboss:domain:resource-adapters:5.0"/>
         <subsystem xmlns="urn:jboss:domain:sar:1.0"/>
         <subsystem xmlns="urn:jboss:domain:security-manager:1.0">
             <deployment-permissions>
