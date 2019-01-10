@@ -16,7 +16,6 @@ package eu.europa.ec.fisheries.uvms.docker.validation.reporting;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
-import eu.europa.ec.fisheries.uvms.docker.validation.common.MessageHelper;
 import eu.europa.ec.fisheries.uvms.asset.client.model.AssetDTO;
 import eu.europa.ec.fisheries.uvms.docker.validation.asset.AssetTestHelper;
 import eu.europa.ec.fisheries.uvms.docker.validation.common.AbstractRest;
@@ -38,13 +37,12 @@ import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.fluent.Request;
-import org.junit.BeforeClass;
 import org.junit.AfterClass;
+import org.junit.BeforeClass;
 import org.junit.Ignore;
 import org.junit.Test;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
+import javax.jms.JMSException;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -52,11 +50,17 @@ import java.util.Map.Entry;
 
 public class ReportingRestIT extends AbstractRest {
 
-	private static final Logger LOG  = LoggerFactory.getLogger(ReportingRestIT.class.getSimpleName());
+	private static MovementHelper movementHelper;
 
-	/** The movement helper. */
-	private static MovementHelper movementHelper = new MovementHelper();
+	@BeforeClass
+	public static void setup() throws JMSException {
+		movementHelper = new MovementHelper();
+	}
 
+	@AfterClass
+	public static void cleanup() {
+		movementHelper.close();
+	}
 	/** The test asset. */
 	private static AssetDTO testAsset =null;
 	
@@ -77,7 +81,8 @@ public class ReportingRestIT extends AbstractRest {
 				assertNotNull(createMovementResponse);
 			}
 		} catch (Exception e) {
-			LOG.error(e.getMessage(), e);
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 	}
 

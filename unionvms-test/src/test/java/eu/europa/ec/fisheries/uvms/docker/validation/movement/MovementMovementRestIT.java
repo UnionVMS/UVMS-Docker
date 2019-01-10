@@ -13,15 +13,6 @@ copy of the GNU General Public License along with the IFDM Suite. If not, see <h
 */
 package eu.europa.ec.fisheries.uvms.docker.validation.movement;
 
-import eu.europa.ec.fisheries.uvms.docker.validation.common.MessageHelper;
-import eu.europa.ec.fisheries.uvms.movement.model.util.DateUtil;
-import org.hamcrest.CoreMatchers;
-import org.junit.AfterClass;
-import org.junit.BeforeClass;
-import org.junit.Test;
-import eu.europa.ec.fisheries.schema.mobileterminal.types.v1.MobileTerminalType;
-import eu.europa.ec.fisheries.schema.movement.module.v1.CreateMovementRequest;
-import eu.europa.ec.fisheries.schema.movement.module.v1.CreateMovementResponse;
 import eu.europa.ec.fisheries.schema.movement.search.v1.ListCriteria;
 import eu.europa.ec.fisheries.schema.movement.search.v1.ListPagination;
 import eu.europa.ec.fisheries.schema.movement.search.v1.MovementQuery;
@@ -35,11 +26,12 @@ import eu.europa.ec.fisheries.uvms.docker.validation.mobileterminal.dto.MobileTe
 import eu.europa.ec.fisheries.uvms.docker.validation.movement.model.IncomingMovement;
 import eu.europa.ec.fisheries.uvms.movement.model.util.DateUtil;
 import org.hamcrest.CoreMatchers;
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 import javax.jms.JMSException;
 import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
 import java.math.BigInteger;
 import java.time.Instant;
 import java.util.ArrayList;
@@ -49,8 +41,26 @@ import java.util.UUID;
 
 public class MovementMovementRestIT extends AbstractRest {
 
-	private MovementHelper movementHelper = new MovementHelper();
+	/** The movement helper. */
+	private static MovementHelper movementHelper;
 
+	@BeforeClass
+	public static void setup() throws JMSException {
+		movementHelper = new MovementHelper();
+	}
+
+	@AfterClass
+	public static void cleanup() {
+		movementHelper.close();
+	}
+
+	/**
+	 * Gets the list by query test.
+	 *
+	 * @return the list by query test
+	 * @throws Exception
+	 *             the exception
+	 */
 	@Test
 	public void getListByQueryTest() {
 	    List<MovementType> dataMap = MovementHelper.getListByQuery(createMovementQuery());
