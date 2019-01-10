@@ -68,7 +68,7 @@ public class SanityRuleHelper extends AbstractHelper {
 
         assertThat(alarmResponse, CoreMatchers.is(CoreMatchers.notNullValue()));
         List<AlarmReport> alarms = alarmResponse.getAlarmList();
-        alarms.sort((a1, a2) -> a1.getCreatedDate().compareTo(a2.getCreatedDate()));
+        alarms.sort((a1, a2) -> a2.getCreatedDate().compareTo(a1.getCreatedDate()));
         return alarms.get(0);
     }
 }

@@ -227,7 +227,7 @@ public class MovementAlarmRestIT extends AbstractRest {
         
         AlarmReport alarm = SanityRuleHelper.getLatestOpenAlarmReportSince(timestamp);
         assertThat(alarm.getIncomingMovement(), CoreMatchers.is(CoreMatchers.notNullValue()));
-        assertThat(alarm.getIncomingMovement().getAssetName(), CoreMatchers.is(asset.getName()));
+        assertThat(alarm.getIncomingMovement().getAssetCFR(), CoreMatchers.is(asset.getCfr()));
 	}
 	
 	private AlarmReport getAlarmReportByGuid(String guid) {

@@ -1,5 +1,10 @@
 package eu.europa.ec.fisheries.uvms.docker.validation.system.vms;
 
+import java.util.List;
+import javax.jms.JMSException;
+
+import eu.europa.ec.fisheries.uvms.docker.validation.movement.MovementHelper;
+import org.junit.*;
 import eu.europa.ec.fisheries.schema.exchange.movement.mobileterminal.v1.IdList;
 import eu.europa.ec.fisheries.schema.exchange.movement.mobileterminal.v1.IdType;
 import eu.europa.ec.fisheries.schema.exchange.movement.mobileterminal.v1.MobileTerminalId;
@@ -19,9 +24,6 @@ import eu.europa.ec.fisheries.uvms.docker.validation.system.helper.CustomRuleBui
 import eu.europa.ec.fisheries.uvms.docker.validation.system.helper.CustomRuleHelper;
 import eu.europa.ec.fisheries.uvms.exchange.model.mapper.ExchangeModuleRequestMapper;
 import eu.europa.ec.fisheries.uvms.exchange.model.mapper.JAXBMarshaller;
-import org.junit.After;
-import org.junit.Assert;
-import org.junit.Test;
 
 import javax.jms.TextMessage;
 import java.time.LocalDateTime;
@@ -38,6 +40,18 @@ public class InmarsatSanityIT extends AbstractRest {
 
     private static final String SELECTOR = "ServiceName='eu.europa.ec.fisheries.uvms.plugins.flux.movement'";
     private static final long TIMEOUT = 10000;
+
+    private static MessageHelper messageHelper;
+
+    @BeforeClass
+    public static void setup() throws JMSException {
+        messageHelper = new MessageHelper();
+    }
+
+    @AfterClass
+    public static void cleanup() {
+        messageHelper.close();
+    }
 
     @After
     public void removeCustomRules() {
@@ -88,9 +102,9 @@ public class InmarsatSanityIT extends AbstractRest {
                         "TWOSTAGE",
                         null);
 
-        MessageHelper.sendMessage("UVMSExchangeEvent", text);
+        messageHelper.sendMessage("UVMSExchangeEvent", text);
         // WAITFOR AND CHECK RESULTS
-        TextMessage message = (TextMessage) MessageHelper.listenOnEventBus(SELECTOR, TIMEOUT);
+        TextMessage message = (TextMessage) messageHelper.listenOnEventBus(SELECTOR, TIMEOUT);
         assertThat(message, is(notNullValue()));
 
         CustomRuleHelper.assertRuleTriggered(createdCustomRule, timestamp);

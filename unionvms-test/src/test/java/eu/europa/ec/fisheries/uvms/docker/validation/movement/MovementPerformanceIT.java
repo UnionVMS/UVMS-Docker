@@ -1,5 +1,10 @@
 package eu.europa.ec.fisheries.uvms.docker.validation.movement;
 
+import java.util.concurrent.TimeUnit;
+import javax.jms.JMSException;
+
+import org.jboss.resteasy.client.jaxrs.internal.ClientWebTarget;
+import eu.europa.ec.fisheries.schema.mobileterminal.types.v1.MobileTerminalType;
 import eu.europa.ec.fisheries.schema.movement.common.v1.ExceptionType;
 import eu.europa.ec.fisheries.schema.movement.module.v1.GetMovementListByQueryRequest;
 import eu.europa.ec.fisheries.schema.movement.module.v1.GetMovementListByQueryResponse;
@@ -17,6 +22,8 @@ import eu.europa.ec.fisheries.uvms.docker.validation.mobileterminal.dto.MobileTe
 import eu.europa.ec.fisheries.uvms.docker.validation.movement.model.IncomingMovement;
 import org.junit.Ignore;
 import org.junit.Test;
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
 
 import javax.jms.Message;
 import javax.jms.TextMessage;
@@ -38,7 +45,20 @@ import java.util.function.Consumer;
 
 public class MovementPerformanceIT extends AbstractRest {
 
-    private static MovementHelper movementHelper = new MovementHelper();
+    private static MovementHelper movementHelper;
+    private static MessageHelper messageHelper;
+
+    @BeforeClass
+    public static void setup() throws JMSException {
+        movementHelper = new MovementHelper();
+        messageHelper = new MessageHelper();
+    }
+
+    @AfterClass
+    public static void cleanup() {
+        movementHelper.close();
+        messageHelper.close();
+    }
 
     @Test
     @Ignore
@@ -204,7 +224,7 @@ public class MovementPerformanceIT extends AbstractRest {
     @Test
     @Ignore
     public void camelErrorHandlingTest() throws Exception {
-        Message message = MessageHelper.getMessageResponse("UVMSMovementEvent","");
+        Message message = messageHelper.getMessageResponse("UVMSMovementEvent","");
 
 
         ExceptionType response = unMarshallErrorResponse(message);
@@ -418,7 +438,7 @@ public class MovementPerformanceIT extends AbstractRest {
 
         String inputString = marshall(input);
 
-        Message output = MessageHelper.getMessageResponse("UVMSMovementEvent",inputString);
+        Message output = messageHelper.getMessageResponse("UVMSMovementEvent",inputString);
         assertNotNull(output);
 
         GetMovementListByQueryResponse response = unMarshallCreateMovementBatchResponse(output);

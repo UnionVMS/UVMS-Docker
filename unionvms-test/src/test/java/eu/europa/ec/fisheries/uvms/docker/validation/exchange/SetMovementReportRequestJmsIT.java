@@ -1,5 +1,10 @@
 package eu.europa.ec.fisheries.uvms.docker.validation.exchange;
 
+import javax.jms.JMSException;
+
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
+import org.junit.Test;
 import eu.europa.ec.fisheries.schema.exchange.module.v1.ExchangeModuleMethod;
 import eu.europa.ec.fisheries.schema.exchange.module.v1.SetMovementReportRequest;
 import eu.europa.ec.fisheries.schema.exchange.movement.asset.v1.AssetId;

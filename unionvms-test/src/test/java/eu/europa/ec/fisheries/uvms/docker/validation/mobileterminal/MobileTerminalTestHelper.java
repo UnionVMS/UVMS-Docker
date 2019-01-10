@@ -78,7 +78,7 @@ public final class MobileTerminalTestHelper extends AbstractHelper {
 	}
 
 	public static MobileTerminalDto createMobileTerminal() {
-        MobileTerminalDto terminal = createBasicMobileTerminal();
+    MobileTerminalDto terminal = createBasicMobileTerminal();
 		MobileTerminalDto createdTerminal = getWebTarget()
 				.path("asset/rest/mobileterminal")
 				.request(MediaType.APPLICATION_JSON)

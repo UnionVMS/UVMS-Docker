@@ -11,6 +11,9 @@ copy of the GNU General Public License along with the IFDM Suite. If not, see <h
  */
 package eu.europa.ec.fisheries.uvms.docker.validation.system.vms;
 
+import javax.jms.JMSException;
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
 import eu.europa.ec.fisheries.schema.exchange.movement.v1.MovementType;
 import eu.europa.ec.fisheries.schema.exchange.plugin.v1.SetReportRequest;
 import eu.europa.ec.fisheries.schema.movementrules.customrule.v1.*;
@@ -42,6 +45,18 @@ public class VMSSystemIT extends AbstractRest {
     private static final String SELECTOR = "ServiceName='eu.europa.ec.fisheries.uvms.plugins.flux.movement'";
     private static final long TIMEOUT = 10000;
 
+    private static MessageHelper messageHelper;
+
+    @BeforeClass
+    public static void setup() throws JMSException {
+        messageHelper = new MessageHelper();
+    }
+
+    @AfterClass
+    public static void cleanup() {
+        messageHelper.close();
+    }
+
     @After
     public void removeCustomRules() {
         CustomRuleHelper.removeCustomRulesByDefaultUser();
@@ -71,7 +86,7 @@ public class VMSSystemIT extends AbstractRest {
         
         FLUXHelper.sendPositionToFluxPlugin(asset, position);
         
-        TextMessage message = (TextMessage) MessageHelper.listenOnEventBus(SELECTOR, TIMEOUT);
+        TextMessage message = (TextMessage) messageHelper.listenOnEventBus(SELECTOR, TIMEOUT);
         assertThat(message, is(notNullValue()));
         
         CustomRuleHelper.assertRuleTriggered(createdCustomRule, timestamp);
@@ -113,7 +128,7 @@ public class VMSSystemIT extends AbstractRest {
         
         FLUXHelper.sendPositionToFluxPlugin(asset, position);
         
-        TextMessage message = (TextMessage) MessageHelper.listenOnEventBus(SELECTOR, TIMEOUT);
+        TextMessage message = (TextMessage) messageHelper.listenOnEventBus(SELECTOR, TIMEOUT);
         assertThat(message, is(notNullValue()));
         
         CustomRuleHelper.assertRuleTriggered(createdCustomRule, timestamp);
@@ -162,7 +177,7 @@ public class VMSSystemIT extends AbstractRest {
         
         FLUXHelper.sendPositionToFluxPlugin(asset, position);
         
-        TextMessage message = (TextMessage) MessageHelper.listenOnEventBus(SELECTOR, TIMEOUT);
+        TextMessage message = (TextMessage) messageHelper.listenOnEventBus(SELECTOR, TIMEOUT);
         assertThat(message, is(notNullValue()));
         
         CustomRuleHelper.assertRuleTriggered(createdCustomRule, timestamp);
@@ -221,7 +236,7 @@ public class VMSSystemIT extends AbstractRest {
         
         FLUXHelper.sendPositionToFluxPlugin(asset, position);
         
-        TextMessage message = (TextMessage) MessageHelper.listenOnEventBus(SELECTOR, TIMEOUT);
+        TextMessage message = (TextMessage) messageHelper.listenOnEventBus(SELECTOR, TIMEOUT);
         assertThat(message, is(notNullValue()));
         
         CustomRuleHelper.assertRuleNotTriggered(createdCustomRuleWithInterval);
@@ -271,7 +286,7 @@ public class VMSSystemIT extends AbstractRest {
         
         FLUXHelper.sendPositionToFluxPlugin(asset, position);
         
-        TextMessage message = (TextMessage) MessageHelper.listenOnEventBus(SELECTOR, TIMEOUT);
+        TextMessage message = (TextMessage) messageHelper.listenOnEventBus(SELECTOR, TIMEOUT);
         assertThat(message, is(notNullValue()));
         
         CustomRuleHelper.assertRuleNotTriggered(createdCustomRuleWithInterval);

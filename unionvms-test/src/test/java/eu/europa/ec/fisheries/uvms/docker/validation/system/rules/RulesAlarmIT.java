@@ -20,9 +20,13 @@ import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
+import javax.jms.JMSException;
 import javax.jms.Message;
 import javax.jms.TextMessage;
+
+import eu.europa.ec.fisheries.uvms.docker.validation.spatial.SpatialHelper;
 import org.junit.After;
+import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import eu.europa.ec.fisheries.schema.exchange.module.v1.GetServiceListResponse;
@@ -59,11 +63,20 @@ public class RulesAlarmIT extends AbstractRest {
     private static final String SELECTOR_FLUX = "ServiceName='eu.europa.ec.fisheries.uvms.plugins.flux.movement'";
     private static final String SERVICE_NAME = "eu.europa.ec.fisheries.uvms.docker.validation.system.rules.EMAIL";
     private static String emailSelector = "ServiceName='" + SERVICE_NAME + "'";
+
+    private static MessageHelper messageHelper;
+
+    @AfterClass
+    public static void cleanup() {
+        messageHelper.close();
+    }
+    
     
     @BeforeClass
     public static void registerEmailPluginIfNotExisting() throws Exception {
+        messageHelper = new MessageHelper();
         String exchangeRequest = ExchangeModuleRequestMapper.createGetServiceListRequest(Arrays.asList(PluginType.EMAIL));
-        Message exchangeResponse = MessageHelper.getMessageResponse(MessageConstants.QUEUE_EXCHANGE_EVENT_NAME, exchangeRequest);
+        Message exchangeResponse = messageHelper.getMessageResponse(MessageConstants.QUEUE_EXCHANGE_EVENT_NAME, exchangeRequest);
         GetServiceListResponse emailServices = JAXBMarshaller.unmarshallTextMessage((TextMessage) exchangeResponse, GetServiceListResponse.class);
         List<ServiceResponseType> service = emailServices.getService();
         if (!service.isEmpty()) {
@@ -75,11 +88,11 @@ public class RulesAlarmIT extends AbstractRest {
             serviceType.setServiceClassName(SERVICE_NAME);
             serviceType.setServiceResponseMessageName(SERVICE_NAME);
             String registerRequest = ExchangeModuleRequestMapper.createRegisterServiceRequest(serviceType, new CapabilityListType(), new SettingListType());
-            MessageHelper.sendToEventBus(registerRequest, ExchangeModelConstants.EXCHANGE_REGISTER_SERVICE);
+            messageHelper.sendToEventBus(registerRequest, ExchangeModelConstants.EXCHANGE_REGISTER_SERVICE);
             
             // Clear topic
-            MessageHelper.listenOnEventBus(emailSelector, TIMEOUT);
-            MessageHelper.listenOnEventBus(emailSelector, TIMEOUT);
+            messageHelper.listenOnEventBus(emailSelector, TIMEOUT);
+            messageHelper.listenOnEventBus(emailSelector, TIMEOUT);
         }
     }
     
@@ -109,7 +122,7 @@ public class RulesAlarmIT extends AbstractRest {
         position.speed = 10.5;
         FLUXHelper.sendPositionToFluxPlugin(asset, position);
         
-        TextMessage message = (TextMessage) MessageHelper.listenOnEventBus(emailSelector, TIMEOUT);
+        TextMessage message = (TextMessage) messageHelper.listenOnEventBus(emailSelector, TIMEOUT);
         assertThat(message, is(notNullValue()));
         
         SetCommandRequest setCommandRequest = JAXBMarshaller.unmarshallTextMessage(message, SetCommandRequest.class);
@@ -140,7 +153,7 @@ public class RulesAlarmIT extends AbstractRest {
         position.speed = 9.5;
         FLUXHelper.sendPositionToFluxPlugin(asset, position);
         
-        TextMessage message = (TextMessage) MessageHelper.listenOnEventBus(emailSelector, TIMEOUT);
+        TextMessage message = (TextMessage) messageHelper.listenOnEventBus(emailSelector, TIMEOUT);
         assertThat(message, is(notNullValue()));
         
         SetCommandRequest setCommandRequest = JAXBMarshaller.unmarshallTextMessage(message, SetCommandRequest.class);
@@ -181,7 +194,7 @@ public class RulesAlarmIT extends AbstractRest {
         position.speed = 9.5;
         FLUXHelper.sendPositionToFluxPlugin(asset, position);
         
-        TextMessage message = (TextMessage) MessageHelper.listenOnEventBus(emailSelector, TIMEOUT);
+        TextMessage message = (TextMessage) messageHelper.listenOnEventBus(emailSelector, TIMEOUT);
         assertThat(message, is(notNullValue()));
         
         SetCommandRequest setCommandRequest = JAXBMarshaller.unmarshallTextMessage(message, SetCommandRequest.class);
@@ -223,7 +236,7 @@ public class RulesAlarmIT extends AbstractRest {
         position.speed = 10.5;
         FLUXHelper.sendPositionToFluxPlugin(asset, position);
         
-        TextMessage message = (TextMessage) MessageHelper.listenOnEventBus(emailSelector, TIMEOUT);
+        TextMessage message = (TextMessage) messageHelper.listenOnEventBus(emailSelector, TIMEOUT);
         assertThat(message, is(notNullValue()));
         
         SetCommandRequest setCommandRequest = JAXBMarshaller.unmarshallTextMessage(message, SetCommandRequest.class);
@@ -255,7 +268,7 @@ public class RulesAlarmIT extends AbstractRest {
         position.speed = 10;
         FLUXHelper.sendPositionToFluxPlugin(asset, position);
         
-        TextMessage message = (TextMessage) MessageHelper.listenOnEventBus(emailSelector, TIMEOUT);
+        TextMessage message = (TextMessage) messageHelper.listenOnEventBus(emailSelector, TIMEOUT);
         assertThat(message, is(notNullValue()));
         
         SetCommandRequest setCommandRequest = JAXBMarshaller.unmarshallTextMessage(message, SetCommandRequest.class);
@@ -286,7 +299,7 @@ public class RulesAlarmIT extends AbstractRest {
         position.speed = 10;
         FLUXHelper.sendPositionToFluxPlugin(asset, position);
         
-        TextMessage message = (TextMessage) MessageHelper.listenOnEventBus(emailSelector, TIMEOUT);
+        TextMessage message = (TextMessage) messageHelper.listenOnEventBus(emailSelector, TIMEOUT);
         assertThat(message, is(notNullValue()));
         
         SetCommandRequest setCommandRequest = JAXBMarshaller.unmarshallTextMessage(message, SetCommandRequest.class);
@@ -319,7 +332,7 @@ public class RulesAlarmIT extends AbstractRest {
         position.speed = 10.5;
         FLUXHelper.sendPositionToFluxPlugin(asset, position);
         
-        TextMessage message = (TextMessage) MessageHelper.listenOnEventBus(emailSelector, TIMEOUT);
+        TextMessage message = (TextMessage) messageHelper.listenOnEventBus(emailSelector, TIMEOUT);
         assertThat(message, is(notNullValue()));
         
         SetCommandRequest setCommandRequest = JAXBMarshaller.unmarshallTextMessage(message, SetCommandRequest.class);
@@ -352,7 +365,7 @@ public class RulesAlarmIT extends AbstractRest {
         position.speed = 9.5;
         FLUXHelper.sendPositionToFluxPlugin(asset, position);
         
-        TextMessage message = (TextMessage) MessageHelper.listenOnEventBus(emailSelector, TIMEOUT);
+        TextMessage message = (TextMessage) messageHelper.listenOnEventBus(emailSelector, TIMEOUT);
         assertThat(message, is(notNullValue()));
         
         SetCommandRequest setCommandRequest = JAXBMarshaller.unmarshallTextMessage(message, SetCommandRequest.class);
@@ -382,7 +395,7 @@ public class RulesAlarmIT extends AbstractRest {
         LatLong position = new LatLong(54.528352, 12.877972, new Date());
         FLUXHelper.sendPositionToFluxPlugin(asset, position);
         
-        TextMessage message = (TextMessage) MessageHelper.listenOnEventBus(emailSelector, TIMEOUT);
+        TextMessage message = (TextMessage) messageHelper.listenOnEventBus(emailSelector, TIMEOUT);
         assertThat(message, is(notNullValue()));
         
         SetCommandRequest setCommandRequest = JAXBMarshaller.unmarshallTextMessage(message, SetCommandRequest.class);
@@ -412,7 +425,7 @@ public class RulesAlarmIT extends AbstractRest {
         LatLong position = new LatLong(1d, 1d, new Date());
         FLUXHelper.sendPositionToFluxPlugin(asset, position);
         
-        TextMessage message = (TextMessage) MessageHelper.listenOnEventBus(emailSelector, TIMEOUT);
+        TextMessage message = (TextMessage) messageHelper.listenOnEventBus(emailSelector, TIMEOUT);
         assertThat(message, is(notNullValue()));
         
         SetCommandRequest setCommandRequest = JAXBMarshaller.unmarshallTextMessage(message, SetCommandRequest.class);
@@ -444,7 +457,7 @@ public class RulesAlarmIT extends AbstractRest {
         LatLong position = new LatLong(1d, 1d, new Date());
         FLUXHelper.sendPositionToFluxPlugin(asset1, position);
         
-        TextMessage message = (TextMessage) MessageHelper.listenOnEventBus(emailSelector, TIMEOUT);
+        TextMessage message = (TextMessage) messageHelper.listenOnEventBus(emailSelector, TIMEOUT);
         assertThat(message, is(notNullValue()));
         
         SetCommandRequest setCommandRequest = JAXBMarshaller.unmarshallTextMessage(message, SetCommandRequest.class);
@@ -458,7 +471,7 @@ public class RulesAlarmIT extends AbstractRest {
         LatLong position2 = new LatLong(2d, 2d, new Date());
         FLUXHelper.sendPositionToFluxPlugin(asset2, position2);
         
-        TextMessage message2 = (TextMessage) MessageHelper.listenOnEventBus(emailSelector, TIMEOUT);
+        TextMessage message2 = (TextMessage) messageHelper.listenOnEventBus(emailSelector, TIMEOUT);
         assertThat(message2, is(notNullValue()));
         
         SetCommandRequest setCommandRequest2 = JAXBMarshaller.unmarshallTextMessage(message2, SetCommandRequest.class);
@@ -489,7 +502,7 @@ public class RulesAlarmIT extends AbstractRest {
         LatLong position = new LatLong(1d, 1d, new Date());
         FLUXHelper.sendPositionToFluxPlugin(asset, position);
         
-        TextMessage message = (TextMessage) MessageHelper.listenOnEventBus(emailSelector, TIMEOUT);
+        TextMessage message = (TextMessage) messageHelper.listenOnEventBus(emailSelector, TIMEOUT);
         assertThat(message, is(notNullValue()));
         
         SetCommandRequest setCommandRequest = JAXBMarshaller.unmarshallTextMessage(message, SetCommandRequest.class);
@@ -529,7 +542,7 @@ public class RulesAlarmIT extends AbstractRest {
         LatLong position = new LatLong(1d, 1d, new Date());
         FLUXHelper.sendPositionToFluxPlugin(asset, position);
         
-        TextMessage message = (TextMessage) MessageHelper.listenOnEventBus(emailSelector, TIMEOUT);
+        TextMessage message = (TextMessage) messageHelper.listenOnEventBus(emailSelector, TIMEOUT);
         assertThat(message, is(notNullValue()));
         
         SetCommandRequest setCommandRequest = JAXBMarshaller.unmarshallTextMessage(message, SetCommandRequest.class);
@@ -560,7 +573,7 @@ public class RulesAlarmIT extends AbstractRest {
         LatLong position = new LatLong(1d, 1d, new Date());
         FLUXHelper.sendPositionToFluxPlugin(asset, position);
         
-        TextMessage message = (TextMessage) MessageHelper.listenOnEventBus(emailSelector, TIMEOUT);
+        TextMessage message = (TextMessage) messageHelper.listenOnEventBus(emailSelector, TIMEOUT);
         assertThat(message, is(notNullValue()));
         
         SetCommandRequest setCommandRequest = JAXBMarshaller.unmarshallTextMessage(message, SetCommandRequest.class);
@@ -590,7 +603,7 @@ public class RulesAlarmIT extends AbstractRest {
         LatLong position = new LatLong(1d, 1d, new Date());
         FLUXHelper.sendPositionToFluxPlugin(asset, position);
         
-        TextMessage message = (TextMessage) MessageHelper.listenOnEventBus(emailSelector, TIMEOUT);
+        TextMessage message = (TextMessage) messageHelper.listenOnEventBus(emailSelector, TIMEOUT);
         assertThat(message, is(notNullValue()));
         
         SetCommandRequest setCommandRequest = JAXBMarshaller.unmarshallTextMessage(message, SetCommandRequest.class);
@@ -619,7 +632,7 @@ public class RulesAlarmIT extends AbstractRest {
         LatLong position = new LatLong(11d, 1d, new Date());
         FLUXHelper.sendPositionToFluxPlugin(asset, position);
         
-        TextMessage message = (TextMessage) MessageHelper.listenOnEventBus(emailSelector, TIMEOUT);
+        TextMessage message = (TextMessage) messageHelper.listenOnEventBus(emailSelector, TIMEOUT);
         assertThat(message, is(notNullValue()));
         
         SetCommandRequest setCommandRequest = JAXBMarshaller.unmarshallTextMessage(message, SetCommandRequest.class);
@@ -648,7 +661,7 @@ public class RulesAlarmIT extends AbstractRest {
         LatLong position = new LatLong(1d, 11d, new Date());
         FLUXHelper.sendPositionToFluxPlugin(asset, position);
         
-        TextMessage message = (TextMessage) MessageHelper.listenOnEventBus(emailSelector, TIMEOUT);
+        TextMessage message = (TextMessage) messageHelper.listenOnEventBus(emailSelector, TIMEOUT);
         assertThat(message, is(notNullValue()));
         
         SetCommandRequest setCommandRequest = JAXBMarshaller.unmarshallTextMessage(message, SetCommandRequest.class);
@@ -677,7 +690,7 @@ public class RulesAlarmIT extends AbstractRest {
         LatLong position = new LatLong(1d, 1d, new Date());
         FLUXHelper.sendPositionToFluxPlugin(asset, position);
         
-        TextMessage message = (TextMessage) MessageHelper.listenOnEventBus(emailSelector, TIMEOUT);
+        TextMessage message = (TextMessage) messageHelper.listenOnEventBus(emailSelector, TIMEOUT);
         assertThat(message, is(notNullValue()));
         
         SetCommandRequest setCommandRequest = JAXBMarshaller.unmarshallTextMessage(message, SetCommandRequest.class);
@@ -711,7 +724,7 @@ public class RulesAlarmIT extends AbstractRest {
         LatLong positionDnk = new LatLong(56d, 10.5, new Date());
         FLUXHelper.sendPositionToFluxPlugin(asset, positionDnk);
         
-        TextMessage message = (TextMessage) MessageHelper.listenOnEventBus(SELECTOR_FLUX, TIMEOUT);
+        TextMessage message = (TextMessage) messageHelper.listenOnEventBus(SELECTOR_FLUX, TIMEOUT);
         assertThat(message, is(notNullValue()));
         
         SetReportRequest setReportRequest = JAXBMarshaller.unmarshallTextMessage(message, SetReportRequest.class);
@@ -759,7 +772,7 @@ public class RulesAlarmIT extends AbstractRest {
         LatLong positionSwe2 = new LatLong(57.670176, 11.799626, new Date());
         FLUXHelper.sendPositionToFluxPlugin(asset, positionSwe2);
         
-        TextMessage message = (TextMessage) MessageHelper.listenOnEventBus(emailSelector, TIMEOUT);
+        TextMessage message = (TextMessage) messageHelper.listenOnEventBus(emailSelector, TIMEOUT);
         assertThat(message, is(notNullValue()));
         
         SetCommandRequest setCommandRequest = JAXBMarshaller.unmarshallTextMessage(message, SetCommandRequest.class);
@@ -794,7 +807,7 @@ public class RulesAlarmIT extends AbstractRest {
         LatLong positionDnk = new LatLong(56d, 10.5, new Date());
         FLUXHelper.sendPositionToFluxPlugin(asset, positionDnk);
         
-        TextMessage message = (TextMessage) MessageHelper.listenOnEventBus(SELECTOR_FLUX, TIMEOUT);
+        TextMessage message = (TextMessage) messageHelper.listenOnEventBus(SELECTOR_FLUX, TIMEOUT);
         assertThat(message, is(notNullValue()));
         
         SetReportRequest setReportRequest = JAXBMarshaller.unmarshallTextMessage(message, SetReportRequest.class);
