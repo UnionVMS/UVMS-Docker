@@ -17,6 +17,7 @@ import eu.europa.ec.fisheries.uvms.docker.validation.common.MessageHelper;
 import eu.europa.ec.fisheries.uvms.docker.validation.movement.model.IncomingMovement;
 import org.hamcrest.CoreMatchers;
 
+import javax.jms.JMSException;
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.GenericType;
@@ -27,13 +28,11 @@ import java.math.BigInteger;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.*;
-import java.io.IOException;
-import javax.jms.JMSException;
 
 public class MovementHelper extends AbstractHelper {
 
 	private static final String UVMS_MOVEMENT_REQUEST_QUEUE = "UVMSMovementEvent";
-	private static final String TEST_ACK_IGNORE_EXCHANGE_LOG = "Test"; //Exchange is set so that it ignores messages with this response
+	public static final String TEST_ACK_IGNORE_EXCHANGE_LOG = "Test"; //Exchange is set so that it ignores messages with this response
 
 	private Random rnd = new Random();
 

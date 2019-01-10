@@ -1,10 +1,5 @@
 package eu.europa.ec.fisheries.uvms.docker.validation.exchange;
 
-import javax.jms.JMSException;
-
-import org.junit.AfterClass;
-import org.junit.BeforeClass;
-import org.junit.Test;
 import eu.europa.ec.fisheries.schema.exchange.module.v1.ExchangeModuleMethod;
 import eu.europa.ec.fisheries.schema.exchange.module.v1.SetMovementReportRequest;
 import eu.europa.ec.fisheries.schema.exchange.movement.asset.v1.AssetId;
@@ -23,8 +18,11 @@ import eu.europa.ec.fisheries.uvms.docker.validation.mobileterminal.dto.MobileTe
 import eu.europa.ec.fisheries.uvms.docker.validation.movement.LatLong;
 import eu.europa.ec.fisheries.uvms.docker.validation.movement.MovementHelper;
 import eu.europa.ec.fisheries.uvms.docker.validation.movement.model.IncomingMovement;
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
+import javax.jms.JMSException;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import java.io.StringWriter;
@@ -33,8 +31,21 @@ import java.util.List;
 
 public class SetMovementReportRequestJmsIT extends AbstractRest {
 
-	private static MovementHelper movementHelper = new MovementHelper();
+	/** The movement helper. */
+	private static MovementHelper movementHelper;
+	private static MessageHelper messageHelper;
 
+	@BeforeClass
+	public static void setup() throws JMSException {
+		movementHelper = new MovementHelper();
+		messageHelper = new MessageHelper();
+	}
+
+	@AfterClass
+	public static void cleanup() {
+		movementHelper.close();
+		messageHelper.close();
+	}
 	//TODO: Make theses tests actually do something and not just send a message on the queue
 	/**
 	 * Creates the movement request test.
@@ -54,7 +65,7 @@ public class SetMovementReportRequestJmsIT extends AbstractRest {
 		LatLong latLong = movementHelper.createRutt(1).get(0);
 		IncomingMovement createMovementRequest = movementHelper.createIncomingMovement(testAsset, latLong);
 
-		MessageHelper.sendMessage("UVMSExchangeEvent",
+		messageHelper.sendMessage("UVMSExchangeEvent",
 				marshall(createSetReportMovementType(testAsset, assignMobileTerminal, createMovementRequest)));
 	}
 
@@ -68,7 +79,7 @@ public class SetMovementReportRequestJmsIT extends AbstractRest {
 
 		for (LatLong latLong : latLongList) {
 			IncomingMovement createMovementRequest = movementHelper.createIncomingMovement(testAsset, latLong);
-			MessageHelper.sendMessage("UVMSExchangeEvent",
+			messageHelper.sendMessage("UVMSExchangeEvent",
 					marshall(createSetReportMovementType(testAsset, assignMobileTerminal, createMovementRequest)));
 		}
 	}
