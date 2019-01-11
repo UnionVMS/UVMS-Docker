@@ -20,7 +20,7 @@
 		<scm.connection>scm:git:https://github.com/UnionVMS/UVMS-Docker.git</scm.connection>
 		<scm.url>scm:git:https://github.com/UnionVMS/UVMS-Docker.git</scm.url>
 		<focus-pom.java.version>1.8</focus-pom.java.version>
-		<unionvms.project.unionvms.web.version>3.0.38-UVMS</unionvms.project.unionvms.web.version>
+		<unionvms.project.unionvms.web.version>3.0.39-UVMS</unionvms.project.unionvms.web.version>
 		<unionvms.project.mapfishprint.version>3.5</unionvms.project.mapfishprint.version>
 		<unionvms.project.geoserver.version>2.12.3</unionvms.project.geoserver.version>
 		<unionvms.project.reporting.db.module>1.0.4</unionvms.project.reporting.db.module>
