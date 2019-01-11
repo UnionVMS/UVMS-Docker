@@ -28,8 +28,11 @@ import eu.europa.ec.fisheries.uvms.docker.validation.mobileterminal.dto.MobileTe
 import eu.europa.ec.fisheries.uvms.docker.validation.movement.LatLong;
 import eu.europa.ec.fisheries.uvms.docker.validation.movement.MovementHelper;
 import eu.europa.ec.fisheries.uvms.docker.validation.movement.model.IncomingMovement;
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
+import javax.jms.JMSException;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import java.io.StringWriter;

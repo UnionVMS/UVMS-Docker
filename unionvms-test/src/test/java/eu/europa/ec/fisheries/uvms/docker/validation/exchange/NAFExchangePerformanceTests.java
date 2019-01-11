@@ -85,10 +85,9 @@ public class NAFExchangePerformanceTests extends AbstractRest {
     public void createRouteTestTitanic1000PositionsSync() throws Exception{   //Needs a special version of exchange that respond on the sales queue to work!!!!
 
         AssetDTO testAsset = AssetTestHelper.createTestAsset();
-        MobileTerminalDto mobileTerminalType = MobileTerminalTestHelper.createMobileTerminal();
-        MobileTerminalTestHelper.assignMobileTerminal(testAsset, mobileTerminalType);
+        MobileTerminalDto mobileTerminal = MobileTerminalTestHelper.createMobileTerminal();
+        MobileTerminalTestHelper.assignMobileTerminal(testAsset, mobileTerminal);
         List<LatLong> route = movementHelper.createRuttCobhNewYork(1000, 0.06f);                //0.1F = 654 pos    0.01 = 6543     0.07 = 934   0.06 = 1090
-
 
         AssetId assetId = new AssetId();
         assetId.setAssetType(AssetType.VESSEL);

@@ -25,6 +25,9 @@ import eu.europa.ec.fisheries.uvms.docker.validation.movement.model.IncomingMove
 import org.hamcrest.CoreMatchers;
 import org.junit.Test;
 
+import javax.jms.JMSException;
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
 import javax.ws.rs.sse.SseEventSource;
 import java.util.ArrayList;
 import java.util.Collections;

@@ -9,22 +9,9 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
-import java.util.concurrent.atomic.AtomicInteger;
-import java.util.function.Consumer;
 import javax.jms.JMSException;
-import javax.jms.Message;
-import javax.jms.TextMessage;
-import javax.ws.rs.client.WebTarget;
-import javax.ws.rs.sse.InboundSseEvent;
-import javax.ws.rs.sse.SseEventSource;
-import javax.xml.bind.JAXBContext;
-import javax.xml.bind.JAXBException;
 
 import org.jboss.resteasy.client.jaxrs.internal.ClientWebTarget;
-import org.junit.AfterClass;
-import org.junit.BeforeClass;
-import org.junit.Ignore;
-import org.junit.Test;
 import eu.europa.ec.fisheries.schema.mobileterminal.types.v1.MobileTerminalType;
 import eu.europa.ec.fisheries.schema.movement.common.v1.ExceptionType;
 import eu.europa.ec.fisheries.schema.movement.module.v1.GetMovementListByQueryRequest;
@@ -43,6 +30,8 @@ import eu.europa.ec.fisheries.uvms.docker.validation.mobileterminal.dto.MobileTe
 import eu.europa.ec.fisheries.uvms.docker.validation.movement.model.IncomingMovement;
 import org.junit.Ignore;
 import org.junit.Test;
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
 
 import javax.jms.Message;
 import javax.jms.TextMessage;

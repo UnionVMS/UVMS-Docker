@@ -18,8 +18,6 @@ import java.time.ZoneOffset;
 import java.util.Calendar;
 import java.util.Date;
 import javax.jms.JMSException;
-import javax.jms.TextMessage;
-import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;

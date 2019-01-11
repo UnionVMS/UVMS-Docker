@@ -7,9 +7,7 @@ import java.time.ZoneOffset;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
-import java.util.TimeZone;
 import javax.jms.JMSException;
-import javax.jms.TextMessage;
 
 import eu.europa.ec.fisheries.uvms.docker.validation.movement.MovementHelper;
 import org.junit.*;
@@ -32,9 +30,6 @@ import eu.europa.ec.fisheries.uvms.docker.validation.system.helper.CustomRuleBui
 import eu.europa.ec.fisheries.uvms.docker.validation.system.helper.CustomRuleHelper;
 import eu.europa.ec.fisheries.uvms.exchange.model.mapper.ExchangeModuleRequestMapper;
 import eu.europa.ec.fisheries.uvms.exchange.model.mapper.JAXBMarshaller;
-import org.junit.After;
-import org.junit.Assert;
-import org.junit.Test;
 
 import javax.jms.TextMessage;
 import java.time.LocalDateTime;

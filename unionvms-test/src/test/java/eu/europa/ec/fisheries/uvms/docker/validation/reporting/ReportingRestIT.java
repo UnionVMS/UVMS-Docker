@@ -22,7 +22,6 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.TimeZone;
 
-import eu.europa.ec.fisheries.uvms.docker.validation.common.MessageHelper;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
 import org.apache.http.client.ClientProtocolException;
@@ -51,25 +50,10 @@ import eu.europa.ec.fisheries.uvms.reporting.service.entities.Position;
 import eu.europa.ec.fisheries.uvms.reporting.service.entities.Selector;
 import eu.europa.ec.fisheries.uvms.reporting.service.enums.ReportTypeEnum;
 import eu.europa.ec.fisheries.uvms.reporting.service.enums.VelocityType;
-import org.apache.http.HttpResponse;
-import org.apache.http.HttpStatus;
-import org.apache.http.client.ClientProtocolException;
-import org.apache.http.client.fluent.Request;
-import org.junit.BeforeClass;
-import org.junit.Ignore;
-import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.IOException;
-import java.text.SimpleDateFormat;
-import java.util.*;
-import java.util.Map.Entry;
 import javax.jms.JMSException;
-
-/**
- * The Class ReportingRestIT.
- */
 
 public class ReportingRestIT extends AbstractRest {
 
@@ -107,7 +91,8 @@ public class ReportingRestIT extends AbstractRest {
 				assertNotNull(createMovementResponse);
 			}
 		} catch (Exception e) {
-			LOG.error(e.getMessage(), e);
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 	}
 
