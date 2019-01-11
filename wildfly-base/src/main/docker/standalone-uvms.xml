@@ -29,6 +29,7 @@
         <extension module="org.wildfly.extension.ee-security"/>
         <extension module="org.wildfly.extension.elytron"/>
         <extension module="org.wildfly.extension.io"/>
+        <extension module="org.wildfly.extension.messaging-activemq"/>
         <extension module="org.wildfly.extension.microprofile.config-smallrye"/>
         <extension module="org.wildfly.extension.microprofile.health-smallrye"/>
         <extension module="org.wildfly.extension.microprofile.opentracing-smallrye"/>
@@ -119,14 +120,14 @@
                 <append value="true"/>
             </periodic-rotating-file-handler>
 
-                        <logger category="com.arjuna">
+            <logger category="com.arjuna">
                 <level name="WARN"/>
             </logger>
             <logger category="org.apache.tomcat.util.modeler">
                 <level name="WARN"/>
             </logger>
             <logger category="eu.europa.ec.mare.usm.jwt">
-              <level name="INFO"/>
+                <level name="INFO"/>
             </logger>
             <logger category="org.jboss.as.config">
                 <level name="INFO"/>
@@ -213,276 +214,276 @@
                         <password>sa</password>
                     </security>
                 </datasource>
-                <xa-datasource jndi-name="java:/jdbc/uvms_audit" pool-name="jdbc/uvms_audit" enabled="true" use-ccm="true" statistics-enabled="false">
+                <xa-datasource jndi-name="java:/jdbc/uvms_audit" pool-name="jdbc/uvms_audit" enabled="true" use-ccm="true" statistics-enabled="true">
                     <xa-datasource-property name="ServerName">postgres</xa-datasource-property>
-    				<xa-datasource-property name="PortNumber">5432</xa-datasource-property>
-    				<xa-datasource-property name="DatabaseName">db71u</xa-datasource-property>
+                    <xa-datasource-property name="PortNumber">5432</xa-datasource-property>
+                    <xa-datasource-property name="DatabaseName">db71u</xa-datasource-property>
 
                     <driver>postgresql</driver>
                     <xa-pool>
-				        <min-pool-size>2</min-pool-size>
-				        <initial-pool-size>2</initial-pool-size>
-				        <max-pool-size>20</max-pool-size>
-				        <prefill>true</prefill>
-				    </xa-pool>
-				    <statement>
-				        <prepared-statement-cache-size>32</prepared-statement-cache-size>
-				        <track-statements>nowarn</track-statements>
-				    </statement>
-				    <validation>
-				        <valid-connection-checker
-				                class-name="org.jboss.jca.adapters.jdbc.extensions.postgres.PostgreSQLValidConnectionChecker"></valid-connection-checker>
-				        <exception-sorter
-				                class-name="org.jboss.jca.adapters.jdbc.extensions.postgres.PostgreSQLExceptionSorter"></exception-sorter>
-				    </validation>
+                        <min-pool-size>2</min-pool-size>
+                        <initial-pool-size>2</initial-pool-size>
+                        <max-pool-size>20</max-pool-size>
+                        <prefill>true</prefill>
+                    </xa-pool>
+                    <statement>
+                        <prepared-statement-cache-size>32</prepared-statement-cache-size>
+                        <track-statements>nowarn</track-statements>
+                    </statement>
+                    <validation>
+                        <valid-connection-checker
+                                class-name="org.jboss.jca.adapters.jdbc.extensions.postgres.PostgreSQLValidConnectionChecker"></valid-connection-checker>
+                        <exception-sorter
+                                class-name="org.jboss.jca.adapters.jdbc.extensions.postgres.PostgreSQLExceptionSorter"></exception-sorter>
+                    </validation>
                     <security>
                         <user-name>audit</user-name>
                         <password>audit</password>
                     </security>
                 </xa-datasource>
-                <xa-datasource jndi-name="java:/jdbc/uvms_mobterm" pool-name="jdbc/uvms_mobterm" enabled="true" use-ccm="true" statistics-enabled="false">
+                <xa-datasource jndi-name="java:/jdbc/uvms_mobterm" pool-name="jdbc/uvms_mobterm" enabled="true" use-ccm="true" statistics-enabled="true">
                     <xa-datasource-property name="ServerName">postgres</xa-datasource-property>
-    				<xa-datasource-property name="PortNumber">5432</xa-datasource-property>
-    				<xa-datasource-property name="DatabaseName">db71u</xa-datasource-property>
+                    <xa-datasource-property name="PortNumber">5432</xa-datasource-property>
+                    <xa-datasource-property name="DatabaseName">db71u</xa-datasource-property>
 
                     <driver>postgresql</driver>
                     <xa-pool>
-				        <min-pool-size>2</min-pool-size>
-				        <initial-pool-size>2</initial-pool-size>
-				        <max-pool-size>20</max-pool-size>
-				        <prefill>true</prefill>
-				    </xa-pool>
-				    <statement>
-				        <prepared-statement-cache-size>32</prepared-statement-cache-size>
-				        <track-statements>nowarn</track-statements>
-				    </statement>
-				    <validation>
-				        <valid-connection-checker
-				                class-name="org.jboss.jca.adapters.jdbc.extensions.postgres.PostgreSQLValidConnectionChecker"></valid-connection-checker>
-				        <exception-sorter
-				                class-name="org.jboss.jca.adapters.jdbc.extensions.postgres.PostgreSQLExceptionSorter"></exception-sorter>
-				    </validation>
+                        <min-pool-size>2</min-pool-size>
+                        <initial-pool-size>2</initial-pool-size>
+                        <max-pool-size>20</max-pool-size>
+                        <prefill>true</prefill>
+                    </xa-pool>
+                    <statement>
+                        <prepared-statement-cache-size>32</prepared-statement-cache-size>
+                        <track-statements>nowarn</track-statements>
+                    </statement>
+                    <validation>
+                        <valid-connection-checker
+                                class-name="org.jboss.jca.adapters.jdbc.extensions.postgres.PostgreSQLValidConnectionChecker"></valid-connection-checker>
+                        <exception-sorter
+                                class-name="org.jboss.jca.adapters.jdbc.extensions.postgres.PostgreSQLExceptionSorter"></exception-sorter>
+                    </validation>
                     <security>
                         <user-name>mobterm</user-name>
                         <password>mobterm</password>
                     </security>
                 </xa-datasource>
-                <xa-datasource jndi-name="java:/jdbc/uvms_movement" pool-name="jdbc/uvms_movement" enabled="true" use-ccm="true" statistics-enabled="false">
+                <xa-datasource jndi-name="java:/jdbc/uvms_movement" pool-name="jdbc/uvms_movement" enabled="true" use-ccm="true" statistics-enabled="true">
                     <xa-datasource-property name="ServerName">postgres</xa-datasource-property>
-    				<xa-datasource-property name="PortNumber">5432</xa-datasource-property>
-    				<xa-datasource-property name="DatabaseName">db71u</xa-datasource-property>
+                    <xa-datasource-property name="PortNumber">5432</xa-datasource-property>
+                    <xa-datasource-property name="DatabaseName">db71u</xa-datasource-property>
 
                     <driver>postgresql</driver>
                     <xa-pool>
-				        <min-pool-size>10</min-pool-size>
-				        <initial-pool-size>10</initial-pool-size>
-				        <max-pool-size>40</max-pool-size>
-				        <prefill>true</prefill>
-				    </xa-pool>
-				    <statement>
-				        <prepared-statement-cache-size>32</prepared-statement-cache-size>
-				        <track-statements>nowarn</track-statements>
-				    </statement>
-				    <validation>
-				        <valid-connection-checker
-				                class-name="org.jboss.jca.adapters.jdbc.extensions.postgres.PostgreSQLValidConnectionChecker"></valid-connection-checker>
-				        <exception-sorter
-				                class-name="org.jboss.jca.adapters.jdbc.extensions.postgres.PostgreSQLExceptionSorter"></exception-sorter>
-				    </validation>
+                        <min-pool-size>2</min-pool-size>
+                        <initial-pool-size>2</initial-pool-size>
+                        <max-pool-size>20</max-pool-size>
+                        <prefill>true</prefill>
+                    </xa-pool>
+                    <statement>
+                        <prepared-statement-cache-size>32</prepared-statement-cache-size>
+                        <track-statements>nowarn</track-statements>
+                    </statement>
+                    <validation>
+                        <valid-connection-checker
+                                class-name="org.jboss.jca.adapters.jdbc.extensions.postgres.PostgreSQLValidConnectionChecker"></valid-connection-checker>
+                        <exception-sorter
+                                class-name="org.jboss.jca.adapters.jdbc.extensions.postgres.PostgreSQLExceptionSorter"></exception-sorter>
+                    </validation>
                     <security>
                         <user-name>movement</user-name>
                         <password>movement</password>
                     </security>
                 </xa-datasource>
-                <xa-datasource jndi-name="java:/jdbc/uvms_asset" pool-name="jdbc/uvms_asset" enabled="true" use-ccm="true" statistics-enabled="false">
+                <xa-datasource jndi-name="java:/jdbc/uvms_asset" pool-name="jdbc/uvms_asset" enabled="true" use-ccm="true" statistics-enabled="true">
                     <xa-datasource-property name="ServerName">postgres</xa-datasource-property>
-    				<xa-datasource-property name="PortNumber">5432</xa-datasource-property>
-    				<xa-datasource-property name="DatabaseName">db71u</xa-datasource-property>
+                    <xa-datasource-property name="PortNumber">5432</xa-datasource-property>
+                    <xa-datasource-property name="DatabaseName">db71u</xa-datasource-property>
 
                     <driver>postgresql</driver>
                     <xa-pool>
-				        <min-pool-size>2</min-pool-size>
-				        <initial-pool-size>2</initial-pool-size>
-				        <max-pool-size>20</max-pool-size>
-				        <prefill>true</prefill>
-				    </xa-pool>
-				    <statement>
-				        <prepared-statement-cache-size>32</prepared-statement-cache-size>
-				        <track-statements>nowarn</track-statements>
-				    </statement>
-				    <validation>
-				        <valid-connection-checker
-				                class-name="org.jboss.jca.adapters.jdbc.extensions.postgres.PostgreSQLValidConnectionChecker"></valid-connection-checker>
-				        <exception-sorter
-				                class-name="org.jboss.jca.adapters.jdbc.extensions.postgres.PostgreSQLExceptionSorter"></exception-sorter>
-				    </validation>
+                        <min-pool-size>2</min-pool-size>
+                        <initial-pool-size>2</initial-pool-size>
+                        <max-pool-size>20</max-pool-size>
+                        <prefill>true</prefill>
+                    </xa-pool>
+                    <statement>
+                        <prepared-statement-cache-size>32</prepared-statement-cache-size>
+                        <track-statements>nowarn</track-statements>
+                    </statement>
+                    <validation>
+                        <valid-connection-checker
+                                class-name="org.jboss.jca.adapters.jdbc.extensions.postgres.PostgreSQLValidConnectionChecker"></valid-connection-checker>
+                        <exception-sorter
+                                class-name="org.jboss.jca.adapters.jdbc.extensions.postgres.PostgreSQLExceptionSorter"></exception-sorter>
+                    </validation>
                     <security>
                         <user-name>asset</user-name>
                         <password>asset</password>
                     </security>
                 </xa-datasource>
-                <xa-datasource jndi-name="java:/jdbc/uvms_exchange" pool-name="jdbc/uvms_exchange" enabled="true" use-ccm="true" statistics-enabled="false">
+                <xa-datasource jndi-name="java:/jdbc/uvms_exchange" pool-name="jdbc/uvms_exchange" enabled="true" use-ccm="true" statistics-enabled="true">
                     <xa-datasource-property name="ServerName">postgres</xa-datasource-property>
-    				<xa-datasource-property name="PortNumber">5432</xa-datasource-property>
-    				<xa-datasource-property name="DatabaseName">db71u</xa-datasource-property>
+                    <xa-datasource-property name="PortNumber">5432</xa-datasource-property>
+                    <xa-datasource-property name="DatabaseName">db71u</xa-datasource-property>
 
                     <driver>postgresql</driver>
                     <xa-pool>
-				        <min-pool-size>2</min-pool-size>
-				        <initial-pool-size>2</initial-pool-size>
-				        <max-pool-size>20</max-pool-size>
-				        <prefill>true</prefill>
-				    </xa-pool>
-				    <statement>
-				        <prepared-statement-cache-size>32</prepared-statement-cache-size>
-				        <track-statements>nowarn</track-statements>
-				    </statement>
-				    <validation>
-				        <valid-connection-checker
-				                class-name="org.jboss.jca.adapters.jdbc.extensions.postgres.PostgreSQLValidConnectionChecker"></valid-connection-checker>
-				        <exception-sorter
-				                class-name="org.jboss.jca.adapters.jdbc.extensions.postgres.PostgreSQLExceptionSorter"></exception-sorter>
-				    </validation>
+                        <min-pool-size>2</min-pool-size>
+                        <initial-pool-size>2</initial-pool-size>
+                        <max-pool-size>20</max-pool-size>
+                        <prefill>true</prefill>
+                    </xa-pool>
+                    <statement>
+                        <prepared-statement-cache-size>32</prepared-statement-cache-size>
+                        <track-statements>nowarn</track-statements>
+                    </statement>
+                    <validation>
+                        <valid-connection-checker
+                                class-name="org.jboss.jca.adapters.jdbc.extensions.postgres.PostgreSQLValidConnectionChecker"></valid-connection-checker>
+                        <exception-sorter
+                                class-name="org.jboss.jca.adapters.jdbc.extensions.postgres.PostgreSQLExceptionSorter"></exception-sorter>
+                    </validation>
                     <security>
                         <user-name>exchange</user-name>
                         <password>exchange</password>
                     </security>
                 </xa-datasource>
-                <xa-datasource jndi-name="java:/jdbc/uvms_rules" pool-name="jdbc/uvms_rules" enabled="true" use-ccm="true" statistics-enabled="false">
+                <xa-datasource jndi-name="java:/jdbc/uvms_rules" pool-name="jdbc/uvms_rules" enabled="true" use-ccm="true" statistics-enabled="true">
                     <xa-datasource-property name="ServerName">postgres</xa-datasource-property>
-    				<xa-datasource-property name="PortNumber">5432</xa-datasource-property>
-    				<xa-datasource-property name="DatabaseName">db71u</xa-datasource-property>
+                    <xa-datasource-property name="PortNumber">5432</xa-datasource-property>
+                    <xa-datasource-property name="DatabaseName">db71u</xa-datasource-property>
 
                     <driver>postgresql</driver>
                     <xa-pool>
-				        <min-pool-size>2</min-pool-size>
-				        <initial-pool-size>2</initial-pool-size>
-				        <max-pool-size>20</max-pool-size>
-				        <prefill>true</prefill>
-				    </xa-pool>
-				    <statement>
-				        <prepared-statement-cache-size>32</prepared-statement-cache-size>
-				        <track-statements>nowarn</track-statements>
-				    </statement>
-				    <validation>
-				        <valid-connection-checker
-				                class-name="org.jboss.jca.adapters.jdbc.extensions.postgres.PostgreSQLValidConnectionChecker"></valid-connection-checker>
-				        <exception-sorter
-				                class-name="org.jboss.jca.adapters.jdbc.extensions.postgres.PostgreSQLExceptionSorter"></exception-sorter>
-				    </validation>
+                        <min-pool-size>2</min-pool-size>
+                        <initial-pool-size>2</initial-pool-size>
+                        <max-pool-size>20</max-pool-size>
+                        <prefill>true</prefill>
+                    </xa-pool>
+                    <statement>
+                        <prepared-statement-cache-size>32</prepared-statement-cache-size>
+                        <track-statements>nowarn</track-statements>
+                    </statement>
+                    <validation>
+                        <valid-connection-checker
+                                class-name="org.jboss.jca.adapters.jdbc.extensions.postgres.PostgreSQLValidConnectionChecker"></valid-connection-checker>
+                        <exception-sorter
+                                class-name="org.jboss.jca.adapters.jdbc.extensions.postgres.PostgreSQLExceptionSorter"></exception-sorter>
+                    </validation>
                     <security>
                         <user-name>rules</user-name>
                         <password>rules</password>
                     </security>
                 </xa-datasource>
-                <xa-datasource jndi-name="java:jboss/datasources/uvms_usm" pool-name="uvms_usm" enabled="true" use-ccm="true" statistics-enabled="false">
+                <xa-datasource jndi-name="java:jboss/datasources/uvms_usm" pool-name="uvms_usm" enabled="true" use-ccm="true" statistics-enabled="true">
                     <xa-datasource-property name="ServerName">postgres</xa-datasource-property>
-    				<xa-datasource-property name="PortNumber">5432</xa-datasource-property>
-    				<xa-datasource-property name="DatabaseName">db71u</xa-datasource-property>
+                    <xa-datasource-property name="PortNumber">5432</xa-datasource-property>
+                    <xa-datasource-property name="DatabaseName">db71u</xa-datasource-property>
 
                     <driver>postgresql</driver>
                     <xa-pool>
-				        <min-pool-size>2</min-pool-size>
-				        <initial-pool-size>2</initial-pool-size>
-				        <max-pool-size>20</max-pool-size>
-				        <prefill>true</prefill>
-				    </xa-pool>
-				    <statement>
-				        <prepared-statement-cache-size>32</prepared-statement-cache-size>
-				        <track-statements>nowarn</track-statements>
-				    </statement>
-				    <validation>
-				        <valid-connection-checker
-				                class-name="org.jboss.jca.adapters.jdbc.extensions.postgres.PostgreSQLValidConnectionChecker"></valid-connection-checker>
-				        <exception-sorter
-				                class-name="org.jboss.jca.adapters.jdbc.extensions.postgres.PostgreSQLExceptionSorter"></exception-sorter>
-				    </validation>
+                        <min-pool-size>2</min-pool-size>
+                        <initial-pool-size>2</initial-pool-size>
+                        <max-pool-size>20</max-pool-size>
+                        <prefill>true</prefill>
+                    </xa-pool>
+                    <statement>
+                        <prepared-statement-cache-size>32</prepared-statement-cache-size>
+                        <track-statements>nowarn</track-statements>
+                    </statement>
+                    <validation>
+                        <valid-connection-checker
+                                class-name="org.jboss.jca.adapters.jdbc.extensions.postgres.PostgreSQLValidConnectionChecker"></valid-connection-checker>
+                        <exception-sorter
+                                class-name="org.jboss.jca.adapters.jdbc.extensions.postgres.PostgreSQLExceptionSorter"></exception-sorter>
+                    </validation>
                     <security>
                         <user-name>usm</user-name>
                         <password>usm</password>
                     </security>
                 </xa-datasource>
-                <xa-datasource jndi-name="java:/jdbc/USM2" pool-name="jdbc/USM2" enabled="true" use-ccm="true" statistics-enabled="false">
+                <xa-datasource jndi-name="java:/jdbc/USM2" pool-name="jdbc/USM2" enabled="true" use-ccm="true" statistics-enabled="true">
                     <xa-datasource-property name="ServerName">postgres</xa-datasource-property>
-    				<xa-datasource-property name="PortNumber">5432</xa-datasource-property>
-    				<xa-datasource-property name="DatabaseName">db71u</xa-datasource-property>
+                    <xa-datasource-property name="PortNumber">5432</xa-datasource-property>
+                    <xa-datasource-property name="DatabaseName">db71u</xa-datasource-property>
 
                     <driver>postgresql</driver>
                     <xa-pool>
-				        <min-pool-size>2</min-pool-size>
-				        <initial-pool-size>2</initial-pool-size>
-				        <max-pool-size>20</max-pool-size>
-				        <prefill>true</prefill>
-				    </xa-pool>
-				    <statement>
-				        <prepared-statement-cache-size>32</prepared-statement-cache-size>
-				        <track-statements>nowarn</track-statements>
-				    </statement>
-				    <validation>
-				        <valid-connection-checker
-				                class-name="org.jboss.jca.adapters.jdbc.extensions.postgres.PostgreSQLValidConnectionChecker"></valid-connection-checker>
-				        <exception-sorter
-				                class-name="org.jboss.jca.adapters.jdbc.extensions.postgres.PostgreSQLExceptionSorter"></exception-sorter>
-				    </validation>
+                        <min-pool-size>2</min-pool-size>
+                        <initial-pool-size>2</initial-pool-size>
+                        <max-pool-size>20</max-pool-size>
+                        <prefill>true</prefill>
+                    </xa-pool>
+                    <statement>
+                        <prepared-statement-cache-size>32</prepared-statement-cache-size>
+                        <track-statements>nowarn</track-statements>
+                    </statement>
+                    <validation>
+                        <valid-connection-checker
+                                class-name="org.jboss.jca.adapters.jdbc.extensions.postgres.PostgreSQLValidConnectionChecker"></valid-connection-checker>
+                        <exception-sorter
+                                class-name="org.jboss.jca.adapters.jdbc.extensions.postgres.PostgreSQLExceptionSorter"></exception-sorter>
+                    </validation>
                     <security>
                         <user-name>usm</user-name>
                         <password>usm</password>
                     </security>
                 </xa-datasource>
-                <xa-datasource jndi-name="java:jboss/datasources/uvms_spatial" pool-name="uvms_spatial" enabled="true" use-ccm="true" statistics-enabled="false">
+                <xa-datasource jndi-name="java:jboss/datasources/uvms_spatial" pool-name="uvms_spatial" enabled="true" use-ccm="true" statistics-enabled="true">
                     <xa-datasource-property name="ServerName">postgres</xa-datasource-property>
-    				<xa-datasource-property name="PortNumber">5432</xa-datasource-property>
-    				<xa-datasource-property name="DatabaseName">db71u</xa-datasource-property>
+                    <xa-datasource-property name="PortNumber">5432</xa-datasource-property>
+                    <xa-datasource-property name="DatabaseName">db71u</xa-datasource-property>
 
                     <driver>postgresql</driver>
                     <xa-pool>
-				        <min-pool-size>2</min-pool-size>
-				        <initial-pool-size>2</initial-pool-size>
-				        <max-pool-size>20</max-pool-size>
-				        <prefill>true</prefill>
-				    </xa-pool>
-				    <statement>
-				        <prepared-statement-cache-size>32</prepared-statement-cache-size>
-				        <track-statements>nowarn</track-statements>
-				    </statement>
-				    <validation>
-				        <valid-connection-checker
-				                class-name="org.jboss.jca.adapters.jdbc.extensions.postgres.PostgreSQLValidConnectionChecker"></valid-connection-checker>
-				        <exception-sorter
-				                class-name="org.jboss.jca.adapters.jdbc.extensions.postgres.PostgreSQLExceptionSorter"></exception-sorter>
-				    </validation>
+                        <min-pool-size>2</min-pool-size>
+                        <initial-pool-size>2</initial-pool-size>
+                        <max-pool-size>20</max-pool-size>
+                        <prefill>true</prefill>
+                    </xa-pool>
+                    <statement>
+                        <prepared-statement-cache-size>32</prepared-statement-cache-size>
+                        <track-statements>nowarn</track-statements>
+                    </statement>
+                    <validation>
+                        <valid-connection-checker
+                                class-name="org.jboss.jca.adapters.jdbc.extensions.postgres.PostgreSQLValidConnectionChecker"></valid-connection-checker>
+                        <exception-sorter
+                                class-name="org.jboss.jca.adapters.jdbc.extensions.postgres.PostgreSQLExceptionSorter"></exception-sorter>
+                    </validation>
                     <security>
                         <user-name>spatial</user-name>
                         <password>spatial</password>
                     </security>
                 </xa-datasource>
-                <xa-datasource jndi-name="java:jboss/datasources/uvms_reporting" pool-name="uvms_reporting" enabled="true" use-ccm="true" statistics-enabled="false">
+                <xa-datasource jndi-name="java:jboss/datasources/uvms_reporting" pool-name="uvms_reporting" enabled="true" use-ccm="true" statistics-enabled="true">
                     <xa-datasource-property name="ServerName">postgres</xa-datasource-property>
-    				<xa-datasource-property name="PortNumber">5432</xa-datasource-property>
-    				<xa-datasource-property name="DatabaseName">db71u</xa-datasource-property>
+                    <xa-datasource-property name="PortNumber">5432</xa-datasource-property>
+                    <xa-datasource-property name="DatabaseName">db71u</xa-datasource-property>
                     <driver>postgresql</driver>
                     <xa-pool>
-				        <min-pool-size>2</min-pool-size>
-				        <initial-pool-size>2</initial-pool-size>
-				        <max-pool-size>20</max-pool-size>
-				        <prefill>true</prefill>
-				    </xa-pool>
-				    <statement>
-				        <prepared-statement-cache-size>32</prepared-statement-cache-size>
-				        <track-statements>nowarn</track-statements>
-				    </statement>
-				    <validation>
-				        <valid-connection-checker
-				                class-name="org.jboss.jca.adapters.jdbc.extensions.postgres.PostgreSQLValidConnectionChecker"></valid-connection-checker>
-				        <exception-sorter
-				                class-name="org.jboss.jca.adapters.jdbc.extensions.postgres.PostgreSQLExceptionSorter"></exception-sorter>
-				    </validation>
+                        <min-pool-size>2</min-pool-size>
+                        <initial-pool-size>2</initial-pool-size>
+                        <max-pool-size>20</max-pool-size>
+                        <prefill>true</prefill>
+                    </xa-pool>
+                    <statement>
+                        <prepared-statement-cache-size>32</prepared-statement-cache-size>
+                        <track-statements>nowarn</track-statements>
+                    </statement>
+                    <validation>
+                        <valid-connection-checker
+                                class-name="org.jboss.jca.adapters.jdbc.extensions.postgres.PostgreSQLValidConnectionChecker"></valid-connection-checker>
+                        <exception-sorter
+                                class-name="org.jboss.jca.adapters.jdbc.extensions.postgres.PostgreSQLExceptionSorter"></exception-sorter>
+                    </validation>
                     <security>
                         <user-name>reporting</user-name>
                         <password>reporting</password>
                     </security>
                 </xa-datasource>
-                <xa-datasource jndi-name="java:/jdbc/uvms_movementrules" pool-name="jdbc/uvms_movementrules" enabled="true" use-ccm="true" statistics-enabled="false">
+                <xa-datasource jndi-name="java:/jdbc/uvms_movementrules" pool-name="jdbc/uvms_movementrules" enabled="true" use-ccm="true" statistics-enabled="true">
                     <xa-datasource-property name="ServerName">postgres</xa-datasource-property>
                     <xa-datasource-property name="PortNumber">5432</xa-datasource-property>
                     <xa-datasource-property name="DatabaseName">db71u</xa-datasource-property>
@@ -505,115 +506,115 @@
                         <password>movementrules</password>
                     </security>
                 </xa-datasource>
-                <xa-datasource jndi-name="java:jboss/datasources/uvms_activity" pool-name="uvms_activity" enabled="true" use-ccm="true" statistics-enabled="false">
-                     <xa-datasource-property name="ServerName">postgres</xa-datasource-property>
-                     <xa-datasource-property name="PortNumber">5432</xa-datasource-property>
-                     <xa-datasource-property name="DatabaseName">db71u</xa-datasource-property>
-
-                     <driver>postgresql</driver>
-                     <xa-pool>
-                         <min-pool-size>2</min-pool-size>
-                         <initial-pool-size>2</initial-pool-size>
-                         <max-pool-size>20</max-pool-size>
-                         <prefill>true</prefill>
-                     </xa-pool>
-                     <statement>
-				        <prepared-statement-cache-size>32</prepared-statement-cache-size>
-				        <track-statements>nowarn</track-statements>
-				     </statement>
-                     <validation>
-                         <valid-connection-checker
-                                 class-name="org.jboss.jca.adapters.jdbc.extensions.postgres.PostgreSQLValidConnectionChecker"></valid-connection-checker>
-                         <exception-sorter
-                                 class-name="org.jboss.jca.adapters.jdbc.extensions.postgres.PostgreSQLExceptionSorter"></exception-sorter>
-                     </validation>
-                     <security>
-                         <user-name>activity</user-name>
-                         <password>activity</password>
-                     </security>
-                 </xa-datasource>
-                 <xa-datasource jndi-name="java:jboss/datasources/uvms_mdr" pool-name="uvms_mdr" enabled="true" use-ccm="true" statistics-enabled="false">
-                     <xa-datasource-property name="ServerName">postgres</xa-datasource-property>
-                     <xa-datasource-property name="PortNumber">5432</xa-datasource-property>
-                     <xa-datasource-property name="DatabaseName">db71u</xa-datasource-property>
-
-                     <driver>postgresql</driver>
-                     <xa-pool>
-                         <min-pool-size>2</min-pool-size>
-                         <initial-pool-size>2</initial-pool-size>
-                         <max-pool-size>20</max-pool-size>
-                         <prefill>true</prefill>
-                     </xa-pool>
-                     <statement>
-				        <prepared-statement-cache-size>32</prepared-statement-cache-size>
-				        <track-statements>nowarn</track-statements>
-				     </statement>
-                     <validation>
-                         <valid-connection-checker
-                                 class-name="org.jboss.jca.adapters.jdbc.extensions.postgres.PostgreSQLValidConnectionChecker"></valid-connection-checker>
-                         <exception-sorter
-                                 class-name="org.jboss.jca.adapters.jdbc.extensions.postgres.PostgreSQLExceptionSorter"></exception-sorter>
-                     </validation>
-                     <security>
-                         <user-name>mdr</user-name>
-                         <password>mdr</password>
-                     </security>
-                 </xa-datasource>
-                 <xa-datasource jndi-name="java:jboss/datasources/uvms_sales" pool-name="uvms_sales" enabled="true" use-ccm="true" statistics-enabled="false">
-                     <xa-datasource-property name="ServerName">postgres</xa-datasource-property>
-                     <xa-datasource-property name="PortNumber">5432</xa-datasource-property>
-                     <xa-datasource-property name="DatabaseName">db71u</xa-datasource-property>
-
-                     <driver>postgresql</driver>
-                     <xa-pool>
-                         <min-pool-size>2</min-pool-size>
-                         <initial-pool-size>2</initial-pool-size>
-                         <max-pool-size>20</max-pool-size>
-                         <prefill>true</prefill>
-                     </xa-pool>
-                     <statement>
-				        <prepared-statement-cache-size>32</prepared-statement-cache-size>
-				        <track-statements>nowarn</track-statements>
-				     </statement>
-                     <validation>
-                         <valid-connection-checker
-                                 class-name="org.jboss.jca.adapters.jdbc.extensions.postgres.PostgreSQLValidConnectionChecker"></valid-connection-checker>
-                         <exception-sorter
-                                 class-name="org.jboss.jca.adapters.jdbc.extensions.postgres.PostgreSQLExceptionSorter"></exception-sorter>
-                     </validation>
-                     <security>
-                         <user-name>sales</user-name>
-                         <password>sales</password>
-                     </security>
-                </xa-datasource>
-                <xa-datasource jndi-name="java:/jdbc/uvms_config" pool-name="jdbc/uvms_config" enabled="true" use-ccm="true" statistics-enabled="false">
+                <xa-datasource jndi-name="java:jboss/datasources/uvms_activity" pool-name="uvms_activity" enabled="true" use-ccm="true" statistics-enabled="true">
                     <xa-datasource-property name="ServerName">postgres</xa-datasource-property>
-    				<xa-datasource-property name="PortNumber">5432</xa-datasource-property>
-    				<xa-datasource-property name="DatabaseName">db71u</xa-datasource-property>
+                    <xa-datasource-property name="PortNumber">5432</xa-datasource-property>
+                    <xa-datasource-property name="DatabaseName">db71u</xa-datasource-property>
 
                     <driver>postgresql</driver>
                     <xa-pool>
-				        <min-pool-size>2</min-pool-size>
-				        <initial-pool-size>2</initial-pool-size>
-				        <max-pool-size>20</max-pool-size>
-				        <prefill>true</prefill>
-				    </xa-pool>
-				    <statement>
-				        <prepared-statement-cache-size>32</prepared-statement-cache-size>
-				        <track-statements>nowarn</track-statements>
-				    </statement>
-				    <validation>
-				        <valid-connection-checker
-				                class-name="org.jboss.jca.adapters.jdbc.extensions.postgres.PostgreSQLValidConnectionChecker"></valid-connection-checker>
-				        <exception-sorter
-				                class-name="org.jboss.jca.adapters.jdbc.extensions.postgres.PostgreSQLExceptionSorter"></exception-sorter>
-				    </validation>
+                        <min-pool-size>2</min-pool-size>
+                        <initial-pool-size>2</initial-pool-size>
+                        <max-pool-size>20</max-pool-size>
+                        <prefill>true</prefill>
+                    </xa-pool>
+                    <statement>
+                        <prepared-statement-cache-size>32</prepared-statement-cache-size>
+                        <track-statements>nowarn</track-statements>
+                    </statement>
+                    <validation>
+                        <valid-connection-checker
+                                class-name="org.jboss.jca.adapters.jdbc.extensions.postgres.PostgreSQLValidConnectionChecker"></valid-connection-checker>
+                        <exception-sorter
+                                class-name="org.jboss.jca.adapters.jdbc.extensions.postgres.PostgreSQLExceptionSorter"></exception-sorter>
+                    </validation>
+                    <security>
+                        <user-name>activity</user-name>
+                        <password>activity</password>
+                    </security>
+                </xa-datasource>
+                <xa-datasource jndi-name="java:jboss/datasources/uvms_mdr" pool-name="uvms_mdr" enabled="true" use-ccm="true" statistics-enabled="true">
+                    <xa-datasource-property name="ServerName">postgres</xa-datasource-property>
+                    <xa-datasource-property name="PortNumber">5432</xa-datasource-property>
+                    <xa-datasource-property name="DatabaseName">db71u</xa-datasource-property>
+
+                    <driver>postgresql</driver>
+                    <xa-pool>
+                        <min-pool-size>2</min-pool-size>
+                        <initial-pool-size>2</initial-pool-size>
+                        <max-pool-size>20</max-pool-size>
+                        <prefill>true</prefill>
+                    </xa-pool>
+                    <statement>
+                        <prepared-statement-cache-size>32</prepared-statement-cache-size>
+                        <track-statements>nowarn</track-statements>
+                    </statement>
+                    <validation>
+                        <valid-connection-checker
+                                class-name="org.jboss.jca.adapters.jdbc.extensions.postgres.PostgreSQLValidConnectionChecker"></valid-connection-checker>
+                        <exception-sorter
+                                class-name="org.jboss.jca.adapters.jdbc.extensions.postgres.PostgreSQLExceptionSorter"></exception-sorter>
+                    </validation>
+                    <security>
+                        <user-name>mdr</user-name>
+                        <password>mdr</password>
+                    </security>
+                </xa-datasource>
+                <xa-datasource jndi-name="java:jboss/datasources/uvms_sales" pool-name="uvms_sales" enabled="true" use-ccm="true" statistics-enabled="true">
+                    <xa-datasource-property name="ServerName">postgres</xa-datasource-property>
+                    <xa-datasource-property name="PortNumber">5432</xa-datasource-property>
+                    <xa-datasource-property name="DatabaseName">db71u</xa-datasource-property>
+
+                    <driver>postgresql</driver>
+                    <xa-pool>
+                        <min-pool-size>2</min-pool-size>
+                        <initial-pool-size>2</initial-pool-size>
+                        <max-pool-size>20</max-pool-size>
+                        <prefill>true</prefill>
+                    </xa-pool>
+                    <statement>
+                        <prepared-statement-cache-size>32</prepared-statement-cache-size>
+                        <track-statements>nowarn</track-statements>
+                    </statement>
+                    <validation>
+                        <valid-connection-checker
+                                class-name="org.jboss.jca.adapters.jdbc.extensions.postgres.PostgreSQLValidConnectionChecker"></valid-connection-checker>
+                        <exception-sorter
+                                class-name="org.jboss.jca.adapters.jdbc.extensions.postgres.PostgreSQLExceptionSorter"></exception-sorter>
+                    </validation>
+                    <security>
+                        <user-name>sales</user-name>
+                        <password>sales</password>
+                    </security>
+                </xa-datasource>
+                <xa-datasource jndi-name="java:/jdbc/uvms_config" pool-name="jdbc/uvms_config" enabled="true" use-ccm="true" statistics-enabled="true">
+                    <xa-datasource-property name="ServerName">postgres</xa-datasource-property>
+                    <xa-datasource-property name="PortNumber">5432</xa-datasource-property>
+                    <xa-datasource-property name="DatabaseName">db71u</xa-datasource-property>
+
+                    <driver>postgresql</driver>
+                    <xa-pool>
+                        <min-pool-size>2</min-pool-size>
+                        <initial-pool-size>2</initial-pool-size>
+                        <max-pool-size>20</max-pool-size>
+                        <prefill>true</prefill>
+                    </xa-pool>
+                    <statement>
+                        <prepared-statement-cache-size>32</prepared-statement-cache-size>
+                        <track-statements>nowarn</track-statements>
+                    </statement>
+                    <validation>
+                        <valid-connection-checker
+                                class-name="org.jboss.jca.adapters.jdbc.extensions.postgres.PostgreSQLValidConnectionChecker"></valid-connection-checker>
+                        <exception-sorter
+                                class-name="org.jboss.jca.adapters.jdbc.extensions.postgres.PostgreSQLExceptionSorter"></exception-sorter>
+                    </validation>
                     <security>
                         <user-name>config</user-name>
                         <password>config</password>
                     </security>
                 </xa-datasource>
-                <xa-datasource jndi-name="java:jboss/datasources/uvms_subscription" pool-name="uvms_subscription" enabled="true" use-ccm="true" statistics-enabled="false">
+                <xa-datasource jndi-name="java:jboss/datasources/uvms_subscription" pool-name="uvms_subscription" enabled="true" use-ccm="true" statistics-enabled="true">
                     <xa-datasource-property name="ServerName">postgres</xa-datasource-property>
                     <xa-datasource-property name="PortNumber">5432</xa-datasource-property>
                     <xa-datasource-property name="DatabaseName">db71u</xa-datasource-property>
@@ -651,9 +652,9 @@
         </subsystem>
         <subsystem xmlns="urn:jboss:domain:discovery:1.0"/>
         <subsystem xmlns="urn:jboss:domain:ee:4.0">
-	        <global-modules>
-	        	<module name="javax.jms.api" slot="main"/>
-	    	</global-modules>
+            <global-modules>
+                <module name="javax.jms.api" slot="main"/>
+            </global-modules>
 
             <spec-descriptor-property-replacement>false</spec-descriptor-property-replacement>
             <concurrent>
@@ -686,7 +687,7 @@
                 <singleton default-access-timeout="15000"/>
             </session-bean>
             <mdb>
-                <resource-adapter-ref resource-adapter-name="activemq-rar.rar"/>
+                <resource-adapter-ref resource-adapter-name="${ejb.resource-adapter-name:activemq-ra.rar}"/>
                 <bean-instance-pool-ref pool-name="mdb-strict-max-pool"/>
             </mdb>
             <pools>
@@ -905,16 +906,94 @@
                 <smtp-server outbound-socket-binding-ref="mail-smtp"/>
             </mail-session>
         </subsystem>
+        <subsystem xmlns="urn:jboss:domain:messaging-activemq:4.0">
+            <server name="default">
+                <management jmx-enabled="true"/>
+                <security-setting name="#">
+                    <role name="guest" send="true" consume="true" create-non-durable-queue="true" delete-non-durable-queue="true" create-durable-queue="true" delete-durable-queue="true" />
+                </security-setting>
+                <address-setting name="#" dead-letter-address="jms.queue.DLQ" expiry-address="jms.queue.ExpiryQueue" max-size-bytes="10485760" page-size-bytes="2097152" message-counter-history-day-limit="10"/>
+                <http-connector name="http-connector" socket-binding="http" endpoint="http-acceptor"/>
+                <http-connector name="http-connector-throughput" socket-binding="http" endpoint="http-acceptor-throughput">
+                    <param name="batch-delay" value="50"/>
+                </http-connector>
+                <in-vm-connector name="in-vm" server-id="0">
+                    <param name="buffer-pooling" value="false"/>
+                </in-vm-connector>
+                <remote-connector name="remote-connector" socket-binding="messaging" />
+                <http-acceptor name="http-acceptor" http-listener="default"/>
+                <http-acceptor name="http-acceptor-throughput" http-listener="default">
+                    <param name="batch-delay" value="50"/>
+                    <param name="direct-deliver" value="false"/>
+                </http-acceptor>
+                <in-vm-acceptor name="in-vm" server-id="0">
+                    <param name="buffer-pooling" value="false"/>
+                </in-vm-acceptor>
+                <remote-acceptor name="remote-acceptor" socket-binding="messaging" />
+                <remote-acceptor name="remote-acceptor-throughput" socket-binding="messaging-throughput">
+                    <param name="batch-delay" value="50"/>
+                    <param name="direct-deliver" value="false"/>
+                </remote-acceptor>
+                <jms-queue name="ExpiryQueue" entries="java:/jms/queue/ExpiryQueue"/>
+                <jms-queue name="DLQ" entries="java:/jms/queue/DLQ"/>
+                <connection-factory name="InVmConnectionFactory" entries="java:/ConnectionFactory" connectors="in-vm" compress-large-messages="true" thread-pool-max-size="60"/>
+                <connection-factory name="RemoteConnectionFactory" entries="java:jboss/exported/jms/RemoteConnectionFactory" connectors="http-connector"/>
+                <pooled-connection-factory name="activemq-ra" entries="java:/JmsXA java:jboss/DefaultJMSConnectionFactory" connectors="in-vm" transaction="xa" compress-large-messages="true" thread-pool-max-size="60" />
+
+                <jms-queue name="UVMSReporting" entries="jms/queue/UVMSReporting java:jboss/exported/jms/queue/UVMSReporting" />
+                <jms-queue name="UVMSReportingEvent" entries="jms/queue/UVMSReportingEvent java:jboss/exported/jms/queue/UVMSReportingEvent" />
+                <jms-queue name="UVMSConfig" entries="jms/queue/UVMSConfig java:jboss/exported/jms/queue/UVMSConfig" />
+                <jms-queue name="UVMSConfigEvent" entries="jms/queue/UVMSConfigEvent java:jboss/exported/jms/queue/UVMSConfigEvent" />
+                <jms-queue name="UVMSSpatial" entries="jms/queue/UVMSSpatial java:jboss/exported/jms/queue/UVMSSpatial" />
+                <jms-queue name="UVMSSpatialEvent" entries="jms/queue/UVMSSpatialEvent java:jboss/exported/jms/queue/UVMSSpatialEvent" />
+                <jms-queue name="UVMSExchange" entries="jms/queue/UVMSExchange java:jboss/exported/jms/queue/UVMSExchange" />
+                <jms-queue name="UVMSExchangeEvent" entries="jms/queue/UVMSExchangeEvent java:jboss/exported/jms/queue/UVMSExchangeEvent" />
+                <jms-queue name="UVMSMovement" entries="jms/queue/UVMSMovement java:jboss/exported/jms/queue/UVMSMovement" />
+                <jms-queue name="UVMSMovementEvent" entries="jms/queue/UVMSMovementEvent java:jboss/exported/jms/queue/UVMSMovementEvent" />
+                <jms-queue name="UVMSMobileTerminal" entries="jms/queue/UVMSMobileTerminal java:jboss/exported/jms/queue/UVMSMobileTerminal" />
+                <jms-queue name="UVMSMobileTerminalEvent" entries="jms/queue/UVMSMobileTerminalEvent java:jboss/exported/jms/queue/UVMSMobileTerminalEvent" />
+                <jms-queue name="UVMSRules" entries="jms/queue/UVMSRules java:jboss/exported/jms/queue/UVMSRules" />
+                <jms-queue name="UVMSRulesEvent" entries="jms/queue/UVMSRulesEvent java:jboss/exported/jms/queue/UVMSRulesEvent" />
+                <jms-queue name="UVMSMovementRules" entries="jms/queue/UVMSMovementRules java:jboss/exported/jms/queue/UVMSMovementRules" />
+                <jms-queue name="UVMSMovementRulesEvent" entries="jms/queue/UVMSMovementRulesEvent java:jboss/exported/jms/queue/UVMSMovementRulesEvent" />
+                <jms-queue name="UVMSUser" entries="jms/queue/UVMSUser java:jboss/exported/jms/queue/UVMSUser" />
+                <jms-queue name="UVMSUserEvent" entries="jms/queue/UVMSUserEvent java:jboss/exported/jms/queue/UVMSUserEvent" />
+                <jms-queue name="UVMSActivity" entries="jms/queue/UVMSActivity java:jboss/exported/jms/queue/UVMSActivity" />
+                <jms-queue name="UVMSActivityEvent" entries="jms/queue/UVMSActivityEvent java:jboss/exported/jms/queue/UVMSActivityEvent" />
+                <jms-queue name="UVMSSubscription" entries="jms/queue/UVMSSubscription java:jboss/exported/jms/queue/UVMSSubscription" />
+                <jms-queue name="UVMSSubscriptionEvent" entries="jms/queue/UVMSSubscriptionEvent java:jboss/exported/jms/queue/UVMSSubscriptionEvent" />
+                <jms-queue name="UVMSAsset" entries="jms/queue/UVMSAsset java:jboss/exported/jms/queue/UVMSAsset" />
+                <jms-queue name="UVMSAssetEvent" entries="jms/queue/UVMSAssetEvent java:jboss/exported/jms/queue/UVMSAssetEvent" />
+                <jms-queue name="UVMSAssetNational" entries="jms/queue/UVMSAssetNational java:jboss/exported/jms/queue/UVMSAssetNational" />
+                <jms-queue name="UVMSAssetXEU" entries="jms/queue/UVMSAssetXEU java:jboss/exported/jms/queue/UVMSAssetXEU" />
+                <jms-queue name="UVMSAudit" entries="jms/queue/UVMSAudit java:jboss/exported/jms/queue/UVMSAudit" />
+                <jms-queue name="UVMSAuditEvent" entries="jms/queue/UVMSAuditEvent java:jboss/exported/jms/queue/UVMSAuditEvent" />
+                <jms-queue name="UVMSMdr" entries="jms/queue/UVMSMdr java:jboss/exported/jms/queue/UVMSMdr" />
+                <jms-queue name="UVMSMdrEvent" entries="jms/queue/UVMSMdrEvent java:jboss/exported/jms/queue/UVMSMdrEvent" />
+                <jms-queue name="UVMSSales" entries="jms/queue/UVMSSales java:jboss/exported/jms/queue/UVMSSales" />
+                <jms-queue name="UVMSSalesEvent" entries="jms/queue/UVMSSalesEvent java:jboss/exported/jms/queue/UVMSSalesEvent" />
+                <jms-queue name="USM4UVMS" entries="jms/queue/USM4UVMS java:jboss/exported/jms/queue/USM4UVMS" />
+                <jms-queue name="UVMSPluginBridge" entries="jms/queue/UVMSPluginBridge java:jboss/exported/jms/queue/UVMSPluginBridge" />
+                <jms-queue name="UVMSMdrPluginEvent" entries="jms/queue/UVMSMdrPluginEvent java:jboss/exported/jms/queue/UVMSMdrPluginEvent" />
+                <jms-queue name="UVMSActivityPluginEvent" entries="jms/queue/UVMSActivityPluginEvent java:jboss/exported/jms/queue/UVMSActivityPluginEvent" />
+                <jms-queue name="IntegrationTestsResponseQueue" entries="jms/queue/IntegrationTestsResponseQueue java:jboss/exported/jms/queue/IntegrationTestsResponseQueue" />
+                <jms-queue name="UVMSInmarsatCFailedReport" entries="jms/queue/UVMSInmarsatCFailedReport java:jboss/exported/jms/queue/UVMSInmarsatCFailedReport" />
+                <jms-topic name="ConfigStatus" entries="jms/topic/ConfigStatus java:jboss/exported/jms/topic/ConfigStatus" />
+                <jms-topic name="EventBus" entries="jms/topic/EventBus java:jboss/exported/jms/topic/EventBus" />
+
+            </server>
+        </subsystem>
+
         <subsystem xmlns="urn:wildfly:microprofile-config-smallrye:1.0"/>
         <subsystem xmlns="urn:wildfly:microprofile-health-smallrye:1.0" security-enabled="false"/>
         <subsystem xmlns="urn:wildfly:microprofile-opentracing-smallrye:1.0"/>
         <subsystem xmlns="urn:jboss:domain:naming:2.0">
             <remote-naming/>
             <bindings>
-            	<simple name="java:global/asset_endpoint" value="http://localhost:8080/unionvms/asset/rest"/>
-            	<simple name="java:global/spatial_endpoint" value="http://localhost:8080/unionvms/spatial"/>
-            	<simple name="java:global/movement-rules_endpoint" value="http://localhost:8080/unionvms/movement-rules/rest"/>
-                <simple name="java:global/exchange_endpoint" value="http://localhost:8080/unionvms/exchange/rest"/>
+                <simple name="java:global/asset_endpoint" value="http://localhost:8080/unionvms/asset/rest"/>
+                <simple name="java:global/spatial_endpoint" value="http://localhost:8080/unionvms/spatial"/>
+                <simple name="java:global/movement-rules_endpoint" value="http://localhost:8080/unionvms/movement-rules/rest"/>
+                <simple name="java:global/exchange_endpoint" value="http://localhost:8080/unionvms/exchange/unsecured/rest"/>
             </bindings>
         </subsystem>
         <subsystem xmlns="urn:jboss:domain:pojo:1.0"/>
@@ -922,296 +1001,8 @@
             <endpoint/>
             <http-connector name="http-remoting-connector" connector-ref="default" security-realm="ApplicationRealm"/>
         </subsystem>
-        <subsystem xmlns="urn:jboss:domain:resource-adapters:5.0">
-           <resource-adapters>
-                <resource-adapter id="activemq-rar.rar">
-                    <archive>
-                        activemq-rar.rar
-                    </archive>
-                    <transaction-support>XATransaction</transaction-support>
-                    <config-property name="Password">
-                        defaultPassword
-                    </config-property>
-                    <config-property name="UserName">
-                        defaultUser
-                    </config-property>
-                    <config-property name="ServerUrl">
-                        failover:(tcp://activemq:61616?socketBufferSize=131072)?jms.rmIdFromConnectionId=true&amp;maxReconnectAttempts=-1
-                    </config-property>
-                    <connection-definitions>
-                        <connection-definition class-name="org.apache.activemq.ra.ActiveMQManagedConnectionFactory" jndi-name="java:/ConnectionFactory" enabled="true" pool-name="ConnectionFactory">
-                            <xa-pool>
-                                <min-pool-size>8</min-pool-size>
-                                <max-pool-size>64</max-pool-size>
-                                <prefill>false</prefill>
-                                <is-same-rm-override>false</is-same-rm-override>
-                            </xa-pool>
-                            <recovery>
-                                <recover-credential>
-                                    <user-name>defaultUser</user-name>
-                                    <password>defaultPassword</password>
-                                </recover-credential>
-                            </recovery>
-                        </connection-definition>
-                    </connection-definitions>
-                    <admin-objects>
-                        <admin-object class-name="org.apache.activemq.command.ActiveMQQueue" jndi-name="java:/jms/queue/UVMSReportingEvent" use-java-context="true" pool-name="UVMSReportingEvent">
-                            <config-property name="PhysicalName">
-                                UVMSReportingEvent
-                            </config-property>
-                        </admin-object>
-                        <admin-object class-name="org.apache.activemq.command.ActiveMQQueue" jndi-name="java:/jms/queue/UVMSConfig" use-java-context="true" pool-name="UVMSConfig">
-                            <config-property name="PhysicalName">
-                                UVMSConfig
-                            </config-property>
-                        </admin-object>
-                        <admin-object class-name="org.apache.activemq.command.ActiveMQQueue" jndi-name="java:/jms/queue/UVMSAssetNational" use-java-context="true" pool-name="UVMSAssetNational">
-                            <config-property name="PhysicalName">
-                                UVMSAssetNational
-                            </config-property>
-                        </admin-object>
-                        <admin-object class-name="org.apache.activemq.command.ActiveMQQueue" jndi-name="java:/jms/queue/UVMSRulesModel" use-java-context="true" pool-name="UVMSRulesModel">
-                            <config-property name="PhysicalName">
-                                UVMSRulesModel
-                            </config-property>
-                        </admin-object>
-                        <admin-object class-name="org.apache.activemq.command.ActiveMQQueue" jndi-name="java:/jms/queue/DLQ" use-java-context="true" pool-name="DLQ">
-                            <config-property name="PhysicalName">
-                                DLQ
-                            </config-property>
-                        </admin-object>
-                        <admin-object class-name="org.apache.activemq.command.ActiveMQQueue" jndi-name="java:/jms/queue/UVMSSpatial" use-java-context="true" pool-name="UVMSSpatial">
-                            <config-property name="PhysicalName">
-                                UVMSSpatial
-                            </config-property>
-                        </admin-object>
-                        <admin-object class-name="org.apache.activemq.command.ActiveMQQueue" jndi-name="java:/jms/queue/UVMSConfigEvent" use-java-context="true" pool-name="UVMSConfigEvent">
-                            <config-property name="PhysicalName">
-                                UVMSConfigEvent
-                            </config-property>
-                        </admin-object>
-                        <admin-object class-name="org.apache.activemq.command.ActiveMQQueue" jndi-name="java:/jms/queue/UVMSExchangeEvent" use-java-context="true" pool-name="UVMSExchangeEvent">
-                            <config-property name="PhysicalName">
-                                UVMSExchangeEvent
-                            </config-property>
-                        </admin-object>
-                        <admin-object class-name="org.apache.activemq.command.ActiveMQQueue" jndi-name="java:/jms/queue/UVMSMovement" use-java-context="true" pool-name="UVMSMovement">
-                            <config-property name="PhysicalName">
-                                UVMSMovement
-                            </config-property>
-                        </admin-object>
-                        <admin-object class-name="org.apache.activemq.command.ActiveMQQueue" jndi-name="java:/jms/queue/UVMSMobileTerminalEvent" use-java-context="true" pool-name="UVMSMobileTerminalEvent">
-                            <config-property name="PhysicalName">
-                                UVMSMobileTerminalEvent
-                            </config-property>
-                        </admin-object>
-                        <admin-object class-name="org.apache.activemq.command.ActiveMQQueue" jndi-name="java:/jms/queue/UVMSAssetModel" use-java-context="true" pool-name="UVMSAssetModel">
-                            <config-property name="PhysicalName">
-                                UVMSAssetModel
-                            </config-property>
-                        </admin-object>
-                        <admin-object class-name="org.apache.activemq.command.ActiveMQQueue" jndi-name="java:/jms/queue/UVMSRulesEvent" use-java-context="true" pool-name="UVMSRulesEvent">
-                            <config-property name="PhysicalName">
-                                UVMSRulesEvent
-                            </config-property>
-                        </admin-object>
-                        <admin-object class-name="org.apache.activemq.command.ActiveMQQueue" jndi-name="java:/jms/queue/UVMSMovementRulesEvent" use-java-context="true" pool-name="UVMSMovementRulesEvent">
-                            <config-property name="PhysicalName">
-                                UVMSMovementRulesEvent
-                            </config-property>
-                        </admin-object>
-                        <admin-object class-name="org.apache.activemq.command.ActiveMQQueue" jndi-name="java:/jms/queue/UVMSUser" use-java-context="true" pool-name="UVMSUser">
-                            <config-property name="PhysicalName">
-                                UVMSUser
-                            </config-property>
-                        </admin-object>
-                        <admin-object class-name="org.apache.activemq.command.ActiveMQQueue" jndi-name="java:/jms/queue/UVMSAssetCache" use-java-context="true" pool-name="UVMSAssetCache">
-                            <config-property name="PhysicalName">
-                                UVMSAssetCache
-                            </config-property>
-                        </admin-object>
-                        <admin-object class-name="org.apache.activemq.command.ActiveMQQueue" jndi-name="java:/jms/queue/UVMSExchangeModel" use-java-context="true" pool-name="UVMSExchangeModel">
-                            <config-property name="PhysicalName">
-                                UVMSExchangeModel
-                            </config-property>
-                        </admin-object>
-                        <admin-object class-name="org.apache.activemq.command.ActiveMQQueue" jndi-name="java:/jms/queue/TestResponseQueue" use-java-context="true" pool-name="TestResponseQueue">
-                            <config-property name="PhysicalName">
-                                TestResponseQueue
-                            </config-property>
-                        </admin-object>
-                        <admin-object class-name="org.apache.activemq.command.ActiveMQQueue" jndi-name="java:/jms/queue/UVMSMobileTerminal" use-java-context="true" pool-name="UVMSMobileTerminal">
-                            <config-property name="PhysicalName">
-                                UVMSMobileTerminal
-                            </config-property>
-                        </admin-object>
-                        <admin-object class-name="org.apache.activemq.command.ActiveMQQueue" jndi-name="java:/jms/queue/UVMSActivityEvent" use-java-context="true" pool-name="UVMSActivityEvent">
-                            <config-property name="PhysicalName">
-                                UVMSActivityEvent
-                            </config-property>
-                        </admin-object>
-                        <admin-object class-name="org.apache.activemq.command.ActiveMQQueue" jndi-name="java:/jms/queue/UVMSActivity" use-java-context="true" pool-name="UVMSActivity">
-                            <config-property name="PhysicalName">
-                                UVMSActivity
-                            </config-property>
-                        </admin-object>
-                        <admin-object class-name="org.apache.activemq.command.ActiveMQQueue" jndi-name="java:/jms/queue/UVMSMobileTerminalNational" use-java-context="true" pool-name="UVMSMobileTerminalNational">
-                            <config-property name="PhysicalName">
-                                UVMSMobileTerminalNational
-                            </config-property>
-                        </admin-object>
-                        <admin-object class-name="org.apache.activemq.command.ActiveMQQueue" jndi-name="java:/jms/queue/UVMSRules" use-java-context="true" pool-name="UVMSRules">
-                            <config-property name="PhysicalName">
-                                UVMSRules
-                            </config-property>
-                        </admin-object>
-                        <admin-object class-name="org.apache.activemq.command.ActiveMQQueue" jndi-name="java:/jms/queue/UVMSMovementRules" use-java-context="true" pool-name="UVMSMovementRules">
-                            <config-property name="PhysicalName">
-                                UVMSMovementRules
-                            </config-property>
-                        </admin-object>
-                        <admin-object class-name="org.apache.activemq.command.ActiveMQQueue" jndi-name="java:/jms/queue/UVMSUserEvent" use-java-context="true" pool-name="UVMSUserEvent">
-                            <config-property name="PhysicalName">
-                                UVMSUserEvent
-                            </config-property>
-                        </admin-object>
-                        <admin-object class-name="org.apache.activemq.command.ActiveMQTopic" jndi-name="java:/jms/topic/ConfigStatus" use-java-context="true" pool-name="ConfigStatus">
-                            <config-property name="PhysicalName">
-                                ConfigStatus
-                            </config-property>
-                        </admin-object>
-                        <admin-object class-name="org.apache.activemq.command.ActiveMQTopic" jndi-name="java:/jms/topic/EventBus" use-java-context="true" pool-name="EventBus">
-                            <config-property name="PhysicalName">
-                                EventBus
-                            </config-property>
-                        </admin-object>
-                        <admin-object class-name="org.apache.activemq.command.ActiveMQQueue" jndi-name="java:/jms/queue/UVMSUpload" use-java-context="true" pool-name="UVMSUpload">
-                            <config-property name="PhysicalName">
-                                UVMSUpload
-                            </config-property>
-                        </admin-object>
-                        <admin-object class-name="org.apache.activemq.command.ActiveMQQueue" jndi-name="java:/jms/queue/UVMSSubscriptionEvent" use-java-context="true" pool-name="UVMSSubscriptionEvent">
-                            <config-property name="PhysicalName">
-                                UVMSSubscriptionEvent
-                            </config-property>
-                        </admin-object>
-                        <admin-object class-name="org.apache.activemq.command.ActiveMQQueue" jndi-name="java:/jms/queue/UVMSAssetEvent" use-java-context="true" pool-name="UVMSAssetEvent">
-                            <config-property name="PhysicalName">
-                                UVMSAssetEvent
-                            </config-property>
-                        </admin-object>
-                        <admin-object class-name="org.apache.activemq.command.ActiveMQQueue" jndi-name="java:/jms/queue/UVMSExchange" use-java-context="true" pool-name="UVMSExchange">
-                            <config-property name="PhysicalName">
-                                UVMSExchange
-                            </config-property>
-                        </admin-object>
-                        <admin-object class-name="org.apache.activemq.command.ActiveMQQueue" jndi-name="java:/jms/queue/UVMSSpatialEvent" use-java-context="true" pool-name="UVMSSpatialEvent">
-                            <config-property name="PhysicalName">
-                                UVMSSpatialEvent
-                            </config-property>
-                        </admin-object>
-                        <admin-object class-name="org.apache.activemq.command.ActiveMQQueue" jndi-name="java:/jms/queue/USM4UVMS" use-java-context="true" pool-name="UVMS4UVMS">
-                            <config-property name="PhysicalName">
-                                USM4UVMS
-                            </config-property>
-                        </admin-object>
-                        <admin-object class-name="org.apache.activemq.command.ActiveMQQueue" jndi-name="java:/jms/queue/UVMSMovementEvent" use-java-context="true" pool-name="UVMSMovementEvent">
-                            <config-property name="PhysicalName">
-                                UVMSMovementEvent
-                            </config-property>
-                        </admin-object>
-                        <admin-object class-name="org.apache.activemq.command.ActiveMQQueue" jndi-name="java:/jms/queue/ExpiryQueue" use-java-context="true" pool-name="ExpiryQueue">
-                            <config-property name="PhysicalName">
-                                ExpiryQueue
-                            </config-property>
-                        </admin-object>
-                        <admin-object class-name="org.apache.activemq.command.ActiveMQQueue" jndi-name="java:/jms/queue/UVMSUploadEvent" use-java-context="true" pool-name="UVMSUploadEvent">
-                            <config-property name="PhysicalName">
-                                UVMSUploadEvent
-                            </config-property>
-                        </admin-object>
-                        <admin-object class-name="org.apache.activemq.command.ActiveMQQueue" jndi-name="java:/jms/queue/UVMSAssetXEU" use-java-context="true" pool-name="UVMSAssetXEU">
-                            <config-property name="PhysicalName">
-                                UVMSAssetXEU
-                            </config-property>
-                        </admin-object>
-                        <admin-object class-name="org.apache.activemq.command.ActiveMQQueue" jndi-name="java:/jms/queue/UVMSAsset" use-java-context="true" pool-name="UVMSAsset">
-                            <config-property name="PhysicalName">
-                                UVMSAsset
-                            </config-property>
-                        </admin-object>
-                        <admin-object class-name="org.apache.activemq.command.ActiveMQQueue" jndi-name="java:/jms/queue/UVMSSubscription" use-java-context="true" pool-name="UVMSSubscription">
-                            <config-property name="PhysicalName">
-                                UVMSSubscription
-                            </config-property>
-                        </admin-object>
-                        <admin-object class-name="org.apache.activemq.command.ActiveMQQueue" jndi-name="java:/jms/queue/UVMSAudit" use-java-context="true" pool-name="UVMSAudit">
-                            <config-property name="PhysicalName">
-                                UVMSAudit
-                            </config-property>
-                        </admin-object>
-                        <admin-object class-name="org.apache.activemq.command.ActiveMQQueue" jndi-name="java:/jms/queue/UVMSReporting" use-java-context="true" pool-name="UVMSReporting">
-                            <config-property name="PhysicalName">
-                                UVMSReporting
-                            </config-property>
-                        </admin-object>
-                        <admin-object class-name="org.apache.activemq.command.ActiveMQQueue" jndi-name="java:/jms/queue/UVMSAuditEvent" use-java-context="true" pool-name="UVMSAuditEvent">
-                            <config-property name="PhysicalName">
-                                UVMSAuditEvent
-                            </config-property>
-                        </admin-object>
-                         <admin-object class-name="org.apache.activemq.command.ActiveMQQueue" jndi-name="java:/jms/queue/UVMSMdr" use-java-context="true" pool-name="UVMSMdr">
-                            <config-property name="PhysicalName">
-                                UVMSMdr
-                            </config-property>
-                        </admin-object>
-                        <admin-object class-name="org.apache.activemq.command.ActiveMQQueue" jndi-name="java:/jms/queue/UVMSMdrEvent" use-java-context="true" pool-name="UVMSMdrEvent">
-                            <config-property name="PhysicalName">
-                                UVMSMdrEvent
-                            </config-property>
-                        </admin-object>
-                        <admin-object class-name="org.apache.activemq.command.ActiveMQQueue" jndi-name="java:/jms/queue/UVMSSalesEvent" use-java-context="true" pool-name="UVMSSalesEvent">
-                            <config-property name="PhysicalName">
-                                UVMSSalesEvent
-                            </config-property>
-                        </admin-object>
-                        <admin-object class-name="org.apache.activemq.command.ActiveMQQueue" jndi-name="java:/jms/queue/UVMSSales" use-java-context="true" pool-name="UVMSSales">
-                            <config-property name="PhysicalName">
-                                UVMSSales
-                            </config-property>
-                        </admin-object>
-						<admin-object class-name="org.apache.activemq.command.ActiveMQQueue"
-							jndi-name="java:/jms/queue/UVMSPluginBridge" use-java-context="true"
-							pool-name="UVMSPluginBridge">
-							<config-property name="PhysicalName">
-								UVMSPluginBridge
-							</config-property>
-						</admin-object>
-						<admin-object class-name="org.apache.activemq.command.ActiveMQQueue"
-							jndi-name="java:/jms/queue/UVMSMdrPluginEvent" use-java-context="true"
-							pool-name="UVMSMdrPluginEvent">
-							<config-property name="PhysicalName">
-								UVMSMdrPluginEvent
-							</config-property>
-						</admin-object>
-						<admin-object class-name="org.apache.activemq.command.ActiveMQQueue"
-							jndi-name="java:/jms/queue/UVMSActivityPluginEvent" use-java-context="true"
-							pool-name="UVMSFAPluginEvent">
-							<config-property name="PhysicalName">
-								UVMSFAPluginEvent
-							</config-property>
-						</admin-object>
-                        <admin-object class-name="org.apache.activemq.command.ActiveMQQueue"
-                                      jndi-name="java:/jms/queue/UVMSInmarsatCFailedReport"
-                                      use-java-context="true"
-                                      pool-name="UVMSInmarsatCFailedReport">
-                            <config-property name="PhysicalName">UVMSInmarsatCFailedReport</config-property>
-                        </admin-object>
-                    </admin-objects>
-                </resource-adapter>
-            </resource-adapters>
-        </subsystem>
         <subsystem xmlns="urn:jboss:domain:request-controller:1.0"/>
+        <subsystem xmlns="urn:jboss:domain:resource-adapters:5.0"/>
         <subsystem xmlns="urn:jboss:domain:sar:1.0"/>
         <subsystem xmlns="urn:jboss:domain:security-manager:1.0">
             <deployment-permissions>
@@ -1318,6 +1109,8 @@
         <socket-binding name="iiop-ssl" interface="unsecure" port="3529"/>
         <socket-binding name="txn-recovery-environment" port="4712"/>
         <socket-binding name="txn-status-manager" port="4713"/>
+        <socket-binding name="messaging" port="5445"/>
+        <socket-binding name="messaging-throughput" port="5455"/>
         <outbound-socket-binding name="mail-smtp">
             <remote-destination host="localhost" port="25"/>
         </outbound-socket-binding>

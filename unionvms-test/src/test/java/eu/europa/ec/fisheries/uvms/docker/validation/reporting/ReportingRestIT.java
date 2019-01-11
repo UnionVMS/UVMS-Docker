@@ -13,6 +13,24 @@ copy of the GNU General Public License along with the IFDM Suite. If not, see <h
 */
 package eu.europa.ec.fisheries.uvms.docker.validation.reporting;
 
+import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.TimeZone;
+
+import eu.europa.ec.fisheries.uvms.docker.validation.common.MessageHelper;
+import org.apache.http.HttpResponse;
+import org.apache.http.HttpStatus;
+import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.fluent.Request;
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
+import org.junit.Ignore;
+import org.junit.Test;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
@@ -47,14 +65,28 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.Map.Entry;
+import javax.jms.JMSException;
+
+/**
+ * The Class ReportingRestIT.
+ */
 
 public class ReportingRestIT extends AbstractRest {
 
 	private static final Logger LOG  = LoggerFactory.getLogger(ReportingRestIT.class.getSimpleName());
 
 	/** The movement helper. */
-	private static MovementHelper movementHelper = new MovementHelper();
+	private static MovementHelper movementHelper;
 
+	@BeforeClass
+	public static void setup() throws JMSException {
+		movementHelper = new MovementHelper();
+	}
+
+	@AfterClass
+	public static void cleanup() {
+		movementHelper.close();
+	}
 	/** The test asset. */
 	private static AssetDTO testAsset =null;
 	

@@ -1,5 +1,31 @@
 package eu.europa.ec.fisheries.uvms.docker.validation.movement;
 
+import java.io.StringReader;
+import java.io.StringWriter;
+import java.math.BigInteger;
+import java.time.Duration;
+import java.time.Instant;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.function.Consumer;
+import javax.jms.JMSException;
+import javax.jms.Message;
+import javax.jms.TextMessage;
+import javax.ws.rs.client.WebTarget;
+import javax.ws.rs.sse.InboundSseEvent;
+import javax.ws.rs.sse.SseEventSource;
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBException;
+
+import org.jboss.resteasy.client.jaxrs.internal.ClientWebTarget;
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
+import org.junit.Ignore;
+import org.junit.Test;
+import eu.europa.ec.fisheries.schema.mobileterminal.types.v1.MobileTerminalType;
 import eu.europa.ec.fisheries.schema.movement.common.v1.ExceptionType;
 import eu.europa.ec.fisheries.schema.movement.module.v1.GetMovementListByQueryRequest;
 import eu.europa.ec.fisheries.schema.movement.module.v1.GetMovementListByQueryResponse;
@@ -38,7 +64,20 @@ import java.util.function.Consumer;
 
 public class MovementPerformanceIT extends AbstractRest {
 
-    private static MovementHelper movementHelper = new MovementHelper();
+    private static MovementHelper movementHelper;
+    private static MessageHelper messageHelper;
+
+    @BeforeClass
+    public static void setup() throws JMSException {
+        movementHelper = new MovementHelper();
+        messageHelper = new MessageHelper();
+    }
+
+    @AfterClass
+    public static void cleanup() {
+        movementHelper.close();
+        messageHelper.close();
+    }
 
     @Test
     @Ignore
@@ -204,7 +243,7 @@ public class MovementPerformanceIT extends AbstractRest {
     @Test
     @Ignore
     public void camelErrorHandlingTest() throws Exception {
-        Message message = MessageHelper.getMessageResponse("UVMSMovementEvent","");
+        Message message = messageHelper.getMessageResponse("UVMSMovementEvent","");
 
 
         ExceptionType response = unMarshallErrorResponse(message);
@@ -418,7 +457,7 @@ public class MovementPerformanceIT extends AbstractRest {
 
         String inputString = marshall(input);
 
-        Message output = MessageHelper.getMessageResponse("UVMSMovementEvent",inputString);
+        Message output = messageHelper.getMessageResponse("UVMSMovementEvent",inputString);
         assertNotNull(output);
 
         GetMovementListByQueryResponse response = unMarshallCreateMovementBatchResponse(output);

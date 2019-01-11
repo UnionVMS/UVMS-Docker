@@ -13,7 +13,8 @@ package eu.europa.ec.fisheries.uvms.docker.validation.common;
 
 import java.io.Closeable;
 import java.io.IOException;
-import java.util.UUID;
+import java.util.HashMap;
+import java.util.Map;
 import javax.jms.Connection;
 import javax.jms.ConnectionFactory;
 import javax.jms.JMSException;
@@ -21,41 +22,47 @@ import javax.jms.Message;
 import javax.jms.MessageConsumer;
 import javax.jms.Session;
 import javax.jms.Topic;
-import org.apache.activemq.ActiveMQConnectionFactory;
+import org.apache.activemq.artemis.api.core.TransportConfiguration;
+import org.apache.activemq.artemis.api.jms.ActiveMQJMSClient;
+import org.apache.activemq.artemis.api.jms.JMSFactoryType;
+import org.apache.activemq.artemis.core.remoting.impl.netty.NettyConnectorFactory;
 
 public class TopicListener implements Closeable {
 
     private final long TIMEOUT = 10000;
 
-    private final ConnectionFactory connectionFactory = new ActiveMQConnectionFactory("tcp://localhost:61616");
+    private final ConnectionFactory connectionFactory;
     private Connection connection;
     private Session session;
     private Topic eventBus;
-    private MessageConsumer durableSubscriber;
+    private MessageConsumer subscriber;
     
     public TopicListener(String selector) throws Exception {
-        registerDurableSubscriber(selector);
+        Map<String, Object> params = new HashMap<>();
+        params.put("host", "localhost");
+        params.put("port", 5445);
+        TransportConfiguration transportConfiguration = new TransportConfiguration(NettyConnectorFactory.class.getName(), params);
+        connectionFactory = ActiveMQJMSClient.createConnectionFactoryWithoutHA(JMSFactoryType.CF,transportConfiguration);
+        connection = connectionFactory.createConnection("test", "test");
+        connection.start();
+        registerSubscriber(selector);
     }
     
-    public void registerDurableSubscriber(String selector) throws Exception {
-        connection = connectionFactory.createConnection();
-        connection.setClientID(UUID.randomUUID().toString());
-        connection.start();
+    public void registerSubscriber(String selector) throws Exception {
         session = connection.createSession(false, Session.AUTO_ACKNOWLEDGE);
-        eventBus = session.createTopic("EventBus");
-        durableSubscriber = session.createDurableSubscriber(eventBus, "TestSubscriber", selector, true);
+        eventBus = session.createTopic("jms.topic.EventBus");
+        subscriber = session.createConsumer(eventBus, selector, true);
     }
     
     public Message listenOnEventBus() throws Exception {
-        return durableSubscriber.receive(TIMEOUT);
+        return subscriber.receive(TIMEOUT);
     }
 
     @Override
     public void close() throws IOException {
         try {
-            durableSubscriber.close();
+            subscriber.close();
             if (session != null) {
-                session.unsubscribe("TestSubscriber");
                 session.close();
             }
             if (connection != null) {

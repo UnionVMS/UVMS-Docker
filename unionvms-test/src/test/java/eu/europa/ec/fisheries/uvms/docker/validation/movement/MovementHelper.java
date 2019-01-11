@@ -1,5 +1,24 @@
 package eu.europa.ec.fisheries.uvms.docker.validation.movement;
 
+import java.io.IOException;
+import java.math.BigInteger;
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Date;
+import java.util.List;
+import java.util.Random;
+import java.util.UUID;
+import javax.jms.JMSException;
+import javax.ws.rs.client.Entity;
+import javax.ws.rs.client.WebTarget;
+import javax.ws.rs.core.GenericType;
+import javax.ws.rs.core.HttpHeaders;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.sse.SseEventSource;
+
+import org.hamcrest.CoreMatchers;
 import com.peertopark.java.geocalc.Coordinate;
 import com.peertopark.java.geocalc.DegreeCoordinate;
 import com.peertopark.java.geocalc.EarthCalc;
@@ -34,6 +53,16 @@ public class MovementHelper extends AbstractHelper {
 	private static final String TEST_ACK_IGNORE_EXCHANGE_LOG = "Test"; //Exchange is set so that it ignores messages with this response
 
 	private Random rnd = new Random();
+
+	private MessageHelper messageHelper;
+
+	public MovementHelper() throws JMSException {
+		messageHelper = new MessageHelper();
+	}
+
+	public void close() {
+		messageHelper.close();
+	}
 
 	public IncomingMovement createIncomingMovement(AssetDTO testAsset, LatLong latlong) {
 
@@ -281,7 +310,7 @@ public class MovementHelper extends AbstractHelper {
 	}
 
 	public MovementDto createMovement(IncomingMovement incomingMovement) throws Exception {
-		MessageHelper.sendMessageWithFunctionAndGroup(UVMS_MOVEMENT_REQUEST_QUEUE, OBJECT_MAPPER.writeValueAsString(incomingMovement), "CREATE", incomingMovement.getAssetCFR());
+		messageHelper.sendMessageWithFunctionAndGroup(UVMS_MOVEMENT_REQUEST_QUEUE, OBJECT_MAPPER.writeValueAsString(incomingMovement), "CREATE", incomingMovement.getAssetCFR());
 		MovementHelper.pollMovementCreated();
 		List<MovementDto> latestMovements = MovementHelper.getLatestMovements(Arrays.asList(incomingMovement.getAssetHistoryId()));
 		assertThat(latestMovements.size(), CoreMatchers.is(1));
@@ -289,7 +318,7 @@ public class MovementHelper extends AbstractHelper {
 	}
 
 	public void createMovementDontWaitForResponse(AssetDTO testAsset, IncomingMovement incomingMovement) throws Exception {
-	    MessageHelper.sendMessageAndReturnMessageId(UVMS_MOVEMENT_REQUEST_QUEUE, OBJECT_MAPPER.writeValueAsString(incomingMovement), testAsset.getId().toString(), "CREATE");
+	    messageHelper.sendMessageAndReturnMessageId(UVMS_MOVEMENT_REQUEST_QUEUE, OBJECT_MAPPER.writeValueAsString(incomingMovement), testAsset.getId().toString(), "CREATE");
 	}
 
 	public static MovementType getMovementById(String guid) {
@@ -339,7 +368,7 @@ public class MovementHelper extends AbstractHelper {
     }
 
 	public void createMovementBatch(List<IncomingMovement> createMovementBatchRequest) throws Exception {
-        MessageHelper.sendMessageWithFunction(UVMS_MOVEMENT_REQUEST_QUEUE, OBJECT_MAPPER.writeValueAsString(createMovementBatchRequest), "CREATE_BATCH");
+        messageHelper.sendMessageWithFunction(UVMS_MOVEMENT_REQUEST_QUEUE, OBJECT_MAPPER.writeValueAsString(createMovementBatchRequest), "CREATE_BATCH");
     }
 
 

@@ -24,6 +24,8 @@ import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
+
+import eu.europa.ec.fisheries.uvms.docker.validation.system.helper.FLUXHelper;
 import org.hamcrest.CoreMatchers;
 import org.junit.Test;
 import eu.europa.ec.fisheries.schema.movementrules.search.v1.AlarmListCriteria;
@@ -52,7 +54,7 @@ public class MovementAlarmRestIT extends AbstractRest {
 	@Test
 	public void getNumberOfOpenAlarmReportsTest() throws Exception {
 	    AssetDTO asset = AssetTestHelper.createBasicAsset();
-        NAFHelper.sendPositionToNAFPlugin(new LatLong(56d, 11d, new Date()), asset);
+        NAFHelper.sendPositionToNAFPlugin(new LatLong(56d, 11d, new Date(System.currentTimeMillis() + 10000)), asset);
 	    
 	    Long response = getWebTarget()
                 .path("movement/rest/alarms/countopen")
@@ -143,7 +145,7 @@ public class MovementAlarmRestIT extends AbstractRest {
 	    ZonedDateTime timestamp = ZonedDateTime.now(ZoneOffset.UTC);
 
         AssetDTO asset = AssetTestHelper.createBasicAsset();
-        NAFHelper.sendPositionToNAFPlugin(new LatLong(56d, 11d, new Date()), asset);
+        FLUXHelper.sendPositionToFluxPlugin(asset,new LatLong(56d, 11d, new Date(System.currentTimeMillis() + 50000)));
 	    
         AlarmReport alarmReport = SanityRuleHelper.getLatestOpenAlarmReportSince(timestamp);
 	    assertThat(alarmReport.getStatus(), CoreMatchers.is("OPEN"));
@@ -165,15 +167,14 @@ public class MovementAlarmRestIT extends AbstractRest {
 
         // Asset does not exist
         AssetDTO asset = AssetTestHelper.createBasicAsset();
-        LatLong position = new LatLong(42d, 41d, new Date());
-        NAFHelper.sendPositionToNAFPlugin(position, asset);
+        LatLong position = new LatLong(42d, 41d, new Date(System.currentTimeMillis() + 5000));
+        FLUXHelper.sendPositionToFluxPlugin(asset,position);
         
         AlarmReport alarmReport = SanityRuleHelper.getLatestOpenAlarmReportSince(timestamp);
         assertThat(alarmReport.getStatus(), CoreMatchers.is("OPEN"));
         
         // Create asset
-        AssetDTO createdAsset = AssetTestHelper.createAsset(asset);
-        
+        Thread.sleep(5000);   //This is here bc we used to have this test working on asset not existing. When we introduced the functionallity of creating assets on unknown using time in future and sleep became the workaround
         Response response = getWebTarget()
                 .path("movement/rest/alarms/reprocess")
                 .request(MediaType.APPLICATION_JSON)
@@ -183,7 +184,7 @@ public class MovementAlarmRestIT extends AbstractRest {
         AlarmReport alarmReportAfter = getAlarmReportByGuid(alarmReport.getId().toString());
         assertThat(alarmReportAfter.getStatus(), CoreMatchers.is("REPROCESSED"));
         
-        List<MovementDto> latestMovements = MovementHelper.getLatestMovements(Arrays.asList(createdAsset.getHistoryId().toString()));
+        List<MovementDto> latestMovements = MovementHelper.getLatestMovements(Arrays.asList(alarmReport.getIncomingMovement().getAssetHistoryId()));
         assertThat(latestMovements.size(), CoreMatchers.is(1));
         assertThat(latestMovements.get(0).getLatitude(), CoreMatchers.is(position.latitude));
         assertThat(latestMovements.get(0).getLongitude(), CoreMatchers.is(position.longitude));
@@ -195,8 +196,8 @@ public class MovementAlarmRestIT extends AbstractRest {
 
         // Asset does not exist
         AssetDTO asset = AssetTestHelper.createBasicAsset();
-        LatLong position = new LatLong(42d, 41d, new Date());
-        NAFHelper.sendPositionToNAFPlugin(position, asset);
+        LatLong position = new LatLong(42d, 41d, new Date(System.currentTimeMillis() + 5000));
+        FLUXHelper.sendPositionToFluxPlugin(asset,position);
         
         AlarmReport alarmReport = SanityRuleHelper.getLatestOpenAlarmReportSince(timestamp);
         assertThat(alarmReport.getStatus(), CoreMatchers.is("OPEN"));
@@ -221,13 +222,13 @@ public class MovementAlarmRestIT extends AbstractRest {
         ZonedDateTime timestamp = ZonedDateTime.now(ZoneOffset.UTC);
 
 		AssetDTO asset = AssetTestHelper.createBasicAsset();
-        NAFHelper.sendPositionToNAFPlugin(new LatLong(56d, 11d, new Date()), asset);
+        FLUXHelper.sendPositionToFluxPlugin(asset, new LatLong(56d, 11d, new Date(System.currentTimeMillis() + 5000)));
 
         SanityRuleHelper.pollAlarmReportCreated();
         
         AlarmReport alarm = SanityRuleHelper.getLatestOpenAlarmReportSince(timestamp);
         assertThat(alarm.getIncomingMovement(), CoreMatchers.is(CoreMatchers.notNullValue()));
-        assertThat(alarm.getIncomingMovement().getAssetName(), CoreMatchers.is(asset.getName()));
+        assertThat(alarm.getIncomingMovement().getAssetCFR(), CoreMatchers.is(asset.getCfr()));
 	}
 	
 	private AlarmReport getAlarmReportByGuid(String guid) {

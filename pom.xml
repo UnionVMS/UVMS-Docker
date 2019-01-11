@@ -11,7 +11,7 @@
 
 	<groupId>eu.europa.ec.fisheries.uvms.docker</groupId>
 	<artifactId>uvms-docker</artifactId>
-	<version>3.30.5.w14-SNAPSHOT</version>
+	<version>3.31.1.w14-SNAPSHOT</version>
 	<packaging>pom</packaging>
 	<name>uvms-docker</name>
 
@@ -28,14 +28,14 @@
 		<unionvms.project.user.module>2.0.11</unionvms.project.user.module>
 		<unionvms.project.rules.module>3.0.31</unionvms.project.rules.module>
 		<unionvms.project.movementrules.module>2.0.3</unionvms.project.movementrules.module>
-		<unionvms.project.movement.module>5.1.8-UVMS</unionvms.project.movement.module>
-		<unionvms.project.exchange.module>4.0.36-UVMS</unionvms.project.exchange.module>
+		<unionvms.project.movement.module>5.1.10-UVMS</unionvms.project.movement.module>
+		<unionvms.project.exchange.module>4.0.38-UVMS</unionvms.project.exchange.module>
 		<unionvms.project.reporting.module>1.1.5-UVMS</unionvms.project.reporting.module>
 		<unionvms.project.spatial.module>1.1.10</unionvms.project.spatial.module>
 		<unionvms.project.subscription.module>1.3</unionvms.project.subscription.module>
 		<unionvms.project.config.module>4.0.10</unionvms.project.config.module>
 		<unionvms.project.audit.module>4.0.9</unionvms.project.audit.module>
-		<unionvms.project.asset.module>6.0.19</unionvms.project.asset.module>
+		<unionvms.project.asset.module>6.0.20</unionvms.project.asset.module>
 		<unionvms.project.activity.module>1.1.6</unionvms.project.activity.module>
 		<unionvms.project.mdr.module>1.0.10</unionvms.project.mdr.module>
 		<unionvms.project.plugins.naf>3.0.11</unionvms.project.plugins.naf>
@@ -44,6 +44,7 @@
 		<unionvms.project.plugins.siriusone>3.0.7</unionvms.project.plugins.siriusone>
 		<unionvms.project.plugins.fluxActivity>1.0.6</unionvms.project.plugins.fluxActivity>
 		<unionvms.project.plugins.mdr>1.0.2</unionvms.project.plugins.mdr>
+		<unionvms.project.artemis-console>2.6.3</unionvms.project.artemis-console>
 	</properties>
 
 
@@ -397,7 +398,6 @@
 	</dependencyManagement>
 
 	<modules>
-		<module>amq</module>
 		<module>postgres-base</module>
 		<module>postgres-release</module>
 		<module>hibernate-spatial-4x-to-5x-wrapper</module>
