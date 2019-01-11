@@ -13,45 +13,29 @@ copy of the GNU General Public License along with the IFDM Suite. If not, see <h
 */
 package eu.europa.ec.fisheries.uvms.docker.validation.asset;
 
-import java.time.OffsetDateTime;
-import java.time.ZoneOffset;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
-import org.apache.http.HttpResponse;
-import org.apache.http.client.fluent.Request;
-import org.junit.Ignore;
-import org.junit.Test;
-import eu.europa.ec.fisheries.uvms.asset.client.model.AssetDTO;
-import eu.europa.ec.fisheries.uvms.asset.client.model.AssetListResponse;
-import eu.europa.ec.fisheries.uvms.asset.client.model.AssetQuery;
-import eu.europa.ec.fisheries.uvms.asset.client.model.ContactInfo;
-import eu.europa.ec.fisheries.uvms.asset.client.model.Note;
+import eu.europa.ec.fisheries.uvms.asset.client.model.*;
 import eu.europa.ec.fisheries.uvms.asset.model.constants.AuditOperationEnum;
 import eu.europa.ec.fisheries.uvms.commons.date.DateUtils;
 import eu.europa.ec.fisheries.uvms.docker.validation.common.AbstractRest;
+import org.junit.Ignore;
+import org.junit.Test;
 
-/**
- * The Class AssetRestIT.
- */
+import javax.ws.rs.client.Entity;
+import javax.ws.rs.core.HttpHeaders;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
+import java.time.OffsetDateTime;
+import java.time.ZoneOffset;
+import java.util.*;
+
 public class AssetRestIT extends AbstractRest {
 
-	/**
-	 * Gets the asset list test.
-	 *
-	 * @return the asset list test
-	 * @throws Exception
-	 *             the exception
-	 */
 	@Test
-	public void getAssetListTest() throws Exception {
+	public void getAssetListTest() {
 		AssetDTO asset = AssetTestHelper.createTestAsset();
 		
 		AssetQuery assetQuery = AssetTestHelper.getBasicAssetQuery();
-		assetQuery.setFlagState(Arrays.asList(asset.getFlagStateCode()));
+		assetQuery.setFlagState(Collections.singletonList(asset.getFlagStateCode()));
 		
 		AssetListResponse assetListResponse = AssetTestHelper.assetListQuery(assetQuery);
 		List<AssetDTO> assets = assetListResponse.getAssetList();
@@ -59,7 +43,7 @@ public class AssetRestIT extends AbstractRest {
 	}
 	
 	@Test
-	public void getAssetListMultipleAssetsGuidsTest() throws Exception {
+	public void getAssetListMultipleAssetsGuidsTest() {
 		AssetDTO asset1 = AssetTestHelper.createTestAsset();
 		AssetDTO asset2 = AssetTestHelper.createTestAsset();
 		
@@ -74,9 +58,9 @@ public class AssetRestIT extends AbstractRest {
 	}
 
 	@Test
-	public void getAssetListItemCountTest() throws Exception {
+	public void getAssetListItemCountTest() {
 	    AssetQuery assetQuery = AssetTestHelper.getBasicAssetQuery();
-	    assetQuery.setFlagState(Arrays.asList("SWE"));
+	    assetQuery.setFlagState(Collections.singletonList("SWE"));
 		
 		Integer countBefore = AssetTestHelper.assetListQueryCount(assetQuery);
 		
@@ -90,11 +74,11 @@ public class AssetRestIT extends AbstractRest {
 	}
 	
 	@Test
-	public void getAssetListUpdatedIRCSNotFoundTest() throws Exception {
+	public void getAssetListUpdatedIRCSNotFoundTest() {
 		AssetDTO testAsset = AssetTestHelper.createTestAsset();
 		
 		AssetQuery assetQuery = AssetTestHelper.getBasicAssetQuery();
-		assetQuery.setIrcs(Arrays.asList(testAsset.getIrcs()));
+		assetQuery.setIrcs(Collections.singletonList(testAsset.getIrcs()));
 		
 		AssetListResponse assetList = AssetTestHelper.assetListQuery(assetQuery);
 		List<AssetDTO> assets = assetList.getAssetList();
@@ -110,41 +94,28 @@ public class AssetRestIT extends AbstractRest {
 	}
 
 	@Test
-	public void getAssetListWithLikeSearchValue() throws Exception {
+	public void getAssetListWithLikeSearchValue() {
 		AssetDTO asset = AssetTestHelper.createBasicAsset();
 		asset.setPortOfRegistration("MyHomePort");
 		AssetDTO createdAsset = AssetTestHelper.createAsset(asset);
 		
 		AssetQuery assetQuery = AssetTestHelper.getBasicAssetQuery();
-		assetQuery.setPortOfRegistration(Arrays.asList("My*"));
+		assetQuery.setPortOfRegistration(Collections.singletonList("My*"));
 		
 		AssetListResponse assetList = AssetTestHelper.assetListQuery(assetQuery);
 		List<AssetDTO> assets = assetList.getAssetList();
 		assertTrue(assets.stream().anyMatch(a -> a.getId().equals(createdAsset.getId())));
 	}
-	
-	/**
-	 * Gets the asset by id test.
-	 *
-	 * @return the asset by id test
-	 * @throws Exception
-	 *             the exception
-	 */
+
 	@Test
-	public void getAssetByIdTest() throws Exception {
+	public void getAssetByIdTest() {
 		AssetDTO asset = AssetTestHelper.createTestAsset();
 		AssetDTO assetByGuid = AssetTestHelper.getAssetByGuid(asset.getId());
 		assertEquals(asset.getId(), assetByGuid.getId());
 	}
 
-	/**
-	 * Creates the asset test.
-	 *
-	 * @throws Exception
-	 *             the exception
-	 */
 	@Test
-	public void createAssetTest() throws Exception {
+	public void createAssetTest() {
 		AssetTestHelper.createTestAsset();
 	}
 
@@ -154,7 +125,6 @@ public class AssetRestIT extends AbstractRest {
 		AssetDTO asset = AssetTestHelper.createTestAsset();
 		AssetTestHelper.assertAssetAuditLogCreated(asset.getId(), AuditOperationEnum.CREATE, fromDate);
 	}
-	
 
 	@Test
 	public void updateAssetAuditLogCreatedTest() throws Exception {
@@ -167,14 +137,8 @@ public class AssetRestIT extends AbstractRest {
 		AssetTestHelper.assertAssetAuditLogCreated(testAsset.getId(), AuditOperationEnum.UPDATE, fromDate);
 	}
 
-	/**
-	 * Archive asset test.
-	 *
-	 * @throws Exception
-	 *             the exception
-	 */
 	@Test
-	public void archiveAssetTest() throws Exception {
+	public void archiveAssetTest() {
 		AssetDTO testAsset = AssetTestHelper.createTestAsset();
 		testAsset.setActive(false);
 		AssetTestHelper.archiveAsset(testAsset);
@@ -189,29 +153,24 @@ public class AssetRestIT extends AbstractRest {
 		
 		AssetTestHelper.assertAssetAuditLogCreated(testAsset.getId(), AuditOperationEnum.ARCHIVE, fromDate);
 	}
-	
-	/**
-	 * Asset list group by flag state test.
-	 *
-	 * @throws Exception
-	 *             the exception
-	 */
+
 	@Ignore // Removed resource?
 	@Test
-	public void assetListGroupByFlagStateTest() throws Exception {
+	public void assetListGroupByFlagStateTest() {
 		AssetDTO asset = AssetTestHelper.createTestAsset();
-		ArrayList<String> assetIdList = new ArrayList<String>();
+		ArrayList<String> assetIdList = new ArrayList<>();
 		assetIdList.add(asset.getId().toString());
 
-		final HttpResponse response = Request.Post(getBaseUrl() + "asset/rest/asset/listGroupByFlagState")
-				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken())
-				.bodyByteArray(writeValueAsString(assetIdList).getBytes()).execute().returnResponse();
-		Map<String, Object> dataMap = checkSuccessResponseReturnMap(response);
+		Response response = getWebTarget()
+				.path("asset/rest/asset/listGroupByFlagState")
+				.request(MediaType.APPLICATION_JSON)
+				.header(HttpHeaders.AUTHORIZATION, getValidJwtToken())
+				.post(Entity.json(assetIdList));
+		assertEquals(Response.Status.OK.getStatusCode(), response.getStatus());
 	}
 
-
 	@Test
-	public void getAssetListWithLikeSearchValue_ICCAT_AND_UVI_GFCM() throws Exception {
+	public void getAssetListWithLikeSearchValue_ICCAT_AND_UVI_GFCM() {
 		AssetDTO asset = AssetTestHelper.createBasicAsset();
 
 		String theValue = UUID.randomUUID().toString();
@@ -223,9 +182,9 @@ public class AssetRestIT extends AbstractRest {
 
 		AssetQuery assetQuery = AssetTestHelper.getBasicAssetQuery();
 
-		assetQuery.setIccat(Arrays.asList(theValue));
-		assetQuery.setUvi(Arrays.asList(theValue));
-		assetQuery.setGfcm(Arrays.asList(theValue));
+		assetQuery.setIccat(Collections.singletonList(theValue));
+		assetQuery.setUvi(Collections.singletonList(theValue));
+		assetQuery.setGfcm(Collections.singletonList(theValue));
 
 		AssetListResponse assetList = AssetTestHelper.assetListQuery(assetQuery);
 		List<AssetDTO> assets = assetList.getAssetList();
@@ -234,7 +193,7 @@ public class AssetRestIT extends AbstractRest {
 
 	@Ignore // TODO check what happens when list doesn't find any asset
 	@Test
-	public void getAssetListWithLikeSearchValue_CHANGE_KEY_AND_FAIL() throws Exception {
+	public void getAssetListWithLikeSearchValue_CHANGE_KEY_AND_FAIL() {
 		AssetDTO asset = AssetTestHelper.createTestAsset();
 		UUID guid = asset.getId();
 
@@ -246,23 +205,16 @@ public class AssetRestIT extends AbstractRest {
 		AssetTestHelper.updateAsset(asset);
 
 		AssetQuery assetQuery = AssetTestHelper.getBasicAssetQuery();
-		assetQuery.setIccat(Arrays.asList(theValue));
-		assetQuery.setId(Arrays.asList(guid));
+		assetQuery.setIccat(Collections.singletonList(theValue));
+		assetQuery.setId(Collections.singletonList(guid));
 
 		AssetListResponse listAssetResponse = AssetTestHelper.assetListQuery(assetQuery);
 		List<AssetDTO> fetchedAsssets = listAssetResponse.getAssetList();
 		assertFalse(fetchedAsssets.stream().anyMatch(a -> a.getId().equals(guid)));
 	}
 
-
-	/**
-	 * Update asset test.
-	 *
-	 * @throws Exception
-	 *             the exception
-	 */
 	@Test
-	public void updateAssetTest() throws Exception {
+	public void updateAssetTest() {
 		AssetDTO testAsset = AssetTestHelper.createTestAsset();
 		String newName = testAsset.getName() + "Changed";
 		testAsset.setName(newName);
@@ -274,7 +226,7 @@ public class AssetRestIT extends AbstractRest {
 	}
 
 	@Test
-	public void assetListQueryHistoryGuidTest() throws Exception {
+	public void assetListQueryHistoryGuidTest() {
 		// Create asset versions
 		AssetDTO asset1 = AssetTestHelper.createTestAsset();
 
@@ -287,7 +239,7 @@ public class AssetRestIT extends AbstractRest {
 		asset3 = AssetTestHelper.updateAsset(asset3);
 
 		AssetQuery assetQuery1 = AssetTestHelper.getBasicAssetQuery();
-		assetQuery1.setHistoryId(Arrays.asList(asset1.getHistoryId()));
+		assetQuery1.setHistoryId(Collections.singletonList(asset1.getHistoryId()));
 		
 		AssetListResponse assetHistory1 = AssetTestHelper.assetListQuery(assetQuery1);
 		List<AssetDTO> assets = assetHistory1.getAssetList();
@@ -295,7 +247,7 @@ public class AssetRestIT extends AbstractRest {
 		assertEquals(asset1.getId(), assets.get(0).getId());
 		
 		AssetQuery assetQuery2 = AssetTestHelper.getBasicAssetQuery();
-		assetQuery2.setHistoryId(Arrays.asList(asset2.getHistoryId()));
+		assetQuery2.setHistoryId(Collections.singletonList(asset2.getHistoryId()));
 		
 		AssetListResponse assetHistory2 = AssetTestHelper.assetListQuery(assetQuery2);
 		List<AssetDTO> assets2 = assetHistory2.getAssetList();
@@ -304,7 +256,7 @@ public class AssetRestIT extends AbstractRest {
 		assertEquals(asset2.getName(), assets2.get(0).getName());
 		
 		AssetQuery assetQuery3 = AssetTestHelper.getBasicAssetQuery();
-		assetQuery3.setHistoryId(Arrays.asList(asset3.getHistoryId()));
+		assetQuery3.setHistoryId(Collections.singletonList(asset3.getHistoryId()));
 		
 		AssetListResponse assetHistory3 = AssetTestHelper.assetListQuery(assetQuery3);
 		List<AssetDTO> assets3 = assetHistory3.getAssetList();
@@ -314,7 +266,7 @@ public class AssetRestIT extends AbstractRest {
 	}
 	
 	@Test
-	public void assetListQueryMultipleHistoryGuidTest() throws Exception {
+	public void assetListQueryMultipleHistoryGuidTest() {
 		// Create asset versions
 		AssetDTO asset1 = AssetTestHelper.createTestAsset();
 
@@ -333,7 +285,7 @@ public class AssetRestIT extends AbstractRest {
 	}
 	
 	@Test
-	public void addContactToAsset() throws Exception {
+	public void addContactToAsset() {
 		AssetDTO asset = AssetTestHelper.createTestAsset();
 	    
 	    ContactInfo contact = new ContactInfo();
@@ -342,21 +294,20 @@ public class AssetRestIT extends AbstractRest {
 	    contact.setPhoneNumber("123-456789");
 	    ContactInfo createdContact = AssetTestHelper.createContactInfoForAsset(asset, contact);
 
-	    assertTrue(createdContact.getId() != null);
+		assertNotNull(createdContact.getId());
 	}
 	
 	@Test
-	public void addNoteToAsset() throws Exception {
+	public void addNoteToAsset() {
 		AssetDTO asset = AssetTestHelper.createTestAsset();
 
 	    Note note = new Note();
 	    note.setActivityCode("1");
 	    note.setDate(OffsetDateTime.now(ZoneOffset.UTC));
 	    note.setNotes("apa");
-
 	    
 	    Note createdNote = AssetTestHelper.createNoteForAsset(asset, note);
-	    
-	    assertTrue(createdNote.getId() != null);
+
+		assertNotNull(createdNote.getId());
 	}
 }

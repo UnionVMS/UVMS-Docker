@@ -17,31 +17,30 @@ import eu.europa.ec.fisheries.schema.exchange.movement.asset.v1.AssetIdList;
 import eu.europa.ec.fisheries.schema.exchange.movement.asset.v1.AssetIdType;
 import eu.europa.ec.fisheries.schema.exchange.movement.asset.v1.AssetType;
 import eu.europa.ec.fisheries.schema.exchange.movement.mobileterminal.v1.MobileTerminalId;
-import eu.europa.ec.fisheries.schema.exchange.movement.v1.MovementActivityType;
-import eu.europa.ec.fisheries.schema.exchange.movement.v1.MovementActivityTypeType;
-import eu.europa.ec.fisheries.schema.exchange.movement.v1.MovementBaseType;
-import eu.europa.ec.fisheries.schema.exchange.movement.v1.MovementComChannelType;
-import eu.europa.ec.fisheries.schema.exchange.movement.v1.MovementPoint;
-import eu.europa.ec.fisheries.schema.exchange.movement.v1.MovementSourceType;
-import eu.europa.ec.fisheries.schema.exchange.movement.v1.MovementTypeType;
-import eu.europa.ec.fisheries.schema.exchange.movement.v1.SetReportMovementType;
+import eu.europa.ec.fisheries.schema.exchange.movement.v1.*;
 import eu.europa.ec.fisheries.schema.exchange.plugin.types.v1.PluginType;
-import eu.europa.ec.fisheries.schema.mobileterminal.types.v1.MobileTerminalType;
 import eu.europa.ec.fisheries.uvms.asset.client.model.AssetDTO;
 import eu.europa.ec.fisheries.uvms.docker.validation.asset.AssetTestHelper;
 import eu.europa.ec.fisheries.uvms.docker.validation.common.AbstractRest;
 import eu.europa.ec.fisheries.uvms.docker.validation.common.MessageHelper;
 import eu.europa.ec.fisheries.uvms.docker.validation.mobileterminal.MobileTerminalTestHelper;
+import eu.europa.ec.fisheries.uvms.docker.validation.mobileterminal.dto.MobileTerminalDto;
 import eu.europa.ec.fisheries.uvms.docker.validation.movement.LatLong;
 import eu.europa.ec.fisheries.uvms.docker.validation.movement.MovementHelper;
 import eu.europa.ec.fisheries.uvms.docker.validation.movement.model.IncomingMovement;
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
+import org.junit.Test;
 
-/**
- * The Class SetMovementReportRequestJmsIT.
- */
+import javax.jms.JMSException;
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBException;
+import java.io.StringWriter;
+import java.util.Date;
+import java.util.List;
+
 public class SetMovementReportRequestJmsIT extends AbstractRest {
 
-	/** The movement helper. */
 	private static MovementHelper movementHelper;
 	private static MessageHelper messageHelper;
 
@@ -66,48 +65,35 @@ public class SetMovementReportRequestJmsIT extends AbstractRest {
 	@Test(timeout = 5000)
 	public void setMovementReportRequestTest() throws Exception {
 		AssetDTO testAsset = AssetTestHelper.createTestAsset();
-		MobileTerminalType mobileTerminalType = MobileTerminalTestHelper.createMobileTerminalType();
-		MobileTerminalTestHelper.assignMobileTerminal(testAsset, mobileTerminalType);
+		MobileTerminalDto mobileTerminal = MobileTerminalTestHelper.createMobileTerminal();
+		MobileTerminalDto assignMobileTerminal = MobileTerminalTestHelper.assignMobileTerminal(testAsset, mobileTerminal);
+
+		assertNotNull(assignMobileTerminal);
+		assertNotNull(assignMobileTerminal.getAsset().getId());
 
 		LatLong latLong = movementHelper.createRutt(1).get(0);
 		IncomingMovement createMovementRequest = movementHelper.createIncomingMovement(testAsset, latLong);
 
 		messageHelper.sendMessage("UVMSExchangeEvent",
-				marshall(createSetReportMovementType(testAsset, mobileTerminalType, createMovementRequest)));
+				marshall(createSetReportMovementType(testAsset, assignMobileTerminal, createMovementRequest)));
 	}
 
-	/**
-	 * Sets the movement report request route test.
-	 *
-	 * @throws Exception
-	 *             the exception
-	 */
 	@Test(timeout = 25000)
 	public void setMovementReportRequestRouteTest() throws Exception {
 		AssetDTO testAsset = AssetTestHelper.createTestAsset();
-		MobileTerminalType mobileTerminalType = MobileTerminalTestHelper.createMobileTerminalType();
-		MobileTerminalTestHelper.assignMobileTerminal(testAsset, mobileTerminalType);
+		MobileTerminalDto mobileTerminal = MobileTerminalTestHelper.createMobileTerminal();
+		MobileTerminalDto assignMobileTerminal = MobileTerminalTestHelper.assignMobileTerminal(testAsset, mobileTerminal);
 
 		List<LatLong> latLongList = movementHelper.createRutt(2);
 
 		for (LatLong latLong : latLongList) {
 			IncomingMovement createMovementRequest = movementHelper.createIncomingMovement(testAsset, latLong);
 			messageHelper.sendMessage("UVMSExchangeEvent",
-					marshall(createSetReportMovementType(testAsset, mobileTerminalType, createMovementRequest)));
+					marshall(createSetReportMovementType(testAsset, assignMobileTerminal, createMovementRequest)));
 		}
 	}
 
-
-	/**
-	 * Marshall.
-	 *
-	 * @param request
-	 *            the request
-	 * @return the string
-	 * @throws JAXBException
-	 *             the JAXB exception
-	 */
-	public String marshall(final SetMovementReportRequest request) throws JAXBException {
+	private String marshall(final SetMovementReportRequest request) throws JAXBException {
 		final StringWriter sw = new StringWriter();
 		JAXBContext.newInstance(SetMovementReportRequest.class).createMarshaller().marshal(request, sw);
 		return sw.toString();
@@ -118,14 +104,15 @@ public class SetMovementReportRequestJmsIT extends AbstractRest {
 	 *
 	 * @param testAsset
 	 *            the test asset
-	 * @param mobileTerminalType
+	 * @param mobileTerminal
 	 *            the mobile terminal type
 	 * @param createMovementRequest
 	 *            the create movement request
 	 * @return the sets the movement report request
 	 */
-	private SetMovementReportRequest createSetReportMovementType(AssetDTO testAsset, MobileTerminalType mobileTerminalType,
+	private SetMovementReportRequest createSetReportMovementType(AssetDTO testAsset, MobileTerminalDto mobileTerminal,
 			IncomingMovement createMovementRequest) {
+
 		final SetMovementReportRequest request = new SetMovementReportRequest();
 		request.setUsername("vms_admin_com");
 		request.setDate(new Date());
@@ -137,7 +124,7 @@ public class SetMovementReportRequestJmsIT extends AbstractRest {
 
 		movementType.setPluginType(PluginType.NAF);
 		movementType.setTimestamp(new Date());
-		movementType.setPluginName(mobileTerminalType.getPlugin().getServiceName());
+		movementType.setPluginName(mobileTerminal.getPlugin().getPluginServiceName());
 		MovementBaseType movementBaseType = new MovementBaseType();
 		movementType.setMovement(movementBaseType);
 		MovementActivityType movementActivityType = new MovementActivityType();
@@ -162,8 +149,8 @@ public class SetMovementReportRequestJmsIT extends AbstractRest {
 		movementBaseType.setMmsi(testAsset.getMmsi());
 
 		MobileTerminalId mobileTerminalId = new MobileTerminalId();
-		mobileTerminalId.setConnectId(mobileTerminalType.getConnectId());
-		mobileTerminalId.setGuid(mobileTerminalType.getMobileTerminalId().getGuid());
+		mobileTerminalId.setConnectId(mobileTerminal.getAsset().getId().toString());
+		mobileTerminalId.setGuid(mobileTerminal.getId().toString());
 		movementBaseType.setMobileTerminalId(mobileTerminalId);
 		movementBaseType.setMovementType(MovementTypeType.POS);
 		MovementPoint movementPoint = new MovementPoint();
@@ -179,5 +166,4 @@ public class SetMovementReportRequestJmsIT extends AbstractRest {
 		movementBaseType.setTripNumber(1d);
 		return request;
 	}
-
 }

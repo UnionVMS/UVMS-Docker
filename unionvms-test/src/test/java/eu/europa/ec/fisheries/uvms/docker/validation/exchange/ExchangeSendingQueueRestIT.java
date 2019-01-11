@@ -15,45 +15,48 @@ package eu.europa.ec.fisheries.uvms.docker.validation.exchange;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import eu.europa.ec.fisheries.uvms.commons.rest.dto.ResponseDto;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.fluent.Request;
 import org.junit.Test;
 import eu.europa.ec.fisheries.uvms.docker.validation.common.AbstractRest;
 
-/**
- * The Class ExchangeSendingQueueRestIT.
- */
+import javax.ws.rs.client.Entity;
+import javax.ws.rs.core.HttpHeaders;
+import javax.ws.rs.core.MediaType;
+
 public class ExchangeSendingQueueRestIT extends AbstractRest {
 
-	/**
-	 * Gets the sending queue test.
-	 *
-	 * @return the sending queue test
-	 * @throws Exception the exception
-	 */
 	@Test
-	public void getSendingQueueTest() throws Exception {
-		final HttpResponse response = Request.Get(getBaseUrl() + "exchange/rest/sendingqueue/list")
-				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken()).execute()
-				.returnResponse();
+	public void getSendingQueueTest() {
 
-		List dataList = checkSuccessResponseReturnType(response, List.class);
+		ResponseDto response = getWebTarget()
+				.path("exchange/rest/sendingqueue/list")
+				.request(MediaType.APPLICATION_JSON)
+				.header(HttpHeaders.AUTHORIZATION, getValidJwtToken())
+				.get(ResponseDto.class);
+
+		assertEquals(200, response.getCode());
+
+		ArrayList list = (ArrayList) response.getData();
+		assertNotNull(list);
+		assertFalse(list.isEmpty());
 	}
 
-	/**
-	 * Gets the send test.
-	 *
-	 * @return the send test
-	 * @throws Exception the exception
-	 */
 	@Test
 	public void getSendTest() throws Exception {
-		final HttpResponse response = Request.Put(getBaseUrl() + "exchange/rest/sendingqueue/send")
-				.bodyByteArray(writeValueAsString(new ArrayList<String>()).getBytes())
-				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken()).execute()
-				.returnResponse();
 
-		Boolean result = checkSuccessResponseReturnType(response, Boolean.class);
+		ResponseDto response = getWebTarget()
+				.path("exchange/rest/sendingqueue/send")
+				.request(MediaType.APPLICATION_JSON)
+				.header(HttpHeaders.AUTHORIZATION, getValidJwtToken())
+				.put(Entity.json(writeValueAsString(new ArrayList<String>()).getBytes()), ResponseDto.class);
+
+		assertEquals(200, response.getCode());
+
+		boolean sent = (boolean) response.getData();
+		assertTrue(sent);
+
 	}
-
 }

@@ -19,6 +19,7 @@ import java.util.Calendar;
 import java.util.Date;
 import org.hamcrest.CoreMatchers;
 import org.joda.time.Instant;
+import org.junit.Ignore;
 import org.junit.Test;
 import eu.europa.ec.fisheries.uvms.asset.client.model.AssetDTO;
 import eu.europa.ec.fisheries.uvms.docker.validation.asset.AssetTestHelper;
@@ -38,6 +39,7 @@ public class SanityRulesIT extends AbstractRest {
     <column name="sanityrule_expression" value="assetGuid == null"/>
      */
     @Test
+    @Ignore    //since we now create a new asset on unknown this test will never succeed
     public void assetMustExistTest() throws Exception {
         // Do not save to DB
         AssetDTO asset = AssetTestHelper.createBasicAsset();

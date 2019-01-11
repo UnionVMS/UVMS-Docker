@@ -993,7 +993,7 @@
                 <simple name="java:global/asset_endpoint" value="http://localhost:8080/unionvms/asset/rest"/>
                 <simple name="java:global/spatial_endpoint" value="http://localhost:8080/unionvms/spatial"/>
                 <simple name="java:global/movement-rules_endpoint" value="http://localhost:8080/unionvms/movement-rules/rest"/>
-                <simple name="java:global/exchange_endpoint" value="http://localhost:8080/unionvms/exchange/rest"/>
+                <simple name="java:global/exchange_endpoint" value="http://localhost:8080/unionvms/exchange/unsecured/rest"/>
             </bindings>
         </subsystem>
         <subsystem xmlns="urn:jboss:domain:pojo:1.0"/>

@@ -7,42 +7,40 @@ import java.time.ZoneOffset;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
-import java.util.TimeZone;
 import javax.jms.JMSException;
-import javax.jms.TextMessage;
 
 import eu.europa.ec.fisheries.uvms.docker.validation.movement.MovementHelper;
 import org.junit.*;
 import eu.europa.ec.fisheries.schema.exchange.movement.mobileterminal.v1.IdList;
 import eu.europa.ec.fisheries.schema.exchange.movement.mobileterminal.v1.IdType;
 import eu.europa.ec.fisheries.schema.exchange.movement.mobileterminal.v1.MobileTerminalId;
-import eu.europa.ec.fisheries.schema.exchange.movement.v1.MovementBaseType;
-import eu.europa.ec.fisheries.schema.exchange.movement.v1.MovementComChannelType;
-import eu.europa.ec.fisheries.schema.exchange.movement.v1.MovementPoint;
-import eu.europa.ec.fisheries.schema.exchange.movement.v1.MovementSourceType;
-import eu.europa.ec.fisheries.schema.exchange.movement.v1.MovementType;
-import eu.europa.ec.fisheries.schema.exchange.movement.v1.MovementTypeType;
-import eu.europa.ec.fisheries.schema.exchange.movement.v1.SetReportMovementType;
+import eu.europa.ec.fisheries.schema.exchange.movement.v1.*;
 import eu.europa.ec.fisheries.schema.exchange.plugin.types.v1.PluginType;
 import eu.europa.ec.fisheries.schema.exchange.plugin.v1.SetReportRequest;
-import eu.europa.ec.fisheries.schema.mobileterminal.types.v1.ComChannelAttribute;
-import eu.europa.ec.fisheries.schema.mobileterminal.types.v1.ComChannelType;
-import eu.europa.ec.fisheries.schema.mobileterminal.types.v1.MobileTerminalType;
-import eu.europa.ec.fisheries.schema.movementrules.customrule.v1.ActionType;
-import eu.europa.ec.fisheries.schema.movementrules.customrule.v1.ConditionType;
-import eu.europa.ec.fisheries.schema.movementrules.customrule.v1.CriteriaType;
-import eu.europa.ec.fisheries.schema.movementrules.customrule.v1.CustomRuleType;
-import eu.europa.ec.fisheries.schema.movementrules.customrule.v1.SubCriteriaType;
+import eu.europa.ec.fisheries.schema.movementrules.customrule.v1.*;
 import eu.europa.ec.fisheries.uvms.asset.client.model.AssetDTO;
 import eu.europa.ec.fisheries.uvms.commons.date.DateUtils;
 import eu.europa.ec.fisheries.uvms.docker.validation.asset.AssetTestHelper;
 import eu.europa.ec.fisheries.uvms.docker.validation.common.AbstractRest;
 import eu.europa.ec.fisheries.uvms.docker.validation.common.MessageHelper;
 import eu.europa.ec.fisheries.uvms.docker.validation.mobileterminal.MobileTerminalTestHelper;
+import eu.europa.ec.fisheries.uvms.docker.validation.mobileterminal.dto.ChannelDto;
+import eu.europa.ec.fisheries.uvms.docker.validation.mobileterminal.dto.MobileTerminalDto;
 import eu.europa.ec.fisheries.uvms.docker.validation.system.helper.CustomRuleBuilder;
 import eu.europa.ec.fisheries.uvms.docker.validation.system.helper.CustomRuleHelper;
 import eu.europa.ec.fisheries.uvms.exchange.model.mapper.ExchangeModuleRequestMapper;
 import eu.europa.ec.fisheries.uvms.exchange.model.mapper.JAXBMarshaller;
+
+import javax.jms.TextMessage;
+import java.time.LocalDateTime;
+import java.time.ZoneOffset;
+import java.util.Date;
+import java.util.GregorianCalendar;
+import java.util.Set;
+import java.util.TimeZone;
+
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.notNullValue;
 
 public class InmarsatSanityIT extends AbstractRest {
 
@@ -62,7 +60,7 @@ public class InmarsatSanityIT extends AbstractRest {
     }
 
     @After
-    public void removeCustomRules() throws Exception {
+    public void removeCustomRules() {
         CustomRuleHelper.removeCustomRulesByDefaultUser();
     }
 
@@ -73,8 +71,8 @@ public class InmarsatSanityIT extends AbstractRest {
 
         // create testdata
         AssetDTO asset = AssetTestHelper.createTestAsset();
-        MobileTerminalType mobileTerminalType = MobileTerminalTestHelper.createMobileTerminalType();
-        MobileTerminalTestHelper.assignMobileTerminal(asset, mobileTerminalType);
+        MobileTerminalDto mobileTerminal = MobileTerminalTestHelper.createMobileTerminal();
+        MobileTerminalTestHelper.assignMobileTerminal(asset, mobileTerminal);
 
         //
         String fluxEndpoint = "DNK";
@@ -89,28 +87,13 @@ public class InmarsatSanityIT extends AbstractRest {
         CustomRuleType createdCustomRule = CustomRuleHelper.createCustomRule(flagStateRule);
         assertNotNull(createdCustomRule);
 
-
         // extract DNID and MEMBERNUMBER from testdata created above
-        List<ComChannelType> channels = mobileTerminalType.getChannels();
+        Set<ChannelDto> channels = mobileTerminal.getChannels();
         Assert.assertEquals(1, channels.size());
-        ComChannelType channel = channels.get(0);
-        List<ComChannelAttribute> attributes = channel.getAttributes();
+        ChannelDto channel = channels.iterator().next();
 
-        String dnid = "";
-        String memberNumber = "";
-        for (ComChannelAttribute attr : attributes) {
-
-            String type = attr.getType();
-            String val = attr.getValue();
-            switch (type) {
-                case "DNID":
-                    dnid = val;
-                    break;
-                case "MEMBER_NUMBER":
-                    memberNumber = val;
-                    break;
-            }
-        }
+        String dnid = channel.getDNID();
+        String memberNumber = channel.getMemberNumber();
 
         // create the positionreport only containing DNID and MEMBER_NUMBER  OBS NO ASSET REFERENCES AT ALL
         SetReportMovementType reportType = createReportType(dnid, memberNumber);
@@ -139,17 +122,12 @@ public class InmarsatSanityIT extends AbstractRest {
         MovementType movement = setReportRequest.getReport().getMovement();
         assertThat(movement.getAssetName(), is(asset.getName()));
         assertThat(movement.getIrcs(), is(asset.getIrcs()));
-
     }
-
-
-
 
     private SetReportMovementType createReportType(String theDnid, String theMemberNumber) {
 
         SetReportMovementType reportType = new SetReportMovementType();
         MobileTerminalId mobileTerminalId = new MobileTerminalId();
-
 
         if(theDnid != null) {
             IdList dnid = new IdList();
@@ -192,9 +170,5 @@ public class InmarsatSanityIT extends AbstractRest {
 
         reportType.setMovement(movement);
         return reportType;
-
-
     }
-
-
 }

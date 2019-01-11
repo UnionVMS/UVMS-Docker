@@ -23,12 +23,9 @@ import eu.europa.ec.fisheries.schema.exchange.plugin.types.v1.PluginType;
 import eu.europa.ec.fisheries.schema.exchange.source.v1.GetServiceListResponse;
 import eu.europa.ec.fisheries.uvms.docker.validation.common.AbstractRest;
 
-/**
- * The Class ExchangeRegistryRestIT.
- */
 public class ExchangeAPIRestIT extends AbstractRest {
 
-	protected static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
+	private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
 
 	static {
 		JaxbAnnotationModule module = new JaxbAnnotationModule();
@@ -36,12 +33,6 @@ public class ExchangeAPIRestIT extends AbstractRest {
 		OBJECT_MAPPER.registerModule(module);
 	}
 
-	/**
-	 * Gets the list test.
-	 *
-	 * @return the list test
-	 * @throws Exception the exception
-	 */
 	@Test
 	public void getListTest() throws Exception {
 		GetServiceListRequest getServiceListRequest = new GetServiceListRequest();
@@ -61,7 +52,5 @@ public class ExchangeAPIRestIT extends AbstractRest {
 		} else {
 			fail("Call to Exchange failed");
 		}
-
 	}
-
 }

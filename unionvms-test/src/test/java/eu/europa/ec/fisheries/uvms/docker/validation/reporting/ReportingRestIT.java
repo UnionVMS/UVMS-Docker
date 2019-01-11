@@ -22,7 +22,6 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.TimeZone;
 
-import eu.europa.ec.fisheries.uvms.docker.validation.common.MessageHelper;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
 import org.apache.http.client.ClientProtocolException;
@@ -34,22 +33,16 @@ import org.junit.Test;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
-import eu.europa.ec.fisheries.schema.mobileterminal.types.v1.MobileTerminalType;
-import eu.europa.ec.fisheries.schema.movement.module.v1.CreateMovementRequest;
-import eu.europa.ec.fisheries.schema.movement.module.v1.CreateMovementResponse;
 import eu.europa.ec.fisheries.uvms.asset.client.model.AssetDTO;
 import eu.europa.ec.fisheries.uvms.docker.validation.asset.AssetTestHelper;
 import eu.europa.ec.fisheries.uvms.docker.validation.common.AbstractRest;
 import eu.europa.ec.fisheries.uvms.docker.validation.mobileterminal.MobileTerminalTestHelper;
+import eu.europa.ec.fisheries.uvms.docker.validation.mobileterminal.dto.MobileTerminalDto;
 import eu.europa.ec.fisheries.uvms.docker.validation.movement.LatLong;
 import eu.europa.ec.fisheries.uvms.docker.validation.movement.MovementDto;
 import eu.europa.ec.fisheries.uvms.docker.validation.movement.MovementHelper;
 import eu.europa.ec.fisheries.uvms.docker.validation.movement.model.IncomingMovement;
-import eu.europa.ec.fisheries.uvms.reporting.service.dto.AssetFilterDTO;
-import eu.europa.ec.fisheries.uvms.reporting.service.dto.CommonFilterDTO;
-import eu.europa.ec.fisheries.uvms.reporting.service.dto.DisplayFormat;
-import eu.europa.ec.fisheries.uvms.reporting.service.dto.LengthType;
-import eu.europa.ec.fisheries.uvms.reporting.service.dto.PositionSelectorDTO;
+import eu.europa.ec.fisheries.uvms.reporting.service.dto.*;
 import eu.europa.ec.fisheries.uvms.reporting.service.dto.report.ReportDTO;
 import eu.europa.ec.fisheries.uvms.reporting.service.dto.report.VisibilityEnum;
 import eu.europa.ec.fisheries.uvms.reporting.service.entities.FilterType;
@@ -57,15 +50,16 @@ import eu.europa.ec.fisheries.uvms.reporting.service.entities.Position;
 import eu.europa.ec.fisheries.uvms.reporting.service.entities.Selector;
 import eu.europa.ec.fisheries.uvms.reporting.service.enums.ReportTypeEnum;
 import eu.europa.ec.fisheries.uvms.reporting.service.enums.VelocityType;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.jms.JMSException;
 
-/**
- * The Class ReportingRestIT.
- */
-
 public class ReportingRestIT extends AbstractRest {
 
+	private static final Logger LOG  = LoggerFactory.getLogger(ReportingRestIT.class.getSimpleName());
+
+	/** The movement helper. */
 	private static MovementHelper movementHelper;
 
 	@BeforeClass
@@ -86,30 +80,22 @@ public class ReportingRestIT extends AbstractRest {
 	@BeforeClass
 	public static void createTestAssetWithTerminalAndPositions() {
 		try {
-		testAsset = AssetTestHelper.createTestAsset();
-		MobileTerminalType mobileTerminalType = MobileTerminalTestHelper.createMobileTerminalType();
-		MobileTerminalTestHelper.assignMobileTerminal(testAsset, mobileTerminalType);
-		List<LatLong> route = movementHelper.createRuttVarbergGrena(-1);
+			testAsset = AssetTestHelper.createTestAsset();
+			MobileTerminalDto mobileTerminal = MobileTerminalTestHelper.createMobileTerminal();
+			MobileTerminalTestHelper.assignMobileTerminal(testAsset, mobileTerminal);
+			List<LatLong> route = movementHelper.createRuttVarbergGrena(-1);
 
-		for (LatLong position : route) {
-			IncomingMovement createMovementRequest = movementHelper.createIncomingMovement(testAsset, position);
-			MovementDto createMovementResponse = movementHelper.createMovement(createMovementRequest);
-			assertNotNull(createMovementResponse);
-		}		
-
+			for (LatLong position : route) {
+				IncomingMovement createMovementRequest = movementHelper.createIncomingMovement(testAsset, position);
+				MovementDto createMovementResponse = movementHelper.createMovement(createMovementRequest);
+				assertNotNull(createMovementResponse);
+			}
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
-	
-	
-	/**
-	 * List reports test.
-	 *
-	 * @throws Exception
-	 *             the exception
-	 */
+
 	@Test
 	public void listReportsTest() throws Exception {
 		final HttpResponse response = Request.Get(getBaseUrl() + "reporting/rest/report/list")
@@ -120,12 +106,6 @@ public class ReportingRestIT extends AbstractRest {
 		assertNotNull(dataMap);
 	}
 
-	/**
-	 * List last executed reports test.
-	 *
-	 * @throws Exception
-	 *             the exception
-	 */
 	@Test
 	public void listLastExecutedReportsTest() throws Exception {
 		final HttpResponse response = Request.Get(getBaseUrl() + "reporting/rest/report/list/lastexecuted/10")
@@ -136,13 +116,6 @@ public class ReportingRestIT extends AbstractRest {
 		assertNotNull(dataMap);
 	}
 
-	/**
-	 * Gets the report test.
-	 *
-	 * @return the report test
-	 * @throws Exception
-	 *             the exception
-	 */
 	@Test
 	public void getReportTest() throws Exception {
 		Long reportId = createTwoWeeksReport("createReportTest", "TwoWeeksReports").getId();
@@ -155,12 +128,6 @@ public class ReportingRestIT extends AbstractRest {
 		assertNotNull(dataMap);
 	}
 
-	/**
-	 * Creates the report test.
-	 *
-	 * @throws Exception
-	 *             the exception
-	 */
 	@Test
 	public void createReportTest() throws Exception {
 		createTwoWeeksReport("createReportTest", "TwoWeeksReports");
@@ -281,13 +248,6 @@ public class ReportingRestIT extends AbstractRest {
 		return reportDTO;
 	}
 
-	
-	/**
-	 * Delete report test.
-	 *
-	 * @throws Exception
-	 *             the exception
-	 */
 	@Test
 	public void deleteReportTest() throws Exception {
 		Long reportId = createTwoWeeksReport("deleteReportTest", "TwoWeeksReports").getId();
@@ -299,12 +259,6 @@ public class ReportingRestIT extends AbstractRest {
 		assertEquals(HttpStatus.SC_OK, response.getStatusLine().getStatusCode());
 	}
 
-	/**
-	 * Update report test.
-	 *
-	 * @throws Exception
-	 *             the exception
-	 */
 	@Test
 	public void updateReportTest() throws Exception {
 		ReportDTO twoWeeksReport = createTwoWeeksReport("updateReportTest", "TwoWeeksReports");
@@ -317,12 +271,6 @@ public class ReportingRestIT extends AbstractRest {
 		assertEquals(HttpStatus.SC_OK, response.getStatusLine().getStatusCode());
 	}
 
-	/**
-	 * Share report test.
-	 *
-	 * @throws Exception
-	 *             the exception
-	 */
 	@Test
 	public void shareReportTest() throws Exception {
 		ReportDTO twoWeeksReport = createTwoWeeksReport("shareReportTest", "TwoWeeksReports");
@@ -464,7 +412,6 @@ public class ReportingRestIT extends AbstractRest {
 		
 	}
 
-	
 	/**
 	 * Execute summary two week report with id for one asset test.
 	 *
@@ -504,5 +451,4 @@ public class ReportingRestIT extends AbstractRest {
 			assertEquals(testAsset.getCfr(), ((Map) map.get("properties")).get("cfr"));
 		}
 	}
-
 }
