@@ -4,8 +4,11 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
+import javax.jms.JMSException;
 import javax.ws.rs.sse.SseEventSource;
 import org.hamcrest.CoreMatchers;
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import eu.europa.ec.fisheries.schema.mobileterminal.types.v1.MobileTerminalType;
 import eu.europa.ec.fisheries.schema.movement.search.v1.ListCriteria;
@@ -17,22 +20,44 @@ import eu.europa.ec.fisheries.uvms.docker.validation.asset.AssetTestHelper;
 import eu.europa.ec.fisheries.uvms.docker.validation.common.AbstractRest;
 import eu.europa.ec.fisheries.uvms.docker.validation.common.MessageHelper;
 import eu.europa.ec.fisheries.uvms.docker.validation.mobileterminal.MobileTerminalTestHelper;
+import eu.europa.ec.fisheries.uvms.docker.validation.mobileterminal.dto.MobileTerminalDto;
 import eu.europa.ec.fisheries.uvms.docker.validation.movement.model.IncomingMovement;
+import org.hamcrest.CoreMatchers;
+import org.junit.Test;
 
-/**
- * The Class MovementJmsIT.
- */
+import javax.jms.JMSException;
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
+import javax.ws.rs.sse.SseEventSource;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Date;
+import java.util.List;
+
 public class MovementJmsIT extends AbstractRest {
 	
 	public static  int ALL = -1;
 	
-	private static MovementHelper movementHelper = new MovementHelper();
+	private static MovementHelper movementHelper;
+	private static MessageHelper messageHelper;
+
+	@BeforeClass
+	public static void setup() throws JMSException {
+		movementHelper = new MovementHelper();
+		messageHelper = new MessageHelper();
+	}
+
+	@AfterClass
+	public static void cleanup() {
+		movementHelper.close();
+		messageHelper.close();
+	}
 
 	@Test(timeout = 20000)
 	public void createMovementBatchRequestTest() throws Exception {
 		AssetDTO testAsset = AssetTestHelper.createTestAsset();
-		MobileTerminalType mobileTerminalType = MobileTerminalTestHelper.createMobileTerminalType();
-		MobileTerminalTestHelper.assignMobileTerminal(testAsset, mobileTerminalType);
+		MobileTerminalDto mobileTerminal = MobileTerminalTestHelper.createMobileTerminal();
+		MobileTerminalTestHelper.assignMobileTerminal(testAsset, mobileTerminal);
 		int numberPositions = 50;
         List<LatLong> latLongList = movementHelper.createRuttCobhNewYork(numberPositions, 0.4f);
 
@@ -62,18 +87,12 @@ public class MovementJmsIT extends AbstractRest {
 		assertThat(movements.size(), CoreMatchers.is(numberPositions));
 	}
 
-	/**
-	 * Creates the movement request test.
-	 *
-	 * @throws Exception
-	 *             the exception
-	 */
 	@Test(timeout = 10000)
 	public void createMovementRequestTest() throws Exception {
 
 		AssetDTO testAsset = AssetTestHelper.createTestAsset();
-		MobileTerminalType mobileTerminalType = MobileTerminalTestHelper.createMobileTerminalType();
-		MobileTerminalTestHelper.assignMobileTerminal(testAsset, mobileTerminalType);
+		MobileTerminalDto mobileTerminal = MobileTerminalTestHelper.createMobileTerminal();
+		MobileTerminalTestHelper.assignMobileTerminal(testAsset, mobileTerminal);
 
 		LatLong latLong = movementHelper.createRutt(1).get(0);
 		IncomingMovement incomingMovement = movementHelper.createIncomingMovement(testAsset, latLong);
@@ -86,30 +105,28 @@ public class MovementJmsIT extends AbstractRest {
 		        incomingMovement.getLongitude());
 		assertEquals(createMovementResponse.getLatitude(),
 		        incomingMovement.getLatitude());
+
 	}
 
 	@Test(timeout = 720000)
 	public void createRouteTest() throws Exception {
 		AssetDTO testAsset = AssetTestHelper.createTestAsset();
-		MobileTerminalType mobileTerminalType = MobileTerminalTestHelper.createMobileTerminalType();
-		MobileTerminalTestHelper.assignMobileTerminal(testAsset, mobileTerminalType);
+		MobileTerminalDto mobileTerminal = MobileTerminalTestHelper.createMobileTerminal();
+		MobileTerminalTestHelper.assignMobileTerminal(testAsset, mobileTerminal);
 		List<LatLong> route = movementHelper.createRutt(24);
 
 		for (LatLong position : route) {
-
 		    IncomingMovement incomingMovement = movementHelper.createIncomingMovement(testAsset, position);
-
 			MovementDto createMovementResponse = movementHelper.createMovement(incomingMovement);
 			assertNotNull(createMovementResponse);
-
 		}
 	}
 
 	@Test
 	public void createRouteTestVarbergGrena() throws Exception {
 		AssetDTO testAsset = AssetTestHelper.createTestAsset();
-		MobileTerminalType mobileTerminalType = MobileTerminalTestHelper.createMobileTerminalType();
-		MobileTerminalTestHelper.assignMobileTerminal(testAsset, mobileTerminalType);
+		MobileTerminalDto mobileTerminal = MobileTerminalTestHelper.createMobileTerminal();
+		MobileTerminalTestHelper.assignMobileTerminal(testAsset, mobileTerminal);
 		List<LatLong> route = movementHelper.createRuttVarbergGrena(-1);
 
 		for (LatLong position : route) {
@@ -122,8 +139,8 @@ public class MovementJmsIT extends AbstractRest {
 	@Test
 	public void createRouteTestTitanic() throws Exception {
 		AssetDTO testAsset = AssetTestHelper.createTestAsset();
-		MobileTerminalType mobileTerminalType = MobileTerminalTestHelper.createMobileTerminalType();
-		MobileTerminalTestHelper.assignMobileTerminal(testAsset, mobileTerminalType);
+		MobileTerminalDto mobileTerminal = MobileTerminalTestHelper.createMobileTerminal();
+		MobileTerminalTestHelper.assignMobileTerminal(testAsset, mobileTerminal);
 		List<LatLong> route = movementHelper.createRuttCobhNewYork(100, 0.4f);
 
 		for (LatLong position : route) {
@@ -143,33 +160,29 @@ public class MovementJmsIT extends AbstractRest {
 		int NUMBER_OF_POSITIONS = 5;
 
 		AssetDTO testAsset = AssetTestHelper.createTestAsset();
-		MobileTerminalType mobileTerminalType = MobileTerminalTestHelper.createMobileTerminalType();
-		MobileTerminalTestHelper.assignMobileTerminal(testAsset, mobileTerminalType);
+		MobileTerminalDto mobileTerminal = MobileTerminalTestHelper.createMobileTerminal();
+		MobileTerminalTestHelper.assignMobileTerminal(testAsset, mobileTerminal);
 		List<LatLong> route = movementHelper.createRuttVarbergGrena(NUMBER_OF_POSITIONS);
 
 		// shake the content so it is not in a deterministic order
 		List<LatLong> routeBeforeShake = new ArrayList<>(route);
 		Collections.shuffle(route);
 
-		for (LatLong position : route) {
-		    IncomingMovement incomingMovement = movementHelper.createIncomingMovement(testAsset, position);
-			MovementDto createMovementResponse = movementHelper.createMovement(incomingMovement);
-			assertNotNull(createMovementResponse);
-			assertNotNull(createMovementResponse.getLatitude());
-			assertNotNull(createMovementResponse.getLongitude());
-		}
-
+		assertMovementReqAndRes(testAsset, route);
 	}
-	
-	
+
 	@Test
 	public void createSmallFishingTourFromVarberg() throws Exception {
-
-	    AssetDTO testAsset = AssetTestHelper.createTestAsset();
-		MobileTerminalType mobileTerminalType = MobileTerminalTestHelper.createMobileTerminalType();
-		MobileTerminalTestHelper.assignMobileTerminal(testAsset, mobileTerminalType);
+		AssetDTO testAsset = AssetTestHelper.createTestAsset();
+		MobileTerminalDto mobileTerminal = MobileTerminalTestHelper.createMobileTerminal();
+		MobileTerminalDto assigned = MobileTerminalTestHelper.assignMobileTerminal(testAsset, mobileTerminal);
+		assertNotNull(assigned);
 		List<LatLong> route = movementHelper.createSmallFishingTourFromVarberg();
 
+		assertMovementReqAndRes(testAsset, route);
+	}
+
+	private void assertMovementReqAndRes(AssetDTO testAsset, List<LatLong> route) throws Exception {
 		for (LatLong position : route) {
 		    IncomingMovement incomingMovement = movementHelper.createIncomingMovement(testAsset, position);
 			MovementDto createMovementResponse = movementHelper.createMovement(incomingMovement);
@@ -178,8 +191,6 @@ public class MovementJmsIT extends AbstractRest {
             assertNotNull(createMovementResponse.getLongitude());
 		}
 	}
-	
-	
 
 	/**
 	 * Check dead letter queue.
@@ -189,7 +200,7 @@ public class MovementJmsIT extends AbstractRest {
 	 */
     @Test
     public void checkAllMovementsRequestProcessedOnQueue() throws Exception {
-        assertFalse(MessageHelper.checkQueueHasElements("UVMSMovementEvent"));
+        assertFalse(messageHelper.checkQueueHasElements("UVMSMovementEvent"));
     }
 
     @Test(timeout = 10000)
@@ -206,7 +217,7 @@ public class MovementJmsIT extends AbstractRest {
                 }
             });
             source.open();
-            MessageHelper.sendMessageWithFunction("UVMSMovementEvent", OBJECT_MAPPER.writeValueAsString(
+            messageHelper.sendMessageWithFunction("UVMSMovementEvent", OBJECT_MAPPER.writeValueAsString(
                     incomingMovement), "CREATE");
             
             while(movements.size() < 1) {

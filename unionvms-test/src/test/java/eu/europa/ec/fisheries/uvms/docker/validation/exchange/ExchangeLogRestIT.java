@@ -13,40 +13,27 @@ copy of the GNU General Public License along with the IFDM Suite. If not, see <h
 */
 package eu.europa.ec.fisheries.uvms.docker.validation.exchange;
 
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
-import java.util.TimeZone;
-import org.apache.http.HttpResponse;
-import org.apache.http.client.fluent.Request;
-import org.junit.Test;
-import eu.europa.ec.fisheries.schema.exchange.v1.ExchangeListCriteria;
-import eu.europa.ec.fisheries.schema.exchange.v1.ExchangeListCriteriaPair;
-import eu.europa.ec.fisheries.schema.exchange.v1.ExchangeListPagination;
-import eu.europa.ec.fisheries.schema.exchange.v1.ExchangeListQuery;
-import eu.europa.ec.fisheries.schema.exchange.v1.ExchangeLogStatusTypeType;
-import eu.europa.ec.fisheries.schema.exchange.v1.SearchField;
+import eu.europa.ec.fisheries.schema.exchange.v1.*;
 import eu.europa.ec.fisheries.uvms.asset.client.model.AssetDTO;
+import eu.europa.ec.fisheries.uvms.commons.rest.dto.ResponseDto;
 import eu.europa.ec.fisheries.uvms.docker.validation.asset.AssetTestHelper;
 import eu.europa.ec.fisheries.uvms.docker.validation.common.AbstractRest;
 import eu.europa.ec.fisheries.uvms.docker.validation.mobileterminal.MobileTerminalTestHelper;
+import eu.europa.ec.fisheries.uvms.docker.validation.mobileterminal.dto.CreatePollResultDto;
+import org.apache.http.HttpResponse;
+import org.apache.http.client.fluent.Request;
+import org.junit.Test;
 
-/**
- * The Class ExchangeLogRestIT.
- */
+import javax.ws.rs.client.Entity;
+import javax.ws.rs.core.HttpHeaders;
+import javax.ws.rs.core.MediaType;
+import java.text.SimpleDateFormat;
+import java.util.*;
+
 public class ExchangeLogRestIT extends AbstractRest {
 
-	/**
-	 * Gets the log list by criteria test.
-	 *
-	 * @return the log list by criteria test
-	 * @throws Exception the exception
-	 */
 	@Test
-	public void getLogListByCriteriaTest() throws Exception {
+	public void getLogListByCriteriaTest() {
 		ExchangeListQuery exchangeListQuery = new ExchangeListQuery();
 		ExchangeListCriteria exchangeListCriteria = new ExchangeListCriteria();
 		exchangeListCriteria.setIsDynamic(true);
@@ -60,39 +47,88 @@ public class ExchangeLogRestIT extends AbstractRest {
 		exchangeListPagination.setPage(1);
 		exchangeListPagination.setListSize(100);
 		exchangeListQuery.setPagination(exchangeListPagination);
-		
-		final HttpResponse response = Request.Post(getBaseUrl() + "exchange/rest/exchange/list")
-				.bodyByteArray(writeValueAsString(exchangeListQuery).getBytes())
-				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken()).execute()
-				.returnResponse();
-		Map<String, Object> dataMap = checkSuccessResponseReturnMap(response);
-		List<List> logList = (List) dataMap.get("logList");
+
+		ResponseDto listQueryResponse = getWebTarget()
+				.path("exchange/rest/exchange/list")
+				.request(MediaType.APPLICATION_JSON)
+				.header(HttpHeaders.AUTHORIZATION, getValidJwtToken())
+				.post(Entity.json(exchangeListQuery), ResponseDto.class);
+
+		assertNotNull(listQueryResponse);
+		HashMap logListMap = (HashMap) listQueryResponse.getData();
+		Object obj = logListMap.get("logList");
+		ArrayList logList = (ArrayList) obj;
 		assertFalse(logList.isEmpty());
 	}
 
-	/**
-	 * Gets the poll status query test.
-	 *
-	 * @return the poll status query test
-	 * @throws Exception the exception
-	 */
 	@Test
-	public void getPollStatusQueryTest() throws Exception {
+	public void getPollStatusQueryTest() {
 		PollQuery pollQuery = new PollQuery();
 		pollQuery.setStatus(ExchangeLogStatusTypeType.SUCCESSFUL);
 		Date oldDate = new Date();
 		oldDate.setTime( oldDate.getTime() - (long)10*1000*60*60*24 );
 		pollQuery.setStatusFromDate(formatDateAsUTC(oldDate));
 		pollQuery.setStatusToDate(formatDateAsUTC(new Date()));
-			
-		final HttpResponse response = Request.Post(getBaseUrl() + "exchange/rest/exchange/poll")
-				.bodyByteArray(writeValueAsString(pollQuery).getBytes())
-				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken()).execute()
-				.returnResponse();
-		List dataList = checkSuccessResponseReturnType(response,List.class);
 
+		ResponseDto exchangeLogStatusTypeList = getWebTarget()
+				.path("exchange/rest/exchange/poll/")
+				.request(MediaType.APPLICATION_JSON)
+				.header(HttpHeaders.AUTHORIZATION, getValidJwtToken())
+				.post(Entity.json(pollQuery), ResponseDto.class);
+
+		assertNotNull(exchangeLogStatusTypeList);
+		List logListMap = (List) exchangeLogStatusTypeList.getData();
+		assertNotNull(logListMap);
+		assertFalse(logListMap.isEmpty());
 	}
-	
+
+	@Test
+	public void getPollStatusRefGuidTest() {
+		AssetDTO testAsset = AssetTestHelper.createTestAsset();
+        CreatePollResultDto createPollResultDto = MobileTerminalTestHelper.createPoll_Helper(testAsset);
+        List<String> sentPolls = createPollResultDto.getSentPolls();
+        String uid = sentPolls.get(0);
+
+		ResponseDto exchangeLogStatusType = getWebTarget()
+                .path("exchange/rest/exchange/poll/" + uid)
+                .request(MediaType.APPLICATION_JSON)
+                .header(HttpHeaders.AUTHORIZATION, getValidJwtToken())
+                .get(ResponseDto.class);
+
+		assertNotNull(exchangeLogStatusType);
+		HashMap guidMap = (HashMap) exchangeLogStatusType.getData();
+		String guid = (String) guidMap.get("guid");
+		assertNotNull(guid);
+	}
+
+	@Test
+	public void getExchangeLogByGuidTest() {
+        AssetDTO testAsset = AssetTestHelper.createTestAsset();
+        CreatePollResultDto createPollResultDto = MobileTerminalTestHelper.createPoll_Helper(testAsset);
+        List<String> sentPolls = createPollResultDto.getSentPolls();
+        String uid = sentPolls.get(0);
+
+		ResponseDto exchangeLogStatusType = getWebTarget()
+                .path("exchange/rest/exchange/poll/" + uid)
+                .request(MediaType.APPLICATION_JSON)
+                .header(HttpHeaders.AUTHORIZATION, getValidJwtToken())
+                .get(ResponseDto.class);
+
+		assertNotNull(exchangeLogStatusType);
+		HashMap guidMap = (HashMap) exchangeLogStatusType.getData();
+        String guid = (String) guidMap.get("guid");
+
+		ResponseDto exchangeLogType = getWebTarget()
+                .path("exchange/rest/exchange/" + guid)
+                .request(MediaType.APPLICATION_JSON)
+                .header(HttpHeaders.AUTHORIZATION, getValidJwtToken())
+                .get(ResponseDto.class);
+
+		assertNotNull(exchangeLogType);
+		HashMap typeMap = (HashMap) exchangeLogType.getData();
+        assertEquals(LogType.SEND_POLL.value(), typeMap.get("type"));
+	}
+
 	private String formatDateAsUTC(Date date) {
 		Calendar calendar = Calendar.getInstance();
 		calendar.setTime(date);
@@ -100,61 +136,4 @@ public class ExchangeLogRestIT extends AbstractRest {
 		sdf.setTimeZone(TimeZone.getTimeZone("UTC"));
 		return sdf.format(date);
 	}
-	
-	/**
-	 * Gets the poll status ref guid test.
-	 *
-	 * @return the poll status ref guid test
-	 * @throws Exception the exception
-	 */
-	@Test
-	public void getPollStatusRefGuidTest() throws Exception {
-		AssetDTO testAsset = AssetTestHelper.createTestAsset();
-		Map<String, Object> programPollDataMap = MobileTerminalTestHelper.createPoll_Helper(testAsset);
-		ArrayList sendPolls = (ArrayList) programPollDataMap.get("sentPolls");
-		String uid = (String) sendPolls.get(0);
-
-		final HttpResponse response = Request.Get(getBaseUrl() + "exchange/rest/exchange/poll/" + uid)
-				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken()).execute()
-				.returnResponse();
-
-		Map<String, Object> dataMap = checkSuccessResponseReturnMap(response);
-		assertNotNull(uid,dataMap.get("guid"));
-
-	}
-
-	/**
-	 * Gets the exchange log by guid test.
-	 *
-	 * @return the exchange log by guid test
-	 * @throws Exception the exception
-	 */
-	@Test
-	public void getExchangeLogByGuidTest() throws Exception {
-		String guid=null;
-		{
-			AssetDTO testAsset = AssetTestHelper.createTestAsset();
-			Map<String, Object> programPollDataMap = MobileTerminalTestHelper.createPoll_Helper(testAsset);
-			ArrayList sendPolls = (ArrayList) programPollDataMap.get("sentPolls");
-			String uid = (String) sendPolls.get(0);
-
-			final HttpResponse response = Request.Get(getBaseUrl() + "exchange/rest/exchange/poll/" + uid)
-					.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken()).execute()
-					.returnResponse();
-
-			Map<String, Object> dataMap = checkSuccessResponseReturnMap(response);
-			guid = (String) dataMap.get("guid");
-
-		}
-		
-		final HttpResponse response = Request.Get(getBaseUrl() + "exchange/rest/exchange/" + guid)
-				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken()).execute()
-				.returnResponse();
-
-		Map<String, Object> dataMap = checkSuccessResponseReturnMap(response);
-		assertEquals("SEND_POLL",dataMap.get("type"));
-
-	}
-
-	
 }

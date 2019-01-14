@@ -1,30 +1,7 @@
 package eu.europa.ec.fisheries.uvms.docker.validation.rules;
 
-import java.io.StringReader;
-import java.time.Duration;
-import java.time.Instant;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import javax.jms.Connection;
-import javax.jms.ConnectionFactory;
-import javax.jms.JMSException;
-import javax.jms.Message;
-import javax.jms.Queue;
-import javax.jms.Session;
-import javax.jms.TextMessage;
-import javax.xml.bind.JAXBContext;
-import javax.xml.bind.JAXBException;
-import javax.xml.bind.Unmarshaller;
-import javax.xml.transform.stream.StreamSource;
-import org.apache.activemq.ActiveMQConnectionFactory;
-import org.junit.Ignore;
-import org.junit.Test;
 import eu.europa.ec.fisheries.schema.exchange.module.v1.ProcessedMovementResponse;
 import eu.europa.ec.fisheries.schema.exchange.movement.v1.MovementRefTypeType;
-import eu.europa.ec.fisheries.schema.mobileterminal.types.v1.MobileTerminalType;
 import eu.europa.ec.fisheries.schema.movementrules.asset.v1.AssetId;
 import eu.europa.ec.fisheries.schema.movementrules.asset.v1.AssetIdList;
 import eu.europa.ec.fisheries.schema.movementrules.asset.v1.AssetIdType;
@@ -32,37 +9,65 @@ import eu.europa.ec.fisheries.schema.movementrules.asset.v1.AssetType;
 import eu.europa.ec.fisheries.schema.movementrules.exchange.v1.PluginType;
 import eu.europa.ec.fisheries.schema.movementrules.module.v1.RulesModuleMethod;
 import eu.europa.ec.fisheries.schema.movementrules.module.v1.SetMovementReportRequest;
-import eu.europa.ec.fisheries.schema.movementrules.movement.v1.MovementComChannelType;
-import eu.europa.ec.fisheries.schema.movementrules.movement.v1.MovementPoint;
-import eu.europa.ec.fisheries.schema.movementrules.movement.v1.MovementSourceType;
-import eu.europa.ec.fisheries.schema.movementrules.movement.v1.MovementTypeType;
-import eu.europa.ec.fisheries.schema.movementrules.movement.v1.RawMovementType;
+import eu.europa.ec.fisheries.schema.movementrules.movement.v1.*;
 import eu.europa.ec.fisheries.uvms.asset.client.model.AssetDTO;
 import eu.europa.ec.fisheries.uvms.docker.validation.asset.AssetTestHelper;
 import eu.europa.ec.fisheries.uvms.docker.validation.mobileterminal.MobileTerminalTestHelper;
+import eu.europa.ec.fisheries.uvms.docker.validation.mobileterminal.dto.MobileTerminalDto;
 import eu.europa.ec.fisheries.uvms.docker.validation.movement.LatLong;
 import eu.europa.ec.fisheries.uvms.docker.validation.movement.MovementHelper;
 import eu.europa.ec.fisheries.uvms.movementrules.model.mapper.JAXBMarshaller;
+import org.apache.activemq.artemis.api.core.TransportConfiguration;
+import org.apache.activemq.artemis.api.jms.ActiveMQJMSClient;
+import org.apache.activemq.artemis.api.jms.JMSFactoryType;
+import org.apache.activemq.artemis.core.remoting.impl.netty.NettyConnectorFactory;
+import org.junit.*;
+
+import javax.jms.*;
+import javax.jms.Queue;
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBException;
+import java.time.Duration;
+import java.time.Instant;
+import java.util.*;
 
 public class RulesPerformanceIT {
 
-    private ConnectionFactory connectionFactory = new ActiveMQConnectionFactory("tcp://localhost:61616");
-    //private ConnectionFactory connectionFactory = new ActiveMQConnectionFactory("tcp://livm73u.havochvatten.se:61616");
+
+    private final ConnectionFactory connectionFactory;
+
     private static final String MOVEMENTRULES_QUEUE = "UVMSMovementRulesEvent";
     private static final String RESPONSE_QUEUE = "IntegrationTestsResponseQueue";
 
-    private static MovementHelper movementHelper = new MovementHelper();
+    private static MovementHelper movementHelper;
 
     private static Map<String, JAXBContext> contexts = new HashMap<>();
 
+    @BeforeClass
+    public static void setup() throws JMSException {
+        movementHelper = new MovementHelper();
+    }
+
+    @AfterClass
+    public static void cleanup() {
+        movementHelper.close();
+    }
+
+    public RulesPerformanceIT() {
+        Map<String, Object> params = new HashMap<>();
+        params.put("host", "localhost");
+        params.put("port", 5445);
+        TransportConfiguration transportConfiguration = new TransportConfiguration(NettyConnectorFactory.class.getName(), params);
+        connectionFactory = ActiveMQJMSClient.createConnectionFactoryWithoutHA(JMSFactoryType.CF,transportConfiguration);
+    }
 
     @Test
     @Ignore
     public void createRouteTestTitanic1000PositionsSync() throws Exception{   //Needs a special version of rules that respond on the test queue to work!!!!
 
         AssetDTO testAsset = AssetTestHelper.createTestAsset();
-        MobileTerminalType mobileTerminalType = MobileTerminalTestHelper.createMobileTerminalType();
-        MobileTerminalTestHelper.assignMobileTerminal(testAsset, mobileTerminalType);
+        MobileTerminalDto mobileTerminal = MobileTerminalTestHelper.createMobileTerminal();
+        MobileTerminalTestHelper.assignMobileTerminal(testAsset, mobileTerminal);
         List<LatLong> route = movementHelper.createRuttCobhNewYork(1000, 0.06f);                //0.1F = 654 pos    0.01 = 6543     0.07 = 934   0.06 = 1090
 
 
@@ -158,8 +163,8 @@ public class RulesPerformanceIT {
         System.out.println("Start creating assets");
         for(int i = 0; i < nrOfShips; i++ ){
             AssetDTO testAsset = AssetTestHelper.createTestAsset();
-            MobileTerminalType mobileTerminalType = MobileTerminalTestHelper.createMobileTerminalType();
-            MobileTerminalTestHelper.assignMobileTerminal(testAsset, mobileTerminalType);
+            MobileTerminalDto mobileTerminal = MobileTerminalTestHelper.createMobileTerminal();
+            MobileTerminalTestHelper.assignMobileTerminal(testAsset, mobileTerminal);
 
 
 
@@ -233,7 +238,7 @@ public class RulesPerformanceIT {
     }
 
     public String sendMessageToRules(String text, String requestType) throws Exception {
-        Connection connection = connectionFactory.createConnection();
+        Connection connection = connectionFactory.createConnection("test", "test");
         try {
             Session session = connection.createSession(false, Session.AUTO_ACKNOWLEDGE);
             Queue responseQueue = session.createQueue(RESPONSE_QUEUE);
@@ -284,28 +289,9 @@ public class RulesPerformanceIT {
         return JAXBMarshaller.marshallJaxBObjectToString(request);
     }
 
-    public static <R> R unmarshallTextMessage(TextMessage textMessage, Class clazz) {
-        try {
-            JAXBContext jc = contexts.get(clazz.getName());
-            if (jc == null) {
-                long before = System.currentTimeMillis();
-                jc = JAXBContext.newInstance(clazz);
-                contexts.put(clazz.getName(), jc);
-
-            }
-            Unmarshaller unmarshaller = jc.createUnmarshaller();
-            StringReader sr = new StringReader(textMessage.getText());
-            StreamSource source = new StreamSource(sr);
-            long before = System.currentTimeMillis();
-            R object = (R) unmarshaller.unmarshal(source);
-            return object;
-        } catch (JMSException | JAXBException ex) {
-            throw new IllegalArgumentException("[Error when unmarshalling response in ResponseMapper. Expected class was " + clazz.getName() + " ]", ex);
-        }
-    }
 
     public Message listenForResponseOnQueue(String correlationId, String queue) throws Exception {
-        Connection connection = connectionFactory.createConnection();
+        Connection connection = connectionFactory.createConnection("test", "test");
         try {
             connection.start();
             Session session = connection.createSession(false, Session.AUTO_ACKNOWLEDGE);

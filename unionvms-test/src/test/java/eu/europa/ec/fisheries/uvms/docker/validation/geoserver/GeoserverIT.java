@@ -68,7 +68,5 @@ public class GeoserverIT extends AbstractRest {
 		assertEquals("true", httpResponse.getFirstHeader("Access-Control-Allow-Credentials").getValue());
 		assertEquals("GET,POST,HEAD",httpResponse.getFirstHeader("Access-Control-Allow-Methods").getValue());
 		assertEquals("X-Requested-With,Content-Type,Accept,Origin",httpResponse.getFirstHeader("Access-Control-Allow-Headers").getValue());
-						
 	}
-
 }

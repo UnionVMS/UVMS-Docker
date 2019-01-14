@@ -17,35 +17,55 @@ import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.util.Calendar;
 import java.util.Date;
-import javax.jms.TextMessage;
-import org.junit.After;
+import javax.jms.JMSException;
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import eu.europa.ec.fisheries.schema.exchange.movement.v1.MovementType;
 import eu.europa.ec.fisheries.schema.exchange.plugin.v1.SetReportRequest;
-import eu.europa.ec.fisheries.schema.mobileterminal.types.v1.MobileTerminalType;
-import eu.europa.ec.fisheries.schema.movementrules.customrule.v1.ActionType;
-import eu.europa.ec.fisheries.schema.movementrules.customrule.v1.ConditionType;
-import eu.europa.ec.fisheries.schema.movementrules.customrule.v1.CriteriaType;
-import eu.europa.ec.fisheries.schema.movementrules.customrule.v1.CustomRuleType;
-import eu.europa.ec.fisheries.schema.movementrules.customrule.v1.SubCriteriaType;
+import eu.europa.ec.fisheries.schema.movementrules.customrule.v1.*;
 import eu.europa.ec.fisheries.uvms.asset.client.model.AssetDTO;
 import eu.europa.ec.fisheries.uvms.docker.validation.asset.AssetTestHelper;
 import eu.europa.ec.fisheries.uvms.docker.validation.common.AbstractRest;
 import eu.europa.ec.fisheries.uvms.docker.validation.common.MessageHelper;
 import eu.europa.ec.fisheries.uvms.docker.validation.mobileterminal.MobileTerminalTestHelper;
+import eu.europa.ec.fisheries.uvms.docker.validation.mobileterminal.dto.MobileTerminalDto;
 import eu.europa.ec.fisheries.uvms.docker.validation.movement.LatLong;
 import eu.europa.ec.fisheries.uvms.docker.validation.system.helper.CustomRuleBuilder;
 import eu.europa.ec.fisheries.uvms.docker.validation.system.helper.CustomRuleHelper;
 import eu.europa.ec.fisheries.uvms.docker.validation.system.helper.FLUXHelper;
 import eu.europa.ec.fisheries.uvms.exchange.model.mapper.JAXBMarshaller;
+import org.junit.After;
+import org.junit.Test;
+
+import javax.jms.TextMessage;
+import java.time.LocalDateTime;
+import java.time.ZoneOffset;
+import java.util.Calendar;
+import java.util.Date;
+
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.notNullValue;
 
 public class VMSSystemIT extends AbstractRest {
 
     private static final String SELECTOR = "ServiceName='eu.europa.ec.fisheries.uvms.plugins.flux.movement'";
     private static final long TIMEOUT = 10000;
 
+    private static MessageHelper messageHelper;
+
+    @BeforeClass
+    public static void setup() throws JMSException {
+        messageHelper = new MessageHelper();
+    }
+
+    @AfterClass
+    public static void cleanup() {
+        messageHelper.close();
+    }
+
     @After
-    public void removeCustomRules() throws Exception {
+    public void removeCustomRules() {
         CustomRuleHelper.removeCustomRulesByDefaultUser();
     }
     
@@ -53,10 +73,9 @@ public class VMSSystemIT extends AbstractRest {
     public void sendFlagStateToFLUXDNKTest() throws Exception {
         LocalDateTime timestamp = LocalDateTime.now(ZoneOffset.UTC);
 
-
         AssetDTO asset = AssetTestHelper.createTestAsset();
-        MobileTerminalType mobileTerminalType = MobileTerminalTestHelper.createMobileTerminalType();
-        MobileTerminalTestHelper.assignMobileTerminal(asset, mobileTerminalType);
+        MobileTerminalDto mobileTerminal = MobileTerminalTestHelper.createMobileTerminal();
+        MobileTerminalTestHelper.assignMobileTerminal(asset, mobileTerminal);
         
         String fluxEndpoint = "DNK";
 
@@ -74,7 +93,7 @@ public class VMSSystemIT extends AbstractRest {
         
         FLUXHelper.sendPositionToFluxPlugin(asset, position);
         
-        TextMessage message = (TextMessage) MessageHelper.listenOnEventBus(SELECTOR, TIMEOUT);
+        TextMessage message = (TextMessage) messageHelper.listenOnEventBus(SELECTOR, TIMEOUT);
         assertThat(message, is(notNullValue()));
         
         CustomRuleHelper.assertRuleTriggered(createdCustomRule, timestamp);
@@ -95,8 +114,8 @@ public class VMSSystemIT extends AbstractRest {
         LocalDateTime timestamp = LocalDateTime.now(ZoneOffset.UTC);
 
         AssetDTO asset = AssetTestHelper.createTestAsset();
-        MobileTerminalType mobileTerminalType = MobileTerminalTestHelper.createMobileTerminalType();
-        MobileTerminalTestHelper.assignMobileTerminal(asset, mobileTerminalType);
+        MobileTerminalDto mobileTerminal = MobileTerminalTestHelper.createMobileTerminal();
+        MobileTerminalTestHelper.assignMobileTerminal(asset, mobileTerminal);
         
         String areaCode = "DNK";
         String fluxEndpoint = "DNK";
@@ -116,7 +135,7 @@ public class VMSSystemIT extends AbstractRest {
         
         FLUXHelper.sendPositionToFluxPlugin(asset, position);
         
-        TextMessage message = (TextMessage) MessageHelper.listenOnEventBus(SELECTOR, TIMEOUT);
+        TextMessage message = (TextMessage) messageHelper.listenOnEventBus(SELECTOR, TIMEOUT);
         assertThat(message, is(notNullValue()));
         
         CustomRuleHelper.assertRuleTriggered(createdCustomRule, timestamp);
@@ -137,8 +156,8 @@ public class VMSSystemIT extends AbstractRest {
         LocalDateTime timestamp = LocalDateTime.now(ZoneOffset.UTC);
 
         AssetDTO asset = AssetTestHelper.createTestAsset();
-        MobileTerminalType mobileTerminalType = MobileTerminalTestHelper.createMobileTerminalType();
-        MobileTerminalTestHelper.assignMobileTerminal(asset, mobileTerminalType);
+        MobileTerminalDto mobileTerminal = MobileTerminalTestHelper.createMobileTerminal();
+        MobileTerminalTestHelper.assignMobileTerminal(asset, mobileTerminal);
         
         String fluxEndpoint = "DNK";
 
@@ -165,7 +184,7 @@ public class VMSSystemIT extends AbstractRest {
         
         FLUXHelper.sendPositionToFluxPlugin(asset, position);
         
-        TextMessage message = (TextMessage) MessageHelper.listenOnEventBus(SELECTOR, TIMEOUT);
+        TextMessage message = (TextMessage) messageHelper.listenOnEventBus(SELECTOR, TIMEOUT);
         assertThat(message, is(notNullValue()));
         
         CustomRuleHelper.assertRuleTriggered(createdCustomRule, timestamp);
@@ -186,8 +205,8 @@ public class VMSSystemIT extends AbstractRest {
         LocalDateTime timestamp = LocalDateTime.now(ZoneOffset.UTC);
 
         AssetDTO asset = AssetTestHelper.createTestAsset();
-        MobileTerminalType mobileTerminalType = MobileTerminalTestHelper.createMobileTerminalType();
-        MobileTerminalTestHelper.assignMobileTerminal(asset, mobileTerminalType);
+        MobileTerminalDto mobileTerminal = MobileTerminalTestHelper.createMobileTerminal();
+        MobileTerminalTestHelper.assignMobileTerminal(asset, mobileTerminal);
         
         String fluxEndpoint = "DNK";
 
@@ -224,7 +243,7 @@ public class VMSSystemIT extends AbstractRest {
         
         FLUXHelper.sendPositionToFluxPlugin(asset, position);
         
-        TextMessage message = (TextMessage) MessageHelper.listenOnEventBus(SELECTOR, TIMEOUT);
+        TextMessage message = (TextMessage) messageHelper.listenOnEventBus(SELECTOR, TIMEOUT);
         assertThat(message, is(notNullValue()));
         
         CustomRuleHelper.assertRuleNotTriggered(createdCustomRuleWithInterval);
@@ -236,8 +255,8 @@ public class VMSSystemIT extends AbstractRest {
         LocalDateTime timestamp = LocalDateTime.now(ZoneOffset.UTC);
 
         AssetDTO asset = AssetTestHelper.createTestAsset();
-        MobileTerminalType mobileTerminalType = MobileTerminalTestHelper.createMobileTerminalType();
-        MobileTerminalTestHelper.assignMobileTerminal(asset, mobileTerminalType);
+        MobileTerminalDto mobileTerminal = MobileTerminalTestHelper.createMobileTerminal();
+        MobileTerminalTestHelper.assignMobileTerminal(asset, mobileTerminal);
         
         String fluxEndpoint = "DNK";
 
@@ -274,7 +293,7 @@ public class VMSSystemIT extends AbstractRest {
         
         FLUXHelper.sendPositionToFluxPlugin(asset, position);
         
-        TextMessage message = (TextMessage) MessageHelper.listenOnEventBus(SELECTOR, TIMEOUT);
+        TextMessage message = (TextMessage) messageHelper.listenOnEventBus(SELECTOR, TIMEOUT);
         assertThat(message, is(notNullValue()));
         
         CustomRuleHelper.assertRuleNotTriggered(createdCustomRuleWithInterval);

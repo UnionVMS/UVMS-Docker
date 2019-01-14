@@ -16,6 +16,7 @@ package eu.europa.ec.fisheries.uvms.docker.validation.asset;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
 import org.apache.http.client.fluent.Request;
+import org.junit.Ignore;
 import org.junit.Test;
 import eu.europa.ec.fisheries.uvms.docker.validation.common.AbstractRest;
 
@@ -48,6 +49,7 @@ public class ConfigRestIT extends AbstractRest {
 	 *             the exception
 	 */
 	@Test
+	@Ignore // This endpoint is removed.
 	public void getConfigurationTest() throws Exception {
 		final HttpResponse response = Request.Get(getBaseUrl() + "asset/rest/config")
 				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken()).execute()

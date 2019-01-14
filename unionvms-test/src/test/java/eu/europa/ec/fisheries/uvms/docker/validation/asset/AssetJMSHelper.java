@@ -5,6 +5,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Random;
 import java.util.UUID;
+import javax.jms.JMSException;
 import javax.jms.TextMessage;
 import eu.europa.ec.fisheries.uvms.asset.model.mapper.AssetModuleRequestMapper;
 import eu.europa.ec.fisheries.uvms.asset.model.mapper.JAXBMarshaller;
@@ -29,68 +30,79 @@ import eu.europa.ec.fisheries.wsdl.asset.types.ListAssetResponse;
 
 public class AssetJMSHelper {
 
-	private static final String ASSET_QUEUE = "UVMSAssetEvent";
-	
-	public static Asset getAssetById(String value, AssetIdType type) throws Exception {
-		String msg = AssetModuleRequestMapper.createGetAssetModuleRequest(value, type);
-		TextMessage response = (TextMessage) MessageHelper.getMessageResponse(ASSET_QUEUE, msg);
-		GetAssetModuleResponse assetModuleResponse = JAXBMarshaller.unmarshallTextMessage(response, GetAssetModuleResponse.class);
-		return assetModuleResponse.getAsset();
-	}
-	
-	public static List<Asset> getAssetByAssetListQuery(AssetListQuery assetListQuery) throws Exception {
-		String msg = AssetModuleRequestMapper.createAssetListModuleRequest(assetListQuery);
-		TextMessage response = (TextMessage) MessageHelper.getMessageResponse(ASSET_QUEUE, msg);
-		ListAssetResponse assetModuleResponse = JAXBMarshaller.unmarshallTextMessage(response, ListAssetResponse.class);
-		return assetModuleResponse.getAsset();
-	}
-	
-	public static List<AssetGroup> getAssetGroupByUser(String username) throws Exception {
-		String msg = AssetModuleRequestMapper.createAssetGroupListByUserModuleRequest(username);
-		TextMessage response = (TextMessage) MessageHelper.getMessageResponse(ASSET_QUEUE, msg);
-		ListAssetGroupResponse assetModuleResponse = JAXBMarshaller.unmarshallTextMessage(response, ListAssetGroupResponse.class);
-		return assetModuleResponse.getAssetGroup();
-	}
-	
-	public static List<AssetGroup> getAssetGroupListByAssetGuid(String assetGuid) throws Exception {
-		String msg = AssetModuleRequestMapper.createAssetGroupListByAssetGuidRequest(assetGuid);
-		TextMessage response = (TextMessage) MessageHelper.getMessageResponse(ASSET_QUEUE, msg);
-		ListAssetGroupResponse assetModuleResponse = JAXBMarshaller.unmarshallTextMessage(response, ListAssetGroupResponse.class);
-		return assetModuleResponse.getAssetGroup();
-	}
-	
-	public static List<Asset> getAssetListByAssetGroups(List<AssetGroup> assetGroups) throws Exception {
-		String msg = AssetModuleRequestMapper.createAssetListModuleRequest(assetGroups);
-		TextMessage response = (TextMessage) MessageHelper.getMessageResponse(ASSET_QUEUE, msg);
-		ListAssetResponse assetModuleResponse = JAXBMarshaller.unmarshallTextMessage(response, ListAssetResponse.class);
-		return assetModuleResponse.getAsset();
-	}
-	
-	public static String pingModule() throws Exception {
-		GetAssetModuleRequest request = new GetAssetModuleRequest();
-		request.setMethod(AssetModuleMethod.PING);
-		String msg = JAXBMarshaller.marshallJaxBObjectToString(request);
-		TextMessage response = (TextMessage) MessageHelper.getMessageResponse(ASSET_QUEUE, msg);
-		PingResponse assetModuleResponse = JAXBMarshaller.unmarshallTextMessage(response, PingResponse.class);
-		return assetModuleResponse.getResponse();
-	}
+    private static final String ASSET_QUEUE = "UVMSAssetEvent";
+
+    private MessageHelper messageHelper;
+
+    public AssetJMSHelper() throws JMSException {
+        messageHelper = new MessageHelper();
+    }
+
+    public void close() {
+        messageHelper.close();
+    }
 
 
-	public static FlagStateType getFlagStateFromAssetGuidAndDate(String guid, Date date) throws Exception {
-		String msg = AssetModuleRequestMapper.createFlagStateRequest(guid, date);
-		TextMessage response = (TextMessage) MessageHelper.getMessageResponse(ASSET_QUEUE, msg);
-		FlagStateTypeResponse flagStateTypeResponse = JAXBMarshaller.unmarshallTextMessage(response, FlagStateTypeResponse.class);
-		return flagStateTypeResponse.getFlagStateType();
-	}
+    public Asset getAssetById(String value, AssetIdType type) throws Exception {
+        String msg = AssetModuleRequestMapper.createGetAssetModuleRequest(value, type);
+        TextMessage response = (TextMessage) messageHelper.getMessageResponse(ASSET_QUEUE, msg);
+        GetAssetModuleResponse assetModuleResponse = JAXBMarshaller.unmarshallTextMessage(response, GetAssetModuleResponse.class);
+        return assetModuleResponse.getAsset();
+    }
+
+    public List<Asset> getAssetByAssetListQuery(AssetListQuery assetListQuery) throws Exception {
+        String msg = AssetModuleRequestMapper.createAssetListModuleRequest(assetListQuery);
+        TextMessage response = (TextMessage) messageHelper.getMessageResponse(ASSET_QUEUE, msg);
+        ListAssetResponse assetModuleResponse = JAXBMarshaller.unmarshallTextMessage(response, ListAssetResponse.class);
+        return assetModuleResponse.getAsset();
+    }
+
+    public List<AssetGroup> getAssetGroupByUser(String username) throws Exception {
+        String msg = AssetModuleRequestMapper.createAssetGroupListByUserModuleRequest(username);
+        TextMessage response = (TextMessage) messageHelper.getMessageResponse(ASSET_QUEUE, msg);
+        ListAssetGroupResponse assetModuleResponse = JAXBMarshaller.unmarshallTextMessage(response, ListAssetGroupResponse.class);
+        return assetModuleResponse.getAssetGroup();
+    }
+
+    public List<AssetGroup> getAssetGroupListByAssetGuid(String assetGuid) throws Exception {
+        String msg = AssetModuleRequestMapper.createAssetGroupListByAssetGuidRequest(assetGuid);
+        TextMessage response = (TextMessage) messageHelper.getMessageResponse(ASSET_QUEUE, msg);
+        ListAssetGroupResponse assetModuleResponse = JAXBMarshaller.unmarshallTextMessage(response, ListAssetGroupResponse.class);
+        return assetModuleResponse.getAssetGroup();
+    }
+
+    public List<Asset> getAssetListByAssetGroups(List<AssetGroup> assetGroups) throws Exception {
+        String msg = AssetModuleRequestMapper.createAssetListModuleRequest(assetGroups);
+        TextMessage response = (TextMessage) messageHelper.getMessageResponse(ASSET_QUEUE, msg);
+        ListAssetResponse assetModuleResponse = JAXBMarshaller.unmarshallTextMessage(response, ListAssetResponse.class);
+        return assetModuleResponse.getAsset();
+    }
+
+    public String pingModule() throws Exception {
+        GetAssetModuleRequest request = new GetAssetModuleRequest();
+        request.setMethod(AssetModuleMethod.PING);
+        String msg = JAXBMarshaller.marshallJaxBObjectToString(request);
+        TextMessage response = (TextMessage) messageHelper.getMessageResponse(ASSET_QUEUE, msg);
+        PingResponse assetModuleResponse = JAXBMarshaller.unmarshallTextMessage(response, PingResponse.class);
+        return assetModuleResponse.getResponse();
+    }
+
+
+    public FlagStateType getFlagStateFromAssetGuidAndDate(String guid, Date date) throws Exception {
+        String msg = AssetModuleRequestMapper.createFlagStateRequest(guid, date);
+        TextMessage response = (TextMessage) messageHelper.getMessageResponse(ASSET_QUEUE, msg);
+        FlagStateTypeResponse flagStateTypeResponse = JAXBMarshaller.unmarshallTextMessage(response, FlagStateTypeResponse.class);
+        return flagStateTypeResponse.getFlagStateType();
+    }
 
 
 
-	public static Asset createDummyCFRAsset() {
+    public Asset createDummyCFRAsset() {
         return createDummyAsset(AssetIdType.CFR);
     }
 
 
-    public static Asset createDummyAsset(AssetIdType assetIdType) {
+    public Asset createDummyAsset(AssetIdType assetIdType) {
         String ircs = "F" + generateARandomStringWithMaxLength(7);
         String cfr = UUID.randomUUID().toString().substring(0, 12);
 
@@ -155,8 +167,8 @@ public class AssetJMSHelper {
 
         return asset;
     }
-    
-    public static eu.europa.ec.fisheries.uvms.asset.client.model.AssetDTO createBasicAsset() {
+
+    public eu.europa.ec.fisheries.uvms.asset.client.model.AssetDTO createBasicAsset() {
         eu.europa.ec.fisheries.uvms.asset.client.model.AssetDTO asset = new eu.europa.ec.fisheries.uvms.asset.client.model.AssetDTO();
 
         asset.setActive(true);
@@ -187,8 +199,8 @@ public class AssetJMSHelper {
 
         return asset;
     }
-    
-    public static AssetListQuery getBasicAssetQuery() {
+
+    public AssetListQuery getBasicAssetQuery() {
         AssetListQuery assetListQuery = new AssetListQuery();
         AssetListPagination assetListPagination = new AssetListPagination();
         assetListPagination.setListSize(1000);
@@ -200,7 +212,7 @@ public class AssetJMSHelper {
         return assetListQuery;
     }
 
-    public static String generateARandomStringWithMaxLength(int len) {
+    public String generateARandomStringWithMaxLength(int len) {
         String ret = "";
         for (int i = 0; i < len; i++) {
             int val = new Random().nextInt(10);
@@ -208,8 +220,8 @@ public class AssetJMSHelper {
         }
         return ret;
     }
-    
-    public static AssetGroup createBasicAssetGroup() {
+
+    public AssetGroup createBasicAssetGroup() {
         AssetGroup assetGroup = new AssetGroup();
         assetGroup.setDynamic(false);
         assetGroup.setGlobal(false);
@@ -217,7 +229,7 @@ public class AssetJMSHelper {
         assetGroup.setName("Name" + UUID.randomUUID().toString());
         return assetGroup;
     }
-	
+
 
 //	public static void upsertAsset() {
 //	}

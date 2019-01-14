@@ -2,7 +2,6 @@ package eu.europa.ec.fisheries.uvms.docker.validation.exchange;
 
 import eu.europa.ec.fisheries.schema.exchange.module.v1.ProcessedMovementResponse;
 import eu.europa.ec.fisheries.schema.exchange.movement.v1.MovementRefTypeType;
-import eu.europa.ec.fisheries.schema.mobileterminal.types.v1.MobileTerminalType;
 import eu.europa.ec.fisheries.schema.movementrules.asset.v1.AssetId;
 import eu.europa.ec.fisheries.schema.movementrules.asset.v1.AssetIdList;
 import eu.europa.ec.fisheries.schema.movementrules.asset.v1.AssetIdType;
@@ -12,15 +11,22 @@ import eu.europa.ec.fisheries.schema.movementrules.module.v1.RulesModuleMethod;
 import eu.europa.ec.fisheries.schema.movementrules.module.v1.SetMovementReportRequest;
 import eu.europa.ec.fisheries.schema.movementrules.movement.v1.*;
 import eu.europa.ec.fisheries.uvms.asset.client.model.AssetDTO;
+import eu.europa.ec.fisheries.uvms.commons.message.impl.JMSUtils;
 import eu.europa.ec.fisheries.uvms.docker.validation.asset.AssetTestHelper;
 import eu.europa.ec.fisheries.uvms.docker.validation.common.AbstractRest;
 import eu.europa.ec.fisheries.uvms.docker.validation.mobileterminal.MobileTerminalTestHelper;
+import eu.europa.ec.fisheries.uvms.docker.validation.mobileterminal.dto.MobileTerminalDto;
 import eu.europa.ec.fisheries.uvms.docker.validation.movement.AuthorizationHeaderWebTarget;
 import eu.europa.ec.fisheries.uvms.docker.validation.movement.LatLong;
 import eu.europa.ec.fisheries.uvms.docker.validation.movement.MovementHelper;
 import eu.europa.ec.fisheries.uvms.docker.validation.system.helper.NAFHelper;
 import eu.europa.ec.fisheries.uvms.movementrules.model.mapper.JAXBMarshaller;
-import org.apache.activemq.ActiveMQConnectionFactory;
+import org.apache.activemq.artemis.api.core.TransportConfiguration;
+import org.apache.activemq.artemis.api.jms.ActiveMQJMSClient;
+import org.apache.activemq.artemis.api.jms.JMSFactoryType;
+import org.apache.activemq.artemis.core.remoting.impl.netty.NettyConnectorFactory;
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
 import org.junit.Ignore;
 import org.junit.Test;
 
@@ -41,71 +47,93 @@ import java.util.function.Consumer;
 
 public class NAFExchangePerformanceTests extends AbstractRest {
 
-        private ConnectionFactory connectionFactory = new ActiveMQConnectionFactory("tcp://localhost:61616");
-        //private ConnectionFactory connectionFactory = new ActiveMQConnectionFactory("tcp://livm73u.havochvatten.se:61616");
-        private static final String MOVEMENTRULES_QUEUE = "UVMSMovementRulesEvent";
-        private static final String RESPONSE_QUEUE = "IntegrationTestsResponseQueue";
+    private static final String MOVEMENTRULES_QUEUE = "UVMSMovementRulesEvent";
+    private static final String RESPONSE_QUEUE = "IntegrationTestsResponseQueue";
 
-        private static MovementHelper movementHelper = new MovementHelper();
+    private Map<String, JAXBContext> contexts = new HashMap<>();
 
-        private static Map<String, JAXBContext> contexts = new HashMap<>();
+    private static Connection connection;
+    private static MessageProducer messageProducer;
+    private static Session session;
+
+    private static MovementHelper movementHelper;
+
+    @BeforeClass
+    public static void setup() throws JMSException {
+        Map<String, Object> params = new HashMap<>();
+        params.put("host", "localhost");
+        params.put("port", 5445);
+        TransportConfiguration transportConfiguration = new TransportConfiguration(NettyConnectorFactory.class.getName(), params);
+        ConnectionFactory connectionFactory = ActiveMQJMSClient.createConnectionFactoryWithoutHA(JMSFactoryType.CF,transportConfiguration);
+        connection = connectionFactory.createConnection("test", "test");
+        connection.setClientID(UUID.randomUUID().toString());
+        connection.start();
+        session = connection.createSession(false, Session.AUTO_ACKNOWLEDGE);
+        Queue movementQueue = session.createQueue(MOVEMENTRULES_QUEUE);
+        messageProducer = session.createProducer(movementQueue);
+        movementHelper = new MovementHelper();
+    }
+
+    @AfterClass
+    public static void cleanup() {
+        movementHelper.close();
+        JMSUtils.disconnectQueue(connection, session, messageProducer);
+    }
+
+    @Test
+    @Ignore
+    public void createRouteTestTitanic1000PositionsSync() throws Exception{   //Needs a special version of exchange that respond on the sales queue to work!!!!
+
+        AssetDTO testAsset = AssetTestHelper.createTestAsset();
+        MobileTerminalDto mobileTerminal = MobileTerminalTestHelper.createMobileTerminal();
+        MobileTerminalTestHelper.assignMobileTerminal(testAsset, mobileTerminal);
+        List<LatLong> route = movementHelper.createRuttCobhNewYork(1000, 0.06f);                //0.1F = 654 pos    0.01 = 6543     0.07 = 934   0.06 = 1090
+
+        AssetId assetId = new AssetId();
+        assetId.setAssetType(AssetType.VESSEL);
+        AssetIdList assetIdList = new AssetIdList();
+        assetIdList.setIdType(AssetIdType.IRCS);
+        assetIdList.setValue(testAsset.getIrcs());
+        assetId.getAssetIdList().add(assetIdList);
+
+        assetIdList = new AssetIdList();
+        assetIdList.setIdType(AssetIdType.CFR);
+        assetIdList.setValue(testAsset.getCfr());
+        assetId.getAssetIdList().add(assetIdList);
 
 
-        @Test
-        @Ignore
-        public void createRouteTestTitanic1000PositionsSync() throws Exception{   //Needs a special version of exchange that respond on the sales queue to work!!!!
+        int i = 0;
+        Instant b4 = Instant.now();
+        Instant lastIteration = Instant.now();
+        List<Duration> averageDurations = new ArrayList<>();
 
-            AssetDTO testAsset = AssetTestHelper.createTestAsset();
-            MobileTerminalType mobileTerminalType = MobileTerminalTestHelper.createMobileTerminalType();
-            MobileTerminalTestHelper.assignMobileTerminal(testAsset, mobileTerminalType);
-            List<LatLong> route = movementHelper.createRuttCobhNewYork(1000, 0.06f);                //0.1F = 654 pos    0.01 = 6543     0.07 = 934   0.06 = 1090
+        for(LatLong pos : route) {
+            RawMovementType move = createBasicMovement(assetId, testAsset.getName(), pos);
+            String request = createSetMovementReportRequest(PluginType.FLUX, move, "PerformanceTester");
 
+            String corrId = sendMessageToRules(request, RulesModuleMethod.SET_MOVEMENT_REPORT.value());
 
-            AssetId assetId = new AssetId();
-            assetId.setAssetType(AssetType.VESSEL);
-            AssetIdList assetIdList = new AssetIdList();
-            assetIdList.setIdType(AssetIdType.IRCS);
-            assetIdList.setValue(testAsset.getIrcs());
-            assetId.getAssetIdList().add(assetIdList);
+            Message message = /*MessageHelper.*/listenForResponseOnQueue("PerformanceTester", "IntegrationTestsResponseQueue");
 
-            assetIdList = new AssetIdList();
-            assetIdList.setIdType(AssetIdType.CFR);
-            assetIdList.setValue(testAsset.getCfr());
-            assetId.getAssetIdList().add(assetIdList);
-
-
-            int i = 0;
-            Instant b4 = Instant.now();
-            Instant lastIteration = Instant.now();
-            List<Duration> averageDurations = new ArrayList<>();
-
-            for(LatLong pos : route) {
-                RawMovementType move = createBasicMovement(assetId, testAsset.getName(), pos);
-                String request = createSetMovementReportRequest(PluginType.FLUX, move, "PerformanceTester");
-
-                String corrId = sendMessageToRules(request, RulesModuleMethod.SET_MOVEMENT_REPORT.value());
-
-                Message message = /*MessageHelper.*/listenForResponseOnQueue("PerformanceTester", "IntegrationTestsResponseQueue");
-
-                ProcessedMovementResponse movementResponse = JAXBMarshaller.unmarshallTextMessage((TextMessage) message, ProcessedMovementResponse.class);
-                if(movementResponse.getMovementRefType().getType().equals(MovementRefTypeType.ALARM)){
-                    System.out.println("Alarm: " + i + ", ");
-                }
-                i++;
-                if((i % 10) == 0){
-                    System.out.println("Created movement number: " + i + " Time so far: " + humanReadableFormat(Duration.between(b4, Instant.now())) + " Time since last 10: " + humanReadableFormat(Duration.between(lastIteration, Instant.now())));
-                    //System.out.println("Time for 10 movement for last iteration: " + Duration.between(lastIteration,Instant.now()).toString());
-                    averageDurations.add(Duration.between(lastIteration, Instant.now()));
-                    lastIteration = Instant.now();
-
-                }
-
+            ProcessedMovementResponse movementResponse = JAXBMarshaller.unmarshallTextMessage((TextMessage) message, ProcessedMovementResponse.class);
+            if(movementResponse.getMovementRefType().getType().equals(MovementRefTypeType.ALARM)){
+                System.out.println("Alarm: " + i + ", ");
+            }
+            i++;
+            if((i % 10) == 0){
+                System.out.println("Created movement number: " + i + " Time so far: " + humanReadableFormat(Duration.between(b4, Instant.now())) + " Time since last 10: " + humanReadableFormat(Duration.between(lastIteration, Instant.now())));
+                //System.out.println("Time for 10 movement for last iteration: " + Duration.between(lastIteration,Instant.now()).toString());
+                averageDurations.add(Duration.between(lastIteration, Instant.now()));
+                lastIteration = Instant.now();
 
             }
 
-            averageDurations.stream().forEach(dur -> System.out.print(humanReadableFormat(dur) + ", "));
-            System.out.println();
+
         }
+
+        averageDurations.stream().forEach(dur -> System.out.print(humanReadableFormat(dur) + ", "));
+        System.out.println();
+    }
 
     @Test
     @Ignore
@@ -135,7 +163,7 @@ public class NAFExchangePerformanceTests extends AbstractRest {
     @Ignore
     public void createRouteTestTitanic10ships6000PositionsAsync() throws Exception{   //Needs a special version of exchange that respond on the sales queue to work!!!!
         List<LatLong> route = movementHelper.createRuttCobhNewYork(6000, 0.01f);                //0.1F = 654 pos    0.01 = 6543     0.07 = 934   0.06 = 1090
-        sendRouteToNAFOnXShipsAsync(10, route);
+        sendRouteToNAFOnXShipsAsync(20, route);
     }
 
     @Test
@@ -177,8 +205,8 @@ public class NAFExchangePerformanceTests extends AbstractRest {
         System.out.println("Start creating assets");
         for(int i = 0; i < nrOfShips; i++ ){
             AssetDTO testAsset = AssetTestHelper.createTestAsset();
-            MobileTerminalType mobileTerminalType = MobileTerminalTestHelper.createMobileTerminalType();
-            MobileTerminalTestHelper.assignMobileTerminal(testAsset, mobileTerminalType);
+            MobileTerminalDto mobileTerminal = MobileTerminalTestHelper.createMobileTerminal();
+            MobileTerminalTestHelper.assignMobileTerminal(testAsset, mobileTerminal);
 
             assetDTOList.add(testAsset);
 
@@ -208,7 +236,7 @@ public class NAFExchangePerformanceTests extends AbstractRest {
         List<String> movements = Collections.synchronizedList(new ArrayList<String>());
         lastRec = Instant.now();
         last10 = Instant.now();
-        try (SseEventSource source = getSseStream()) {
+        /*try (SseEventSource source = getSseStream()) {
             source.register((inboundSseEvent) -> {
                 if (inboundSseEvent.getComment() != null) {
                     movements.add(inboundSseEvent.readData());
@@ -220,29 +248,30 @@ public class NAFExchangePerformanceTests extends AbstractRest {
                 }
             }, onError);
             source.open();
-            for (LatLong pos : route) {
-                AssetDTO asset = assetDTOList.get(i % nrOfShips);
+            */
+        for (LatLong pos : route) {
+            AssetDTO asset = assetDTOList.get(i % nrOfShips);
 
-                NAFHelper.sendPositionToNAFPlugin(pos, asset);
+            NAFHelper.sendPositionToNAFPlugin(pos, asset);
 
-                //RawMovementType move = createBasicMovement(assetId, nameList.get(i % nrOfShips), pos);
-                //String request = createSetMovementReportRequest(PluginType.FLUX, move, "PerformanceTester");
+            //RawMovementType move = createBasicMovement(assetId, nameList.get(i % nrOfShips), pos);
+            //String request = createSetMovementReportRequest(PluginType.FLUX, move, "PerformanceTester");
 
-                //String corrId = sendMessageToRules(request, RulesModuleMethod.SET_MOVEMENT_REPORT.value());
-                //corrList.add(corrId);
+            //String corrId = sendMessageToRules(request, RulesModuleMethod.SET_MOVEMENT_REPORT.value());
+            //corrList.add(corrId);
 
 
-                i++;
-                if ((i % 10) == 0) {
-                    System.out.println("Created movement number: " + i + " Time so far: " + humanReadableFormat(Duration.between(b4, Instant.now())) + " Time since last 10 sent: " + humanReadableFormat(Duration.between(lastSent, Instant.now())));
-                    //System.out.println("Time for 10 movement for last iteration: " + Duration.between(lastIteration,Instant.now()).toString());
-                    averageDurations.add(Duration.between(lastSent, Instant.now()));
-                    lastSent = Instant.now();
-
-                }
-
+            i++;
+            if ((i % 10) == 0) {
+                System.out.println("Created movement number: " + i + " Time so far: " + humanReadableFormat(Duration.between(b4, Instant.now())) + " Time since last 10 sent: " + humanReadableFormat(Duration.between(lastSent, Instant.now())));
+                //System.out.println("Time for 10 movement for last iteration: " + Duration.between(lastIteration,Instant.now()).toString());
+                averageDurations.add(Duration.between(lastSent, Instant.now()));
+                lastSent = Instant.now();
 
             }
+
+
+        }
 
            /* Instant middle = Instant.now();
             i = 0;
@@ -261,13 +290,13 @@ public class NAFExchangePerformanceTests extends AbstractRest {
 
                 }
             }*/
-            while (movements.size() < route.size()) {
-                Thread.sleep(100);
-                if(Duration.between(lastRec, Instant.now()).getSeconds() > 90){
-                    throw new RuntimeException("More then 30 seconds since last received. Received so far: " + movements.size() + " Time of death: " + humanReadableFormat(Duration.between(b4, Instant.now())));
-                }
+        while (movements.size() < route.size()) {
+            Thread.sleep(100);
+            if(Duration.between(lastRec, Instant.now()).getSeconds() > 90){
+                throw new RuntimeException("More then 30 seconds since last received. Received so far: " + movements.size() + " Time of death: " + humanReadableFormat(Duration.between(b4, Instant.now())));
             }
         }
+        //}
         averageDurations.stream().forEach(dur -> System.out.print(humanReadableFormat(dur) + ", "));
         System.out.println();
     }
@@ -283,9 +312,9 @@ public class NAFExchangePerformanceTests extends AbstractRest {
     };
 
     public String sendMessageToRules(String text, String requestType) throws Exception {
-        Connection connection = connectionFactory.createConnection();
+
+        Session session = connection.createSession(false, Session.AUTO_ACKNOWLEDGE);
         try {
-            Session session = connection.createSession(false, Session.AUTO_ACKNOWLEDGE);
             Queue responseQueue = session.createQueue(RESPONSE_QUEUE);
             Queue assetQueue = session.createQueue(MOVEMENTRULES_QUEUE);
 
@@ -295,10 +324,10 @@ public class NAFExchangePerformanceTests extends AbstractRest {
             message.setStringProperty("FUNCTION", requestType);
 
             session.createProducer(assetQueue).send(message);
-
             return message.getJMSMessageID();
+
         } finally {
-            connection.close();
+            session.close();
         }
     }
 
@@ -334,7 +363,7 @@ public class NAFExchangePerformanceTests extends AbstractRest {
         return JAXBMarshaller.marshallJaxBObjectToString(request);
     }
 
-    public static <R> R unmarshallTextMessage(TextMessage textMessage, Class clazz) {
+    public <R> R unmarshallTextMessage(TextMessage textMessage, Class clazz) {
         try {
             JAXBContext jc = contexts.get(clazz.getName());
             if (jc == null) {
@@ -355,16 +384,13 @@ public class NAFExchangePerformanceTests extends AbstractRest {
     }
 
     public Message listenForResponseOnQueue(String correlationId, String queue) throws Exception {
-        Connection connection = connectionFactory.createConnection();
+        Session session = connection.createSession(false, Session.AUTO_ACKNOWLEDGE);
         try {
-            connection.start();
-            Session session = connection.createSession(false, Session.AUTO_ACKNOWLEDGE);
             Queue responseQueue = session.createQueue(queue);
-
             //return session.createConsumer(responseQueue).receive(TIMEOUT);
             return session.createConsumer(responseQueue).receive(60000);
         } finally {
-            connection.close();
+            session.close();
         }
     }
 
