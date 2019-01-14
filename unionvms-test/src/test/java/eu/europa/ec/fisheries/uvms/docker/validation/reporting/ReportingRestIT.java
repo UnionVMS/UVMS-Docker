@@ -62,23 +62,16 @@ public class ReportingRestIT extends AbstractRest {
 	/** The movement helper. */
 	private static MovementHelper movementHelper;
 
-	@BeforeClass
-	public static void setup() throws JMSException {
-		movementHelper = new MovementHelper();
-	}
-
-	@AfterClass
-	public static void cleanup() {
-		movementHelper.close();
-	}
 	/** The test asset. */
 	private static AssetDTO testAsset =null;
 	
 	/**
 	 * Creates the test asset with terminal and positions.
+	 * @throws JMSException 
 	 */
 	@BeforeClass
-	public static void createTestAssetWithTerminalAndPositions() {
+	public static void createTestAssetWithTerminalAndPositions() throws JMSException {
+	    movementHelper = new MovementHelper();
 		try {
 			testAsset = AssetTestHelper.createTestAsset();
 			MobileTerminalDto mobileTerminal = MobileTerminalTestHelper.createMobileTerminal();
@@ -94,6 +87,11 @@ public class ReportingRestIT extends AbstractRest {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+	}
+
+	@AfterClass
+	public static void cleanup() {
+	    movementHelper.close();
 	}
 
 	@Test
