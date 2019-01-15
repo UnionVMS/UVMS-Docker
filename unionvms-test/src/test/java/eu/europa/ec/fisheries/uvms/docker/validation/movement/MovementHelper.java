@@ -18,6 +18,7 @@ import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.sse.SseEventSource;
 
+import eu.europa.ec.fisheries.schema.movement.v1.MovementSourceType;
 import org.hamcrest.CoreMatchers;
 import com.peertopark.java.geocalc.Coordinate;
 import com.peertopark.java.geocalc.DegreeCoordinate;
@@ -94,6 +95,8 @@ public class MovementHelper extends AbstractHelper {
 		incomingMovement.setUpdatedBy("Test");
 		
 		incomingMovement.setPluginType("NAF");
+
+		incomingMovement.setMovementSourceType(MovementSourceType.OTHER.value());
 		
 		return incomingMovement;
 	}
