@@ -14,6 +14,7 @@ copy of the GNU General Public License along with the IFDM Suite. If not, see <h
 package eu.europa.ec.fisheries.uvms.docker.validation.exchange;
 
 import eu.europa.ec.fisheries.schema.exchange.v1.*;
+import eu.europa.ec.fisheries.schema.mobileterminal.polltypes.v1.PollType;
 import eu.europa.ec.fisheries.uvms.asset.client.model.AssetDTO;
 import eu.europa.ec.fisheries.uvms.commons.rest.dto.ResponseDto;
 import eu.europa.ec.fisheries.uvms.docker.validation.asset.AssetTestHelper;
@@ -85,7 +86,7 @@ public class ExchangeLogRestIT extends AbstractRest {
 	@Test
 	public void getPollStatusRefGuidTest() {
 		AssetDTO testAsset = AssetTestHelper.createTestAsset();
-        CreatePollResultDto createPollResultDto = MobileTerminalTestHelper.createPoll_Helper(testAsset);
+        CreatePollResultDto createPollResultDto = MobileTerminalTestHelper.createPoll_Helper(testAsset, PollType.MANUAL_POLL);
         List<String> sentPolls = createPollResultDto.getSentPolls();
         String uid = sentPolls.get(0);
 
@@ -104,7 +105,7 @@ public class ExchangeLogRestIT extends AbstractRest {
 	@Test
 	public void getExchangeLogByGuidTest() {
         AssetDTO testAsset = AssetTestHelper.createTestAsset();
-        CreatePollResultDto createPollResultDto = MobileTerminalTestHelper.createPoll_Helper(testAsset);
+        CreatePollResultDto createPollResultDto = MobileTerminalTestHelper.createPoll_Helper(testAsset, PollType.MANUAL_POLL);
         List<String> sentPolls = createPollResultDto.getSentPolls();
         String uid = sentPolls.get(0);
 

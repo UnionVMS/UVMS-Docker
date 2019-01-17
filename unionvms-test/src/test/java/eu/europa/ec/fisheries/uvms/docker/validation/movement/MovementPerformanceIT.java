@@ -450,8 +450,8 @@ public class MovementPerformanceIT extends AbstractRest {
         assertNotNull(output);
 
         GetMovementListByQueryResponse response = unMarshallCreateMovementBatchResponse(output);
-        System.out.println("Amount of movement: " + response.getMovement().size());
-        System.out.println("Time search query: " + humanReadableFormat(Duration.between(start, Instant.now()))); //last time 1.015S
+//        System.out.println("Amount of movement: " + response.getMovement().size());
+//        System.out.println("Time search query: " + humanReadableFormat(Duration.between(start, Instant.now()))); //last time 1.015S
 
     }
 
