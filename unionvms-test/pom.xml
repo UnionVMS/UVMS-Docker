@@ -63,7 +63,7 @@
 			<groupId>eu.europa.ec.fisheries.uvms.reporting</groupId>
 			<artifactId>service</artifactId>
 			<version>${unionvms.project.reporting.module}</version>
-		</dependency>		
+		</dependency>
 		<dependency>
 			<groupId>eu.europa.ec.fisheries.uvms.config</groupId>
 			<artifactId>config-model</artifactId>

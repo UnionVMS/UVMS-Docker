@@ -73,6 +73,13 @@
             <version>${unionvms.project.activity.module}</version>
         </dependency>
 
+        <dependency>
+            <groupId>eu.europa.ec.fisheries.uvms.asset</groupId>
+            <artifactId>asset-module</artifactId>
+            <type>ear</type>
+            <version>${unionvms.project.asset.module}</version>
+        </dependency>
+
         <!-- Plugin modules -->
         <dependency>
             <groupId>eu.europa.ec.fisheries.uvms.plugins</groupId>
@@ -203,10 +210,6 @@
                                             <zipfileset dir="${project.basedir}/target/dockerfile/jboss-deployment/asset" includes="*.xml" prefix="META-INF" />
                                         </jar>
 
-                                        <jar destfile="${project.basedir}/target/dockerfile/deployments/rules-module-${unionvms.project.rules.module}.ear" update="true">
-                                            <zipfileset dir="${project.basedir}/target/dockerfile/jboss-deployment/rules" includes="*.xml" prefix="META-INF" />
-                                        </jar>
-
                                         <jar destfile="${project.basedir}/target/dockerfile/deployments/mdr-module-${unionvms.project.mdr.module}.ear" update="true">
                                             <zipfileset dir="${project.basedir}/target/dockerfile/jboss-deployment/mdr" includes="*.xml" prefix="META-INF" />
                                         </jar>
@@ -233,6 +236,10 @@
 
                                         <jar destfile="${project.basedir}/target/dockerfile/deployments/exchange-module-${unionvms.project.exchange.module}.ear" update="true">
                                             <zipfileset dir="${project.basedir}/target/dockerfile/jboss-deployment/exchange" includes="*.xml" prefix="META-INF" />
+                                        </jar>
+
+                                        <jar destfile="${project.basedir}/target/dockerfile/deployments/rules-module-${unionvms.project.rules.module}.ear" update="true">
+                                            <zipfileset dir="${project.basedir}/target/dockerfile/jboss-deployment/rules" includes="*.xml" prefix="META-INF" />
                                         </jar>
                                     </then>
                                     <else>
