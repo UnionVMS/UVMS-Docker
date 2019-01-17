@@ -15,6 +15,7 @@ package eu.europa.ec.fisheries.uvms.docker.validation.mobileterminal;
 
 import eu.europa.ec.fisheries.schema.mobileterminal.polltypes.v1.PollListQuery;
 import eu.europa.ec.fisheries.schema.mobileterminal.polltypes.v1.PollSearchCriteria;
+import eu.europa.ec.fisheries.schema.mobileterminal.polltypes.v1.PollType;
 import eu.europa.ec.fisheries.schema.mobileterminal.polltypes.v1.PollableQuery;
 import eu.europa.ec.fisheries.schema.mobileterminal.types.v1.ListPagination;
 import eu.europa.ec.fisheries.uvms.asset.client.model.AssetDTO;
@@ -56,7 +57,7 @@ public class PollRestIT extends AbstractRest {
 	@Test
 	public void createPollTest() {
 		AssetDTO testAsset = AssetTestHelper.createTestAsset();
-		CreatePollResultDto resultDto = MobileTerminalTestHelper.createPoll_Helper(testAsset);
+		CreatePollResultDto resultDto = MobileTerminalTestHelper.createPoll_Helper(testAsset, PollType.MANUAL_POLL);
 		assertNotNull(resultDto);
 		assertEquals(1, resultDto.getSentPolls().size());
 	}
@@ -64,9 +65,9 @@ public class PollRestIT extends AbstractRest {
 	@Test
 	public void startProgramPollTest() {
 		AssetDTO testAsset = AssetTestHelper.createTestAsset();
-		CreatePollResultDto resultDto = MobileTerminalTestHelper.createPoll_Helper(testAsset);
-		List<String> sentPolls = resultDto.getSentPolls();
-		String uid = sentPolls.get(0);
+		CreatePollResultDto resultDto = MobileTerminalTestHelper.createPoll_Helper(testAsset, PollType.PROGRAM_POLL);
+		List<String> unsentPolls = resultDto.getUnsentPolls();
+		String uid = unsentPolls.get(0);
 
 		Response response = getWebTarget()
 				.path("asset/rest/poll/start")
@@ -84,9 +85,9 @@ public class PollRestIT extends AbstractRest {
 	@Test
 	public void stopProgramPollTest() {
 		AssetDTO testAsset = AssetTestHelper.createTestAsset();
-		CreatePollResultDto resultDto = MobileTerminalTestHelper.createPoll_Helper(testAsset);
-		List<String> sentPolls = resultDto.getSentPolls();
-		String uid = sentPolls.get(0);
+		CreatePollResultDto resultDto = MobileTerminalTestHelper.createPoll_Helper(testAsset, PollType.PROGRAM_POLL);
+		List<String> unsentPolls = resultDto.getUnsentPolls();
+		String uid = unsentPolls.get(0);
 
 		// start it
 		Response started = getWebTarget()
@@ -128,9 +129,9 @@ public class PollRestIT extends AbstractRest {
 	@Test
 	public void inactivateProgramPollTest() {
 		AssetDTO testAsset = AssetTestHelper.createTestAsset();
-		CreatePollResultDto resultDto = MobileTerminalTestHelper.createPoll_Helper(testAsset);
-		List<String> sentPolls = resultDto.getSentPolls();
-		String uid = sentPolls.get(0);
+		CreatePollResultDto resultDto = MobileTerminalTestHelper.createPoll_Helper(testAsset, PollType.PROGRAM_POLL);
+		List<String> unsentPolls = resultDto.getUnsentPolls();
+		String uid = unsentPolls.get(0);
 
 		// start it
 		Response started = getWebTarget()

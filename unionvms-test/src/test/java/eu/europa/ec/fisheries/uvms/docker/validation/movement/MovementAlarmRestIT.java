@@ -54,8 +54,10 @@ public class MovementAlarmRestIT extends AbstractRest {
 	@Test
 	public void getNumberOfOpenAlarmReportsTest() throws Exception {
 	    AssetDTO asset = AssetTestHelper.createBasicAsset();
-        NAFHelper.sendPositionToNAFPlugin(new LatLong(56d, 11d, new Date(System.currentTimeMillis() + 10000)), asset);
+        FLUXHelper.sendPositionToFluxPlugin(asset, new LatLong(56d, 11d, new Date(System.currentTimeMillis() + 10000)));
 	    
+        SanityRuleHelper.pollAlarmReportCreated();
+        
 	    Long response = getWebTarget()
                 .path("movement/rest/alarms/countopen")
                 .request(MediaType.APPLICATION_JSON)

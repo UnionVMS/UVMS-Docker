@@ -23,7 +23,7 @@ public final class MobileTerminalTestHelper extends AbstractHelper {
 
 	private static String serialNumber;
 
-	public static CreatePollResultDto createPoll_Helper(AssetDTO testAsset) {
+	public static CreatePollResultDto createPoll_Helper(AssetDTO testAsset, PollType pollType) {
 
 		MobileTerminalDto createdTerminal = createMobileTerminal();
 
@@ -38,7 +38,7 @@ public final class MobileTerminalTestHelper extends AbstractHelper {
 		String comChannelId = createdTerminal.getChannels().iterator().next().getId().toString();
 
 		PollRequestType pollRequestType = new PollRequestType();
-		pollRequestType.setPollType(PollType.PROGRAM_POLL);
+		pollRequestType.setPollType(pollType);
 		pollRequestType.setUserName("vms_admin_com");
 		pollRequestType.setComment("Manual poll created by test");
 

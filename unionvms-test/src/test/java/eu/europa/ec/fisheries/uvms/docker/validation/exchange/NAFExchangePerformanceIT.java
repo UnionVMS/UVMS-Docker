@@ -45,7 +45,7 @@ import java.util.*;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Consumer;
 
-public class NAFExchangePerformanceTests extends AbstractRest {
+public class NAFExchangePerformanceIT extends AbstractRest {
 
     private static final String MOVEMENTRULES_QUEUE = "UVMSMovementRulesEvent";
     private static final String RESPONSE_QUEUE = "IntegrationTestsResponseQueue";
