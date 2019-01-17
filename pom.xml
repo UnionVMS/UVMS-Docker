@@ -24,23 +24,26 @@
         <scm.url>scm:git:https://github.com/UnionVMS/UVMS-Docker.git</scm.url>
         <focus-pom.java.version>1.8</focus-pom.java.version>
 
-        <unionvms.project.user.module>2.0.12-W14J8</unionvms.project.user.module>
-        <unionvms.project.config.module>4.0.11-W14J8</unionvms.project.config.module>
-        <unionvms.project.audit.module>4.0.11-W14J8</unionvms.project.audit.module>
-        <unionvms.project.asset.module>4.0.19-W14J8</unionvms.project.asset.module>
-        <unionvms.project.asset.client.jar>6.0.17</unionvms.project.asset.client.jar>
-        <unionvms.project.mdr.module>1.0.16-W14J8</unionvms.project.mdr.module>
-        <unionvms.project.rules.module>3.0.46-W14J8</unionvms.project.rules.module>
-        <unionvms.project.subscription.module>1.4-W14J8</unionvms.project.subscription.module>
-        <unionvms.project.exchange.module>4.0.36-W14J8</unionvms.project.exchange.module>
-        <unionvms.project.activity.module>1.1.11-W14J8</unionvms.project.activity.module>
+        <unionvms.project.user.module>2.0.12.1-W14J8</unionvms.project.user.module>
+        <unionvms.project.user.liquibase.version>2.0.11</unionvms.project.user.liquibase.version>
+
+        <unionvms.project.config.module>4.0.12-W14J8</unionvms.project.config.module>
+        <unionvms.project.audit.module>4.0.12-W14J8</unionvms.project.audit.module>
+<!--        <unionvms.project.asset.module>6.0.17</unionvms.project.asset.module>
+        <unionvms.project.asset.client.jar>6.0.17</unionvms.project.asset.client.jar>-->
+        <unionvms.project.asset.module>4.0.20-W14J8-MARE</unionvms.project.asset.module>
+        <unionvms.project.mdr.module>1.0.17-W14J8</unionvms.project.mdr.module>
+        <unionvms.project.rules.module>3.0.49-W14J8-MARE</unionvms.project.rules.module>
+        <unionvms.project.subscription.module>1.4.1-W14J8</unionvms.project.subscription.module>
+        <unionvms.project.exchange.module>4.0.37-W14J8</unionvms.project.exchange.module>
+        <unionvms.project.activity.module>1.1.13-W14J8</unionvms.project.activity.module>
 
         <unionvms.project.movementrules.module>1.0.5-W14J8</unionvms.project.movementrules.module>
-        <unionvms.project.movement.module>5.1.4-W14J8</unionvms.project.movement.module>
-        <unionvms.project.reporting.db.module>1.0.4</unionvms.project.reporting.db.module>
-        <unionvms.project.reporting.module>1.1.6-1-W14J8</unionvms.project.reporting.module>
-        <unionvms.project.spatial.db.module>1.0.5</unionvms.project.spatial.db.module>
-        <unionvms.project.spatial.module>1.1.10-1-W14J8</unionvms.project.spatial.module>
+        <unionvms.project.movement.module>5.1.5-W14J8</unionvms.project.movement.module>
+        <!-- unionvms.project.reporting.db.module>1.0.4</unionvms.project.reporting.db.module -->
+        <unionvms.project.reporting.module>1.1.7.1-W14J8</unionvms.project.reporting.module>
+        <!-- unionvms.project.spatial.db.module>1.0.5</unionvms.project.spatial.db.module -->
+        <unionvms.project.spatial.module>1.1.13-W14J8</unionvms.project.spatial.module>
 
         <unionvms.project.unionvms.web.version>3.0.26</unionvms.project.unionvms.web.version>
         <unionvms.project.mapfishprint.version>3.5</unionvms.project.mapfishprint.version>
@@ -48,7 +51,7 @@
 
         <!-- Plugins Dependencies -->
         <unionvms.project.plugins.flux.movement>3.0.15-W14J8</unionvms.project.plugins.flux.movement>
-        <unionvms.project.plugins.flux.activity>1.0.17-W14-J8</unionvms.project.plugins.flux.activity>
+        <unionvms.project.plugins.flux.activity>1.0.17.1-W14J8</unionvms.project.plugins.flux.activity>
         <unionvms.project.plugins.flux.mdr>1.0.4-W14J8</unionvms.project.plugins.flux.mdr>
 
         <unionvms.project.plugins.naf>3.0.10-W14J8</unionvms.project.plugins.naf>
@@ -182,7 +185,7 @@
                 <groupId>eu.europa.ec.fisheries.uvms.spatial</groupId>
                 <artifactId>liquibase</artifactId>
                 <type>sql</type>
-                <version>${unionvms.project.spatial.db.module}</version>
+                <version>${unionvms.project.spatial.module}</version>
                 <exclusions>
                     <exclusion>
                         <groupId>com.oracle</groupId>
@@ -230,7 +233,7 @@
                 <groupId>eu.europa.ec.fisheries.uvms.reporting</groupId>
                 <artifactId>liquibase</artifactId>
                 <type>sql</type>
-                <version>${unionvms.project.reporting.db.module}</version>
+                <version>${unionvms.project.reporting.module}</version>
                 <exclusions>
                     <exclusion>
                         <groupId>com.oracle</groupId>
@@ -447,7 +450,7 @@
                                 wildfly.hibernate.module.hibernate.version,wildfly.hibernate.module.spatial.version,wildfly.hibernate.module.jts.version,wildfly.postgres.module.postgis.version,wildfly.postgres.module.postgres.version,wildfly.activemq.rar.version
                             </excludeProperties>
                             <includeProperties>
-                                unionvms.project.spatial.db.module,unionvms.project.reporting.db.module,unionvms.project.unionvms.web.version,unionvms.project.mapfishprint.version,unionvms.project.geoserver.version,unionvms.project.user.module,unionvms.project.rules.module,unionvms.project.movement.module,unionvms.project.exchange.module,unionvms.project.reporting.module,unionvms.project.subscription.module,unionvms.project.spatial.module,unionvms.project.config.module,unionvms.project.audit.module,unionvms.project.asset.module,unionvms.project.activity.module,unionvms.project.mdr.module,unionvms.project.plugins.naf,unionvms.project.plugins.flux,unionvms.project.plugins.inmarsat,unionvms.project.plugins.siriusone
+                                unionvms.project.spatial.module,unionvms.project.reporting.module,unionvms.project.unionvms.web.version,unionvms.project.mapfishprint.version,unionvms.project.geoserver.version,unionvms.project.user.module,unionvms.project.rules.module,unionvms.project.movement.module,unionvms.project.exchange.module,unionvms.project.reporting.module,unionvms.project.subscription.module,unionvms.project.spatial.module,unionvms.project.config.module,unionvms.project.audit.module,unionvms.project.asset.module,unionvms.project.activity.module,unionvms.project.mdr.module,unionvms.project.plugins.naf,unionvms.project.plugins.flux,unionvms.project.plugins.inmarsat,unionvms.project.plugins.siriusone
                             </includeProperties>
                             <allowSnapshots>true</allowSnapshots>
                         </configuration>

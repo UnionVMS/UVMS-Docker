@@ -16,9 +16,9 @@
 -->
 <!-- START SNIPPET: example -->
 <beans
-  xmlns="http://www.springframework.org/schema/beans"
-  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+        xmlns="http://www.springframework.org/schema/beans"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
   http://activemq.apache.org/schema/core http://activemq.apache.org/schema/core/activemq-core.xsd">
 
     <!-- Allows us to use system properties as variables in this configuration file -->
@@ -28,76 +28,96 @@
         </property>
     </bean>
 
-   <!-- Allows accessing the server log -->
-    <bean id="logQuery" class="io.fabric8.insight.log.log4j.Log4jLogQuery"
-          lazy-init="false" scope="singleton"
-          init-method="start" destroy-method="stop">
+    <!-- Allows accessing the server log -->
+    <bean id="logQuery" class="io.fabric8.insight.log.log4j.Log4jLogQuery" lazy-init="false" scope="singleton" init-method="start" destroy-method="stop">
     </bean>
 
     <!--
         The <broker> element is used to configure the ActiveMQ broker.
     -->
-    <broker xmlns="http://activemq.apache.org/schema/core" brokerName="localhost" dataDirectory="${activemq.data}" advisorySupport="false" useJmx="true">
+    <broker xmlns="http://activemq.apache.org/schema/core" brokerName="localhost" persistent="true" dataDirectory="${activemq.data}" advisorySupport="false" useJmx="true"
+    useLoggingForShutdownErrors="true" enableStatistics="true">
 
         <destinationPolicy>
             <policyMap>
-              <policyEntries>
-                <policyEntry topic=">" >
-                    <!-- The constantPendingMessageLimitStrategy is used to prevent
-                         slow topic consumers to block producers and affect other consumers
-                         by limiting the number of messages that are retained
-                         For more information, see:
+                <policyEntries>
 
-                         http://activemq.apache.org/slow-consumer-handling.html
-                    -->
-                  <pendingMessageLimitStrategy>
-                    <constantPendingMessageLimitStrategy limit="1000"/>
-                  </pendingMessageLimitStrategy>
-                </policyEntry>
+                    <policyEntry topic=">">
+                        <pendingMessageLimitStrategy>
+                            <constantPendingMessageLimitStrategy limit="100000"/>
+                        </pendingMessageLimitStrategy>
+                    </policyEntry>
 
-		<policyEntry queue=">" optimizedDispatch="true"/>
+                    <policyEntry queue=">" optimizedDispatch="true" queuePrefetch="1000">
+                    </policyEntry>
 
-                <policyEntry queue="UVMSAsset" producerFlowControl="true">
-                    <deadLetterStrategy>
-                        <sharedDeadLetterStrategy processExpired="false" expiration="60000"/>
-                    </deadLetterStrategy>
-                </policyEntry>
-                <policyEntry queue="UVMSAudit" producerFlowControl="true">
-                    <deadLetterStrategy>
-                        <sharedDeadLetterStrategy processExpired="false" expiration="60000"/>
-                    </deadLetterStrategy>
-                </policyEntry>
-                <policyEntry queue="UVMSConfig" producerFlowControl="true">
-                    <deadLetterStrategy>
-                        <sharedDeadLetterStrategy processExpired="false" expiration="60000"/>
-                    </deadLetterStrategy>
-                </policyEntry>
-                <policyEntry queue="UVMSExchange" producerFlowControl="true">
-                    <deadLetterStrategy>
-                        <sharedDeadLetterStrategy processExpired="false" expiration="60000"/>
-                    </deadLetterStrategy>
-                </policyEntry>
-                <policyEntry queue="UVMSMobileTerminal" producerFlowControl="true">
-                    <deadLetterStrategy>
-                        <sharedDeadLetterStrategy processExpired="false" expiration="60000"/>
-                    </deadLetterStrategy>
-                </policyEntry>
-                <policyEntry queue="UVMSMovement" producerFlowControl="true">
-                    <deadLetterStrategy>
-                        <sharedDeadLetterStrategy processExpired="false" expiration="60000"/>
-                    </deadLetterStrategy>
-                </policyEntry>
-                <policyEntry queue="UVMSRules" producerFlowControl="true">
-                    <deadLetterStrategy>
-                        <sharedDeadLetterStrategy processExpired="false" expiration="60000"/>
-                    </deadLetterStrategy>
-                </policyEntry>
-                  <policyEntry queue="UVMSSubscription" producerFlowControl="true">
-                      <deadLetterStrategy>
-                          <sharedDeadLetterStrategy processExpired="false" expiration="60000"/>
-                      </deadLetterStrategy>
-                  </policyEntry>
-              </policyEntries>
+                    <policyEntry queue="UVMSAsset" producerFlowControl="false" optimizedDispatch="true">
+                        <deadLetterStrategy>
+                            <sharedDeadLetterStrategy processExpired="false" />
+                        </deadLetterStrategy>
+                    </policyEntry>
+                    <policyEntry queue="UVMSAudit" producerFlowControl="false" optimizedDispatch="true">
+                        <deadLetterStrategy>
+                            <sharedDeadLetterStrategy processExpired="false" />
+                        </deadLetterStrategy>
+                    </policyEntry>
+                    <policyEntry queue="UVMSConfig" producerFlowControl="false" optimizedDispatch="true">
+                        <deadLetterStrategy>
+                            <sharedDeadLetterStrategy processExpired="false" />
+                        </deadLetterStrategy>
+                    </policyEntry>
+                    <policyEntry queue="UVMSExchange" producerFlowControl="false" optimizedDispatch="true">
+                        <deadLetterStrategy>
+                            <sharedDeadLetterStrategy processExpired="false" />
+                        </deadLetterStrategy>
+                    </policyEntry>
+					<policyEntry queue="UVMSExchangeEvent" producerFlowControl="false" optimizedDispatch="true" memoryLimit="30mb">
+                        <deadLetterStrategy>
+                            <sharedDeadLetterStrategy processExpired="false" />
+                        </deadLetterStrategy>
+                    </policyEntry>
+                    <policyEntry queue="UVMSMobileTerminal" producerFlowControl="false" optimizedDispatch="true">
+                        <deadLetterStrategy>
+                            <sharedDeadLetterStrategy processExpired="false" />
+                        </deadLetterStrategy>
+                    </policyEntry>
+                    <policyEntry queue="UVMSMovement" producerFlowControl="false" optimizedDispatch="true">
+                        <deadLetterStrategy>
+                            <sharedDeadLetterStrategy processExpired="false" />
+                        </deadLetterStrategy>
+                    </policyEntry>
+                    <policyEntry queue="UVMSRules" producerFlowControl="false" optimizedDispatch="true">
+                        <deadLetterStrategy>
+                            <sharedDeadLetterStrategy processExpired="false" />
+                        </deadLetterStrategy>
+                    </policyEntry>
+					<policyEntry queue="UVMSRulesEvent" producerFlowControl="false" optimizedDispatch="true" memoryLimit="100mb">
+                        <deadLetterStrategy>
+                            <sharedDeadLetterStrategy processExpired="false" />
+                        </deadLetterStrategy>
+                    </policyEntry>
+                    <policyEntry queue="UVMSSubscription" producerFlowControl="false" optimizedDispatch="true">
+                        <deadLetterStrategy>
+                            <sharedDeadLetterStrategy processExpired="false" />
+                        </deadLetterStrategy>
+                    </policyEntry>
+                    <policyEntry queue="UVMSActivity" producerFlowControl="false" optimizedDispatch="true">
+                        <deadLetterStrategy>
+                            <sharedDeadLetterStrategy processExpired="false" />
+                        </deadLetterStrategy>
+                    </policyEntry>
+					<policyEntry queue="UVMSActivityEvent" producerFlowControl="false" optimizedDispatch="true" memoryLimit="70mb">
+                        <deadLetterStrategy>
+                            <sharedDeadLetterStrategy processExpired="false" />
+                        </deadLetterStrategy>
+                    </policyEntry>
+                    <policyEntry queue="UVMSMdr" producerFlowControl="false" optimizedDispatch="true">
+                        <deadLetterStrategy>
+                            <sharedDeadLetterStrategy processExpired="false" />
+                        </deadLetterStrategy>
+                    </policyEntry>
+
+                </policyEntries>
             </policyMap>
         </destinationPolicy>
 
@@ -110,7 +130,7 @@
             http://activemq.apache.org/jmx.html
         -->
         <managementContext>
-            <managementContext/>
+            <managementContext createConnector="false"/>
         </managementContext>
 
         <!--
@@ -121,19 +141,23 @@
             http://activemq.apache.org/persistence.html
         -->
         <persistenceAdapter>
-            <kahaDB directory="${activemq.data}/kahadb"/>
+            <kahaDB directory="${activemq.data}/kahadb"
+                    enableJournalDiskSyncs="true"
+                    preallocationStrategy="zeros"
+                    concurrentStoreAndDispatchQueues="true"
+                    concurrentStoreAndDispatchTopics="true"/>
         </persistenceAdapter>
 
 
-          <!--
-            The systemUsage controls the maximum amount of space the broker will
-            use before disabling caching and/or slowing down producers. For more information, see:
-            http://activemq.apache.org/producer-flow-control.html
-          -->
-          <systemUsage>
-            <systemUsage>
+        <!--
+          The systemUsage controls the maximum amount of space the broker will
+          use before disabling caching and/or slowing down producers. For more information, see:
+          http://activemq.apache.org/producer-flow-control.html
+        -->
+        <systemUsage>
+            <systemUsage sendFailIfNoSpace="true">
                 <memoryUsage>
-                    <memoryUsage percentOfJvmHeap="70" />
+                    <memoryUsage percentOfJvmHeap="90"/>
                 </memoryUsage>
                 <storeUsage>
                     <storeUsage limit="100 gb"/>
@@ -151,17 +175,23 @@
             http://activemq.apache.org/configuring-transports.html
         -->
         <transportConnectors>
-            <!-- DOS protection, limit concurrent connections to 1000 and frame size to 100MB -->
-            <transportConnector name="openwire" uri="tcp://0.0.0.0:61616?maximumConnections=1000&amp;wireFormat.maxFrameSize=304857600&amp;jms.watchTopicAdvisories=false"/>
-            <transportConnector name="amqp" uri="amqp://0.0.0.0:5672?maximumConnections=1000&amp;wireFormat.maxFrameSize=304857600"/>
-            <transportConnector name="stomp" uri="stomp://0.0.0.0:61613?maximumConnections=1000&amp;wireFormat.maxFrameSize=304857600"/>
-            <transportConnector name="mqtt" uri="mqtt://0.0.0.0:1883?maximumConnections=1000&amp;wireFormat.maxFrameSize=304857600"/>
-            <transportConnector name="ws" uri="ws://0.0.0.0:61614?maximumConnections=1000&amp;wireFormat.maxFrameSize=304857600"/>
+            <!-- DOS protection, limit concurrent connections to 1000 and frame size to 100MB &amp;wireFormat.maxInactivityDuration=30000 default-->
+<!--            <transportConnector name="openwire"
+                                uri="tcp://0.0.0.0:61616?maximumConnections=100000&amp;wireFormat.maxFrameSize=304857600&amp;jms.watchTopicAdvisories=false&amp;wireFormat.maxInactivityDuration=40000"/>-->
+             <transportConnector name="openwire" uri="tcp://0.0.0.0:61616?maximumConnections=100000&amp;wireFormat.maxInactivityDuration=0&amp;transport.useInactivityMonitor=false&amp;jms.useAsyncSend=true&amp;wireFormat.maxFrameSize=304857600&amp;jms.watchTopicAdvisories=false"/>
+            <!--<transportConnector name="amqp"
+                                uri="amqp://0.0.0.0:5672?maximumConnections=1000&amp;wireFormat.maxFrameSize=304857600"/>
+            <transportConnector name="stomp"
+                                uri="stomp://0.0.0.0:61613?maximumConnections=1000&amp;wireFormat.maxFrameSize=304857600"/>
+            <transportConnector name="mqtt"
+                                uri="mqtt://0.0.0.0:1883?maximumConnections=1000&amp;wireFormat.maxFrameSize=304857600"/>
+            <transportConnector name="ws"
+                                uri="ws://0.0.0.0:61614?maximumConnections=1000&amp;wireFormat.maxFrameSize=304857600"/ !-->
         </transportConnectors>
 
         <!-- destroy the spring context on shutdown to stop jetty -->
         <shutdownHooks>
-            <bean xmlns="http://www.springframework.org/schema/beans" class="org.apache.activemq.hooks.SpringContextHook" />
+            <bean xmlns="http://www.springframework.org/schema/beans" class="org.apache.activemq.hooks.SpringContextHook"/>
         </shutdownHooks>
 
     </broker>
@@ -175,4 +205,4 @@
     <import resource="jetty.xml"/>
 
 </beans>
-<!-- END SNIPPET: example -->
+        <!-- END SNIPPET: example -->
