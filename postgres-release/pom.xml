@@ -139,7 +139,7 @@
 			<groupId>eu.europa.ec.fisheries.uvms.user</groupId>
 			<artifactId>liquibase</artifactId>
 			<type>sql</type>
-			<version>${unionvms.project.user.module}</version>
+			<version>${unionvms.project.user.liquibase.version}</version>
 			<exclusions>
 				<exclusion>
 					<groupId>com.oracle</groupId>
