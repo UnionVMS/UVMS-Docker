@@ -24,9 +24,7 @@
         <scm.url>scm:git:https://github.com/UnionVMS/UVMS-Docker.git</scm.url>
         <focus-pom.java.version>1.8</focus-pom.java.version>
 
-        <unionvms.project.user.module>2.0.12.1-W14J8</unionvms.project.user.module>
-        <unionvms.project.user.liquibase.version>2.0.11</unionvms.project.user.liquibase.version>
-
+        <unionvms.project.user.module>2.0.13-W14J8</unionvms.project.user.module>
         <unionvms.project.config.module>4.0.12-W14J8</unionvms.project.config.module>
         <unionvms.project.audit.module>4.0.12-W14J8</unionvms.project.audit.module>
 <!--        <unionvms.project.asset.module>6.0.17</unionvms.project.asset.module>-->
@@ -40,9 +38,7 @@
 
         <unionvms.project.movementrules.module>1.0.5-W14J8</unionvms.project.movementrules.module>
         <unionvms.project.movement.module>5.1.5-W14J8</unionvms.project.movement.module>
-        <!-- unionvms.project.reporting.db.module>1.0.4</unionvms.project.reporting.db.module -->
         <unionvms.project.reporting.module>1.1.7.1-W14J8</unionvms.project.reporting.module>
-        <!-- unionvms.project.spatial.db.module>1.0.5</unionvms.project.spatial.db.module -->
         <unionvms.project.spatial.module>1.1.13-W14J8</unionvms.project.spatial.module>
 
         <unionvms.project.unionvms.web.version>3.0.26</unionvms.project.unionvms.web.version>
@@ -50,7 +46,7 @@
         <unionvms.project.geoserver.version>2.12.3</unionvms.project.geoserver.version>
 
         <!-- Plugins Dependencies -->
-        <unionvms.project.plugins.flux.movement>3.0.15-W14J8</unionvms.project.plugins.flux.movement>
+        <unionvms.project.plugins.flux.movement>3.0.16-W14J8</unionvms.project.plugins.flux.movement>
         <unionvms.project.plugins.flux.activity>1.0.17.1-W14J8</unionvms.project.plugins.flux.activity>
         <unionvms.project.plugins.flux.mdr>1.0.4-W14J8</unionvms.project.plugins.flux.mdr>
 
