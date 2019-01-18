@@ -35,8 +35,8 @@
     <!--
         The <broker> element is used to configure the ActiveMQ broker.
     -->
-    <broker xmlns="http://activemq.apache.org/schema/core" brokerName="localhost" persistent="true" dataDirectory="${activemq.data}" advisorySupport="false" useJmx="true"
-    useLoggingForShutdownErrors="true" enableStatistics="true">
+    <broker xmlns="http://activemq.apache.org/schema/core" brokerName="localhost" persistent="false" dataDirectory="${activemq.data}" advisorySupport="false" useJmx="true"
+    useLoggingForShutdownErrors="true" enableStatistics="false">
 
         <destinationPolicy>
             <policyMap>
@@ -44,11 +44,11 @@
 
                     <policyEntry topic=">">
                         <pendingMessageLimitStrategy>
-                            <constantPendingMessageLimitStrategy limit="100000"/>
+                            <constantPendingMessageLimitStrategy limit="10000"/>
                         </pendingMessageLimitStrategy>
                     </policyEntry>
 
-                    <policyEntry queue=">" optimizedDispatch="true" queuePrefetch="1000">
+                    <policyEntry queue=">" optimizedDispatch="true" queuePrefetch="300">
                     </policyEntry>
 
                     <policyEntry queue="UVMSAsset" producerFlowControl="false" optimizedDispatch="true">
@@ -71,7 +71,7 @@
                             <sharedDeadLetterStrategy processExpired="false" />
                         </deadLetterStrategy>
                     </policyEntry>
-					<policyEntry queue="UVMSExchangeEvent" producerFlowControl="false" optimizedDispatch="true" memoryLimit="30mb">
+					<policyEntry queue="UVMSExchangeEvent" producerFlowControl="false" optimizedDispatch="true" memoryLimit="50mb">
                         <deadLetterStrategy>
                             <sharedDeadLetterStrategy processExpired="false" />
                         </deadLetterStrategy>
@@ -106,11 +106,16 @@
                             <sharedDeadLetterStrategy processExpired="false" />
                         </deadLetterStrategy>
                     </policyEntry>
-					<policyEntry queue="UVMSActivityEvent" producerFlowControl="false" optimizedDispatch="true" memoryLimit="70mb">
+					<!-- policyEntry queue="UVMSActivityEvent" producerFlowControl="false" optimizedDispatch="true" memoryLimit="200mb">
                         <deadLetterStrategy>
                             <sharedDeadLetterStrategy processExpired="false" />
                         </deadLetterStrategy>
                     </policyEntry>
+					<policyEntry queue="UVMSActivitySubscriptionsEvent" producerFlowControl="false" optimizedDispatch="true">
+                        <deadLetterStrategy>
+                            <sharedDeadLetterStrategy processExpired="false" />
+                        </deadLetterStrategy>
+                    </policyEntry -->
                     <policyEntry queue="UVMSMdr" producerFlowControl="false" optimizedDispatch="true">
                         <deadLetterStrategy>
                             <sharedDeadLetterStrategy processExpired="false" />
