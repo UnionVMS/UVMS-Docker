@@ -33,9 +33,12 @@
     </bean>
 
     <!--
-        The <broker> element is used to configure the ActiveMQ broker.
+        The <broker> element is used to configure the ActiveMQ broker .
+
+        persistent="true"
+
     -->
-    <broker xmlns="http://activemq.apache.org/schema/core" brokerName="localhost" persistent="false" dataDirectory="${activemq.data}" advisorySupport="false" useJmx="true"
+    <broker xmlns="http://activemq.apache.org/schema/core" brokerName="localhost" dataDirectory="${activemq.data}" advisorySupport="false" useJmx="true"
     useLoggingForShutdownErrors="true" enableStatistics="false">
 
         <destinationPolicy>
