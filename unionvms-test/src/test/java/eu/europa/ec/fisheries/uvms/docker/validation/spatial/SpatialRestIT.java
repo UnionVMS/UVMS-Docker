@@ -9,6 +9,7 @@ import javax.ws.rs.core.GenericType;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import org.junit.Assert;
+import org.junit.Ignore;
 import org.junit.Test;
 import eu.europa.ec.fisheries.uvms.docker.validation.common.AbstractRest;
 import eu.europa.ec.fisheries.uvms.spatial.model.exception.SpatialModelMarshallException;
@@ -138,6 +139,45 @@ public class SpatialRestIT extends AbstractRest {
             control.add(aeit.getName());
         }
         Assert.assertTrue(control.contains("Göteborg-Lundbyhamnen"));
+    }
+
+
+    @Test
+    @Ignore
+    public void getClosestAreaWith4kPoints() throws Exception {
+
+        double[] points = TestPoints.testpoints;
+        StringBuilder sb = new StringBuilder();
+        for(int i = 0 ; i < 8000 ; i = i + 2) {
+            PointType point = new PointType();
+            point.setLatitude(points[i]);
+            point.setLongitude(points[i + 1]);
+            point.setCrs(crs);
+            ClosestAreaSpatialRQ request = createClosestAreaRequest(point, UnitType.METERS, Arrays.asList(AreaType.EEZ));
+
+            // @formatter:off
+            Response ret = getWebTarget()
+                    .path("spatial/spatialnonsecure/json/getClosestArea")
+                    .request(MediaType.APPLICATION_JSON)
+                    .accept(MediaType.APPLICATION_JSON)
+                    .post(Entity.json(request), Response.class);
+            // @formatter:on
+
+            Assert.assertEquals(200, ret.getStatus());
+            List<Area> list = ret.readEntity(new GenericType<List<Area>>() {
+            });
+
+            sb.append("Latitude: " + point.getLatitude() + " Longitude: " + point.getLongitude());
+            for (Area aeit : list) {
+                sb.append(" " + aeit.getAreaType().value() + ": " + aeit.getCode());
+            }
+            sb.append("\r\n");
+
+            if(i % 100 == 0){
+                System.out.println("Number: " + i);
+            }
+        }
+        System.out.println(sb.toString());
     }
 
     @Test
