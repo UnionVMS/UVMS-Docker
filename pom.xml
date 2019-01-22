@@ -31,7 +31,7 @@
         <unionvms.project.audit.module>4.0.12-W14J8</unionvms.project.audit.module>
 <!--        <unionvms.project.asset.module>6.0.17</unionvms.project.asset.module>-->
         <unionvms.project.asset.client.jar>6.0.17</unionvms.project.asset.client.jar>
-        <unionvms.project.asset.module>4.0.20-W14J8-MARE</unionvms.project.asset.module>
+        <unionvms.project.asset.module>4.0.21-W14J8-MARE</unionvms.project.asset.module>
         <unionvms.project.mdr.module>1.0.17-W14J8</unionvms.project.mdr.module>
         <unionvms.project.rules.module>3.0.49-W14J8-MARE</unionvms.project.rules.module>
         <unionvms.project.subscription.module>1.4.1-W14J8</unionvms.project.subscription.module>
