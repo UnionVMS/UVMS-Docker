@@ -52,7 +52,6 @@ import java.util.*;
 public class MovementHelper extends AbstractHelper {
 
 	private static final String UVMS_MOVEMENT_REQUEST_QUEUE = "UVMSMovementEvent";
-	public static final String TEST_ACK_IGNORE_EXCHANGE_LOG = "Test"; //Exchange is set so that it ignores messages with this response
 
 	private Random rnd = new Random();
 
@@ -90,7 +89,7 @@ public class MovementHelper extends AbstractHelper {
 		incomingMovement.setReportedCourse(latlong.bearing);
 		incomingMovement.setReportedSpeed(latlong.speed);
 
-		incomingMovement.setAckResponseMessageId(TEST_ACK_IGNORE_EXCHANGE_LOG);   //Exchange is set so that it ignores messages with this response
+		incomingMovement.setAckResponseMessageId(null);   //Exchange ignores ackId=null
 
 		incomingMovement.setUpdatedBy("Test");
 		
