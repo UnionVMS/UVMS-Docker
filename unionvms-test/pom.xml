@@ -5,12 +5,12 @@
 	<parent>
 		<groupId>eu.europa.ec.fisheries.uvms.docker</groupId>
 		<artifactId>uvms-docker</artifactId>
-		<version>3.31.10.w15-SNAPSHOT</version>
+		<version>3.31.10.w15</version>
 		<relativePath>../pom.xml</relativePath>
 	</parent>
 	
 	<groupId>eu.europa.ec.fisheries.uvms.docker</groupId>
-	<version>3.31.10.w15-SNAPSHOT</version>
+	<version>3.31.10.w15</version>
 	<artifactId>uvms-unionvms-test</artifactId>
 	<packaging>jar</packaging>
 	<name>uvms-unionvms-test</name>
