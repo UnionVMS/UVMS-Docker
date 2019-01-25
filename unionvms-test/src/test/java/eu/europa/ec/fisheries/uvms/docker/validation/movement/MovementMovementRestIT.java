@@ -179,7 +179,6 @@ public class MovementMovementRestIT extends AbstractRest {
                 .get(long.class);
 
         assertNotNull(response);
-        System.out.println(response);
 
     }
 }

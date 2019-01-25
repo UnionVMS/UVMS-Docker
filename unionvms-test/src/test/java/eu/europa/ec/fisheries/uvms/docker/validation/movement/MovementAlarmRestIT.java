@@ -201,6 +201,8 @@ public class MovementAlarmRestIT extends AbstractRest {
         LatLong position = new LatLong(42d, 41d, new Date(System.currentTimeMillis() + 5000));
         FLUXHelper.sendPositionToFluxPlugin(asset,position);
         
+        SanityRuleHelper.pollAlarmReportCreated();
+        
         AlarmReport alarmReport = SanityRuleHelper.getLatestOpenAlarmReportSince(timestamp);
         assertThat(alarmReport.getStatus(), CoreMatchers.is("OPEN"));
         

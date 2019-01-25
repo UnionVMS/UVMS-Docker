@@ -4,20 +4,36 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.notNullValue;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
+import java.time.ZonedDateTime;
 import java.util.Date;
 import java.util.GregorianCalendar;
-import java.util.List;
+import java.util.Set;
+import java.util.TimeZone;
 import javax.jms.JMSException;
-
-import eu.europa.ec.fisheries.uvms.docker.validation.movement.MovementHelper;
-import org.junit.*;
+import javax.jms.TextMessage;
+import org.hamcrest.CoreMatchers;
+import org.junit.After;
+import org.junit.AfterClass;
+import org.junit.Assert;
+import org.junit.BeforeClass;
+import org.junit.Test;
 import eu.europa.ec.fisheries.schema.exchange.movement.mobileterminal.v1.IdList;
 import eu.europa.ec.fisheries.schema.exchange.movement.mobileterminal.v1.IdType;
 import eu.europa.ec.fisheries.schema.exchange.movement.mobileterminal.v1.MobileTerminalId;
-import eu.europa.ec.fisheries.schema.exchange.movement.v1.*;
+import eu.europa.ec.fisheries.schema.exchange.movement.v1.MovementBaseType;
+import eu.europa.ec.fisheries.schema.exchange.movement.v1.MovementComChannelType;
+import eu.europa.ec.fisheries.schema.exchange.movement.v1.MovementPoint;
+import eu.europa.ec.fisheries.schema.exchange.movement.v1.MovementSourceType;
+import eu.europa.ec.fisheries.schema.exchange.movement.v1.MovementType;
+import eu.europa.ec.fisheries.schema.exchange.movement.v1.MovementTypeType;
+import eu.europa.ec.fisheries.schema.exchange.movement.v1.SetReportMovementType;
 import eu.europa.ec.fisheries.schema.exchange.plugin.types.v1.PluginType;
 import eu.europa.ec.fisheries.schema.exchange.plugin.v1.SetReportRequest;
-import eu.europa.ec.fisheries.schema.movementrules.customrule.v1.*;
+import eu.europa.ec.fisheries.schema.movementrules.customrule.v1.ActionType;
+import eu.europa.ec.fisheries.schema.movementrules.customrule.v1.ConditionType;
+import eu.europa.ec.fisheries.schema.movementrules.customrule.v1.CriteriaType;
+import eu.europa.ec.fisheries.schema.movementrules.customrule.v1.CustomRuleType;
+import eu.europa.ec.fisheries.schema.movementrules.customrule.v1.SubCriteriaType;
 import eu.europa.ec.fisheries.uvms.asset.client.model.AssetDTO;
 import eu.europa.ec.fisheries.uvms.commons.date.DateUtils;
 import eu.europa.ec.fisheries.uvms.docker.validation.asset.AssetTestHelper;
@@ -26,21 +42,13 @@ import eu.europa.ec.fisheries.uvms.docker.validation.common.MessageHelper;
 import eu.europa.ec.fisheries.uvms.docker.validation.mobileterminal.MobileTerminalTestHelper;
 import eu.europa.ec.fisheries.uvms.docker.validation.mobileterminal.dto.ChannelDto;
 import eu.europa.ec.fisheries.uvms.docker.validation.mobileterminal.dto.MobileTerminalDto;
+import eu.europa.ec.fisheries.uvms.docker.validation.movement.model.AlarmReport;
 import eu.europa.ec.fisheries.uvms.docker.validation.system.helper.CustomRuleBuilder;
 import eu.europa.ec.fisheries.uvms.docker.validation.system.helper.CustomRuleHelper;
+import eu.europa.ec.fisheries.uvms.docker.validation.system.helper.SanityRuleHelper;
+import eu.europa.ec.fisheries.uvms.exchange.model.exception.ExchangeModelMarshallException;
 import eu.europa.ec.fisheries.uvms.exchange.model.mapper.ExchangeModuleRequestMapper;
 import eu.europa.ec.fisheries.uvms.exchange.model.mapper.JAXBMarshaller;
-
-import javax.jms.TextMessage;
-import java.time.LocalDateTime;
-import java.time.ZoneOffset;
-import java.util.Date;
-import java.util.GregorianCalendar;
-import java.util.Set;
-import java.util.TimeZone;
-
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.CoreMatchers.notNullValue;
 
 public class InmarsatSanityIT extends AbstractRest {
 
@@ -87,28 +95,10 @@ public class InmarsatSanityIT extends AbstractRest {
         CustomRuleType createdCustomRule = CustomRuleHelper.createCustomRule(flagStateRule);
         assertNotNull(createdCustomRule);
 
-        // extract DNID and MEMBERNUMBER from testdata created above
-        Set<ChannelDto> channels = mobileTerminal.getChannels();
-        Assert.assertEquals(1, channels.size());
-        ChannelDto channel = channels.iterator().next();
-
-        String dnid = channel.getDNID();
-        String memberNumber = channel.getMemberNumber();
-
         // create the positionreport only containing DNID and MEMBER_NUMBER  OBS NO ASSET REFERENCES AT ALL
-        SetReportMovementType reportType = createReportType(dnid, memberNumber);
-        String text =
-                ExchangeModuleRequestMapper.createSetMovementReportRequest(
-                        reportType,
-                        "TWOSTAGE",
-                        null,
-                        DateUtils.nowUTC().toDate(),
-                        null,
-                        PluginType.SATELLITE_RECEIVER,
-                        "TWOSTAGE",
-                        null);
+        String request = createReportRequest(mobileTerminal);
 
-        messageHelper.sendMessage("UVMSExchangeEvent", text);
+        messageHelper.sendMessage("UVMSExchangeEvent", request);
         // WAITFOR AND CHECK RESULTS
         TextMessage message = (TextMessage) messageHelper.listenOnEventBus(SELECTOR, TIMEOUT);
         assertThat(message, is(notNullValue()));
@@ -123,9 +113,105 @@ public class InmarsatSanityIT extends AbstractRest {
         assertThat(movement.getAssetName(), is(asset.getName()));
         assertThat(movement.getIrcs(), is(asset.getIrcs()));
     }
+    
+    @Test
+    public void sendInmarsatVerifyAsset() throws Exception {
+        String dnid = "12345";
+        
+        // create assets/mt
+        AssetDTO asset1 = AssetTestHelper.createTestAsset();
+        MobileTerminalDto mobileTerminal1 = MobileTerminalTestHelper.createBasicMobileTerminal();
+        mobileTerminal1.getChannels().iterator().next().setDNID(dnid);
+        mobileTerminal1 = MobileTerminalTestHelper.persistMobileTerminal(mobileTerminal1);
+        MobileTerminalTestHelper.assignMobileTerminal(asset1, mobileTerminal1);
+        
+        AssetDTO asset2 = AssetTestHelper.createTestAsset();
+        MobileTerminalDto mobileTerminal2 = MobileTerminalTestHelper.createBasicMobileTerminal();
+        mobileTerminal2.getChannels().iterator().next().setDNID(dnid);
+        mobileTerminal2 = MobileTerminalTestHelper.persistMobileTerminal(mobileTerminal2);
+        MobileTerminalTestHelper.assignMobileTerminal(asset2, mobileTerminal2);
+        
+        AssetDTO asset3 = AssetTestHelper.createTestAsset();
+        MobileTerminalDto mobileTerminal3 = MobileTerminalTestHelper.createBasicMobileTerminal();
+        mobileTerminal3.getChannels().iterator().next().setDNID(dnid);
+        mobileTerminal3 = MobileTerminalTestHelper.persistMobileTerminal(mobileTerminal3);
+        MobileTerminalTestHelper.assignMobileTerminal(asset3, mobileTerminal3);
 
-    private SetReportMovementType createReportType(String theDnid, String theMemberNumber) {
+        // Send position and verify
+        SetReportRequest setReportRequest = sendPositionAndReturnResponse(asset1, mobileTerminal1);
+        MovementType movement1 = setReportRequest.getReport().getMovement();
+        assertThat(movement1.getAssetName(), is(asset1.getName()));
+        assertThat(movement1.getIrcs(), is(asset1.getIrcs()));
+        
+        SetReportRequest setReportRequest2 = sendPositionAndReturnResponse(asset2, mobileTerminal2);
+        MovementType movement2 = setReportRequest2.getReport().getMovement();
+        assertThat(movement2.getAssetName(), is(asset2.getName()));
+        assertThat(movement2.getIrcs(), is(asset2.getIrcs()));
+        
+        SetReportRequest setReportRequest3 = sendPositionAndReturnResponse(asset3, mobileTerminal3);
+        MovementType movement3 = setReportRequest3.getReport().getMovement();
+        assertThat(movement3.getAssetName(), is(asset3.getName()));
+        assertThat(movement3.getIrcs(), is(asset3.getIrcs()));
+    }
+    
+    @Test
+    public void sendInmarsatNonExistingAssetAndMobileTerminal() throws Exception {
+        ZonedDateTime timestamp = ZonedDateTime.now(ZoneOffset.UTC);
+        
+        MobileTerminalDto mobileTerminal = MobileTerminalTestHelper.createBasicMobileTerminal();
+        
+        String request = createReportRequest(mobileTerminal);
+        messageHelper.sendMessage("UVMSExchangeEvent", request);
+        
+        SanityRuleHelper.pollAlarmReportCreated();
+        
+        AlarmReport alarmReport = SanityRuleHelper.getLatestOpenAlarmReportSince(timestamp);
+        ChannelDto channel = mobileTerminal.getChannels().iterator().next();
+        assertThat(alarmReport.getIncomingMovement().getMobileTerminalDNID(), CoreMatchers.is(channel.getDNID()));
+        assertThat(alarmReport.getIncomingMovement().getMobileTerminalMemberNumber(), CoreMatchers.is(channel.getMemberNumber()));
+    }
 
+    private SetReportRequest sendPositionAndReturnResponse(AssetDTO asset1, MobileTerminalDto mobileTerminal1)
+            throws ExchangeModelMarshallException, Exception {
+        LocalDateTime timestamp = LocalDateTime.now(ZoneOffset.UTC);
+
+        String fluxEndpoint = "DNK";
+
+        CustomRuleType flagStateRule = CustomRuleBuilder.getBuilder()
+                .setName("Flag state => FLUX DNK")
+                .rule(CriteriaType.ASSET, SubCriteriaType.ASSET_IRCS,
+                        ConditionType.EQ, asset1.getIrcs())
+                .action(ActionType.SEND_TO_FLUX, fluxEndpoint)
+                .build();
+
+        CustomRuleType createdCustomRule = CustomRuleHelper.createCustomRule(flagStateRule);
+        assertNotNull(createdCustomRule);
+
+        // create the positionreport only containing DNID and MEMBER_NUMBER  OBS NO ASSET REFERENCES AT ALL
+        String request = createReportRequest(mobileTerminal1);
+
+        messageHelper.sendMessage("UVMSExchangeEvent", request);
+        // WAITFOR AND CHECK RESULTS
+        TextMessage message = (TextMessage) messageHelper.listenOnEventBus(SELECTOR, TIMEOUT);
+        assertThat(message, is(notNullValue()));
+
+        CustomRuleHelper.assertRuleTriggered(createdCustomRule, timestamp);
+
+        SetReportRequest setReportRequest = JAXBMarshaller.unmarshallTextMessage(message, SetReportRequest.class);
+
+        assertThat(setReportRequest.getReport().getRecipient(), is(fluxEndpoint));
+        return setReportRequest;
+    }
+
+    private String createReportRequest(MobileTerminalDto mobileTerminal) throws ExchangeModelMarshallException, IllegalArgumentException {
+
+        Set<ChannelDto> channels = mobileTerminal.getChannels();
+        Assert.assertEquals(1, channels.size());
+        ChannelDto channel = channels.iterator().next();
+
+        String theDnid = channel.getDNID();
+        String theMemberNumber = channel.getMemberNumber();
+        
         SetReportMovementType reportType = new SetReportMovementType();
         MobileTerminalId mobileTerminalId = new MobileTerminalId();
 
@@ -169,6 +255,15 @@ public class InmarsatSanityIT extends AbstractRest {
         reportType.setPluginType(PluginType.SATELLITE_RECEIVER);
 
         reportType.setMovement(movement);
-        return reportType;
+        
+        return ExchangeModuleRequestMapper.createSetMovementReportRequest(
+                reportType,
+                "TWOSTAGE",
+                null,
+                DateUtils.nowUTC().toDate(),
+                null,
+                PluginType.SATELLITE_RECEIVER,
+                "TWOSTAGE",
+                null);
     }
 }

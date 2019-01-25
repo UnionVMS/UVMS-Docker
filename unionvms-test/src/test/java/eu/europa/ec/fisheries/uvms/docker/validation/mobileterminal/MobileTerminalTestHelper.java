@@ -78,17 +78,21 @@ public final class MobileTerminalTestHelper extends AbstractHelper {
 	}
 
 	public static MobileTerminalDto createMobileTerminal() {
-    MobileTerminalDto terminal = createBasicMobileTerminal();
-		MobileTerminalDto createdTerminal = getWebTarget()
-				.path("asset/rest/mobileterminal")
-				.request(MediaType.APPLICATION_JSON)
-				.header(HttpHeaders.AUTHORIZATION, getValidJwtToken())
-				.post(Entity.json(terminal), MobileTerminalDto.class);
-
-		assertNotNull(createdTerminal);
-		return createdTerminal;
+	    MobileTerminalDto terminal = createBasicMobileTerminal();
+		return persistMobileTerminal(terminal);
 	}
 
+	public static MobileTerminalDto persistMobileTerminal(MobileTerminalDto terminal) {
+	    MobileTerminalDto createdTerminal = getWebTarget()
+                .path("asset/rest/mobileterminal")
+                .request(MediaType.APPLICATION_JSON)
+                .header(HttpHeaders.AUTHORIZATION, getValidJwtToken())
+                .post(Entity.json(terminal), MobileTerminalDto.class);
+
+        assertNotNull(createdTerminal);
+        return createdTerminal;
+	}
+	
 	public static MobileTerminalDto getMobileTerminalById(UUID uuid) {
 		return getWebTarget()
 				.path("asset/rest/mobileterminal")
@@ -173,7 +177,7 @@ public final class MobileTerminalTestHelper extends AbstractHelper {
 				.get(new GenericType<List<MobileTerminalDto>>(){});
 	}
 
-	private static MobileTerminalDto createBasicMobileTerminal() {
+	public static MobileTerminalDto createBasicMobileTerminal() {
 		MobileTerminalDto mobileTerminal = new MobileTerminalDto();
 		mobileTerminal.setSource("INTERNAL");
 		mobileTerminal.setMobileTerminalType("INMARSAT_C");
