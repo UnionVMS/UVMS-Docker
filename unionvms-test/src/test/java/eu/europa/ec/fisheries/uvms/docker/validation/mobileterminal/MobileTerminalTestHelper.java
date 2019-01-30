@@ -23,6 +23,55 @@ public final class MobileTerminalTestHelper extends AbstractHelper {
 
 	private static String serialNumber;
 
+    public static CreatePollResultDto createPollWithMT_Helper(AssetDTO testAsset, PollType pollType,
+            MobileTerminalDto terminal) {
+        // Assign first
+        terminal = assignMobileTerminal(testAsset, terminal);
+
+        assertNotNull(terminal.getAsset());
+
+        String comChannelId = terminal.getChannels().iterator().next().getId().toString();
+
+        PollRequestType pollRequestType = new PollRequestType();
+        pollRequestType.setPollType(pollType);
+        pollRequestType.setUserName("vms_admin_com");
+        pollRequestType.setComment("Manual poll created by test");
+
+        PollMobileTerminal pollMobileTerminal = new PollMobileTerminal();
+        pollMobileTerminal.setComChannelId(comChannelId);
+        pollMobileTerminal.setConnectId(testAsset.getId().toString());
+        pollMobileTerminal.setMobileTerminalId(terminal.getId().toString());
+
+        List<PollAttribute> pollAttributes = pollRequestType.getAttributes();
+
+        PollAttribute frequency = new PollAttribute();
+        PollAttribute startDate = new PollAttribute();
+        PollAttribute endDate = new PollAttribute();
+
+        pollAttributes.add(frequency);
+        frequency.setKey(PollAttributeType.FREQUENCY);
+        frequency.setValue("1000");
+
+        pollAttributes.add(startDate);
+        startDate.setKey(PollAttributeType.START_DATE);
+        startDate.setValue(getDateAsString(2001, Calendar.JANUARY, 7, 1, 7, 23, 45));
+
+        pollAttributes.add(endDate);
+        endDate.setKey(PollAttributeType.END_DATE);
+        endDate.setValue(getDateAsString(2027, Calendar.DECEMBER, 24, 11, 45, 7, 980));
+
+        pollRequestType.getMobileTerminals().add(pollMobileTerminal);
+
+        CreatePollResultDto response = getWebTarget()
+                .path("asset/rest/poll")
+                .request(MediaType.APPLICATION_JSON)
+                .header(HttpHeaders.AUTHORIZATION, getValidJwtToken())
+                .post(Entity.json(pollRequestType), CreatePollResultDto.class);
+
+        assertNotNull(response);
+        return response;
+	}
+	
 	public static CreatePollResultDto createPoll_Helper(AssetDTO testAsset, PollType pollType) {
 
 		MobileTerminalDto createdTerminal = createMobileTerminal();
@@ -30,51 +79,7 @@ public final class MobileTerminalTestHelper extends AbstractHelper {
 		assertNotNull(createdTerminal);
 		assertNull(createdTerminal.getAsset());
 
-		// Assign first
-		createdTerminal = assignMobileTerminal(testAsset, createdTerminal);
-
-		assertNotNull(createdTerminal.getAsset());
-
-		String comChannelId = createdTerminal.getChannels().iterator().next().getId().toString();
-
-		PollRequestType pollRequestType = new PollRequestType();
-		pollRequestType.setPollType(pollType);
-		pollRequestType.setUserName("vms_admin_com");
-		pollRequestType.setComment("Manual poll created by test");
-
-		PollMobileTerminal pollMobileTerminal = new PollMobileTerminal();
-		pollMobileTerminal.setComChannelId(comChannelId);
-		pollMobileTerminal.setConnectId(testAsset.getId().toString());
-		pollMobileTerminal.setMobileTerminalId(createdTerminal.getId().toString());
-
-		List<PollAttribute> pollAttributes = pollRequestType.getAttributes();
-
-		PollAttribute frequency = new PollAttribute();
-		PollAttribute startDate = new PollAttribute();
-		PollAttribute endDate = new PollAttribute();
-
-		pollAttributes.add(frequency);
-		frequency.setKey(PollAttributeType.FREQUENCY);
-		frequency.setValue("1000");
-
-		pollAttributes.add(startDate);
-		startDate.setKey(PollAttributeType.START_DATE);
-		startDate.setValue(getDateAsString(2001, Calendar.JANUARY, 7, 1, 7, 23, 45));
-
-		pollAttributes.add(endDate);
-		endDate.setKey(PollAttributeType.END_DATE);
-		endDate.setValue(getDateAsString(2027, Calendar.DECEMBER, 24, 11, 45, 7, 980));
-
-		pollRequestType.getMobileTerminals().add(pollMobileTerminal);
-
-		CreatePollResultDto response = getWebTarget()
-				.path("asset/rest/poll")
-				.request(MediaType.APPLICATION_JSON)
-				.header(HttpHeaders.AUTHORIZATION, getValidJwtToken())
-				.post(Entity.json(pollRequestType), CreatePollResultDto.class);
-
-		assertNotNull(response);
-		return response;
+		return createPollWithMT_Helper(testAsset, pollType, createdTerminal);
 	}
 
 	public static MobileTerminalDto createMobileTerminal() {
