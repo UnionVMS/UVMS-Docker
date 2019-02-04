@@ -36,10 +36,11 @@
         The <broker> element is used to configure the ActiveMQ broker .
 
         persistent="true"
+        enableStatistics="false" (if disabled you don't see anymore the messages in the queues in the admin console)
 
     -->
-    <broker xmlns="http://activemq.apache.org/schema/core" brokerName="localhost" dataDirectory="${activemq.data}" advisorySupport="false" useJmx="true"
-    useLoggingForShutdownErrors="true" enableStatistics="false">
+    <broker xmlns="http://activemq.apache.org/schema/core" brokerName="localhost" dataDirectory="${activemq.data}" advisorySupport="false" useJmx="true"  persistent="false"
+    useLoggingForShutdownErrors="true">
 
         <destinationPolicy>
             <policyMap>
@@ -74,7 +75,7 @@
                             <sharedDeadLetterStrategy processExpired="false" />
                         </deadLetterStrategy>
                     </policyEntry>
-					<policyEntry queue="UVMSExchangeEvent" producerFlowControl="false" optimizedDispatch="true" memoryLimit="50mb">
+					<policyEntry queue="UVMSExchangeEvent" producerFlowControl="false" optimizedDispatch="true" memoryLimit="200mb">
                         <deadLetterStrategy>
                             <sharedDeadLetterStrategy processExpired="false" />
                         </deadLetterStrategy>
@@ -109,7 +110,7 @@
                             <sharedDeadLetterStrategy processExpired="false" />
                         </deadLetterStrategy>
                     </policyEntry>
-					<!-- policyEntry queue="UVMSActivityEvent" producerFlowControl="false" optimizedDispatch="true" memoryLimit="200mb">
+					<policyEntry queue="UVMSActivityEvent" producerFlowControl="false" optimizedDispatch="true" memoryLimit="200mb">
                         <deadLetterStrategy>
                             <sharedDeadLetterStrategy processExpired="false" />
                         </deadLetterStrategy>
@@ -118,7 +119,7 @@
                         <deadLetterStrategy>
                             <sharedDeadLetterStrategy processExpired="false" />
                         </deadLetterStrategy>
-                    </policyEntry -->
+                    </policyEntry>
                     <policyEntry queue="UVMSMdr" producerFlowControl="false" optimizedDispatch="true">
                         <deadLetterStrategy>
                             <sharedDeadLetterStrategy processExpired="false" />
@@ -165,7 +166,7 @@
         <systemUsage>
             <systemUsage sendFailIfNoSpace="true">
                 <memoryUsage>
-                    <memoryUsage percentOfJvmHeap="90"/>
+                    <memoryUsage percentOfJvmHeap="95"/>
                 </memoryUsage>
                 <storeUsage>
                     <storeUsage limit="100 gb"/>
@@ -186,8 +187,10 @@
             <!-- DOS protection, limit concurrent connections to 1000 and frame size to 100MB &amp;wireFormat.maxInactivityDuration=30000 default-->
 <!--            <transportConnector name="openwire"
                                 uri="tcp://0.0.0.0:61616?maximumConnections=100000&amp;wireFormat.maxFrameSize=304857600&amp;jms.watchTopicAdvisories=false&amp;wireFormat.maxInactivityDuration=40000"/>-->
-             <transportConnector name="openwire" uri="tcp://0.0.0.0:61616?maximumConnections=100000&amp;wireFormat.maxInactivityDuration=0&amp;transport.useInactivityMonitor=false&amp;jms.useAsyncSend=true&amp;wireFormat.maxFrameSize=304857600&amp;jms.watchTopicAdvisories=false"/>
-            <!--<transportConnector name="amqp"
+             <!-- transportConnector name="openwire" uri="tcp://0.0.0.0:61616?maximumConnections=10000&amp;wireFormat.maxInactivityDuration=100000000&amp;transport.useInactivityMonitor=false&amp;wireFormat.maxFrameSize=304857600&amp;jms.watchTopicAdvisories=false&amp;jms.useAsyncSend=true"/ -->
+             <transportConnector name="nio" uri="nio://0.0.0.0:61616?maximumConnections=10000&amp;wireFormat.maxInactivityDuration=100000000&amp;transport.useInactivityMonitor=false&amp;wireFormat.maxFrameSize=304857600&amp;jms.watchTopicAdvisories=false&amp;jms.useAsyncSend=true"/>
+           
+			<!--<transportConnector name="amqp"
                                 uri="amqp://0.0.0.0:5672?maximumConnections=1000&amp;wireFormat.maxFrameSize=304857600"/>
             <transportConnector name="stomp"
                                 uri="stomp://0.0.0.0:61613?maximumConnections=1000&amp;wireFormat.maxFrameSize=304857600"/>

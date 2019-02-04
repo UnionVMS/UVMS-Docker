@@ -241,6 +241,14 @@
                         <user-name>audit</user-name>
                         <password>audit</password>
                     </security>
+					<timeout>
+						<allocation-retry>5</allocation-retry>
+						<allocation-retry-wait-millis>1000</allocation-retry-wait-millis>
+					</timeout>
+                	<timeout>
+						<allocation-retry>5</allocation-retry>
+						<allocation-retry-wait-millis>1000</allocation-retry-wait-millis>
+					</timeout>
                 </xa-datasource>
 
                 <xa-datasource jndi-name="java:/jdbc/uvms_mobterm" pool-name="jdbc/uvms_mobterm" enabled="true" use-ccm="true" statistics-enabled="false">
@@ -266,6 +274,10 @@
                         <user-name>mobterm</user-name>
                         <password>mobterm</password>
                     </security>
+                	<timeout>
+						<allocation-retry>5</allocation-retry>
+						<allocation-retry-wait-millis>1000</allocation-retry-wait-millis>
+					</timeout>
                 </xa-datasource>
 
                 <xa-datasource jndi-name="java:/jdbc/uvms_movement" pool-name="jdbc/uvms_movement" enabled="true" use-ccm="true" statistics-enabled="false">
@@ -291,6 +303,10 @@
                         <user-name>movement</user-name>
                         <password>movement</password>
                     </security>
+                	<timeout>
+						<allocation-retry>5</allocation-retry>
+						<allocation-retry-wait-millis>1000</allocation-retry-wait-millis>
+					</timeout>
                 </xa-datasource>
 
                 <xa-datasource jndi-name="java:/jdbc/uvms_asset" pool-name="jdbc/uvms_asset" enabled="true" use-ccm="true" statistics-enabled="false">
@@ -316,6 +332,10 @@
                         <user-name>asset</user-name>
                         <password>asset</password>
                     </security>
+                	<timeout>
+						<allocation-retry>5</allocation-retry>
+						<allocation-retry-wait-millis>1000</allocation-retry-wait-millis>
+					</timeout>
                 </xa-datasource>
 
                 <xa-datasource jndi-name="java:/jdbc/uvms_exchange" pool-name="jdbc/uvms_exchange" enabled="true" use-ccm="true" statistics-enabled="false">
@@ -324,11 +344,16 @@
     				<xa-datasource-property name="DatabaseName">db71u</xa-datasource-property>
                     <driver>postgresql</driver>
                     <xa-pool>
-				        <min-pool-size>10</min-pool-size>
-				        <initial-pool-size>10</initial-pool-size>
-				        <max-pool-size>200</max-pool-size>
-				        <prefill>true</prefill>
-				    </xa-pool>
+                         <min-pool-size>10</min-pool-size>
+                         <initial-pool-size>10</initial-pool-size>
+                         <max-pool-size>500</max-pool-size>
+                         <prefill>true</prefill>
+						 <is-same-rm-override>false</is-same-rm-override>
+						 <use-strict-min>false</use-strict-min>
+						 <flush-strategy>IdleConnections</flush-strategy>
+						 <pad-xid>false</pad-xid>
+						 <wrap-xa-resource>true</wrap-xa-resource>
+                     </xa-pool>
 				    <statement>
 				        <prepared-statement-cache-size>32</prepared-statement-cache-size>
 				        <track-statements>nowarn</track-statements>
@@ -341,6 +366,10 @@
                         <user-name>exchange</user-name>
                         <password>exchange</password>
                     </security>
+                	<timeout>
+						<allocation-retry>5</allocation-retry>
+						<allocation-retry-wait-millis>1000</allocation-retry-wait-millis>
+					</timeout>
                 </xa-datasource>
 
                 <xa-datasource jndi-name="java:/jdbc/uvms_rules" pool-name="jdbc/uvms_rules" enabled="true" use-ccm="true" statistics-enabled="false">
@@ -349,11 +378,16 @@
     				<xa-datasource-property name="DatabaseName">db71u</xa-datasource-property>
                     <driver>postgresql</driver>
                     <xa-pool>
-				        <min-pool-size>10</min-pool-size>
-				        <initial-pool-size>10</initial-pool-size>
-				        <max-pool-size>200</max-pool-size>
-				        <prefill>true</prefill>
-				    </xa-pool>
+                        <min-pool-size>10</min-pool-size>
+                        <initial-pool-size>10</initial-pool-size>
+                        <max-pool-size>500</max-pool-size>
+                        <prefill>true</prefill>
+                        <is-same-rm-override>false</is-same-rm-override>
+                        <use-strict-min>false</use-strict-min>
+                        <!--flush-strategy>IdleConnections</flush-strategy-->
+                        <pad-xid>false</pad-xid>
+                        <wrap-xa-resource>false</wrap-xa-resource>
+                    </xa-pool>
 				    <statement>
 				        <prepared-statement-cache-size>32</prepared-statement-cache-size>
 				        <track-statements>nowarn</track-statements>
@@ -366,6 +400,10 @@
                         <user-name>rules</user-name>
                         <password>rules</password>
                     </security>
+                	<timeout>
+						<allocation-retry>5</allocation-retry>
+						<allocation-retry-wait-millis>1000</allocation-retry-wait-millis>
+					</timeout>
                 </xa-datasource>
 
                 <xa-datasource jndi-name="java:jboss/datasources/uvms_usm" pool-name="uvms_usm" enabled="true" use-ccm="true" statistics-enabled="false">
@@ -391,6 +429,10 @@
                         <user-name>usm</user-name>
                         <password>usm</password>
                     </security>
+                	<timeout>
+						<allocation-retry>5</allocation-retry>
+						<allocation-retry-wait-millis>1000</allocation-retry-wait-millis>
+					</timeout>
                 </xa-datasource>
 
                 <xa-datasource jndi-name="java:/jdbc/USM2" pool-name="jdbc/USM2" enabled="true" use-ccm="true" statistics-enabled="false">
@@ -416,6 +458,10 @@
                         <user-name>usm</user-name>
                         <password>usm</password>
                     </security>
+                	<timeout>
+						<allocation-retry>5</allocation-retry>
+						<allocation-retry-wait-millis>1000</allocation-retry-wait-millis>
+					</timeout>
                 </xa-datasource>
 
                 <xa-datasource jndi-name="java:jboss/datasources/uvms_spatial" pool-name="uvms_spatial" enabled="true" use-ccm="true" statistics-enabled="false">
@@ -441,6 +487,10 @@
                         <user-name>spatial</user-name>
                         <password>spatial</password>
                     </security>
+                	<timeout>
+						<allocation-retry>5</allocation-retry>
+						<allocation-retry-wait-millis>1000</allocation-retry-wait-millis>
+					</timeout>
                 </xa-datasource>
 
                 <xa-datasource jndi-name="java:jboss/datasources/uvms_reporting" pool-name="uvms_reporting" enabled="true" use-ccm="true" statistics-enabled="false">
@@ -466,6 +516,10 @@
                         <user-name>reporting</user-name>
                         <password>reporting</password>
                     </security>
+                	<timeout>
+						<allocation-retry>5</allocation-retry>
+						<allocation-retry-wait-millis>1000</allocation-retry-wait-millis>
+					</timeout>
                 </xa-datasource>
 
                 <xa-datasource jndi-name="java:/jdbc/uvms_movementrules" pool-name="jdbc/uvms_movementrules" enabled="true" use-ccm="true" statistics-enabled="false">
@@ -487,9 +541,13 @@
                         <user-name>movementrules</user-name>
                         <password>movementrules</password>
                     </security>
+                	<timeout>
+						<allocation-retry>5</allocation-retry>
+						<allocation-retry-wait-millis>1000</allocation-retry-wait-millis>
+					</timeout>
                 </xa-datasource>
 
-                <xa-datasource jndi-name="java:jboss/datasources/uvms_activity" pool-name="uvms_activity" enabled="true" use-ccm="true" statistics-enabled="false">
+                <xa-datasource jndi-name="java:jboss/datasources/uvms_activity" pool-name="uvms_activity" enabled="true" use-ccm="true" statistics-enabled="true">
                      <xa-datasource-property name="ServerName">postgres</xa-datasource-property>
                      <xa-datasource-property name="PortNumber">5432</xa-datasource-property>
                      <xa-datasource-property name="DatabaseName">db71u</xa-datasource-property>
@@ -497,8 +555,13 @@
                      <xa-pool>
                          <min-pool-size>10</min-pool-size>
                          <initial-pool-size>10</initial-pool-size>
-                         <max-pool-size>200</max-pool-size>
+                         <max-pool-size>500</max-pool-size>
                          <prefill>true</prefill>
+						 <is-same-rm-override>false</is-same-rm-override>
+						 <use-strict-min>false</use-strict-min>
+						 <!-- flush-strategy>IdleConnections</flush-strategy -->
+						 <pad-xid>false</pad-xid>
+						 <wrap-xa-resource>false</wrap-xa-resource>
                      </xa-pool>
                      <statement>
 				        <prepared-statement-cache-size>32</prepared-statement-cache-size>
@@ -512,6 +575,10 @@
                          <user-name>activity</user-name>
                          <password>activity</password>
                      </security>
+                	<timeout>
+						<allocation-retry>3</allocation-retry>
+						<allocation-retry-wait-millis>1000</allocation-retry-wait-millis>
+					</timeout>
                  </xa-datasource>
 
                  <xa-datasource jndi-name="java:jboss/datasources/uvms_mdr" pool-name="uvms_mdr" enabled="true" use-ccm="true" statistics-enabled="false">
@@ -537,7 +604,11 @@
                          <user-name>mdr</user-name>
                          <password>mdr</password>
                      </security>
-                 </xa-datasource>
+                	<timeout>
+						<allocation-retry>5</allocation-retry>
+						<allocation-retry-wait-millis>1000</allocation-retry-wait-millis>
+					</timeout>
+                </xa-datasource>
 
                  <xa-datasource jndi-name="java:jboss/datasources/uvms_sales" pool-name="uvms_sales" enabled="true" use-ccm="true" statistics-enabled="false">
                      <xa-datasource-property name="ServerName">postgres</xa-datasource-property>
@@ -562,6 +633,10 @@
                          <user-name>sales</user-name>
                          <password>sales</password>
                      </security>
+                	<timeout>
+						<allocation-retry>5</allocation-retry>
+						<allocation-retry-wait-millis>1000</allocation-retry-wait-millis>
+					</timeout>
                 </xa-datasource>
 
                 <xa-datasource jndi-name="java:/jdbc/uvms_config" pool-name="jdbc/uvms_config" enabled="true" use-ccm="true" statistics-enabled="false">
@@ -587,6 +662,10 @@
                         <user-name>config</user-name>
                         <password>config</password>
                     </security>
+                	<timeout>
+						<allocation-retry>5</allocation-retry>
+						<allocation-retry-wait-millis>1000</allocation-retry-wait-millis>
+					</timeout>
                 </xa-datasource>
 
                 <xa-datasource jndi-name="java:jboss/datasources/uvms_subscription" pool-name="uvms_subscription" enabled="true" use-ccm="true" statistics-enabled="false">
@@ -608,6 +687,10 @@
                         <user-name>subscription</user-name>
                         <password>subscription</password>
                     </security>
+					<timeout>
+						<allocation-retry>5</allocation-retry>
+						<allocation-retry-wait-millis>1000</allocation-retry-wait-millis>
+					</timeout>
                 </xa-datasource>
 
                 <drivers>
@@ -673,8 +756,8 @@
             </entity-bean>
             <pools>
                 <bean-instance-pools>
-                    <strict-max-pool name="slsb-strict-max-pool" max-pool-size="1000000" instance-acquisition-timeout="10" instance-acquisition-timeout-unit="MINUTES"/>
-                    <strict-max-pool name="mdb-strict-max-pool" max-pool-size="10000" instance-acquisition-timeout="10" instance-acquisition-timeout-unit="MINUTES"/>
+                    <strict-max-pool name="slsb-strict-max-pool" max-pool-size="20000" instance-acquisition-timeout="10" instance-acquisition-timeout-unit="MINUTES"/>
+                    <strict-max-pool name="mdb-strict-max-pool" max-pool-size="200" instance-acquisition-timeout="10" instance-acquisition-timeout-unit="MINUTES"/>
                     <strict-max-pool name="entity-strict-max-pool" max-pool-size="200000" instance-acquisition-timeout="10" instance-acquisition-timeout-unit="MINUTES"/>
                 </bean-instance-pools>
             </pools>
@@ -865,13 +948,13 @@
                 <short-running-threads>
                     <core-threads count="100"/>
                     <queue-length count="100"/>
-                    <max-threads count="100"/>
+                    <max-threads count="1000"/>
                     <keepalive-time time="10" unit="seconds"/>
                 </short-running-threads>
                 <long-running-threads>
                     <core-threads count="100"/>
                     <queue-length count="100"/>
-                    <max-threads count="100"/>
+                    <max-threads count="1000"/>
                     <keepalive-time time="10" unit="seconds"/>
                 </long-running-threads>
             </default-workmanager>
@@ -915,7 +998,7 @@
         </subsystem>
         <subsystem xmlns="urn:jboss:domain:resource-adapters:5.0">
            <resource-adapters>
-                <resource-adapter id="activemq-rar.rar">
+                <resource-adapter id="activemq-rar.rar" statistics-enabled="true">
                     <archive>
                         activemq-rar.rar
                     </archive>
@@ -928,20 +1011,22 @@
                     <config-property name="UserName">
                         defaultUser
                     </config-property>
-                    <config-property name="ServerUrl">
-                        tcp://activemq:61616?wireFormat.maxInactivityDuration=0&amp;jms.rmIdFromConnectionId=true&amp;jms.useAsyncSend=true
+                    <config-property name="ServerUrl"> <!-- &amp;jms.useAsyncSend=true -->
+                        tcp://activemq:61616?wireFormat.maxInactivityDuration=10000000&amp;jms.rmIdFromConnectionId=true&amp;jms.useAsyncSend=true
                     </config-property>
                     <connection-definitions>
-                        <connection-definitions>
-                            <connection-definition class-name="org.apache.activemq.ra.ActiveMQManagedConnectionFactory" jndi-name="java:/ConnectionFactory" enabled="true"
-                                                   pool-name="ConnectionFactory" use-java-context="true" use-ccm="true" sharable="true">
+						<!-- https://wildscribe.github.io/WildFly/14.0/subsystem/resource-adapters/resource-adapter/connection-definitions/index.html -->
+						<!-- https://github.com/wildfly/wildfly/tree/master/connector/src/test/resources/org/jboss/as/connector/subsystems/resourceadapters -->
+                            <connection-definition class-name="org.apache.activemq.ra.ActiveMQManagedConnectionFactory" jndi-name="java:/ConnectionFactory" enabled="true" pool-name="ConnectionFactory" 
+							use-java-context="true" use-ccm="true" sharable="true" connectable="true">
                                 <xa-pool>
                                     <min-pool-size>50</min-pool-size>
                                     <max-pool-size>100000</max-pool-size>
                                     <prefill>true</prefill>
                                     <is-same-rm-override>false</is-same-rm-override>
                                     <use-strict-min>false</use-strict-min>
-                                    <flush-strategy>FailingConnectionOnly</flush-strategy>
+									<flush-strategy>IdleConnections</flush-strategy>
+                                    <!-- Version before : flush-strategy>FailingConnectionOnly</flush-strategy -->
                                     <pad-xid>false</pad-xid>
                                     <wrap-xa-resource>true</wrap-xa-resource>
                                 </xa-pool>
@@ -951,8 +1036,11 @@
                                         <password>defaultPassword</password>
                                     </recover-credential>
                                 </recovery>
+                                <timeout>
+                                    <allocation-retry>5</allocation-retry>
+                                    <allocation-retry-wait-millis>2000</allocation-retry-wait-millis>
+                                </timeout>
                             </connection-definition>
-                        </connection-definitions>
                     </connection-definitions>
                     <admin-objects>
                         <admin-object class-name="org.apache.activemq.command.ActiveMQQueue" jndi-name="java:/jms/queue/UVMSReportingEvent" use-java-context="true" pool-name="UVMSReportingEvent">
@@ -1316,7 +1404,7 @@
         <socket-binding name="txn-recovery-environment" port="4712"/>
         <socket-binding name="txn-status-manager" port="4713"/>
         <outbound-socket-binding name="mail-smtp">
-            <remote-destination host="localhost" port="25"/>
+        <remote-destination host="localhost" port="25"/>
         </outbound-socket-binding>
     </socket-binding-group>
 </server>

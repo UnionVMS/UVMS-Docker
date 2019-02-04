@@ -26,8 +26,11 @@
 # Set jvm memory configuration (minimal/maximum amount of memory)
 ACTIVEMQ_OPTS_MEMORY="-Xms256M -Xmx2524M"
 
+# Set NIO transport opts
+ACTIVEMQ_OPTS_NIO_TRANSPORT="-Dorg.apache.activemq.transport.nio.SelectorManager.corePoolSize=2000 -Dorg.apache.activemq.transport.nio.SelectorManager.maximumPoolSize=2000 -Dorg.apache.activemq.transport.nio.SelectorManager.workQueueCapacity=1024"
+
 if [ -z "$ACTIVEMQ_OPTS" ] ; then
-    ACTIVEMQ_OPTS="$ACTIVEMQ_OPTS_MEMORY -XX:+UseG1GC -XX:ReservedCodeCacheSize=128M -Djava.util.logging.config.file=logging.properties -Djava.security.auth.login.config=$ACTIVEMQ_CONF/login.config -Dorg.apache.activemq.UseDedicatedTaskRunner=false -Dorg.apache.activemq.kahaDB.files.skipMetadataUpdate=true"
+    ACTIVEMQ_OPTS="$ACTIVEMQ_OPTS_MEMORY $ACTIVEMQ_OPTS_NIO_TRANSPORT -XX:+UseG1GC -XX:ReservedCodeCacheSize=128M -Djava.util.logging.config.file=logging.properties -Djava.security.auth.login.config=$ACTIVEMQ_CONF/login.config -Dorg.apache.activemq.UseDedicatedTaskRunner=false -Dorg.apache.activemq.kahaDB.files.skipMetadataUpdate=true"
 fi
 
 # Uncomment to enable audit logging
