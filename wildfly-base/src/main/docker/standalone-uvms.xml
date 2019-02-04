@@ -550,7 +550,7 @@
 					</timeout>
                 </xa-datasource>
 
-                <xa-datasource jndi-name="java:jboss/datasources/uvms_activity" pool-name="uvms_activity" enabled="true" use-ccm="true" statistics-enabled="true">
+                <xa-datasource jndi-name="java:jboss/datasources/uvms_activity" pool-name="uvms_activity" enabled="true" use-ccm="true" statistics-enabled="false">
                      <xa-datasource-property name="ServerName">postgres</xa-datasource-property>
                      <xa-datasource-property name="PortNumber">5432</xa-datasource-property>
                      <xa-datasource-property name="DatabaseName">db71u</xa-datasource-property>
