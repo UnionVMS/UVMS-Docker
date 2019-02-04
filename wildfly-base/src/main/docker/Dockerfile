@@ -2,7 +2,7 @@ FROM njmittet/alpine-openjdk:jdk8
 
 MAINTAINER Nils Jørgen Mittet <njmittet@gmail.com>
 
-ENV WILDFLY_VERSION 14.0.1.Final
+ENV WILDFLY_VERSION 15.0.1.Final
 ENV JBOSS_HOME /opt/jboss/wildfly
 
 USER root
@@ -79,6 +79,8 @@ RUN echo "@edge http://nl.alpinelinux.org/alpine/edge/main" >> /etc/apk/reposito
 USER jboss
 
 RUN $JBOSS_HOME/bin/add-user.sh -u 'admin' -p 'Wildfly4ever!'
+
+RUN echo 'alias serverLogs="tail -fn 1000 /opt/jboss/wildfly/standalone/log/server.log"' >> ~/.bashrc
 
 # Expose stuff to outside world
 EXPOSE 8787

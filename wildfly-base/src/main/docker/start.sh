@@ -1,8 +1,10 @@
 #!/bin/bash
 
+# Remove all previous logs
 rm -rf /app/logs/*
 rm -rf /opt/jboss/wildfly/standalone/log/*
 
+# Check if the db is up, if not wait for 5 seconds and check again
 locked="y"
 printf "Waiting for database.\n"
 while :
