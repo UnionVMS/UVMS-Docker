@@ -717,6 +717,7 @@
         <subsystem xmlns="urn:jboss:domain:ee:4.0">
 	        <global-modules>
 	        	<module name="javax.jms.api" slot="main"/>
+                <module name="org.jboss.jts" slot="main"/>
 	    	</global-modules>
             <spec-descriptor-property-replacement>false</spec-descriptor-property-replacement>
             <concurrent>
@@ -927,7 +928,6 @@
             </cache-container>
             <cache-container name="hibernate" module="org.infinispan.hibernate-cache">
                 <local-cache name="entity">
-                    <transaction mode="NON_XA"/>
                     <object-memory size="10000"/>
                     <expiration max-idle="100000"/>
                 </local-cache>
@@ -1015,7 +1015,7 @@
                         defaultUser
                     </config-property>
                     <config-property name="ServerUrl"> <!-- &amp;jms.useAsyncSend=true -->
-                        tcp://activemq:61616?wireFormat.maxInactivityDuration=10000000&amp;jms.rmIdFromConnectionId=true&amp;jms.useAsyncSend=true
+                        tcp://activemq:61616?wireFormat.maxInactivityDuration=0&amp;jms.rmIdFromConnectionId=true&amp;jms.useAsyncSend=true
                     </config-property>
                     <connection-definitions>
 						<!-- https://wildscribe.github.io/WildFly/14.0/subsystem/resource-adapters/resource-adapter/connection-definitions/index.html -->

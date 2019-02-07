@@ -142,6 +142,7 @@
                                     <excludes>
                                         <exclude>Dockerfile</exclude>
                                         <exclude>**/jboss-all.xml</exclude>
+                                        <exclude>**/jboss-structure.xml</exclude>
                                     </excludes>
                                 </resource>
                                 <resource>
@@ -150,6 +151,7 @@
                                     <includes>
                                         <include>Dockerfile</include>
                                         <include>**/jboss-all.xml</include>
+                                        <exclude>**/jboss-structure.xml</exclude>
                                     </includes>
                                 </resource>
                             </resources>
@@ -208,38 +210,47 @@
 
                                         <jar destfile="${project.basedir}/target/dockerfile/deployments/asset-module-${unionvms.project.asset.module}.ear" update="true">
                                             <zipfileset dir="${project.basedir}/target/dockerfile/jboss-deployment/asset" includes="*.xml" prefix="META-INF" />
+                                            <zipfileset dir="${project.basedir}/target/dockerfile/jboss-deployment/deployment-structure" includes="*.xml" prefix="META-INF" />
                                         </jar>
 
                                         <jar destfile="${project.basedir}/target/dockerfile/deployments/mdr-module-${unionvms.project.mdr.module}.ear" update="true">
                                             <zipfileset dir="${project.basedir}/target/dockerfile/jboss-deployment/mdr" includes="*.xml" prefix="META-INF" />
+                                            <zipfileset dir="${project.basedir}/target/dockerfile/jboss-deployment/deployment-structure" includes="*.xml" prefix="META-INF" />
                                         </jar>
 
                                         <jar destfile="${project.basedir}/target/dockerfile/deployments/reporting-module-${unionvms.project.reporting.module}.ear" update="true">
                                             <zipfileset dir="${project.basedir}/target/dockerfile/jboss-deployment/reporting" includes="*.xml" prefix="META-INF" />
+                                            <zipfileset dir="${project.basedir}/target/dockerfile/jboss-deployment/deployment-structure" includes="*.xml" prefix="META-INF" />
                                         </jar>
 
                                         <jar destfile="${project.basedir}/target/dockerfile/deployments/flux-mdr-plugin-module-${unionvms.project.plugins.flux.mdr}.ear" update="true">
                                             <zipfileset dir="${project.basedir}/target/dockerfile/jboss-deployment/plugins" includes="*.xml" prefix="META-INF" />
+                                            <zipfileset dir="${project.basedir}/target/dockerfile/jboss-deployment/deployment-structure" includes="*.xml" prefix="META-INF" />
                                         </jar>
 
                                         <jar destfile="${project.basedir}/target/dockerfile/deployments/flux-activity-plugin-module-${unionvms.project.plugins.flux.activity}.ear" update="true">
                                             <zipfileset dir="${project.basedir}/target/dockerfile/jboss-deployment/plugins" includes="*.xml" prefix="META-INF" />
+                                            <zipfileset dir="${project.basedir}/target/dockerfile/jboss-deployment/deployment-structure" includes="*.xml" prefix="META-INF" />
                                         </jar>
 
                                         <jar destfile="${project.basedir}/target/dockerfile/deployments/activity-module-${unionvms.project.activity.module}.ear" update="true">
                                             <zipfileset dir="${project.basedir}/target/dockerfile/jboss-deployment/activity" includes="*.xml" prefix="META-INF" />
+                                            <zipfileset dir="${project.basedir}/target/dockerfile/jboss-deployment/deployment-structure" includes="*.xml" prefix="META-INF" />
                                         </jar>
 
                                         <jar destfile="${project.basedir}/target/dockerfile/deployments/subscription-module-${unionvms.project.subscription.module}.ear" update="true">
                                             <zipfileset dir="${project.basedir}/target/dockerfile/jboss-deployment/subscription" includes="*.xml" prefix="META-INF" />
+                                            <zipfileset dir="${project.basedir}/target/dockerfile/jboss-deployment/deployment-structure" includes="*.xml" prefix="META-INF" />
                                         </jar>
 
                                         <jar destfile="${project.basedir}/target/dockerfile/deployments/exchange-module-${unionvms.project.exchange.module}.ear" update="true">
                                             <zipfileset dir="${project.basedir}/target/dockerfile/jboss-deployment/exchange" includes="*.xml" prefix="META-INF" />
+                                            <zipfileset dir="${project.basedir}/target/dockerfile/jboss-deployment/deployment-structure" includes="*.xml" prefix="META-INF" />
                                         </jar>
 
                                         <jar destfile="${project.basedir}/target/dockerfile/deployments/rules-module-${unionvms.project.rules.module}.ear" update="true">
                                             <zipfileset dir="${project.basedir}/target/dockerfile/jboss-deployment/rules" includes="*.xml" prefix="META-INF" />
+                                            <zipfileset dir="${project.basedir}/target/dockerfile/jboss-deployment/deployment-structure" includes="*.xml" prefix="META-INF" />
                                         </jar>
                                     </then>
                                     <else>

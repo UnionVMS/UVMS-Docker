@@ -12,36 +12,28 @@ USER jboss
 WORKDIR /opt/jboss
 RUN curl -O http://download.jboss.org/wildfly/$WILDFLY_VERSION/wildfly-$WILDFLY_VERSION.zip && unzip wildfly-$WILDFLY_VERSION.zip && mv $HOME/wildfly-$WILDFLY_VERSION $HOME/wildfly && rm wildfly-$WILDFLY_VERSION.zip
 
-EXPOSE 8080 9990
+EXPOSE 8080 9990 9010
 
 CMD ["/opt/jboss/start.sh", "/opt/jboss/wildfly/bin/standalone.sh", "-c", "standalone-uvms.xml", "-b", "0.0.0.0", "-bmanagement", "0.0.0.0", "--debug"]
 
 ENV TZ=CET
-
-
 ENV HIBERNATE_MODULE $JBOSS_HOME/modules/system/layers/base/org/hibernate/main
-
 ENV POSTGRES_MODULE $JBOSS_HOME/modules/org/postgresql/main
 ENV DEPLOYMENTS $JBOSS_HOME/standalone/deployments
 ENV PGPASSWORD=postgres
+ENV YASSON_MODULE $JBOSS_HOME/modules/system/layers/base/org/eclipse/yasson/main
 
 RUN mkdir -p $JBOSS_HOME/modules/org/postgresql/main && \
     mkdir -p /opt/jboss/wildfly/standalone/deployments/hibernatesearch/eu.europa.ec.fisheries.uvms.entity.model.AssetHistory
-
-    
 COPY dependencies/activemq-rar-${wildfly.activemq.rar.version}.rar $DEPLOYMENTS/activemq-rar.rar
-
 COPY postgres/module.xml $POSTGRES_MODULE
 COPY dependencies/postgresql-${wildfly.postgres.module.postgres.version}.jar $POSTGRES_MODULE 
 COPY dependencies/postgis-jdbc-${wildfly.postgres.module.postgis.version}.jar $POSTGRES_MODULE
-
 COPY hibernate/module.xml $HIBERNATE_MODULE
 COPY dependencies/hibernate-spatial-${wildfly.hibernate.module.spatial.version}.jar $HIBERNATE_MODULE
 COPY dependencies/jts-${wildfly.hibernate.module.jts.version}.jar $HIBERNATE_MODULE
 COPY dependencies/geolatte-geom-${wildfly.hibernate.module.geolatte.version}.jar $HIBERNATE_MODULE
 COPY dependencies/hibernate-spatial-4x-to-5x-wrapper-${project.version}.jar $HIBERNATE_MODULE
-
-ENV YASSON_MODULE $JBOSS_HOME/modules/system/layers/base/org/eclipse/yasson/main
 COPY yasson/module.xml $YASSON_MODULE
 COPY dependencies/yasson-1.0.2.jar $YASSON_MODULE
 
@@ -50,6 +42,7 @@ COPY standalone.conf $JBOSS_HOME/bin/
 COPY standalone-uvms.xml $JBOSS_HOME/standalone/configuration/
 COPY start.sh /opt/jboss/
 COPY fakesmtp /opt/jboss/fakesmtp
+COPY aliases.sh /opt/jboss
 
 
 # Create log directory
@@ -67,6 +60,7 @@ RUN mkdir -p /opt/jboss/fakesmtp/logs && \
     chown -R jboss:jboss /opt/jboss/wildfly/standalone/log && \
     chmod 777 /opt/jboss/wildfly/standalone/log/ && \
     chmod 755 /opt/jboss/start.sh && \
+    chmod 777 /opt/jboss/aliases.sh && \
     chown -R jboss:jboss /opt/jboss
 # install TZDATA, set timesone then delete TZDATA
 # alpine linux does not include curl. install it, but delete the apk cache to keep layer size small
@@ -80,8 +74,21 @@ USER jboss
 
 RUN $JBOSS_HOME/bin/add-user.sh -u 'admin' -p 'Wildfly4ever!'
 
-RUN echo 'alias serverLogs="tail -fn 1000 /opt/jboss/wildfly/standalone/log/server.log"' >> ~/.bashrc
+## With this command you'll have 'comodity' aliases like 'serverLogs' or 'activityLogs' or 'editStandalone' or 'configurationFolder' ecc directly after accessing the runing container...
+#RUN /bin/bash -c "source /opt/jboss/aliases.sh"
+#RUN . /opt/jboss/aliases.sh
+#SHELL ["/bin/bash", "-c", "source /opt/jboss/aliases.sh"]
 
 # Expose stuff to outside world
 EXPOSE 8787
 VOLUME ["/app/logs", "/opt/jboss/wildfly/standalone/log"]
+
+
+
+
+
+
+
+
+
+

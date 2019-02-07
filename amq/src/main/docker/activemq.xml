@@ -188,7 +188,7 @@
 <!--            <transportConnector name="openwire"
                                 uri="tcp://0.0.0.0:61616?maximumConnections=100000&amp;wireFormat.maxFrameSize=304857600&amp;jms.watchTopicAdvisories=false&amp;wireFormat.maxInactivityDuration=40000"/>-->
              <!-- transportConnector name="openwire" uri="tcp://0.0.0.0:61616?maximumConnections=10000&amp;wireFormat.maxInactivityDuration=100000000&amp;transport.useInactivityMonitor=false&amp;wireFormat.maxFrameSize=304857600&amp;jms.watchTopicAdvisories=false&amp;jms.useAsyncSend=true"/ -->
-             <transportConnector name="nio" uri="nio://0.0.0.0:61616?maximumConnections=10000&amp;wireFormat.maxInactivityDuration=100000000&amp;transport.useInactivityMonitor=false&amp;wireFormat.maxFrameSize=304857600&amp;jms.watchTopicAdvisories=false&amp;jms.useAsyncSend=true"/>
+             <transportConnector name="nio" uri="nio://0.0.0.0:61616?maximumConnections=10000&amp;wireFormat.maxInactivityDuration=0&amp;transport.useInactivityMonitor=false&amp;wireFormat.maxFrameSize=304857600&amp;jms.watchTopicAdvisories=false&amp;jms.useAsyncSend=true"/>
            
 			<!--<transportConnector name="amqp"
                                 uri="amqp://0.0.0.0:5672?maximumConnections=1000&amp;wireFormat.maxFrameSize=304857600"/>

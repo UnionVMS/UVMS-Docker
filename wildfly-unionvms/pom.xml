@@ -190,6 +190,7 @@
 									<excludes>
 										<exclude>Dockerfile</exclude>
 										<exclude>**/jboss-all.xml</exclude>
+										<exclude>**/jboss-structure.xml</exclude>
 									</excludes>
 								</resource>
 								<resource>
@@ -198,6 +199,7 @@
 									<includes>
 										<include>Dockerfile</include>
 										<include>**/jboss-all.xml</include>
+										<exclude>**/jboss-structure.xml</exclude>
 									</includes>
 								</resource>
 							</resources>
@@ -258,62 +260,77 @@
 
 									<jar destfile="${project.basedir}/target/dockerfile/deployments/user-module-${unionvms.project.user.module}.ear" update="true">
 										<zipfileset dir="${project.basedir}/target/dockerfile/jboss-deployment/user" includes="*.xml" prefix="META-INF" />
+										<zipfileset dir="${project.basedir}/target/dockerfile/jboss-deployment/deployment-structure" includes="*.xml" prefix="META-INF" />
 									</jar>
 
 									<jar destfile="${project.basedir}/target/dockerfile/deployments/config-module-${unionvms.project.config.module}.ear" update="true">
 										<zipfileset dir="${project.basedir}/target/dockerfile/jboss-deployment/config" includes="*.xml" prefix="META-INF" />
+										<zipfileset dir="${project.basedir}/target/dockerfile/jboss-deployment/deployment-structure" includes="*.xml" prefix="META-INF" />
 									</jar>
 
 									<jar destfile="${project.basedir}/target/dockerfile/deployments/audit-module-${unionvms.project.audit.module}.ear" update="true">
 										<zipfileset dir="${project.basedir}/target/dockerfile/jboss-deployment/audit" includes="*.xml" prefix="META-INF" />
+										<zipfileset dir="${project.basedir}/target/dockerfile/jboss-deployment/deployment-structure" includes="*.xml" prefix="META-INF" />
 									</jar>
 
 									<jar destfile="${project.basedir}/target/dockerfile/deployments/exchange-module-${unionvms.project.exchange.module}.ear" update="true">
 										<zipfileset dir="${project.basedir}/target/dockerfile/jboss-deployment/exchange" includes="*.xml" prefix="META-INF" />
+										<zipfileset dir="${project.basedir}/target/dockerfile/jboss-deployment/deployment-structure" includes="*.xml" prefix="META-INF" />
 									</jar>
 
 									<jar destfile="${project.basedir}/target/dockerfile/deployments/movement-rules-module-${unionvms.project.movementrules.module}.ear" update="true">
 										<zipfileset dir="${project.basedir}/target/dockerfile/jboss-deployment/movement-rules" includes="*.xml" prefix="META-INF" />
+										<zipfileset dir="${project.basedir}/target/dockerfile/jboss-deployment/deployment-structure" includes="*.xml" prefix="META-INF" />
 									</jar>
 
 									<jar destfile="${project.basedir}/target/dockerfile/deployments/spatial-module-${unionvms.project.spatial.module}.ear" update="true">
 										<zipfileset dir="${project.basedir}/target/dockerfile/jboss-deployment/spatial" includes="*.xml" prefix="META-INF" />
+										<zipfileset dir="${project.basedir}/target/dockerfile/jboss-deployment/deployment-structure" includes="*.xml" prefix="META-INF" />
 									</jar>
 
 									<jar destfile="${project.basedir}/target/dockerfile/deployments/movement-module-${unionvms.project.movement.module}.ear" update="true">
 										<zipfileset dir="${project.basedir}/target/dockerfile/jboss-deployment/movement" includes="*.xml" prefix="META-INF" />
+										<zipfileset dir="${project.basedir}/target/dockerfile/jboss-deployment/deployment-structure" includes="*.xml" prefix="META-INF" />
 									</jar>
 
 									<jar destfile="${project.basedir}/target/dockerfile/deployments/gs-web-app-${unionvms.project.geoserver.version}.war" update="true">
 										<zipfileset dir="${project.basedir}/target/dockerfile/jboss-deployment/web-app" includes="*.xml" prefix="WEB-INF" />
+										<zipfileset dir="${project.basedir}/target/dockerfile/jboss-deployment/deployment-structure" includes="*.xml" prefix="META-INF" />
 									</jar>
 
 									<jar destfile="${project.basedir}/target/dockerfile/deployments/mapfish-print-${unionvms.project.mapfishprint.version}.war" update="true">
 										<zipfileset dir="${project.basedir}/target/dockerfile/jboss-deployment/web-app" includes="*.xml" prefix="WEB-INF" />
+										<zipfileset dir="${project.basedir}/target/dockerfile/jboss-deployment/deployment-structure" includes="*.xml" prefix="META-INF" />
 									</jar>
 
 									<!--<jar destfile="${project.basedir}/target/dockerfile/deployments/inmarsat-module-${unionvms.project.plugins.inmarsat}.ear" update="true">
 										<zipfileset dir="${project.basedir}/target/dockerfile/jboss-deployment/plugins" includes="*.xml" prefix="META-INF" />
+                                            <zipfileset dir="${project.basedir}/target/dockerfile/jboss-deployment/deployment-structure" includes="*.xml" prefix="META-INF" />
 									</jar>
 
 									<jar destfile="${project.basedir}/target/dockerfile/deployments/naf-module-${unionvms.project.plugins.naf}.ear" update="true">
 										<zipfileset dir="${project.basedir}/target/dockerfile/jboss-deployment/plugins" includes="*.xml" prefix="META-INF" />
+                                            <zipfileset dir="${project.basedir}/target/dockerfile/jboss-deployment/deployment-structure" includes="*.xml" prefix="META-INF" />
 									</jar>
 
 									<jar destfile="${project.basedir}/target/dockerfile/deployments/siriusone-module-${unionvms.project.plugins.siriusone}.ear" update="true">
 										<zipfileset dir="${project.basedir}/target/dockerfile/jboss-deployment/plugins" includes="*.xml" prefix="META-INF" />
+                                            <zipfileset dir="${project.basedir}/target/dockerfile/jboss-deployment/deployment-structure" includes="*.xml" prefix="META-INF" />
 									</jar>-->
 
 									<jar destfile="${project.basedir}/target/dockerfile/deployments/flux-movement-plugin-module-${unionvms.project.plugins.flux.movement}.ear" update="true">
 										<zipfileset dir="${project.basedir}/target/dockerfile/jboss-deployment/plugins" includes="*.xml" prefix="META-INF" />
+										<zipfileset dir="${project.basedir}/target/dockerfile/jboss-deployment/deployment-structure" includes="*.xml" prefix="META-INF" />
 									</jar>
 
 									<jar destfile="${project.basedir}/target/dockerfile/deployments/unionvms-web-${unionvms.project.unionvms.web.version}.war" update="true">
 										<zipfileset dir="${project.basedir}/target/dockerfile/jboss-deployment/web-app" includes="*.xml" prefix="WEB-INF" />
+										<zipfileset dir="${project.basedir}/target/dockerfile/jboss-deployment/deployment-structure" includes="*.xml" prefix="META-INF" />
 									</jar>
 
 									<jar destfile="${project.basedir}/target/dockerfile/deployments/asset-module-${unionvms.project.asset.module}.ear" update="true">
 										<zipfileset dir="${project.basedir}/target/dockerfile/jboss-deployment/asset" includes="*.xml" prefix="META-INF" />
+										<zipfileset dir="${project.basedir}/target/dockerfile/jboss-deployment/deployment-structure" includes="*.xml" prefix="META-INF" />
 									</jar>
 
 								</then>
