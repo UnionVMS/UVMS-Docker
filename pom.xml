@@ -41,7 +41,7 @@
         <unionvms.project.movementrules.module>1.0.5-W14J8</unionvms.project.movementrules.module>
         <unionvms.project.movement.module>5.1.6-W14J8</unionvms.project.movement.module>
         <unionvms.project.reporting.module>1.1.8-W14J8</unionvms.project.reporting.module>
-        <unionvms.project.spatial.module>1.1.14-W14J8</unionvms.project.spatial.module>
+        <unionvms.project.spatial.module>1.1.15-W14J8</unionvms.project.spatial.module>
 
         <unionvms.project.unionvms.web.version>3.0.28</unionvms.project.unionvms.web.version>
         <unionvms.project.mapfishprint.version>3.5</unionvms.project.mapfishprint.version>

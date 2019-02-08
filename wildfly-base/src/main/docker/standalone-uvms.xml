@@ -127,6 +127,9 @@
             <logger category="eu.europa.ec.mare.usm.jwt.jndiUtil">
                 <level name="OFF"/>
             </logger>
+            <logger category="jndiUtil">
+                <level name="OFF"/>
+            </logger>
             <logger category="org.hibernate.search.util.impl.InternalAnalyzerUtils">
                 <level name="ERROR"/>
             </logger>

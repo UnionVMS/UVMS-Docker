@@ -14,9 +14,9 @@ printf "\nStoping container and cleaning images...\n"
 docker stop wildfly && docker rm -f wildfly &&                                         # Stop wildfly container
 
 ### UNCOMMENT IF NEED TOTALLY NEW IMAGES, OTHERWISE THE REFRESH WORKS ALSO (NOT KILLING THE IMAGES)
-docker image ls | grep wildfly-release | awk '{print $3}' | xargs docker rmi &&        # Remove wildfly-release image
-docker image ls | grep wildfly-unionvms | awk '{print $3}' | xargs docker rmi &&       # Remove wildfly-unionvms image
-docker image ls | grep wildfly-base | awk '{print $3}' | xargs docker rmi &&           # Remove wildfly-base image
+#docker image ls | grep wildfly-release | awk '{print $3}' | xargs docker rmi &&        # Remove wildfly-release image
+#docker image ls | grep wildfly-unionvms | awk '{print $3}' | xargs docker rmi &&       # Remove wildfly-unionvms image
+#docker image ls | grep wildfly-base | awk '{print $3}' | xargs docker rmi &&           # Remove wildfly-base image
 
 sleep 2
 
