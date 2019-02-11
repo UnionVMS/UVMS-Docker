@@ -40,7 +40,7 @@
 		<unionvms.project.mdr.module>1.0.10</unionvms.project.mdr.module>
 		<unionvms.project.plugins.naf>3.0.12</unionvms.project.plugins.naf>
 		<unionvms.project.plugins.flux>3.0.14</unionvms.project.plugins.flux>
-		<unionvms.project.plugins.inmarsat>3.0.49</unionvms.project.plugins.inmarsat>
+		<unionvms.project.plugins.inmarsat>3.0.51</unionvms.project.plugins.inmarsat>
 		<unionvms.project.plugins.siriusone>3.0.7</unionvms.project.plugins.siriusone>
 		<unionvms.project.plugins.fluxActivity>1.0.6</unionvms.project.plugins.fluxActivity>
 		<unionvms.project.plugins.mdr>1.0.2</unionvms.project.plugins.mdr>
