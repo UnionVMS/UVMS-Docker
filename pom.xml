@@ -28,20 +28,20 @@
         <unionvms.project.user.liquibase.version>2.0.11</unionvms.project.user.liquibase.version>
 
         <unionvms.project.config.module>4.0.13-W14J8</unionvms.project.config.module>
-        <unionvms.project.audit.module>4.0.13-W14J8</unionvms.project.audit.module>
+        <unionvms.project.audit.module>4.0.14-W14J8</unionvms.project.audit.module>
 <!--        <unionvms.project.asset.module>6.0.17</unionvms.project.asset.module>-->
         <unionvms.project.asset.client.jar>6.0.17</unionvms.project.asset.client.jar>
-        <unionvms.project.asset.module>4.0.21-W14J8-MARE</unionvms.project.asset.module>
-        <unionvms.project.mdr.module>1.0.18-W14J8</unionvms.project.mdr.module>
-        <unionvms.project.rules.module>3.0.52-W14J8-MARE</unionvms.project.rules.module>
-        <unionvms.project.subscription.module>1.4.5-W14J8</unionvms.project.subscription.module>
-        <unionvms.project.exchange.module>4.0.41-W14J8</unionvms.project.exchange.module>
-        <unionvms.project.activity.module>1.1.14-W14J8</unionvms.project.activity.module>
+        <unionvms.project.asset.module>4.0.23-W14J8-MARE</unionvms.project.asset.module>
+        <unionvms.project.mdr.module>1.0.19-W14J8</unionvms.project.mdr.module>
+        <unionvms.project.rules.module>3.0.53-W14J8-MARE</unionvms.project.rules.module>
+        <unionvms.project.subscription.module>1.4.6-W14J8</unionvms.project.subscription.module>
+        <unionvms.project.exchange.module>4.0.42-W14J8</unionvms.project.exchange.module>
+        <unionvms.project.activity.module>1.1.15-W14J8</unionvms.project.activity.module>
 
         <unionvms.project.movementrules.module>1.0.5-W14J8</unionvms.project.movementrules.module>
-        <unionvms.project.movement.module>5.1.6-W14J8</unionvms.project.movement.module>
-        <unionvms.project.reporting.module>1.1.8-W14J8</unionvms.project.reporting.module>
-        <unionvms.project.spatial.module>1.1.15-W14J8</unionvms.project.spatial.module>
+        <unionvms.project.movement.module>5.1.7-W14J8</unionvms.project.movement.module>
+        <unionvms.project.reporting.module>1.1.9-W14J8</unionvms.project.reporting.module>
+        <unionvms.project.spatial.module>1.1.16-W14J8</unionvms.project.spatial.module>
 
         <unionvms.project.unionvms.web.version>3.0.28</unionvms.project.unionvms.web.version>
         <unionvms.project.mapfishprint.version>3.5</unionvms.project.mapfishprint.version>
@@ -49,7 +49,7 @@
 
         <!-- Plugins Dependencies -->
         <unionvms.project.plugins.flux.movement>3.0.17.1-W14J8</unionvms.project.plugins.flux.movement>
-        <unionvms.project.plugins.flux.activity>1.0.18-W14J8</unionvms.project.plugins.flux.activity>
+        <unionvms.project.plugins.flux.activity>1.0.19-W14J8</unionvms.project.plugins.flux.activity>
         <unionvms.project.plugins.flux.mdr>1.0.8-W14J8</unionvms.project.plugins.flux.mdr>
 
         <unionvms.project.plugins.naf>3.0.10-W14J8</unionvms.project.plugins.naf>
