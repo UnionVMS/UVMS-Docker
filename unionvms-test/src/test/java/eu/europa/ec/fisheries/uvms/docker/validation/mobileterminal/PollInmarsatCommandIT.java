@@ -16,36 +16,26 @@ import static org.hamcrest.CoreMatchers.notNullValue;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import javax.jms.TextMessage;
 import org.junit.Test;
 import eu.europa.ec.fisheries.schema.exchange.common.v1.CommandTypeType;
 import eu.europa.ec.fisheries.schema.exchange.common.v1.KeyValueType;
 import eu.europa.ec.fisheries.schema.exchange.plugin.v1.SetCommandRequest;
-import eu.europa.ec.fisheries.schema.mobileterminal.polltypes.v1.PollType;
 import eu.europa.ec.fisheries.uvms.asset.client.model.AssetDTO;
 import eu.europa.ec.fisheries.uvms.docker.validation.asset.AssetTestHelper;
 import eu.europa.ec.fisheries.uvms.docker.validation.common.AbstractRest;
-import eu.europa.ec.fisheries.uvms.docker.validation.common.TopicListener;
 import eu.europa.ec.fisheries.uvms.docker.validation.mobileterminal.dto.ChannelDto;
 import eu.europa.ec.fisheries.uvms.docker.validation.mobileterminal.dto.MobileTerminalDto;
-import eu.europa.ec.fisheries.uvms.exchange.model.mapper.JAXBMarshaller;
+import eu.europa.ec.fisheries.uvms.docker.validation.system.helper.PollHelper;
 
 public class PollInmarsatCommandIT extends AbstractRest {
     
-    private static final String SELECTOR = "ServiceName='eu.europa.ec.fisheries.uvms.plugins.inmarsat'";
-
     @Test
     public void sendPollAndVerifySetCommandValues() throws Exception {
         Thread.sleep(1000);  //since jenkings reads a configRequest is instead
         AssetDTO testAsset = AssetTestHelper.createTestAsset();
         MobileTerminalDto mobileTerminal = MobileTerminalTestHelper.createMobileTerminal();
         
-        TextMessage message = null;
-        try (TopicListener topicListener = new TopicListener(SELECTOR)) {
-            MobileTerminalTestHelper.createPollWithMT_Helper(testAsset, PollType.MANUAL_POLL, mobileTerminal);
-            message = (TextMessage) topicListener.listenOnEventBus();
-        }
-        SetCommandRequest command = JAXBMarshaller.unmarshallString(message.getText(), SetCommandRequest.class);
+        SetCommandRequest command = PollHelper.createPollAndReturnSetCommandRequest(testAsset, mobileTerminal);
         
         assertThat(command, is(notNullValue()));
         assertThat(command.getCommand().getCommand(), is(CommandTypeType.POLL));

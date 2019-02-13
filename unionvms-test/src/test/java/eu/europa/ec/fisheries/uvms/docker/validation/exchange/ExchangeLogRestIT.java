@@ -13,21 +13,29 @@ copy of the GNU General Public License along with the IFDM Suite. If not, see <h
 */
 package eu.europa.ec.fisheries.uvms.docker.validation.exchange;
 
+import eu.europa.ec.fisheries.schema.exchange.common.v1.CommandType;
+import eu.europa.ec.fisheries.schema.exchange.plugin.v1.SetCommandRequest;
 import eu.europa.ec.fisheries.schema.exchange.v1.*;
 import eu.europa.ec.fisheries.schema.mobileterminal.polltypes.v1.PollType;
 import eu.europa.ec.fisheries.uvms.asset.client.model.AssetDTO;
 import eu.europa.ec.fisheries.uvms.commons.rest.dto.ResponseDto;
 import eu.europa.ec.fisheries.uvms.docker.validation.asset.AssetTestHelper;
 import eu.europa.ec.fisheries.uvms.docker.validation.common.AbstractRest;
+import eu.europa.ec.fisheries.uvms.docker.validation.common.TopicListener;
 import eu.europa.ec.fisheries.uvms.docker.validation.mobileterminal.MobileTerminalTestHelper;
 import eu.europa.ec.fisheries.uvms.docker.validation.mobileterminal.dto.CreatePollResultDto;
+import eu.europa.ec.fisheries.uvms.docker.validation.movement.MovementDto;
+import eu.europa.ec.fisheries.uvms.docker.validation.system.helper.PollHelper;
+import eu.europa.ec.fisheries.uvms.exchange.model.mapper.JAXBMarshaller;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.fluent.Request;
 import org.junit.Test;
-
+import javax.jms.TextMessage;
 import javax.ws.rs.client.Entity;
+import javax.ws.rs.core.GenericType;
 import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -63,7 +71,11 @@ public class ExchangeLogRestIT extends AbstractRest {
 	}
 
 	@Test
-	public void getPollStatusQueryTest() {
+	public void getPollStatusQueryTest() throws IOException, Exception {
+        SetCommandRequest commandRequest = PollHelper.createPollAndReturnSetCommandRequest();
+        CommandType command = commandRequest.getCommand();
+        PollHelper.ackPoll(command.getPoll().getMessage(), command.getPoll().getPollId(), ExchangeLogStatusTypeType.SUCCESSFUL);
+
 		PollQuery pollQuery = new PollQuery();
 		pollQuery.setStatus(ExchangeLogStatusTypeType.SUCCESSFUL);
 		Date oldDate = new Date();
@@ -71,14 +83,14 @@ public class ExchangeLogRestIT extends AbstractRest {
 		pollQuery.setStatusFromDate(formatDateAsUTC(oldDate));
 		pollQuery.setStatusToDate(formatDateAsUTC(new Date()));
 
-		ResponseDto exchangeLogStatusTypeList = getWebTarget()
+		ResponseDto<List<ExchangeLogStatusType>> exchangeLogStatusTypeList = getWebTarget()
 				.path("exchange/rest/exchange/poll/")
 				.request(MediaType.APPLICATION_JSON)
 				.header(HttpHeaders.AUTHORIZATION, getValidJwtToken())
-				.post(Entity.json(pollQuery), ResponseDto.class);
-
+				.post(Entity.json(pollQuery), new GenericType<ResponseDto<List<ExchangeLogStatusType>>>() {});
+		
 		assertNotNull(exchangeLogStatusTypeList);
-		List logListMap = (List) exchangeLogStatusTypeList.getData();
+		List<ExchangeLogStatusType> logListMap = exchangeLogStatusTypeList.getData();
 		assertNotNull(logListMap);
 		assertFalse(logListMap.isEmpty());
 	}

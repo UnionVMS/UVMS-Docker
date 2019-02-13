@@ -1,16 +1,27 @@
 package eu.europa.ec.fisheries.uvms.docker.validation.common;
 
+import java.io.Closeable;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
-import javax.jms.*;
-
+import javax.jms.Connection;
+import javax.jms.ConnectionFactory;
+import javax.jms.DeliveryMode;
+import javax.jms.JMSException;
+import javax.jms.Message;
+import javax.jms.MessageConsumer;
+import javax.jms.MessageProducer;
+import javax.jms.Queue;
+import javax.jms.QueueBrowser;
+import javax.jms.Session;
+import javax.jms.TextMessage;
+import javax.jms.Topic;
 import org.apache.activemq.artemis.api.core.TransportConfiguration;
 import org.apache.activemq.artemis.api.jms.ActiveMQJMSClient;
 import org.apache.activemq.artemis.api.jms.JMSFactoryType;
 import org.apache.activemq.artemis.core.remoting.impl.netty.NettyConnectorFactory;
 
-public class MessageHelper {
+public class MessageHelper implements Closeable {
 
     private final Connection connection;
     private final Session session;
@@ -162,6 +173,7 @@ public class MessageHelper {
         }
     }
 
+    @Override
     public void close() {
 
         if(session != null) {
