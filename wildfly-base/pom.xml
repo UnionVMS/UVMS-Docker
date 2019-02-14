@@ -17,8 +17,8 @@
 		<wildfly.hibernate.module.spatial.version>5.3.7.Final</wildfly.hibernate.module.spatial.version>
 		<wildfly.hibernate.module.geolatte.version>1.2.0</wildfly.hibernate.module.geolatte.version>
 		<wildfly.hibernate.module.jts.version>1.13</wildfly.hibernate.module.jts.version>
-		<wildfly.postgres.module.postgis.version>1.5.3</wildfly.postgres.module.postgis.version>
-		<wildfly.postgres.module.postgres.version>42.1.4.jre7</wildfly.postgres.module.postgres.version>
+		<wildfly.postgres.module.postgis.version>2.3.0</wildfly.postgres.module.postgis.version>
+		<wildfly.postgres.module.postgres.version>42.2.5</wildfly.postgres.module.postgres.version>
 	</properties>
 	<dependencies>
 		<dependency>
@@ -47,7 +47,7 @@
 			<version>${wildfly.postgres.module.postgres.version}</version>
 		</dependency>
 		<dependency>
-			<groupId>org.postgis</groupId>
+			<groupId>net.postgis</groupId>
 			<artifactId>postgis-jdbc</artifactId>
 			<version>${wildfly.postgres.module.postgis.version}</version>
 		</dependency>
