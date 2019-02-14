@@ -12,9 +12,6 @@ DROP USER IF EXISTS config;
 -- Exchange
 DROP USER IF EXISTS exchange; 
 
--- Mobile terminal
-DROP USER IF EXISTS mobterm; 
-
 -- Movement
 DROP USER IF EXISTS movement; 
 

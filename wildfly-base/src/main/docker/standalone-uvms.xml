@@ -243,33 +243,6 @@
                         <password>audit</password>
                     </security>
                 </xa-datasource>
-                <xa-datasource jndi-name="java:/jdbc/uvms_mobterm" pool-name="jdbc/uvms_mobterm" enabled="true" use-ccm="true" statistics-enabled="true">
-                    <xa-datasource-property name="ServerName">postgres</xa-datasource-property>
-                    <xa-datasource-property name="PortNumber">5432</xa-datasource-property>
-                    <xa-datasource-property name="DatabaseName">db71u</xa-datasource-property>
-
-                    <driver>postgresql</driver>
-                    <xa-pool>
-                        <min-pool-size>2</min-pool-size>
-                        <initial-pool-size>2</initial-pool-size>
-                        <max-pool-size>20</max-pool-size>
-                        <prefill>true</prefill>
-                    </xa-pool>
-                    <statement>
-                        <prepared-statement-cache-size>32</prepared-statement-cache-size>
-                        <track-statements>nowarn</track-statements>
-                    </statement>
-                    <validation>
-                        <valid-connection-checker
-                                class-name="org.jboss.jca.adapters.jdbc.extensions.postgres.PostgreSQLValidConnectionChecker"></valid-connection-checker>
-                        <exception-sorter
-                                class-name="org.jboss.jca.adapters.jdbc.extensions.postgres.PostgreSQLExceptionSorter"></exception-sorter>
-                    </validation>
-                    <security>
-                        <user-name>mobterm</user-name>
-                        <password>mobterm</password>
-                    </security>
-                </xa-datasource>
                 <xa-datasource jndi-name="java:/jdbc/uvms_movement" pool-name="jdbc/uvms_movement" enabled="true" use-ccm="true" statistics-enabled="true">
                     <xa-datasource-property name="ServerName">postgres</xa-datasource-property>
                     <xa-datasource-property name="PortNumber">5432</xa-datasource-property>
@@ -950,8 +923,6 @@
                 <jms-queue name="UVMSExchangeEvent" entries="jms/queue/UVMSExchangeEvent java:jboss/exported/jms/queue/UVMSExchangeEvent" />
                 <jms-queue name="UVMSMovement" entries="jms/queue/UVMSMovement java:jboss/exported/jms/queue/UVMSMovement" />
                 <jms-queue name="UVMSMovementEvent" entries="jms/queue/UVMSMovementEvent java:jboss/exported/jms/queue/UVMSMovementEvent" />
-                <jms-queue name="UVMSMobileTerminal" entries="jms/queue/UVMSMobileTerminal java:jboss/exported/jms/queue/UVMSMobileTerminal" />
-                <jms-queue name="UVMSMobileTerminalEvent" entries="jms/queue/UVMSMobileTerminalEvent java:jboss/exported/jms/queue/UVMSMobileTerminalEvent" />
                 <jms-queue name="UVMSRules" entries="jms/queue/UVMSRules java:jboss/exported/jms/queue/UVMSRules" />
                 <jms-queue name="UVMSRulesEvent" entries="jms/queue/UVMSRulesEvent java:jboss/exported/jms/queue/UVMSRulesEvent" />
                 <jms-queue name="UVMSMovementRules" entries="jms/queue/UVMSMovementRules java:jboss/exported/jms/queue/UVMSMovementRules" />

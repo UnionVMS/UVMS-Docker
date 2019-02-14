@@ -22,8 +22,6 @@ echo "Running config.sql to create tables and init data"
 psql -U config -d db71u --single-transaction -q -f  /var/lib/postgresql/eu.europa.ec.fisheries.uvms.config.liquibase-${unionvms.project.config.module}.sql >/dev/null
 echo "Running exchange.sql to create tables and init data"
 psql -U exchange -d db71u --single-transaction -q -f  /var/lib/postgresql/eu.europa.ec.fisheries.uvms.exchange.liquibase-${unionvms.project.exchange.module}.sql >/dev/null
-echo "Running mobterm.sql to create tables and init data"
-# psql -U mobterm -d db71u --single-transaction -q -f  /var/lib/postgresql/eu.europa.ec.fisheries.uvms.mobileterminal.liquibase-${unionvms.project.mobileterminal.module}.sql >/dev/null
 echo "Running movement.sql to create tables and init data"
 psql -U movement -d db71u --single-transaction -q -f  /var/lib/postgresql/eu.europa.ec.fisheries.uvms.movement.liquibase-${unionvms.project.movement.module}.sql >/dev/null
 echo "Running rules.sql to create tables and init data"

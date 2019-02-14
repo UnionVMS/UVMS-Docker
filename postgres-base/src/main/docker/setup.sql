@@ -43,14 +43,6 @@ GRANT CONNECT ON DATABASE db71u TO exchange;
 GRANT SELECT, INSERT, UPDATE, DELETE ON ALL TABLES IN SCHEMA exchange TO exchange; 
 ALTER SCHEMA exchange OWNER TO exchange; 
 
--- Mobile terminal
-CREATE USER mobterm WITH PASSWORD 'mobterm'; 
-CREATE SCHEMA AUTHORIZATION mobterm; 
-ALTER USER mobterm SET search_path = mobterm, public; 
-GRANT CONNECT ON DATABASE db71u TO mobterm; 
-GRANT SELECT, INSERT, UPDATE, DELETE ON ALL TABLES IN SCHEMA mobterm TO mobterm; 
-ALTER SCHEMA mobterm OWNER TO mobterm; 
-
 -- Movement
 CREATE USER movement WITH PASSWORD 'movement'; 
 CREATE SCHEMA AUTHORIZATION movement; 
