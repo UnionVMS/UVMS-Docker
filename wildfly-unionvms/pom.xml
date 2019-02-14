@@ -256,7 +256,7 @@
 								<taskdef resource="net/sf/antcontrib/antcontrib.properties" classpathref="maven.plugin.classpath" />
 								
 								<if>
-								    <not><equals arg1="${docker.dependency.skip}" arg2="true" /></not>
+								    <!--not--><equals arg1="${docker.dependency.skip}" arg2="true" /><!--/not-->
 								    <then>
 									<echo message="Modify ear/war:s to define startup order!" />
 
