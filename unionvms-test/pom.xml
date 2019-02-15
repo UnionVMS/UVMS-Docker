@@ -316,7 +316,7 @@
 								</ports>
 								<wait>
 									<http>
-										<url>http://localhost:28080/geoserver/index.html</url>
+										<url>http://admin:Wildfly4ever!@localhost:29990/management</url>
 										<method>GET</method>
 										<status>200</status>
 									</http>
