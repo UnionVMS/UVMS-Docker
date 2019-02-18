@@ -38,7 +38,7 @@ cd $BASE_DOCKER_DIR/wildfly-fluxfmc && mvn clean install -DskipTests -DkipITs=tr
 ## Runinng wildfly container phase : 
 printf "\n\nGoing to run wildfly container..\n\n"
 # -p 9010:9010 for jconsole
-docker image ls | grep wildfly-release | awk '{print $3}' | xargs docker run -it -p 9990:9990 -p 8787:8787 -p 8080:8080 --name wildfly --net-alias wildfly --net=uvms -m 8G -d # Run the wildfly-release image
+docker image ls | grep wildfly-release | awk '{print $3}' | xargs docker run -it -p 9990:9990 -p 8787:8787 -p 8080:8080 --name wildfly --net-alias wildfly --net=uvms -m 8G -d # Run the wildfly-release image (create container)
 printf "\nContainer was started.. Going in the wildfly container now.. See YA..\n\n" 
 
 docker exec -it wildfly bash

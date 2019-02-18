@@ -1,5 +1,7 @@
 version: '2'
 services:
+
+  ## Wildfly container and configs
   wildfly:
     image: fevamko/wildfly:image-as-of-14-02-2019
     container_name: wildfly
@@ -15,11 +17,15 @@ services:
      - postgres
      - activemq
     command: ["/opt/jboss/start.sh", "/opt/jboss/wildfly/bin/standalone.sh", "-c", "standalone-uvms.xml", "-b", "0.0.0.0", "-bmanagement", "0.0.0.0", "--debug"]
+
+  ## Postgres container and configs
   postgres:
     image: fevamko/postgres:image-as-of-14-02-2019
     container_name: postgres
     ports: 
      - "5432:5432"
+
+  ## Activemq container and configs
   activemq:
     image: fevamko/activemq:image-as-of-14-02-2019
     container_name: activemq
