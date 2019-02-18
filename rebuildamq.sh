@@ -26,7 +26,7 @@ printf "\n\nCreating the Docker images from "$BASE_DOCKER_DIR" folder...\n\n"
 printf "\n-->> Building activemq image...\n\n" &&
 cd $BASE_DOCKER_DIR/amq && mvn clean install -DskipTests -DkipITs=true &&     # Build activemq image
 
-## Runinng wildfly container phase : 
+## Runinng activemq container phase :
 printf "\n\nGoing to run activemq container..\n\n"
 
 docker image ls | grep activemq | awk '{print $3}' | xargs docker run -it -p 8161:8161 -p 61616:61616 --name activemq --net-alias activemq --net=uvms -m 2G -d  # Run the activemq image (create container)

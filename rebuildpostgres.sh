@@ -24,15 +24,15 @@ pwd
 printf "\n\nCreating the Docker images from "$BASE_DOCKER_DIR" folder...\n\n" &&
 
 printf "\n-->> Building postgres-base image...\n\n" &&
-cd $BASE_DOCKER_DIR/postgres-base && mvn clean install -DskipTests -DkipITs=true &&     # Build postgres image
+cd $BASE_DOCKER_DIR/postgres-base && mvn clean install -U -DskipTests -DkipITs=true &&     # Build postgres image
 printf "\n-->> Finished building postgres-base image...\n\n" &&
 
 printf "\n-->> Building postgres-release image...\n\n" &&
-cd $BASE_DOCKER_DIR/postgres-release && mvn clean install -DskipTests -DkipITs=true &&     # Build postgres image
+cd $BASE_DOCKER_DIR/postgres-release && mvn clean install -U -DskipTests -DkipITs=true &&     # Build postgres image
 printf "\n-->> Finished building postgres-release image...\n\n" &&
 
-## Runinng wildfly container phase : 
+## Runinng postgres container phase :
 printf "\n\nGoing to run postgres container..\n\n"
 
-docker image ls | grep postgres | awk '{print $3}' | xargs docker run -it -p 5432:5432 --name postgres --net-alias postgres --net=uvms -d   # Run the postgres image (create container)
+docker image ls | grep postgres-release | awk '{print $3}' | xargs docker run -it -p 5432:5432 --name postgres --net-alias postgres --net=uvms -d   # Run the postgres image (create container)
 printf "\nContainer was started correctly.. See YA..\n\n"
