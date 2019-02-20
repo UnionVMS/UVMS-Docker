@@ -17,13 +17,23 @@ import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 import javax.jms.JMSException;
 import javax.jms.Message;
 import javax.jms.TextMessage;
 
+import eu.europa.ec.fisheries.schema.exchange.common.v1.CommandTypeType;
+import eu.europa.ec.fisheries.schema.exchange.common.v1.KeyValueType;
+import eu.europa.ec.fisheries.schema.mobileterminal.polltypes.v1.PollType;
+import eu.europa.ec.fisheries.schema.mobileterminal.types.v1.ComChannelType;
+import eu.europa.ec.fisheries.schema.movement.v1.MovementComChannelType;
+import eu.europa.ec.fisheries.schema.movement.v1.MovementSourceType;
+import eu.europa.ec.fisheries.uvms.docker.validation.common.TopicListener;
+import eu.europa.ec.fisheries.uvms.docker.validation.mobileterminal.MobileTerminalTestHelper;
+import eu.europa.ec.fisheries.uvms.docker.validation.mobileterminal.dto.ChannelDto;
+import eu.europa.ec.fisheries.uvms.docker.validation.mobileterminal.dto.MobileTerminalDto;
+import eu.europa.ec.fisheries.uvms.docker.validation.movement.MovementDto;
+import eu.europa.ec.fisheries.uvms.docker.validation.movement.model.IncomingMovement;
 import eu.europa.ec.fisheries.uvms.docker.validation.spatial.SpatialHelper;
 import org.junit.After;
 import org.junit.AfterClass;
@@ -818,6 +828,72 @@ public class RulesAlarmIT extends AbstractRest {
         assertThat(movement.getIrcs(), is(asset.getIrcs()));
         
         CustomRuleHelper.assertRuleTriggered(createdAreaRule, timestamp.toLocalDateTime());
+    }
+
+    private static final String INMARSAT_SELECTOR = "ServiceName='eu.europa.ec.fisheries.uvms.plugins.inmarsat'";
+
+    @Test
+    public void createPollIfReportedSpeedIsGreaterThan10knotsTest() throws Exception {
+        LocalDateTime timestamp = LocalDateTime.now(ZoneOffset.UTC);
+
+        AssetDTO asset = AssetTestHelper.createTestAsset();
+        MobileTerminalDto mobileTerminal = MobileTerminalTestHelper.createMobileTerminal();
+        MobileTerminalTestHelper.assignMobileTerminal(asset, mobileTerminal);
+
+
+        CustomRuleType speedRule = CustomRuleBuilder.getBuilder()
+                .setName("Speed > 10 knots => Send poll")
+                .rule(CriteriaType.POSITION, SubCriteriaType.REPORTED_SPEED,
+                        ConditionType.GT, "10")
+                .action(ActionType.MANUAL_POLL, "Not needed")
+                .build();
+
+
+
+        CustomRuleType createdSpeedRule = CustomRuleHelper.createCustomRule(speedRule);
+        assertNotNull(createdSpeedRule);
+
+        TextMessage message = null;
+        try (TopicListener topicListener = new TopicListener(INMARSAT_SELECTOR)) {
+
+            LatLong position = new LatLong(11d, 56d, new Date());
+            position.speed = 10.5;
+
+            ChannelDto channel = null;
+            Iterator it = mobileTerminal.getChannels().iterator();                  //srsly why is this a bloody set?????? And why have we not set the different channel variables???????
+            while(it.hasNext()){
+                channel = (ChannelDto)it.next();
+            }
+            MovementHelper movementHelper = new MovementHelper();
+            IncomingMovement incomingMovement = movementHelper.createIncomingMovement(asset, position);
+            incomingMovement.setMovementSourceType(MovementSourceType.INMARSAT_C.value());
+            incomingMovement.setPluginType(PluginType.SATELLITE_RECEIVER.value());
+            incomingMovement.setMobileTerminalMemberNumber(channel.getMemberNumber());
+            incomingMovement.setMobileTerminalDNID(channel.getDNID());
+            incomingMovement.setComChannelType(MovementComChannelType.MOBILE_TERMINAL.value());
+
+            movementHelper.createMovement(incomingMovement);
+            message = (TextMessage) topicListener.listenOnEventBus();
+        }
+
+        assertThat(message, is(notNullValue()));
+        SetCommandRequest response = JAXBMarshaller.unmarshallString(message.getText(), SetCommandRequest.class);
+
+
+        assertThat(response.getCommand().getCommand(), is(CommandTypeType.POLL));
+
+        List<KeyValueType> pollReceiverValues = response.getCommand().getPoll().getPollReceiver();
+        Map<String, String> receiverValuesMap = new HashMap<>();
+        for (KeyValueType keyValueType : pollReceiverValues) {
+            receiverValuesMap.put(keyValueType.getKey(), keyValueType.getValue());
+        }
+        assertThat(receiverValuesMap.get("SATELLITE_NUMBER"), is(mobileTerminal.getSatelliteNumber()));
+
+        ChannelDto channel = mobileTerminal.getChannels().iterator().next();
+        assertThat(receiverValuesMap.get("DNID"), is(channel.getDNID()));
+        assertThat(receiverValuesMap.get("MEMBER_NUMBER"), is(channel.getMemberNumber()));
+
+        CustomRuleHelper.assertRuleTriggered(createdSpeedRule, timestamp);
     }
 
 }
