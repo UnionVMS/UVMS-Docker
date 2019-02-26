@@ -1,13 +1,24 @@
 package eu.europa.ec.fisheries.uvms.docker.validation.spatial;
 
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.GenericType;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+
+import com.vividsolutions.jts.geom.Geometry;
+import com.vividsolutions.jts.geom.Point;
+import com.vividsolutions.jts.geomgraph.Position;
+import com.vividsolutions.jts.io.ParseException;
+import com.vividsolutions.jts.io.WKTReader;
+import eu.europa.ec.fisheries.schema.movement.v1.MovementPoint;
+import eu.europa.ec.fisheries.schema.movement.v1.MovementType;
+import eu.europa.ec.fisheries.schema.movement.v1.SegmentCategoryType;
 import org.junit.Assert;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -457,6 +468,47 @@ public class SpatialRestIT extends AbstractRest {
 
     }
 
+    @Test
+    public void testSegmentCategoriFromHelsingborgToLidkoping(){
+        List<MovementType> movementList = new ArrayList<>();
+        String[] pointArray = HelsingborgToLidkoping.helsingborgToLidköping;
+        Instant start = Instant.now().minusSeconds(60 * pointArray.length);
+
+        for(int i = 0 ; i < pointArray.length - 1 ; i++) {
+
+            movementList.clear();
+
+            MovementType move = new MovementType();
+            Point p = (Point)getGeometryFromWKTSrring(pointArray[i]);
+            MovementPoint pos = new MovementPoint();
+            pos.setLongitude(p.getX());
+            pos.setLatitude(p.getY());
+            move.setPosition(pos);
+            move.setPositionTime(Date.from(start.plusSeconds(i * 60)));
+
+            movementList.add(move);
+
+            move = new MovementType();
+            p = (Point)getGeometryFromWKTSrring(pointArray[i + 1]);
+            pos = new MovementPoint();
+            pos.setLongitude(p.getX());
+            pos.setLatitude(p.getY());
+            move.setPosition(pos);
+            move.setPositionTime(Date.from(start.plusSeconds((i + 1) * 60)));
+
+            movementList.add(move);
+
+            Response response =  getWebTarget()
+                    .path("spatial/spatialnonsecure/json/getSegmentCategoryType")
+                    .request(MediaType.APPLICATION_JSON)
+                    .post(Entity.json(movementList), Response.class);
+
+            assertEquals(200, response.getStatus());
+            //System.out.println(pointArray[i] + "  " + pointArray[i+1] + " " + response.readEntity(new GenericType<SegmentCategoryType>() {}));
+
+        }
+    }
+
 
     /*******************************************************************************************************************
      * HELPERS                                                                                                         *
@@ -593,6 +645,17 @@ public class SpatialRestIT extends AbstractRest {
         }
         request.setLocationTypes(loc);
         return request;
+    }
+
+    private static Geometry getGeometryFromWKTSrring(String wkt) {
+        try {
+            WKTReader reader = new WKTReader();
+            Geometry geom = reader.read(wkt);
+            geom.setSRID(4326);
+            return geom;
+        }catch (ParseException e){
+            throw new IllegalArgumentException("Inputstring " + wkt + " causes a parse exception.", e);
+        }
     }
 
 
