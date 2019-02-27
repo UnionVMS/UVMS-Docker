@@ -17,6 +17,7 @@
 
 	<properties>
 		<docker.skip>${skipITs}</docker.skip>
+		<docker.frontend.test.suite>UnionVMSTestCase</docker.frontend.test.suite>
 	</properties>
 
 	<dependencies>
@@ -377,6 +378,24 @@
 	</repositories>
 	<profiles>
 		<profile>
+			<id>frontend-test-rules</id>
+			<properties>
+				<docker.frontend.test.suite>UnionVMSTestCaseRules</docker.frontend.test.suite>
+			</properties>
+		</profile>
+		<profile>
+			<id>frontend-test-filtering</id>
+			<properties>
+				<docker.frontend.test.suite>UnionVMSTestCaseFiltering</docker.frontend.test.suite>
+			</properties>
+		</profile>
+		<profile>
+			<id>frontend-test-mtchannels</id>
+			<properties>
+				<docker.frontend.test.suite>UnionVMSTestCaseMobileTerminalChannels</docker.frontend.test.suite>
+			</properties>
+		</profile>
+		<profile>
 			<id>frontend-test</id>
 			<build>
 				<plugins>
@@ -399,7 +418,7 @@
 											<arg value="-m" />
 											<arg value="unittest" />
 											<arg value="-v" />
-											<arg value="Python-regression-suite-selenium.UnionVMSTestCase" />
+											<arg value="Python-regression-suite-selenium.${docker.frontend.test.suite}" />
 									  </exec>
 									</tasks>
 								</configuration>
