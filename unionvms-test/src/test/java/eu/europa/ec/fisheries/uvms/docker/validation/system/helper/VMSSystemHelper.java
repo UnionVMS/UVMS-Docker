@@ -15,7 +15,7 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertThat;
-import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 import java.util.Arrays;
 import java.util.Date;
@@ -63,7 +63,7 @@ public class VMSSystemHelper {
     
     public static <T> T triggerBasicRuleWithAction(ActionType actionType, String actionValue, Class<T> expectedType, String selector) throws Exception {
         try {
-            LocalDateTime timestamp = LocalDateTime.now(ZoneOffset.UTC);
+            OffsetDateTime timestamp = OffsetDateTime.now(ZoneOffset.UTC);
             AssetDTO asset = AssetTestHelper.createTestAsset();
     
             CustomRuleType flagStateRule = CustomRuleBuilder.getBuilder()

@@ -13,30 +13,27 @@ package eu.europa.ec.fisheries.uvms.docker.validation.system.rules;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.notNullValue;
-import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
-import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.*;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 import javax.jms.TextMessage;
-
-import eu.europa.ec.fisheries.schema.exchange.common.v1.CommandTypeType;
-import eu.europa.ec.fisheries.schema.exchange.common.v1.KeyValueType;
-import eu.europa.ec.fisheries.schema.movement.v1.MovementComChannelType;
-import eu.europa.ec.fisheries.schema.movement.v1.MovementSourceType;
-import eu.europa.ec.fisheries.uvms.docker.validation.common.TopicListener;
-import eu.europa.ec.fisheries.uvms.docker.validation.mobileterminal.MobileTerminalTestHelper;
-import eu.europa.ec.fisheries.uvms.docker.validation.mobileterminal.dto.ChannelDto;
-import eu.europa.ec.fisheries.uvms.docker.validation.mobileterminal.dto.MobileTerminalDto;
-import eu.europa.ec.fisheries.uvms.docker.validation.movement.model.IncomingMovement;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import eu.europa.ec.fisheries.schema.exchange.common.v1.CommandTypeType;
+import eu.europa.ec.fisheries.schema.exchange.common.v1.KeyValueType;
 import eu.europa.ec.fisheries.schema.exchange.movement.v1.MovementType;
 import eu.europa.ec.fisheries.schema.exchange.plugin.types.v1.PluginType;
 import eu.europa.ec.fisheries.schema.exchange.plugin.v1.SetCommandRequest;
 import eu.europa.ec.fisheries.schema.exchange.plugin.v1.SetReportRequest;
+import eu.europa.ec.fisheries.schema.movement.v1.MovementComChannelType;
+import eu.europa.ec.fisheries.schema.movement.v1.MovementSourceType;
 import eu.europa.ec.fisheries.schema.movementrules.customrule.v1.ActionType;
 import eu.europa.ec.fisheries.schema.movementrules.customrule.v1.ConditionType;
 import eu.europa.ec.fisheries.schema.movementrules.customrule.v1.CriteriaType;
@@ -46,8 +43,13 @@ import eu.europa.ec.fisheries.uvms.asset.client.model.AssetDTO;
 import eu.europa.ec.fisheries.uvms.docker.validation.asset.AssetTestHelper;
 import eu.europa.ec.fisheries.uvms.docker.validation.common.AbstractRest;
 import eu.europa.ec.fisheries.uvms.docker.validation.common.MessageHelper;
+import eu.europa.ec.fisheries.uvms.docker.validation.common.TopicListener;
+import eu.europa.ec.fisheries.uvms.docker.validation.mobileterminal.MobileTerminalTestHelper;
+import eu.europa.ec.fisheries.uvms.docker.validation.mobileterminal.dto.ChannelDto;
+import eu.europa.ec.fisheries.uvms.docker.validation.mobileterminal.dto.MobileTerminalDto;
 import eu.europa.ec.fisheries.uvms.docker.validation.movement.LatLong;
 import eu.europa.ec.fisheries.uvms.docker.validation.movement.MovementHelper;
+import eu.europa.ec.fisheries.uvms.docker.validation.movement.model.IncomingMovement;
 import eu.europa.ec.fisheries.uvms.docker.validation.system.helper.CustomRuleBuilder;
 import eu.europa.ec.fisheries.uvms.docker.validation.system.helper.CustomRuleHelper;
 import eu.europa.ec.fisheries.uvms.docker.validation.system.helper.FLUXHelper;
@@ -57,7 +59,6 @@ import eu.europa.ec.fisheries.uvms.exchange.model.mapper.JAXBMarshaller;
 public class RulesAlarmIT extends AbstractRest {
 
     private static final long TIMEOUT = 10000;
-    private static final String SELECTOR_FLUX = "ServiceName='eu.europa.ec.fisheries.uvms.plugins.flux.movement'";
 
     private static MessageHelper messageHelper;
 
@@ -79,7 +80,7 @@ public class RulesAlarmIT extends AbstractRest {
     
     @Test
     public void sendEmailIfReportedSpeedIsGreaterThan10knotsTest() throws Exception {
-        LocalDateTime timestamp = LocalDateTime.now(ZoneOffset.UTC);
+        OffsetDateTime timestamp = OffsetDateTime.now(ZoneOffset.UTC);
 
         AssetDTO asset = AssetTestHelper.createTestAsset();
         
@@ -110,7 +111,7 @@ public class RulesAlarmIT extends AbstractRest {
     
     @Test
     public void sendEmailIfReportedSpeedIslessThan10knotsTest() throws Exception {
-        LocalDateTime timestamp = LocalDateTime.now(ZoneOffset.UTC);
+        OffsetDateTime timestamp = OffsetDateTime.now(ZoneOffset.UTC);
 
         AssetDTO asset = AssetTestHelper.createTestAsset();
         
@@ -141,7 +142,7 @@ public class RulesAlarmIT extends AbstractRest {
 
     @Test
     public void doNotTriggerRuleIfReportedSpeedIsLessThan10knotsTest() throws Exception {
-        LocalDateTime timestamp = LocalDateTime.now(ZoneOffset.UTC);
+        OffsetDateTime timestamp = OffsetDateTime.now(ZoneOffset.UTC);
 
         AssetDTO asset = AssetTestHelper.createTestAsset();
         
@@ -183,7 +184,7 @@ public class RulesAlarmIT extends AbstractRest {
     
     @Test
     public void doNotTriggerRuleIfReportedSpeedIsGreaterThan10knotsTest() throws Exception {
-        LocalDateTime timestamp = LocalDateTime.now(ZoneOffset.UTC);
+        OffsetDateTime timestamp = OffsetDateTime.now(ZoneOffset.UTC);
 
         AssetDTO asset = AssetTestHelper.createTestAsset();
         
@@ -225,7 +226,7 @@ public class RulesAlarmIT extends AbstractRest {
     
     @Test
     public void sendEmailIfReportedSpeedIsGreaterThanOrEqual10knotsTest() throws Exception {
-        LocalDateTime timestamp = LocalDateTime.now(ZoneOffset.UTC);
+        OffsetDateTime timestamp = OffsetDateTime.now(ZoneOffset.UTC);
 
         AssetDTO asset = AssetTestHelper.createTestAsset();
         
@@ -256,7 +257,7 @@ public class RulesAlarmIT extends AbstractRest {
     
     @Test
     public void sendEmailIfReportedSpeedIsLessThanOrEqual10knotsTest() throws Exception {
-        LocalDateTime timestamp = LocalDateTime.now(ZoneOffset.UTC);
+        OffsetDateTime timestamp = OffsetDateTime.now(ZoneOffset.UTC);
 
         AssetDTO asset = AssetTestHelper.createTestAsset();
         
@@ -287,7 +288,7 @@ public class RulesAlarmIT extends AbstractRest {
     
     @Test
     public void sendEmailIfReportedSpeedIsGreaterThan10knotsAndAreaIsDNKTest() throws Exception {
-        LocalDateTime timestamp = LocalDateTime.now(ZoneOffset.UTC);
+        OffsetDateTime timestamp = OffsetDateTime.now(ZoneOffset.UTC);
 
         AssetDTO asset = AssetTestHelper.createTestAsset();
         
@@ -320,7 +321,7 @@ public class RulesAlarmIT extends AbstractRest {
     
     @Test
     public void sendEmailIfReportedSpeedIsLessThan10knotsAndAreaIsDNKTest() throws Exception {
-        LocalDateTime timestamp = LocalDateTime.now(ZoneOffset.UTC);
+        OffsetDateTime timestamp = OffsetDateTime.now(ZoneOffset.UTC);
 
         AssetDTO asset = AssetTestHelper.createTestAsset();
         
@@ -353,7 +354,7 @@ public class RulesAlarmIT extends AbstractRest {
     
     @Test
     public void sendEmailIfAreaCodeIsDEUTest() throws Exception {
-        LocalDateTime timestamp = LocalDateTime.now(ZoneOffset.UTC);
+        OffsetDateTime timestamp = OffsetDateTime.now(ZoneOffset.UTC);
 
         AssetDTO asset = AssetTestHelper.createTestAsset();
         
@@ -383,7 +384,7 @@ public class RulesAlarmIT extends AbstractRest {
     
     @Test
     public void sendEmailIfAssetIRCSMatchesTest() throws Exception {
-        LocalDateTime timestamp = LocalDateTime.now(ZoneOffset.UTC);
+        OffsetDateTime timestamp = OffsetDateTime.now(ZoneOffset.UTC);
 
         AssetDTO asset = AssetTestHelper.createTestAsset();
         
@@ -413,7 +414,7 @@ public class RulesAlarmIT extends AbstractRest {
     
     @Test
     public void sendEmailIfIrcsDisjunctionMatchesTest() throws Exception {
-        LocalDateTime timestamp = LocalDateTime.now(ZoneOffset.UTC);
+        OffsetDateTime timestamp = OffsetDateTime.now(ZoneOffset.UTC);
 
         AssetDTO asset1 = AssetTestHelper.createTestAsset();
         AssetDTO asset2 = AssetTestHelper.createTestAsset();
@@ -442,7 +443,7 @@ public class RulesAlarmIT extends AbstractRest {
         
         CustomRuleHelper.assertRuleTriggered(createdCustomRule, timestamp);
         
-        timestamp = LocalDateTime.now(ZoneOffset.UTC);
+        timestamp = OffsetDateTime.now(ZoneOffset.UTC);
         
         LatLong position2 = new LatLong(2d, 2d, new Date());
         FLUXHelper.sendPositionToFluxPlugin(asset2, position2);
@@ -459,7 +460,7 @@ public class RulesAlarmIT extends AbstractRest {
     
     @Test
     public void sendEmailIfIrcsCfrConjunctionMatchesTest() throws Exception {
-        LocalDateTime timestamp = LocalDateTime.now(ZoneOffset.UTC);
+        OffsetDateTime timestamp = OffsetDateTime.now(ZoneOffset.UTC);
 
         AssetDTO asset = AssetTestHelper.createTestAsset();
         
@@ -490,7 +491,7 @@ public class RulesAlarmIT extends AbstractRest {
     
     @Test
     public void doNotTriggerRuleIfIrcsCfrConjunctionNotMatchesTest() throws Exception {
-        LocalDateTime timestamp = LocalDateTime.now(ZoneOffset.UTC);
+        OffsetDateTime timestamp = OffsetDateTime.now(ZoneOffset.UTC);
 
         AssetDTO asset = AssetTestHelper.createTestAsset();
         
@@ -531,7 +532,7 @@ public class RulesAlarmIT extends AbstractRest {
     
     @Test
     public void sendEmailIfAssetCFRMatchesTest() throws Exception {
-        LocalDateTime timestamp = LocalDateTime.now(ZoneOffset.UTC);
+        OffsetDateTime timestamp = OffsetDateTime.now(ZoneOffset.UTC);
 
         AssetDTO asset = AssetTestHelper.createTestAsset();
         
@@ -561,7 +562,7 @@ public class RulesAlarmIT extends AbstractRest {
     
     @Test
     public void sendEmailIfAssetNameMatchesTest() throws Exception {
-        LocalDateTime timestamp = LocalDateTime.now(ZoneOffset.UTC);
+        OffsetDateTime timestamp = OffsetDateTime.now(ZoneOffset.UTC);
 
         AssetDTO asset = AssetTestHelper.createTestAsset();
         
@@ -591,7 +592,7 @@ public class RulesAlarmIT extends AbstractRest {
     
     @Test
     public void sendEmailIfLatitudeIsGreaterThan10Test() throws Exception {
-        LocalDateTime timestamp = LocalDateTime.now(ZoneOffset.UTC);
+        OffsetDateTime timestamp = OffsetDateTime.now(ZoneOffset.UTC);
 
         AssetDTO asset = AssetTestHelper.createTestAsset();
         
@@ -620,7 +621,7 @@ public class RulesAlarmIT extends AbstractRest {
     
     @Test
     public void sendEmailIfLongitudeIsGreaterThan10Test() throws Exception {
-        LocalDateTime timestamp = LocalDateTime.now(ZoneOffset.UTC);
+        OffsetDateTime timestamp = OffsetDateTime.now(ZoneOffset.UTC);
 
         AssetDTO asset = AssetTestHelper.createTestAsset();
         
@@ -649,7 +650,7 @@ public class RulesAlarmIT extends AbstractRest {
     
     @Test
     public void sendEmailIfPositionReportTimeIsGreaterOrEqualTest() throws Exception {
-        ZonedDateTime timestamp = ZonedDateTime.now(ZoneOffset.UTC);
+        OffsetDateTime timestamp = OffsetDateTime.now(ZoneOffset.UTC);
 
         AssetDTO asset = AssetTestHelper.createTestAsset();
         
@@ -673,12 +674,12 @@ public class RulesAlarmIT extends AbstractRest {
         assertThat(setCommandRequest.getCommand().getEmail().getTo(), is(email));
         assertThat(setCommandRequest.getCommand().getFwdRule(), is(createdCustomRule.getName()));
         
-        CustomRuleHelper.assertRuleTriggered(createdCustomRule, timestamp.toLocalDateTime());
+        CustomRuleHelper.assertRuleTriggered(createdCustomRule, timestamp);
     }
     
     @Test
     public void triggerAreaEntryRule() throws Exception {
-        ZonedDateTime timestamp = ZonedDateTime.now(ZoneOffset.UTC);
+        OffsetDateTime timestamp = OffsetDateTime.now(ZoneOffset.UTC);
 
         AssetDTO asset = AssetTestHelper.createTestAsset();
         
@@ -700,7 +701,7 @@ public class RulesAlarmIT extends AbstractRest {
         LatLong positionDnk = new LatLong(56d, 10.5, new Date());
         FLUXHelper.sendPositionToFluxPlugin(asset, positionDnk);
         
-        TextMessage message = (TextMessage) messageHelper.listenOnEventBus(SELECTOR_FLUX, TIMEOUT);
+        TextMessage message = (TextMessage) messageHelper.listenOnEventBus(VMSSystemHelper.FLUX_SELECTOR, TIMEOUT);
         assertThat(message, is(notNullValue()));
         
         SetReportRequest setReportRequest = JAXBMarshaller.unmarshallTextMessage(message, SetReportRequest.class);
@@ -710,12 +711,12 @@ public class RulesAlarmIT extends AbstractRest {
         assertThat(movement.getAssetName(), is(asset.getName()));
         assertThat(movement.getIrcs(), is(asset.getIrcs()));
         
-        CustomRuleHelper.assertRuleTriggered(createdAreaRule, timestamp.toLocalDateTime());
+        CustomRuleHelper.assertRuleTriggered(createdAreaRule, timestamp);
     }
     
     @Test
     public void doNotTriggerAreaEntryRule() throws Exception {
-        ZonedDateTime timestamp = ZonedDateTime.now(ZoneOffset.UTC);
+        OffsetDateTime timestamp = OffsetDateTime.now(ZoneOffset.UTC);
 
         AssetDTO asset = AssetTestHelper.createTestAsset();
         
@@ -756,12 +757,12 @@ public class RulesAlarmIT extends AbstractRest {
         assertThat(setCommandRequest.getCommand().getFwdRule(), is(createdFsRule.getName()));
         
         CustomRuleHelper.assertRuleNotTriggered(createdAreaRule);
-        CustomRuleHelper.assertRuleTriggered(createdFsRule, timestamp.toLocalDateTime());
+        CustomRuleHelper.assertRuleTriggered(createdFsRule, timestamp);
     }
     
     @Test
     public void triggerAreaExitRule() throws Exception {
-        ZonedDateTime timestamp = ZonedDateTime.now(ZoneOffset.UTC);
+        OffsetDateTime timestamp = OffsetDateTime.now(ZoneOffset.UTC);
 
         AssetDTO asset = AssetTestHelper.createTestAsset();
         
@@ -783,7 +784,7 @@ public class RulesAlarmIT extends AbstractRest {
         LatLong positionDnk = new LatLong(56d, 10.5, new Date());
         FLUXHelper.sendPositionToFluxPlugin(asset, positionDnk);
         
-        TextMessage message = (TextMessage) messageHelper.listenOnEventBus(SELECTOR_FLUX, TIMEOUT);
+        TextMessage message = (TextMessage) messageHelper.listenOnEventBus(VMSSystemHelper.FLUX_SELECTOR, TIMEOUT);
         assertThat(message, is(notNullValue()));
         
         SetReportRequest setReportRequest = JAXBMarshaller.unmarshallTextMessage(message, SetReportRequest.class);
@@ -793,14 +794,14 @@ public class RulesAlarmIT extends AbstractRest {
         assertThat(movement.getAssetName(), is(asset.getName()));
         assertThat(movement.getIrcs(), is(asset.getIrcs()));
         
-        CustomRuleHelper.assertRuleTriggered(createdAreaRule, timestamp.toLocalDateTime());
+        CustomRuleHelper.assertRuleTriggered(createdAreaRule, timestamp);
     }
 
     private static final String INMARSAT_SELECTOR = "ServiceName='eu.europa.ec.fisheries.uvms.plugins.inmarsat'";
 
     @Test
     public void createPollIfReportedSpeedIsGreaterThan10knotsTest() throws Exception {
-        LocalDateTime timestamp = LocalDateTime.now(ZoneOffset.UTC);
+        OffsetDateTime timestamp = OffsetDateTime.now(ZoneOffset.UTC);
 
         AssetDTO asset = AssetTestHelper.createTestAsset();
         MobileTerminalDto mobileTerminal = MobileTerminalTestHelper.createMobileTerminal();
