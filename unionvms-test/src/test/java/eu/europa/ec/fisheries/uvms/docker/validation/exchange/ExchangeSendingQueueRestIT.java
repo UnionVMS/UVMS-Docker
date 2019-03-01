@@ -13,50 +13,129 @@ copy of the GNU General Public License along with the IFDM Suite. If not, see <h
 */
 package eu.europa.ec.fisheries.uvms.docker.validation.exchange;
 
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.notNullValue;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
-
-import eu.europa.ec.fisheries.uvms.commons.rest.dto.ResponseDto;
-import org.apache.http.HttpResponse;
-import org.apache.http.client.fluent.Request;
-import org.junit.Test;
-import eu.europa.ec.fisheries.uvms.docker.validation.common.AbstractRest;
-
+import java.util.Objects;
+import java.util.UUID;
+import javax.jms.TextMessage;
 import javax.ws.rs.client.Entity;
+import javax.ws.rs.core.GenericType;
 import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
+import org.junit.Test;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import eu.europa.ec.fisheries.schema.exchange.plugin.v1.SetCommandRequest;
+import eu.europa.ec.fisheries.schema.exchange.plugin.v1.SetReportRequest;
+import eu.europa.ec.fisheries.uvms.commons.rest.dto.ResponseDto;
+import eu.europa.ec.fisheries.uvms.docker.validation.common.AbstractRest;
+import eu.europa.ec.fisheries.uvms.docker.validation.common.MessageHelper;
+import eu.europa.ec.fisheries.uvms.docker.validation.exchange.dto.PluginType;
+import eu.europa.ec.fisheries.uvms.docker.validation.exchange.dto.SendingGroupLog;
+import eu.europa.ec.fisheries.uvms.docker.validation.exchange.dto.SendingLog;
+import eu.europa.ec.fisheries.uvms.docker.validation.system.helper.VMSSystemHelper;
+import eu.europa.ec.fisheries.uvms.exchange.model.mapper.JAXBMarshaller;
 
 public class ExchangeSendingQueueRestIT extends AbstractRest {
 
-	@Test
-	public void getSendingQueueTest() {
-
-		ResponseDto response = getWebTarget()
-				.path("exchange/rest/sendingqueue/list")
-				.request(MediaType.APPLICATION_JSON)
-				.header(HttpHeaders.AUTHORIZATION, getValidJwtToken())
-				.get(ResponseDto.class);
-
-		assertEquals(200, response.getCode());
-
-		ArrayList list = (ArrayList) response.getData();
-		assertNotNull(list);
-		assertFalse(list.isEmpty());
+    private static final long TIMEOUT = 10000;
+    
+    @Test
+	public void getSendingQueueTest() throws Exception {
+	    String fluxEndpoint = "DNK";
+	    SetReportRequest reportRequest = VMSSystemHelper.triggerBasicRuleAndSendToFlux(fluxEndpoint);
+	    String unsentMessageGuid = reportRequest.getReport().getUnsentMessageGuid();
+		assertSendingLogContainsUnsentMessageGuid(fluxEndpoint, unsentMessageGuid);
 	}
 
 	@Test
 	public void getSendTest() throws Exception {
-
-		ResponseDto response = getWebTarget()
-				.path("exchange/rest/sendingqueue/send")
-				.request(MediaType.APPLICATION_JSON)
-				.header(HttpHeaders.AUTHORIZATION, getValidJwtToken())
-				.put(Entity.json(writeValueAsString(new ArrayList<String>()).getBytes()), ResponseDto.class);
-
-		assertEquals(200, response.getCode());
-
-		boolean sent = (boolean) response.getData();
+		boolean sent = sendSendingGroupIds(new ArrayList<String>());
 		assertTrue(sent);
+	}
 
+	@Test
+	public void resendToFLUXTest() throws Exception {
+	    String fluxEndpoint = "DNK";
+	    SetReportRequest reportRequest = VMSSystemHelper.triggerBasicRuleAndSendToFlux(fluxEndpoint);
+	    String unsentMessageGuid = reportRequest.getReport().getUnsentMessageGuid();
+	    assertSendingLogContainsUnsentMessageGuid(fluxEndpoint, unsentMessageGuid);
+
+	    SetReportRequest reportRequest2 = null;
+	    try (MessageHelper messageHelper = new MessageHelper()) {
+	        sendSendingGroupIds(Arrays.asList(unsentMessageGuid));
+            TextMessage message = (TextMessage) messageHelper.listenOnEventBus(VMSSystemHelper.FLUX_SELECTOR, TIMEOUT);
+            assertThat(message, is(notNullValue()));
+            reportRequest2 = JAXBMarshaller.unmarshallTextMessage(message, SetReportRequest.class);
+        }
+	    assertThat(reportRequest2, is(notNullValue()));
+	    
+	    assertTrue(Objects.equals(reportRequest.getReport().getMovement(), reportRequest2.getReport().getMovement()));
+	    assertThat(reportRequest.getReport().getRecipient(), is(reportRequest2.getReport().getRecipient()));
+	}
+	
+	@Test
+    public void resendToEmailTest() throws Exception {
+	    VMSSystemHelper.registerEmailPluginIfNotExisting();
+	    
+        String email = UUID.randomUUID() + "@mail.com";
+        SetCommandRequest reportRequest = VMSSystemHelper.triggerBasicRuleAndSendEmail(email);
+        String unsentMessageGuid = reportRequest.getCommand().getUnsentMessageGuid();
+        assertSendingLogContainsUnsentMessageGuid(VMSSystemHelper.emailPluginName, unsentMessageGuid);
+
+        SetCommandRequest reportRequest2 = null;
+        try (MessageHelper messageHelper = new MessageHelper()) {
+            sendSendingGroupIds(Arrays.asList(unsentMessageGuid));
+            TextMessage message = (TextMessage) messageHelper.listenOnEventBus(VMSSystemHelper.emailSelector, TIMEOUT);
+            assertThat(message, is(notNullValue()));
+            reportRequest2 = JAXBMarshaller.unmarshallTextMessage(message, SetCommandRequest.class);
+        }
+        assertThat(reportRequest2, is(notNullValue()));
+        
+        assertTrue(Objects.equals(reportRequest.getCommand().getEmail(), reportRequest2.getCommand().getEmail()));
+        assertThat(reportRequest.getCommand().getFwdRule(), is(reportRequest2.getCommand().getFwdRule()));
+    }
+	
+	private void assertSendingLogContainsUnsentMessageGuid(String msgType, String unsentMessageGuid) {
+	    List<SendingLog> list = getSendingLogListForMsgType(msgType);
+        assertThat(list, is(notNullValue()));
+        assertFalse(list.isEmpty());
+        assertTrue(list.stream().anyMatch(log -> log.getMessageId().equals(unsentMessageGuid)));
+	}
+	
+	private List<SendingLog> getSendingLogListForMsgType(String pluginName) {
+	    List<SendingGroupLog> sendGroupList = getSendGroupList();
+	    for (SendingGroupLog sendingGroupLog : sendGroupList) {
+            for (PluginType plugin : sendingGroupLog.getPluginList()) {
+                if (plugin.getName().equals(pluginName)) {
+                    return plugin.getSendingLogList();
+                }
+            }
+        }
+	    return null;
+	}
+	
+	private List<SendingGroupLog> getSendGroupList() {
+	    ResponseDto<List<SendingGroupLog>> response = getWebTarget()
+                .path("exchange/rest/sendingqueue/list")
+                .request(MediaType.APPLICATION_JSON)
+                .header(HttpHeaders.AUTHORIZATION, getValidJwtToken())
+                .get(new GenericType<ResponseDto<List<SendingGroupLog>>>() {});
+
+        assertEquals(200, response.getCode());
+        return response.getData();
+	}
+	
+	private Boolean sendSendingGroupIds(List<String> ids) throws JsonProcessingException {
+	    ResponseDto<Boolean> response = getWebTarget()
+                .path("exchange/rest/sendingqueue/send")
+                .request(MediaType.APPLICATION_JSON)
+                .header(HttpHeaders.AUTHORIZATION, getValidJwtToken())
+                .put(Entity.json(writeValueAsString(ids).getBytes()), new GenericType<ResponseDto<Boolean>>() {});
+	    
+	    assertEquals(200, response.getCode());
+	    return response.getData();
 	}
 }
