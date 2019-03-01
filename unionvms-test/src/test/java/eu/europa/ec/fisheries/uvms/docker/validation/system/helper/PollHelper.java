@@ -38,21 +38,17 @@ public class PollHelper {
     }
     
     public static SetCommandRequest createPollAndReturnSetCommandRequest(AssetDTO testAsset) throws IOException, Exception {
-        TextMessage message = null;
         try (TopicListener topicListener = new TopicListener(INMARSAT_SELECTOR)) {
             MobileTerminalTestHelper.createPoll_Helper(testAsset, PollType.MANUAL_POLL);
-            message = (TextMessage) topicListener.listenOnEventBus();
+            return topicListener.listenOnEventBusForSpecificMessage(SetCommandRequest.class);
         }
-        return JAXBMarshaller.unmarshallString(message.getText(), SetCommandRequest.class);
     }
     
     public static SetCommandRequest createPollAndReturnSetCommandRequest(AssetDTO testAsset, MobileTerminalDto mobileTerminal) throws IOException, Exception {
-        TextMessage message = null;
         try (TopicListener topicListener = new TopicListener(INMARSAT_SELECTOR)) {
             MobileTerminalTestHelper.createPollWithMT_Helper(testAsset, PollType.MANUAL_POLL, mobileTerminal);
-            message = (TextMessage) topicListener.listenOnEventBus();
+            return topicListener.listenOnEventBusForSpecificMessage(SetCommandRequest.class);
         }
-        return JAXBMarshaller.unmarshallString(message.getText(), SetCommandRequest.class);
     }
     
     public static SetCommandRequest listenForCommandRequest() throws Exception {

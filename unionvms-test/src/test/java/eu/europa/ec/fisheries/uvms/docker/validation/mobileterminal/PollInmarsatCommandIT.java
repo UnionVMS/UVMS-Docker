@@ -31,7 +31,6 @@ public class PollInmarsatCommandIT extends AbstractRest {
     
     @Test
     public void sendPollAndVerifySetCommandValues() throws Exception {
-        Thread.sleep(1000);  //since jenkings reads a configRequest is instead
         AssetDTO testAsset = AssetTestHelper.createTestAsset();
         MobileTerminalDto mobileTerminal = MobileTerminalTestHelper.createMobileTerminal();
         

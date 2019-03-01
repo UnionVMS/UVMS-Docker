@@ -32,6 +32,7 @@ import eu.europa.ec.fisheries.schema.exchange.plugin.v1.SetReportRequest;
 import eu.europa.ec.fisheries.uvms.commons.rest.dto.ResponseDto;
 import eu.europa.ec.fisheries.uvms.docker.validation.common.AbstractRest;
 import eu.europa.ec.fisheries.uvms.docker.validation.common.MessageHelper;
+import eu.europa.ec.fisheries.uvms.docker.validation.common.TopicListener;
 import eu.europa.ec.fisheries.uvms.docker.validation.exchange.dto.PluginType;
 import eu.europa.ec.fisheries.uvms.docker.validation.exchange.dto.SendingGroupLog;
 import eu.europa.ec.fisheries.uvms.docker.validation.exchange.dto.SendingLog;
@@ -64,11 +65,9 @@ public class ExchangeSendingQueueRestIT extends AbstractRest {
 	    assertSendingLogContainsUnsentMessageGuid(fluxEndpoint, unsentMessageGuid);
 
 	    SetReportRequest reportRequest2 = null;
-	    try (MessageHelper messageHelper = new MessageHelper()) {
+	    try (TopicListener topicListener = new TopicListener(VMSSystemHelper.FLUX_SELECTOR)) {
 	        sendSendingGroupIds(Arrays.asList(unsentMessageGuid));
-            TextMessage message = (TextMessage) messageHelper.listenOnEventBus(VMSSystemHelper.FLUX_SELECTOR, TIMEOUT);
-            assertThat(message, is(notNullValue()));
-            reportRequest2 = JAXBMarshaller.unmarshallTextMessage(message, SetReportRequest.class);
+	        reportRequest2 = topicListener.listenOnEventBusForSpecificMessage(SetReportRequest.class);
         }
 	    assertThat(reportRequest2, is(notNullValue()));
 	    
@@ -81,21 +80,19 @@ public class ExchangeSendingQueueRestIT extends AbstractRest {
 	    VMSSystemHelper.registerEmailPluginIfNotExisting();
 	    
         String email = UUID.randomUUID() + "@mail.com";
-        SetCommandRequest reportRequest = VMSSystemHelper.triggerBasicRuleAndSendEmail(email);
-        String unsentMessageGuid = reportRequest.getCommand().getUnsentMessageGuid();
+        SetCommandRequest commandRequest = VMSSystemHelper.triggerBasicRuleAndSendEmail(email);
+        String unsentMessageGuid = commandRequest.getCommand().getUnsentMessageGuid();
         assertSendingLogContainsUnsentMessageGuid(VMSSystemHelper.emailPluginName, unsentMessageGuid);
 
-        SetCommandRequest reportRequest2 = null;
-        try (MessageHelper messageHelper = new MessageHelper()) {
+        SetCommandRequest commantRequest2 = null;
+        try (TopicListener topicListener = new TopicListener(VMSSystemHelper.emailSelector)) {
             sendSendingGroupIds(Arrays.asList(unsentMessageGuid));
-            TextMessage message = (TextMessage) messageHelper.listenOnEventBus(VMSSystemHelper.emailSelector, TIMEOUT);
-            assertThat(message, is(notNullValue()));
-            reportRequest2 = JAXBMarshaller.unmarshallTextMessage(message, SetCommandRequest.class);
+            commantRequest2 = topicListener.listenOnEventBusForSpecificMessage(SetCommandRequest.class);
         }
-        assertThat(reportRequest2, is(notNullValue()));
+        assertThat(commantRequest2, is(notNullValue()));
         
-        assertTrue(Objects.equals(reportRequest.getCommand().getEmail(), reportRequest2.getCommand().getEmail()));
-        assertThat(reportRequest.getCommand().getFwdRule(), is(reportRequest2.getCommand().getFwdRule()));
+        assertTrue(Objects.equals(commandRequest.getCommand().getEmail(), commantRequest2.getCommand().getEmail()));
+        assertThat(commandRequest.getCommand().getFwdRule(), is(commantRequest2.getCommand().getFwdRule()));
     }
 	
 	private void assertSendingLogContainsUnsentMessageGuid(String msgType, String unsentMessageGuid) {
