@@ -53,6 +53,7 @@ import eu.europa.ec.fisheries.uvms.docker.validation.movement.model.IncomingMove
 import eu.europa.ec.fisheries.uvms.docker.validation.system.helper.CustomRuleBuilder;
 import eu.europa.ec.fisheries.uvms.docker.validation.system.helper.CustomRuleHelper;
 import eu.europa.ec.fisheries.uvms.docker.validation.system.helper.FLUXHelper;
+import eu.europa.ec.fisheries.uvms.docker.validation.system.helper.InmarsatPluginMock;
 import eu.europa.ec.fisheries.uvms.docker.validation.system.helper.VMSSystemHelper;
 import eu.europa.ec.fisheries.uvms.exchange.model.mapper.JAXBMarshaller;
 
@@ -797,8 +798,6 @@ public class RulesAlarmIT extends AbstractRest {
         CustomRuleHelper.assertRuleTriggered(createdAreaRule, timestamp);
     }
 
-    private static final String INMARSAT_SELECTOR = "ServiceName='eu.europa.ec.fisheries.uvms.plugins.inmarsat'";
-
     @Test
     public void createPollIfReportedSpeedIsGreaterThan10knotsTest() throws Exception {
         OffsetDateTime timestamp = OffsetDateTime.now(ZoneOffset.UTC);
@@ -815,31 +814,16 @@ public class RulesAlarmIT extends AbstractRest {
                 .action(ActionType.MANUAL_POLL, "Not needed")
                 .build();
 
-
-
         CustomRuleType createdSpeedRule = CustomRuleHelper.createCustomRule(speedRule);
         assertNotNull(createdSpeedRule);
 
         TextMessage message = null;
-        try (TopicListener topicListener = new TopicListener(INMARSAT_SELECTOR)) {
+        try (TopicListener topicListener = new TopicListener(VMSSystemHelper.INMARSAT_SELECTOR)) {
 
             LatLong position = new LatLong(11d, 56d, new Date());
             position.speed = 10.5;
 
-            ChannelDto channel = null;
-            Iterator it = mobileTerminal.getChannels().iterator();                  //srsly why is this a bloody set?????? And why have we not set the different channel variables???????
-            while(it.hasNext()){
-                channel = (ChannelDto)it.next();
-            }
-            MovementHelper movementHelper = new MovementHelper();
-            IncomingMovement incomingMovement = movementHelper.createIncomingMovement(asset, position);
-            incomingMovement.setMovementSourceType(MovementSourceType.INMARSAT_C.value());
-            incomingMovement.setPluginType(PluginType.SATELLITE_RECEIVER.value());
-            incomingMovement.setMobileTerminalMemberNumber(channel.getMemberNumber());
-            incomingMovement.setMobileTerminalDNID(channel.getDNID());
-            incomingMovement.setComChannelType(MovementComChannelType.MOBILE_TERMINAL.value());
-
-            movementHelper.createMovement(incomingMovement);
+            InmarsatPluginMock.sendInmarsatPosition(mobileTerminal, position);
             message = (TextMessage) topicListener.listenOnEventBus();
         }
 

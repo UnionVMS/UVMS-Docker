@@ -13,4 +13,12 @@ package eu.europa.ec.fisheries.uvms.docker.validation.movement.model;
 
 public class AlarmItem {
 
+    private String ruleName;
+
+    public String getRuleName() {
+        return ruleName;
+    }
+    public void setRuleName(String ruleName) {
+        this.ruleName = ruleName;
+    }
 }

@@ -50,6 +50,7 @@ public class VMSSystemHelper {
     private static final long TIMEOUT = 10000;
 
     public static final String FLUX_SELECTOR = "ServiceName='eu.europa.ec.fisheries.uvms.plugins.flux.movement'";
+    public static final String INMARSAT_SELECTOR = "ServiceName='eu.europa.ec.fisheries.uvms.plugins.inmarsat'";
     public static String emailSelector = "ServiceName='" + SERVICE_NAME + "'";
     public static String emailPluginName = "TEST EMAIL";
     

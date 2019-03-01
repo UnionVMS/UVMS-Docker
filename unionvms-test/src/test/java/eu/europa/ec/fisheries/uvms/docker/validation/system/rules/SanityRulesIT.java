@@ -18,15 +18,16 @@ import java.time.temporal.ChronoUnit;
 import java.util.Calendar;
 import java.util.Date;
 import org.hamcrest.CoreMatchers;
-import org.joda.time.Instant;
-import org.junit.Ignore;
 import org.junit.Test;
 import eu.europa.ec.fisheries.uvms.asset.client.model.AssetDTO;
 import eu.europa.ec.fisheries.uvms.docker.validation.asset.AssetTestHelper;
 import eu.europa.ec.fisheries.uvms.docker.validation.common.AbstractRest;
+import eu.europa.ec.fisheries.uvms.docker.validation.mobileterminal.MobileTerminalTestHelper;
+import eu.europa.ec.fisheries.uvms.docker.validation.mobileterminal.dto.MobileTerminalDto;
 import eu.europa.ec.fisheries.uvms.docker.validation.movement.LatLong;
 import eu.europa.ec.fisheries.uvms.docker.validation.movement.model.AlarmReport;
 import eu.europa.ec.fisheries.uvms.docker.validation.system.helper.FLUXHelper;
+import eu.europa.ec.fisheries.uvms.docker.validation.system.helper.InmarsatPluginMock;
 import eu.europa.ec.fisheries.uvms.docker.validation.system.helper.NAFHelper;
 import eu.europa.ec.fisheries.uvms.docker.validation.system.helper.SanityRuleHelper;
 import un.unece.uncefact.data.standard.fluxvesselpositionmessage._4.FLUXVesselPositionMessage;
@@ -34,24 +35,30 @@ import xeu.bridge_connector.v1.RequestType;
 
 public class SanityRulesIT extends AbstractRest {
     
+    private String assetMustExistRuleName = "Asset not found";
+    private String memberNoMissingRuleName = "Mem No. missing";
+    private String dnidMissingRuleName = "DNID missing";
+
     /*
     <column name="sanityrule_description" value="An asset must exist"/>
     <column name="sanityrule_expression" value="assetGuid == null"/>
      */
     @Test
-    @Ignore    //since we now create a new asset on unknown this test will never succeed
     public void assetMustExistTest() throws Exception {
-        // Do not save to DB
-        AssetDTO asset = AssetTestHelper.createBasicAsset();
+        ZonedDateTime timestamp = ZonedDateTime.now(ZoneOffset.UTC);
+        MobileTerminalDto mobileTerminal = MobileTerminalTestHelper.createBasicMobileTerminal();
 
         long openAlarmsBefore = SanityRuleHelper.countOpenAlarms();
         
         LatLong position = new LatLong(11d, 56d, new Date());
-        NAFHelper.sendPositionToNAFPlugin(position, asset);
+        InmarsatPluginMock.sendInmarsatPosition(mobileTerminal, position);
 
         SanityRuleHelper.pollAlarmReportCreated();
         long openAlarmsAfter = SanityRuleHelper.countOpenAlarms();
-        assertThat(openAlarmsAfter, is(openAlarmsBefore + 1)); 
+        assertThat(openAlarmsAfter, is(openAlarmsBefore + 1));
+
+        AlarmReport latestAlarm = SanityRuleHelper.getLatestOpenAlarmReportSince(timestamp);
+        assertTrue(latestAlarm.getAlarmItemList().stream().anyMatch(item -> item.getRuleName().equals(assetMustExistRuleName)));
     }
 
     /*
@@ -70,7 +77,6 @@ public class SanityRulesIT extends AbstractRest {
         NAFHelper.sendPositionToNAFPlugin(position, asset);
 
         SanityRuleHelper.pollAlarmReportCreated();
-        Thread.sleep(10000);
         long openAlarmsAfter = SanityRuleHelper.countOpenAlarms();
         assertThat(openAlarmsAfter, is(openAlarmsBefore + 1));
     }
@@ -125,10 +131,51 @@ public class SanityRulesIT extends AbstractRest {
     <column name="sanityrule_description" value="Member number must exist when INMARSAT_C"/>
     <column name="sanityrule_expression" value="mobileTerminalMemberNumber == null &amp;&amp; pluginType == &quot;SATELLITE_RECEIVER&quot; &amp;&amp; mobileTerminalType == &quot;INMARSAT_C&quot;"/>
     */
+    @Test
+    public void memberNumberMustExistWhenInmarsatTest() throws Exception {
+        ZonedDateTime timestamp = ZonedDateTime.now(ZoneOffset.UTC);
+
+        AssetDTO asset = AssetTestHelper.createTestAsset();
+        MobileTerminalDto mobileTerminal = MobileTerminalTestHelper.createMobileTerminal();
+        MobileTerminalTestHelper.assignMobileTerminal(asset, mobileTerminal);
+
+        long openAlarmsBefore = SanityRuleHelper.countOpenAlarms();
+
+        LatLong position = new LatLong(11d, 56d, new Date());
+        mobileTerminal.getChannels().iterator().next().setMemberNumber(null);
+        InmarsatPluginMock.sendInmarsatPosition(mobileTerminal, position);
+
+        SanityRuleHelper.pollAlarmReportCreated();
+        long openAlarmsAfter = SanityRuleHelper.countOpenAlarms();
+        assertThat(openAlarmsAfter, is(openAlarmsBefore + 1));
+
+        AlarmReport latestAlarm = SanityRuleHelper.getLatestOpenAlarmReportSince(timestamp);
+        assertTrue(latestAlarm.getAlarmItemList().stream().anyMatch(item -> item.getRuleName().equals(memberNoMissingRuleName)));
+    }
     /*
     <column name="sanityrule_description" value="DNID must exist when INMARSAT_C"/>
     <column name="sanityrule_expression" value="mobileTerminalDnid == null &amp;&amp; pluginType == &quot;SATELLITE_RECEIVER&quot; &amp;&amp; mobileTerminalType == &quot;INMARSAT_C&quot;"/>
      */
+    @Test
+    public void dnidMustExistWhenInmarsatTest() throws Exception {
+        ZonedDateTime timestamp = ZonedDateTime.now(ZoneOffset.UTC);
+        AssetDTO asset = AssetTestHelper.createTestAsset();
+        MobileTerminalDto mobileTerminal = MobileTerminalTestHelper.createMobileTerminal();
+        MobileTerminalTestHelper.assignMobileTerminal(asset, mobileTerminal);
+
+        long openAlarmsBefore = SanityRuleHelper.countOpenAlarms();
+
+        LatLong position = new LatLong(11d, 56d, new Date());
+        mobileTerminal.getChannels().iterator().next().setDNID(null);
+        InmarsatPluginMock.sendInmarsatPosition(mobileTerminal, position);
+
+        SanityRuleHelper.pollAlarmReportCreated();
+        long openAlarmsAfter = SanityRuleHelper.countOpenAlarms();
+        assertThat(openAlarmsAfter, is(openAlarmsBefore + 1));
+
+        AlarmReport latestAlarm = SanityRuleHelper.getLatestOpenAlarmReportSince(timestamp);
+        assertTrue(latestAlarm.getAlarmItemList().stream().anyMatch(item -> item.getRuleName().equals(dnidMissingRuleName)));
+    }
     /*
     <column name="sanityrule_description" value="Serial Number must exist when IRIDIUM"/>
     <column name="sanityrule_expression" value="mobileTerminalSerialNumber == null &amp;&amp; pluginType == &quot;SATELLITE_RECEIVER&quot; &amp;&amp; mobileTerminalType == &quot;IRIDIUM&quot;"/>
@@ -168,7 +215,6 @@ public class SanityRulesIT extends AbstractRest {
     
     @Test
     public void triggerTwoSanityRulesTest() throws Exception {
-        Thread.sleep(5000);  //otherwise it takes the alarm report of the movement from the previous test
         ZonedDateTime timestamp = ZonedDateTime.now(ZoneOffset.UTC);
         
         AssetDTO asset = AssetTestHelper.createTestAsset();
