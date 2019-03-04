@@ -23,8 +23,8 @@
 <!-- Represents Hibernate 5.1.x, will later become 5.3.x for WF 14  -->
 <module name="org.hibernate" xmlns="urn:jboss:module:1.7">
     <resources>
-        <resource-root path="hibernate-core-5.3.7.Final.jar"/>
-        <resource-root path="hibernate-envers-5.3.7.Final.jar"/> 
+        <resource-root path="hibernate-core-5.3.9.Final.jar"/>
+        <resource-root path="hibernate-envers-5.3.9.Final.jar"/> 
 
         <resource-root path="hibernate-spatial-${wildfly.hibernate.module.spatial.version}.jar"/>
 		<resource-root path="jts-${wildfly.hibernate.module.jts.version}.jar"/>
