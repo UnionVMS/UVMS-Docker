@@ -67,7 +67,7 @@ public class TopicListener implements Closeable {
         while (retries < maxRetries) {
             TextMessage message = (TextMessage) listenOnEventBus();
             try {
-                T returnType = JAXBMarshaller.unmarshallString(message.getText(), messageType);
+                T returnType = (T) JAXBMarshaller.unmarshallString(message.getText(), messageType);
                 return returnType;
             } catch (Exception e) {
                 retries++;
