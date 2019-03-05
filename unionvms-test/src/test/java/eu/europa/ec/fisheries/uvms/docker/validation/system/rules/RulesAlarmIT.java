@@ -21,6 +21,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 import javax.jms.TextMessage;
 import org.junit.After;
 import org.junit.AfterClass;
@@ -844,6 +845,7 @@ public class RulesAlarmIT extends AbstractRest {
         assertThat(receiverValuesMap.get("DNID"), is(channel.getDNID()));
         assertThat(receiverValuesMap.get("MEMBER_NUMBER"), is(channel.getMemberNumber()));
 
+        TimeUnit.SECONDS.sleep(3);
         CustomRuleHelper.assertRuleTriggered(createdSpeedRule, timestamp);
     }
 
