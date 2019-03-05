@@ -30,39 +30,40 @@ import eu.europa.ec.fisheries.uvms.exchange.model.mapper.JAXBMarshaller;
 
 public class PollHelper {
     
-    private static final String INMARSAT_SELECTOR = "ServiceName='eu.europa.ec.fisheries.uvms.plugins.inmarsat'";
-    
     public static SetCommandRequest createPollAndReturnSetCommandRequest() throws IOException, Exception {
         AssetDTO testAsset = AssetTestHelper.createTestAsset();
-        TextMessage message = null;
-        try (TopicListener topicListener = new TopicListener(INMARSAT_SELECTOR)) {
-            MobileTerminalTestHelper.createPoll_Helper(testAsset, PollType.MANUAL_POLL);
-            message = (TextMessage) topicListener.listenOnEventBus();
-        }
-        return JAXBMarshaller.unmarshallString(message.getText(), SetCommandRequest.class);
+        return createPollAndReturnSetCommandRequest(testAsset);
     }
     
     public static SetCommandRequest createPollAndReturnSetCommandRequest(AssetDTO testAsset) throws IOException, Exception {
-        TextMessage message = null;
-        try (TopicListener topicListener = new TopicListener(INMARSAT_SELECTOR)) {
+        try (TopicListener topicListener = new TopicListener(VMSSystemHelper.INMARSAT_SELECTOR)) {
             MobileTerminalTestHelper.createPoll_Helper(testAsset, PollType.MANUAL_POLL);
-            message = (TextMessage) topicListener.listenOnEventBus();
+            return topicListener.listenOnEventBusForSpecificMessage(SetCommandRequest.class);
         }
-        return JAXBMarshaller.unmarshallString(message.getText(), SetCommandRequest.class);
     }
     
     public static SetCommandRequest createPollAndReturnSetCommandRequest(AssetDTO testAsset, MobileTerminalDto mobileTerminal) throws IOException, Exception {
-        TextMessage message = null;
-        try (TopicListener topicListener = new TopicListener(INMARSAT_SELECTOR)) {
+        try (TopicListener topicListener = new TopicListener(VMSSystemHelper.INMARSAT_SELECTOR)) {
             MobileTerminalTestHelper.createPollWithMT_Helper(testAsset, PollType.MANUAL_POLL, mobileTerminal);
+            return topicListener.listenOnEventBusForSpecificMessage(SetCommandRequest.class);
+        }
+    }
+    
+    public static SetCommandRequest listenForCommandRequest() throws Exception {
+        TextMessage message = null;
+        try (TopicListener topicListener = new TopicListener(VMSSystemHelper.INMARSAT_SELECTOR)) {
             message = (TextMessage) topicListener.listenOnEventBus();
         }
         return JAXBMarshaller.unmarshallString(message.getText(), SetCommandRequest.class);
     }
 
     public static void ackPoll(String messageId, String pollId, ExchangeLogStatusTypeType status) throws Exception {
-        
+        ackPoll(messageId, pollId, status, "");
+    }
+    
+    public static void ackPoll(String messageId, String pollId, ExchangeLogStatusTypeType status, String unsentMessageId) throws Exception {
         AcknowledgeType setCommandAck = ExchangePluginResponseMapper.mapToAcknowlegeType(messageId, AcknowledgeTypeType.OK);
+        setCommandAck.setUnsentMessageGuid(unsentMessageId);
         PollStatusAcknowledgeType pollAck = new PollStatusAcknowledgeType();
         pollAck.setStatus(status);
         pollAck.setPollId(pollId);

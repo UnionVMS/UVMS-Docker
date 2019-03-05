@@ -14,6 +14,7 @@ package eu.europa.ec.fisheries.uvms.docker.validation.system.helper;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
@@ -43,7 +44,7 @@ public class SanityRuleHelper extends AbstractHelper {
             .get();
     }
     
-    public static AlarmReport getLatestOpenAlarmReportSince(ZonedDateTime timestamp) {
+    public static AlarmReport getLatestOpenAlarmReportSince(ZonedDateTime timestamp) throws Exception {
         AlarmQuery query = new AlarmQuery();
         ListPagination pagination = new ListPagination();
         pagination.setListSize(100);
@@ -59,6 +60,7 @@ public class SanityRuleHelper extends AbstractHelper {
         criteria2.setValue("OPEN");
         query.getAlarmSearchCriteria().add(criteria2);
 
+        TimeUnit.SECONDS.sleep(1);
         AlarmListResponseDto alarmResponse = getWebTarget()
                 .path("movement/rest/alarms/list")
                 .request(MediaType.APPLICATION_JSON)

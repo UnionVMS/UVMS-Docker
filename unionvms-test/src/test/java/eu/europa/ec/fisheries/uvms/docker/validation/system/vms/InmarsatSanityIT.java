@@ -2,7 +2,7 @@ package eu.europa.ec.fisheries.uvms.docker.validation.system.vms;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.notNullValue;
-import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
 import java.util.Date;
@@ -75,7 +75,7 @@ public class InmarsatSanityIT extends AbstractRest {
     @Test
     public void inmarsatPosition_MEMBER_NUMBER_and_DNID() throws Exception {
 
-        LocalDateTime timestamp = LocalDateTime.now(ZoneOffset.UTC);
+        OffsetDateTime timestamp = OffsetDateTime.now(ZoneOffset.UTC);
 
         // create testdata
         AssetDTO asset = AssetTestHelper.createTestAsset();
@@ -173,7 +173,7 @@ public class InmarsatSanityIT extends AbstractRest {
 
     private SetReportRequest sendPositionAndReturnResponse(AssetDTO asset1, MobileTerminalDto mobileTerminal1)
             throws ExchangeModelMarshallException, Exception {
-        LocalDateTime timestamp = LocalDateTime.now(ZoneOffset.UTC);
+        OffsetDateTime timestamp = OffsetDateTime.now(ZoneOffset.UTC);
 
         String fluxEndpoint = "DNK";
 

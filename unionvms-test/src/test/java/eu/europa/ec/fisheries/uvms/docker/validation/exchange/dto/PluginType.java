@@ -9,16 +9,36 @@ the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the impl
 FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more details. You should have received a
 copy of the GNU General Public License along with the IFDM Suite. If not, see <http://www.gnu.org/licenses/>.
  */
-package eu.europa.ec.fisheries.uvms.docker.validation.movement.model;
+package eu.europa.ec.fisheries.uvms.docker.validation.exchange.dto;
 
-public class AlarmItem {
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
+import java.util.ArrayList;
+import java.util.List;
 
-    private String ruleName;
+@XmlAccessorType(XmlAccessType.FIELD)
+public class PluginType {
 
-    public String getRuleName() {
-        return ruleName;
+    @XmlElement(required = true)
+    private String name;
+    @XmlElement(required = true)
+    private List<SendingLog> sendingLogList;
+
+    public String getName() {
+        return name;
     }
-    public void setRuleName(String ruleName) {
-        this.ruleName = ruleName;
+
+    public void setName(String name) {
+        this.name = name;
     }
+
+    public List<SendingLog> getSendingLogList() {
+        return sendingLogList;
+    }
+
+    public void setSendingLogList(List<SendingLog> sendingLogList) {
+        this.sendingLogList = sendingLogList;
+    }
+
 }

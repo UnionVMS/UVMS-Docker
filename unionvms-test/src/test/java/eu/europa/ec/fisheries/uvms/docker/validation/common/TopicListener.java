@@ -21,15 +21,19 @@ import javax.jms.JMSException;
 import javax.jms.Message;
 import javax.jms.MessageConsumer;
 import javax.jms.Session;
+import javax.jms.TextMessage;
 import javax.jms.Topic;
 import org.apache.activemq.artemis.api.core.TransportConfiguration;
 import org.apache.activemq.artemis.api.jms.ActiveMQJMSClient;
 import org.apache.activemq.artemis.api.jms.JMSFactoryType;
 import org.apache.activemq.artemis.core.remoting.impl.netty.NettyConnectorFactory;
+import eu.europa.ec.fisheries.schema.exchange.plugin.v1.SetCommandRequest;
+import eu.europa.ec.fisheries.uvms.exchange.model.mapper.JAXBMarshaller;
 
 public class TopicListener implements Closeable {
 
     private final long TIMEOUT = 10000;
+    private final int maxRetries = 3;
 
     private final ConnectionFactory connectionFactory;
     private Connection connection;
@@ -56,6 +60,20 @@ public class TopicListener implements Closeable {
     
     public Message listenOnEventBus() throws Exception {
         return subscriber.receive(TIMEOUT);
+    }
+
+    public <T> T listenOnEventBusForSpecificMessage(Class<T> messageType) throws Exception {
+        int retries = 0;
+        while (retries < maxRetries) {
+            TextMessage message = (TextMessage) listenOnEventBus();
+            try {
+                T returnType = JAXBMarshaller.unmarshallString(message.getText(), messageType);
+                return returnType;
+            } catch (Exception e) {
+                retries++;
+            }
+        }
+        return null;
     }
 
     @Override

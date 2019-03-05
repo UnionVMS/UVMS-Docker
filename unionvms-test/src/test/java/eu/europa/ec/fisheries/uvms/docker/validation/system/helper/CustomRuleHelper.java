@@ -13,8 +13,7 @@ package eu.europa.ec.fisheries.uvms.docker.validation.system.helper;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.nullValue;
-import java.time.LocalDateTime;
-import java.time.ZoneOffset;
+import java.time.OffsetDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import javax.ws.rs.client.Entity;
@@ -59,7 +58,7 @@ public class CustomRuleHelper extends AbstractHelper {
         }
     }
     
-    public static void assertRuleTriggered(CustomRuleType rule, LocalDateTime dateFrom) {
+    public static void assertRuleTriggered(CustomRuleType rule, OffsetDateTime dateFrom) {
         ResponseDto<CustomRuleType> responseDto = getWebTarget()
                 .path("movement-rules/rest/customrules")
                 .path(rule.getGuid())
@@ -69,14 +68,13 @@ public class CustomRuleHelper extends AbstractHelper {
         CustomRuleType fetchedCustomRule = responseDto.getData();
         
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss Z");
-        LocalDateTime lastTriggered = LocalDateTime.parse(fetchedCustomRule.getLastTriggered(), formatter);
-        lastTriggered.atOffset(ZoneOffset.UTC);
+        OffsetDateTime lastTriggered = OffsetDateTime.parse(fetchedCustomRule.getLastTriggered(), formatter);
         assertNotNull(lastTriggered);
 
         assertTrue(lastTriggered.isAfter(dateFrom) || compareWithoutMillis(lastTriggered,dateFrom));
     }
 
-    public static boolean compareWithoutMillis(LocalDateTime a, LocalDateTime b) {
+    public static boolean compareWithoutMillis(OffsetDateTime a, OffsetDateTime b) {
         return a.getYear() == b.getYear() && a.getMonth().equals(b.getMonth()) && a.getDayOfMonth() == b.getDayOfMonth() &&
                 a.getHour() == b.getHour() && a.getMinute() == b.getMinute() && a.getSecond() == b.getSecond();
     }
