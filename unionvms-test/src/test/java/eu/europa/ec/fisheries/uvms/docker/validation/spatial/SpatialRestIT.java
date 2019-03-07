@@ -149,7 +149,7 @@ public class SpatialRestIT extends AbstractRest {
         for (Area aeit : list) {
             control.add(aeit.getName());
         }
-        Assert.assertTrue(control.contains("Göteborg-Lundbyhamnen"));
+        Assert.assertTrue(control.contains("Swedish Exclusive Economic Zone"));
     }
 
 

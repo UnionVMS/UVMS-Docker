@@ -37,7 +37,6 @@ COPY hibernate/module.xml $HIBERNATE_MODULE
 COPY dependencies/hibernate-spatial-${wildfly.hibernate.module.spatial.version}.jar $HIBERNATE_MODULE
 COPY dependencies/jts-${wildfly.hibernate.module.jts.version}.jar $HIBERNATE_MODULE
 COPY dependencies/geolatte-geom-${wildfly.hibernate.module.geolatte.version}.jar $HIBERNATE_MODULE
-COPY dependencies/hibernate-spatial-4x-to-5x-wrapper-${project.version}.jar $HIBERNATE_MODULE
 
 # Standalone config
 COPY standalone.conf $JBOSS_HOME/bin/

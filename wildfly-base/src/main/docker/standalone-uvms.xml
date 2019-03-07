@@ -44,9 +44,8 @@
     <system-properties>
     	<property name="jboss.as.management.blocking.timeout" value="1200"/>
         <property name="db.dialect" value="postgres"/>
-        <property name="hibernate.dialect" value="org.hibernate.dialect.PostgreSQLDialect"/>
-        <!-- <property name="hibernate.spatial.dialect" value="org.hibernate.spatial.dialect.postgis.PostgisDialect"/>-->
-        <property name="hibernate.spatial.dialect" value="org.hibernate.spatial.dialect.postgis.Postgis43WrapperDialect"/>
+        <property name="hibernate.dialect" value="org.hibernate.dialect.PostgreSQL9Dialect"/>
+        <property name="hibernate.spatial.dialect" value="org.hibernate.spatial.dialect.postgis.PostgisPG9Dialect"/>
     </system-properties>
 
 
