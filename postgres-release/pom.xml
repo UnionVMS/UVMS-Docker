@@ -4,12 +4,12 @@
 	<parent>
 		<groupId>eu.europa.ec.fisheries.uvms.docker</groupId>
 		<artifactId>uvms-docker</artifactId>
-		<version>3.31.20.w15-SNAPSHOT</version>
+		<version>3.32.0.w15</version>
 		<relativePath>../pom.xml</relativePath>
 	</parent>
 	<groupId>eu.europa.ec.fisheries.uvms.docker</groupId>
 	<artifactId>uvms-docker-postgres-release</artifactId>
-	<version>3.31.20.w15-SNAPSHOT</version>
+	<version>3.32.0.w15</version>
 	<packaging>pom</packaging>
 	<name>uvms-docker-postgres-release</name>
 	<dependencies>
@@ -348,6 +348,6 @@
 		</profile>
 	</profiles>
 	<scm>
-		<tag>HEAD</tag>
+		<tag>uvms-docker-3.32.0.w15</tag>
 	</scm>
 </project>
