@@ -13,56 +13,55 @@ copy of the GNU General Public License along with the IFDM Suite. If not, see <h
 */
 package eu.europa.ec.fisheries.uvms.docker.validation.spatial;
 
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.notNullValue;
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
-import org.apache.http.HttpResponse;
-import org.apache.http.HttpStatus;
-import org.apache.http.client.fluent.Request;
+import javax.ws.rs.client.Entity;
+import javax.ws.rs.core.GenericType;
+import javax.ws.rs.core.HttpHeaders;
+import javax.ws.rs.core.MediaType;
 import org.junit.Test;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import eu.europa.ec.fisheries.uvms.commons.rest.dto.ResponseDto;
 import eu.europa.ec.fisheries.uvms.docker.validation.common.AbstractRest;
+import eu.europa.ec.fisheries.uvms.docker.validation.spatial.dto.ConfigurationDto;
+import eu.europa.ec.fisheries.uvms.docker.validation.spatial.dto.MapConfigDto;
+import eu.europa.ec.fisheries.uvms.docker.validation.spatial.dto.ProjectionDto;
 
 /**
  * The Class SpatialConfigRestIT.
  */
 public class SpatialConfigRestIT extends AbstractRest {
 
-	private ObjectMapper mapper = new ObjectMapper();
-
 	@Test
 	public void getReportMapConfig() throws Exception {
 
 		String uid = "rep_power";
 		String pwd = "abcd-1234";
-		String token = getValidJwtToken(uid, pwd);
 		String scopeName = "EC";
 		String roleName = "rep_power_role";
 
-		String id = "5";
+		String id = "1";
 
 		ConfigResourceDto dto = new ConfigResourceDto();
 		dto.setTimeStamp(new Date().toString());
-		String theDto = mapper.writeValueAsString(dto);
 
 		// @formatter:off
-		final HttpResponse response = Request.Post(getBaseUrl() + "spatial/rest/config/" + id)
-				.setHeader("Content-Type", "application/json")
-				.setHeader("Authorization", token)
-				.setHeader(AuthConstants.HTTP_HEADER_SCOPE_NAME, scopeName)
-				.setHeader(AuthConstants.HTTP_HEADER_ROLE_NAME, roleName)
-				.bodyByteArray(theDto.getBytes())
-				.execute()
-				.returnResponse();
+		ResponseDto<MapConfigDto> response = getWebTarget()
+		        .path("spatial/rest/config")
+                .path(id)
+                .request(MediaType.APPLICATION_JSON)
+                .header(HttpHeaders.AUTHORIZATION, getValidJwtToken(uid, pwd))
+                .header(AuthConstants.HTTP_HEADER_SCOPE_NAME, scopeName)
+                .header(AuthConstants.HTTP_HEADER_ROLE_NAME, roleName)
+                .post(Entity.json(dto), new GenericType<ResponseDto<MapConfigDto>>() {});
 		// @formatter:on
 
-		assertEquals(HttpStatus.SC_OK, response.getStatusLine().getStatusCode());
-		final Map<String, Object> data = getJsonMap(response);
-
-		// for now
-		assertTrue(data != null);
-		assertTrue(data.size() > 0);
-
+		assertThat(response, is(notNullValue()));
+		assertThat(response.getData(), is(notNullValue()));
+		assertThat(response.getData().getMap(), is(notNullValue()));
+		assertThat(response.getData().getMap().getProjection(), is(notNullValue()));
+		assertThat(response.getData().getMap().getProjection().getEpsgCode(), is(3857));
 	}
 
 	@Test
@@ -70,27 +69,25 @@ public class SpatialConfigRestIT extends AbstractRest {
 
 		String uid = "rep_power";
 		String pwd = "abcd-1234";
-		String token = getValidJwtToken(uid, pwd);
 		String scopeName = "EC";
 		String roleName = "rep_power_role";
 
 		// @formatter:off
-		final HttpResponse response = Request.Get(getBaseUrl() + "spatial/rest/config/basic")
-				.setHeader("Content-Type", "application/json")
-				.setHeader("Authorization", token)
-				.setHeader(AuthConstants.HTTP_HEADER_SCOPE_NAME, scopeName)
-				.setHeader(AuthConstants.HTTP_HEADER_ROLE_NAME, roleName)
-				.execute()
-				.returnResponse();
+		ResponseDto<MapConfigDto> response = getWebTarget()
+                .path("spatial/rest/config")
+                .path("basic")
+                .request(MediaType.APPLICATION_JSON)
+                .header(HttpHeaders.AUTHORIZATION, getValidJwtToken(uid, pwd))
+                .header(AuthConstants.HTTP_HEADER_SCOPE_NAME, scopeName)
+                .header(AuthConstants.HTTP_HEADER_ROLE_NAME, roleName)
+                .get(new GenericType<ResponseDto<MapConfigDto>>() {});
 		// @formatter:on
 
-		assertEquals(HttpStatus.SC_OK, response.getStatusLine().getStatusCode());
-		final Map<String, Object> data = getJsonMap(response);
-
-		// for now
-		assertTrue(data != null);
-		assertTrue(data.size() > 0);
-
+        assertThat(response, is(notNullValue()));
+        assertThat(response.getData(), is(notNullValue()));
+        assertThat(response.getData().getMap(), is(notNullValue()));
+        assertThat(response.getData().getMap().getProjection(), is(notNullValue()));
+        assertThat(response.getData().getMap().getProjection().getEpsgCode(), is(3857));
 	}
 	
 	
@@ -112,26 +109,26 @@ public class SpatialConfigRestIT extends AbstractRest {
 
 		String uid = "rep_power";
 		String pwd = "abcd-1234";
-		String token = getValidJwtToken(uid, pwd);
 		String scopeName = "EC";
 		String roleName = "rep_power_role";
 
 		// @formatter:off
-		final HttpResponse response = Request.Get(getBaseUrl() + "spatial/rest/config/projections")
-				.setHeader("Content-Type", "application/json")
-				.setHeader("Authorization", token)
-				.setHeader(AuthConstants.HTTP_HEADER_SCOPE_NAME, scopeName)
-				.setHeader(AuthConstants.HTTP_HEADER_ROLE_NAME, roleName)
-				.execute()
-				.returnResponse();
+		ResponseDto<List<ProjectionDto>> response = getWebTarget()
+                .path("spatial/rest/config")
+                .path("projections")
+                .request(MediaType.APPLICATION_JSON)
+                .header(HttpHeaders.AUTHORIZATION, getValidJwtToken(uid, pwd))
+                .header(AuthConstants.HTTP_HEADER_SCOPE_NAME, scopeName)
+                .header(AuthConstants.HTTP_HEADER_ROLE_NAME, roleName)
+                .get(new GenericType<ResponseDto<List<ProjectionDto>>>() {});
 		// @formatter:on
 
-		List dataList = checkSuccessResponseReturnType(response, List.class);
+        assertThat(response, is(notNullValue()));
+        assertThat(response.getData(), is(notNullValue()));
+        assertThat(response.getData().size(), is(2));
 
-		// for now
-		assertTrue(dataList != null);
-		assertTrue(dataList.size() > 0);
-
+        assertTrue(response.getData().stream().anyMatch(proj -> proj.getName().equals("Spherical Mercator")));
+        assertTrue(response.getData().stream().anyMatch(proj -> proj.getName().equals("WGS 84")));
 	}
 
 	@Test
@@ -139,26 +136,25 @@ public class SpatialConfigRestIT extends AbstractRest {
 
 		String uid = "rep_power";
 		String pwd = "abcd-1234";
-		String token = getValidJwtToken(uid, pwd);
 		String scopeName = "EC";
 		String roleName = "rep_power_role";
 
 		// @formatter:off
-		final HttpResponse response = Request.Get(getBaseUrl() + "spatial/rest/config/admin")
-				.setHeader("Content-Type", "application/json")
-				.setHeader("Authorization", token)
-				.setHeader(AuthConstants.HTTP_HEADER_SCOPE_NAME, scopeName)
-				.setHeader(AuthConstants.HTTP_HEADER_ROLE_NAME, roleName)
-				.execute()
-				.returnResponse();
+		ResponseDto<ConfigurationDto> response = getWebTarget()
+		        .path("spatial/rest/config")
+		        .path("admin")
+                .request(MediaType.APPLICATION_JSON)
+                .header(HttpHeaders.AUTHORIZATION, getValidJwtToken(uid, pwd))
+                .header(AuthConstants.HTTP_HEADER_SCOPE_NAME, scopeName)
+                .header(AuthConstants.HTTP_HEADER_ROLE_NAME, roleName)
+                .get(new GenericType<ResponseDto<ConfigurationDto>>() {});
 		// @formatter:on
 
-		assertEquals(HttpStatus.SC_OK, response.getStatusLine().getStatusCode());
-		final Map<String, Object> data = getJsonMap(response);
+		assertThat(response, is(notNullValue()));
+        assertThat(response.getData(), is(notNullValue()));
 
-		// for now
-		assertTrue(data != null);
-		assertTrue(data.size() > 0);
+        assertThat(response.getData().getSystemSettings(), is(notNullValue()));
+        assertThat(response.getData().getSystemSettings().getGeoserverUrl(), is("http://localhost:28080/geoserver/"));
 	}
 
 }

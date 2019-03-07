@@ -35,11 +35,6 @@
 			<groupId>com.vividsolutions</groupId>
 			<artifactId>jts</artifactId>
 			<version>${wildfly.hibernate.module.jts.version}</version>
-		</dependency>	
-		<dependency>
-			<groupId>eu.europa.ec.fisheries.uvms.docker</groupId>
-			<artifactId>hibernate-spatial-4x-to-5x-wrapper</artifactId>
-			<version>${project.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.postgresql</groupId>
