@@ -25,6 +25,12 @@
 			</exclusions>
 		</dependency>
 		<dependency>
+			<groupId>eu.europa.ec.fisheries.uvms.asset</groupId>
+			<artifactId>liquibase</artifactId>
+			<version>${unionvms.project.asset.module}</version>
+			<type>zip</type>
+		</dependency>
+		<dependency>
 			<groupId>eu.europa.ec.fisheries.uvms.audit</groupId>
 			<artifactId>liquibase</artifactId>
 			<type>sql</type>
@@ -69,6 +75,12 @@
 			</exclusions>			
 		</dependency>
 		<dependency>
+			<groupId>eu.europa.ec.fisheries.uvms.movement</groupId>
+			<artifactId>liquibase</artifactId>
+			<version>${unionvms.project.movement.module}</version>
+			<type>zip</type>
+		</dependency>
+		<dependency>
 			<groupId>eu.europa.ec.fisheries.uvms.rules</groupId>
 			<artifactId>liquibase</artifactId>
 			<type>sql</type>
@@ -91,6 +103,12 @@
 			</exclusions>			
 		</dependency>
 		<dependency>
+			<groupId>eu.europa.ec.fisheries.uvms.movement-rules</groupId>
+			<artifactId>liquibase</artifactId>
+			<version>${unionvms.project.movementrules.module}</version>
+			<type>zip</type>
+		</dependency>
+		<dependency>
 			<groupId>eu.europa.ec.fisheries.uvms.spatial</groupId>
 			<artifactId>liquibase</artifactId>
 			<type>sql</type>
@@ -100,6 +118,12 @@
 					<artifactId>ojdbc6</artifactId>
 				</exclusion>
 			</exclusions>			
+		</dependency>
+		<dependency>
+			<groupId>eu.europa.ec.fisheries.uvms.spatial</groupId>
+			<artifactId>liquibase</artifactId>
+			<version>${unionvms.project.spatial.module}</version>
+			<type>zip</type>
 		</dependency>
 		<dependency>
 			<groupId>eu.europa.ec.fisheries.uvms.activity</groupId>
@@ -182,8 +206,22 @@
 						<configuration>
 							<copyPom>false</copyPom>
 							<outputDirectory>${project.basedir}/target/dockerfile/sql</outputDirectory>
-							<excludeTypes>pom,jar</excludeTypes>
+							<excludeTypes>pom,jar,zip</excludeTypes>
 							<prependGroupId>true</prependGroupId>
+						</configuration>
+					</execution>
+					<execution>
+						<id>copy-liquibase</id>
+						<phase>generate-resources</phase>
+						<goals>
+							<goal>copy-dependencies</goal>
+						</goals>
+						<configuration>
+							<copyPom>false</copyPom>
+							<outputDirectory>${project.basedir}/target/dockerfile/liquibase</outputDirectory>
+							<excludeTypes>pom,jar,sql</excludeTypes>
+							<prependGroupId>true</prependGroupId>
+							<stripVersion>true</stripVersion>
 						</configuration>
 					</execution>
 				</executions>
@@ -222,7 +260,7 @@
 										<include>updateDb.sh</include>
 										<include>updateDbOnly.sh</include>										
 									</includes>
-								</resource>								
+								</resource>
 							</resources>
 						</configuration>
 					</execution>

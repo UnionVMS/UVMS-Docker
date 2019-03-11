@@ -13,6 +13,13 @@
             <outputDirectory></outputDirectory>
         </fileSet>
         <fileSet>
+            <directory>target/dockerfile/liquibase/</directory>
+            <includes>
+                <include>*.zip</include>
+            </includes>
+            <outputDirectory>liquibase</outputDirectory>
+        </fileSet>
+        <fileSet>
             <directory>target/dockerfile/</directory>
             <includes>
                 <include>createDb.sh</include>
