@@ -38,10 +38,10 @@
 	<dependencies>
 		<!-- Admin -->
 		<dependency>
-			<groupId>org.apache.activemq</groupId>
-			<artifactId>artemis-console</artifactId>
-			<version>${unionvms.project.artemis-console}</version>
+			<groupId>io.hawt</groupId>
+			<artifactId>hawtio-wildfly</artifactId>
 			<type>war</type>
+			<version>${unionvms.project.hawtio-wildfly}</version>
 		</dependency>
 
 		<!-- frontend modules -->
@@ -332,7 +332,7 @@
 								
 							<move file="${project.basedir}/target/dockerfile/deployments/mapfish-print-${unionvms.project.mapfishprint.version}.war" tofile="${project.basedir}/target/dockerfile/deployments/mapfish-print.war" />
 							<move file="${project.basedir}/target/dockerfile/deployments/gs-web-app-${unionvms.project.geoserver.version}.war" tofile="${project.basedir}/target/dockerfile/deployments/geoserver.war" />
-							<move file="${project.basedir}/target/dockerfile/deployments/artemis-console-${unionvms.project.artemis-console}.war" tofile="${project.basedir}/target/dockerfile/deployments/artemis-console.war" />
+							<move file="${project.basedir}/target/dockerfile/deployments/hawtio-wildfly-${unionvms.project.hawtio-wildfly}.war" tofile="${project.basedir}/target/dockerfile/deployments/hawtio-wildfly.war" />
 
 							</tasks>
 						</configuration>

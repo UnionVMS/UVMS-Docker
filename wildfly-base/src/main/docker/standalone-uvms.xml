@@ -46,6 +46,7 @@
         <property name="db.dialect" value="postgres"/>
         <property name="hibernate.dialect" value="org.hibernate.dialect.PostgreSQL9Dialect"/>
         <property name="hibernate.spatial.dialect" value="org.hibernate.spatial.dialect.postgis.PostgisPG9Dialect"/>
+        <property name="hawtio.authenticationEnabled" value="false" />
     </system-properties>
 
 
