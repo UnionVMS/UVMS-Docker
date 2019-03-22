@@ -253,9 +253,9 @@
 
                     <driver>postgresql</driver>
                     <xa-pool>
-                        <min-pool-size>2</min-pool-size>
-                        <initial-pool-size>2</initial-pool-size>
-                        <max-pool-size>20</max-pool-size>
+                        <min-pool-size>10</min-pool-size>
+                        <initial-pool-size>10</initial-pool-size>
+                        <max-pool-size>100</max-pool-size>
                         <prefill>true</prefill>
                     </xa-pool>
                     <statement>
@@ -280,9 +280,9 @@
 
                     <driver>postgresql</driver>
                     <xa-pool>
-                        <min-pool-size>2</min-pool-size>
-                        <initial-pool-size>2</initial-pool-size>
-                        <max-pool-size>20</max-pool-size>
+                        <min-pool-size>10</min-pool-size>
+                        <initial-pool-size>10</initial-pool-size>
+                        <max-pool-size>100</max-pool-size>
                         <prefill>true</prefill>
                     </xa-pool>
                     <statement>
@@ -307,9 +307,9 @@
 
                     <driver>postgresql</driver>
                     <xa-pool>
-                        <min-pool-size>2</min-pool-size>
-                        <initial-pool-size>2</initial-pool-size>
-                        <max-pool-size>20</max-pool-size>
+                        <min-pool-size>10</min-pool-size>
+                        <initial-pool-size>10</initial-pool-size>
+                        <max-pool-size>100</max-pool-size>
                         <prefill>true</prefill>
                     </xa-pool>
                     <statement>
@@ -415,9 +415,9 @@
 
                     <driver>postgresql</driver>
                     <xa-pool>
-                        <min-pool-size>2</min-pool-size>
-                        <initial-pool-size>2</initial-pool-size>
-                        <max-pool-size>20</max-pool-size>
+                        <min-pool-size>10</min-pool-size>
+                        <initial-pool-size>10</initial-pool-size>
+                        <max-pool-size>100</max-pool-size>
                         <prefill>true</prefill>
                     </xa-pool>
                     <statement>
