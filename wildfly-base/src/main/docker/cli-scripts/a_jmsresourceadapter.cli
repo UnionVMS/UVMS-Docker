@@ -1,0 +1,298 @@
+set resourceAdapterFilePath=${resource-adapter-file-path}
+set resourceAdapterFile=${resource-adapter-file}
+set resourceAdapterName=${resource-adapter-name}
+set activemqURL=${activemq-url}
+set activemqUser=${activemq-user}
+set activemqPassword=${activemq-password}
+
+batch
+
+# ---------------------------------------------
+#
+# NOT REQUIRED because part of EC configuration
+#
+# deploying rar file
+#deploy $resourceAdapterFilePath --enabled
+#
+# ---------------------------------------------
+
+# ---------------------------------------------
+# Add resource adapter
+/subsystem=resource-adapters/resource-adapter=$resourceAdapterName:add(archive=$resourceAdapterFile, transaction-support=XATransaction) 
+
+# add resource adapter properties, issue on appending ?jms.rmIdFromConnectionId=true&amp;socketBufferSize=131072
+/subsystem=resource-adapters/resource-adapter=$resourceAdapterName/config-properties=UserName/:add(value=$activemqUser)
+/subsystem=resource-adapters/resource-adapter=$resourceAdapterName/config-properties=Password/:add(value=$activemqPassword)
+/subsystem=resource-adapters/resource-adapter=$resourceAdapterName/config-properties=ServerUrl/:add(value=$activemqURL)
+
+# Add resource adapter properties
+# Please look at attributes at https://access.redhat.com/documentation/en-us/jboss_enterprise_application_platform/6/html/administration_and_configuration_guide/resource_adapter_descriptor_reference1
+
+/subsystem=resource-adapters/resource-adapter=$resourceAdapterName/connection-definitions=ConnectionFactory:add(class-name=org.apache.activemq.ra.ActiveMQManagedConnectionFactory, jndi-name=java:/ConnectionFactory,enabled=true)
+/subsystem=resource-adapters/resource-adapter=$resourceAdapterName/connection-definitions=ConnectionFactory:write-attribute(name=min-pool-size,value=8)
+/subsystem=resource-adapters/resource-adapter=$resourceAdapterName/connection-definitions=ConnectionFactory:write-attribute(name=max-pool-size,value=64)
+/subsystem=resource-adapters/resource-adapter=$resourceAdapterName/connection-definitions=ConnectionFactory:write-attribute(name=pool-prefill,value=false)
+/subsystem=resource-adapters/resource-adapter=$resourceAdapterName/connection-definitions=ConnectionFactory:write-attribute(name=same-rm-override,value=false)
+/subsystem=resource-adapters/resource-adapter=$resourceAdapterName/connection-definitions=ConnectionFactory/:write-attribute(name=recovery-username, value=$activemqUser)
+/subsystem=resource-adapters/resource-adapter=$resourceAdapterName/connection-definitions=ConnectionFactory/:write-attribute(name=recovery-password, value=$activemqPassword)
+# ---------------------------------------------
+
+# ---------------------------------------------
+# Adding MDB capability
+/subsystem=ejb3:write-attribute(name="default-mdb-instance-pool", value="mdb-strict-max-pool")
+/subsystem=ejb3:write-attribute(name="default-resource-adapter-name", value=$resourceAdapterName)
+# ---------------------------------------------
+
+# ---------------------------------------------
+# Adding admin-objects
+
+#UVMSReportingEvent
+/subsystem=resource-adapters/resource-adapter=$resourceAdapterName/admin-objects=UVMSReportingEvent:add(class-name=org.apache.activemq.command.ActiveMQQueue, jndi-name=java:/jms/queue/UVMSReportingEvent)
+/subsystem=resource-adapters/resource-adapter=$resourceAdapterName/admin-objects=UVMSReportingEvent:write-attribute(name=use-java-context, value=true)
+/subsystem=resource-adapters/resource-adapter=$resourceAdapterName/admin-objects=UVMSReportingEvent/config-properties=PhysicalName/:add(value=UVMSReportingEvent)
+
+#UVMSConfig
+/subsystem=resource-adapters/resource-adapter=$resourceAdapterName/admin-objects=UVMSConfig:add(class-name=org.apache.activemq.command.ActiveMQQueue, jndi-name=java:/jms/queue/UVMSConfig)
+/subsystem=resource-adapters/resource-adapter=$resourceAdapterName/admin-objects=UVMSConfig:write-attribute(name=use-java-context, value=true)
+/subsystem=resource-adapters/resource-adapter=$resourceAdapterName/admin-objects=UVMSConfig/config-properties=PhysicalName/:add(value=UVMSConfig)
+
+#UVMSAssetNational
+/subsystem=resource-adapters/resource-adapter=$resourceAdapterName/admin-objects=UVMSAssetNational:add(class-name=org.apache.activemq.command.ActiveMQQueue, jndi-name=java:/jms/queue/UVMSAssetNational)
+/subsystem=resource-adapters/resource-adapter=$resourceAdapterName/admin-objects=UVMSAssetNational:write-attribute(name=use-java-context, value=true)
+/subsystem=resource-adapters/resource-adapter=$resourceAdapterName/admin-objects=UVMSAssetNational/config-properties=PhysicalName/:add(value=UVMSAssetNational)
+
+#UVMSRulesModel
+/subsystem=resource-adapters/resource-adapter=$resourceAdapterName/admin-objects=UVMSRulesModel:add(class-name=org.apache.activemq.command.ActiveMQQueue, jndi-name=java:/jms/queue/UVMSRulesModel)
+/subsystem=resource-adapters/resource-adapter=$resourceAdapterName/admin-objects=UVMSRulesModel:write-attribute(name=use-java-context, value=true)
+/subsystem=resource-adapters/resource-adapter=$resourceAdapterName/admin-objects=UVMSRulesModel/config-properties=PhysicalName/:add(value=UVMSRulesModel)
+
+#DLQ
+/subsystem=resource-adapters/resource-adapter=$resourceAdapterName/admin-objects=DLQ:add(class-name=org.apache.activemq.command.ActiveMQQueue, jndi-name=java:/jms/queue/DLQ)
+/subsystem=resource-adapters/resource-adapter=$resourceAdapterName/admin-objects=DLQ:write-attribute(name=use-java-context, value=true)
+/subsystem=resource-adapters/resource-adapter=$resourceAdapterName/admin-objects=DLQ/config-properties=PhysicalName/:add(value=DLQ)
+
+#UVMSSpatial
+/subsystem=resource-adapters/resource-adapter=$resourceAdapterName/admin-objects=UVMSSpatial:add(class-name=org.apache.activemq.command.ActiveMQQueue, jndi-name=java:/jms/queue/UVMSSpatial)
+/subsystem=resource-adapters/resource-adapter=$resourceAdapterName/admin-objects=UVMSSpatial:write-attribute(name=use-java-context, value=true)
+/subsystem=resource-adapters/resource-adapter=$resourceAdapterName/admin-objects=UVMSSpatial/config-properties=PhysicalName/:add(value=UVMSSpatial)
+
+#UVMSConfigEvent
+/subsystem=resource-adapters/resource-adapter=$resourceAdapterName/admin-objects=UVMSConfigEvent:add(class-name=org.apache.activemq.command.ActiveMQQueue, jndi-name=java:/jms/queue/UVMSConfigEvent)
+/subsystem=resource-adapters/resource-adapter=$resourceAdapterName/admin-objects=UVMSConfigEvent:write-attribute(name=use-java-context, value=true)
+/subsystem=resource-adapters/resource-adapter=$resourceAdapterName/admin-objects=UVMSConfigEvent/config-properties=PhysicalName/:add(value=UVMSConfigEvent)
+
+#UVMSExchangeEvent
+/subsystem=resource-adapters/resource-adapter=$resourceAdapterName/admin-objects=UVMSExchangeEvent:add(class-name=org.apache.activemq.command.ActiveMQQueue, jndi-name=java:/jms/queue/UVMSExchangeEvent)
+/subsystem=resource-adapters/resource-adapter=$resourceAdapterName/admin-objects=UVMSExchangeEvent:write-attribute(name=use-java-context, value=true)
+/subsystem=resource-adapters/resource-adapter=$resourceAdapterName/admin-objects=UVMSExchangeEvent/config-properties=PhysicalName/:add(value=UVMSExchangeEvent)
+
+#UVMSMovement
+/subsystem=resource-adapters/resource-adapter=$resourceAdapterName/admin-objects=UVMSMovement:add(class-name=org.apache.activemq.command.ActiveMQQueue, jndi-name=java:/jms/queue/UVMSMovement)
+/subsystem=resource-adapters/resource-adapter=$resourceAdapterName/admin-objects=UVMSMovement:write-attribute(name=use-java-context, value=true)
+/subsystem=resource-adapters/resource-adapter=$resourceAdapterName/admin-objects=UVMSMovement/config-properties=PhysicalName/:add(value=UVMSMovement)
+
+#UVMSMobileTerminalEvent
+/subsystem=resource-adapters/resource-adapter=$resourceAdapterName/admin-objects=UVMSMobileTerminalEvent:add(class-name=org.apache.activemq.command.ActiveMQQueue, jndi-name=java:/jms/queue/UVMSMobileTerminalEvent)
+/subsystem=resource-adapters/resource-adapter=$resourceAdapterName/admin-objects=UVMSMobileTerminalEvent:write-attribute(name=use-java-context, value=true)
+/subsystem=resource-adapters/resource-adapter=$resourceAdapterName/admin-objects=UVMSMobileTerminalEvent/config-properties=PhysicalName/:add(value=UVMSMobileTerminalEvent)
+
+#UVMSAssetModel
+/subsystem=resource-adapters/resource-adapter=$resourceAdapterName/admin-objects=UVMSAssetModel:add(class-name=org.apache.activemq.command.ActiveMQQueue, jndi-name=java:/jms/queue/UVMSAssetModel)
+/subsystem=resource-adapters/resource-adapter=$resourceAdapterName/admin-objects=UVMSAssetModel:write-attribute(name=use-java-context, value=true)
+/subsystem=resource-adapters/resource-adapter=$resourceAdapterName/admin-objects=UVMSAssetModel/config-properties=PhysicalName/:add(value=UVMSAssetModel)
+
+#UVMSRulesEvent
+/subsystem=resource-adapters/resource-adapter=$resourceAdapterName/admin-objects=UVMSRulesEvent:add(class-name=org.apache.activemq.command.ActiveMQQueue, jndi-name=java:/jms/queue/UVMSRulesEvent)
+/subsystem=resource-adapters/resource-adapter=$resourceAdapterName/admin-objects=UVMSRulesEvent:write-attribute(name=use-java-context, value=true)
+/subsystem=resource-adapters/resource-adapter=$resourceAdapterName/admin-objects=UVMSRulesEvent/config-properties=PhysicalName/:add(value=UVMSRulesEvent)
+
+#UVMSMovementRulesEvent
+/subsystem=resource-adapters/resource-adapter=$resourceAdapterName/admin-objects=UVMSMovementRulesEvent:add(class-name=org.apache.activemq.command.ActiveMQQueue, jndi-name=java:/jms/queue/UVMSMovementRulesEvent)
+/subsystem=resource-adapters/resource-adapter=$resourceAdapterName/admin-objects=UVMSMovementRulesEvent:write-attribute(name=use-java-context, value=true)
+/subsystem=resource-adapters/resource-adapter=$resourceAdapterName/admin-objects=UVMSMovementRulesEvent/config-properties=PhysicalName/:add(value=UVMSMovementRulesEvent)
+
+#UVMSUser
+/subsystem=resource-adapters/resource-adapter=$resourceAdapterName/admin-objects=UVMSUser:add(class-name=org.apache.activemq.command.ActiveMQQueue, jndi-name=java:/jms/queue/UVMSUser)
+/subsystem=resource-adapters/resource-adapter=$resourceAdapterName/admin-objects=UVMSUser:write-attribute(name=use-java-context, value=true)
+/subsystem=resource-adapters/resource-adapter=$resourceAdapterName/admin-objects=UVMSUser/config-properties=PhysicalName/:add(value=UVMSUser)
+
+#UVMSAssetCache
+/subsystem=resource-adapters/resource-adapter=$resourceAdapterName/admin-objects=UVMSAssetCache:add(class-name=org.apache.activemq.command.ActiveMQQueue, jndi-name=java:/jms/queue/UVMSAssetCache)
+/subsystem=resource-adapters/resource-adapter=$resourceAdapterName/admin-objects=UVMSAssetCache:write-attribute(name=use-java-context, value=true)
+/subsystem=resource-adapters/resource-adapter=$resourceAdapterName/admin-objects=UVMSAssetCache/config-properties=PhysicalName/:add(value=UVMSAssetCache)
+
+#UVMSExchangeModel
+/subsystem=resource-adapters/resource-adapter=$resourceAdapterName/admin-objects=UVMSExchangeModel:add(class-name=org.apache.activemq.command.ActiveMQQueue, jndi-name=java:/jms/queue/UVMSExchangeModel)
+/subsystem=resource-adapters/resource-adapter=$resourceAdapterName/admin-objects=UVMSExchangeModel:write-attribute(name=use-java-context, value=true)
+/subsystem=resource-adapters/resource-adapter=$resourceAdapterName/admin-objects=UVMSExchangeModel/config-properties=PhysicalName/:add(value=UVMSExchangeModel)
+
+#TestResponseQueue
+/subsystem=resource-adapters/resource-adapter=$resourceAdapterName/admin-objects=TestResponseQueue:add(class-name=org.apache.activemq.command.ActiveMQQueue, jndi-name=java:/jms/queue/TestResponseQueue)
+/subsystem=resource-adapters/resource-adapter=$resourceAdapterName/admin-objects=TestResponseQueue:write-attribute(name=use-java-context, value=true)
+/subsystem=resource-adapters/resource-adapter=$resourceAdapterName/admin-objects=TestResponseQueue/config-properties=PhysicalName/:add(value=TestResponseQueue)
+
+#UVMSMobileTerminal
+/subsystem=resource-adapters/resource-adapter=$resourceAdapterName/admin-objects=UVMSMobileTerminal:add(class-name=org.apache.activemq.command.ActiveMQQueue, jndi-name=java:/jms/queue/UVMSMobileTerminal)
+/subsystem=resource-adapters/resource-adapter=$resourceAdapterName/admin-objects=UVMSMobileTerminal:write-attribute(name=use-java-context, value=true)
+/subsystem=resource-adapters/resource-adapter=$resourceAdapterName/admin-objects=UVMSMobileTerminal/config-properties=PhysicalName/:add(value=UVMSMobileTerminal)
+
+#UVMSActivityEvent
+/subsystem=resource-adapters/resource-adapter=$resourceAdapterName/admin-objects=UVMSActivityEvent:add(class-name=org.apache.activemq.command.ActiveMQQueue, jndi-name=java:/jms/queue/UVMSActivityEvent)
+/subsystem=resource-adapters/resource-adapter=$resourceAdapterName/admin-objects=UVMSActivityEvent:write-attribute(name=use-java-context, value=true)
+/subsystem=resource-adapters/resource-adapter=$resourceAdapterName/admin-objects=UVMSActivityEvent/config-properties=PhysicalName/:add(value=UVMSActivityEvent)
+
+#UVMSActivity
+/subsystem=resource-adapters/resource-adapter=$resourceAdapterName/admin-objects=UVMSActivity:add(class-name=org.apache.activemq.command.ActiveMQQueue, jndi-name=java:/jms/queue/UVMSActivity)
+/subsystem=resource-adapters/resource-adapter=$resourceAdapterName/admin-objects=UVMSActivity:write-attribute(name=use-java-context, value=true)
+/subsystem=resource-adapters/resource-adapter=$resourceAdapterName/admin-objects=UVMSActivity/config-properties=PhysicalName/:add(value=UVMSActivity)
+
+#UVMSMobileTerminalNational
+/subsystem=resource-adapters/resource-adapter=$resourceAdapterName/admin-objects=UVMSMobileTerminalNational:add(class-name=org.apache.activemq.command.ActiveMQQueue, jndi-name=java:/jms/queue/UVMSMobileTerminalNational)
+/subsystem=resource-adapters/resource-adapter=$resourceAdapterName/admin-objects=UVMSMobileTerminalNational:write-attribute(name=use-java-context, value=true)
+/subsystem=resource-adapters/resource-adapter=$resourceAdapterName/admin-objects=UVMSMobileTerminalNational/config-properties=PhysicalName/:add(value=UVMSMobileTerminalNational)
+
+#UVMSRules
+/subsystem=resource-adapters/resource-adapter=$resourceAdapterName/admin-objects=UVMSRules:add(class-name=org.apache.activemq.command.ActiveMQQueue, jndi-name=java:/jms/queue/UVMSRules)
+/subsystem=resource-adapters/resource-adapter=$resourceAdapterName/admin-objects=UVMSRules:write-attribute(name=use-java-context, value=true)
+/subsystem=resource-adapters/resource-adapter=$resourceAdapterName/admin-objects=UVMSRules/config-properties=PhysicalName/:add(value=UVMSRules)
+
+#UVMSMovementRules
+/subsystem=resource-adapters/resource-adapter=$resourceAdapterName/admin-objects=UVMSMovementRules:add(class-name=org.apache.activemq.command.ActiveMQQueue, jndi-name=java:/jms/queue/UVMSMovementRules)
+/subsystem=resource-adapters/resource-adapter=$resourceAdapterName/admin-objects=UVMSMovementRules:write-attribute(name=use-java-context, value=true)
+/subsystem=resource-adapters/resource-adapter=$resourceAdapterName/admin-objects=UVMSMovementRules/config-properties=PhysicalName/:add(value=UVMSMovementRules)
+
+#UVMSUserEvent
+/subsystem=resource-adapters/resource-adapter=$resourceAdapterName/admin-objects=UVMSUserEvent:add(class-name=org.apache.activemq.command.ActiveMQQueue, jndi-name=java:/jms/queue/UVMSUserEvent)
+/subsystem=resource-adapters/resource-adapter=$resourceAdapterName/admin-objects=UVMSUserEvent:write-attribute(name=use-java-context, value=true)
+/subsystem=resource-adapters/resource-adapter=$resourceAdapterName/admin-objects=UVMSUserEvent/config-properties=PhysicalName/:add(value=UVMSUserEvent)
+
+#ConfigStatus
+/subsystem=resource-adapters/resource-adapter=$resourceAdapterName/admin-objects=ConfigStatus:add(class-name=org.apache.activemq.command.ActiveMQTopic, jndi-name=java:/jms/topic/ConfigStatus)
+/subsystem=resource-adapters/resource-adapter=$resourceAdapterName/admin-objects=ConfigStatus:write-attribute(name=use-java-context, value=true)
+/subsystem=resource-adapters/resource-adapter=$resourceAdapterName/admin-objects=ConfigStatus/config-properties=PhysicalName/:add(value=ConfigStatus)
+
+#EventBus
+/subsystem=resource-adapters/resource-adapter=$resourceAdapterName/admin-objects=EventBus:add(class-name=org.apache.activemq.command.ActiveMQTopic, jndi-name=java:/jms/topic/EventBus)
+/subsystem=resource-adapters/resource-adapter=$resourceAdapterName/admin-objects=EventBus:write-attribute(name=use-java-context, value=true)
+/subsystem=resource-adapters/resource-adapter=$resourceAdapterName/admin-objects=EventBus/config-properties=PhysicalName/:add(value=EventBus)
+
+#UVMSUpload
+/subsystem=resource-adapters/resource-adapter=$resourceAdapterName/admin-objects=UVMSUpload:add(class-name=org.apache.activemq.command.ActiveMQQueue, jndi-name=java:/jms/queue/UVMSUpload)
+/subsystem=resource-adapters/resource-adapter=$resourceAdapterName/admin-objects=UVMSUpload:write-attribute(name=use-java-context, value=true)
+/subsystem=resource-adapters/resource-adapter=$resourceAdapterName/admin-objects=UVMSUpload/config-properties=PhysicalName/:add(value=UVMSUpload)
+
+#UVMSSubscriptionEvent
+/subsystem=resource-adapters/resource-adapter=$resourceAdapterName/admin-objects=UVMSSubscriptionEvent:add(class-name=org.apache.activemq.command.ActiveMQQueue, jndi-name=java:/jms/queue/UVMSSubscriptionEvent)
+/subsystem=resource-adapters/resource-adapter=$resourceAdapterName/admin-objects=UVMSSubscriptionEvent:write-attribute(name=use-java-context, value=true)
+/subsystem=resource-adapters/resource-adapter=$resourceAdapterName/admin-objects=UVMSSubscriptionEvent/config-properties=PhysicalName/:add(value=UVMSSubscriptionEvent)
+
+#UVMSAssetEvent
+/subsystem=resource-adapters/resource-adapter=$resourceAdapterName/admin-objects=UVMSAssetEvent:add(class-name=org.apache.activemq.command.ActiveMQQueue, jndi-name=java:/jms/queue/UVMSAssetEvent)
+/subsystem=resource-adapters/resource-adapter=$resourceAdapterName/admin-objects=UVMSAssetEvent:write-attribute(name=use-java-context, value=true)
+/subsystem=resource-adapters/resource-adapter=$resourceAdapterName/admin-objects=UVMSAssetEvent/config-properties=PhysicalName/:add(value=UVMSAssetEvent)
+
+#UVMSExchange
+/subsystem=resource-adapters/resource-adapter=$resourceAdapterName/admin-objects=UVMSExchange:add(class-name=org.apache.activemq.command.ActiveMQQueue, jndi-name=java:/jms/queue/UVMSExchange)
+/subsystem=resource-adapters/resource-adapter=$resourceAdapterName/admin-objects=UVMSExchange:write-attribute(name=use-java-context, value=true)
+/subsystem=resource-adapters/resource-adapter=$resourceAdapterName/admin-objects=UVMSExchange/config-properties=PhysicalName/:add(value=UVMSExchange)
+
+#UVMSSpatialEvent
+/subsystem=resource-adapters/resource-adapter=$resourceAdapterName/admin-objects=UVMSSpatialEvent:add(class-name=org.apache.activemq.command.ActiveMQQueue, jndi-name=java:/jms/queue/UVMSSpatialEvent)
+/subsystem=resource-adapters/resource-adapter=$resourceAdapterName/admin-objects=UVMSSpatialEvent:write-attribute(name=use-java-context, value=true)
+/subsystem=resource-adapters/resource-adapter=$resourceAdapterName/admin-objects=UVMSSpatialEvent/config-properties=PhysicalName/:add(value=UVMSSpatialEvent)
+
+#USM4UVMS
+/subsystem=resource-adapters/resource-adapter=$resourceAdapterName/admin-objects=USM4UVMS:add(class-name=org.apache.activemq.command.ActiveMQQueue, jndi-name=java:/jms/queue/USM4UVMS)
+/subsystem=resource-adapters/resource-adapter=$resourceAdapterName/admin-objects=USM4UVMS:write-attribute(name=use-java-context, value=true)
+/subsystem=resource-adapters/resource-adapter=$resourceAdapterName/admin-objects=USM4UVMS/config-properties=PhysicalName/:add(value=USM4UVMS)
+
+#UVMSMovementEvent
+/subsystem=resource-adapters/resource-adapter=$resourceAdapterName/admin-objects=UVMSMovementEvent:add(class-name=org.apache.activemq.command.ActiveMQQueue, jndi-name=java:/jms/queue/UVMSMovementEvent)
+/subsystem=resource-adapters/resource-adapter=$resourceAdapterName/admin-objects=UVMSMovementEvent:write-attribute(name=use-java-context, value=true)
+/subsystem=resource-adapters/resource-adapter=$resourceAdapterName/admin-objects=UVMSMovementEvent/config-properties=PhysicalName/:add(value=UVMSMovementEvent)
+
+#ExpiryQueue
+/subsystem=resource-adapters/resource-adapter=$resourceAdapterName/admin-objects=ExpiryQueue:add(class-name=org.apache.activemq.command.ActiveMQQueue, jndi-name=java:/jms/queue/ExpiryQueue)
+/subsystem=resource-adapters/resource-adapter=$resourceAdapterName/admin-objects=ExpiryQueue:write-attribute(name=use-java-context, value=true)
+/subsystem=resource-adapters/resource-adapter=$resourceAdapterName/admin-objects=ExpiryQueue/config-properties=PhysicalName/:add(value=ExpiryQueue)
+
+#UVMSUploadEvent
+/subsystem=resource-adapters/resource-adapter=$resourceAdapterName/admin-objects=UVMSUploadEvent:add(class-name=org.apache.activemq.command.ActiveMQQueue, jndi-name=java:/jms/queue/UVMSUploadEvent)
+/subsystem=resource-adapters/resource-adapter=$resourceAdapterName/admin-objects=UVMSUploadEvent:write-attribute(name=use-java-context, value=true)
+/subsystem=resource-adapters/resource-adapter=$resourceAdapterName/admin-objects=UVMSUploadEvent/config-properties=PhysicalName/:add(value=UVMSUploadEvent)
+
+#UVMSAssetXEU
+/subsystem=resource-adapters/resource-adapter=$resourceAdapterName/admin-objects=UVMSAssetXEU:add(class-name=org.apache.activemq.command.ActiveMQQueue, jndi-name=java:/jms/queue/UVMSAssetXEU)
+/subsystem=resource-adapters/resource-adapter=$resourceAdapterName/admin-objects=UVMSAssetXEU:write-attribute(name=use-java-context, value=true)
+/subsystem=resource-adapters/resource-adapter=$resourceAdapterName/admin-objects=UVMSAssetXEU/config-properties=PhysicalName/:add(value=UVMSAssetXEU)
+
+#UVMSAsset
+/subsystem=resource-adapters/resource-adapter=$resourceAdapterName/admin-objects=UVMSAsset:add(class-name=org.apache.activemq.command.ActiveMQQueue, jndi-name=java:/jms/queue/UVMSAsset)
+/subsystem=resource-adapters/resource-adapter=$resourceAdapterName/admin-objects=UVMSAsset:write-attribute(name=use-java-context, value=true)
+/subsystem=resource-adapters/resource-adapter=$resourceAdapterName/admin-objects=UVMSAsset/config-properties=PhysicalName/:add(value=UVMSAsset)
+
+#UVMSSubscription
+/subsystem=resource-adapters/resource-adapter=$resourceAdapterName/admin-objects=UVMSSubscription:add(class-name=org.apache.activemq.command.ActiveMQQueue, jndi-name=java:/jms/queue/UVMSSubscription)
+/subsystem=resource-adapters/resource-adapter=$resourceAdapterName/admin-objects=UVMSSubscription:write-attribute(name=use-java-context, value=true)
+/subsystem=resource-adapters/resource-adapter=$resourceAdapterName/admin-objects=UVMSSubscription/config-properties=PhysicalName/:add(value=UVMSSubscription)
+
+#UVMSAudit
+/subsystem=resource-adapters/resource-adapter=$resourceAdapterName/admin-objects=UVMSAudit:add(class-name=org.apache.activemq.command.ActiveMQQueue, jndi-name=java:/jms/queue/UVMSAudit)
+/subsystem=resource-adapters/resource-adapter=$resourceAdapterName/admin-objects=UVMSAudit:write-attribute(name=use-java-context, value=true)
+/subsystem=resource-adapters/resource-adapter=$resourceAdapterName/admin-objects=UVMSAudit/config-properties=PhysicalName/:add(value=UVMSAudit)
+
+#UVMSReporting
+/subsystem=resource-adapters/resource-adapter=$resourceAdapterName/admin-objects=UVMSReporting:add(class-name=org.apache.activemq.command.ActiveMQQueue, jndi-name=java:/jms/queue/UVMSReporting)
+/subsystem=resource-adapters/resource-adapter=$resourceAdapterName/admin-objects=UVMSReporting:write-attribute(name=use-java-context, value=true)
+/subsystem=resource-adapters/resource-adapter=$resourceAdapterName/admin-objects=UVMSReporting/config-properties=PhysicalName/:add(value=UVMSReporting)
+
+#UVMSAuditEvent
+/subsystem=resource-adapters/resource-adapter=$resourceAdapterName/admin-objects=UVMSAuditEvent:add(class-name=org.apache.activemq.command.ActiveMQQueue, jndi-name=java:/jms/queue/UVMSAuditEvent)
+/subsystem=resource-adapters/resource-adapter=$resourceAdapterName/admin-objects=UVMSAuditEvent:write-attribute(name=use-java-context, value=true)
+/subsystem=resource-adapters/resource-adapter=$resourceAdapterName/admin-objects=UVMSAuditEvent/config-properties=PhysicalName/:add(value=UVMSAuditEvent)
+
+#UVMSMdr
+/subsystem=resource-adapters/resource-adapter=$resourceAdapterName/admin-objects=UVMSMdr:add(class-name=org.apache.activemq.command.ActiveMQQueue, jndi-name=java:/jms/queue/UVMSMdr)
+/subsystem=resource-adapters/resource-adapter=$resourceAdapterName/admin-objects=UVMSMdr:write-attribute(name=use-java-context, value=true)
+/subsystem=resource-adapters/resource-adapter=$resourceAdapterName/admin-objects=UVMSMdr/config-properties=PhysicalName/:add(value=UVMSMdr)
+
+#UVMSMdrEvent
+/subsystem=resource-adapters/resource-adapter=$resourceAdapterName/admin-objects=UVMSMdrEvent:add(class-name=org.apache.activemq.command.ActiveMQQueue, jndi-name=java:/jms/queue/UVMSMdrEvent)
+/subsystem=resource-adapters/resource-adapter=$resourceAdapterName/admin-objects=UVMSMdrEvent:write-attribute(name=use-java-context, value=true)
+/subsystem=resource-adapters/resource-adapter=$resourceAdapterName/admin-objects=UVMSMdrEvent/config-properties=PhysicalName/:add(value=UVMSMdrEvent)
+
+#UVMSSales
+/subsystem=resource-adapters/resource-adapter=$resourceAdapterName/admin-objects=UVMSSales:add(class-name=org.apache.activemq.command.ActiveMQQueue, jndi-name=java:/jms/queue/UVMSSales)
+/subsystem=resource-adapters/resource-adapter=$resourceAdapterName/admin-objects=UVMSSales:write-attribute(name=use-java-context, value=true)
+/subsystem=resource-adapters/resource-adapter=$resourceAdapterName/admin-objects=UVMSSales/config-properties=PhysicalName/:add(value=UVMSSales)
+
+#UVMSSalesEvent
+/subsystem=resource-adapters/resource-adapter=$resourceAdapterName/admin-objects=UVMSSalesEvent:add(class-name=org.apache.activemq.command.ActiveMQQueue, jndi-name=java:/jms/queue/UVMSSalesEvent)
+/subsystem=resource-adapters/resource-adapter=$resourceAdapterName/admin-objects=UVMSSalesEvent:write-attribute(name=use-java-context, value=true)
+/subsystem=resource-adapters/resource-adapter=$resourceAdapterName/admin-objects=UVMSSalesEvent/config-properties=PhysicalName/:add(value=UVMSSalesEvent)
+
+#UVMSPluginBridge
+/subsystem=resource-adapters/resource-adapter=$resourceAdapterName/admin-objects=UVMSPluginBridge:add(class-name=org.apache.activemq.command.ActiveMQQueue, jndi-name=java:/jms/queue/UVMSPluginBridge)
+/subsystem=resource-adapters/resource-adapter=$resourceAdapterName/admin-objects=UVMSPluginBridge:write-attribute(name=use-java-context, value=true)
+/subsystem=resource-adapters/resource-adapter=$resourceAdapterName/admin-objects=UVMSPluginBridge/config-properties=PhysicalName/:add(value=UVMSPluginBridge)
+
+#UVMSMdrPluginEvent
+/subsystem=resource-adapters/resource-adapter=$resourceAdapterName/admin-objects=UVMSMdrPluginEvent:add(class-name=org.apache.activemq.command.ActiveMQQueue, jndi-name=java:/jms/queue/UVMSMdrPluginEvent)
+/subsystem=resource-adapters/resource-adapter=$resourceAdapterName/admin-objects=UVMSMdrPluginEvent:write-attribute(name=use-java-context, value=true)
+/subsystem=resource-adapters/resource-adapter=$resourceAdapterName/admin-objects=UVMSMdrPluginEvent/config-properties=PhysicalName/:add(value=UVMSMdrPluginEvent)
+
+#UVMSFAPluginEvent
+/subsystem=resource-adapters/resource-adapter=$resourceAdapterName/admin-objects=UVMSFAPluginEvent:add(class-name=org.apache.activemq.command.ActiveMQQueue, jndi-name=java:/jms/queue/UVMSFAPluginEvent)
+/subsystem=resource-adapters/resource-adapter=$resourceAdapterName/admin-objects=UVMSFAPluginEvent:write-attribute(name=use-java-context, value=true)
+/subsystem=resource-adapters/resource-adapter=$resourceAdapterName/admin-objects=UVMSFAPluginEvent/config-properties=PhysicalName/:add(value=UVMSFAPluginEvent)
+
+#UVMSActivitySubscriptionsEvent
+/subsystem=resource-adapters/resource-adapter=$resourceAdapterName/admin-objects=UVMSActivitySubscriptionsEvent:add(class-name=org.apache.activemq.command.ActiveMQQueue, jndi-name=java:/jms/queue/UVMSActivitySubscriptionsEvent)
+/subsystem=resource-adapters/resource-adapter=$resourceAdapterName/admin-objects=UVMSActivitySubscriptionsEvent:write-attribute(name=use-java-context, value=true)
+/subsystem=resource-adapters/resource-adapter=$resourceAdapterName/admin-objects=UVMSActivitySubscriptionsEvent/config-properties=PhysicalName/:add(value=UVMSActivitySubscriptionsEvent)
+# ---------------------------------------------
+
+# Run the batch commands
+run-batch
+:reload
+

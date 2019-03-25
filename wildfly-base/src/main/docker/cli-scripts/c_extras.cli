@@ -1,0 +1,20 @@
+set assetEndpoint=${asset-endpoint}
+set spatialEndpoint=${spatial-endpoint}
+set movementRulesEndpoint=${movement-endpoint}
+
+batch
+
+# naming
+
+/subsystem=naming/binding=java\:global\/asset_endpoint:add(binding-type=simple, value=$assetEndpoint)
+/subsystem=naming/binding=java\:global\/spatial_endpoint:add(binding-type=simple, value=$spatialEndpoint)
+/subsystem=naming/binding=java\:global\/movement-rules_endpoint:add(binding-type=simple, value=$movementRulesEndpoint)
+
+# Jackson
+/system-property="resteasy.preferJacksonOverJsonB":add(value="true")
+
+# Run the batch commands
+run-batch
+
+#:reload
+

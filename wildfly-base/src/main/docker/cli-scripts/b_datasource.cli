@@ -1,0 +1,300 @@
+# setting properties
+
+set postgresServerURL=${postgres-server-URL}
+set postgresServerPort=${postgres-server-port}
+set postgresServerDatabase=${postgres-server-database}
+
+# setting passwords
+set auditPass=${uvms_audit_pass}
+set mobtermPass=${uvms_mobterm_pass}
+set movementPass=${uvms_movement_pass}
+set assetPass=${uvms_asset_pass}
+set exchangePass=${uvms_exchange_pass}
+set rulesPass=${uvms_rules_pass}
+set usmPass=${uvms_usm_pass}
+set usm2Pass=${uvms_usm2_pass}
+set spatialPass=${uvms_spatial_pass}
+set reportingPass=${uvms_reporting_pass}
+set movementRulesPass=${uvms_movementrules_pass}
+set activityPass=${uvms_activity_pass}
+set mdrPass=${uvms_mdr_pass}
+set salesPass=${uvms_sales_pass}
+set configPass=${uvms_config_pass}
+set subscriptionPass=${uvms_subscription_pass}
+
+batch
+
+# Adding properties
+
+/system-property="jboss.as.management.blocking.timeout":add(value=1200)
+/system-property="db.dialect":add(value=postgres)
+/system-property="hibernate.dialect":add(value=org.hibernate.dialect.PostgreSQLDialect)
+/system-property="hibernate.spatial.dialect":add(value="org.hibernate.spatial.dialect.postgis.Postgis43WrapperDialect")
+
+#
+# NOT REQUIRED because part of EC configuration
+#
+# add driver. Make sure the org.postgresql is indeed installed in the Wildfly modules
+#/subsystem=datasources/jdbc-driver=postgresql:add(driver-name=postgresql,driver-module-name=org.postgresql,driver-xa-datasource-class-name=org.postgresql.xa.PGXADataSource)
+#
+
+# add data source uvms_audit
+
+/subsystem=datasources/xa-data-source="jdbc/uvms_audit":add(jndi-name="java:/jdbc/uvms_audit",driver-name="postgresql",enabled="true", use-ccm="true",statistics-enabled="false")
+/subsystem=datasources/xa-data-source="jdbc/uvms_audit"/xa-datasource-properties=ServerName:add(value=$postgresServerURL)
+/subsystem=datasources/xa-data-source="jdbc/uvms_audit"/xa-datasource-properties=PortNumber:add(value=$postgresServerPort)
+/subsystem=datasources/xa-data-source="jdbc/uvms_audit"/xa-datasource-properties=DatabaseName:add(value=$postgresServerDatabase)
+/subsystem=datasources/xa-data-source="jdbc/uvms_audit":write-attribute(name=user-name,value=audit)
+/subsystem=datasources/xa-data-source="jdbc/uvms_audit":write-attribute(name=password,value=$auditPass)
+/subsystem=datasources/xa-data-source="jdbc/uvms_audit":write-attribute(name=min-pool-size,value=2)
+/subsystem=datasources/xa-data-source="jdbc/uvms_audit":write-attribute(name=initial-pool-size,value=2)
+/subsystem=datasources/xa-data-source="jdbc/uvms_audit":write-attribute(name=max-pool-size,value=20)
+/subsystem=datasources/xa-data-source="jdbc/uvms_audit":write-attribute(name=pool-prefill,value=true)
+/subsystem=datasources/xa-data-source="jdbc/uvms_audit":write-attribute(name=prepared-statements-cache-size,value=32)
+/subsystem=datasources/xa-data-source="jdbc/uvms_audit":write-attribute(name=track-statements,value=nowarn)
+/subsystem=datasources/xa-data-source="jdbc/uvms_audit":write-attribute(name=valid-connection-checker-class-name,value=org.jboss.jca.adapters.jdbc.extensions.postgres.PostgreSQLValidConnectionChecker)
+/subsystem=datasources/xa-data-source="jdbc/uvms_audit":write-attribute(name=exception-sorter-class-name,value=org.jboss.jca.adapters.jdbc.extensions.postgres.PostgreSQLExceptionSorter)
+
+# add data source uvms_mobterm
+/subsystem=datasources/xa-data-source="jdbc/uvms_mobterm":add(jndi-name="java:/jdbc/uvms_mobterm",driver-name="postgresql",enabled="true", use-ccm="true",statistics-enabled="false")
+/subsystem=datasources/xa-data-source="jdbc/uvms_mobterm"/xa-datasource-properties=ServerName:add(value=$postgresServerURL)
+/subsystem=datasources/xa-data-source="jdbc/uvms_mobterm"/xa-datasource-properties=PortNumber:add(value=$postgresServerPort)
+/subsystem=datasources/xa-data-source="jdbc/uvms_mobterm"/xa-datasource-properties=DatabaseName:add(value=$postgresServerDatabase)
+/subsystem=datasources/xa-data-source="jdbc/uvms_mobterm":write-attribute(name=user-name,value=mobterm)
+/subsystem=datasources/xa-data-source="jdbc/uvms_mobterm":write-attribute(name=password,value=$mobtermPass)
+/subsystem=datasources/xa-data-source="jdbc/uvms_mobterm":write-attribute(name=min-pool-size,value=2)
+/subsystem=datasources/xa-data-source="jdbc/uvms_mobterm":write-attribute(name=initial-pool-size,value=2)
+/subsystem=datasources/xa-data-source="jdbc/uvms_mobterm":write-attribute(name=max-pool-size,value=20)
+/subsystem=datasources/xa-data-source="jdbc/uvms_mobterm":write-attribute(name=pool-prefill,value=true)
+/subsystem=datasources/xa-data-source="jdbc/uvms_mobterm":write-attribute(name=prepared-statements-cache-size,value=32)
+/subsystem=datasources/xa-data-source="jdbc/uvms_mobterm":write-attribute(name=track-statements,value=nowarn)
+/subsystem=datasources/xa-data-source="jdbc/uvms_mobterm":write-attribute(name=valid-connection-checker-class-name,value=org.jboss.jca.adapters.jdbc.extensions.postgres.PostgreSQLValidConnectionChecker)
+/subsystem=datasources/xa-data-source="jdbc/uvms_mobterm":write-attribute(name=exception-sorter-class-name,value=org.jboss.jca.adapters.jdbc.extensions.postgres.PostgreSQLExceptionSorter)
+
+# add data source uvms_movement
+/subsystem=datasources/xa-data-source="jdbc/uvms_movement":add(jndi-name="java:/jdbc/uvms_movement",driver-name="postgresql",enabled="true", use-ccm="true",statistics-enabled="false")
+/subsystem=datasources/xa-data-source="jdbc/uvms_movement"/xa-datasource-properties=ServerName:add(value=$postgresServerURL)
+/subsystem=datasources/xa-data-source="jdbc/uvms_movement"/xa-datasource-properties=PortNumber:add(value=$postgresServerPort)
+/subsystem=datasources/xa-data-source="jdbc/uvms_movement"/xa-datasource-properties=DatabaseName:add(value=$postgresServerDatabase)
+/subsystem=datasources/xa-data-source="jdbc/uvms_movement":write-attribute(name=user-name,value=movement)
+/subsystem=datasources/xa-data-source="jdbc/uvms_movement":write-attribute(name=password,value=$movementPass)
+/subsystem=datasources/xa-data-source="jdbc/uvms_movement":write-attribute(name=min-pool-size,value=2)
+/subsystem=datasources/xa-data-source="jdbc/uvms_movement":write-attribute(name=initial-pool-size,value=2)
+/subsystem=datasources/xa-data-source="jdbc/uvms_movement":write-attribute(name=max-pool-size,value=20)
+/subsystem=datasources/xa-data-source="jdbc/uvms_movement":write-attribute(name=pool-prefill,value=true)
+/subsystem=datasources/xa-data-source="jdbc/uvms_movement":write-attribute(name=prepared-statements-cache-size,value=32)
+/subsystem=datasources/xa-data-source="jdbc/uvms_movement":write-attribute(name=track-statements,value=nowarn)
+/subsystem=datasources/xa-data-source="jdbc/uvms_movement":write-attribute(name=valid-connection-checker-class-name,value=org.jboss.jca.adapters.jdbc.extensions.postgres.PostgreSQLValidConnectionChecker)
+/subsystem=datasources/xa-data-source="jdbc/uvms_movement":write-attribute(name=exception-sorter-class-name,value=org.jboss.jca.adapters.jdbc.extensions.postgres.PostgreSQLExceptionSorter)
+
+# add data source uvms_asset
+/subsystem=datasources/xa-data-source="jdbc/uvms_asset":add(jndi-name="java:/jdbc/uvms_asset",driver-name="postgresql",enabled="true", use-ccm="true",statistics-enabled="false")
+/subsystem=datasources/xa-data-source="jdbc/uvms_asset"/xa-datasource-properties=ServerName:add(value=$postgresServerURL)
+/subsystem=datasources/xa-data-source="jdbc/uvms_asset"/xa-datasource-properties=PortNumber:add(value=$postgresServerPort)
+/subsystem=datasources/xa-data-source="jdbc/uvms_asset"/xa-datasource-properties=DatabaseName:add(value=$postgresServerDatabase)
+/subsystem=datasources/xa-data-source="jdbc/uvms_asset":write-attribute(name=user-name,value=asset)
+/subsystem=datasources/xa-data-source="jdbc/uvms_asset":write-attribute(name=password,value=$assetPass)
+/subsystem=datasources/xa-data-source="jdbc/uvms_asset":write-attribute(name=min-pool-size,value=2)
+/subsystem=datasources/xa-data-source="jdbc/uvms_asset":write-attribute(name=initial-pool-size,value=2)
+/subsystem=datasources/xa-data-source="jdbc/uvms_asset":write-attribute(name=max-pool-size,value=20)
+/subsystem=datasources/xa-data-source="jdbc/uvms_asset":write-attribute(name=pool-prefill,value=true)
+/subsystem=datasources/xa-data-source="jdbc/uvms_asset":write-attribute(name=prepared-statements-cache-size,value=32)
+/subsystem=datasources/xa-data-source="jdbc/uvms_asset":write-attribute(name=track-statements,value=nowarn)
+/subsystem=datasources/xa-data-source="jdbc/uvms_asset":write-attribute(name=valid-connection-checker-class-name,value=org.jboss.jca.adapters.jdbc.extensions.postgres.PostgreSQLValidConnectionChecker)
+/subsystem=datasources/xa-data-source="jdbc/uvms_asset":write-attribute(name=exception-sorter-class-name,value=org.jboss.jca.adapters.jdbc.extensions.postgres.PostgreSQLExceptionSorter)
+
+# add data source uvms_exchange
+/subsystem=datasources/xa-data-source="jdbc/uvms_exchange":add(jndi-name="java:/jdbc/uvms_exchange",driver-name="postgresql",enabled="true", use-ccm="true",statistics-enabled="false")
+/subsystem=datasources/xa-data-source="jdbc/uvms_exchange"/xa-datasource-properties=ServerName:add(value=$postgresServerURL)
+/subsystem=datasources/xa-data-source="jdbc/uvms_exchange"/xa-datasource-properties=PortNumber:add(value=$postgresServerPort)
+/subsystem=datasources/xa-data-source="jdbc/uvms_exchange"/xa-datasource-properties=DatabaseName:add(value=$postgresServerDatabase)
+/subsystem=datasources/xa-data-source="jdbc/uvms_exchange":write-attribute(name=user-name,value=exchange)
+/subsystem=datasources/xa-data-source="jdbc/uvms_exchange":write-attribute(name=password,value=$exchangePass)
+/subsystem=datasources/xa-data-source="jdbc/uvms_exchange":write-attribute(name=min-pool-size,value=2)
+/subsystem=datasources/xa-data-source="jdbc/uvms_exchange":write-attribute(name=initial-pool-size,value=2)
+/subsystem=datasources/xa-data-source="jdbc/uvms_exchange":write-attribute(name=max-pool-size,value=20)
+/subsystem=datasources/xa-data-source="jdbc/uvms_exchange":write-attribute(name=pool-prefill,value=true)
+/subsystem=datasources/xa-data-source="jdbc/uvms_exchange":write-attribute(name=prepared-statements-cache-size,value=32)
+/subsystem=datasources/xa-data-source="jdbc/uvms_exchange":write-attribute(name=track-statements,value=nowarn)
+/subsystem=datasources/xa-data-source="jdbc/uvms_exchange":write-attribute(name=valid-connection-checker-class-name,value=org.jboss.jca.adapters.jdbc.extensions.postgres.PostgreSQLValidConnectionChecker)
+/subsystem=datasources/xa-data-source="jdbc/uvms_exchange":write-attribute(name=exception-sorter-class-name,value=org.jboss.jca.adapters.jdbc.extensions.postgres.PostgreSQLExceptionSorter)
+
+# add data source uvms_rules
+/subsystem=datasources/xa-data-source="jdbc/uvms_rules":add(jndi-name="java:/jdbc/uvms_rules",driver-name="postgresql",enabled="true", use-ccm="true",statistics-enabled="false")
+/subsystem=datasources/xa-data-source="jdbc/uvms_rules"/xa-datasource-properties=ServerName:add(value=$postgresServerURL)
+/subsystem=datasources/xa-data-source="jdbc/uvms_rules"/xa-datasource-properties=PortNumber:add(value=$postgresServerPort)
+/subsystem=datasources/xa-data-source="jdbc/uvms_rules"/xa-datasource-properties=DatabaseName:add(value=$postgresServerDatabase)
+/subsystem=datasources/xa-data-source="jdbc/uvms_rules":write-attribute(name=user-name,value=rules)
+/subsystem=datasources/xa-data-source="jdbc/uvms_rules":write-attribute(name=password,value=$rulesPass)
+/subsystem=datasources/xa-data-source="jdbc/uvms_rules":write-attribute(name=min-pool-size,value=2)
+/subsystem=datasources/xa-data-source="jdbc/uvms_rules":write-attribute(name=initial-pool-size,value=2)
+/subsystem=datasources/xa-data-source="jdbc/uvms_rules":write-attribute(name=max-pool-size,value=20)
+/subsystem=datasources/xa-data-source="jdbc/uvms_rules":write-attribute(name=pool-prefill,value=true)
+/subsystem=datasources/xa-data-source="jdbc/uvms_rules":write-attribute(name=prepared-statements-cache-size,value=32)
+/subsystem=datasources/xa-data-source="jdbc/uvms_rules":write-attribute(name=track-statements,value=nowarn)
+/subsystem=datasources/xa-data-source="jdbc/uvms_rules":write-attribute(name=valid-connection-checker-class-name,value=org.jboss.jca.adapters.jdbc.extensions.postgres.PostgreSQLValidConnectionChecker)
+/subsystem=datasources/xa-data-source="jdbc/uvms_rules":write-attribute(name=exception-sorter-class-name,value=org.jboss.jca.adapters.jdbc.extensions.postgres.PostgreSQLExceptionSorter)
+
+# add data source uvms_usm
+/subsystem=datasources/xa-data-source="uvms_usm":add(jndi-name="java:jboss/datasources/uvms_usm",driver-name="postgresql",enabled="true", use-ccm="true",statistics-enabled="false")
+/subsystem=datasources/xa-data-source="uvms_usm"/xa-datasource-properties=ServerName:add(value=$postgresServerURL)
+/subsystem=datasources/xa-data-source="uvms_usm"/xa-datasource-properties=PortNumber:add(value=$postgresServerPort)
+/subsystem=datasources/xa-data-source="uvms_usm"/xa-datasource-properties=DatabaseName:add(value=$postgresServerDatabase)
+/subsystem=datasources/xa-data-source="uvms_usm":write-attribute(name=user-name,value=usm)
+/subsystem=datasources/xa-data-source="uvms_usm":write-attribute(name=password,value=$usmPass)
+/subsystem=datasources/xa-data-source="uvms_usm":write-attribute(name=min-pool-size,value=2)
+/subsystem=datasources/xa-data-source="uvms_usm":write-attribute(name=initial-pool-size,value=2)
+/subsystem=datasources/xa-data-source="uvms_usm":write-attribute(name=max-pool-size,value=20)
+/subsystem=datasources/xa-data-source="uvms_usm":write-attribute(name=pool-prefill,value=true)
+/subsystem=datasources/xa-data-source="uvms_usm":write-attribute(name=prepared-statements-cache-size,value=32)
+/subsystem=datasources/xa-data-source="uvms_usm":write-attribute(name=track-statements,value=nowarn)
+/subsystem=datasources/xa-data-source="uvms_usm":write-attribute(name=valid-connection-checker-class-name,value=org.jboss.jca.adapters.jdbc.extensions.postgres.PostgreSQLValidConnectionChecker)
+/subsystem=datasources/xa-data-source="uvms_usm":write-attribute(name=exception-sorter-class-name,value=org.jboss.jca.adapters.jdbc.extensions.postgres.PostgreSQLExceptionSorter)
+
+# add data source USM2
+/subsystem=datasources/xa-data-source="jdbc/USM2":add(jndi-name="java:/jdbc/USM2",driver-name="postgresql",enabled="true", use-ccm="true",statistics-enabled="false")
+/subsystem=datasources/xa-data-source="jdbc/USM2"/xa-datasource-properties=ServerName:add(value=$postgresServerURL)
+/subsystem=datasources/xa-data-source="jdbc/USM2"/xa-datasource-properties=PortNumber:add(value=$postgresServerPort)
+/subsystem=datasources/xa-data-source="jdbc/USM2"/xa-datasource-properties=DatabaseName:add(value=$postgresServerDatabase)
+/subsystem=datasources/xa-data-source="jdbc/USM2":write-attribute(name=user-name,value=usm)
+/subsystem=datasources/xa-data-source="jdbc/USM2":write-attribute(name=password,value=$usmPass)
+/subsystem=datasources/xa-data-source="jdbc/USM2":write-attribute(name=min-pool-size,value=2)
+/subsystem=datasources/xa-data-source="jdbc/USM2":write-attribute(name=initial-pool-size,value=2)
+/subsystem=datasources/xa-data-source="jdbc/USM2":write-attribute(name=max-pool-size,value=20)
+/subsystem=datasources/xa-data-source="jdbc/USM2":write-attribute(name=pool-prefill,value=true)
+/subsystem=datasources/xa-data-source="jdbc/USM2":write-attribute(name=prepared-statements-cache-size,value=32)
+/subsystem=datasources/xa-data-source="jdbc/USM2":write-attribute(name=track-statements,value=nowarn)
+/subsystem=datasources/xa-data-source="jdbc/USM2":write-attribute(name=valid-connection-checker-class-name,value=org.jboss.jca.adapters.jdbc.extensions.postgres.PostgreSQLValidConnectionChecker)
+/subsystem=datasources/xa-data-source="jdbc/USM2":write-attribute(name=exception-sorter-class-name,value=org.jboss.jca.adapters.jdbc.extensions.postgres.PostgreSQLExceptionSorter)
+
+# add data source uvms_spatial
+/subsystem=datasources/xa-data-source="uvms_spatial":add(jndi-name="java:jboss/datasources/uvms_spatial",driver-name="postgresql",enabled="true", use-ccm="true",statistics-enabled="false")
+/subsystem=datasources/xa-data-source="uvms_spatial"/xa-datasource-properties=ServerName:add(value=$postgresServerURL)
+/subsystem=datasources/xa-data-source="uvms_spatial"/xa-datasource-properties=PortNumber:add(value=$postgresServerPort)
+/subsystem=datasources/xa-data-source="uvms_spatial"/xa-datasource-properties=DatabaseName:add(value=$postgresServerDatabase)
+/subsystem=datasources/xa-data-source="uvms_spatial":write-attribute(name=user-name,value=spatial)
+/subsystem=datasources/xa-data-source="uvms_spatial":write-attribute(name=password,value=$spatialPass)
+/subsystem=datasources/xa-data-source="uvms_spatial":write-attribute(name=min-pool-size,value=2)
+/subsystem=datasources/xa-data-source="uvms_spatial":write-attribute(name=initial-pool-size,value=2)
+/subsystem=datasources/xa-data-source="uvms_spatial":write-attribute(name=max-pool-size,value=20)
+/subsystem=datasources/xa-data-source="uvms_spatial":write-attribute(name=pool-prefill,value=true)
+/subsystem=datasources/xa-data-source="uvms_spatial":write-attribute(name=prepared-statements-cache-size,value=32)
+/subsystem=datasources/xa-data-source="uvms_spatial":write-attribute(name=track-statements,value=nowarn)
+/subsystem=datasources/xa-data-source="uvms_spatial":write-attribute(name=valid-connection-checker-class-name,value=org.jboss.jca.adapters.jdbc.extensions.postgres.PostgreSQLValidConnectionChecker)
+/subsystem=datasources/xa-data-source="uvms_spatial":write-attribute(name=exception-sorter-class-name,value=org.jboss.jca.adapters.jdbc.extensions.postgres.PostgreSQLExceptionSorter)
+
+# add data source uvms_reporting
+/subsystem=datasources/xa-data-source="uvms_reporting":add(jndi-name="java:jboss/datasources/uvms_reporting",driver-name="postgresql",enabled="true", use-ccm="true",statistics-enabled="false")
+/subsystem=datasources/xa-data-source="uvms_reporting"/xa-datasource-properties=ServerName:add(value=$postgresServerURL)
+/subsystem=datasources/xa-data-source="uvms_reporting"/xa-datasource-properties=PortNumber:add(value=$postgresServerPort)
+/subsystem=datasources/xa-data-source="uvms_reporting"/xa-datasource-properties=DatabaseName:add(value=$postgresServerDatabase)
+/subsystem=datasources/xa-data-source="uvms_reporting":write-attribute(name=user-name,value=reporting)
+/subsystem=datasources/xa-data-source="uvms_reporting":write-attribute(name=password,value=$reportingPass)
+/subsystem=datasources/xa-data-source="uvms_reporting":write-attribute(name=min-pool-size,value=2)
+/subsystem=datasources/xa-data-source="uvms_reporting":write-attribute(name=initial-pool-size,value=2)
+/subsystem=datasources/xa-data-source="uvms_reporting":write-attribute(name=max-pool-size,value=20)
+/subsystem=datasources/xa-data-source="uvms_reporting":write-attribute(name=pool-prefill,value=true)
+/subsystem=datasources/xa-data-source="uvms_reporting":write-attribute(name=prepared-statements-cache-size,value=32)
+/subsystem=datasources/xa-data-source="uvms_reporting":write-attribute(name=track-statements,value=nowarn)
+/subsystem=datasources/xa-data-source="uvms_reporting":write-attribute(name=valid-connection-checker-class-name,value=org.jboss.jca.adapters.jdbc.extensions.postgres.PostgreSQLValidConnectionChecker)
+/subsystem=datasources/xa-data-source="uvms_reporting":write-attribute(name=exception-sorter-class-name,value=org.jboss.jca.adapters.jdbc.extensions.postgres.PostgreSQLExceptionSorter)
+
+# add data source uvms_movementrules
+/subsystem=datasources/xa-data-source="jdbc/uvms_movementrules":add(jndi-name="java:/jdbc/uvms_movementrules",driver-name="postgresql",enabled="true", use-ccm="true",statistics-enabled="false")
+/subsystem=datasources/xa-data-source="jdbc/uvms_movementrules"/xa-datasource-properties=ServerName:add(value=$postgresServerURL)
+/subsystem=datasources/xa-data-source="jdbc/uvms_movementrules"/xa-datasource-properties=PortNumber:add(value=$postgresServerPort)
+/subsystem=datasources/xa-data-source="jdbc/uvms_movementrules"/xa-datasource-properties=DatabaseName:add(value=$postgresServerDatabase)
+/subsystem=datasources/xa-data-source="jdbc/uvms_movementrules":write-attribute(name=user-name,value=movementrules)
+/subsystem=datasources/xa-data-source="jdbc/uvms_movementrules":write-attribute(name=password,value=$movementRulesPass)
+/subsystem=datasources/xa-data-source="jdbc/uvms_movementrules":write-attribute(name=min-pool-size,value=2)
+/subsystem=datasources/xa-data-source="jdbc/uvms_movementrules":write-attribute(name=initial-pool-size,value=2)
+/subsystem=datasources/xa-data-source="jdbc/uvms_movementrules":write-attribute(name=max-pool-size,value=20)
+/subsystem=datasources/xa-data-source="jdbc/uvms_movementrules":write-attribute(name=pool-prefill,value=true)
+/subsystem=datasources/xa-data-source="jdbc/uvms_movementrules":write-attribute(name=prepared-statements-cache-size,value=32)
+/subsystem=datasources/xa-data-source="jdbc/uvms_movementrules":write-attribute(name=track-statements,value=nowarn)
+/subsystem=datasources/xa-data-source="jdbc/uvms_movementrules":write-attribute(name=valid-connection-checker-class-name,value=org.jboss.jca.adapters.jdbc.extensions.postgres.PostgreSQLValidConnectionChecker)
+/subsystem=datasources/xa-data-source="jdbc/uvms_movementrules":write-attribute(name=exception-sorter-class-name,value=org.jboss.jca.adapters.jdbc.extensions.postgres.PostgreSQLExceptionSorter)
+
+# add data source uvms_activity
+/subsystem=datasources/xa-data-source="uvms_activity":add(jndi-name="java:jboss/datasources/uvms_activity",driver-name="postgresql",enabled="true", use-ccm="true",statistics-enabled="false")
+/subsystem=datasources/xa-data-source="uvms_activity"/xa-datasource-properties=ServerName:add(value=$postgresServerURL)
+/subsystem=datasources/xa-data-source="uvms_activity"/xa-datasource-properties=PortNumber:add(value=$postgresServerPort)
+/subsystem=datasources/xa-data-source="uvms_activity"/xa-datasource-properties=DatabaseName:add(value=$postgresServerDatabase)
+/subsystem=datasources/xa-data-source="uvms_activity":write-attribute(name=user-name,value=activity)
+/subsystem=datasources/xa-data-source="uvms_activity":write-attribute(name=password,value=$activityPass)
+/subsystem=datasources/xa-data-source="uvms_activity":write-attribute(name=min-pool-size,value=2)
+/subsystem=datasources/xa-data-source="uvms_activity":write-attribute(name=initial-pool-size,value=2)
+/subsystem=datasources/xa-data-source="uvms_activity":write-attribute(name=max-pool-size,value=20)
+/subsystem=datasources/xa-data-source="uvms_activity":write-attribute(name=pool-prefill,value=true)
+/subsystem=datasources/xa-data-source="uvms_activity":write-attribute(name=prepared-statements-cache-size,value=32)
+/subsystem=datasources/xa-data-source="uvms_activity":write-attribute(name=track-statements,value=nowarn)
+/subsystem=datasources/xa-data-source="uvms_activity":write-attribute(name=valid-connection-checker-class-name,value=org.jboss.jca.adapters.jdbc.extensions.postgres.PostgreSQLValidConnectionChecker)
+/subsystem=datasources/xa-data-source="uvms_activity":write-attribute(name=exception-sorter-class-name,value=org.jboss.jca.adapters.jdbc.extensions.postgres.PostgreSQLExceptionSorter)
+
+# add data source uvms_mdr
+/subsystem=datasources/xa-data-source="uvms_mdr":add(jndi-name="java:jboss/datasources/uvms_mdr",driver-name="postgresql",enabled="true", use-ccm="true",statistics-enabled="false")
+/subsystem=datasources/xa-data-source="uvms_mdr"/xa-datasource-properties=ServerName:add(value=$postgresServerURL)
+/subsystem=datasources/xa-data-source="uvms_mdr"/xa-datasource-properties=PortNumber:add(value=$postgresServerPort)
+/subsystem=datasources/xa-data-source="uvms_mdr"/xa-datasource-properties=DatabaseName:add(value=$postgresServerDatabase)
+/subsystem=datasources/xa-data-source="uvms_mdr":write-attribute(name=user-name,value=mdr)
+/subsystem=datasources/xa-data-source="uvms_mdr":write-attribute(name=password,value=$mdrPass)
+/subsystem=datasources/xa-data-source="uvms_mdr":write-attribute(name=min-pool-size,value=2)
+/subsystem=datasources/xa-data-source="uvms_mdr":write-attribute(name=initial-pool-size,value=2)
+/subsystem=datasources/xa-data-source="uvms_mdr":write-attribute(name=max-pool-size,value=20)
+/subsystem=datasources/xa-data-source="uvms_mdr":write-attribute(name=pool-prefill,value=true)
+/subsystem=datasources/xa-data-source="uvms_mdr":write-attribute(name=prepared-statements-cache-size,value=32)
+/subsystem=datasources/xa-data-source="uvms_mdr":write-attribute(name=track-statements,value=nowarn)
+/subsystem=datasources/xa-data-source="uvms_mdr":write-attribute(name=valid-connection-checker-class-name,value=org.jboss.jca.adapters.jdbc.extensions.postgres.PostgreSQLValidConnectionChecker)
+/subsystem=datasources/xa-data-source="uvms_mdr":write-attribute(name=exception-sorter-class-name,value=org.jboss.jca.adapters.jdbc.extensions.postgres.PostgreSQLExceptionSorter)
+
+# add data source uvms_sales
+/subsystem=datasources/xa-data-source="uvms_sales":add(jndi-name="java:jboss/datasources/uvms_sales",driver-name="postgresql",enabled="true", use-ccm="true",statistics-enabled="false")
+/subsystem=datasources/xa-data-source="uvms_sales"/xa-datasource-properties=ServerName:add(value=$postgresServerURL)
+/subsystem=datasources/xa-data-source="uvms_sales"/xa-datasource-properties=PortNumber:add(value=$postgresServerPort)
+/subsystem=datasources/xa-data-source="uvms_sales"/xa-datasource-properties=DatabaseName:add(value=$postgresServerDatabase)
+/subsystem=datasources/xa-data-source="uvms_sales":write-attribute(name=user-name,value=sales)
+/subsystem=datasources/xa-data-source="uvms_sales":write-attribute(name=password,value=$salesPass)
+/subsystem=datasources/xa-data-source="uvms_sales":write-attribute(name=min-pool-size,value=2)
+/subsystem=datasources/xa-data-source="uvms_sales":write-attribute(name=initial-pool-size,value=2)
+/subsystem=datasources/xa-data-source="uvms_sales":write-attribute(name=max-pool-size,value=20)
+/subsystem=datasources/xa-data-source="uvms_sales":write-attribute(name=pool-prefill,value=true)
+/subsystem=datasources/xa-data-source="uvms_sales":write-attribute(name=prepared-statements-cache-size,value=32)
+/subsystem=datasources/xa-data-source="uvms_sales":write-attribute(name=track-statements,value=nowarn)
+/subsystem=datasources/xa-data-source="uvms_sales":write-attribute(name=valid-connection-checker-class-name,value=org.jboss.jca.adapters.jdbc.extensions.postgres.PostgreSQLValidConnectionChecker)
+/subsystem=datasources/xa-data-source="uvms_sales":write-attribute(name=exception-sorter-class-name,value=org.jboss.jca.adapters.jdbc.extensions.postgres.PostgreSQLExceptionSorter)
+
+# add data source uvms_config
+/subsystem=datasources/xa-data-source="jdbc/uvms_config":add(jndi-name="java:/jdbc/uvms_config",driver-name="postgresql",enabled="true", use-ccm="true",statistics-enabled="false")
+/subsystem=datasources/xa-data-source="jdbc/uvms_config"/xa-datasource-properties=ServerName:add(value=$postgresServerURL)
+/subsystem=datasources/xa-data-source="jdbc/uvms_config"/xa-datasource-properties=PortNumber:add(value=$postgresServerPort)
+/subsystem=datasources/xa-data-source="jdbc/uvms_config"/xa-datasource-properties=DatabaseName:add(value=$postgresServerDatabase)
+/subsystem=datasources/xa-data-source="jdbc/uvms_config":write-attribute(name=user-name,value=config)
+/subsystem=datasources/xa-data-source="jdbc/uvms_config":write-attribute(name=password,value=$configPass)
+/subsystem=datasources/xa-data-source="jdbc/uvms_config":write-attribute(name=min-pool-size,value=2)
+/subsystem=datasources/xa-data-source="jdbc/uvms_config":write-attribute(name=initial-pool-size,value=2)
+/subsystem=datasources/xa-data-source="jdbc/uvms_config":write-attribute(name=max-pool-size,value=20)
+/subsystem=datasources/xa-data-source="jdbc/uvms_config":write-attribute(name=pool-prefill,value=true)
+/subsystem=datasources/xa-data-source="jdbc/uvms_config":write-attribute(name=prepared-statements-cache-size,value=32)
+/subsystem=datasources/xa-data-source="jdbc/uvms_config":write-attribute(name=track-statements,value=nowarn)
+/subsystem=datasources/xa-data-source="jdbc/uvms_config":write-attribute(name=valid-connection-checker-class-name,value=org.jboss.jca.adapters.jdbc.extensions.postgres.PostgreSQLValidConnectionChecker)
+/subsystem=datasources/xa-data-source="jdbc/uvms_config":write-attribute(name=exception-sorter-class-name,value=org.jboss.jca.adapters.jdbc.extensions.postgres.PostgreSQLExceptionSorter)
+
+# add data source uvms_subscription
+/subsystem=datasources/xa-data-source="uvms_subscription":add(jndi-name="java:jboss/datasources/uvms_subscription",driver-name="postgresql",enabled="true", use-ccm="true",statistics-enabled="false")
+/subsystem=datasources/xa-data-source="uvms_subscription"/xa-datasource-properties=ServerName:add(value=$postgresServerURL)
+/subsystem=datasources/xa-data-source="uvms_subscription"/xa-datasource-properties=PortNumber:add(value=$postgresServerPort)
+/subsystem=datasources/xa-data-source="uvms_subscription"/xa-datasource-properties=DatabaseName:add(value=$postgresServerDatabase)
+/subsystem=datasources/xa-data-source="uvms_subscription":write-attribute(name=user-name,value=subscription)
+/subsystem=datasources/xa-data-source="uvms_subscription":write-attribute(name=password,value=$subscriptionPass)
+/subsystem=datasources/xa-data-source="uvms_subscription":write-attribute(name=min-pool-size,value=2)
+/subsystem=datasources/xa-data-source="uvms_subscription":write-attribute(name=initial-pool-size,value=2)
+/subsystem=datasources/xa-data-source="uvms_subscription":write-attribute(name=max-pool-size,value=20)
+/subsystem=datasources/xa-data-source="uvms_subscription":write-attribute(name=pool-prefill,value=true)
+/subsystem=datasources/xa-data-source="uvms_subscription":write-attribute(name=prepared-statements-cache-size,value=32)
+/subsystem=datasources/xa-data-source="uvms_subscription":write-attribute(name=track-statements,value=nowarn)
+/subsystem=datasources/xa-data-source="uvms_subscription":write-attribute(name=valid-connection-checker-class-name,value=org.jboss.jca.adapters.jdbc.extensions.postgres.PostgreSQLValidConnectionChecker)
+/subsystem=datasources/xa-data-source="uvms_subscription":write-attribute(name=exception-sorter-class-name,value=org.jboss.jca.adapters.jdbc.extensions.postgres.PostgreSQLExceptionSorter)
+
+run-batch
+:reload
+
