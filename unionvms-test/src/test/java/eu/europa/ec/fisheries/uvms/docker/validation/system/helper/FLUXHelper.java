@@ -180,7 +180,7 @@ public class FLUXHelper extends AbstractHelper {
 
         BindingProvider bp = (BindingProvider) bridgeConnectorPortType;
         bp.getRequestContext().put(BindingProvider.ENDPOINT_ADDRESS_PROPERTY,
-                getBaseUrl() + "/movement-service/MovementPositionService/FluxMovementPositionReceiverBean");
+                getBaseUrl() + "movement-service/MovementPositionService/FluxMovementPositionReceiverBean");
         return bridgeConnectorPortType;
     }
     

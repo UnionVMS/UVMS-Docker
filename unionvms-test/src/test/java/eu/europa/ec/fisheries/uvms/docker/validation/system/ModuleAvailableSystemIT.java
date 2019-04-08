@@ -47,7 +47,7 @@ public class ModuleAvailableSystemIT extends AbstractRest {
 				.getStatusLine().getStatusCode());
 		assertEquals(HttpStatus.SC_OK, Request.Get(getBaseUrl() + "user/monitoring").execute().returnResponse()
 				.getStatusLine().getStatusCode());		
-		assertEquals(HttpStatus.SC_FORBIDDEN, Request.Get(getBaseUrl() + "/usm-administration/rest").execute()
+		assertEquals(HttpStatus.SC_FORBIDDEN, Request.Get(getBaseUrl() + "usm-administration/rest").execute()
 				.returnResponse().getStatusLine().getStatusCode());
 	}
 
