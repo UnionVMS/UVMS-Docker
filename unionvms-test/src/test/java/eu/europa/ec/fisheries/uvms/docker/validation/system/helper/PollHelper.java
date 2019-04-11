@@ -57,10 +57,7 @@ public class PollHelper {
         return JAXBMarshaller.unmarshallString(message.getText(), SetCommandRequest.class);
     }
 
-    public static void ackPoll(String messageId, String pollId, ExchangeLogStatusTypeType status) throws Exception {
-        ackPoll(messageId, pollId, status, "");
-    }
-    
+
     public static void ackPoll(String messageId, String pollId, ExchangeLogStatusTypeType status, String unsentMessageId) throws Exception {
         AcknowledgeType setCommandAck = ExchangePluginResponseMapper.mapToAcknowlegeType(messageId, AcknowledgeTypeType.OK);
         setCommandAck.setUnsentMessageGuid(unsentMessageId);
