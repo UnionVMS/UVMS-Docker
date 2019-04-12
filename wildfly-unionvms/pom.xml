@@ -52,6 +52,13 @@
 			<version>${unionvms.project.unionvms.web.version}</version>
 		</dependency>
 
+        <dependency>
+            <groupId>eu.europa.ec.fisheries.uvms</groupId>
+            <artifactId>vms-web</artifactId>
+            <type>war</type>
+            <version>${unionvms.project.vms.web.version}</version>
+        </dependency>
+
 		<dependency>
 			<groupId>eu.europa.ec.fisheries.uvms.mapfish.print</groupId>
 			<artifactId>mapfish-print</artifactId>
