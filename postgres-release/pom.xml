@@ -63,6 +63,12 @@
 				</exclusion>
 			</exclusions>			
 		</dependency>
+    <dependency>
+      <groupId>eu.europa.ec.fisheries.uvms.exchange</groupId>
+      <artifactId>liquibase</artifactId>
+      <version>${unionvms.project.exchange.module}</version>
+      <type>zip</type>
+    </dependency>
 		<dependency>
 			<groupId>eu.europa.ec.fisheries.uvms.movement</groupId>
 			<artifactId>liquibase</artifactId>
