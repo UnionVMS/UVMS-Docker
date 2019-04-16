@@ -155,7 +155,7 @@
 		</dependency>
 		<dependency>
 			<groupId>eu.europa.ec.fisheries.uvms.reporting</groupId>
-			<artifactId>liquibase</artifactId>
+			<artifactId>reporting-liquibase</artifactId>
 			<type>sql</type>
 			<exclusions>
 				<exclusion>
