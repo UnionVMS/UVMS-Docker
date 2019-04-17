@@ -59,16 +59,14 @@
 
 		<dependency>
 			<groupId>eu.europa.ec.fisheries.uvms.mapfish.print</groupId>
-			<artifactId>mapfish-print</artifactId>
+			<artifactId>print-servlet</artifactId>
 			<type>war</type>
-			<version>${unionvms.project.mapfishprint.version}</version>
 		</dependency>
 		
 		<dependency>
 			<groupId>eu.europa.ec.fisheries.uvms.geoserver.web.overlay</groupId>			
 			<artifactId>gs-web-app</artifactId>
 			<type>war</type>
-			<version>${unionvms.project.geoserver.version}</version>
 		</dependency>
 		
 
@@ -77,55 +75,46 @@
 			<groupId>eu.europa.ec.fisheries.uvms.asset</groupId>
 			<artifactId>asset-module</artifactId>
 			<type>ear</type>
-			<version>${unionvms.project.asset.module}</version>
 		</dependency>
 		<dependency>
 			<groupId>eu.europa.ec.fisheries.uvms.audit</groupId>
 			<artifactId>audit-module</artifactId>
 			<type>ear</type>
-			<version>${unionvms.project.audit.module}</version>
 		</dependency>
 		<dependency>
 			<groupId>eu.europa.ec.fisheries.uvms.config</groupId>
 			<artifactId>config-module</artifactId>
 			<type>ear</type>
-			<version>${unionvms.project.config.module}</version>
 		</dependency>
 		<dependency>
 			<groupId>eu.europa.ec.fisheries.uvms.exchange</groupId>
 			<artifactId>exchange-module</artifactId>
 			<type>ear</type>
-			<version>${unionvms.project.exchange.module}</version>
 		</dependency>
 		<dependency>
 			<groupId>eu.europa.ec.fisheries.uvms.movement</groupId>
 			<artifactId>movement-module</artifactId>
 			<type>ear</type>
-			<version>${unionvms.project.movement.module}</version>
 		</dependency>
 		<dependency>
 			<groupId>eu.europa.ec.fisheries.uvms.movement-rules</groupId>
 			<artifactId>movement-rules-module</artifactId>
 			<type>ear</type>
-			<version>${unionvms.project.movementrules.module}</version>
 		</dependency>
 		<dependency>
 			<groupId>eu.europa.ec.fisheries.uvms.spatial</groupId>
 			<artifactId>spatial-module</artifactId>
 			<type>ear</type>
-			<version>${unionvms.project.spatial.module}</version>
 		</dependency>
 		<dependency>
 			<groupId>eu.europa.ec.fisheries.uvms.user</groupId>
 			<artifactId>user-module</artifactId>
 			<type>ear</type>
-			<version>${unionvms.project.user.module}</version>
 		</dependency>
 		<dependency>
 			<groupId>eu.europa.ec.fisheries.uvms.reporting</groupId>
 			<artifactId>reporting-module</artifactId>
 			<type>ear</type>
-			<version>${unionvms.project.reporting.module}</version>
 		</dependency>
 
 		<!-- plugin modules -->
@@ -133,25 +122,21 @@
 			<groupId>eu.europa.ec.fisheries.uvms.plugins</groupId>
 			<artifactId>inmarsat-module</artifactId>
   			<type>ear</type>
-			<version>${unionvms.project.plugins.inmarsat}</version>
 		</dependency>
 		<dependency>
 			<groupId>eu.europa.ec.fisheries.uvms.plugins</groupId>
 			<artifactId>naf-module</artifactId>
 			<type>ear</type>
-			<version>${unionvms.project.plugins.naf}</version>
 		</dependency>
 		<dependency>
 			<groupId>eu.europa.ec.fisheries.uvms.plugins</groupId>
 			<artifactId>flux-movement-plugin-module</artifactId>
 			<type>ear</type>
-			<version>${unionvms.project.plugins.flux}</version>
 		</dependency>
 		<dependency>
 			<groupId>eu.europa.ec.fisheries.uvms.plugins.iridium</groupId>
 			<artifactId>siriusone-module</artifactId>
 			<type>ear</type>
-			<version>${unionvms.project.plugins.siriusone}</version>
 		</dependency>
 	</dependencies>
 	<build>
@@ -305,7 +290,7 @@
 										<zipfileset dir="${project.basedir}/target/dockerfile/jboss-deployment/web-app" includes="*.xml" prefix="WEB-INF" />
 									</jar>
 		
-									<jar destfile="${project.basedir}/target/dockerfile/deployments/mapfish-print-${unionvms.project.mapfishprint.version}.war" update="true">
+									<jar destfile="${project.basedir}/target/dockerfile/deployments/print-servlet-${unionvms.project.mapfishprint.version}.war" update="true">
 										<zipfileset dir="${project.basedir}/target/dockerfile/jboss-deployment/web-app" includes="*.xml" prefix="WEB-INF" />
 									</jar>
 									
@@ -335,7 +320,7 @@
 								</else>
 							</if>
 								
-							<move file="${project.basedir}/target/dockerfile/deployments/mapfish-print-${unionvms.project.mapfishprint.version}.war" tofile="${project.basedir}/target/dockerfile/deployments/mapfish-print.war" />
+							<move file="${project.basedir}/target/dockerfile/deployments/print-servlet-${unionvms.project.mapfishprint.version}.war" tofile="${project.basedir}/target/dockerfile/deployments/mapfish-print.war" />
 							<move file="${project.basedir}/target/dockerfile/deployments/gs-web-app-${unionvms.project.geoserver.version}.war" tofile="${project.basedir}/target/dockerfile/deployments/geoserver.war" />
 							<move file="${project.basedir}/target/dockerfile/deployments/hawtio-wildfly-${unionvms.project.hawtio-wildfly}.war" tofile="${project.basedir}/target/dockerfile/deployments/hawtio-wildfly.war" />
 
