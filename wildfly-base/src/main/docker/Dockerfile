@@ -69,6 +69,13 @@ RUN echo "@edge http://nl.alpinelinux.org/alpine/edge/main" >> /etc/apk/reposito
     apk del tzdata && \
     rm -rf /var/cache/apk/*
 
+# NPE in sun.awt.FontConfiguration.getVersion(...), see https://github.com/AdoptOpenJDK/openjdk-docker/issues/75
+RUN apk add --no-cache fontconfig
+RUN ln -s /usr/lib/libfontconfig.so.1 /usr/lib/libfontconfig.so && \
+    ln -s /lib/libuuid.so.1 /usr/lib/libuuid.so.1 && \
+    ln -s /lib/libc.musl-x86_64.so.1 /usr/lib/libc.musl-x86_64.so.1
+ENV LD_LIBRARY_PATH /usr/lib
+
 USER jboss
 
 RUN $JBOSS_HOME/bin/add-user.sh -u 'admin' -p 'Wildfly4ever!'
