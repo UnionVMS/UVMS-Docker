@@ -15,46 +15,44 @@ package eu.europa.ec.fisheries.uvms.docker.validation.user;
 
 import java.io.IOException;
 import java.util.Map;
+import javax.ws.rs.client.Entity;
+import javax.ws.rs.core.HttpHeaders;
+import javax.ws.rs.core.MediaType;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.fluent.Request;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import eu.europa.ec.fisheries.uvms.docker.validation.common.AbstractRest;
+import eu.europa.ec.fisheries.uvms.docker.validation.common.AuthenticationRequest;
+import eu.europa.ec.fisheries.uvms.docker.validation.common.AuthenticationResponse;
+import eu.europa.ec.fisheries.uvms.docker.validation.user.dto.ChallengeResponse;
 
 /**
  * UserHelper
  */
 public class UserHelper extends AbstractRest {
 
-	private ObjectMapper MAPPER = new ObjectMapper();
-
-	public Map<String, Object> authenticate(String user, String password) throws ClientProtocolException, IOException {
+	public static AuthenticationResponse authenticate(String user, String password) throws ClientProtocolException, IOException {
+	    AuthenticationRequest userPwd = new AuthenticationRequest(user,password);
 		
-		UserPwd userPwd = new UserPwd(user,password);
-		String jsonUserPwd = MAPPER.writeValueAsString(userPwd);
-		final HttpResponse response = Request.Post(getBaseUrl() + "usm-administration/rest/authenticate")
-				.setHeader("Content-Type", "application/json")
-				.bodyByteArray(jsonUserPwd.getBytes()).execute()
-				.returnResponse();
-
-		assertEquals(HttpStatus.SC_OK, response.getStatusLine().getStatusCode());
-		final Map<String, Object> data = getJsonMap(response);
-		return data;
-
+	    return getWebTarget()
+                .path("usm-administration/rest/authenticate")
+                .request(MediaType.APPLICATION_JSON)
+                .post(Entity.json(userPwd), AuthenticationResponse.class);
 	}
 	
 	
-	public Map<String, Object> getChallenge(String jwtoken) throws ClientProtocolException, IOException{
+	public static ChallengeResponse getChallenge(String jwtoken) throws ClientProtocolException, IOException{
+		ChallengeResponse challengeResponse = getWebTarget()
+                .path("usm-administration/rest/challenge")
+                .request(MediaType.APPLICATION_JSON)
+                .header(HttpHeaders.AUTHORIZATION, jwtoken)
+                .get(ChallengeResponse.class);
 		
-		final HttpResponse response = Request.Get(getBaseUrl() + "usm-administration/rest/challenge")
-				.setHeader("Content-Type", "application/json").setHeader("authorization", jwtoken).execute()
-				.returnResponse();
-		assertEquals(HttpStatus.SC_OK, response.getStatusLine().getStatusCode());
-		final Map<String, Object> data = getJsonMap(response);
-		assertNotNull(data.get("challenge"));
-		assertEquals("vms_admin_com", data.get("userName"));
-		return data;
+		assertNotNull(challengeResponse.getChallenge());
+		assertEquals("vms_admin_com", challengeResponse.getUserName());
+		return challengeResponse;
 	}
 	
 
