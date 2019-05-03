@@ -6,6 +6,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.Entity;
@@ -267,5 +268,14 @@ public abstract class AbstractRest extends Assert {
 				final Map<String, Object> data = OBJECT_MAPPER.readValue(response.getEntity().getContent(), type);
 				return data;
 			}
+
+	protected static String generateARandomStringWithMaxLength(int len) {
+        String ret = "";
+        for (int i = 0; i < len; i++) {
+            int val = new Random().nextInt(10);
+            ret += String.valueOf(val);
+        }
+        return ret;
+    }
 
 }

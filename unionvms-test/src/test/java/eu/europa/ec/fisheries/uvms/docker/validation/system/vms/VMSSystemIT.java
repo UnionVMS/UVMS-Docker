@@ -17,6 +17,7 @@ import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 import javax.jms.JMSException;
 import javax.jms.TextMessage;
 import org.junit.After;
@@ -24,6 +25,7 @@ import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import eu.europa.ec.fisheries.schema.exchange.movement.v1.MovementType;
+import eu.europa.ec.fisheries.schema.exchange.movement.v1.RecipientInfoType;
 import eu.europa.ec.fisheries.schema.exchange.plugin.v1.SetReportRequest;
 import eu.europa.ec.fisheries.schema.movementrules.customrule.v1.ActionType;
 import eu.europa.ec.fisheries.schema.movementrules.customrule.v1.ConditionType;
@@ -41,6 +43,9 @@ import eu.europa.ec.fisheries.uvms.docker.validation.system.helper.CustomRuleBui
 import eu.europa.ec.fisheries.uvms.docker.validation.system.helper.CustomRuleHelper;
 import eu.europa.ec.fisheries.uvms.docker.validation.system.helper.FLUXHelper;
 import eu.europa.ec.fisheries.uvms.docker.validation.system.helper.VMSSystemHelper;
+import eu.europa.ec.fisheries.uvms.docker.validation.user.UserHelper;
+import eu.europa.ec.fisheries.uvms.docker.validation.user.dto.EndPoint;
+import eu.europa.ec.fisheries.uvms.docker.validation.user.dto.Organisation;
 import eu.europa.ec.fisheries.uvms.exchange.model.mapper.JAXBMarshaller;
 
 public class VMSSystemIT extends AbstractRest {
@@ -293,5 +298,33 @@ public class VMSSystemIT extends AbstractRest {
         
         CustomRuleHelper.assertRuleNotTriggered(createdCustomRuleWithInterval);
         CustomRuleHelper.assertRuleTriggered(createdCustomRuleWithoutInterval, timestamp);
+    }
+    
+    @Test
+    public void sendToNafEndpointTest() throws Exception {
+        String nation = generateARandomStringWithMaxLength(9);
+        String uri = "Test URI" + generateARandomStringWithMaxLength(10);
+        String name = "NAF";
+
+        Organisation organisation = UserHelper.getBasicOrganisation();
+        organisation.setNation(nation);
+        UserHelper.createOrganisation(organisation);
+        EndPoint endpoint = new EndPoint();
+        endpoint.setName(name);
+        endpoint.setURI(uri);
+        endpoint.setStatus("E");
+        endpoint.setOrganisationName(organisation.getName());
+        UserHelper.createEndpoint(endpoint);
+
+        SetReportRequest report = VMSSystemHelper.triggerBasicRuleAndSendToNAF(nation);
+        assertThat(report, is(notNullValue()));
+        assertThat(report.getReport(), is(notNullValue()));
+        
+        List<RecipientInfoType> recipientInfo = report.getReport().getRecipientInfo();
+        
+        assertThat(recipientInfo.size(), is(1));
+        RecipientInfoType recipientInfoType = recipientInfo.get(0);
+        assertThat(recipientInfoType.getKey(), is(name));
+        assertThat(recipientInfoType.getValue(), is(uri));
     }
 }

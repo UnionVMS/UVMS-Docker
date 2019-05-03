@@ -50,6 +50,7 @@ public class VMSSystemHelper {
     private static final long TIMEOUT = 10000;
 
     public static final String FLUX_SELECTOR = "ServiceName='eu.europa.ec.fisheries.uvms.plugins.flux.movement'";
+    public static final String NAF_SELECTOR = "ServiceName='eu.europa.ec.fisheries.uvms.plugins.naf'";
     public static final String INMARSAT_SELECTOR = "ServiceName='eu.europa.ec.fisheries.uvms.plugins.inmarsat'";
     public static String emailSelector = "ServiceName='" + SERVICE_NAME + "'";
     public static String emailPluginName = "TEST EMAIL";
@@ -57,7 +58,11 @@ public class VMSSystemHelper {
     public static SetReportRequest triggerBasicRuleAndSendToFlux(String fluxEndpoint) throws Exception {
         return triggerBasicRuleWithAction(ActionType.SEND_TO_FLUX, fluxEndpoint, SetReportRequest.class, FLUX_SELECTOR);
     }
-    
+
+    public static SetReportRequest triggerBasicRuleAndSendToNAF(String nation) throws Exception {
+        return triggerBasicRuleWithAction(ActionType.SEND_TO_NAF, nation, SetReportRequest.class, NAF_SELECTOR);
+    }
+
     public static SetCommandRequest triggerBasicRuleAndSendEmail(String email) throws Exception {
         return triggerBasicRuleWithAction(ActionType.EMAIL, email, SetCommandRequest.class, emailSelector);
     }

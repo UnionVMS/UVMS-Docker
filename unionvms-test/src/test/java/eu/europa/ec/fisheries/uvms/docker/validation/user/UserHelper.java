@@ -14,19 +14,18 @@ copy of the GNU General Public License along with the IFDM Suite. If not, see <h
 package eu.europa.ec.fisheries.uvms.docker.validation.user;
 
 import java.io.IOException;
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.List;
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
-import org.apache.http.HttpResponse;
-import org.apache.http.HttpStatus;
 import org.apache.http.client.ClientProtocolException;
-import org.apache.http.client.fluent.Request;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import eu.europa.ec.fisheries.uvms.docker.validation.common.AbstractRest;
 import eu.europa.ec.fisheries.uvms.docker.validation.common.AuthenticationRequest;
 import eu.europa.ec.fisheries.uvms.docker.validation.common.AuthenticationResponse;
 import eu.europa.ec.fisheries.uvms.docker.validation.user.dto.ChallengeResponse;
+import eu.europa.ec.fisheries.uvms.docker.validation.user.dto.EndPoint;
+import eu.europa.ec.fisheries.uvms.docker.validation.user.dto.Organisation;
 
 /**
  * UserHelper
@@ -55,5 +54,42 @@ public class UserHelper extends AbstractRest {
 		return challengeResponse;
 	}
 	
+	public static Organisation createOrganisation(Organisation organisation) {
+	    return getWebTarget()
+                .path("usm-administration/rest/organisations")
+                .request(MediaType.APPLICATION_JSON)
+                .header(HttpHeaders.AUTHORIZATION, getValidJwtToken())
+                .header("roleName", "AdminAllUVMS")
+                .header("scopeName", "All Vessels")
+                .post(Entity.json(organisation), Organisation.class);
+	}
 
+	public static Organisation getOrganisation(Long organisationId) {
+        return getWebTarget()
+                .path("usm-administration/rest/organisations")
+                .path(organisationId.toString())
+                .request(MediaType.APPLICATION_JSON)
+                .header(HttpHeaders.AUTHORIZATION, getValidJwtToken())
+                .header("roleName", "AdminAllUVMS")
+                .header("scopeName", "All Vessels")
+                .get(Organisation.class);
+    }
+
+	public static EndPoint createEndpoint(EndPoint endpoint) {
+        return getWebTarget()
+                .path("usm-administration/rest/endpoint")
+                .request(MediaType.APPLICATION_JSON)
+                .header(HttpHeaders.AUTHORIZATION, getValidJwtToken())
+                .header("roleName", "AdminAllUVMS")
+                .header("scopeName", "All Vessels")
+                .post(Entity.json(endpoint), EndPoint.class);
+    }
+
+    public static Organisation getBasicOrganisation() {
+        Organisation organisation = new Organisation();
+        organisation.setName("Name " + generateARandomStringWithMaxLength(10));
+        organisation.setNation("SWE");
+        organisation.setStatus("E");
+        return organisation;
+    }
 }
