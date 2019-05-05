@@ -228,14 +228,4 @@ public final class MobileTerminalTestHelper extends AbstractHelper {
 
 		return mobileTerminal;
 	}
-
-	private static String generateARandomStringWithMaxLength(int len) {
-		Random random = new Random();
-		StringBuilder ret = new StringBuilder();
-		for (int i = 0; i < len; i++) {
-			int val = random.nextInt(10);
-			ret.append(String.valueOf(val));
-		}
-		return ret.toString();
-	}
 }
