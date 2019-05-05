@@ -269,7 +269,7 @@ public abstract class AbstractRest extends Assert {
 				return data;
 			}
 
-	protected static String generateARandomStringWithMaxLength(int len) {
+	public static String generateARandomStringWithMaxLength(int len) {
         String ret = "";
         for (int i = 0; i < len; i++) {
             int val = new Random().nextInt(10);
