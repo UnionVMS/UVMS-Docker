@@ -14,8 +14,6 @@ copy of the GNU General Public License along with the IFDM Suite. If not, see <h
 package eu.europa.ec.fisheries.uvms.docker.validation.user;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
@@ -24,6 +22,7 @@ import eu.europa.ec.fisheries.uvms.docker.validation.common.AbstractRest;
 import eu.europa.ec.fisheries.uvms.docker.validation.common.AuthenticationRequest;
 import eu.europa.ec.fisheries.uvms.docker.validation.common.AuthenticationResponse;
 import eu.europa.ec.fisheries.uvms.docker.validation.user.dto.ChallengeResponse;
+import eu.europa.ec.fisheries.uvms.docker.validation.user.dto.Channel;
 import eu.europa.ec.fisheries.uvms.docker.validation.user.dto.EndPoint;
 import eu.europa.ec.fisheries.uvms.docker.validation.user.dto.Organisation;
 
@@ -83,6 +82,16 @@ public class UserHelper extends AbstractRest {
                 .header("roleName", "AdminAllUVMS")
                 .header("scopeName", "All Vessels")
                 .post(Entity.json(endpoint), EndPoint.class);
+    }
+
+	public static Channel createChannel(Channel channel) {
+        return getWebTarget()
+                .path("usm-administration/rest/channel")
+                .request(MediaType.APPLICATION_JSON)
+                .header(HttpHeaders.AUTHORIZATION, getValidJwtToken("usm_bootstrap", "password"))
+                .header("roleName", "AdminAllUVMS")
+                .header("scopeName", "All Vessels")
+                .post(Entity.json(channel), Channel.class);
     }
 
     public static Organisation getBasicOrganisation() {

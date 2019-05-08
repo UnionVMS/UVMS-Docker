@@ -44,6 +44,7 @@ import eu.europa.ec.fisheries.uvms.docker.validation.system.helper.CustomRuleHel
 import eu.europa.ec.fisheries.uvms.docker.validation.system.helper.FLUXHelper;
 import eu.europa.ec.fisheries.uvms.docker.validation.system.helper.VMSSystemHelper;
 import eu.europa.ec.fisheries.uvms.docker.validation.user.UserHelper;
+import eu.europa.ec.fisheries.uvms.docker.validation.user.dto.Channel;
 import eu.europa.ec.fisheries.uvms.docker.validation.user.dto.EndPoint;
 import eu.europa.ec.fisheries.uvms.docker.validation.user.dto.Organisation;
 import eu.europa.ec.fisheries.uvms.exchange.model.mapper.JAXBMarshaller;
@@ -301,7 +302,7 @@ public class VMSSystemIT extends AbstractRest {
     }
     
     @Test
-    public void sendToNafEndpointTest() throws Exception {
+    public void sendToExistingNafEndpointTest() throws Exception {
         String nation = generateARandomStringWithMaxLength(9);
         String uri = "Test URI" + generateARandomStringWithMaxLength(10);
         String name = "NAF";
@@ -314,9 +315,15 @@ public class VMSSystemIT extends AbstractRest {
         endpoint.setURI(uri);
         endpoint.setStatus("E");
         endpoint.setOrganisationName(organisation.getName());
-        UserHelper.createEndpoint(endpoint);
+        EndPoint createdEndpoint = UserHelper.createEndpoint(endpoint);
+        Channel channel = new Channel();
+        channel.setDataflow("NAF");
+        channel.setService("NAF");
+        channel.setPriority(1);
+        channel.setEndpointId(createdEndpoint.getEndpointId());
+        UserHelper.createChannel(channel);
 
-        SetReportRequest report = VMSSystemHelper.triggerBasicRuleAndSendToNAF(nation);
+        SetReportRequest report = VMSSystemHelper.triggerBasicRuleAndSendToNAF(organisation.getName());
         assertThat(report, is(notNullValue()));
         assertThat(report.getReport(), is(notNullValue()));
         
@@ -326,5 +333,99 @@ public class VMSSystemIT extends AbstractRest {
         RecipientInfoType recipientInfoType = recipientInfo.get(0);
         assertThat(recipientInfoType.getKey(), is(name));
         assertThat(recipientInfoType.getValue(), is(uri));
+    }
+
+    @Test
+    public void sendToNonExistingNafEndpointTest() throws Exception {
+        String nation = generateARandomStringWithMaxLength(9);
+        String uri = "Test URI" + generateARandomStringWithMaxLength(10);
+        String name = "NAF";
+
+        Organisation organisation = UserHelper.getBasicOrganisation();
+        organisation.setNation(nation);
+        UserHelper.createOrganisation(organisation);
+        EndPoint endpoint = new EndPoint();
+        endpoint.setName(name);
+        endpoint.setURI(uri);
+        endpoint.setStatus("E");
+        endpoint.setOrganisationName(organisation.getName());
+        EndPoint createdEndpoint = UserHelper.createEndpoint(endpoint);
+        Channel channel = new Channel();
+        channel.setDataflow("NOTNAF");
+        channel.setService("NOTNAF");
+        channel.setPriority(1);
+        channel.setEndpointId(createdEndpoint.getEndpointId());
+        UserHelper.createChannel(channel);
+
+        SetReportRequest report = VMSSystemHelper.triggerBasicRuleAndSendToNAF(organisation.getName());
+        assertThat(report, is(notNullValue()));
+        assertThat(report.getReport(), is(notNullValue()));
+        assertThat(report.getReport().getRecipient(), is(nation));
+
+        List<RecipientInfoType> recipientInfo = report.getReport().getRecipientInfo();
+
+        assertThat(recipientInfo.size(), is(0));
+    }
+    
+    @Test
+    public void sendToExistingFLUXEndpointTest() throws Exception {
+        String nation = generateARandomStringWithMaxLength(9);
+        String uri = "FLUX:" + generateARandomStringWithMaxLength(10);
+        String name = "FLUX";
+
+        Organisation organisation = UserHelper.getBasicOrganisation();
+        organisation.setNation(nation);
+        UserHelper.createOrganisation(organisation);
+        EndPoint endpoint = new EndPoint();
+        endpoint.setName(name);
+        endpoint.setURI(uri);
+        endpoint.setStatus("E");
+        endpoint.setOrganisationName(organisation.getName());
+        EndPoint createdEndpoint = UserHelper.createEndpoint(endpoint);
+        Channel channel = new Channel();
+        channel.setDataflow("FLUXVesselPositionMessage");
+        channel.setService("FLUX");
+        channel.setPriority(1);
+        channel.setEndpointId(createdEndpoint.getEndpointId());
+        UserHelper.createChannel(channel);
+
+        SetReportRequest report = VMSSystemHelper.triggerBasicRuleAndSendToFlux(organisation.getName());
+        assertThat(report, is(notNullValue()));
+        assertThat(report.getReport(), is(notNullValue()));
+        assertThat(report.getReport().getRecipient(), is(uri));
+        
+        List<RecipientInfoType> recipientInfo = report.getReport().getRecipientInfo();
+        assertThat(recipientInfo.size(), is(0));
+    }
+
+    @Test
+    public void sendToNonExistingFLUXEndpointTest() throws Exception {
+        String nation = generateARandomStringWithMaxLength(9);
+        String uri = "Test URI" + generateARandomStringWithMaxLength(10);
+        String name = "FLUX";
+
+        Organisation organisation = UserHelper.getBasicOrganisation();
+        organisation.setNation(nation);
+        UserHelper.createOrganisation(organisation);
+        EndPoint endpoint = new EndPoint();
+        endpoint.setName(name);
+        endpoint.setURI(uri);
+        endpoint.setStatus("E");
+        endpoint.setOrganisationName(organisation.getName());
+        EndPoint createdEndpoint = UserHelper.createEndpoint(endpoint);
+        Channel channel = new Channel();
+        channel.setDataflow("NOTFLUXVesselPositionMessage");
+        channel.setService("NOTFLUX");
+        channel.setPriority(1);
+        channel.setEndpointId(createdEndpoint.getEndpointId());
+        UserHelper.createChannel(channel);
+
+        SetReportRequest report = VMSSystemHelper.triggerBasicRuleAndSendToFlux(organisation.getName());
+        assertThat(report, is(notNullValue()));
+        assertThat(report.getReport(), is(notNullValue()));
+        assertThat(report.getReport().getRecipient(), is(nation));
+
+        List<RecipientInfoType> recipientInfo = report.getReport().getRecipientInfo();
+        assertThat(recipientInfo.size(), is(0));
     }
 }
