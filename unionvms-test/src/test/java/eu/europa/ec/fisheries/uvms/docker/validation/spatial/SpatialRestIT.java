@@ -219,7 +219,7 @@ public class SpatialRestIT extends AbstractRest {
         for (Location aeit : list) {
             control.add(aeit.getName());
         }
-        Assert.assertTrue(control.contains("Kalvö"));
+        Assert.assertTrue(control.contains("Göteborg-Ringökajen"));
     }
 
     @Test
@@ -252,10 +252,11 @@ public class SpatialRestIT extends AbstractRest {
         for (Location aeit : list) {
             control.add(aeit.getName());
         }
-        Assert.assertTrue(control.contains("Kalvö"));
+        Assert.assertTrue(control.contains("Göteborg-Ringökajen"));
     }
 
     @Test
+    @Ignore         //this functionality has been removed
     public void getFilterArea() throws Exception {
 
         AreaIdentifierType areaType = new AreaIdentifierType();
@@ -281,6 +282,7 @@ public class SpatialRestIT extends AbstractRest {
     }
 
     @Test
+    @Ignore         //this functionality has been removed
     public void getMapConfiguration() throws Exception {
 
         SpatialGetMapConfigurationRQ request = getSpatialGetMapConfigurationRQ();
@@ -370,6 +372,7 @@ public class SpatialRestIT extends AbstractRest {
     }
 
     @Test
+    @Ignore     //this functionality has been removed
     public void getEnrichmentBatch() throws Exception {
 
 

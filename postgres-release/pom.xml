@@ -131,6 +131,25 @@
 			<version>${unionvms.project.spatial.module}</version>
 			<type>zip</type>
 		</dependency>
+
+		<dependency>
+			<groupId>eu.europa.ec.fisheries.uvms.spatialSwe</groupId>
+			<artifactId>liquibase</artifactId>
+			<type>sql</type>
+			<exclusions>
+				<exclusion>
+					<groupId>com.oracle</groupId>
+					<artifactId>ojdbc6</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		<dependency>
+			<groupId>eu.europa.ec.fisheries.uvms.spatialSwe</groupId>
+			<artifactId>liquibase</artifactId>
+			<version>${unionvms.project.spatialSwe.module}</version>
+			<type>zip</type>
+		</dependency>
+
 		<dependency>
 			<groupId>eu.europa.ec.fisheries.uvms.activity</groupId>
 			<artifactId>liquibase</artifactId>

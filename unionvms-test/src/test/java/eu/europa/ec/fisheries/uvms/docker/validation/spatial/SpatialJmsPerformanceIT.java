@@ -7,10 +7,7 @@ import eu.europa.ec.fisheries.uvms.docker.validation.common.MessageHelper;
 import org.databene.contiperf.PerfTest;
 import org.databene.contiperf.Required;
 import org.databene.contiperf.junit.ContiPerfRule;
-import org.junit.AfterClass;
-import org.junit.BeforeClass;
-import org.junit.Rule;
-import org.junit.Test;
+import org.junit.*;
 import eu.europa.ec.fisheries.uvms.docker.validation.common.AbstractRest;
 import eu.europa.ec.fisheries.uvms.docker.validation.movement.LatLong;
 import eu.europa.ec.fisheries.uvms.docker.validation.movement.MovementHelper;
@@ -64,6 +61,7 @@ public class SpatialJmsPerformanceIT extends AbstractRest {
 	@Test
 	@PerfTest(threads = 2, duration = 10000)
 	@Required(max = 6900, average = 2500, percentile95 = 2500, throughput = 1)
+	@Ignore				//all jms endpoints, wit hthe exceptions of config, has been removed
 	public void createSpatialEnrichmentRequestPerformanceTest() throws Exception {
 		LatLong position = createRutt.get(ThreadLocalRandom.current().nextInt(0, 30));
 

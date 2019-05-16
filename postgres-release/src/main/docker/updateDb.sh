@@ -32,6 +32,8 @@ echo "Running usm.sql to create tables and init data"
 psql -U usm -d db71u --single-transaction -q -f /var/lib/postgresql/eu.europa.ec.fisheries.uvms.user.liquibase-${unionvms.project.user.module}.sql >/dev/null
 echo "Running spatial.sql to create tables and init data"
 psql -U spatial -d db71u --single-transaction -q -f /var/lib/postgresql/eu.europa.ec.fisheries.uvms.spatial.liquibase-${unionvms.project.spatial.module}.sql >/dev/null
+echo "Running spatialSwe.sql to create tables and init data"
+psql -U spatialSwe -d db71u --single-transaction -q -f /var/lib/postgresql/eu.europa.ec.fisheries.uvms.spatialSwe.liquibase-${unionvms.project.spatialSwe.module}.sql >/dev/null
 echo "Running mdr.sql to create tables and init data"
 psql -U mdr -d db71u --single-transaction -q -f /var/lib/postgresql/eu.europa.ec.fisheries.uvms.mdr.liquibase-${unionvms.project.mdr.module}.sql >/dev/null
 echo "Running activity.sql to create tables and init data"

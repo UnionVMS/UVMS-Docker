@@ -15,12 +15,14 @@ import javax.ws.rs.client.Entity;
 import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
 import org.hamcrest.CoreMatchers;
+import org.junit.Ignore;
 import org.junit.Test;
 import eu.europa.ec.fisheries.uvms.docker.validation.common.AbstractRest;
 
 public class SpatialImageRestIT extends AbstractRest {
     
     @Test
+    @Ignore         //This functionality has been removed
     public void renderImagesTest() {
         String response = getWebTarget()
                 .path("spatial/rest/image")

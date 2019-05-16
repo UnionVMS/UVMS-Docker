@@ -21,6 +21,8 @@ import javax.ws.rs.client.Entity;
 import javax.ws.rs.core.GenericType;
 import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
+
+import org.junit.Ignore;
 import org.junit.Test;
 import eu.europa.ec.fisheries.uvms.commons.rest.dto.ResponseDto;
 import eu.europa.ec.fisheries.uvms.docker.validation.common.AbstractRest;
@@ -34,6 +36,7 @@ import eu.europa.ec.fisheries.uvms.docker.validation.spatial.dto.ProjectionDto;
 public class SpatialConfigRestIT extends AbstractRest {
 
 	@Test
+	@Ignore		//functionality has been removed
 	public void getReportMapConfig() throws Exception {
 
 		String uid = "rep_power";
@@ -65,6 +68,7 @@ public class SpatialConfigRestIT extends AbstractRest {
 	}
 
 	@Test
+	@Ignore			//this functionality has been removed
 	public void getBasicReportMapConfig() throws Exception {
 
 		String uid = "rep_power";
@@ -132,6 +136,7 @@ public class SpatialConfigRestIT extends AbstractRest {
 	}
 
 	@Test
+	@Ignore		//functionality has been removed
 	public void admin() throws Exception {
 
 		String uid = "rep_power";
