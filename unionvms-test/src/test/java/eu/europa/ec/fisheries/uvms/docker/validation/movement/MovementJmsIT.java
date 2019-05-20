@@ -81,7 +81,7 @@ public class MovementJmsIT extends AbstractRest {
 		MovementQuery query = MovementHelper.getBasicMovementQuery();
         ListCriteria criteria = new ListCriteria();
         criteria.setKey(SearchKey.CONNECT_ID);
-        criteria.setValue(testAsset.getHistoryId().toString());
+        criteria.setValue(testAsset.getId().toString());
         query.getMovementSearchCriteria().add(criteria);
 		List<MovementType> movements = MovementHelper.getListByQuery(query);
 		assertThat(movements.size(), CoreMatchers.is(numberPositions));

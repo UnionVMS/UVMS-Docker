@@ -186,7 +186,7 @@ public class MovementAlarmRestIT extends AbstractRest {
         AlarmReport alarmReportAfter = getAlarmReportByGuid(alarmReport.getId().toString());
         assertThat(alarmReportAfter.getStatus(), CoreMatchers.is("REPROCESSED"));
         
-        List<MovementDto> latestMovements = MovementHelper.getLatestMovements(Arrays.asList(alarmReport.getIncomingMovement().getAssetHistoryId()));
+        List<MovementDto> latestMovements = MovementHelper.getLatestMovements(Arrays.asList(alarmReport.getIncomingMovement().getAssetGuid()));
         assertThat(latestMovements.size(), CoreMatchers.is(1));
         assertThat(latestMovements.get(0).getLatitude(), CoreMatchers.is(position.latitude));
         assertThat(latestMovements.get(0).getLongitude(), CoreMatchers.is(position.longitude));
