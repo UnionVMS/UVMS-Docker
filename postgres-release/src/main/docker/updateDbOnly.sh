@@ -25,7 +25,7 @@ psql -U usm -d $1 --host=$2 --single-transaction -q -f eu.europa.ec.fisheries.uv
 echo "Running spatial.sql to create tables and init data"
 psql -U spatial -d $1 --host=$2 --single-transaction -q -f eu.europa.ec.fisheries.uvms.spatial.liquibase-${unionvms.project.spatial.module}.sql >/dev/null
 echo "Running spatialSwe.sql to create tables and init data"
-psql -U spatialSwe -d $1 --host=$2 --single-transaction -q -f eu.europa.ec.fisheries.uvms.spatialSwe.liquibase-${unionvms.project.spatialSwe.module}.sql >/dev/null
+psql -U spatialswe -d $1 --host=$2 --single-transaction -q -f eu.europa.ec.fisheries.uvms.spatialSwe.liquibase-${unionvms.project.spatialSwe.module}.sql >/dev/null
 echo "Running mdr.sql to create tables and init data"
 psql -U mdr -d $1 --host=$2 --single-transaction -q -f eu.europa.ec.fisheries.uvms.mdr.liquibase-${unionvms.project.mdr.module}.sql >/dev/null
 echo "Running activity.sql to create tables and init data"
