@@ -254,7 +254,7 @@
                     <driver>postgresql</driver>
                     <xa-pool>
                         <min-pool-size>10</min-pool-size>
-                        <initial-pool-size>10</initial-pool-size>
+                        <initial-pool-size>30</initial-pool-size>
                         <max-pool-size>100</max-pool-size>
                         <prefill>true</prefill>
                     </xa-pool>
@@ -433,6 +433,33 @@
                     <security>
                         <user-name>spatial</user-name>
                         <password>spatial</password>
+                    </security>
+                </xa-datasource>
+                <xa-datasource jndi-name="java:jboss/datasources/uvms_spatialswe" pool-name="uvms_spatialswe" enabled="true" use-ccm="true" statistics-enabled="${wildfly.datasources.statistics-enabled:${wildfly.statistics-enabled:false}}">
+                    <xa-datasource-property name="ServerName">postgres</xa-datasource-property>
+                    <xa-datasource-property name="PortNumber">5432</xa-datasource-property>
+                    <xa-datasource-property name="DatabaseName">db71u</xa-datasource-property>
+
+                    <driver>postgresql</driver>
+                    <xa-pool>
+                        <min-pool-size>10</min-pool-size>
+                        <initial-pool-size>10</initial-pool-size>
+                        <max-pool-size>100</max-pool-size>
+                        <prefill>true</prefill>
+                    </xa-pool>
+                    <statement>
+                        <prepared-statement-cache-size>32</prepared-statement-cache-size>
+                        <track-statements>nowarn</track-statements>
+                    </statement>
+                    <validation>
+                        <valid-connection-checker
+                                class-name="org.jboss.jca.adapters.jdbc.extensions.postgres.PostgreSQLValidConnectionChecker"></valid-connection-checker>
+                        <exception-sorter
+                                class-name="org.jboss.jca.adapters.jdbc.extensions.postgres.PostgreSQLExceptionSorter"></exception-sorter>
+                    </validation>
+                    <security>
+                        <user-name>spatialswe</user-name>
+                        <password>spatialswe</password>
                     </security>
                 </xa-datasource>
                 <xa-datasource jndi-name="java:jboss/datasources/uvms_reporting" pool-name="uvms_reporting" enabled="true" use-ccm="true" statistics-enabled="${wildfly.datasources.statistics-enabled:${wildfly.statistics-enabled:false}}">
@@ -964,7 +991,7 @@
             <remote-naming/>
             <bindings>
                 <simple name="java:global/asset_endpoint" value="http://localhost:8080/unionvms/asset/rest"/>
-                <simple name="java:global/spatial_endpoint" value="http://localhost:8080/unionvms/spatial"/>
+                <simple name="java:global/spatial_endpoint" value="http://localhost:8080/unionvms/spatialSwe"/>
                 <simple name="java:global/movement-rules_endpoint" value="http://localhost:8080/unionvms/movement-rules/rest"/>
                 <simple name="java:global/exchange_endpoint" value="http://localhost:8080/unionvms/exchange/unsecured/rest"/>
                 <simple name="java:global/movement_endpoint" value="http://localhost:8080/unionvms/movement/rest"/>

@@ -60,7 +60,7 @@ import eu.europa.ec.fisheries.uvms.spatial.model.schemas.SpatialSaveOrUpdateMapC
 import eu.europa.ec.fisheries.uvms.spatial.model.schemas.UnitType;
 import eu.europa.ec.fisheries.uvms.spatial.model.schemas.UserAreasType;
 
-public class SpatialRestIT extends AbstractRest {
+public class SpatialSweRestIT extends AbstractRest {
     int batchSize = 10;
     private Integer crs = 4326;
     private Double latitude = 57.715523;
@@ -79,7 +79,7 @@ public class SpatialRestIT extends AbstractRest {
         areaByLocationSpatialRQ.setMethod(SpatialModuleMethod.GET_AREA_BY_LOCATION);
         // @formatter:off
         Response ret = getWebTarget() 
-                .path("spatial/spatialnonsecure/json/getAreaByLocation")
+                .path("spatialSwe/spatialnonsecure/json/getAreaByLocation")
                 .request(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON)
                 .post(Entity.json(areaByLocationSpatialRQ), Response.class);
@@ -106,7 +106,7 @@ public class SpatialRestIT extends AbstractRest {
 
         // @formatter:off
         Response ret =  getWebTarget() 
-                .path("spatial/spatialnonsecure/json/getAreaTypes")
+                .path("spatialSwe/spatialnonsecure/json/getAreaTypes")
                 .request(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON)
                 .post(Entity.json(request), Response.class);
@@ -135,7 +135,7 @@ public class SpatialRestIT extends AbstractRest {
 
         // @formatter:off
         Response ret =  getWebTarget() 
-                .path("spatial/spatialnonsecure/json/getClosestArea")
+                .path("spatialSwe/spatialnonsecure/json/getClosestArea")
                 .request(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON)
                 .post(Entity.json(request), Response.class);
@@ -168,7 +168,7 @@ public class SpatialRestIT extends AbstractRest {
 
             // @formatter:off
             Response ret = getWebTarget()
-                    .path("spatial/spatialnonsecure/json/getClosestArea")
+                    .path("spatialSwe/spatialnonsecure/json/getClosestArea")
                     .request(MediaType.APPLICATION_JSON)
                     .accept(MediaType.APPLICATION_JSON)
                     .post(Entity.json(request), Response.class);
@@ -203,7 +203,7 @@ public class SpatialRestIT extends AbstractRest {
 
         // @formatter:off
         Response ret =  getWebTarget() 
-                .path("spatial/spatialnonsecure/json/getClosestLocation")
+                .path("spatialSwe/spatialnonsecure/json/getClosestLocation")
                 .request(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON)
                 .post(Entity.json(request), Response.class);
@@ -236,7 +236,7 @@ public class SpatialRestIT extends AbstractRest {
 
         // @formatter:off
         Response ret = getWebTarget() 
-                .path("spatial/spatialnonsecure/json/getEnrichment")
+                .path("spatialSwe/spatialnonsecure/json/getEnrichment")
                 .request(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON)
                 .post(Entity.json(request), Response.class);
@@ -267,7 +267,7 @@ public class SpatialRestIT extends AbstractRest {
 
         // @formatter:off
         Response ret = getWebTarget() 
-                .path("spatial/spatialnonsecure/json/getFilterArea")
+                .path("spatialSwe/spatialnonsecure/json/getFilterArea")
                 .request(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON)
                 .post(Entity.json(request), Response.class);
@@ -290,7 +290,7 @@ public class SpatialRestIT extends AbstractRest {
 
         // @formatter:off
         Response ret = getWebTarget() 
-                .path("spatial/spatialnonsecure/json/getMapConfiguration")
+                .path("spatialSwe/spatialnonsecure/json/getMapConfiguration")
                 .request(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON)
                 .post(Entity.json(request), Response.class);
@@ -314,7 +314,7 @@ public class SpatialRestIT extends AbstractRest {
         PingRQ request = new PingRQ();
         // @formatter:off
         Response ret = getWebTarget() 
-                .path("spatial/spatialnonsecure/json/ping")
+                .path("spatialSwe/spatialnonsecure/json/ping")
                 .request(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON)
                 .post(Entity.json(request), Response.class);
@@ -332,7 +332,7 @@ public class SpatialRestIT extends AbstractRest {
         AreaByCodeRequest request = createAreaByCodeRequest();
         // @formatter:off
         Response ret = getWebTarget() 
-                .path("spatial/spatialnonsecure/json/getAreaByCode")
+                .path("spatialSwe/spatialnonsecure/json/getAreaByCode")
                 .request(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON)
                 .post(Entity.json(request), Response.class);
@@ -359,12 +359,13 @@ public class SpatialRestIT extends AbstractRest {
         GeometryByPortCodeRequest request = createToGeometryByPortCodeRequest("AOLAD");
         // @formatter:off
         Response ret = getWebTarget() 
-                .path("spatial/spatialnonsecure/json/getGeometryByPortCode")
+                .path("spatialSwe/spatialnonsecure/json/getGeometryByPortCode")
                 .request(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON)
                 .post(Entity.json(request), Response.class);
-        GeometryByPortCodeResponse rs = ret.readEntity(new GenericType<GeometryByPortCodeResponse>() {});
+
         Assert.assertEquals(200, ret.getStatus());
+        GeometryByPortCodeResponse rs = ret.readEntity(new GenericType<GeometryByPortCodeResponse>() {});
         String geometry = rs.getPortGeometry();
         Assert.assertTrue(geometry != null);
         Assert.assertTrue(geometry.contains("MULTIPOINT"));
@@ -400,7 +401,7 @@ public class SpatialRestIT extends AbstractRest {
         // @formatter:off
         long then = System.currentTimeMillis();
         Response ret = getWebTarget() 
-                .path("spatial/spatialnonsecure/json/getEnrichmentBatch")
+                .path("spatialSwe/spatialnonsecure/json/getEnrichmentBatch")
                 .request(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON)
                 .post(Entity.json(request), Response.class);
@@ -450,7 +451,7 @@ public class SpatialRestIT extends AbstractRest {
         for(int i = 0 ; i < batchSize ; i++) {
              SpatialEnrichmentRQ request = requests.get(i);
           Response ret = getWebTarget() 
-                .path("spatial/spatialnonsecure/json/getEnrichment")
+                .path("spatialSwe/spatialnonsecure/json/getEnrichment")
                 .request(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON)
                 .post(Entity.json(request), Response.class);
@@ -502,7 +503,7 @@ public class SpatialRestIT extends AbstractRest {
             movementList.add(move);
 
             Response response =  getWebTarget()
-                    .path("spatial/spatialnonsecure/json/getSegmentCategoryType")
+                    .path("spatialSwe/spatialnonsecure/json/getSegmentCategoryType")
                     .request(MediaType.APPLICATION_JSON)
                     .post(Entity.json(movementList), Response.class);
 

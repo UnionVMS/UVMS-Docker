@@ -107,6 +107,11 @@
 			<type>ear</type>
 		</dependency>
 		<dependency>
+			<groupId>eu.europa.ec.fisheries.uvms.spatialSwe</groupId>
+			<artifactId>spatialSwe-module</artifactId>
+			<type>ear</type>
+		</dependency>
+		<dependency>
 			<groupId>eu.europa.ec.fisheries.uvms.user</groupId>
 			<artifactId>user-module</artifactId>
 			<type>ear</type>
@@ -267,6 +272,10 @@
 									</jar>
 
 									<jar destfile="${project.basedir}/target/dockerfile/deployments/spatial-module-${unionvms.project.spatial.module}.ear" update="true">
+										<zipfileset dir="${project.basedir}/target/dockerfile/jboss-deployment/spatial" includes="*.xml" prefix="META-INF" />
+									</jar>
+
+									<jar destfile="${project.basedir}/target/dockerfile/deployments/spatialSwe-module-${unionvms.project.spatialSwe.module}.ear" update="true">
 										<zipfileset dir="${project.basedir}/target/dockerfile/jboss-deployment/spatial" includes="*.xml" prefix="META-INF" />
 									</jar>
 	
