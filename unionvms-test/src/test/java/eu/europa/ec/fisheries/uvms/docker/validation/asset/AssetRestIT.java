@@ -314,7 +314,6 @@ public class AssetRestIT extends AbstractRest {
 
 
 	@Test
-	@Ignore
 	public void testIfUserCanCreateAnAsset() {
 
 		try {
