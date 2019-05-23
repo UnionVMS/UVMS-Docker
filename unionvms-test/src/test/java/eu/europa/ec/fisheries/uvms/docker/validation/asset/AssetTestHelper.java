@@ -56,6 +56,14 @@ public class AssetTestHelper extends AbstractHelper {
                 .post(Entity.json(asset), AssetDTO.class);
 	}
 
+	public static AssetDTO createAsset(AssetDTO asset, String user, String pwd) {
+		return getWebTarget()
+				.path("asset/rest/asset")
+				.request(MediaType.APPLICATION_JSON)
+				.header(HttpHeaders.AUTHORIZATION, getValidJwtToken(user, pwd))
+				.post(Entity.json(asset), AssetDTO.class);
+	}
+
 	public static AssetDTO updateAsset(AssetDTO asset) {
 		return getWebTarget()
                 .path("asset/rest/asset")

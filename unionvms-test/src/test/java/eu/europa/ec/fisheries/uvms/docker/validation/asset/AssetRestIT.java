@@ -20,6 +20,7 @@ import eu.europa.ec.fisheries.uvms.docker.validation.common.AbstractRest;
 import org.junit.Ignore;
 import org.junit.Test;
 
+import javax.ws.rs.ForbiddenException;
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
@@ -309,5 +310,22 @@ public class AssetRestIT extends AbstractRest {
 	    Note createdNote = AssetTestHelper.createNoteForAsset(asset, note);
 
 		assertNotNull(createdNote.getId());
+	}
+
+
+	@Test
+	@Ignore
+	public void testIfUserCanCreateAnAsset() {
+
+		try {
+			AssetDTO anAsset = AssetTestHelper.createBasicAsset();
+			anAsset = AssetTestHelper.createAsset(anAsset, "usm_user", "password");
+			assertFalse(true); // this must not occur
+		}catch(ForbiddenException e){
+			// logged on but have not that feature
+			assertTrue(true);
+		}
+
+
 	}
 }
