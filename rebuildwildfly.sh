@@ -14,9 +14,9 @@ printf "\nStoping container and cleaning images...\n"
 docker stop wildfly && docker rm -f wildfly &&                                         # Stop wildfly container
 
 ### UNCOMMENT IF NEED TOTALLY NEW IMAGES, OTHERWISE THE REFRESH WORKS ALSO (NOT KILLING THE IMAGES)
-#docker image ls | grep wildfly-release | awk '{print $3}' | xargs docker rmi &&        # Remove wildfly-release image
-#docker image ls | grep wildfly-unionvms | awk '{print $3}' | xargs docker rmi &&       # Remove wildfly-unionvms image
-#docker image ls | grep wildfly-base | awk '{print $3}' | xargs docker rmi &&           # Remove wildfly-base image
+docker image ls | grep wildfly-release | awk '{print $3}' | xargs docker rmi &&        # Remove wildfly-release image
+docker image ls | grep wildfly-unionvms | awk '{print $3}' | xargs docker rmi &&       # Remove wildfly-unionvms image
+docker image ls | grep wildfly-base | awk '{print $3}' | xargs docker rmi &&           # Remove wildfly-base image
 
 sleep 2
 
@@ -26,13 +26,13 @@ pwd
 																
 printf "\n\nCreating the Docker images from "$BASE_DOCKER_DIR" folder...\n\n" 
 
-printf "\n-->> Building wildfly base image...\n\n" &&
+printf "\n-->> Building wildfly BASE image...\n\n" &&
 cd $BASE_DOCKER_DIR/wildfly-base && mvn clean install -DskipTests -DkipITs=true &&     # Build wildfly-base image
 
-printf "\n-->> Building wildfly unionvms image...\n\n" &&
+printf "\n-->> Building wildfly UNIONVMS image...\n\n" &&
 cd $BASE_DOCKER_DIR/wildfly-unionvms && mvn clean install -DskipTests -DkipITs=true && # Build wildfly-unionvms image
 
-printf "\n-->> Building wildfly base fluxfmc...\n\n" &&
+printf "\n-->> Building wildfly FLUXFMC...\n\n" &&
 cd $BASE_DOCKER_DIR/wildfly-fluxfmc && mvn clean install -DskipTests -DkipITs=true &&  # Build wildfly-fluxfmc image
 
 ## Runinng wildfly container phase : 

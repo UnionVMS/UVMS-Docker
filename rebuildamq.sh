@@ -13,7 +13,7 @@ fi
 printf "\nStoping container and cleaning images...\n" 
 docker stop activemq && docker rm -f activemq &&                              # Stop activemq container
 
-#docker image ls | grep activemq | awk '{print $3}' | xargs docker rmi &&        # Remove activemq image
+docker image ls | grep activemq | awk '{print $3}' | xargs docker rmi &&        # Remove activemq image
 
 sleep 2
 

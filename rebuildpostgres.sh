@@ -13,7 +13,7 @@ fi
 printf "\nStoping container and cleaning images...\n" 
 docker stop postgres && docker rm -f postgres &&                              # Stop postgres container
 
-#docker image ls | grep postgres | awk '{print $3}' | xargs docker rmi &&        # Remove postgres image
+docker image ls | grep postgres | awk '{print $3}' | xargs docker rmi &&        # Remove postgres image
 
 sleep 2
 
