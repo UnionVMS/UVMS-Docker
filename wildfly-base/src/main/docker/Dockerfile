@@ -1,4 +1,4 @@
-FROM njmittet/alpine-openjdk:jdk8
+FROM fabric8/java-alpine-openjdk8-jdk:1.6.3
 
 MAINTAINER Nils Jørgen Mittet <njmittet@gmail.com>
 
@@ -33,7 +33,7 @@ COPY hibernate/module.xml $HIBERNATE_MODULE
 COPY dependencies/hibernate-spatial-${wildfly.hibernate.module.spatial.version}.jar $HIBERNATE_MODULE
 COPY dependencies/jts-${wildfly.hibernate.module.jts.version}.jar $HIBERNATE_MODULE
 COPY dependencies/geolatte-geom-${wildfly.hibernate.module.geolatte.version}.jar $HIBERNATE_MODULE
-COPY dependencies/hibernate-spatial-4x-to-5x-wrapper-${project.version}.jar $HIBERNATE_MODULE
+COPY dependencies/hibernate-spatial-4x-to-5x-wrapper-3.31.19.w15.jar $HIBERNATE_MODULE
 COPY yasson/module.xml $YASSON_MODULE
 COPY dependencies/yasson-1.0.2.jar $YASSON_MODULE
 

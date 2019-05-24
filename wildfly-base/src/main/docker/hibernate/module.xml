@@ -28,7 +28,7 @@
         <resource-root path="hibernate-spatial-${wildfly.hibernate.module.spatial.version}.jar"/>
 		<resource-root path="jts-${wildfly.hibernate.module.jts.version}.jar"/>
 		<resource-root path="geolatte-geom-${wildfly.hibernate.module.geolatte.version}.jar"/>
-		<resource-root path="hibernate-spatial-4x-to-5x-wrapper-${project.version}.jar"/>
+		<resource-root path="hibernate-spatial-4x-to-5x-wrapper-3.31.19.w15.jar"/>
     </resources>
 
     <dependencies>
