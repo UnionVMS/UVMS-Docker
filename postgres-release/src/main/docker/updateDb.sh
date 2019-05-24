@@ -13,7 +13,8 @@ sed -i -e"s/^#work_mem = 4MB.*$/work_mem = 16MB/" /var/lib/postgresql/data/postg
 #psql -U postgres postgres -c "SELECT pg_reload_conf()"
 /etc/init.d/postgresql restart
 
-echo "Running module.sql to create tables and init data"
+echo "Running updateDb.sh to create tables and init data for all the projects.."
+
 echo "Running asset.sql to create tables and init data"
 psql -U asset -d db71u --single-transaction -q -f  /var/lib/postgresql/eu.europa.ec.fisheries.uvms.asset.liquibase-${unionvms.project.asset.module}.sql >/dev/null
 echo "Running audit.sql to create tables and init data"
@@ -23,7 +24,7 @@ psql -U config -d db71u --single-transaction -q -f  /var/lib/postgresql/eu.europ
 echo "Running exchange.sql to create tables and init data"
 psql -U exchange -d db71u --single-transaction -q -f  /var/lib/postgresql/eu.europa.ec.fisheries.uvms.exchange.liquibase-${unionvms.project.exchange.module}.sql >/dev/null
 echo "Running mobterm.sql to create tables and init data"
-# psql -U mobterm -d db71u --single-transaction -q -f  /var/lib/postgresql/eu.europa.ec.fisheries.uvms.mobileterminal.liquibase-${unionvms.project.mobileterminal.module}.sql >/dev/null
+psql -U mobterm -d db71u --single-transaction -q -f  /var/lib/postgresql/eu.europa.ec.fisheries.uvms.mobileterminal.liquibase-${unionvms.project.mobileterminal.module}.sql >/dev/null
 echo "Running movement.sql to create tables and init data"
 psql -U movement -d db71u --single-transaction -q -f  /var/lib/postgresql/eu.europa.ec.fisheries.uvms.movement.liquibase-${unionvms.project.movement.module}.sql >/dev/null
 echo "Running rules.sql to create tables and init data"
@@ -42,7 +43,8 @@ echo "Running reporting.sql to create tables and init data"
 psql -U reporting -d db71u --single-transaction -q -f /var/lib/postgresql/eu.europa.ec.fisheries.uvms.reporting.liquibase-${unionvms.project.reporting.module}.sql >/dev/null
 echo "Running subscription.sql to create tables and init data"
 psql -U subscription -d db71u --single-transaction -q -f /var/lib/postgresql/eu.europa.ec.fisheries.uvms.subscription.liquibase-${unionvms.project.subscription.module}.sql >/dev/null
-echo "Completed module.sql"
+
+echo "\n\nCompleted updateDb.sql"
 
 echo "Docker specific update"
 psql -U spatial -d db71u -c "update system_configurations set value = 'http://localhost:28080/geoserver/' where name='geo_server_url'"

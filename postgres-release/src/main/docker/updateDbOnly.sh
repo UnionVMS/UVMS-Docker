@@ -6,6 +6,7 @@ if [ $# -ne 2 ];
 fi
 
 echo "Running module.sql to create tables and init data"
+
 echo "Running asset.sql to create tables and init data"
 psql -U asset -d $1 --host=$2 --single-transaction -q -f  eu.europa.ec.fisheries.uvms.asset.liquibase-${unionvms.project.asset.module}.sql >/dev/null
 echo "Running  audit.sql to create tables and init data"
@@ -15,7 +16,7 @@ psql -U config -d $1 --host=$2 --single-transaction -q -f  eu.europa.ec.fisherie
 echo "Running exchange.sql to create tables and init data"
 psql -U exchange -d $1 --host=$2 --single-transaction -q -f  eu.europa.ec.fisheries.uvms.exchange.liquibase-${unionvms.project.exchange.module}.sql >/dev/null
 echo "Running mobterm.sql to create tables and init data"
-# psql -U mobterm -d $1 --host=$2 --single-transaction -q -f  eu.europa.ec.fisheries.uvms.mobileterminal.liquibase-${unionvms.project.mobileterminal.module}.sql >/dev/null
+psql -U mobterm -d $1 --host=$2 --single-transaction -q -f  eu.europa.ec.fisheries.uvms.mobileterminal.liquibase-${unionvms.project.mobileterminal.module}.sql >/dev/null
 echo "Running movement.sql to create tables and init data"
 psql -U movement -d $1 --host=$2 --single-transaction -q -f  eu.europa.ec.fisheries.uvms.movement.liquibase-${unionvms.project.movement.module}.sql >/dev/null
 echo "Running rules.sql to create tables and init data"
@@ -34,4 +35,5 @@ echo "Running reporting.sql to create tables and init data"
 psql -U reporting -d $1 --host=$2 --single-transaction -q -f eu.europa.ec.fisheries.uvms.reporting.liquibase-${unionvms.project.reporting.module}.sql >/dev/null
 echo "Running subscription.sql to create tables and init data"
 psql -U subscription -d $1 --host=$2 --single-transaction -q -f eu.europa.ec.fisheries.uvms.subscription.liquibase-${unionvms.project.subscription.module}.sql >/dev/null
+
 echo "Completed module.sql"

@@ -44,7 +44,7 @@ GRANT SELECT, INSERT, UPDATE, DELETE ON ALL TABLES IN SCHEMA exchange TO exchang
 ALTER SCHEMA exchange OWNER TO exchange; 
 
 -- Mobile terminal
-CREATE USER mobterm WITH PASSWORD 'mobterm'; 
+CREATE USER mobterm WITH PASSWORD 'mobterm';
 CREATE SCHEMA AUTHORIZATION mobterm; 
 ALTER USER mobterm SET search_path = mobterm, public; 
 GRANT CONNECT ON DATABASE db71u TO mobterm; 
