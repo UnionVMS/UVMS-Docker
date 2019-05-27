@@ -39,6 +39,8 @@ public class ExchangeRegistryRestIT extends AbstractRest {
 		assertFalse(list.isEmpty());
 	}
 
-    // Removed two tests that started and stopped the service sweagencyemail. Since sweagency is specific to swe
-	// (and thus other are not supposed to have that plugin) and since sweagencyemail is not in a working order, the test where removed.
+
+    /* 	Removed two tests that started and stopped the service sweagencyemail.
+    	Since sweagency is specific to swe (and thus other are not supposed to have
+    	that plugin) and since sweagencyemail is not in a working order, the test where removed. */
 }

@@ -13,35 +13,31 @@ copy of the GNU General Public License along with the IFDM Suite. If not, see <h
 */
 package eu.europa.ec.fisheries.uvms.docker.validation.exchange;
 
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.CoreMatchers.notNullValue;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Objects;
-import java.util.UUID;
-import javax.jms.TextMessage;
-import javax.ws.rs.client.Entity;
-import javax.ws.rs.core.GenericType;
-import javax.ws.rs.core.HttpHeaders;
-import javax.ws.rs.core.MediaType;
-import org.junit.Test;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import eu.europa.ec.fisheries.schema.exchange.plugin.v1.SetCommandRequest;
 import eu.europa.ec.fisheries.schema.exchange.plugin.v1.SetReportRequest;
 import eu.europa.ec.fisheries.uvms.commons.rest.dto.ResponseDto;
 import eu.europa.ec.fisheries.uvms.docker.validation.common.AbstractRest;
-import eu.europa.ec.fisheries.uvms.docker.validation.common.MessageHelper;
 import eu.europa.ec.fisheries.uvms.docker.validation.common.TopicListener;
 import eu.europa.ec.fisheries.uvms.docker.validation.exchange.dto.PluginType;
 import eu.europa.ec.fisheries.uvms.docker.validation.exchange.dto.SendingGroupLog;
 import eu.europa.ec.fisheries.uvms.docker.validation.exchange.dto.SendingLog;
 import eu.europa.ec.fisheries.uvms.docker.validation.system.helper.VMSSystemHelper;
-import eu.europa.ec.fisheries.uvms.exchange.model.mapper.JAXBMarshaller;
+import org.junit.Test;
+
+import javax.ws.rs.client.Entity;
+import javax.ws.rs.core.GenericType;
+import javax.ws.rs.core.HttpHeaders;
+import javax.ws.rs.core.MediaType;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.UUID;
+
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.notNullValue;
 
 public class ExchangeSendingQueueRestIT extends AbstractRest {
-
-    private static final long TIMEOUT = 10000;
     
     @Test
 	public void getSendingQueueTest() throws Exception {
@@ -53,7 +49,7 @@ public class ExchangeSendingQueueRestIT extends AbstractRest {
 
 	@Test
 	public void getSendTest() throws Exception {
-		boolean sent = sendSendingGroupIds(new ArrayList<String>());
+		boolean sent = sendSendingGroupIds(new ArrayList<>());
 		assertTrue(sent);
 	}
 
@@ -64,14 +60,14 @@ public class ExchangeSendingQueueRestIT extends AbstractRest {
 	    String unsentMessageGuid = reportRequest.getReport().getUnsentMessageGuid();
 	    assertSendingLogContainsUnsentMessageGuid(fluxEndpoint, unsentMessageGuid);
 
-	    SetReportRequest reportRequest2 = null;
+	    SetReportRequest reportRequest2;
 	    try (TopicListener topicListener = new TopicListener(VMSSystemHelper.FLUX_SELECTOR)) {
-	        sendSendingGroupIds(Arrays.asList(unsentMessageGuid));
+	        sendSendingGroupIds(Collections.singletonList(unsentMessageGuid));
 	        reportRequest2 = topicListener.listenOnEventBusForSpecificMessage(SetReportRequest.class);
         }
 	    assertThat(reportRequest2, is(notNullValue()));
-	    
-	    assertTrue(Objects.equals(reportRequest.getReport().getMovement(), reportRequest2.getReport().getMovement()));
+
+		assertEquals(reportRequest.getReport().getMovement(), reportRequest2.getReport().getMovement());
 	    assertThat(reportRequest.getReport().getRecipient(), is(reportRequest2.getReport().getRecipient()));
 	}
 	
@@ -84,15 +80,15 @@ public class ExchangeSendingQueueRestIT extends AbstractRest {
         String unsentMessageGuid = commandRequest.getCommand().getUnsentMessageGuid();
         assertSendingLogContainsUnsentMessageGuid(VMSSystemHelper.emailPluginName, unsentMessageGuid);
 
-        SetCommandRequest commantRequest2 = null;
+        SetCommandRequest commandRequest2;
         try (TopicListener topicListener = new TopicListener(VMSSystemHelper.emailSelector)) {
-            sendSendingGroupIds(Arrays.asList(unsentMessageGuid));
-            commantRequest2 = topicListener.listenOnEventBusForSpecificMessage(SetCommandRequest.class);
+            sendSendingGroupIds(Collections.singletonList(unsentMessageGuid));
+            commandRequest2 = topicListener.listenOnEventBusForSpecificMessage(SetCommandRequest.class);
         }
-        assertThat(commantRequest2, is(notNullValue()));
-        
-        assertTrue(Objects.equals(commandRequest.getCommand().getEmail(), commantRequest2.getCommand().getEmail()));
-        assertThat(commandRequest.getCommand().getFwdRule(), is(commantRequest2.getCommand().getFwdRule()));
+        assertThat(commandRequest2, is(notNullValue()));
+
+		assertEquals(commandRequest.getCommand().getEmail(), commandRequest2.getCommand().getEmail());
+        assertThat(commandRequest.getCommand().getFwdRule(), is(commandRequest2.getCommand().getFwdRule()));
     }
 	
 	private void assertSendingLogContainsUnsentMessageGuid(String msgType, String unsentMessageGuid) {

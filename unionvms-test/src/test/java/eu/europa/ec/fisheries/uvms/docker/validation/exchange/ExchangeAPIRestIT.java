@@ -13,44 +13,29 @@ copy of the GNU General Public License along with the IFDM Suite. If not, see <h
 */
 package eu.europa.ec.fisheries.uvms.docker.validation.exchange;
 
-import org.apache.http.HttpResponse;
-import org.apache.http.client.fluent.Request;
-import org.junit.Test;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.module.jaxb.JaxbAnnotationModule;
 import eu.europa.ec.fisheries.schema.exchange.module.v1.GetServiceListRequest;
 import eu.europa.ec.fisheries.schema.exchange.plugin.types.v1.PluginType;
 import eu.europa.ec.fisheries.schema.exchange.source.v1.GetServiceListResponse;
 import eu.europa.ec.fisheries.uvms.docker.validation.common.AbstractRest;
+import org.junit.Test;
+
+import javax.ws.rs.client.Entity;
+import javax.ws.rs.core.HttpHeaders;
+import javax.ws.rs.core.MediaType;
 
 public class ExchangeAPIRestIT extends AbstractRest {
-
-	private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
-
-	static {
-		JaxbAnnotationModule module = new JaxbAnnotationModule();
-		// configure as necessary
-		OBJECT_MAPPER.registerModule(module);
-	}
-
 	@Test
-	public void getListTest() throws Exception {
+	public void getListTest() {
 		GetServiceListRequest getServiceListRequest = new GetServiceListRequest();
 		getServiceListRequest.getType().add(PluginType.SATELLITE_RECEIVER);
 
-		String json = OBJECT_MAPPER.writeValueAsString(getServiceListRequest);
-		final HttpResponse response = Request.Post(getBaseUrl() + "exchange/unsecured/rest/api/serviceList")
-				.setHeader("Content-Type", "application/json")
-				.bodyByteArray(json.getBytes())
-				.execute()
-				.returnResponse();
+		GetServiceListResponse response = getWebTarget()
+				.path("exchange/unsecured/rest/api/serviceList")
+				.request(MediaType.APPLICATION_JSON)
+				.header(HttpHeaders.AUTHORIZATION, getValidJwtToken())
+				.post(Entity.json(getServiceListRequest), GetServiceListResponse.class);
 
-		if(response.getStatusLine().getStatusCode() == 200) {
-			GetServiceListResponse answer = OBJECT_MAPPER.readValue(response.getEntity().getContent(), GetServiceListResponse.class);
-			assertNotNull(answer);
-			assertTrue(answer.getService().size() > 0);
-		} else {
-			fail("Call to Exchange failed");
-		}
+		assertNotNull(response);
+		assertTrue(response.getService().size() > 0);
 	}
 }
