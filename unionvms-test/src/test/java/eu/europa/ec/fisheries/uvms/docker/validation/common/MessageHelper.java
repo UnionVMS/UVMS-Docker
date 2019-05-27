@@ -1,25 +1,15 @@
 package eu.europa.ec.fisheries.uvms.docker.validation.common;
 
-import java.io.Closeable;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
-import javax.jms.Connection;
-import javax.jms.ConnectionFactory;
-import javax.jms.DeliveryMode;
-import javax.jms.JMSException;
-import javax.jms.Message;
-import javax.jms.MessageConsumer;
-import javax.jms.MessageProducer;
-import javax.jms.Queue;
-import javax.jms.QueueBrowser;
-import javax.jms.Session;
-import javax.jms.TextMessage;
-import javax.jms.Topic;
 import org.apache.activemq.artemis.api.core.TransportConfiguration;
 import org.apache.activemq.artemis.api.jms.ActiveMQJMSClient;
 import org.apache.activemq.artemis.api.jms.JMSFactoryType;
 import org.apache.activemq.artemis.core.remoting.impl.netty.NettyConnectorFactory;
+
+import javax.jms.*;
+import java.io.Closeable;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.UUID;
 
 public class MessageHelper implements Closeable {
 
@@ -57,24 +47,19 @@ public class MessageHelper implements Closeable {
 
     public Message getMessageResponse(String queueName, final String msg) throws Exception {
         Queue queue = createQueue(queueName);
-        MessageProducer messageProducer = session.createProducer(queue);
-        try {
+        try (MessageProducer messageProducer = session.createProducer(queue)) {
             TextMessage createTextMessage = session.createTextMessage(msg);
             Queue responseQueue = session.createQueue(TEST_RESPONSE_QUEUE);
             createTextMessage.setJMSReplyTo(responseQueue);
             messageProducer.send(createTextMessage);
             return listenOnTestResponseQueue(createTextMessage.getJMSMessageID(), TIMEOUT);
-        } finally {
-            messageProducer.close();
         }
     }
 
     public String sendMessageAndReturnMessageId(String queueName, final String msg, String asset, String function) throws Exception {
-        Session session = connection.createSession(false, Session.AUTO_ACKNOWLEDGE);
-        try {
+        try (Session session = connection.createSession(false, Session.AUTO_ACKNOWLEDGE)) {
             Queue queue = session.createQueue(queueName);
-            MessageProducer messageProducer = session.createProducer(queue);
-            try {
+            try (MessageProducer messageProducer = session.createProducer(queue)) {
                 TextMessage createTextMessage = session.createTextMessage(msg);
                 Queue responseQueue = session.createQueue(TEST_RESPONSE_QUEUE);
                 createTextMessage.setJMSReplyTo(responseQueue);
@@ -82,61 +67,33 @@ public class MessageHelper implements Closeable {
                 createTextMessage.setStringProperty("JMSXGroupID", asset);
                 messageProducer.send(createTextMessage);
                 return createTextMessage.getJMSMessageID();
-            } finally {
-                messageProducer.close();
             }
-        } finally {
-            session.close();
         }
     }
 
-    public Message listenOnTestResponseQueue(String correlationId, long timeoutInMillis) throws JMSException {
+    private Message listenOnTestResponseQueue(String correlationId, long timeoutInMillis) throws JMSException {
         Queue responseQueue = createQueue(TEST_RESPONSE_QUEUE + "?consumer.prefetchSize=5000");
-        MessageConsumer messageConsumer = session.createConsumer(responseQueue, "JMSCorrelationID='" + correlationId + "'");
-        try {
+        try (MessageConsumer messageConsumer = session.createConsumer(responseQueue, "JMSCorrelationID='" + correlationId + "'")) {
             return messageConsumer.receive(timeoutInMillis);
-        } finally {
-            messageConsumer.close();
         }
     }
 
     public void sendMessage(String queueName, final String msg) throws Exception {
         final Queue queue = createQueue(queueName);
-
-        final MessageProducer messageProducer = session.createProducer(queue);
-        try {
+        try (MessageProducer messageProducer = session.createProducer(queue)) {
             messageProducer.setDeliveryMode(DeliveryMode.PERSISTENT);
             messageProducer.setTimeToLive(0);
-            final Queue responseQueue = session
-                    .createQueue(TEST_RESPONSE_QUEUE);
+            final Queue responseQueue = session.createQueue(TEST_RESPONSE_QUEUE);
             TextMessage createTextMessage = session.createTextMessage(msg);
             createTextMessage.setJMSReplyTo(responseQueue);
             messageProducer.send(createTextMessage);
-        } finally {
-            messageProducer.close();
         }
     }
 
-
-    /**
-     * Check queue has elements.
-     *
-     * @param connection
-     * @param queueName
-     * @return
-     * @throws Exception
-     */
-
     public boolean checkQueueHasElements(String queueName) throws Exception {
         Queue queue = createQueue(queueName);
-        QueueBrowser browser = session.createBrowser(queue);
-        try {
-            if (browser.getEnumeration().hasMoreElements()) {
-                return true;
-            }
-            return false;
-        } finally {
-            browser.close();
+        try (QueueBrowser browser = session.createBrowser(queue)) {
+            return browser.getEnumeration().hasMoreElements();
         }
     }
 
@@ -144,38 +101,27 @@ public class MessageHelper implements Closeable {
         Topic eventBus = session.createTopic("jms.topic.EventBus");
         TextMessage message = session.createTextMessage(text);
         message.setStringProperty(SERVICE_NAME, selector);
-        MessageProducer producer = session.createProducer(eventBus);
-        try {
+        try (MessageProducer producer = session.createProducer(eventBus)) {
             producer.send(message);
-        } finally {
-            producer.close();
         }
-
     }
 
     public Message listenOnEventBus(String selector, Long timeoutInMillis) throws Exception {
         Topic eventBus = session.createTopic("jms.topic.EventBus");
-        MessageConsumer messageConsumer = session.createConsumer(eventBus, selector);
-        try {
+        try (MessageConsumer messageConsumer = session.createConsumer(eventBus, selector)) {
             return messageConsumer.receive(timeoutInMillis);
-        } finally {
-            messageConsumer.close();
         }
     }
 
     public Message listenForResponseOnQueue(String correlationId, String queue) throws Exception {
         Queue responseQueue = createQueue(queue);
-        MessageConsumer messageConsumer = session.createConsumer(responseQueue, "JMSCorrelationID='" + correlationId + "'");
-        try {
+        try (MessageConsumer messageConsumer = session.createConsumer(responseQueue, "JMSCorrelationID='" + correlationId + "'")) {
             return messageConsumer.receive(TIMEOUT);
-        } finally {
-            messageConsumer.close();
         }
     }
 
     @Override
     public void close() {
-
         if(session != null) {
             try {
                 session.close();
@@ -183,7 +129,6 @@ public class MessageHelper implements Closeable {
                 e.printStackTrace();
             }
         }
-
         if(connection != null) {
             try {
                 connection.close();
@@ -198,27 +143,18 @@ public class MessageHelper implements Closeable {
     }
 
     public void sendMessageWithFunctionAndGroup(String queueName, final String msg, String function, String group) throws Exception {
-        final Session session = connection.createSession(false, Session.AUTO_ACKNOWLEDGE);
-        try {
+        try (Session session = connection.createSession(false, Session.AUTO_ACKNOWLEDGE)) {
             final Queue queue = session.createQueue(queueName);
-
-            final MessageProducer messageProducer = session.createProducer(queue);
-            try {
+            try (MessageProducer messageProducer = session.createProducer(queue)) {
                 messageProducer.setDeliveryMode(DeliveryMode.PERSISTENT);
                 messageProducer.setTimeToLive(1000000000);
-                final Queue responseQueue = session
-                        .createQueue(RESPONSE_QUEUE_NAME);
+                final Queue responseQueue = session.createQueue(RESPONSE_QUEUE_NAME);
                 TextMessage createTextMessage = session.createTextMessage(msg);
                 createTextMessage.setJMSReplyTo(responseQueue);
                 createTextMessage.setStringProperty("FUNCTION", function);
                 createTextMessage.setStringProperty("JMSXGroupID", group);
                 messageProducer.send(createTextMessage);
-            } finally {
-                messageProducer.close();
             }
-        } finally {
-            session.close();
         }
     }
-
 }
