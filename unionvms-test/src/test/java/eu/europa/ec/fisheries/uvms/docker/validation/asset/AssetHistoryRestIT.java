@@ -20,39 +20,27 @@ import org.junit.Test;
 import eu.europa.ec.fisheries.uvms.asset.client.model.AssetDTO;
 import eu.europa.ec.fisheries.uvms.docker.validation.common.AbstractRest;
 
-/**
- * The Class AssetHistoryRestIT.
- */
-
 public class AssetHistoryRestIT extends AbstractRest {
 
-	/**
-	 * Gets the asset history list by asset id test.
-	 *
-	 * @return the asset history list by asset id test
-	 * @throws Exception
-	 *             the exception
-	 */
 	@Test
-	public void getAssetHistoryListByAssetIdNumberOfHistoriesTest() throws Exception {
+	public void getAssetHistoryListByAssetIdNumberOfHistoriesTest() {
 		AssetDTO asset = AssetTestHelper.createTestAsset();
 		List<AssetDTO> assetHistories = AssetTestHelper.getAssetHistoryFromAssetGuid(asset.getId());
-		assertTrue(assetHistories.size() == 1);
+		assertEquals(1, assetHistories.size());
 		
 		asset.setName(asset.getName() + "Updated");
 		asset = AssetTestHelper.updateAsset(asset);
 		assetHistories = AssetTestHelper.getAssetHistoryFromAssetGuid(asset.getId());
-		assertTrue(assetHistories.size() == 2);
+		assertEquals(2, assetHistories.size());
 		
 		asset.setName(asset.getName() + "Updated2");
 		asset = AssetTestHelper.updateAsset(asset);
 		assetHistories = AssetTestHelper.getAssetHistoryFromAssetGuid(asset.getId());
-		assertTrue(assetHistories.size() == 3);
+		assertEquals(3, assetHistories.size());
 	}
 	
 	@Test
-	public void getAssetHistoryListByAssetIdHistoriesIsRetainedTest() throws Exception {
-		// Create asset versions
+	public void getAssetHistoryListByAssetIdHistoriesIsRetainedTest() {
 		AssetDTO asset1 = AssetTestHelper.createTestAsset();
 
 		AssetDTO asset2 = AssetTestHelper.getAssetByGuid(asset1.getId());
@@ -64,30 +52,22 @@ public class AssetHistoryRestIT extends AbstractRest {
 		AssetDTO createdAsset3 = AssetTestHelper.updateAsset(asset3);
 		
 		List<AssetDTO> assetHistories = AssetTestHelper.getAssetHistoryFromAssetGuid(createdAsset3.getId());
-		assertTrue(assetHistories.size() == 3);
+		assertEquals(3, assetHistories.size());
 		
 		assertTrue(assetHistories.stream().anyMatch(a -> a.getId().equals(asset1.getId()) && a.getName().equals(asset1.getName())));
 		assertTrue(assetHistories.stream().anyMatch(a -> a.getId().equals(createdAsset2.getId()) && a.getName().equals(createdAsset2.getName())));
 		assertTrue(assetHistories.stream().anyMatch(a -> a.getId().equals(createdAsset3.getId()) && a.getName().equals(createdAsset3.getName())));
 	}
 
-	/**
-	 * Gets the asset history by asset hist guid test.
-	 *
-	 * @return the asset history by asset hist guid test
-	 * @throws Exception
-	 *             the exception
-	 */
 	@Test
-	public void getAssetHistoryByAssetHistGuidTest() throws Exception {
+	public void getAssetHistoryByAssetHistGuidTest() {
 		AssetDTO asset = AssetTestHelper.createTestAsset();
 		AssetDTO assetFromHistory = AssetTestHelper.getAssetHistoryFromHistoryGuid(asset.getHistoryId());
 		assertEquals(asset.getId(), assetFromHistory.getId());
 	}
 	
 	@Test
-	public void getAssetHistoryByAssetHistGuidHistortyIsRetained() throws Exception {
-		// Create asset versions
+	public void getAssetHistoryByAssetHistGuidHistoryIsRetained() {
 		AssetDTO asset1 = AssetTestHelper.createTestAsset();
 
 		AssetDTO asset2 = AssetTestHelper.getAssetByGuid(asset1.getId());
@@ -112,7 +92,7 @@ public class AssetHistoryRestIT extends AbstractRest {
 	}
 
     @Test
-    public void getAssetFromAssetIdAndDate() throws Exception {
+    public void getAssetFromAssetIdAndDate() {
         // Create asset
 		AssetDTO asset = AssetTestHelper.createTestAsset();
         String value = asset.getCfr();

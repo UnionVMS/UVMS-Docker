@@ -20,56 +20,33 @@ import org.junit.Ignore;
 import org.junit.Test;
 import eu.europa.ec.fisheries.uvms.docker.validation.common.AbstractRest;
 
-/**
- * The Class ConfigRestIT.
- */
-
 public class ConfigRestIT extends AbstractRest {
 
-	/**
-	 * Gets the config search fields test.
-	 *
-	 * @return the config search fields test
-	 * @throws Exception
-	 *             the exception
-	 */
 	@Test
 	public void getConfigSearchFieldsTest() throws Exception {
 		final HttpResponse response = Request.Get(getBaseUrl() + "asset/rest/config/searchfields")
-				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken()).execute()
+				.setHeader("Content-Type", "application/json")
+				.setHeader("Authorization", getValidJwtToken()).execute()
 				.returnResponse();
 		assertEquals(HttpStatus.SC_OK, response.getStatusLine().getStatusCode());
 	}
 
-	/**
-	 * Gets the configuration test.
-	 *
-	 * @return the configuration test
-	 * @throws Exception
-	 *             the exception
-	 */
 	@Test
-	@Ignore // This endpoint is removed.
+	@Ignore("This endpoint is removed.")
 	public void getConfigurationTest() throws Exception {
 		final HttpResponse response = Request.Get(getBaseUrl() + "asset/rest/config")
-				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken()).execute()
+				.setHeader("Content-Type", "application/json")
+				.setHeader("Authorization", getValidJwtToken()).execute()
 				.returnResponse();
 		assertEquals(HttpStatus.SC_OK, response.getStatusLine().getStatusCode());
 	}
 
-	/**
-	 * Gets the parameters test.
-	 *
-	 * @return the parameters test
-	 * @throws Exception
-	 *             the exception
-	 */
 	@Test
 	public void getParametersTest() throws Exception {
 		final HttpResponse response = Request.Get(getBaseUrl() + "asset/rest/config/parameters")
-				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken()).execute()
+				.setHeader("Content-Type", "application/json")
+				.setHeader("Authorization", getValidJwtToken()).execute()
 				.returnResponse();
 		assertEquals(HttpStatus.SC_OK, response.getStatusLine().getStatusCode());
 	}
-
 }

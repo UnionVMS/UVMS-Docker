@@ -30,14 +30,12 @@ import eu.europa.ec.fisheries.uvms.docker.validation.common.AuditHelper;
 
 public class AssetTestHelper extends AbstractHelper {
 
-	// ************************************************
-	//  AssetResource
-	// ************************************************
-
 	public static AssetDTO createTestAsset() {
 		AssetDTO asset = createBasicAsset();
 		return createAsset(asset);
 	}
+
+	/* AssetResource */
 
 	public static AssetDTO getAssetByGuid(UUID assetGuid) {
 		return getWebTarget()
@@ -148,9 +146,7 @@ public class AssetTestHelper extends AbstractHelper {
                 .post(Entity.json(note), Note.class);
     }
 
-		// ************************************************
-	//  AssetGroupResource
-	// ************************************************
+	/*  AssetGroupResource */
 		
 	public static AssetGroup createAssetGroup(AssetGroup assetGroup) {
 		return getWebTarget()
@@ -214,10 +210,8 @@ public class AssetTestHelper extends AbstractHelper {
                 .header(HttpHeaders.AUTHORIZATION, getValidJwtToken())
                 .get(new GenericType<List<AssetGroupField>>() {});
     }
-	
-	// ************************************************
-	//  Audit logs
-	// ************************************************
+
+	/*  Audit logs */
 	
 	public static void assertAssetAuditLogCreated(UUID guid, AuditOperationEnum auditOperation, Date fromDate) throws Exception {
 		AuditLogListQuery auditLogListQuery = getAssetAuditLogListQuery(AuditObjectTypeEnum.ASSET);
@@ -238,7 +232,7 @@ public class AssetTestHelper extends AbstractHelper {
 		return auditLogListQuery;
 	}
 	
-	private static void assertAuditLog(UUID guid, AuditOperationEnum auditOperation, AuditLogListQuery auditLogListQuery, Date fromDate) throws Exception {
+	private static void assertAuditLog(UUID guid, AuditOperationEnum auditOperation, AuditLogListQuery auditLogListQuery, Date fromDate) {
 		ListCriteria typeListCriteria = new ListCriteria();
 		typeListCriteria.setKey(SearchKey.OPERATION);
 		typeListCriteria.setValue(auditOperation.getValue());
@@ -259,9 +253,7 @@ public class AssetTestHelper extends AbstractHelper {
 		assertTrue(found);
 	}
 
-	// ************************************************
-	//  Misc
-	// ************************************************
+	/*  Misc  */
 	
 	public static Integer getAssetCountSweden() {
 	    AssetQuery assetQuery = getBasicAssetQuery();

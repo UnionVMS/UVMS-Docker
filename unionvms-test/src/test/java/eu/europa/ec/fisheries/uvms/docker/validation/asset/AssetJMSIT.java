@@ -90,14 +90,12 @@ public class AssetJMSIT {
 
 	@Test
 	public void getAssetGroupListByUserTest() throws Exception {
-		// Create Group
 		AssetGroup assetGroup = AssetTestHelper.createBasicAssetGroup();
 		AssetGroup createdAssetGroup = AssetTestHelper.createAssetGroup(assetGroup);
 
 		AssetDTO asset1 = AssetTestHelper.createTestAsset();
 		AssetDTO asset2 = AssetTestHelper.createTestAsset();
 
-		// Add assets to group
 		AssetGroupField assetGroupField1 = new AssetGroupField();
 		assetGroupField1.setField(ConfigSearchField.GUID.toString());
 		assetGroupField1.setValue(asset1.getId().toString());
@@ -120,19 +118,16 @@ public class AssetJMSIT {
 
 	@Test
 	public void getAssetGroupByAssetGuidTest() throws Exception {
-		// Create Group
 		AssetGroup assetGroup = AssetTestHelper.createBasicAssetGroup();
 		AssetGroup createdAssetGroup = AssetTestHelper.createAssetGroup(assetGroup);
 
 		AssetDTO asset1 = AssetTestHelper.createTestAsset();
 
-		// Add asset to group
 		AssetGroupField assetGroupField1 = new AssetGroupField();
 		assetGroupField1.setField(ConfigSearchField.GUID.toString());
 		assetGroupField1.setValue(asset1.getId().toString());
 		assetGroupField1.setAssetGroup(assetGroup);
 		AssetTestHelper.createAssetGroupField(createdAssetGroup.getId(), assetGroupField1);
-
 
 		List<eu.europa.ec.fisheries.wsdl.asset.group.AssetGroup> assetGroups = assetJMSHelper.getAssetGroupListByAssetGuid(asset1.getId().toString());
 
@@ -142,14 +137,12 @@ public class AssetJMSIT {
 
 	@Test
 	public void getAssetListByAssetGroups() throws Exception {
-		// Create Group
 		AssetGroup assetGroup = AssetTestHelper.createBasicAssetGroup();
 		AssetGroup createdAssetGroup = AssetTestHelper.createAssetGroup(assetGroup);
 
 		AssetDTO asset1 = AssetTestHelper.createTestAsset();
 		AssetDTO asset2 = AssetTestHelper.createTestAsset();
 
-		// Add assets to group
 		AssetGroupField assetGroupField1 = new AssetGroupField();
 		assetGroupField1.setField(ConfigSearchField.GUID.toString());
 		assetGroupField1.setValue(asset1.getId().toString());

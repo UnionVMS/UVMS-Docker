@@ -25,29 +25,16 @@ import eu.europa.ec.fisheries.uvms.asset.model.constants.AuditOperationEnum;
 import eu.europa.ec.fisheries.uvms.commons.date.DateUtils;
 import eu.europa.ec.fisheries.uvms.docker.validation.common.AbstractRest;
 
-/**
- * The Class AssetGroupRestIT.
- */
-
 public class AssetGroupRestIT extends AbstractRest {
 
-	/**
-	 * Gets the asset group list by user test.
-	 *
-	 * @return the asset group list by user test
-	 * @throws Exception
-	 *             the exception
-	 */
 	@Test
-	public void getAssetGroupListByUserTest() throws Exception {
-		// Create Group
+	public void getAssetGroupListByUserTest() {
 	    AssetGroup assetGroup = AssetTestHelper.createBasicAssetGroup();
 	    AssetGroup createdAssetGroup = AssetTestHelper.createAssetGroup(assetGroup);
 
 		AssetDTO asset1 = AssetTestHelper.createTestAsset();
 		AssetDTO asset2 = AssetTestHelper.createTestAsset();
-		
-		// Add assets to group
+
 		AssetGroupField assetGroupField1 = new AssetGroupField();
 		assetGroupField1.setField("GUID");
 		assetGroupField1.setValue(asset1.getId().toString());
@@ -69,15 +56,8 @@ public class AssetGroupRestIT extends AbstractRest {
 		assertTrue(assetGroups.stream().anyMatch(group -> group.getId().equals(createdAssetGroup.getId())));
 	}
 
-	/**
-	 * Gets the asset by id test.
-	 *
-	 * @return the asset by id test
-	 * @throws Exception
-	 *             the exception
-	 */
 	@Test
-	public void getAssetByIdTest() throws Exception {
+	public void getAssetByIdTest() {
 		AssetGroup testAssetGroup = AssetTestHelper.createBasicAssetGroup();
 		testAssetGroup = AssetTestHelper.createAssetGroup(testAssetGroup);
 		
@@ -86,13 +66,8 @@ public class AssetGroupRestIT extends AbstractRest {
 		assertEquals(testAssetGroup.getUpdateTime(), assetGroupById.getUpdateTime());
 	}
 
-	/**
-	 * Creates the asset group test.
-	 *
-	 * @throws Exception the exception
-	 */
 	@Test
-	public void createAssetGroupTest() throws Exception {
+	public void createAssetGroupTest() {
 		AssetGroup testAssetGroup = AssetTestHelper.createBasicAssetGroup();
 		AssetGroup createdAssetGroup = AssetTestHelper.createAssetGroup(testAssetGroup);
 
@@ -102,7 +77,7 @@ public class AssetGroupRestIT extends AbstractRest {
 		assertEquals(testAssetGroup.getGlobal(), createdAssetGroup.getGlobal());
 	}
 	
-	@Ignore // No audit logs sent by asset groups
+	@Ignore("No audit logs sent by asset groups")
 	@Test
 	public void createAssetGroupAuditLogCreatedTest() throws Exception {
 		Date fromDate = DateUtils.getNowDateUTC();
@@ -112,14 +87,8 @@ public class AssetGroupRestIT extends AbstractRest {
 		AssetTestHelper.assertAssetGroupAuditLogCreated(createdAssetGroup.getId(), AuditOperationEnum.CREATE, fromDate);
 	}
 
-
-	/**
-	 * Update asset group test.
-	 *
-	 * @throws Exception the exception
-	 */
 	@Test
-	public void updateAssetGroupTest() throws Exception {
+	public void updateAssetGroupTest() {
 		AssetGroup testAssetGroup = AssetTestHelper.createBasicAssetGroup();
 		testAssetGroup = AssetTestHelper.createAssetGroup(testAssetGroup);
 
@@ -141,13 +110,8 @@ public class AssetGroupRestIT extends AbstractRest {
 		AssetTestHelper.assertAssetGroupAuditLogCreated(testAssetGroup.getId(), AuditOperationEnum.UPDATE, fromDate);
 	}
 
-	/**
-	 * Delete asset group test.
-	 *
-	 * @throws Exception the exception
-	 */
 	@Test
-	public void deleteAssetGroupTest() throws Exception {
+	public void deleteAssetGroupTest() {
 		AssetGroup testAssetGroup = AssetTestHelper.createBasicAssetGroup();
 		
 		List<AssetGroup> initialAssetGroupList = AssetTestHelper.getAssetGroupListByUser(testAssetGroup.getOwner());
@@ -157,8 +121,7 @@ public class AssetGroupRestIT extends AbstractRest {
 
 		List<AssetGroup> firstAssetGroupList = AssetTestHelper.getAssetGroupListByUser(testAssetGroup.getOwner());
 		assertEquals(initialSize + 1, firstAssetGroupList.size());
-		
-		// Delete the AssetGroup
+
 		AssetTestHelper.deleteAssetGroup(testAssetGroup);
 		
 		List<AssetGroup> secondAssetGroupList = AssetTestHelper.getAssetGroupListByUser(testAssetGroup.getOwner());
@@ -172,7 +135,6 @@ public class AssetGroupRestIT extends AbstractRest {
 		AssetGroup testAssetGroup = AssetTestHelper.createBasicAssetGroup();
 		testAssetGroup = AssetTestHelper.createAssetGroup(testAssetGroup);
 
-		// Delete the AssetGroup
 		AssetTestHelper.deleteAssetGroup(testAssetGroup);
 		
 		AssetTestHelper.assertAssetGroupAuditLogCreated(testAssetGroup.getId(), AuditOperationEnum.ARCHIVE, fromDate);

@@ -22,9 +22,9 @@ public class AssetCustomCodesRestIT extends AbstractRest {
     @Test
     public void listConstantsTest() throws Exception {
         HttpResponse response = Request.Get(getBaseUrl() + "asset/rest/customcodes/listconstants")
-                .setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken()).execute()
+                .setHeader("Content-Type", "application/json")
+                .setHeader("Authorization", getValidJwtToken()).execute()
                 .returnResponse();
         assertEquals(HttpStatus.SC_OK, response.getStatusLine().getStatusCode());
     }
-
 }
