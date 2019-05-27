@@ -13,41 +13,35 @@ copy of the GNU General Public License along with the IFDM Suite. If not, see <h
 */
 package eu.europa.ec.fisheries.uvms.docker.validation.audit;
 
-import java.math.BigInteger;
-import java.util.Map;
-import org.apache.http.HttpResponse;
-import org.apache.http.client.fluent.Request;
-import org.junit.Test;
 import eu.europa.ec.fisheries.schema.audit.search.v1.AuditLogListQuery;
 import eu.europa.ec.fisheries.schema.audit.search.v1.ListPagination;
 import eu.europa.ec.fisheries.uvms.docker.validation.common.AbstractRest;
+import org.junit.Test;
 
-/**
- * The Class AuditRestIT.
- */
+import javax.ws.rs.client.Entity;
+import javax.ws.rs.core.HttpHeaders;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
+import java.math.BigInteger;
+
+import static javax.ws.rs.core.Response.Status.OK;
 
 public class AuditRestIT extends AbstractRest {
 
-	/**
-	 * Gets the config search fields test.
-	 *
-	 * @return the config search fields test
-	 * @throws Exception
-	 *             the exception
-	 */
 	@Test
-	public void getListByQueryTest() throws Exception {
+	public void getListByQueryTest() {
 		AuditLogListQuery auditLogListQuery = new AuditLogListQuery();
 		ListPagination listPagination = new ListPagination();
 		listPagination.setPage(BigInteger.valueOf(1));
 		listPagination.setListSize(BigInteger.valueOf(25));
 		auditLogListQuery.setPagination(listPagination);
 
-		final HttpResponse response = Request.Post(getBaseUrl() + "audit/rest/audit/list")
-				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken())
-				.bodyByteArray(writeValueAsString(auditLogListQuery).getBytes()).execute().returnResponse();
+		Response response = getWebTarget()
+				.path("audit/rest/audit/list")
+				.request(MediaType.APPLICATION_JSON)
+				.header(HttpHeaders.AUTHORIZATION, getValidJwtToken())
+				.post(Entity.json(auditLogListQuery));
 
-		Map<String, Object> dataMap = checkSuccessResponseReturnMap(response);
+		assertEquals(OK.getStatusCode(), response.getStatus());
 	}
-
 }

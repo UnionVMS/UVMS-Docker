@@ -87,7 +87,6 @@ public class AssetJMSHelper {
         return assetModuleResponse.getResponse();
     }
 
-
     public FlagStateType getFlagStateFromAssetGuidAndDate(String guid, Date date) throws Exception {
         String msg = AssetModuleRequestMapper.createFlagStateRequest(guid, date);
         TextMessage response = (TextMessage) messageHelper.getMessageResponse(ASSET_QUEUE, msg);
@@ -95,12 +94,9 @@ public class AssetJMSHelper {
         return flagStateTypeResponse.getFlagStateType();
     }
 
-
-
     public Asset createDummyCFRAsset() {
         return createDummyAsset(AssetIdType.CFR);
     }
-
 
     public Asset createDummyAsset(AssetIdType assetIdType) {
         String ircs = "F" + generateARandomStringWithMaxLength(7);
@@ -229,11 +225,4 @@ public class AssetJMSHelper {
         assetGroup.setName("Name" + UUID.randomUUID().toString());
         return assetGroup;
     }
-
-
-//	public static void upsertAsset() {
-//	}
-//	
-//	public static void fishingGearUpsert() {
-//	}
 }

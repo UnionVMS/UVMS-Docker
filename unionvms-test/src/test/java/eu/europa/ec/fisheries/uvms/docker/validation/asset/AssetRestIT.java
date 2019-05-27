@@ -64,8 +64,7 @@ public class AssetRestIT extends AbstractRest {
 	    assetQuery.setFlagState(Collections.singletonList("SWE"));
 		
 		Integer countBefore = AssetTestHelper.assetListQueryCount(assetQuery);
-		
-		// Add new asset
+
 		AssetDTO asset = AssetTestHelper.createBasicAsset();
 		asset.setFlagStateCode("SWE");
 		AssetTestHelper.createAsset(asset);
@@ -155,7 +154,7 @@ public class AssetRestIT extends AbstractRest {
 		AssetTestHelper.assertAssetAuditLogCreated(testAsset.getId(), AuditOperationEnum.ARCHIVE, fromDate);
 	}
 
-	@Ignore // Removed resource?
+	@Ignore("Removed resource?")
 	@Test
 	public void assetListGroupByFlagStateTest() {
 		AssetDTO asset = AssetTestHelper.createTestAsset();
@@ -192,7 +191,7 @@ public class AssetRestIT extends AbstractRest {
 		assertTrue(assets.stream().anyMatch(a -> a.getId().equals(createdAsset.getId())));
 	}
 
-	@Ignore // TODO check what happens when list doesn't find any asset
+	@Ignore("check what happens when list doesn't find any asset")
 	@Test
 	public void getAssetListWithLikeSearchValue_CHANGE_KEY_AND_FAIL() {
 		AssetDTO asset = AssetTestHelper.createTestAsset();
@@ -228,7 +227,6 @@ public class AssetRestIT extends AbstractRest {
 
 	@Test
 	public void assetListQueryHistoryGuidTest() {
-		// Create asset versions
 		AssetDTO asset1 = AssetTestHelper.createTestAsset();
 
 		AssetDTO asset2 = AssetTestHelper.getAssetByGuid(asset1.getId());
@@ -268,7 +266,6 @@ public class AssetRestIT extends AbstractRest {
 	
 	@Test
 	public void assetListQueryMultipleHistoryGuidTest() {
-		// Create asset versions
 		AssetDTO asset1 = AssetTestHelper.createTestAsset();
 
 		AssetDTO asset2 = AssetTestHelper.getAssetByGuid(asset1.getId());
@@ -312,19 +309,14 @@ public class AssetRestIT extends AbstractRest {
 		assertNotNull(createdNote.getId());
 	}
 
-
 	@Test
 	public void testIfUserCanCreateAnAsset() {
-
 		try {
 			AssetDTO anAsset = AssetTestHelper.createBasicAsset();
-			anAsset = AssetTestHelper.createAsset(anAsset, "usm_user", "password");
-			assertFalse(true); // this must not occur
-		}catch(ForbiddenException e){
-			// logged on but have not that feature
-			assertTrue(true);
+			AssetTestHelper.createAsset(anAsset, "usm_user", "password");
+			fail("this must not occur");
+		} catch(ForbiddenException e){
+			assertTrue("logged on but have not that feature", true);
 		}
-
-
 	}
 }
