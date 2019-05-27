@@ -11,14 +11,14 @@ fi
 
 # Rebuilding/running each image :
 
-printf "\nRebuilding \n"
+printf "\nRebuilding [[[[[{{AMQ}}]]]]] \n"
 /bin/bash rebuildamq.sh
-printf "\nFinished Rebuilding \n"
+printf "\nFinished Rebuilding [[[[[{{AMQ}}]]]]] \n"
 
-printf "\nRebuilding \n"
+printf "\nRebuilding [[[[[{{POSTGRES}}]]]]] \n"
 /bin/bash rebuildpostgres.sh
-printf "\nFinished Rebuilding \n"
+printf "\nFinished Rebuilding [[[[[{{POSTGRES}}]]]]] \n"
 
-printf "\nRebuilding \n"
+printf "\nRebuilding [[[[[{{WILDFLY}}]]]]] \n"
 /bin/bash rebuildwildfly.sh
-printf "\nFinished Rebuilding \n"
+printf "\nFinished Rebuilding [[[[[{{WILDFLY}}]]]]] \n"

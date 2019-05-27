@@ -26,17 +26,17 @@ pwd
 																
 printf "\n\nCreating the Docker images from "$BASE_DOCKER_DIR" folder...\n\n" 
 
-printf "\n-->> Building wildfly BASE image...\n\n" &&
+printf "\n-->> Building WILDFLY BASE image...\n\n" &&
 cd $BASE_DOCKER_DIR/wildfly-base && mvn clean install -DskipTests -DkipITs=true &&     # Build wildfly-base image
 
-printf "\n-->> Building wildfly UNIONVMS image...\n\n" &&
+printf "\n-->> Building WILDFLY UNIONVMS image...\n\n" &&
 cd $BASE_DOCKER_DIR/wildfly-unionvms && mvn clean install -DskipTests -DkipITs=true && # Build wildfly-unionvms image
 
-printf "\n-->> Building wildfly FLUXFMC...\n\n" &&
+printf "\n-->> Building WILDFLY FLUXFMC...\n\n" &&
 cd $BASE_DOCKER_DIR/wildfly-fluxfmc && mvn clean install -DskipTests -DkipITs=true &&  # Build wildfly-fluxfmc image
 
 ## Runinng wildfly container phase : 
-printf "\n\nGoing to run wildfly container..\n\n"
+printf "\n\nGoing to run WILDFLY container..\n\n"
 # -p 9010:9010 for jconsole
 docker image ls | grep wildfly-release | awk '{print $3}' | xargs docker run -it -p 9990:9990 -p 8787:8787 -p 8080:8080 --name wildfly --net-alias wildfly --net=uvms -m 8G -d # Run the wildfly-release image (create container)
 printf "\nContainer was started.. Going in the wildfly container now.. See YA..\n\n" 
