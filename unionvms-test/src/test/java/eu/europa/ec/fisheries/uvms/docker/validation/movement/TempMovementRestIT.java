@@ -155,7 +155,7 @@ public class TempMovementRestIT extends AbstractRest {
         
         MovementHelper.pollMovementCreated();
         
-        List<MovementDto> latestMovements = MovementHelper.getLatestMovements(Arrays.asList(asset.getHistoryId().toString()));
+        List<MovementDto> latestMovements = MovementHelper.getLatestMovements(Arrays.asList(asset.getId().toString()));
         assertThat(latestMovements.size(), is(1));
         
         MovementDto createdMovement = latestMovements.get(0);

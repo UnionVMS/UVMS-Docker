@@ -71,7 +71,7 @@ public class MovementHelper extends AbstractHelper {
 	    
 	    // Used later in tests
 	    incomingMovement.setAssetHistoryId(testAsset.getHistoryId().toString());
-	    
+	    incomingMovement.setAssetGuid(testAsset.getId().toString());
 		incomingMovement.setAssetCFR(testAsset.getCfr());
 		incomingMovement.setAssetIRCS(testAsset.getIrcs());
 		incomingMovement.setAssetName(testAsset.getName());
@@ -315,7 +315,7 @@ public class MovementHelper extends AbstractHelper {
 	public MovementDto createMovement(IncomingMovement incomingMovement) throws Exception {
 		messageHelper.sendMessageWithFunctionAndGroup(UVMS_MOVEMENT_REQUEST_QUEUE, OBJECT_MAPPER.writeValueAsString(incomingMovement), "CREATE", incomingMovement.getAssetCFR());
 		MovementHelper.pollMovementCreated();
-		List<MovementDto> latestMovements = MovementHelper.getLatestMovements(Arrays.asList(incomingMovement.getAssetHistoryId()));
+		List<MovementDto> latestMovements = MovementHelper.getLatestMovements(Arrays.asList(incomingMovement.getAssetGuid()));
 		assertThat(latestMovements.size(), CoreMatchers.is(1));
 		return latestMovements.get(0);
 	}
