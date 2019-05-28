@@ -14,9 +14,7 @@ public class GeoserverIT extends AbstractRest {
 
 	@Test
 	public void verifyProtectedUvmsLayersTest() {
-		Client client = ClientBuilder.newClient();
-		WebTarget webTarget = client.target("http://localhost:28080/geoserver/");
-		Response response = webTarget
+		Response response = geoServerWebTarget()
 				.path("uvms/wms")
 				.queryParam("service", "WMS")
 				.queryParam("version", "1.1.0")
