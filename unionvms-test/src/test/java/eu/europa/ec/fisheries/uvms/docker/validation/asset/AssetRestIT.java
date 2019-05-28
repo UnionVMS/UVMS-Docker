@@ -31,292 +31,309 @@ import java.util.*;
 
 public class AssetRestIT extends AbstractRest {
 
-	@Test
-	public void getAssetListTest() {
-		AssetDTO asset = AssetTestHelper.createTestAsset();
-		
-		AssetQuery assetQuery = AssetTestHelper.getBasicAssetQuery();
-		assetQuery.setFlagState(Collections.singletonList(asset.getFlagStateCode()));
-		
-		AssetListResponse assetListResponse = AssetTestHelper.assetListQuery(assetQuery);
-		List<AssetDTO> assets = assetListResponse.getAssetList();
-		assertTrue(assets.stream().anyMatch(a -> a.getId().equals(asset.getId())));
-	}
-	
-	@Test
-	public void getAssetListMultipleAssetsGuidsTest() {
-		AssetDTO asset1 = AssetTestHelper.createTestAsset();
-		AssetDTO asset2 = AssetTestHelper.createTestAsset();
-		
-		AssetQuery assetQuery = AssetTestHelper.getBasicAssetQuery();
-		assetQuery.setId(Arrays.asList(asset1.getId(), asset2.getId()));
-		
-		AssetListResponse assetListResponse = AssetTestHelper.assetListQuery(assetQuery);
-		List<AssetDTO> assets = assetListResponse.getAssetList();
-		assertEquals(2, assets.size());
-		assertTrue(assets.stream().anyMatch(a -> a.getId().equals(asset1.getId())));
-		assertTrue(assets.stream().anyMatch(a -> a.getId().equals(asset2.getId())));
-	}
+    @Test
+    public void getAssetListTest() {
+        AssetDTO asset = AssetTestHelper.createTestAsset();
 
-	@Test
-	public void getAssetListItemCountTest() {
-	    AssetQuery assetQuery = AssetTestHelper.getBasicAssetQuery();
-	    assetQuery.setFlagState(Collections.singletonList("SWE"));
-		
-		Integer countBefore = AssetTestHelper.assetListQueryCount(assetQuery);
+        AssetQuery assetQuery = AssetTestHelper.getBasicAssetQuery();
+        assetQuery.setFlagState(Collections.singletonList(asset.getFlagStateCode()));
 
-		AssetDTO asset = AssetTestHelper.createBasicAsset();
-		asset.setFlagStateCode("SWE");
-		AssetTestHelper.createAsset(asset);
-		
-		Integer countAfter = AssetTestHelper.assetListQueryCount(assetQuery);
-		assertEquals(Integer.valueOf(countBefore + 1), countAfter);
-	}
-	
-	@Test
-	public void getAssetListUpdatedIRCSNotFoundTest() {
-		AssetDTO testAsset = AssetTestHelper.createTestAsset();
-		
-		AssetQuery assetQuery = AssetTestHelper.getBasicAssetQuery();
-		assetQuery.setIrcs(Collections.singletonList(testAsset.getIrcs()));
-		
-		AssetListResponse assetList = AssetTestHelper.assetListQuery(assetQuery);
-		List<AssetDTO> assets = assetList.getAssetList();
-		assertTrue(assets.stream().anyMatch(a -> a.getId().equals(testAsset.getId())));
-		
-		testAsset.setIrcs("I" + AssetTestHelper.generateARandomStringWithMaxLength(7));
-		AssetTestHelper.updateAsset(testAsset);
-		
-		// Search with same query, the asset should not be found
-		assetList = AssetTestHelper.assetListQuery(assetQuery);
-		assets = assetList.getAssetList();
-		assertFalse(assets.stream().anyMatch(a -> a.getId().equals(testAsset.getId())));
-	}
+        AssetListResponse assetListResponse = AssetTestHelper.assetListQuery(assetQuery);
+        List<AssetDTO> assets = assetListResponse.getAssetList();
+        assertTrue(assets.stream().anyMatch(a -> a.getId().equals(asset.getId())));
+    }
 
-	@Test
-	public void getAssetListWithLikeSearchValue() {
-		AssetDTO asset = AssetTestHelper.createBasicAsset();
-		asset.setPortOfRegistration("MyHomePort");
-		AssetDTO createdAsset = AssetTestHelper.createAsset(asset);
-		
-		AssetQuery assetQuery = AssetTestHelper.getBasicAssetQuery();
-		assetQuery.setPortOfRegistration(Collections.singletonList("My*"));
-		
-		AssetListResponse assetList = AssetTestHelper.assetListQuery(assetQuery);
-		List<AssetDTO> assets = assetList.getAssetList();
-		assertTrue(assets.stream().anyMatch(a -> a.getId().equals(createdAsset.getId())));
-	}
+    @Test
+    public void getAssetListMultipleAssetsGuidsTest() {
+        AssetDTO asset1 = AssetTestHelper.createTestAsset();
+        AssetDTO asset2 = AssetTestHelper.createTestAsset();
 
-	@Test
-	public void getAssetByIdTest() {
-		AssetDTO asset = AssetTestHelper.createTestAsset();
-		AssetDTO assetByGuid = AssetTestHelper.getAssetByGuid(asset.getId());
-		assertEquals(asset.getId(), assetByGuid.getId());
-	}
+        AssetQuery assetQuery = AssetTestHelper.getBasicAssetQuery();
+        assetQuery.setId(Arrays.asList(asset1.getId(), asset2.getId()));
 
-	@Test
-	public void createAssetTest() {
-		AssetTestHelper.createTestAsset();
-	}
+        AssetListResponse assetListResponse = AssetTestHelper.assetListQuery(assetQuery);
+        List<AssetDTO> assets = assetListResponse.getAssetList();
+        assertEquals(2, assets.size());
+        assertTrue(assets.stream().anyMatch(a -> a.getId().equals(asset1.getId())));
+        assertTrue(assets.stream().anyMatch(a -> a.getId().equals(asset2.getId())));
+    }
 
-	@Test
-	public void createAssetAuditLogCreatedTest() throws Exception {
-		Date fromDate = DateUtils.getNowDateUTC();
-		AssetDTO asset = AssetTestHelper.createTestAsset();
-		AssetTestHelper.assertAssetAuditLogCreated(asset.getId(), AuditOperationEnum.CREATE, fromDate);
-	}
+    @Test
+    public void getAssetListItemCountTest() {
+        AssetQuery assetQuery = AssetTestHelper.getBasicAssetQuery();
+        assetQuery.setFlagState(Collections.singletonList("SWE"));
 
-	@Test
-	public void updateAssetAuditLogCreatedTest() throws Exception {
-		Date fromDate = DateUtils.getNowDateUTC();
-		AssetDTO testAsset = AssetTestHelper.createTestAsset();
-		String newName = testAsset.getName() + "Changed";
-		testAsset.setName(newName);
-		AssetTestHelper.updateAsset(testAsset);
-		
-		AssetTestHelper.assertAssetAuditLogCreated(testAsset.getId(), AuditOperationEnum.UPDATE, fromDate);
-	}
+        Integer countBefore = AssetTestHelper.assetListQueryCount(assetQuery);
 
-	@Test
-	public void archiveAssetTest() {
-		AssetDTO testAsset = AssetTestHelper.createTestAsset();
-		testAsset.setActive(false);
-		AssetTestHelper.archiveAsset(testAsset);
-	}
+        AssetDTO asset = AssetTestHelper.createBasicAsset();
+        asset.setFlagStateCode("SWE");
+        AssetTestHelper.createAsset(asset);
 
-	@Test
-	public void archiveAssetAuditLogCreatedTest() throws Exception {
-		Date fromDate = DateUtils.getNowDateUTC();
-		AssetDTO testAsset = AssetTestHelper.createTestAsset();
-		testAsset.setActive(false);
-		AssetTestHelper.archiveAsset(testAsset);
-		
-		AssetTestHelper.assertAssetAuditLogCreated(testAsset.getId(), AuditOperationEnum.ARCHIVE, fromDate);
-	}
+        Integer countAfter = AssetTestHelper.assetListQueryCount(assetQuery);
+        assertEquals(Integer.valueOf(countBefore + 1), countAfter);
+    }
 
-	@Ignore("Removed resource?")
-	@Test
-	public void assetListGroupByFlagStateTest() {
-		AssetDTO asset = AssetTestHelper.createTestAsset();
-		ArrayList<String> assetIdList = new ArrayList<>();
-		assetIdList.add(asset.getId().toString());
+    @Test
+    public void getAssetListUpdatedIRCSNotFoundTest() {
+        AssetDTO testAsset = AssetTestHelper.createTestAsset();
 
-		Response response = getWebTarget()
-				.path("asset/rest/asset/listGroupByFlagState")
-				.request(MediaType.APPLICATION_JSON)
-				.header(HttpHeaders.AUTHORIZATION, getValidJwtToken())
-				.post(Entity.json(assetIdList));
-		assertEquals(Response.Status.OK.getStatusCode(), response.getStatus());
-	}
+        AssetQuery assetQuery = AssetTestHelper.getBasicAssetQuery();
+        assetQuery.setIrcs(Collections.singletonList(testAsset.getIrcs()));
 
-	@Test
-	public void getAssetListWithLikeSearchValue_ICCAT_AND_UVI_GFCM() {
-		AssetDTO asset = AssetTestHelper.createBasicAsset();
+        AssetListResponse assetList = AssetTestHelper.assetListQuery(assetQuery);
+        List<AssetDTO> assets = assetList.getAssetList();
+        assertTrue(assets.stream().anyMatch(a -> a.getId().equals(testAsset.getId())));
 
-		String theValue = UUID.randomUUID().toString();
-		asset.setIccat(theValue);
-		asset.setUvi(theValue);
-		asset.setGfcm(theValue);
+        testAsset.setIrcs("I" + AssetTestHelper.generateARandomStringWithMaxLength(7));
+        AssetTestHelper.updateAsset(testAsset);
 
-		AssetDTO createdAsset = AssetTestHelper.createAsset(asset);
+        // Search with same query, the asset should not be found
+        assetList = AssetTestHelper.assetListQuery(assetQuery);
+        assets = assetList.getAssetList();
+        assertFalse(assets.stream().anyMatch(a -> a.getId().equals(testAsset.getId())));
+    }
 
-		AssetQuery assetQuery = AssetTestHelper.getBasicAssetQuery();
+    @Test
+    public void getAssetListWithLikeSearchValue() {
+        AssetDTO asset = AssetTestHelper.createBasicAsset();
+        asset.setPortOfRegistration("MyHomePort");
+        AssetDTO createdAsset = AssetTestHelper.createAsset(asset);
 
-		assetQuery.setIccat(Collections.singletonList(theValue));
-		assetQuery.setUvi(Collections.singletonList(theValue));
-		assetQuery.setGfcm(Collections.singletonList(theValue));
+        AssetQuery assetQuery = AssetTestHelper.getBasicAssetQuery();
+        assetQuery.setPortOfRegistration(Collections.singletonList("My*"));
 
-		AssetListResponse assetList = AssetTestHelper.assetListQuery(assetQuery);
-		List<AssetDTO> assets = assetList.getAssetList();
-		assertTrue(assets.stream().anyMatch(a -> a.getId().equals(createdAsset.getId())));
-	}
+        AssetListResponse assetList = AssetTestHelper.assetListQuery(assetQuery);
+        List<AssetDTO> assets = assetList.getAssetList();
+        assertTrue(assets.stream().anyMatch(a -> a.getId().equals(createdAsset.getId())));
+    }
 
-	@Ignore("check what happens when list doesn't find any asset")
-	@Test
-	public void getAssetListWithLikeSearchValue_CHANGE_KEY_AND_FAIL() {
-		AssetDTO asset = AssetTestHelper.createTestAsset();
-		UUID guid = asset.getId();
+    @Test
+    public void getAssetByIdTest() {
+        AssetDTO asset = AssetTestHelper.createTestAsset();
+        AssetDTO assetByGuid = AssetTestHelper.getAssetByGuid(asset.getId());
+        assertEquals(asset.getId(), assetByGuid.getId());
+    }
 
-		String oldIccat = asset.getIccat();
-		String theValue = UUID.randomUUID().toString();
-		String newName = asset.getName() + "Changed";
-		asset.setName(newName);
-		asset.setIccat(theValue);
-		AssetTestHelper.updateAsset(asset);
+    @Test
+    public void createAssetTest() {
+        AssetTestHelper.createTestAsset();
+    }
 
-		AssetQuery assetQuery = AssetTestHelper.getBasicAssetQuery();
-		assetQuery.setIccat(Collections.singletonList(theValue));
-		assetQuery.setId(Collections.singletonList(guid));
+    @Test
+    public void createAssetAuditLogCreatedTest() throws Exception {
+        Date fromDate = DateUtils.getNowDateUTC();
+        AssetDTO asset = AssetTestHelper.createTestAsset();
+        AssetTestHelper.assertAssetAuditLogCreated(asset.getId(), AuditOperationEnum.CREATE, fromDate);
+    }
 
-		AssetListResponse listAssetResponse = AssetTestHelper.assetListQuery(assetQuery);
-		List<AssetDTO> fetchedAsssets = listAssetResponse.getAssetList();
-		assertFalse(fetchedAsssets.stream().anyMatch(a -> a.getId().equals(guid)));
-	}
+    @Test
+    public void updateAssetAuditLogCreatedTest() throws Exception {
+        Date fromDate = DateUtils.getNowDateUTC();
+        AssetDTO testAsset = AssetTestHelper.createTestAsset();
+        String newName = testAsset.getName() + "Changed";
+        testAsset.setName(newName);
+        AssetTestHelper.updateAsset(testAsset);
 
-	@Test
-	public void updateAssetTest() {
-		AssetDTO testAsset = AssetTestHelper.createTestAsset();
-		String newName = testAsset.getName() + "Changed";
-		testAsset.setName(newName);
-		AssetDTO updatedAsset = AssetTestHelper.updateAsset(testAsset);
-		assertEquals(newName, updatedAsset.getName());
-		assertEquals(testAsset.getId(), updatedAsset.getId());
-		assertEquals(testAsset.getCfr(), updatedAsset.getCfr());
-		assertNotEquals(testAsset.getHistoryId(), updatedAsset.getHistoryId());
-	}
+        AssetTestHelper.assertAssetAuditLogCreated(testAsset.getId(), AuditOperationEnum.UPDATE, fromDate);
+    }
 
-	@Test
-	public void assetListQueryHistoryGuidTest() {
-		AssetDTO asset1 = AssetTestHelper.createTestAsset();
+    @Test
+    public void archiveAssetTest() {
+        AssetDTO testAsset = AssetTestHelper.createTestAsset();
+        testAsset.setActive(false);
+        AssetTestHelper.archiveAsset(testAsset);
+    }
 
-		AssetDTO asset2 = AssetTestHelper.getAssetByGuid(asset1.getId());
-		asset2.setName(asset2.getName() + "1");
-		asset2 = AssetTestHelper.updateAsset(asset2);
+    @Test
+    public void archiveAssetAuditLogCreatedTest() throws Exception {
+        Date fromDate = DateUtils.getNowDateUTC();
+        AssetDTO testAsset = AssetTestHelper.createTestAsset();
+        testAsset.setActive(false);
+        AssetTestHelper.archiveAsset(testAsset);
 
-		AssetDTO asset3 = AssetTestHelper.getAssetByGuid(asset2.getId());
-		asset3.setName(asset3.getName() + "2");
-		asset3 = AssetTestHelper.updateAsset(asset3);
+        AssetTestHelper.assertAssetAuditLogCreated(testAsset.getId(), AuditOperationEnum.ARCHIVE, fromDate);
+    }
 
-		AssetQuery assetQuery1 = AssetTestHelper.getBasicAssetQuery();
-		assetQuery1.setHistoryId(Collections.singletonList(asset1.getHistoryId()));
-		
-		AssetListResponse assetHistory1 = AssetTestHelper.assetListQuery(assetQuery1);
-		List<AssetDTO> assets = assetHistory1.getAssetList();
-		assertEquals(1, assets.size());
-		assertEquals(asset1.getId(), assets.get(0).getId());
-		
-		AssetQuery assetQuery2 = AssetTestHelper.getBasicAssetQuery();
-		assetQuery2.setHistoryId(Collections.singletonList(asset2.getHistoryId()));
-		
-		AssetListResponse assetHistory2 = AssetTestHelper.assetListQuery(assetQuery2);
-		List<AssetDTO> assets2 = assetHistory2.getAssetList();
-		assertEquals(1, assets2.size());
-		assertEquals(asset2.getId(), assets2.get(0).getId());		
-		assertEquals(asset2.getName(), assets2.get(0).getName());
-		
-		AssetQuery assetQuery3 = AssetTestHelper.getBasicAssetQuery();
-		assetQuery3.setHistoryId(Collections.singletonList(asset3.getHistoryId()));
-		
-		AssetListResponse assetHistory3 = AssetTestHelper.assetListQuery(assetQuery3);
-		List<AssetDTO> assets3 = assetHistory3.getAssetList();
-		assertEquals(1, assets3.size());
-		assertEquals(asset3.getId(), assets3.get(0).getId());
-		assertEquals(asset3.getName(), assets3.get(0).getName());
-	}
-	
-	@Test
-	public void assetListQueryMultipleHistoryGuidTest() {
-		AssetDTO asset1 = AssetTestHelper.createTestAsset();
+    @Ignore("Removed resource?")
+    @Test
+    public void assetListGroupByFlagStateTest() {
+        AssetDTO asset = AssetTestHelper.createTestAsset();
+        ArrayList<String> assetIdList = new ArrayList<>();
+        assetIdList.add(asset.getId().toString());
 
-		AssetDTO asset2 = AssetTestHelper.getAssetByGuid(asset1.getId());
-		asset2.setName(asset2.getName() + "1");
-		AssetDTO createdAsset2 = AssetTestHelper.updateAsset(asset2);
+        Response response = getWebTarget()
+                .path("asset/rest/asset/listGroupByFlagState")
+                .request(MediaType.APPLICATION_JSON)
+                .header(HttpHeaders.AUTHORIZATION, getValidJwtToken())
+                .post(Entity.json(assetIdList));
+        assertEquals(Response.Status.OK.getStatusCode(), response.getStatus());
+    }
 
-		AssetQuery assetQuery = AssetTestHelper.getBasicAssetQuery();
-		assetQuery.setHistoryId(Arrays.asList(asset1.getHistoryId(), createdAsset2.getHistoryId()));
-		
-		AssetListResponse assetHistory = AssetTestHelper.assetListQuery(assetQuery);
-		List<AssetDTO> assets = assetHistory.getAssetList();
-		assertEquals(2, assets.size());
-		assertTrue(assets.stream().anyMatch(a -> a.getId().equals(asset1.getId()) && a.getName().equals(asset1.getName())));	
-		assertTrue(assets.stream().anyMatch(a -> a.getId().equals(createdAsset2.getId()) && a.getName().equals(asset2.getName())));
-	}
-	
-	@Test
-	public void addContactToAsset() {
-		AssetDTO asset = AssetTestHelper.createTestAsset();
-	    
-	    ContactInfo contact = new ContactInfo();
-	    contact.setName("Test contact");
-	    contact.setEmail("test@mail.com");
-	    contact.setPhoneNumber("123-456789");
-	    ContactInfo createdContact = AssetTestHelper.createContactInfoForAsset(asset, contact);
+    @Test
+    public void getAssetListWithLikeSearchValue_ICCAT_AND_UVI_GFCM() {
+        AssetDTO asset = AssetTestHelper.createBasicAsset();
 
-		assertNotNull(createdContact.getId());
-	}
-	
-	@Test
-	public void addNoteToAsset() {
-		AssetDTO asset = AssetTestHelper.createTestAsset();
+        String theValue = UUID.randomUUID().toString();
+        asset.setIccat(theValue);
+        asset.setUvi(theValue);
+        asset.setGfcm(theValue);
 
-	    Note note = new Note();
-	    note.setActivityCode("1");
-	    note.setDate(OffsetDateTime.now(ZoneOffset.UTC));
-	    note.setNotes("apa");
-	    
-	    Note createdNote = AssetTestHelper.createNoteForAsset(asset, note);
+        AssetDTO createdAsset = AssetTestHelper.createAsset(asset);
 
-		assertNotNull(createdNote.getId());
-	}
+        AssetQuery assetQuery = AssetTestHelper.getBasicAssetQuery();
 
-	@Test
-	public void testIfUserCanCreateAnAsset() {
-		try {
-			AssetDTO anAsset = AssetTestHelper.createBasicAsset();
-			AssetTestHelper.createAsset(anAsset, "usm_user", "password");
-			fail("this must not occur");
-		} catch(ForbiddenException e){
-			assertTrue("logged on but have not that feature", true);
-		}
-	}
+        assetQuery.setIccat(Collections.singletonList(theValue));
+        assetQuery.setUvi(Collections.singletonList(theValue));
+        assetQuery.setGfcm(Collections.singletonList(theValue));
+
+        AssetListResponse assetList = AssetTestHelper.assetListQuery(assetQuery);
+        List<AssetDTO> assets = assetList.getAssetList();
+        assertTrue(assets.stream().anyMatch(a -> a.getId().equals(createdAsset.getId())));
+    }
+
+    @Ignore("check what happens when list doesn't find any asset")
+    @Test
+    public void getAssetListWithLikeSearchValue_CHANGE_KEY_AND_FAIL() {
+        AssetDTO asset = AssetTestHelper.createTestAsset();
+        UUID guid = asset.getId();
+
+        String oldIccat = asset.getIccat();
+        String theValue = UUID.randomUUID().toString();
+        String newName = asset.getName() + "Changed";
+        asset.setName(newName);
+        asset.setIccat(theValue);
+        AssetTestHelper.updateAsset(asset);
+
+        AssetQuery assetQuery = AssetTestHelper.getBasicAssetQuery();
+        assetQuery.setIccat(Collections.singletonList(theValue));
+        assetQuery.setId(Collections.singletonList(guid));
+
+        AssetListResponse listAssetResponse = AssetTestHelper.assetListQuery(assetQuery);
+        List<AssetDTO> fetchedAsssets = listAssetResponse.getAssetList();
+        assertFalse(fetchedAsssets.stream().anyMatch(a -> a.getId().equals(guid)));
+    }
+
+    @Test
+    public void updateAssetTest() {
+        AssetDTO testAsset = AssetTestHelper.createTestAsset();
+        String newName = testAsset.getName() + "Changed";
+        testAsset.setName(newName);
+        AssetDTO updatedAsset = AssetTestHelper.updateAsset(testAsset);
+        assertEquals(newName, updatedAsset.getName());
+        assertEquals(testAsset.getId(), updatedAsset.getId());
+        assertEquals(testAsset.getCfr(), updatedAsset.getCfr());
+        assertNotEquals(testAsset.getHistoryId(), updatedAsset.getHistoryId());
+    }
+
+    @Test
+    public void assetListQueryHistoryGuidTest() {
+        AssetDTO asset1 = AssetTestHelper.createTestAsset();
+
+        AssetDTO asset2 = AssetTestHelper.getAssetByGuid(asset1.getId());
+        asset2.setName(asset2.getName() + "1");
+        asset2 = AssetTestHelper.updateAsset(asset2);
+
+        AssetDTO asset3 = AssetTestHelper.getAssetByGuid(asset2.getId());
+        asset3.setName(asset3.getName() + "2");
+        asset3 = AssetTestHelper.updateAsset(asset3);
+
+        AssetQuery assetQuery1 = AssetTestHelper.getBasicAssetQuery();
+        assetQuery1.setHistoryId(Collections.singletonList(asset1.getHistoryId()));
+
+        AssetListResponse assetHistory1 = AssetTestHelper.assetListQuery(assetQuery1);
+        List<AssetDTO> assets = assetHistory1.getAssetList();
+        assertEquals(1, assets.size());
+        assertEquals(asset1.getId(), assets.get(0).getId());
+
+        AssetQuery assetQuery2 = AssetTestHelper.getBasicAssetQuery();
+        assetQuery2.setHistoryId(Collections.singletonList(asset2.getHistoryId()));
+
+        AssetListResponse assetHistory2 = AssetTestHelper.assetListQuery(assetQuery2);
+        List<AssetDTO> assets2 = assetHistory2.getAssetList();
+        assertEquals(1, assets2.size());
+        assertEquals(asset2.getId(), assets2.get(0).getId());
+        assertEquals(asset2.getName(), assets2.get(0).getName());
+
+        AssetQuery assetQuery3 = AssetTestHelper.getBasicAssetQuery();
+        assetQuery3.setHistoryId(Collections.singletonList(asset3.getHistoryId()));
+
+        AssetListResponse assetHistory3 = AssetTestHelper.assetListQuery(assetQuery3);
+        List<AssetDTO> assets3 = assetHistory3.getAssetList();
+        assertEquals(1, assets3.size());
+        assertEquals(asset3.getId(), assets3.get(0).getId());
+        assertEquals(asset3.getName(), assets3.get(0).getName());
+    }
+
+    @Test
+    public void assetListQueryMultipleHistoryGuidTest() {
+        AssetDTO asset1 = AssetTestHelper.createTestAsset();
+
+        AssetDTO asset2 = AssetTestHelper.getAssetByGuid(asset1.getId());
+        asset2.setName(asset2.getName() + "1");
+        AssetDTO createdAsset2 = AssetTestHelper.updateAsset(asset2);
+
+        AssetQuery assetQuery = AssetTestHelper.getBasicAssetQuery();
+        assetQuery.setHistoryId(Arrays.asList(asset1.getHistoryId(), createdAsset2.getHistoryId()));
+
+        AssetListResponse assetHistory = AssetTestHelper.assetListQuery(assetQuery);
+        List<AssetDTO> assets = assetHistory.getAssetList();
+        assertEquals(2, assets.size());
+        assertTrue(assets.stream().anyMatch(a -> a.getId().equals(asset1.getId()) && a.getName().equals(asset1.getName())));
+        assertTrue(assets.stream().anyMatch(a -> a.getId().equals(createdAsset2.getId()) && a.getName().equals(asset2.getName())));
+    }
+
+    @Test
+    public void addContactToAsset() {
+        AssetDTO asset = AssetTestHelper.createTestAsset();
+
+        ContactInfo contact = new ContactInfo();
+        contact.setName("Test contact");
+        contact.setEmail("test@mail.com");
+        contact.setPhoneNumber("123-456789");
+        ContactInfo createdContact = AssetTestHelper.createContactInfoForAsset(asset, contact);
+
+        assertNotNull(createdContact.getId());
+    }
+
+    @Test
+    public void addNoteToAsset() {
+        AssetDTO asset = AssetTestHelper.createTestAsset();
+
+        Note note = new Note();
+        note.setActivityCode("1");
+        note.setDate(OffsetDateTime.now(ZoneOffset.UTC));
+        note.setNotes("apa");
+
+        Note createdNote = AssetTestHelper.createNoteForAsset(asset, note);
+
+        assertNotNull(createdNote.getId());
+    }
+
+    @Test
+    public void testIfUserCanCreateAnAsset() {
+        try {
+            AssetDTO anAsset = AssetTestHelper.createBasicAsset();
+            AssetTestHelper.createAsset(anAsset, "usm_user", "password");
+            fail("this must not occur");
+        } catch (ForbiddenException e) {
+            assertTrue("logged on but have not that feature", true);
+        }
+    }
+
+
+    @Test
+    public void testIfUserCanCreateAnAssetOkUser() {
+
+
+        try {
+            AssetDTO anAsset = AssetTestHelper.createBasicAsset();
+            anAsset = AssetTestHelper.createAsset(anAsset);
+            assertTrue(true); // this must not occur
+        } catch (ForbiddenException e) {
+            // logged on but have not that feature
+            assertFalse(true);
+        }
+    }
+
+
 }
