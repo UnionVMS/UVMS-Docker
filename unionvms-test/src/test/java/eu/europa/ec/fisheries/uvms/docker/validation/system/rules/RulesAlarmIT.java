@@ -434,7 +434,7 @@ public class RulesAlarmIT extends AbstractRest {
         
         LatLong position2 = new LatLong(2d, 2d, new Date());
         try (TopicListener topicListener = new TopicListener(VMSSystemHelper.emailSelector)) {
-            FLUXHelper.sendPositionToFluxPlugin(asset1, position2);
+            FLUXHelper.sendPositionToFluxPlugin(asset2, position2);
             CustomRuleHelper.pollTicketCreated();
 
             SetCommandRequest setCommandRequest2 = topicListener.listenOnEventBusForSpecificMessage(SetCommandRequest.class);
