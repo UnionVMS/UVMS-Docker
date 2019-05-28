@@ -13,30 +13,41 @@ copy of the GNU General Public License along with the IFDM Suite. If not, see <h
 */
 package eu.europa.ec.fisheries.uvms.docker.validation.exchange;
 
+import eu.europa.ec.fisheries.uvms.commons.rest.dto.ResponseDto;
+import eu.europa.ec.fisheries.uvms.docker.validation.common.AbstractRest;
+import org.junit.Test;
+
+import javax.ws.rs.core.HttpHeaders;
+import javax.ws.rs.core.MediaType;
 import java.util.List;
 import java.util.Map;
-import org.apache.http.HttpResponse;
-import org.apache.http.client.fluent.Request;
-import org.junit.Test;
-import eu.europa.ec.fisheries.uvms.docker.validation.common.AbstractRest;
 
 public class ExchangeConfigRestIT extends AbstractRest {
 
 	@Test
-	public void getConfigSearchFieldsTest() throws Exception {
-		final HttpResponse response = Request.Get(getBaseUrl() + "exchange/rest/config/searchfields")
-				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken()).execute()
-				.returnResponse();
+	public void getConfigSearchFieldsTest() {
+		ResponseDto dto = getWebTarget()
+				.path("exchange/rest/config/searchfields")
+				.request(MediaType.APPLICATION_JSON)
+				.header(HttpHeaders.AUTHORIZATION, getValidJwtToken())
+				.get(ResponseDto.class);
 
-		List dataList = checkSuccessResponseReturnType(response,List.class);
+		List fields = (List) dto.getData();
+
+		assertNotNull(fields);
+		assertEquals(9, fields.size());
 	}
 
 	@Test
-	public void getConfigurationTest() throws Exception {
-		final HttpResponse response = Request.Get(getBaseUrl() + "exchange/rest/config")
-				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken()).execute()
-				.returnResponse();
+	public void getConfigurationTest() {
+		ResponseDto dto = getWebTarget()
+				.path("exchange/rest/config")
+				.request(MediaType.APPLICATION_JSON)
+				.header(HttpHeaders.AUTHORIZATION, getValidJwtToken())
+				.get(ResponseDto.class);
 
-		Map<String,Object> dataMap = checkSuccessResponseReturnMap(response);
+		Map configurationMap = (Map) dto.getData();
+
+		assertNotNull(configurationMap);
 	}
 }

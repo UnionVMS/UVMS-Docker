@@ -1,15 +1,5 @@
 package eu.europa.ec.fisheries.uvms.docker.validation.exchange;
 
-import java.io.StringWriter;
-import java.util.Date;
-import java.util.List;
-import javax.jms.JMSException;
-import javax.xml.bind.JAXBContext;
-import javax.xml.bind.JAXBException;
-
-import org.junit.AfterClass;
-import org.junit.BeforeClass;
-import org.junit.Test;
 import eu.europa.ec.fisheries.schema.exchange.module.v1.ExchangeModuleMethod;
 import eu.europa.ec.fisheries.schema.exchange.module.v1.SetMovementReportRequest;
 import eu.europa.ec.fisheries.schema.exchange.movement.asset.v1.AssetId;
@@ -55,14 +45,10 @@ public class SetMovementReportRequestJmsIT extends AbstractRest {
 		movementHelper.close();
 		messageHelper.close();
 	}
+
 	//TODO: Make theses tests actually do something and not just send a message on the queue
-	/**
-	 * Creates the movement request test.
-	 *
-	 * @throws Exception
-	 *             the exception
-	 */
-	@Test(timeout = 5000)
+
+	@Test(timeout = 50000)
 	public void setMovementReportRequestTest() throws Exception {
 		AssetDTO testAsset = AssetTestHelper.createTestAsset();
 		MobileTerminalDto mobileTerminal = MobileTerminalTestHelper.createMobileTerminal();
@@ -99,17 +85,6 @@ public class SetMovementReportRequestJmsIT extends AbstractRest {
 		return sw.toString();
 	}
 
-	/**
-	 * Creates the set report movement type.
-	 *
-	 * @param testAsset
-	 *            the test asset
-	 * @param mobileTerminal
-	 *            the mobile terminal type
-	 * @param createMovementRequest
-	 *            the create movement request
-	 * @return the sets the movement report request
-	 */
 	private SetMovementReportRequest createSetReportMovementType(AssetDTO testAsset, MobileTerminalDto mobileTerminal,
 			IncomingMovement createMovementRequest) {
 

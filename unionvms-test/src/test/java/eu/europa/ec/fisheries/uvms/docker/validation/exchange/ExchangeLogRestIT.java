@@ -71,10 +71,11 @@ public class ExchangeLogRestIT extends AbstractRest {
 	}
 
 	@Test
-	public void getPollStatusQueryTest() throws IOException, Exception {
+	public void getPollStatusQueryTest() throws Exception {
         SetCommandRequest commandRequest = PollHelper.createPollAndReturnSetCommandRequest();
         CommandType command = commandRequest.getCommand();
-        PollHelper.ackPoll(command.getPoll().getMessage(), command.getPoll().getPollId(), ExchangeLogStatusTypeType.SUCCESSFUL, command.getUnsentMessageGuid());
+        PollHelper.ackPoll(command.getPoll().getMessage(), command.getPoll().getPollId(),
+				ExchangeLogStatusTypeType.SUCCESSFUL, command.getUnsentMessageGuid());
 
 		PollQuery pollQuery = new PollQuery();
 		pollQuery.setStatus(ExchangeLogStatusTypeType.SUCCESSFUL);
@@ -83,7 +84,7 @@ public class ExchangeLogRestIT extends AbstractRest {
 		pollQuery.setStatusFromDate(formatDateAsUTC(oldDate));
 		pollQuery.setStatusToDate(formatDateAsUTC(new Date()));
 
-		Thread.sleep(500);		//needed to let the system work and catch up
+		Thread.sleep(500);	 // Needed to let the system work and catch up
 
 		ResponseDto<List<ExchangeLogStatusType>> exchangeLogStatusTypeList = getWebTarget()
 				.path("exchange/rest/exchange/poll/")
