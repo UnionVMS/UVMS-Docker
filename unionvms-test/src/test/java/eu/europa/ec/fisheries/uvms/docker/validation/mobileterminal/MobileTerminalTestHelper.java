@@ -16,18 +16,13 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.util.Calendar;
 import java.util.List;
-import java.util.Random;
 import java.util.UUID;
 
 public final class MobileTerminalTestHelper extends AbstractHelper {
 
-	private static String serialNumber;
+	public static CreatePollResultDto createPollWithMT_Helper(AssetDTO testAsset, PollType pollType, MobileTerminalDto terminal) {
 
-    public static CreatePollResultDto createPollWithMT_Helper(AssetDTO testAsset, PollType pollType,
-            MobileTerminalDto terminal) {
-        // Assign first
         terminal = assignMobileTerminal(testAsset, terminal);
-
         assertNotNull(terminal.getAsset());
 
         String comChannelId = terminal.getChannels().iterator().next().getId().toString();
@@ -98,7 +93,7 @@ public final class MobileTerminalTestHelper extends AbstractHelper {
         return createdTerminal;
 	}
 	
-	public static MobileTerminalDto getMobileTerminalById(UUID uuid) {
+	static MobileTerminalDto getMobileTerminalById(UUID uuid) {
 		return getWebTarget()
 				.path("asset/rest/mobileterminal")
 				.path(uuid.toString())
@@ -107,7 +102,7 @@ public final class MobileTerminalTestHelper extends AbstractHelper {
 				.get(MobileTerminalDto.class);
 	}
 
-	public static MobileTerminalDto updateMobileTerminal(MobileTerminalDto mobileTerminal) {
+	static MobileTerminalDto updateMobileTerminal(MobileTerminalDto mobileTerminal) {
 		return getWebTarget()
 				.path("asset/rest/mobileterminal")
 				.queryParam("comment", "MobileTerminal is Archived")
@@ -116,7 +111,7 @@ public final class MobileTerminalTestHelper extends AbstractHelper {
 				.put(Entity.json(mobileTerminal), MobileTerminalDto.class);
 	}
 
-	public static Response getMobileTerminalList(MobileTerminalListQuery queryRequest) {
+	static Response getMobileTerminalList(MobileTerminalListQuery queryRequest) {
 		return getWebTarget()
 				.path("asset/rest/mobileterminal/list")
 				.request(MediaType.APPLICATION_JSON)
@@ -124,7 +119,7 @@ public final class MobileTerminalTestHelper extends AbstractHelper {
 				.post(Entity.json(queryRequest));
 	}
 
-	public static MobileTerminalDto activateMobileTerminal(UUID uuid) {
+	static MobileTerminalDto activateMobileTerminal(UUID uuid) {
 		return getWebTarget()
 				.path("asset/rest/mobileterminal/status/activate")
 				.queryParam("comment", "Activate MobileTerminal")
@@ -133,7 +128,7 @@ public final class MobileTerminalTestHelper extends AbstractHelper {
 				.put(Entity.json(uuid), MobileTerminalDto.class);
 	}
 
-	public static MobileTerminalDto removeMobileTerminal(UUID uuid) {
+	static MobileTerminalDto removeMobileTerminal(UUID uuid) {
 		return getWebTarget()
 				.path("asset/rest/mobileterminal/status/remove")
 				.queryParam("comment", "Remove MobileTerminal")
@@ -142,7 +137,7 @@ public final class MobileTerminalTestHelper extends AbstractHelper {
 				.put(Entity.json(uuid), MobileTerminalDto.class);
 	}
 
-	public static MobileTerminalDto inactivateMobileTerminal(UUID uuid) {
+	static MobileTerminalDto inactivateMobileTerminal(UUID uuid) {
 		return getWebTarget()
 				.path("asset/rest/mobileterminal/status/inactivate")
 				.queryParam("comment", "InActivate MobileTerminal")
@@ -162,7 +157,7 @@ public final class MobileTerminalTestHelper extends AbstractHelper {
 				.put(Entity.json(mobileTerminal.getId()), MobileTerminalDto.class);
 	}
 
-	public static MobileTerminalDto unAssignMobileTerminal(AssetDTO asset, MobileTerminalDto mobileTerminal) {
+	static MobileTerminalDto unAssignMobileTerminal(AssetDTO asset, MobileTerminalDto mobileTerminal) {
 
 		return getWebTarget()
 				.path("asset/rest/mobileterminal/unassign")
@@ -173,7 +168,7 @@ public final class MobileTerminalTestHelper extends AbstractHelper {
 				.put(Entity.json(mobileTerminal.getId()), MobileTerminalDto.class);
 	}
 
-	public static List<MobileTerminalDto> getMobileTerminalHistoryList(UUID uuid) {
+	static List<MobileTerminalDto> getMobileTerminalHistoryList(UUID uuid) {
 		return getWebTarget()
 				.path("asset/rest/mobileterminal/history")
 				.path(uuid.toString())
@@ -186,8 +181,7 @@ public final class MobileTerminalTestHelper extends AbstractHelper {
 		MobileTerminalDto mobileTerminal = new MobileTerminalDto();
 		mobileTerminal.setSource("INTERNAL");
 		mobileTerminal.setMobileTerminalType("INMARSAT_C");
-		serialNumber = generateARandomStringWithMaxLength(10);
-		mobileTerminal.setSerialNo(serialNumber);
+		mobileTerminal.setSerialNo(generateARandomStringWithMaxLength(10));
 		mobileTerminal.setArchived(false);
 		mobileTerminal.setInactivated(false);
 

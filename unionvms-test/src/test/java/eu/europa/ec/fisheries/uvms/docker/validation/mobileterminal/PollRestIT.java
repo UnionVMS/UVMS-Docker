@@ -21,9 +21,10 @@ import eu.europa.ec.fisheries.schema.mobileterminal.types.v1.ListPagination;
 import eu.europa.ec.fisheries.uvms.asset.client.model.AssetDTO;
 import eu.europa.ec.fisheries.uvms.docker.validation.asset.AssetTestHelper;
 import eu.europa.ec.fisheries.uvms.docker.validation.common.AbstractRest;
-import eu.europa.ec.fisheries.uvms.docker.validation.mobileterminal.dto.*;
-import org.apache.http.HttpResponse;
-import org.apache.http.client.fluent.Request;
+import eu.europa.ec.fisheries.uvms.docker.validation.mobileterminal.dto.CreatePollResultDto;
+import eu.europa.ec.fisheries.uvms.docker.validation.mobileterminal.dto.PollDto;
+import eu.europa.ec.fisheries.uvms.docker.validation.mobileterminal.dto.PollKey;
+import eu.europa.ec.fisheries.uvms.docker.validation.mobileterminal.dto.PollValue;
 import org.junit.Test;
 
 import javax.ws.rs.client.Entity;
@@ -31,16 +32,13 @@ import javax.ws.rs.core.GenericType;
 import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 
 public class PollRestIT extends AbstractRest {
 
 	@Test
 	public void getRunningProgramPollsTest() {
-
 		Response response = getWebTarget()
 				.path("asset/rest/poll/running")
 				.request(MediaType.APPLICATION_JSON)
@@ -89,7 +87,6 @@ public class PollRestIT extends AbstractRest {
 		List<String> unsentPolls = resultDto.getUnsentPolls();
 		String uid = unsentPolls.get(0);
 
-		// start it
 		Response started = getWebTarget()
 				.path("asset/rest/poll/start")
 				.path(uid)
@@ -102,7 +99,6 @@ public class PollRestIT extends AbstractRest {
 		assertNotNull(startedPollDto);
 		assertEquals(10, startedPollDto.getValue().size());
 
-		// stop it
 		Response stopped = getWebTarget()
 				.path("asset/rest/poll/stop")
 				.path(uid)
@@ -133,7 +129,6 @@ public class PollRestIT extends AbstractRest {
 		List<String> unsentPolls = resultDto.getUnsentPolls();
 		String uid = unsentPolls.get(0);
 
-		// start it
 		Response started = getWebTarget()
 				.path("asset/rest/poll/start")
 				.path(uid)
@@ -146,7 +141,6 @@ public class PollRestIT extends AbstractRest {
 		assertNotNull(startedPollDto);
 		assertEquals(10, startedPollDto.getValue().size());
 
-		// inactivate it
 		Response inactivated = getWebTarget()
 				.path("asset/rest/poll/inactivate")
 				.path(uid)

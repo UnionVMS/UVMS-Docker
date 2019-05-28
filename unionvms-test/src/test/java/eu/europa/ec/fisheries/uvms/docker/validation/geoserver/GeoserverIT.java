@@ -1,72 +1,97 @@
 package eu.europa.ec.fisheries.uvms.docker.validation.geoserver;
 
-import org.apache.http.HttpResponse;
-import org.apache.http.HttpStatus;
-import org.apache.http.client.fluent.Request;
-import org.junit.Test;
 import eu.europa.ec.fisheries.uvms.docker.validation.common.AbstractRest;
+import org.junit.Test;
 
-/**
- * The Class GeoserverTest.
- */
+import javax.ws.rs.client.Client;
+import javax.ws.rs.client.ClientBuilder;
+import javax.ws.rs.client.WebTarget;
+import javax.ws.rs.core.HttpHeaders;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
+
 public class GeoserverIT extends AbstractRest {
 
-	/**
-	 * Verify protected uvms layers test.
-	 *
-	 * @throws Exception the exception
-	 */
 	@Test
-	public void verifyProtectedUvmsLayersTest() throws Exception {
-		HttpResponse httpResponse = Request.Get("http://localhost:28080/geoserver/uvms/wms?service=WMS&version=1.1.0&request=GetMap&layers=uvms:port&styles=&bbox=-180.0,-90.0,180.0,90.0&width=768&height=384&srs=EPSG:4326&format=application/openlayers").execute().returnResponse();
-		assertEquals(HttpStatus.SC_FORBIDDEN, httpResponse.getStatusLine().getStatusCode());
+	public void verifyProtectedUvmsLayersTest() {
+		Client client = ClientBuilder.newClient();
+		WebTarget webTarget = client.target("http://localhost:28080/geoserver/");
+		Response response = webTarget
+				.path("uvms/wms")
+				.queryParam("service", "WMS")
+				.queryParam("version", "1.1.0")
+				.queryParam("request", "GetMap")
+				.queryParam("layers", "uvms:port")
+				.queryParam("styles", "")
+				.queryParam("bbox", "-180.0,-90.0,180.0,90.0")
+				.queryParam("width", "768")
+				.queryParam("height", "384")
+				.queryParam("srs", "EPSG:4326")
+				.queryParam("format", "application/openlayers")
+				.request(MediaType.APPLICATION_JSON)
+				.get();
+
+		assertEquals(Response.Status.FORBIDDEN.getStatusCode(), response.getStatus());
 	}
 
-	/**
-	 * Verify protected uvms layers access with jwt header test.
-	 *
-	 * @throws Exception the exception
-	 */
 	@Test
-	public void verifyProtectedUvmsLayersAccessWithJwtHeaderTest() throws Exception {
-		HttpResponse httpResponse = Request.Get("http://localhost:28080/geoserver/uvms/wms?service=WMS&version=1.1.0&request=GetMap&layers=uvms:port&styles=&bbox=-180.0,-90.0,180.0,90.0&width=768&height=384&srs=EPSG:4326&format=application/openlayers").setHeader("Authorization", getValidJwtToken()).execute().returnResponse();
-		assertEquals(HttpStatus.SC_OK, httpResponse.getStatusLine().getStatusCode());
-		
-		assertEquals("SAMEORIGIN", httpResponse.getFirstHeader("X-Frame-Options").getValue());
+	public void verifyProtectedUvmsLayersAccessWithJwtHeaderTest() {
+		Response response = geoServerWebTarget()
+				.path("uvms/wms")
+				.queryParam("service", "WMS")
+				.queryParam("version", "1.1.0")
+				.queryParam("request", "GetMap")
+				.queryParam("layers", "uvms:port")
+				.queryParam("styles", "")
+				.queryParam("bbox", "-180.0,-90.0,180.0,90.0")
+				.queryParam("width", "768")
+				.queryParam("height", "384")
+				.queryParam("srs", "EPSG:4326")
+				.queryParam("format", "application/openlayers")
+				.request(MediaType.APPLICATION_JSON)
+				.header(HttpHeaders.AUTHORIZATION, getValidJwtToken())
+				.get();
 
-		
+		assertEquals(Response.Status.OK.getStatusCode(), response.getStatus());
+		assertEquals("SAMEORIGIN", response.getHeaderString("X-Frame-Options"));
 	}	
 	
-	/**
-	 * Verify access control allow origin test.
-	 *
-	 * @throws Exception the exception
-	 */
 	@Test
-	public void verifyAccessControlAllowOriginTest() throws Exception {
-		HttpResponse httpResponse = Request.Get("http://localhost:28080/geoserver/web/").setHeader("Authorization", getValidJwtToken()).setHeader("Origin", "http://www.example.com").execute().returnResponse();
-		assertEquals(HttpStatus.SC_OK, httpResponse.getStatusLine().getStatusCode());
-		
-		assertEquals("SAMEORIGIN", httpResponse.getFirstHeader("X-Frame-Options").getValue());
-		assertEquals("http://www.example.com", httpResponse.getFirstHeader("Access-Control-Allow-Origin").getValue());
-		assertEquals("true", httpResponse.getFirstHeader("Access-Control-Allow-Credentials").getValue());
-				
+	public void verifyAccessControlAllowOriginTest() {
+		Response response = geoServerWebTarget()
+				.path("web/")
+				.request(MediaType.APPLICATION_JSON)
+				.header(HttpHeaders.AUTHORIZATION, getValidJwtToken())
+				.header("Origin", "http://www.example.com")
+				.get();
+
+		assertEquals(Response.Status.OK.getStatusCode(), response.getStatus());
+		assertEquals("SAMEORIGIN", response.getHeaderString("X-Frame-Options"));
+		assertEquals("http://www.example.com", response.getHeaderString("Access-Control-Allow-Origin"));
+		assertEquals("true", response.getHeaderString("Access-Control-Allow-Credentials"));
 	}
 
-	/**
-	 * Verify options allow test.
-	 *
-	 * @throws Exception the exception
-	 */
 	@Test
-	public void verifyOptionsAllowTest() throws Exception {
-		HttpResponse httpResponse = Request.Options("http://localhost:28080/geoserver/web/").setHeader("Authorization", getValidJwtToken()).setHeader("Origin", "http://www.example.com").setHeader("Access-Control-Request-Method","POST").setHeader("Access-Control-Request-Headers", "content-type,accept").execute().returnResponse();
-		assertEquals(HttpStatus.SC_OK, httpResponse.getStatusLine().getStatusCode());
-		
-		assertEquals("GET, HEAD, POST, PUT, DELETE, TRACE, OPTIONS, PATCH", httpResponse.getFirstHeader("Allow").getValue());
-		assertEquals("http://www.example.com", httpResponse.getFirstHeader("Access-Control-Allow-Origin").getValue());
-		assertEquals("true", httpResponse.getFirstHeader("Access-Control-Allow-Credentials").getValue());
-		assertEquals("GET,POST,HEAD",httpResponse.getFirstHeader("Access-Control-Allow-Methods").getValue());
-		assertEquals("X-Requested-With,Content-Type,Accept,Origin",httpResponse.getFirstHeader("Access-Control-Allow-Headers").getValue());
+	public void verifyOptionsAllowTest() {
+		Response response = geoServerWebTarget()
+				.path("web")
+				.request(MediaType.APPLICATION_JSON)
+				.header(HttpHeaders.AUTHORIZATION, getValidJwtToken())
+				.header("Origin", "http://www.example.com")
+				.header("Access-Control-Request-Method", "POST")
+				.header("Access-Control-Request-Headers", "content-type,accept")
+				.options();
+
+		assertEquals(Response.Status.OK.getStatusCode(), response.getStatus());
+		assertEquals("GET, HEAD, POST, PUT, DELETE, TRACE, OPTIONS, PATCH", response.getHeaderString("Allow"));
+		assertEquals("http://www.example.com", response.getHeaderString("Access-Control-Allow-Origin"));
+		assertEquals("true", response.getHeaderString("Access-Control-Allow-Credentials"));
+		assertEquals("GET,POST,HEAD", response.getHeaderString("Access-Control-Allow-Methods"));
+		assertEquals("X-Requested-With,Content-Type,Accept,Origin", response.getHeaderString("Access-Control-Allow-Headers"));
+	}
+
+	private WebTarget geoServerWebTarget() {
+		Client client = ClientBuilder.newClient();
+		return client.target("http://localhost:28080/geoserver/");
 	}
 }

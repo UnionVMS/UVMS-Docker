@@ -11,12 +11,6 @@ copy of the GNU General Public License along with the IFDM Suite. If not, see <h
  */
 package eu.europa.ec.fisheries.uvms.docker.validation.mobileterminal;
 
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.CoreMatchers.notNullValue;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import org.junit.Test;
 import eu.europa.ec.fisheries.schema.exchange.common.v1.CommandTypeType;
 import eu.europa.ec.fisheries.schema.exchange.common.v1.KeyValueType;
 import eu.europa.ec.fisheries.schema.exchange.plugin.v1.SetCommandRequest;
@@ -26,6 +20,14 @@ import eu.europa.ec.fisheries.uvms.docker.validation.common.AbstractRest;
 import eu.europa.ec.fisheries.uvms.docker.validation.mobileterminal.dto.ChannelDto;
 import eu.europa.ec.fisheries.uvms.docker.validation.mobileterminal.dto.MobileTerminalDto;
 import eu.europa.ec.fisheries.uvms.docker.validation.system.helper.PollHelper;
+import org.junit.Test;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.notNullValue;
 
 public class PollInmarsatCommandIT extends AbstractRest {
     
@@ -50,5 +52,4 @@ public class PollInmarsatCommandIT extends AbstractRest {
         assertThat(receiverValuesMap.get("DNID"), is(channel.getDNID()));
         assertThat(receiverValuesMap.get("MEMBER_NUMBER"), is(channel.getMemberNumber()));
     }
-
 }
