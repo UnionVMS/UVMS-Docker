@@ -15,6 +15,7 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.notNullValue;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -26,6 +27,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import eu.europa.ec.fisheries.schema.exchange.movement.v1.MovementType;
 import eu.europa.ec.fisheries.schema.exchange.movement.v1.RecipientInfoType;
+import eu.europa.ec.fisheries.schema.exchange.plugin.v1.SetCommandRequest;
 import eu.europa.ec.fisheries.schema.exchange.plugin.v1.SetReportRequest;
 import eu.europa.ec.fisheries.schema.movementrules.customrule.v1.ActionType;
 import eu.europa.ec.fisheries.schema.movementrules.customrule.v1.ConditionType;
@@ -36,6 +38,7 @@ import eu.europa.ec.fisheries.uvms.asset.client.model.AssetDTO;
 import eu.europa.ec.fisheries.uvms.docker.validation.asset.AssetTestHelper;
 import eu.europa.ec.fisheries.uvms.docker.validation.common.AbstractRest;
 import eu.europa.ec.fisheries.uvms.docker.validation.common.MessageHelper;
+import eu.europa.ec.fisheries.uvms.docker.validation.common.TopicListener;
 import eu.europa.ec.fisheries.uvms.docker.validation.mobileterminal.MobileTerminalTestHelper;
 import eu.europa.ec.fisheries.uvms.docker.validation.mobileterminal.dto.MobileTerminalDto;
 import eu.europa.ec.fisheries.uvms.docker.validation.movement.LatLong;
@@ -92,22 +95,22 @@ public class VMSSystemIT extends AbstractRest {
         
         LatLong position = new LatLong(11d, 56d, new Date());
         
-        FLUXHelper.sendPositionToFluxPlugin(asset, position);
+        try (TopicListener topicListener = new TopicListener(VMSSystemHelper.FLUX_SELECTOR)) {
+            
+            FLUXHelper.sendPositionToFluxPlugin(asset, position);
+            CustomRuleHelper.pollTicketCreated();
+            CustomRuleHelper.assertRuleTriggered(createdCustomRule, timestamp);
+            
+            SetReportRequest setReportRequest = topicListener.listenOnEventBusForSpecificMessage(SetReportRequest.class);
         
-        TextMessage message = (TextMessage) messageHelper.listenOnEventBus(VMSSystemHelper.FLUX_SELECTOR, TIMEOUT);
-        assertThat(message, is(notNullValue()));
-        
-        CustomRuleHelper.assertRuleTriggered(createdCustomRule, timestamp);
-        
-        SetReportRequest setReportRequest = JAXBMarshaller.unmarshallTextMessage(message, SetReportRequest.class);
-        
-        assertThat(setReportRequest.getReport().getRecipient(), is(fluxEndpoint));
-        
-        MovementType movement = setReportRequest.getReport().getMovement();
-        assertThat(movement.getAssetName(), is(asset.getName()));
-        assertThat(movement.getIrcs(), is(asset.getIrcs()));
-        assertThat(movement.getPosition().getLatitude(), is(position.latitude));
-        assertThat(movement.getPosition().getLongitude(), is(position.longitude));
+            assertThat(setReportRequest.getReport().getRecipient(), is(fluxEndpoint));
+            
+            MovementType movement = setReportRequest.getReport().getMovement();
+            assertThat(movement.getAssetName(), is(asset.getName()));
+            assertThat(movement.getIrcs(), is(asset.getIrcs()));
+            assertThat(movement.getPosition().getLatitude(), is(position.latitude));
+            assertThat(movement.getPosition().getLongitude(), is(position.longitude));
+        }
     }
     
     @Test
@@ -134,22 +137,22 @@ public class VMSSystemIT extends AbstractRest {
         
         LatLong position = new LatLong(56d, 10.5, new Date());
         
-        FLUXHelper.sendPositionToFluxPlugin(asset, position);
-        
-        TextMessage message = (TextMessage) messageHelper.listenOnEventBus(VMSSystemHelper.FLUX_SELECTOR, TIMEOUT);
-        assertThat(message, is(notNullValue()));
-        
-        CustomRuleHelper.assertRuleTriggered(createdCustomRule, timestamp);
-        
-        SetReportRequest setReportRequest = JAXBMarshaller.unmarshallTextMessage(message, SetReportRequest.class);
-        
-        assertThat(setReportRequest.getReport().getRecipient(), is(fluxEndpoint));
-        
-        MovementType movement = setReportRequest.getReport().getMovement();
-        assertThat(movement.getAssetName(), is(asset.getName()));
-        assertThat(movement.getIrcs(), is(asset.getIrcs()));
-        assertThat(movement.getPosition().getLatitude(), is(position.latitude));
-        assertThat(movement.getPosition().getLongitude(), is(position.longitude));
+        try (TopicListener topicListener = new TopicListener(VMSSystemHelper.FLUX_SELECTOR)) {
+            
+            FLUXHelper.sendPositionToFluxPlugin(asset, position);
+            CustomRuleHelper.pollTicketCreated();
+            CustomRuleHelper.assertRuleTriggered(createdCustomRule, timestamp);
+            
+            SetReportRequest setReportRequest = topicListener.listenOnEventBusForSpecificMessage(SetReportRequest.class);
+            
+            assertThat(setReportRequest.getReport().getRecipient(), is(fluxEndpoint));
+            
+            MovementType movement = setReportRequest.getReport().getMovement();
+            assertThat(movement.getAssetName(), is(asset.getName()));
+            assertThat(movement.getIrcs(), is(asset.getIrcs()));
+            assertThat(movement.getPosition().getLatitude(), is(position.latitude));
+            assertThat(movement.getPosition().getLongitude(), is(position.longitude));
+        }
     }
     
     @Test
@@ -183,22 +186,22 @@ public class VMSSystemIT extends AbstractRest {
         
         LatLong position = new LatLong(11d, 56d, new Date());
         
-        FLUXHelper.sendPositionToFluxPlugin(asset, position);
+        try (TopicListener topicListener = new TopicListener(VMSSystemHelper.FLUX_SELECTOR)) {
+            
+            FLUXHelper.sendPositionToFluxPlugin(asset, position);
+            CustomRuleHelper.pollTicketCreated();
+            CustomRuleHelper.assertRuleTriggered(createdCustomRule, timestamp);
+            
+            SetReportRequest setReportRequest = topicListener.listenOnEventBusForSpecificMessage(SetReportRequest.class);
         
-        TextMessage message = (TextMessage) messageHelper.listenOnEventBus(VMSSystemHelper.FLUX_SELECTOR, TIMEOUT);
-        assertThat(message, is(notNullValue()));
-        
-        CustomRuleHelper.assertRuleTriggered(createdCustomRule, timestamp);
-        
-        SetReportRequest setReportRequest = JAXBMarshaller.unmarshallTextMessage(message, SetReportRequest.class);
-        
-        assertThat(setReportRequest.getReport().getRecipient(), is(fluxEndpoint));
-        
-        MovementType movement = setReportRequest.getReport().getMovement();
-        assertThat(movement.getAssetName(), is(asset.getName()));
-        assertThat(movement.getIrcs(), is(asset.getIrcs()));
-        assertThat(movement.getPosition().getLatitude(), is(position.latitude));
-        assertThat(movement.getPosition().getLongitude(), is(position.longitude));
+            assertThat(setReportRequest.getReport().getRecipient(), is(fluxEndpoint));
+            
+            MovementType movement = setReportRequest.getReport().getMovement();
+            assertThat(movement.getAssetName(), is(asset.getName()));
+            assertThat(movement.getIrcs(), is(asset.getIrcs()));
+            assertThat(movement.getPosition().getLatitude(), is(position.latitude));
+            assertThat(movement.getPosition().getLongitude(), is(position.longitude));
+        }
     }
     
     @Test
@@ -242,10 +245,15 @@ public class VMSSystemIT extends AbstractRest {
         
         LatLong position = new LatLong(11d, 56d, new Date());
         
-        FLUXHelper.sendPositionToFluxPlugin(asset, position);
+        try (TopicListener topicListener = new TopicListener(VMSSystemHelper.FLUX_SELECTOR)) {
+            
+            FLUXHelper.sendPositionToFluxPlugin(asset, position);
+            CustomRuleHelper.pollTicketCreated();
+            
+            SetReportRequest setReportRequest = topicListener.listenOnEventBusForSpecificMessage(SetReportRequest.class);
+            assertThat(setReportRequest, is(notNullValue()));
         
-        TextMessage message = (TextMessage) messageHelper.listenOnEventBus(VMSSystemHelper.FLUX_SELECTOR, TIMEOUT);
-        assertThat(message, is(notNullValue()));
+        }
         
         CustomRuleHelper.assertRuleNotTriggered(createdCustomRuleWithInterval);
         CustomRuleHelper.assertRuleTriggered(createdCustomRuleWithoutInterval, timestamp);
@@ -292,10 +300,14 @@ public class VMSSystemIT extends AbstractRest {
         
         LatLong position = new LatLong(11d, 56d, new Date());
         
-        FLUXHelper.sendPositionToFluxPlugin(asset, position);
-        
-        TextMessage message = (TextMessage) messageHelper.listenOnEventBus(VMSSystemHelper.FLUX_SELECTOR, TIMEOUT);
-        assertThat(message, is(notNullValue()));
+        try (TopicListener topicListener = new TopicListener(VMSSystemHelper.FLUX_SELECTOR)) {
+            
+            FLUXHelper.sendPositionToFluxPlugin(asset, position);
+            CustomRuleHelper.pollTicketCreated();
+            
+            SetReportRequest setReportRequest = topicListener.listenOnEventBusForSpecificMessage(SetReportRequest.class);
+            assertThat(setReportRequest, is(notNullValue()));
+        }
         
         CustomRuleHelper.assertRuleNotTriggered(createdCustomRuleWithInterval);
         CustomRuleHelper.assertRuleTriggered(createdCustomRuleWithoutInterval, timestamp);

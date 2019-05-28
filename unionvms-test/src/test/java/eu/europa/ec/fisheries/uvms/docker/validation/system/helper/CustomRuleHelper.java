@@ -90,4 +90,10 @@ public class CustomRuleHelper extends AbstractHelper {
         assertThat(fetchedCustomRule.getLastTriggered(), is(nullValue()));
     }
 
+    public static void pollTicketCreated() {
+        getWebTarget()
+            .path("movement-rules/activity/ticket")
+            .request(MediaType.APPLICATION_JSON)
+            .get();
+    }
 }

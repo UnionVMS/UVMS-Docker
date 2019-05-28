@@ -1,7 +1,6 @@
 package eu.europa.ec.fisheries.uvms.docker.validation.system.vms;
 
 import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.CoreMatchers.notNullValue;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
@@ -10,7 +9,6 @@ import java.util.GregorianCalendar;
 import java.util.Set;
 import java.util.TimeZone;
 import javax.jms.JMSException;
-import javax.jms.TextMessage;
 import org.hamcrest.CoreMatchers;
 import org.junit.After;
 import org.junit.AfterClass;
@@ -39,6 +37,7 @@ import eu.europa.ec.fisheries.uvms.commons.date.DateUtils;
 import eu.europa.ec.fisheries.uvms.docker.validation.asset.AssetTestHelper;
 import eu.europa.ec.fisheries.uvms.docker.validation.common.AbstractRest;
 import eu.europa.ec.fisheries.uvms.docker.validation.common.MessageHelper;
+import eu.europa.ec.fisheries.uvms.docker.validation.common.TopicListener;
 import eu.europa.ec.fisheries.uvms.docker.validation.mobileterminal.MobileTerminalTestHelper;
 import eu.europa.ec.fisheries.uvms.docker.validation.mobileterminal.dto.ChannelDto;
 import eu.europa.ec.fisheries.uvms.docker.validation.mobileterminal.dto.MobileTerminalDto;
@@ -48,12 +47,10 @@ import eu.europa.ec.fisheries.uvms.docker.validation.system.helper.CustomRuleHel
 import eu.europa.ec.fisheries.uvms.docker.validation.system.helper.SanityRuleHelper;
 import eu.europa.ec.fisheries.uvms.exchange.model.exception.ExchangeModelMarshallException;
 import eu.europa.ec.fisheries.uvms.exchange.model.mapper.ExchangeModuleRequestMapper;
-import eu.europa.ec.fisheries.uvms.exchange.model.mapper.JAXBMarshaller;
 
 public class InmarsatSanityIT extends AbstractRest {
 
     private static final String SELECTOR = "ServiceName='eu.europa.ec.fisheries.uvms.plugins.flux.movement'";
-    private static final long TIMEOUT = 10000;
 
     private static MessageHelper messageHelper;
 
@@ -97,21 +94,20 @@ public class InmarsatSanityIT extends AbstractRest {
 
         // create the positionreport only containing DNID and MEMBER_NUMBER  OBS NO ASSET REFERENCES AT ALL
         String request = createReportRequest(mobileTerminal);
+        try (TopicListener topicListener = new TopicListener(SELECTOR)) {
+            messageHelper.sendMessage("UVMSExchangeEvent", request);
 
-        messageHelper.sendMessage("UVMSExchangeEvent", request);
-        // WAITFOR AND CHECK RESULTS
-        TextMessage message = (TextMessage) messageHelper.listenOnEventBus(SELECTOR, TIMEOUT);
-        assertThat(message, is(notNullValue()));
-
-        CustomRuleHelper.assertRuleTriggered(createdCustomRule, timestamp);
-
-        SetReportRequest setReportRequest = JAXBMarshaller.unmarshallTextMessage(message, SetReportRequest.class);
-
-        assertThat(setReportRequest.getReport().getRecipient(), is(fluxEndpoint));
-
-        MovementType movement = setReportRequest.getReport().getMovement();
-        assertThat(movement.getAssetName(), is(asset.getName()));
-        assertThat(movement.getIrcs(), is(asset.getIrcs()));
+            CustomRuleHelper.pollTicketCreated();
+            CustomRuleHelper.assertRuleTriggered(createdCustomRule, timestamp);
+    
+            SetReportRequest setReportRequest = topicListener.listenOnEventBusForSpecificMessage(SetReportRequest.class);
+    
+            assertThat(setReportRequest.getReport().getRecipient(), is(fluxEndpoint));
+    
+            MovementType movement = setReportRequest.getReport().getMovement();
+            assertThat(movement.getAssetName(), is(asset.getName()));
+            assertThat(movement.getIrcs(), is(asset.getIrcs()));
+        }
     }
     
     @Test
@@ -189,18 +185,17 @@ public class InmarsatSanityIT extends AbstractRest {
 
         // create the positionreport only containing DNID and MEMBER_NUMBER  OBS NO ASSET REFERENCES AT ALL
         String request = createReportRequest(mobileTerminal1);
+        try (TopicListener topicListener = new TopicListener(SELECTOR)) {
+            messageHelper.sendMessage("UVMSExchangeEvent", request);
 
-        messageHelper.sendMessage("UVMSExchangeEvent", request);
-        // WAITFOR AND CHECK RESULTS
-        TextMessage message = (TextMessage) messageHelper.listenOnEventBus(SELECTOR, TIMEOUT);
-        assertThat(message, is(notNullValue()));
+            CustomRuleHelper.pollTicketCreated();
+            CustomRuleHelper.assertRuleTriggered(createdCustomRule, timestamp);
 
-        CustomRuleHelper.assertRuleTriggered(createdCustomRule, timestamp);
+            SetReportRequest setReportRequest = topicListener.listenOnEventBusForSpecificMessage(SetReportRequest.class);
 
-        SetReportRequest setReportRequest = JAXBMarshaller.unmarshallTextMessage(message, SetReportRequest.class);
-
-        assertThat(setReportRequest.getReport().getRecipient(), is(fluxEndpoint));
-        return setReportRequest;
+            assertThat(setReportRequest.getReport().getRecipient(), is(fluxEndpoint));
+            return setReportRequest;
+        }
     }
 
     private String createReportRequest(MobileTerminalDto mobileTerminal) throws ExchangeModelMarshallException, IllegalArgumentException {

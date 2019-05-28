@@ -18,7 +18,6 @@ import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
@@ -30,11 +29,8 @@ import org.junit.Test;
 import eu.europa.ec.fisheries.schema.exchange.common.v1.CommandTypeType;
 import eu.europa.ec.fisheries.schema.exchange.common.v1.KeyValueType;
 import eu.europa.ec.fisheries.schema.exchange.movement.v1.MovementType;
-import eu.europa.ec.fisheries.schema.exchange.plugin.types.v1.PluginType;
 import eu.europa.ec.fisheries.schema.exchange.plugin.v1.SetCommandRequest;
 import eu.europa.ec.fisheries.schema.exchange.plugin.v1.SetReportRequest;
-import eu.europa.ec.fisheries.schema.movement.v1.MovementComChannelType;
-import eu.europa.ec.fisheries.schema.movement.v1.MovementSourceType;
 import eu.europa.ec.fisheries.schema.movementrules.customrule.v1.ActionType;
 import eu.europa.ec.fisheries.schema.movementrules.customrule.v1.ConditionType;
 import eu.europa.ec.fisheries.schema.movementrules.customrule.v1.CriteriaType;
@@ -50,7 +46,6 @@ import eu.europa.ec.fisheries.uvms.docker.validation.mobileterminal.dto.ChannelD
 import eu.europa.ec.fisheries.uvms.docker.validation.mobileterminal.dto.MobileTerminalDto;
 import eu.europa.ec.fisheries.uvms.docker.validation.movement.LatLong;
 import eu.europa.ec.fisheries.uvms.docker.validation.movement.MovementHelper;
-import eu.europa.ec.fisheries.uvms.docker.validation.movement.model.IncomingMovement;
 import eu.europa.ec.fisheries.uvms.docker.validation.system.helper.CustomRuleBuilder;
 import eu.europa.ec.fisheries.uvms.docker.validation.system.helper.CustomRuleHelper;
 import eu.europa.ec.fisheries.uvms.docker.validation.system.helper.FLUXHelper;
@@ -59,8 +54,6 @@ import eu.europa.ec.fisheries.uvms.docker.validation.system.helper.VMSSystemHelp
 import eu.europa.ec.fisheries.uvms.exchange.model.mapper.JAXBMarshaller;
 
 public class RulesAlarmIT extends AbstractRest {
-
-    private static final long TIMEOUT = 10000;
 
     private static MessageHelper messageHelper;
 
@@ -99,14 +92,14 @@ public class RulesAlarmIT extends AbstractRest {
         
         LatLong position = new LatLong(11d, 56d, new Date());
         position.speed = 10.5;
-        FLUXHelper.sendPositionToFluxPlugin(asset, position);
-        
-        TextMessage message = (TextMessage) messageHelper.listenOnEventBus(VMSSystemHelper.emailSelector, TIMEOUT);
-        assertThat(message, is(notNullValue()));
-        
-        SetCommandRequest setCommandRequest = JAXBMarshaller.unmarshallTextMessage(message, SetCommandRequest.class);
-        assertThat(setCommandRequest.getCommand().getEmail().getTo(), is(email));
-        assertThat(setCommandRequest.getCommand().getFwdRule(), is(createdSpeedRule.getName()));
+        try (TopicListener topicListener = new TopicListener(VMSSystemHelper.emailSelector)) {
+            FLUXHelper.sendPositionToFluxPlugin(asset, position);
+            CustomRuleHelper.pollTicketCreated();
+
+            SetCommandRequest setCommandRequest = topicListener.listenOnEventBusForSpecificMessage(SetCommandRequest.class);
+            assertThat(setCommandRequest.getCommand().getEmail().getTo(), is(email));
+            assertThat(setCommandRequest.getCommand().getFwdRule(), is(createdSpeedRule.getName()));
+        }
         
         CustomRuleHelper.assertRuleTriggered(createdSpeedRule, timestamp);
     }
@@ -130,16 +123,15 @@ public class RulesAlarmIT extends AbstractRest {
         
         LatLong position = new LatLong(11d, 56d, new Date());
         position.speed = 9.5;
-        FLUXHelper.sendPositionToFluxPlugin(asset, position);
-        
-        TextMessage message = (TextMessage) messageHelper.listenOnEventBus(VMSSystemHelper.emailSelector, TIMEOUT);
-        assertThat(message, is(notNullValue()));
-        
-        SetCommandRequest setCommandRequest = JAXBMarshaller.unmarshallTextMessage(message, SetCommandRequest.class);
-        assertThat(setCommandRequest.getCommand().getEmail().getTo(), is(email));
-        assertThat(setCommandRequest.getCommand().getFwdRule(), is(createdSpeedRule.getName()));
-        
-        CustomRuleHelper.assertRuleTriggered(createdSpeedRule, timestamp);
+        try (TopicListener topicListener = new TopicListener(VMSSystemHelper.emailSelector)) {
+            FLUXHelper.sendPositionToFluxPlugin(asset, position);
+            CustomRuleHelper.pollTicketCreated();
+
+            SetCommandRequest setCommandRequest = topicListener.listenOnEventBusForSpecificMessage(SetCommandRequest.class);
+            assertThat(setCommandRequest.getCommand().getEmail().getTo(), is(email));
+            assertThat(setCommandRequest.getCommand().getFwdRule(), is(createdSpeedRule.getName()));
+        }
+            CustomRuleHelper.assertRuleTriggered(createdSpeedRule, timestamp);
     }
 
     @Test
@@ -171,15 +163,15 @@ public class RulesAlarmIT extends AbstractRest {
         
         LatLong position = new LatLong(11d, 56d, new Date());
         position.speed = 9.5;
-        FLUXHelper.sendPositionToFluxPlugin(asset, position);
+        try (TopicListener topicListener = new TopicListener(VMSSystemHelper.emailSelector)) {
+            FLUXHelper.sendPositionToFluxPlugin(asset, position);
+            CustomRuleHelper.pollTicketCreated();
+
+            SetCommandRequest setCommandRequest = topicListener.listenOnEventBusForSpecificMessage(SetCommandRequest.class);
         
-        TextMessage message = (TextMessage) messageHelper.listenOnEventBus(VMSSystemHelper.emailSelector, TIMEOUT);
-        assertThat(message, is(notNullValue()));
-        
-        SetCommandRequest setCommandRequest = JAXBMarshaller.unmarshallTextMessage(message, SetCommandRequest.class);
-        assertThat(setCommandRequest.getCommand().getEmail().getTo(), is(email));
-        assertThat(setCommandRequest.getCommand().getFwdRule(), is(createdFsRule.getName()));
-        
+            assertThat(setCommandRequest.getCommand().getEmail().getTo(), is(email));
+            assertThat(setCommandRequest.getCommand().getFwdRule(), is(createdFsRule.getName()));
+        }
         CustomRuleHelper.assertRuleNotTriggered(createdSpeedRule);
         CustomRuleHelper.assertRuleTriggered(createdFsRule, timestamp);
     }
@@ -213,15 +205,14 @@ public class RulesAlarmIT extends AbstractRest {
         
         LatLong position = new LatLong(11d, 56d, new Date());
         position.speed = 10.5;
-        FLUXHelper.sendPositionToFluxPlugin(asset, position);
-        
-        TextMessage message = (TextMessage) messageHelper.listenOnEventBus(VMSSystemHelper.emailSelector, TIMEOUT);
-        assertThat(message, is(notNullValue()));
-        
-        SetCommandRequest setCommandRequest = JAXBMarshaller.unmarshallTextMessage(message, SetCommandRequest.class);
-        assertThat(setCommandRequest.getCommand().getEmail().getTo(), is(email));
-        assertThat(setCommandRequest.getCommand().getFwdRule(), is(createdFsRule.getName()));
-        
+        try (TopicListener topicListener = new TopicListener(VMSSystemHelper.emailSelector)) {
+            FLUXHelper.sendPositionToFluxPlugin(asset, position);
+            CustomRuleHelper.pollTicketCreated();
+
+            SetCommandRequest setCommandRequest = topicListener.listenOnEventBusForSpecificMessage(SetCommandRequest.class);
+            assertThat(setCommandRequest.getCommand().getEmail().getTo(), is(email));
+            assertThat(setCommandRequest.getCommand().getFwdRule(), is(createdFsRule.getName()));
+        }
         CustomRuleHelper.assertRuleNotTriggered(createdSpeedRule);
         CustomRuleHelper.assertRuleTriggered(createdFsRule, timestamp);
     }
@@ -245,15 +236,14 @@ public class RulesAlarmIT extends AbstractRest {
         
         LatLong position = new LatLong(11d, 56d, new Date());
         position.speed = 10;
-        FLUXHelper.sendPositionToFluxPlugin(asset, position);
-        
-        TextMessage message = (TextMessage) messageHelper.listenOnEventBus(VMSSystemHelper.emailSelector, TIMEOUT);
-        assertThat(message, is(notNullValue()));
-        
-        SetCommandRequest setCommandRequest = JAXBMarshaller.unmarshallTextMessage(message, SetCommandRequest.class);
-        assertThat(setCommandRequest.getCommand().getEmail().getTo(), is(email));
-        assertThat(setCommandRequest.getCommand().getFwdRule(), is(createdSpeedRule.getName()));
-        
+        try (TopicListener topicListener = new TopicListener(VMSSystemHelper.emailSelector)) {
+            FLUXHelper.sendPositionToFluxPlugin(asset, position);
+            CustomRuleHelper.pollTicketCreated();
+
+            SetCommandRequest setCommandRequest = topicListener.listenOnEventBusForSpecificMessage(SetCommandRequest.class);
+            assertThat(setCommandRequest.getCommand().getEmail().getTo(), is(email));
+            assertThat(setCommandRequest.getCommand().getFwdRule(), is(createdSpeedRule.getName()));
+        }
         CustomRuleHelper.assertRuleTriggered(createdSpeedRule, timestamp);
     }
     
@@ -276,15 +266,14 @@ public class RulesAlarmIT extends AbstractRest {
         
         LatLong position = new LatLong(11d, 56d, new Date());
         position.speed = 10;
-        FLUXHelper.sendPositionToFluxPlugin(asset, position);
-        
-        TextMessage message = (TextMessage) messageHelper.listenOnEventBus(VMSSystemHelper.emailSelector, TIMEOUT);
-        assertThat(message, is(notNullValue()));
-        
-        SetCommandRequest setCommandRequest = JAXBMarshaller.unmarshallTextMessage(message, SetCommandRequest.class);
-        assertThat(setCommandRequest.getCommand().getEmail().getTo(), is(email));
-        assertThat(setCommandRequest.getCommand().getFwdRule(), is(createdSpeedRule.getName()));
-        
+        try (TopicListener topicListener = new TopicListener(VMSSystemHelper.emailSelector)) {
+            FLUXHelper.sendPositionToFluxPlugin(asset, position);
+            CustomRuleHelper.pollTicketCreated();
+
+            SetCommandRequest setCommandRequest = topicListener.listenOnEventBusForSpecificMessage(SetCommandRequest.class);
+            assertThat(setCommandRequest.getCommand().getEmail().getTo(), is(email));
+            assertThat(setCommandRequest.getCommand().getFwdRule(), is(createdSpeedRule.getName()));
+        }
         CustomRuleHelper.assertRuleTriggered(createdSpeedRule, timestamp);
     }
     
@@ -309,15 +298,14 @@ public class RulesAlarmIT extends AbstractRest {
         
         LatLong position = new LatLong(56d, 10.5, new Date());
         position.speed = 10.5;
-        FLUXHelper.sendPositionToFluxPlugin(asset, position);
-        
-        TextMessage message = (TextMessage) messageHelper.listenOnEventBus(VMSSystemHelper.emailSelector, TIMEOUT);
-        assertThat(message, is(notNullValue()));
-        
-        SetCommandRequest setCommandRequest = JAXBMarshaller.unmarshallTextMessage(message, SetCommandRequest.class);
-        assertThat(setCommandRequest.getCommand().getEmail().getTo(), is(email));
-        assertThat(setCommandRequest.getCommand().getFwdRule(), is(createdSpeedAndAreaRule.getName()));
-        
+        try (TopicListener topicListener = new TopicListener(VMSSystemHelper.emailSelector)) {
+            FLUXHelper.sendPositionToFluxPlugin(asset, position);
+            CustomRuleHelper.pollTicketCreated();
+
+            SetCommandRequest setCommandRequest = topicListener.listenOnEventBusForSpecificMessage(SetCommandRequest.class);
+            assertThat(setCommandRequest.getCommand().getEmail().getTo(), is(email));
+            assertThat(setCommandRequest.getCommand().getFwdRule(), is(createdSpeedAndAreaRule.getName()));
+        }
         CustomRuleHelper.assertRuleTriggered(createdSpeedAndAreaRule, timestamp);
     }
     
@@ -342,15 +330,14 @@ public class RulesAlarmIT extends AbstractRest {
         
         LatLong position = new LatLong(56d, 10.5, new Date());
         position.speed = 9.5;
-        FLUXHelper.sendPositionToFluxPlugin(asset, position);
-        
-        TextMessage message = (TextMessage) messageHelper.listenOnEventBus(VMSSystemHelper.emailSelector, TIMEOUT);
-        assertThat(message, is(notNullValue()));
-        
-        SetCommandRequest setCommandRequest = JAXBMarshaller.unmarshallTextMessage(message, SetCommandRequest.class);
-        assertThat(setCommandRequest.getCommand().getEmail().getTo(), is(email));
-        assertThat(setCommandRequest.getCommand().getFwdRule(), is(createdSpeedAndAreaRule.getName()));
-        
+        try (TopicListener topicListener = new TopicListener(VMSSystemHelper.emailSelector)) {
+            FLUXHelper.sendPositionToFluxPlugin(asset, position);
+            CustomRuleHelper.pollTicketCreated();
+
+            SetCommandRequest setCommandRequest = topicListener.listenOnEventBusForSpecificMessage(SetCommandRequest.class);
+            assertThat(setCommandRequest.getCommand().getEmail().getTo(), is(email));
+            assertThat(setCommandRequest.getCommand().getFwdRule(), is(createdSpeedAndAreaRule.getName()));
+        }
         CustomRuleHelper.assertRuleTriggered(createdSpeedAndAreaRule, timestamp);
     }
     
@@ -372,15 +359,14 @@ public class RulesAlarmIT extends AbstractRest {
         assertNotNull(createdAreaRule);
         
         LatLong position = new LatLong(54.528352, 12.877972, new Date());
-        FLUXHelper.sendPositionToFluxPlugin(asset, position);
-        
-        TextMessage message = (TextMessage) messageHelper.listenOnEventBus(VMSSystemHelper.emailSelector, TIMEOUT);
-        assertThat(message, is(notNullValue()));
-        
-        SetCommandRequest setCommandRequest = JAXBMarshaller.unmarshallTextMessage(message, SetCommandRequest.class);
-        assertThat(setCommandRequest.getCommand().getEmail().getTo(), is(email));
-        assertThat(setCommandRequest.getCommand().getFwdRule(), is(createdAreaRule.getName()));
-        
+        try (TopicListener topicListener = new TopicListener(VMSSystemHelper.emailSelector)) {
+            FLUXHelper.sendPositionToFluxPlugin(asset, position);
+            CustomRuleHelper.pollTicketCreated();
+
+            SetCommandRequest setCommandRequest = topicListener.listenOnEventBusForSpecificMessage(SetCommandRequest.class);
+            assertThat(setCommandRequest.getCommand().getEmail().getTo(), is(email));
+            assertThat(setCommandRequest.getCommand().getFwdRule(), is(createdAreaRule.getName()));
+        }
         CustomRuleHelper.assertRuleTriggered(createdAreaRule, timestamp);
     }
     
@@ -402,15 +388,14 @@ public class RulesAlarmIT extends AbstractRest {
         assertNotNull(createdIrcsRule);
         
         LatLong position = new LatLong(1d, 1d, new Date());
-        FLUXHelper.sendPositionToFluxPlugin(asset, position);
-        
-        TextMessage message = (TextMessage) messageHelper.listenOnEventBus(VMSSystemHelper.emailSelector, TIMEOUT);
-        assertThat(message, is(notNullValue()));
-        
-        SetCommandRequest setCommandRequest = JAXBMarshaller.unmarshallTextMessage(message, SetCommandRequest.class);
-        assertThat(setCommandRequest.getCommand().getEmail().getTo(), is(email));
-        assertThat(setCommandRequest.getCommand().getFwdRule(), is(createdIrcsRule.getName()));
-        
+        try (TopicListener topicListener = new TopicListener(VMSSystemHelper.emailSelector)) {
+            FLUXHelper.sendPositionToFluxPlugin(asset, position);
+            CustomRuleHelper.pollTicketCreated();
+
+            SetCommandRequest setCommandRequest = topicListener.listenOnEventBusForSpecificMessage(SetCommandRequest.class);
+            assertThat(setCommandRequest.getCommand().getEmail().getTo(), is(email));
+            assertThat(setCommandRequest.getCommand().getFwdRule(), is(createdIrcsRule.getName()));
+        }
         CustomRuleHelper.assertRuleTriggered(createdIrcsRule, timestamp);
     }
     
@@ -434,29 +419,28 @@ public class RulesAlarmIT extends AbstractRest {
         assertNotNull(createdCustomRule);
         
         LatLong position = new LatLong(1d, 1d, new Date());
-        FLUXHelper.sendPositionToFluxPlugin(asset1, position);
-        
-        TextMessage message = (TextMessage) messageHelper.listenOnEventBus(VMSSystemHelper.emailSelector, TIMEOUT);
-        assertThat(message, is(notNullValue()));
-        
-        SetCommandRequest setCommandRequest = JAXBMarshaller.unmarshallTextMessage(message, SetCommandRequest.class);
-        assertThat(setCommandRequest.getCommand().getEmail().getTo(), is(email));
-        assertThat(setCommandRequest.getCommand().getFwdRule(), is(createdCustomRule.getName()));
+        try (TopicListener topicListener = new TopicListener(VMSSystemHelper.emailSelector)) {
+            FLUXHelper.sendPositionToFluxPlugin(asset1, position);
+            CustomRuleHelper.pollTicketCreated();
+
+            SetCommandRequest setCommandRequest = topicListener.listenOnEventBusForSpecificMessage(SetCommandRequest.class);
+            assertThat(setCommandRequest.getCommand().getEmail().getTo(), is(email));
+            assertThat(setCommandRequest.getCommand().getFwdRule(), is(createdCustomRule.getName()));
+        }
         
         CustomRuleHelper.assertRuleTriggered(createdCustomRule, timestamp);
         
         timestamp = OffsetDateTime.now(ZoneOffset.UTC);
         
         LatLong position2 = new LatLong(2d, 2d, new Date());
-        FLUXHelper.sendPositionToFluxPlugin(asset2, position2);
-        
-        TextMessage message2 = (TextMessage) messageHelper.listenOnEventBus(VMSSystemHelper.emailSelector, TIMEOUT);
-        assertThat(message2, is(notNullValue()));
-        
-        SetCommandRequest setCommandRequest2 = JAXBMarshaller.unmarshallTextMessage(message2, SetCommandRequest.class);
-        assertThat(setCommandRequest2.getCommand().getEmail().getTo(), is(email));
-        assertThat(setCommandRequest2.getCommand().getFwdRule(), is(createdCustomRule.getName()));
-        
+        try (TopicListener topicListener = new TopicListener(VMSSystemHelper.emailSelector)) {
+            FLUXHelper.sendPositionToFluxPlugin(asset1, position2);
+            CustomRuleHelper.pollTicketCreated();
+
+            SetCommandRequest setCommandRequest2 = topicListener.listenOnEventBusForSpecificMessage(SetCommandRequest.class);
+            assertThat(setCommandRequest2.getCommand().getEmail().getTo(), is(email));
+            assertThat(setCommandRequest2.getCommand().getFwdRule(), is(createdCustomRule.getName()));
+        }
         CustomRuleHelper.assertRuleTriggered(createdCustomRule, timestamp);
     }
     
@@ -479,15 +463,14 @@ public class RulesAlarmIT extends AbstractRest {
         assertNotNull(createdCustomRule);
         
         LatLong position = new LatLong(1d, 1d, new Date());
-        FLUXHelper.sendPositionToFluxPlugin(asset, position);
-        
-        TextMessage message = (TextMessage) messageHelper.listenOnEventBus(VMSSystemHelper.emailSelector, TIMEOUT);
-        assertThat(message, is(notNullValue()));
-        
-        SetCommandRequest setCommandRequest = JAXBMarshaller.unmarshallTextMessage(message, SetCommandRequest.class);
-        assertThat(setCommandRequest.getCommand().getEmail().getTo(), is(email));
-        assertThat(setCommandRequest.getCommand().getFwdRule(), is(createdCustomRule.getName()));
-        
+        try (TopicListener topicListener = new TopicListener(VMSSystemHelper.emailSelector)) {
+            FLUXHelper.sendPositionToFluxPlugin(asset, position);
+            CustomRuleHelper.pollTicketCreated();
+
+            SetCommandRequest setCommandRequest = topicListener.listenOnEventBusForSpecificMessage(SetCommandRequest.class);
+            assertThat(setCommandRequest.getCommand().getEmail().getTo(), is(email));
+            assertThat(setCommandRequest.getCommand().getFwdRule(), is(createdCustomRule.getName()));
+        }
         CustomRuleHelper.assertRuleTriggered(createdCustomRule, timestamp);
     }
     
@@ -519,15 +502,14 @@ public class RulesAlarmIT extends AbstractRest {
         assertNotNull(createdFsRule);
         
         LatLong position = new LatLong(1d, 1d, new Date());
-        FLUXHelper.sendPositionToFluxPlugin(asset, position);
-        
-        TextMessage message = (TextMessage) messageHelper.listenOnEventBus(VMSSystemHelper.emailSelector, TIMEOUT);
-        assertThat(message, is(notNullValue()));
-        
-        SetCommandRequest setCommandRequest = JAXBMarshaller.unmarshallTextMessage(message, SetCommandRequest.class);
-        assertThat(setCommandRequest.getCommand().getEmail().getTo(), is(email));
-        assertThat(setCommandRequest.getCommand().getFwdRule(), is(createdFsRule.getName()));
-        
+        try (TopicListener topicListener = new TopicListener(VMSSystemHelper.emailSelector)) {
+            FLUXHelper.sendPositionToFluxPlugin(asset, position);
+            CustomRuleHelper.pollTicketCreated();
+
+            SetCommandRequest setCommandRequest = topicListener.listenOnEventBusForSpecificMessage(SetCommandRequest.class);
+            assertThat(setCommandRequest.getCommand().getEmail().getTo(), is(email));
+            assertThat(setCommandRequest.getCommand().getFwdRule(), is(createdFsRule.getName()));
+        }
         CustomRuleHelper.assertRuleNotTriggered(createdCustomRule);
         CustomRuleHelper.assertRuleTriggered(createdFsRule, timestamp);
     }
@@ -550,15 +532,14 @@ public class RulesAlarmIT extends AbstractRest {
         assertNotNull(createdCfrRule);
         
         LatLong position = new LatLong(1d, 1d, new Date());
-        FLUXHelper.sendPositionToFluxPlugin(asset, position);
-        
-        TextMessage message = (TextMessage) messageHelper.listenOnEventBus(VMSSystemHelper.emailSelector, TIMEOUT);
-        assertThat(message, is(notNullValue()));
-        
-        SetCommandRequest setCommandRequest = JAXBMarshaller.unmarshallTextMessage(message, SetCommandRequest.class);
-        assertThat(setCommandRequest.getCommand().getEmail().getTo(), is(email));
-        assertThat(setCommandRequest.getCommand().getFwdRule(), is(createdCfrRule.getName()));
-        
+        try (TopicListener topicListener = new TopicListener(VMSSystemHelper.emailSelector)) {
+            FLUXHelper.sendPositionToFluxPlugin(asset, position);
+            CustomRuleHelper.pollTicketCreated();
+
+            SetCommandRequest setCommandRequest = topicListener.listenOnEventBusForSpecificMessage(SetCommandRequest.class);
+            assertThat(setCommandRequest.getCommand().getEmail().getTo(), is(email));
+            assertThat(setCommandRequest.getCommand().getFwdRule(), is(createdCfrRule.getName()));
+        }
         CustomRuleHelper.assertRuleTriggered(createdCfrRule, timestamp);
     }
     
@@ -580,15 +561,14 @@ public class RulesAlarmIT extends AbstractRest {
         assertNotNull(createdAssetNameRule);
         
         LatLong position = new LatLong(1d, 1d, new Date());
-        FLUXHelper.sendPositionToFluxPlugin(asset, position);
-        
-        TextMessage message = (TextMessage) messageHelper.listenOnEventBus(VMSSystemHelper.emailSelector, TIMEOUT);
-        assertThat(message, is(notNullValue()));
-        
-        SetCommandRequest setCommandRequest = JAXBMarshaller.unmarshallTextMessage(message, SetCommandRequest.class);
-        assertThat(setCommandRequest.getCommand().getEmail().getTo(), is(email));
-        assertThat(setCommandRequest.getCommand().getFwdRule(), is(createdAssetNameRule.getName()));
-        
+        try (TopicListener topicListener = new TopicListener(VMSSystemHelper.emailSelector)) {
+            FLUXHelper.sendPositionToFluxPlugin(asset, position);
+            CustomRuleHelper.pollTicketCreated();
+
+            SetCommandRequest setCommandRequest = topicListener.listenOnEventBusForSpecificMessage(SetCommandRequest.class);
+            assertThat(setCommandRequest.getCommand().getEmail().getTo(), is(email));
+            assertThat(setCommandRequest.getCommand().getFwdRule(), is(createdAssetNameRule.getName()));
+        }
         CustomRuleHelper.assertRuleTriggered(createdAssetNameRule, timestamp);
     }
     
@@ -609,15 +589,14 @@ public class RulesAlarmIT extends AbstractRest {
         assertNotNull(createdCustomRule);
         
         LatLong position = new LatLong(11d, 1d, new Date());
-        FLUXHelper.sendPositionToFluxPlugin(asset, position);
-        
-        TextMessage message = (TextMessage) messageHelper.listenOnEventBus(VMSSystemHelper.emailSelector, TIMEOUT);
-        assertThat(message, is(notNullValue()));
-        
-        SetCommandRequest setCommandRequest = JAXBMarshaller.unmarshallTextMessage(message, SetCommandRequest.class);
-        assertThat(setCommandRequest.getCommand().getEmail().getTo(), is(email));
-        assertThat(setCommandRequest.getCommand().getFwdRule(), is(createdCustomRule.getName()));
-        
+        try (TopicListener topicListener = new TopicListener(VMSSystemHelper.emailSelector)) {
+            FLUXHelper.sendPositionToFluxPlugin(asset, position);
+            CustomRuleHelper.pollTicketCreated();
+
+            SetCommandRequest setCommandRequest = topicListener.listenOnEventBusForSpecificMessage(SetCommandRequest.class);
+            assertThat(setCommandRequest.getCommand().getEmail().getTo(), is(email));
+            assertThat(setCommandRequest.getCommand().getFwdRule(), is(createdCustomRule.getName()));
+        }
         CustomRuleHelper.assertRuleTriggered(createdCustomRule, timestamp);
     }
     
@@ -638,15 +617,14 @@ public class RulesAlarmIT extends AbstractRest {
         assertNotNull(createdCustomRule);
         
         LatLong position = new LatLong(1d, 11d, new Date());
-        FLUXHelper.sendPositionToFluxPlugin(asset, position);
-        
-        TextMessage message = (TextMessage) messageHelper.listenOnEventBus(VMSSystemHelper.emailSelector, TIMEOUT);
-        assertThat(message, is(notNullValue()));
-        
-        SetCommandRequest setCommandRequest = JAXBMarshaller.unmarshallTextMessage(message, SetCommandRequest.class);
-        assertThat(setCommandRequest.getCommand().getEmail().getTo(), is(email));
-        assertThat(setCommandRequest.getCommand().getFwdRule(), is(createdCustomRule.getName()));
-        
+        try (TopicListener topicListener = new TopicListener(VMSSystemHelper.emailSelector)) {
+            FLUXHelper.sendPositionToFluxPlugin(asset, position);
+            CustomRuleHelper.pollTicketCreated();
+
+            SetCommandRequest setCommandRequest = topicListener.listenOnEventBusForSpecificMessage(SetCommandRequest.class);
+            assertThat(setCommandRequest.getCommand().getEmail().getTo(), is(email));
+            assertThat(setCommandRequest.getCommand().getFwdRule(), is(createdCustomRule.getName()));
+        }
         CustomRuleHelper.assertRuleTriggered(createdCustomRule, timestamp);
     }
     
@@ -667,15 +645,14 @@ public class RulesAlarmIT extends AbstractRest {
         assertNotNull(createdCustomRule);
         
         LatLong position = new LatLong(1d, 1d, new Date());
-        FLUXHelper.sendPositionToFluxPlugin(asset, position);
-        
-        TextMessage message = (TextMessage) messageHelper.listenOnEventBus(VMSSystemHelper.emailSelector, TIMEOUT);
-        assertThat(message, is(notNullValue()));
-        
-        SetCommandRequest setCommandRequest = JAXBMarshaller.unmarshallTextMessage(message, SetCommandRequest.class);
-        assertThat(setCommandRequest.getCommand().getEmail().getTo(), is(email));
-        assertThat(setCommandRequest.getCommand().getFwdRule(), is(createdCustomRule.getName()));
-        
+        try (TopicListener topicListener = new TopicListener(VMSSystemHelper.emailSelector)) {
+            FLUXHelper.sendPositionToFluxPlugin(asset, position);
+            CustomRuleHelper.pollTicketCreated();
+
+            SetCommandRequest setCommandRequest = topicListener.listenOnEventBusForSpecificMessage(SetCommandRequest.class);
+            assertThat(setCommandRequest.getCommand().getEmail().getTo(), is(email));
+            assertThat(setCommandRequest.getCommand().getFwdRule(), is(createdCustomRule.getName()));
+        }
         CustomRuleHelper.assertRuleTriggered(createdCustomRule, timestamp);
     }
     
@@ -701,18 +678,17 @@ public class RulesAlarmIT extends AbstractRest {
         assertNotNull(createdAreaRule);
         
         LatLong positionDnk = new LatLong(56d, 10.5, new Date());
-        FLUXHelper.sendPositionToFluxPlugin(asset, positionDnk);
-        
-        TextMessage message = (TextMessage) messageHelper.listenOnEventBus(VMSSystemHelper.FLUX_SELECTOR, TIMEOUT);
-        assertThat(message, is(notNullValue()));
-        
-        SetReportRequest setReportRequest = JAXBMarshaller.unmarshallTextMessage(message, SetReportRequest.class);
-        assertThat(setReportRequest.getReport().getRecipient(), is(fluxEndpoint));
-        
-        MovementType movement = setReportRequest.getReport().getMovement();
-        assertThat(movement.getAssetName(), is(asset.getName()));
-        assertThat(movement.getIrcs(), is(asset.getIrcs()));
-        
+        try (TopicListener topicListener = new TopicListener(VMSSystemHelper.FLUX_SELECTOR)) {
+            FLUXHelper.sendPositionToFluxPlugin(asset, positionDnk);
+            CustomRuleHelper.pollTicketCreated();
+
+            SetReportRequest setReportRequest = topicListener.listenOnEventBusForSpecificMessage(SetReportRequest.class);
+            assertThat(setReportRequest.getReport().getRecipient(), is(fluxEndpoint));
+            
+            MovementType movement = setReportRequest.getReport().getMovement();
+            assertThat(movement.getAssetName(), is(asset.getName()));
+            assertThat(movement.getIrcs(), is(asset.getIrcs()));
+        }
         CustomRuleHelper.assertRuleTriggered(createdAreaRule, timestamp);
     }
     
@@ -749,15 +725,14 @@ public class RulesAlarmIT extends AbstractRest {
         assertNotNull(createdFsRule);
         
         LatLong positionSwe2 = new LatLong(57.670176, 11.799626, new Date());
-        FLUXHelper.sendPositionToFluxPlugin(asset, positionSwe2);
-        
-        TextMessage message = (TextMessage) messageHelper.listenOnEventBus(VMSSystemHelper.emailSelector, TIMEOUT);
-        assertThat(message, is(notNullValue()));
-        
-        SetCommandRequest setCommandRequest = JAXBMarshaller.unmarshallTextMessage(message, SetCommandRequest.class);
-        assertThat(setCommandRequest.getCommand().getEmail().getTo(), is(email));
-        assertThat(setCommandRequest.getCommand().getFwdRule(), is(createdFsRule.getName()));
-        
+        try (TopicListener topicListener = new TopicListener(VMSSystemHelper.emailSelector)) {
+            FLUXHelper.sendPositionToFluxPlugin(asset, positionSwe2);
+            CustomRuleHelper.pollTicketCreated();
+
+            SetCommandRequest setCommandRequest = topicListener.listenOnEventBusForSpecificMessage(SetCommandRequest.class);
+            assertThat(setCommandRequest.getCommand().getEmail().getTo(), is(email));
+            assertThat(setCommandRequest.getCommand().getFwdRule(), is(createdFsRule.getName()));
+        }
         CustomRuleHelper.assertRuleNotTriggered(createdAreaRule);
         CustomRuleHelper.assertRuleTriggered(createdFsRule, timestamp);
     }
@@ -784,18 +759,17 @@ public class RulesAlarmIT extends AbstractRest {
         assertNotNull(createdAreaRule);
         
         LatLong positionDnk = new LatLong(56d, 10.5, new Date());
-        FLUXHelper.sendPositionToFluxPlugin(asset, positionDnk);
-        
-        TextMessage message = (TextMessage) messageHelper.listenOnEventBus(VMSSystemHelper.FLUX_SELECTOR, TIMEOUT);
-        assertThat(message, is(notNullValue()));
-        
-        SetReportRequest setReportRequest = JAXBMarshaller.unmarshallTextMessage(message, SetReportRequest.class);
-        assertThat(setReportRequest.getReport().getRecipient(), is(fluxEndpoint));
-        
-        MovementType movement = setReportRequest.getReport().getMovement();
-        assertThat(movement.getAssetName(), is(asset.getName()));
-        assertThat(movement.getIrcs(), is(asset.getIrcs()));
-        
+        try (TopicListener topicListener = new TopicListener(VMSSystemHelper.FLUX_SELECTOR)) {
+            FLUXHelper.sendPositionToFluxPlugin(asset, positionDnk);
+            CustomRuleHelper.pollTicketCreated();
+
+            SetReportRequest setReportRequest = topicListener.listenOnEventBusForSpecificMessage(SetReportRequest.class);
+            assertThat(setReportRequest.getReport().getRecipient(), is(fluxEndpoint));
+            
+            MovementType movement = setReportRequest.getReport().getMovement();
+            assertThat(movement.getAssetName(), is(asset.getName()));
+            assertThat(movement.getIrcs(), is(asset.getIrcs()));
+        }
         CustomRuleHelper.assertRuleTriggered(createdAreaRule, timestamp);
     }
 
