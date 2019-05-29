@@ -13,16 +13,6 @@ copy of the GNU General Public License along with the IFDM Suite. If not, see <h
 */
 package eu.europa.ec.fisheries.uvms.docker.validation.movement;
 
-import java.util.List;
-import javax.ws.rs.core.GenericType;
-import javax.ws.rs.core.HttpHeaders;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
-import javax.ws.rs.core.Response.Status;
-import org.apache.http.HttpResponse;
-import org.apache.http.client.fluent.Request;
-import org.hamcrest.CoreMatchers;
-import org.junit.Test;
 import eu.europa.ec.fisheries.schema.exchange.movement.v1.MovementActivityTypeType;
 import eu.europa.ec.fisheries.schema.movement.search.v1.SearchKeyType;
 import eu.europa.ec.fisheries.schema.movement.v1.MovementSourceType;
@@ -30,22 +20,20 @@ import eu.europa.ec.fisheries.schema.movement.v1.MovementTypeType;
 import eu.europa.ec.fisheries.schema.movement.v1.SegmentCategoryType;
 import eu.europa.ec.fisheries.uvms.commons.rest.dto.ResponseDto;
 import eu.europa.ec.fisheries.uvms.docker.validation.common.AbstractRest;
+import org.hamcrest.CoreMatchers;
+import org.junit.Test;
 
-/**
- * The Class MovementConfigRestIT.
- */
+import javax.ws.rs.core.GenericType;
+import javax.ws.rs.core.HttpHeaders;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
+import javax.ws.rs.core.Response.Status;
+import java.util.List;
 
 public class MovementConfigRestIT extends AbstractRest {
 
-	/**
-	 * Gets the movement types test.
-	 *
-	 * @return the movement types test
-	 * @throws Exception
-	 *             the exception
-	 */
 	@Test
-	public void getMovementTypesTest() throws Exception {
+	public void getMovementTypesTest() {
 		ResponseDto<List<MovementTypeType>> response = getWebTarget()
 		        .path("movement/rest/config/movementTypes")
 		        .request(MediaType.APPLICATION_JSON)
@@ -54,15 +42,8 @@ public class MovementConfigRestIT extends AbstractRest {
 		assertThat(response.getData(), CoreMatchers.is(CoreMatchers.notNullValue()));
 	}
 
-	/**
-	 * Gets the segmet types test.
-	 *
-	 * @return the segmet types test
-	 * @throws Exception
-	 *             the exception
-	 */
 	@Test
-	public void getSegmentTypesTest() throws Exception {
+	public void getSegmentTypesTest() {
 		ResponseDto<List<SegmentCategoryType>> response = getWebTarget()
                 .path("movement/rest/config/segmentCategoryTypes")
                 .request(MediaType.APPLICATION_JSON)
@@ -71,15 +52,8 @@ public class MovementConfigRestIT extends AbstractRest {
         assertThat(response.getData(), CoreMatchers.is(CoreMatchers.notNullValue()));
 	}
 
-	/**
-	 * Gets the movement search keys test.
-	 *
-	 * @return the movement search keys test
-	 * @throws Exception
-	 *             the exception
-	 */
 	@Test
-	public void getMovementSearchKeysTest() throws Exception {
+	public void getMovementSearchKeysTest() {
 		ResponseDto<List<SearchKeyType>> response = getWebTarget()
                 .path("movement/rest/config/searchKeys")
                 .request(MediaType.APPLICATION_JSON)
@@ -88,15 +62,8 @@ public class MovementConfigRestIT extends AbstractRest {
         assertThat(response.getData(), CoreMatchers.is(CoreMatchers.notNullValue()));
 	}
 
-	/**
-	 * Gets the movement source types test.
-	 *
-	 * @return the movement source types test
-	 * @throws Exception
-	 *             the exception
-	 */
 	@Test
-	public void getMovementSourceTypesTest() throws Exception {
+	public void getMovementSourceTypesTest() {
 		ResponseDto<List<MovementSourceType>> response = getWebTarget()
                 .path("movement/rest/config/movementSourceTypes")
                 .request(MediaType.APPLICATION_JSON)
@@ -105,15 +72,8 @@ public class MovementConfigRestIT extends AbstractRest {
         assertThat(response.getData(), CoreMatchers.is(CoreMatchers.notNullValue()));
 	}
 
-	/**
-	 * Gets the activity types test.
-	 *
-	 * @return the activity types test
-	 * @throws Exception
-	 *             the exception
-	 */
 	@Test
-	public void getActivityTypesTest() throws Exception {
+	public void getActivityTypesTest() {
 		ResponseDto<List<MovementActivityTypeType>> response = getWebTarget()
                 .path("movement/rest/config/activityTypes")
                 .request(MediaType.APPLICATION_JSON)
@@ -122,15 +82,8 @@ public class MovementConfigRestIT extends AbstractRest {
         assertThat(response.getData(), CoreMatchers.is(CoreMatchers.notNullValue()));
 	}
 
-	/**
-	 * Gets the configuration test.
-	 *
-	 * @return the configuration test
-	 * @throws Exception
-	 *             the exception
-	 */
 	@Test
-	public void getConfigurationTest() throws Exception {
+	public void getConfigurationTest() {
 		Response response = getWebTarget()
                 .path("movement/rest/config/")
                 .request(MediaType.APPLICATION_JSON)
@@ -140,17 +93,15 @@ public class MovementConfigRestIT extends AbstractRest {
         assertThat(response.getStatus(), CoreMatchers.is(Status.OK.getStatusCode()));
 	}
 
-	   
-    /**
-     * Gets the alarm statuses test.
-     *
-     * @return the alarm statuses test
-     * @throws Exception the exception
-     */
     @Test
-    public void getAlarmStatusesTest() throws Exception {
-        final HttpResponse response = Request.Get(getBaseUrl() + "movement/rest/config/alarmstatus")
-                .setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken()).execute().returnResponse();
-        List dataList = checkSuccessResponseReturnType(response,List.class);
+    public void getAlarmStatusesTest() {
+		ResponseDto response = getWebTarget()
+				.path("movement/rest/config/alarmstatus")
+				.request(MediaType.APPLICATION_JSON)
+				.header(HttpHeaders.AUTHORIZATION, getValidJwtToken())
+				.get(ResponseDto.class);
+
+		List list = (List) response.getData();
+		assertEquals(3, list.size());
     }
 }

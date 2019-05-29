@@ -1,25 +1,5 @@
 package eu.europa.ec.fisheries.uvms.docker.validation.movement;
 
-import java.io.IOException;
-import java.math.BigInteger;
-import java.time.Instant;
-import java.time.temporal.ChronoUnit;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.List;
-import java.util.Random;
-import java.util.UUID;
-import javax.jms.JMSException;
-import javax.ws.rs.client.Entity;
-import javax.ws.rs.client.WebTarget;
-import javax.ws.rs.core.GenericType;
-import javax.ws.rs.core.HttpHeaders;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.sse.SseEventSource;
-
-import eu.europa.ec.fisheries.schema.movement.v1.MovementSourceType;
-import org.hamcrest.CoreMatchers;
 import com.peertopark.java.geocalc.Coordinate;
 import com.peertopark.java.geocalc.DegreeCoordinate;
 import com.peertopark.java.geocalc.EarthCalc;
@@ -28,6 +8,7 @@ import eu.europa.ec.fisheries.schema.movement.search.v1.ListPagination;
 import eu.europa.ec.fisheries.schema.movement.search.v1.MovementQuery;
 import eu.europa.ec.fisheries.schema.movement.source.v1.GetMovementListByQueryResponse;
 import eu.europa.ec.fisheries.schema.movement.v1.MovementActivityTypeType;
+import eu.europa.ec.fisheries.schema.movement.v1.MovementSourceType;
 import eu.europa.ec.fisheries.schema.movement.v1.MovementType;
 import eu.europa.ec.fisheries.schema.movement.v1.MovementTypeType;
 import eu.europa.ec.fisheries.uvms.asset.client.model.AssetDTO;
@@ -118,11 +99,10 @@ public class MovementHelper extends AbstractHelper {
 		int movementTimeDeltaInMillis = 30000;
 		List<LatLong> rutt = new ArrayList<>();
 		long ts = Instant.now().minus(1, ChronoUnit.DAYS).getEpochSecond();
-		
 
-		double divideramed = 50;
-		double randomFactorLat = rnd.nextDouble() / divideramed;
-		double randomFactorLong = rnd.nextDouble() / divideramed;
+		double divideWith = 50;
+		double randomFactorLat = rnd.nextDouble() / divideWith;
+		double randomFactorLong = rnd.nextDouble() / divideWith;
 
 		double latitude = 57.110 + randomFactorLat;
 		double longitude = 12.244 + randomFactorLong;
@@ -131,7 +111,6 @@ public class MovementHelper extends AbstractHelper {
 		double END_LONGITUDE = 10.926;
 
 		while (true) {
-
 			if (latitude >= END_LATITUDE)
 				latitude = latitude - 0.03;
 			if (longitude >= END_LONGITUDE)
@@ -168,7 +147,6 @@ public class MovementHelper extends AbstractHelper {
 		double END_LONGITUDE = -73.740;
 
 		while (true) {
-
 			if (latitude >= END_LATITUDE)
 				latitude = latitude - distanceBetweenReports;
 			if (longitude >= END_LONGITUDE)
@@ -196,7 +174,6 @@ public class MovementHelper extends AbstractHelper {
 		long ts = System.currentTimeMillis() - movementTimeDeltaInMillis * numberPositions;
 
 		while (true) {
-
 			if (START_LATITUDE >= END_LATITUDE)
 				START_LATITUDE = START_LATITUDE - 0.01;
 			if (START_LONGITUDE >= END_LONGITUDE)
@@ -213,11 +190,11 @@ public class MovementHelper extends AbstractHelper {
 		}
 	}
 
-	public List<LatLong> createRutt(int movementTimeDeltaInMillis, int numberPositions) {
+	private List<LatLong> createRutt(int movementTimeDeltaInMillis, int numberPositions) {
 
-		double divideramed = 50;
-		double randomFactorLat = rnd.nextDouble() / divideramed;
-		double randomFactorLong = rnd.nextDouble() / divideramed;
+		double divideWith = 50;
+		double randomFactorLat = rnd.nextDouble() / divideWith;
+		double randomFactorLong = rnd.nextDouble() / divideWith;
 
 		List<LatLong> rutt = new ArrayList<>();
 		long ts = System.currentTimeMillis() - movementTimeDeltaInMillis * numberPositions;
@@ -315,7 +292,7 @@ public class MovementHelper extends AbstractHelper {
 	public MovementDto createMovement(IncomingMovement incomingMovement) throws Exception {
 		messageHelper.sendMessageWithFunctionAndGroup(UVMS_MOVEMENT_REQUEST_QUEUE, OBJECT_MAPPER.writeValueAsString(incomingMovement), "CREATE", incomingMovement.getAssetCFR());
 		MovementHelper.pollMovementCreated();
-		List<MovementDto> latestMovements = MovementHelper.getLatestMovements(Arrays.asList(incomingMovement.getAssetGuid()));
+		List<MovementDto> latestMovements = MovementHelper.getLatestMovements(Collections.singletonList(incomingMovement.getAssetGuid()));
 		assertThat(latestMovements.size(), CoreMatchers.is(1));
 		return latestMovements.get(0);
 	}
@@ -371,7 +348,8 @@ public class MovementHelper extends AbstractHelper {
     }
 
 	public void createMovementBatch(List<IncomingMovement> createMovementBatchRequest) throws Exception {
-        messageHelper.sendMessageWithFunction(UVMS_MOVEMENT_REQUEST_QUEUE, OBJECT_MAPPER.writeValueAsString(createMovementBatchRequest), "CREATE_BATCH");
+        messageHelper.sendMessageWithFunction(UVMS_MOVEMENT_REQUEST_QUEUE, OBJECT_MAPPER
+				.writeValueAsString(createMovementBatchRequest), "CREATE_BATCH");
     }
 
 
@@ -384,7 +362,7 @@ public class MovementHelper extends AbstractHelper {
 		return response;
 	}
 
-	List<LatLong> calculateReportedDataForRoute(List<LatLong> route) {
+	private List<LatLong> calculateReportedDataForRoute(List<LatLong> route) {
 
 		LatLong previousPosition = null;
 		LatLong currentPosition = null;
@@ -402,8 +380,7 @@ public class MovementHelper extends AbstractHelper {
 			double distance = distance(previousPosition, currentPosition);
 			route.get(i - 1).bearing = bearing;
 			route.get(i - 1).distance = distance;
-			double speed = calcSpeed(previousPosition, currentPosition);
-			route.get(i - 1).speed = speed;
+			route.get(i - 1).speed = calcSpeed(previousPosition, currentPosition);
 
 			if (i < n) {
 				previousPosition = currentPosition;
@@ -455,8 +432,8 @@ public class MovementHelper extends AbstractHelper {
 			// distance to next
 			double distanceM = src.distance;
 
-			double durationms = (double) Math.abs(dst.positionTime.getTime() - src.positionTime.getTime());
-			double durationSecs = durationms / 1000;
+			double durationMs = (double) Math.abs(dst.positionTime.getTime() - src.positionTime.getTime());
+			double durationSecs = durationMs / 1000;
 			double speedMeterPerSecond = (distanceM / durationSecs);
 			double speedMPerHour = speedMeterPerSecond * 3600;
 			return speedMPerHour / 1000;
@@ -472,9 +449,9 @@ public class MovementHelper extends AbstractHelper {
 		List<LatLong> rutt = new ArrayList<>();
 		long ts = Instant.now().minus(1, ChronoUnit.DAYS).getEpochSecond();
 
-		double divideramed = 50;
-		double randomFactorLat = rnd.nextDouble() / divideramed;
-		double randomFactorLong = rnd.nextDouble() / divideramed;
+		double divideWith = 50;
+		double randomFactorLat = rnd.nextDouble() / divideWith;
+		double randomFactorLong = rnd.nextDouble() / divideWith;
 
 		double latitude = 57.110 + randomFactorLat;
 		double longitude = 12.244 + randomFactorLong;
@@ -485,7 +462,6 @@ public class MovementHelper extends AbstractHelper {
 
 		// leave the harbour
 		for (int i = 0; i < 25; i++) {
-
 			if (latitude >= END_LATITUDE)
 				latitude = latitude - 0.004;
 			if (longitude >= END_LONGITUDE)

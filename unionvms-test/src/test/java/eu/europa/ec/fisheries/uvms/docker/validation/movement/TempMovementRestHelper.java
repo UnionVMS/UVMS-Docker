@@ -10,17 +10,18 @@ copy of the GNU General Public License along with the IFDM Suite. If not, see <h
  */
 package eu.europa.ec.fisheries.uvms.docker.validation.movement;
 
-import javax.ws.rs.client.Entity;
-import javax.ws.rs.core.GenericType;
-import javax.ws.rs.core.HttpHeaders;
-import javax.ws.rs.core.MediaType;
 import eu.europa.ec.fisheries.schema.movement.v1.TempMovementType;
 import eu.europa.ec.fisheries.uvms.commons.rest.dto.ResponseDto;
 import eu.europa.ec.fisheries.uvms.docker.validation.common.AbstractHelper;
 
+import javax.ws.rs.client.Entity;
+import javax.ws.rs.core.GenericType;
+import javax.ws.rs.core.HttpHeaders;
+import javax.ws.rs.core.MediaType;
+
 public class TempMovementRestHelper extends AbstractHelper {
 
-    public static TempMovementType createTempMovement(TempMovementType tempMovement) {
+    static TempMovementType createTempMovement(TempMovementType tempMovement) {
         ResponseDto<TempMovementType> response = getWebTarget()
                 .path("movement/rest/tempmovement")
                 .request(MediaType.APPLICATION_JSON)
@@ -29,7 +30,7 @@ public class TempMovementRestHelper extends AbstractHelper {
         return response.getData();
     }
 
-    public static ResponseDto<?> createTempMovementResponse(TempMovementType tempMovement) {
+    static ResponseDto<?> createTempMovementResponse(TempMovementType tempMovement) {
         return getWebTarget()
                 .path("movement/rest/tempmovement")
                 .request(MediaType.APPLICATION_JSON)
@@ -37,7 +38,7 @@ public class TempMovementRestHelper extends AbstractHelper {
                 .post(Entity.json(tempMovement), new GenericType<ResponseDto<?>>() {});
     }
 
-    public static TempMovementType getTempMovement(String guid) {
+    static TempMovementType getTempMovement(String guid) {
         ResponseDto<TempMovementType> response = getWebTarget()
                 .path("movement/rest/tempmovement/")
                 .path(guid)
@@ -47,7 +48,7 @@ public class TempMovementRestHelper extends AbstractHelper {
         return response.getData();
     }
 
-    public static ResponseDto<?> getTempMovementResponse(String guid) {
+    static ResponseDto<?> getTempMovementResponse(String guid) {
         return getWebTarget()
                 .path("movement/rest/tempmovement/" + guid)
                 .request(MediaType.APPLICATION_JSON)
@@ -55,7 +56,7 @@ public class TempMovementRestHelper extends AbstractHelper {
                 .get(new GenericType<ResponseDto<?>>() {});
     }
 
-    public static TempMovementType removeTempMovement(String guid) {
+    static TempMovementType removeTempMovement(String guid) {
         ResponseDto<TempMovementType> response = getWebTarget()
                 .path("movement/rest/tempmovement/remove")
                 .path(guid)
@@ -65,7 +66,7 @@ public class TempMovementRestHelper extends AbstractHelper {
         return response.getData();
     }
 
-    public static ResponseDto<?> removeTempMovementResponse(String guid) {
+    static ResponseDto<?> removeTempMovementResponse(String guid) {
         return getWebTarget()
                 .path("movement/rest/tempmovement/remove/" + guid)
                 .request(MediaType.APPLICATION_JSON)
@@ -73,7 +74,7 @@ public class TempMovementRestHelper extends AbstractHelper {
                 .put(null, new GenericType<ResponseDto<?>>() {});
     }
 
-    public static TempMovementType updateTempMovement(TempMovementType tempMovement) {
+    static TempMovementType updateTempMovement(TempMovementType tempMovement) {
         ResponseDto<TempMovementType> response = getWebTarget()
                 .path("movement/rest/tempmovement")
                 .request(MediaType.APPLICATION_JSON)
@@ -82,7 +83,7 @@ public class TempMovementRestHelper extends AbstractHelper {
         return response.getData();
     }
     
-    public static TempMovementType sendTempMovement(String guid) {
+    static TempMovementType sendTempMovement(String guid) {
         ResponseDto<TempMovementType> response = getWebTarget()
                 .path("movement/rest/tempmovement/send")
                 .path(guid)

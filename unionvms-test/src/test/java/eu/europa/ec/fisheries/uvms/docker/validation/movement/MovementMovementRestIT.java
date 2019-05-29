@@ -13,25 +13,6 @@ copy of the GNU General Public License along with the IFDM Suite. If not, see <h
 */
 package eu.europa.ec.fisheries.uvms.docker.validation.movement;
 
-import java.math.BigInteger;
-import java.time.Instant;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.UUID;
-import javax.jms.JMSException;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
-
-import eu.europa.ec.fisheries.uvms.docker.validation.common.MessageHelper;
-import eu.europa.ec.fisheries.uvms.movement.model.util.DateUtil;
-import org.hamcrest.CoreMatchers;
-import org.junit.AfterClass;
-import org.junit.BeforeClass;
-import org.junit.Test;
-import eu.europa.ec.fisheries.schema.mobileterminal.types.v1.MobileTerminalType;
-import eu.europa.ec.fisheries.schema.movement.module.v1.CreateMovementRequest;
-import eu.europa.ec.fisheries.schema.movement.module.v1.CreateMovementResponse;
 import eu.europa.ec.fisheries.schema.movement.search.v1.ListCriteria;
 import eu.europa.ec.fisheries.schema.movement.search.v1.ListPagination;
 import eu.europa.ec.fisheries.schema.movement.search.v1.MovementQuery;
@@ -72,21 +53,11 @@ public class MovementMovementRestIT extends AbstractRest {
 		movementHelper.close();
 	}
 
-	/**
-	 * Gets the list by query test.
-	 *
-	 * @return the list by query test
-	 * @throws Exception
-	 *             the exception
-	 */
 	@Test
 	public void getListByQueryTest() {
 	    List<MovementType> dataMap = MovementHelper.getListByQuery(createMovementQuery());
 		assertNotNull(dataMap);
 	}
-
-	// Two tests (and an unused helper function) removed since they assumed that some specific data where
-	// already in the database. Since the DB is empty, the test would never pass.
 
 	private MovementQuery createMovementQuery() {
 		MovementQuery movementQuery = new MovementQuery();
@@ -111,21 +82,18 @@ public class MovementMovementRestIT extends AbstractRest {
 
 	@Test
 	public void getLatestMovementsByConnectIdsTest() throws Exception {
-
 		AssetDTO testAsset = AssetTestHelper.createTestAsset();
 		MobileTerminalDto mobileTerminal = MobileTerminalTestHelper.createMobileTerminal();
 		MobileTerminalTestHelper.assignMobileTerminal(testAsset, mobileTerminal);
 		LatLong latLong = new LatLong(16.9, 32.6333333, new Date(System.currentTimeMillis()));
 		IncomingMovement createMovementRequest = movementHelper.createIncomingMovement(testAsset, latLong);
 		MovementDto createMovementResponse = movementHelper.createMovement(createMovementRequest);
-
-		List<String> connectIds = new ArrayList<>();
 		
 		assertNotNull(createMovementResponse);
-		assertNotNull(createMovementResponse.getConnectId());	
-		
+		assertNotNull(createMovementResponse.getConnectId());
+
+		List<String> connectIds = new ArrayList<>();
 		String connectId = createMovementResponse.getConnectId();
-		
 		connectIds.add(connectId);
 		
 		List<MovementDto> latestMovements = MovementHelper.getLatestMovements(connectIds);
@@ -148,7 +116,6 @@ public class MovementMovementRestIT extends AbstractRest {
 
 	@Test
 	public void getByIdTest() throws Exception {
-
 		AssetDTO testAsset = AssetTestHelper.createTestAsset();
 		MobileTerminalDto mobileTerminal = MobileTerminalTestHelper.createMobileTerminal();
 		MobileTerminalTestHelper.assignMobileTerminal(testAsset, mobileTerminal);
@@ -160,25 +127,22 @@ public class MovementMovementRestIT extends AbstractRest {
 		
 		assertNotNull(createMovementResponse);
 		assertNotNull(createMovementResponse.getMovementGUID());
-		String id = createMovementResponse.getMovementGUID();
 
+		String id = createMovementResponse.getMovementGUID();
 		MovementType movementById = MovementHelper.getMovementById(id);
 		assertNotNull(movementById);
 	}
 
 	@Test
     public void countMovementsForAsset() {
-	    String asset = "4f87e873-214c-4ebd-b161-5a934904f4fc";
-        Instant now = Instant.now();
+	    String assetId = "4f87e873-214c-4ebd-b161-5a934904f4fc";
 
-        long response = getWebTarget()
-                .path("movement/rest/internal/countMovementsInDateAndTheDayBeforeForAsset/" + asset)
-                .queryParam("after", DateUtil.parseUTCDateToString(now))    //yyyy-MM-dd HH:mm:ss Z
+        Long response = getWebTarget()
+                .path("movement/rest/internal/countMovementsInDateAndTheDayBeforeForAsset/" + assetId)
+                .queryParam("after", DateUtil.parseUTCDateToString(Instant.now()))    //yyyy-MM-dd HH:mm:ss Z
                 .request(MediaType.APPLICATION_JSON)
-                //.header(HttpHeaders.AUTHORIZATION, getValidJwtToken())
-                .get(long.class);
+                .get(Long.class);
 
         assertNotNull(response);
-
     }
 }

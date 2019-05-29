@@ -1,16 +1,5 @@
 package eu.europa.ec.fisheries.uvms.docker.validation.movement;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Date;
-import java.util.List;
-import javax.jms.JMSException;
-import javax.ws.rs.sse.SseEventSource;
-import org.hamcrest.CoreMatchers;
-import org.junit.AfterClass;
-import org.junit.BeforeClass;
-import org.junit.Test;
-import eu.europa.ec.fisheries.schema.mobileterminal.types.v1.MobileTerminalType;
 import eu.europa.ec.fisheries.schema.movement.search.v1.ListCriteria;
 import eu.europa.ec.fisheries.schema.movement.search.v1.MovementQuery;
 import eu.europa.ec.fisheries.schema.movement.search.v1.SearchKey;
@@ -23,11 +12,11 @@ import eu.europa.ec.fisheries.uvms.docker.validation.mobileterminal.MobileTermin
 import eu.europa.ec.fisheries.uvms.docker.validation.mobileterminal.dto.MobileTerminalDto;
 import eu.europa.ec.fisheries.uvms.docker.validation.movement.model.IncomingMovement;
 import org.hamcrest.CoreMatchers;
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 import javax.jms.JMSException;
-import org.junit.AfterClass;
-import org.junit.BeforeClass;
 import javax.ws.rs.sse.SseEventSource;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -35,8 +24,6 @@ import java.util.Date;
 import java.util.List;
 
 public class MovementJmsIT extends AbstractRest {
-	
-	public static  int ALL = -1;
 	
 	private static MovementHelper movementHelper;
 	private static MessageHelper messageHelper;
@@ -89,7 +76,6 @@ public class MovementJmsIT extends AbstractRest {
 
 	@Test(timeout = 10000)
 	public void createMovementRequestTest() throws Exception {
-
 		AssetDTO testAsset = AssetTestHelper.createTestAsset();
 		MobileTerminalDto mobileTerminal = MobileTerminalTestHelper.createMobileTerminal();
 		MobileTerminalTestHelper.assignMobileTerminal(testAsset, mobileTerminal);
@@ -100,7 +86,7 @@ public class MovementJmsIT extends AbstractRest {
 		MovementDto createMovementResponse = movementHelper.createMovement(incomingMovement);
 
 		assertNotNull(createMovementResponse);
-		assertEquals(null, createMovementResponse.getCalculatedSpeed());
+		assertNull(createMovementResponse.getCalculatedSpeed());
 		assertEquals(createMovementResponse.getLongitude(),
 		        incomingMovement.getLongitude());
 		assertEquals(createMovementResponse.getLatitude(),
@@ -192,12 +178,6 @@ public class MovementJmsIT extends AbstractRest {
 		}
 	}
 
-	/**
-	 * Check dead letter queue.
-	 *
-	 * @throws Exception
-	 *             the exception
-	 */
     @Test
     public void checkAllMovementsRequestProcessedOnQueue() throws Exception {
         assertFalse(messageHelper.checkQueueHasElements("UVMSMovementEvent"));
@@ -224,7 +204,6 @@ public class MovementJmsIT extends AbstractRest {
                 Thread.sleep(100);
             }
         }
-        
         assertThat(movements.size(), CoreMatchers.is(1));
     }
 }

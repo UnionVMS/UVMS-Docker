@@ -13,14 +13,6 @@ copy of the GNU General Public License along with the IFDM Suite. If not, see <h
 */
 package eu.europa.ec.fisheries.uvms.docker.validation.movement;
 
-import java.util.List;
-import java.util.UUID;
-import javax.ws.rs.client.Entity;
-import javax.ws.rs.core.GenericType;
-import javax.ws.rs.core.HttpHeaders;
-import javax.ws.rs.core.MediaType;
-import org.hamcrest.CoreMatchers;
-import org.junit.Test;
 import eu.europa.ec.fisheries.schema.movement.search.v1.GroupListCriteria;
 import eu.europa.ec.fisheries.schema.movement.search.v1.MovementSearchGroup;
 import eu.europa.ec.fisheries.schema.movement.search.v1.SearchKeyType;
@@ -28,32 +20,25 @@ import eu.europa.ec.fisheries.uvms.asset.client.model.AssetDTO;
 import eu.europa.ec.fisheries.uvms.commons.rest.dto.ResponseDto;
 import eu.europa.ec.fisheries.uvms.docker.validation.asset.AssetTestHelper;
 import eu.europa.ec.fisheries.uvms.docker.validation.common.AbstractRest;
+import org.hamcrest.CoreMatchers;
+import org.junit.Test;
 
-/**
- * The Class MovementPerformanceIT.
- */
+import javax.ws.rs.client.Entity;
+import javax.ws.rs.core.GenericType;
+import javax.ws.rs.core.HttpHeaders;
+import javax.ws.rs.core.MediaType;
+import java.util.List;
+import java.util.UUID;
 
 public class MovementMovementSearchRestIT extends AbstractRest {
 
-	/**
-	 * Creates the movement search group test.
-	 *
-	 * @throws Exception
-	 *             the exception
-	 */
 	@Test
-	public void createMovementSearchGroupTest() throws Exception {
+	public void createMovementSearchGroupTest() {
 		MovementSearchGroup createMovementSearchGroup = createMovementSearchGroup();
 		assertNotNull(createMovementSearchGroup);
 	}
 
-	/**
-	 * Creates the movement search group.
-	 *
-	 * @return the movement search group
-	 * @throws Exception the exception
-	 */
-	private MovementSearchGroup createMovementSearchGroup() throws Exception {
+	private MovementSearchGroup createMovementSearchGroup() {
 		AssetDTO testAsset = AssetTestHelper.createTestAsset();
 
 		MovementSearchGroup movementSearchGroup = new MovementSearchGroup();
@@ -72,18 +57,10 @@ public class MovementMovementSearchRestIT extends AbstractRest {
                 .header(HttpHeaders.AUTHORIZATION, getValidJwtToken())
                 .post(Entity.json(movementSearchGroup), new GenericType<ResponseDto<MovementSearchGroup>>() {});
         return response.getData();
-		
 	}
 
-	/**
-	 * Gets the movement search group test.
-	 *
-	 * @return the movement search group test
-	 * @throws Exception
-	 *             the exception
-	 */
 	@Test
-	public void getMovementSearchGroupTest() throws Exception {
+	public void getMovementSearchGroupTest() {
 		MovementSearchGroup createMovementSearchGroup = createMovementSearchGroup();
 		assertNotNull(createMovementSearchGroup);
 		
@@ -99,14 +76,8 @@ public class MovementMovementSearchRestIT extends AbstractRest {
         assertThat(fetchedSearchGroup.getId(), CoreMatchers.is(createMovementSearchGroup.getId()));
 	}
 
-	/**
-	 * Update movement seach group test.
-	 *
-	 * @throws Exception
-	 *             the exception
-	 */
 	@Test
-	public void updateMovementSeachGroupTest() throws Exception {
+	public void updateMovementSearchGroupTest() {
 		MovementSearchGroup movementSearchGroup = createMovementSearchGroup();
 		assertNotNull(movementSearchGroup);
 
@@ -120,18 +91,10 @@ public class MovementMovementSearchRestIT extends AbstractRest {
 		
 		MovementSearchGroup fetchedSearchGroup = response.getData();
 		assertThat(fetchedSearchGroup.getName(), CoreMatchers.is(movementSearchGroup.getName()));
-		
 	}
 
-	/**
-	 * Gets the movement search groups by user test.
-	 *
-	 * @return the movement search groups by user test
-	 * @throws Exception
-	 *             the exception
-	 */
 	@Test
-	public void getMovementSearchGroupsByUserTest() throws Exception {
+	public void getMovementSearchGroupsByUserTest() {
 		ResponseDto<List<MovementSearchGroup>> response = getWebTarget()
                 .path("movement/rest/search/groups")
                 .queryParam("user", "vms_admin_com")
@@ -142,14 +105,8 @@ public class MovementMovementSearchRestIT extends AbstractRest {
 		assertThat(searchGroups, CoreMatchers.is(CoreMatchers.notNullValue()));
 	}
 
-	/**
-	 * Delete movement search group test.
-	 *
-	 * @throws Exception
-	 *             the exception
-	 */
 	@Test
-	public void deleteMovementSearchGroupTest() throws Exception {
+	public void deleteMovementSearchGroupTest() {
 		MovementSearchGroup createMovementSearchGroup = createMovementSearchGroup();
 		assertNotNull(createMovementSearchGroup);
 
@@ -163,5 +120,4 @@ public class MovementMovementSearchRestIT extends AbstractRest {
 		MovementSearchGroup deletedGroup = response.getData();
 		assertThat(deletedGroup, CoreMatchers.is(CoreMatchers.notNullValue()));
 	}
-
 }
