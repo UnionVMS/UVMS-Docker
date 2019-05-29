@@ -13,21 +13,6 @@ copy of the GNU General Public License along with the IFDM Suite. If not, see <h
 */
 package eu.europa.ec.fisheries.uvms.docker.validation.movement;
 
-import java.time.ZoneOffset;
-import java.time.ZonedDateTime;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.List;
-import java.util.UUID;
-import javax.ws.rs.client.Entity;
-import javax.ws.rs.core.HttpHeaders;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
-import javax.ws.rs.core.Response.Status;
-
-import eu.europa.ec.fisheries.uvms.docker.validation.system.helper.FLUXHelper;
-import org.hamcrest.CoreMatchers;
-import org.junit.Test;
 import eu.europa.ec.fisheries.schema.movementrules.search.v1.AlarmListCriteria;
 import eu.europa.ec.fisheries.schema.movementrules.search.v1.AlarmQuery;
 import eu.europa.ec.fisheries.schema.movementrules.search.v1.AlarmSearchKey;
@@ -36,25 +21,27 @@ import eu.europa.ec.fisheries.uvms.asset.client.model.AssetDTO;
 import eu.europa.ec.fisheries.uvms.docker.validation.asset.AssetTestHelper;
 import eu.europa.ec.fisheries.uvms.docker.validation.common.AbstractRest;
 import eu.europa.ec.fisheries.uvms.docker.validation.movement.model.AlarmReport;
-import eu.europa.ec.fisheries.uvms.docker.validation.system.helper.NAFHelper;
+import eu.europa.ec.fisheries.uvms.docker.validation.system.helper.FLUXHelper;
 import eu.europa.ec.fisheries.uvms.docker.validation.system.helper.SanityRuleHelper;
+import org.hamcrest.CoreMatchers;
+import org.junit.Test;
 
-/**
- * The Class RulesAlarmRestIT.
- */
+import javax.ws.rs.client.Entity;
+import javax.ws.rs.core.HttpHeaders;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
+import javax.ws.rs.core.Response.Status;
+import java.time.ZoneOffset;
+import java.time.ZonedDateTime;
+import java.util.*;
 
 public class MovementAlarmRestIT extends AbstractRest {
 
-	/**
-	 * Gets the number of open alarm reports test.
-	 *
-	 * @return the number of open alarm reports test
-	 * @throws Exception the exception
-	 */
 	@Test
 	public void getNumberOfOpenAlarmReportsTest() throws Exception {
 	    AssetDTO asset = AssetTestHelper.createBasicAsset();
-        FLUXHelper.sendPositionToFluxPlugin(asset, new LatLong(56d, 11d, new Date(System.currentTimeMillis() + 10000)));
+        FLUXHelper.sendPositionToFluxPlugin(asset,
+				new LatLong(56d, 11d, new Date(System.currentTimeMillis() + 10000)));
 	    
         SanityRuleHelper.pollAlarmReportCreated();
         
@@ -67,16 +54,8 @@ public class MovementAlarmRestIT extends AbstractRest {
 		assertTrue(response > 0);
 	}
 
-
-	/**
-	 * Gets the custom rule list test.
-	 *
-	 * @return the custom rule list test
-	 * @throws Exception the exception
-	 */
-	//Added enough to make the query complete
 	@Test
-	public void getCustomRuleListTest() throws Exception {
+	public void getCustomRuleListTest() {
 		AlarmQuery alarmQuery = new AlarmQuery();
 		ListPagination lp = new ListPagination();
 		lp.setListSize(10);
@@ -97,15 +76,8 @@ public class MovementAlarmRestIT extends AbstractRest {
 		assertThat(response.getStatus(), CoreMatchers.is(Status.OK.getStatusCode()));
 	}
 
-
-	/**
-	 * Update alarm status test.
-	 *
-	 * @throws Exception the exception
-	 */
-	//Nothing to update, changing to expect a server error
 	@Test
-	public void updateAlarmStatusTest() throws Exception {
+	public void updateAlarmStatusWithoutPersistedEntityTest() {
 		AlarmReport alarmReportType = new AlarmReport();
 		
 		Response response = getWebTarget()
@@ -117,15 +89,8 @@ public class MovementAlarmRestIT extends AbstractRest {
 		assertThat(response.getStatus(), CoreMatchers.is(Status.INTERNAL_SERVER_ERROR.getStatusCode()));
 	}
 
-	
-	/**
-	 * Gets the alarm report by guid test.
-	 *
-	 * @return the alarm report by guid test
-	 * @throws Exception the exception
-	 */
 	@Test
-	public void getAlarmReportByGuidTest() throws Exception {
+	public void getAlarmReportByGuidTest() {
 	    Response response = getWebTarget()
                 .path("movement/rest/alarms")
                 .path("guid")
@@ -136,12 +101,6 @@ public class MovementAlarmRestIT extends AbstractRest {
 	    assertThat(response.getStatus(), CoreMatchers.is(Status.INTERNAL_SERVER_ERROR.getStatusCode()));
 	}
 
-	
-	/**
-	 * Reprocess alarm test.
-	 *
-	 * @throws Exception the exception
-	 */
 	@Test
 	public void reprocessAlarmTest() throws Exception {
 	    ZonedDateTime timestamp = ZonedDateTime.now(ZoneOffset.UTC);
@@ -156,7 +115,8 @@ public class MovementAlarmRestIT extends AbstractRest {
                 .path("movement/rest/alarms/reprocess")
                 .request(MediaType.APPLICATION_JSON)
                 .header(HttpHeaders.AUTHORIZATION, getValidJwtToken())
-                .post(Entity.json(Arrays.asList(alarmReport.getId())), Response.class);
+                .post(Entity.json(Collections.singletonList(alarmReport.getId())));
+	    assertEquals(Status.OK.getStatusCode(), response.getStatus());
         
 	    AlarmReport alarmReportAfter = getAlarmReportByGuid(alarmReport.getId().toString());
         assertThat(alarmReportAfter.getStatus(), CoreMatchers.is("REPROCESSED"));
@@ -164,7 +124,7 @@ public class MovementAlarmRestIT extends AbstractRest {
 	
 	@Test
     public void reprocessAlarmSuccessTest() throws Exception {
-		Thread.sleep(5000);			//otherwise it gets the alarm report for some other movement.
+		Thread.sleep(5000); //otherwise it gets the alarm report for some other movement.
         ZonedDateTime timestamp = ZonedDateTime.now(ZoneOffset.UTC);
 
         // Asset does not exist
@@ -176,17 +136,23 @@ public class MovementAlarmRestIT extends AbstractRest {
         assertThat(alarmReport.getStatus(), CoreMatchers.is("OPEN"));
         
         // Create asset
-        Thread.sleep(5000);   //This is here bc we used to have this test working on asset not existing. When we introduced the functionallity of creating assets on unknown using time in future and sleep became the workaround
+
+		// This is here bc we used to have this test working on asset not existing.
+		// When we introduced the functionality of creating assets on unknown using time in future and sleep became the workaround
+        Thread.sleep(5000);
+
         Response response = getWebTarget()
                 .path("movement/rest/alarms/reprocess")
                 .request(MediaType.APPLICATION_JSON)
                 .header(HttpHeaders.AUTHORIZATION, getValidJwtToken())
-                .post(Entity.json(Arrays.asList(alarmReport.getId())), Response.class);
+                .post(Entity.json(Collections.singletonList(alarmReport.getId())), Response.class);
+		assertEquals(Status.OK.getStatusCode(), response.getStatus());
         
         AlarmReport alarmReportAfter = getAlarmReportByGuid(alarmReport.getId().toString());
         assertThat(alarmReportAfter.getStatus(), CoreMatchers.is("REPROCESSED"));
         
-        List<MovementDto> latestMovements = MovementHelper.getLatestMovements(Arrays.asList(alarmReport.getIncomingMovement().getAssetGuid()));
+        List<MovementDto> latestMovements = MovementHelper.getLatestMovements(
+        		Collections.singletonList(alarmReport.getIncomingMovement().getAssetGuid()));
         assertThat(latestMovements.size(), CoreMatchers.is(1));
         assertThat(latestMovements.get(0).getLatitude(), CoreMatchers.is(position.latitude));
         assertThat(latestMovements.get(0).getLongitude(), CoreMatchers.is(position.longitude));
@@ -210,7 +176,8 @@ public class MovementAlarmRestIT extends AbstractRest {
                 .path("movement/rest/alarms/reprocess")
                 .request(MediaType.APPLICATION_JSON)
                 .header(HttpHeaders.AUTHORIZATION, getValidJwtToken())
-                .post(Entity.json(Arrays.asList(alarmReport.getId())), Response.class);
+                .post(Entity.json(Collections.singletonList(alarmReport.getId())), Response.class);
+		assertEquals(Status.OK.getStatusCode(), response.getStatus());
         
         AlarmReport alarmReportAfter = getAlarmReportByGuid(alarmReport.getId().toString());
         assertThat(alarmReportAfter.getStatus(), CoreMatchers.is("REPROCESSED"));

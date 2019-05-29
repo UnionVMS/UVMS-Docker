@@ -20,15 +20,11 @@ public class LatLong {
 
 	@Override
 	public String toString() {
-
 		String formatStr = "%2.6f";
 		String la = String.format(formatStr, latitude);
 		String lo = String.format(formatStr, longitude);
 		String be = String.format(formatStr, bearing);
-
-
 		return "[lat=" + la + ", lon=" + lo + ", pos=" + positionTime + ", bearing=" + be + ", distance=" + distance
 				+ ", speed=" + speed + "]";
-
 	}
 }

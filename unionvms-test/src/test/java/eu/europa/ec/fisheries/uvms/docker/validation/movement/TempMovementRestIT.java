@@ -13,15 +13,6 @@ copy of the GNU General Public License along with the IFDM Suite. If not, see <h
 */
 package eu.europa.ec.fisheries.uvms.docker.validation.movement;
 
-import static org.hamcrest.CoreMatchers.is;
-import java.text.SimpleDateFormat;
-import java.util.Arrays;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
-import java.util.TimeZone;
-import java.util.UUID;
-import org.junit.Test;
 import eu.europa.ec.fisheries.schema.movement.asset.v1.VesselType;
 import eu.europa.ec.fisheries.schema.movement.v1.MovementPoint;
 import eu.europa.ec.fisheries.schema.movement.v1.TempMovementStateEnum;
@@ -30,23 +21,21 @@ import eu.europa.ec.fisheries.uvms.asset.client.model.AssetDTO;
 import eu.europa.ec.fisheries.uvms.commons.rest.dto.ResponseDto;
 import eu.europa.ec.fisheries.uvms.docker.validation.asset.AssetTestHelper;
 import eu.europa.ec.fisheries.uvms.docker.validation.common.AbstractRest;
+import org.junit.Test;
 
-/**
- * The Class TempMovementRestIT.
- */
+import java.text.SimpleDateFormat;
+import java.util.*;
+
+import static org.hamcrest.CoreMatchers.is;
+
 public class TempMovementRestIT extends AbstractRest {
 
-    /**
-     * Creates the temp test.
-     *
-     * @throws Exception the exception
-     */
     @Test
-    public void createTempMovementTest() throws Exception {
+    public void createTempMovementTest() {
         TempMovementType tempMovement = getTempMovement();
         TempMovementType createdTempMovement = TempMovementRestHelper.createTempMovement(tempMovement);
 
-        assertTrue(createdTempMovement.getGuid() != null);
+        assertNotNull(createdTempMovement.getGuid());
         assertEquals(tempMovement.getAsset(), createdTempMovement.getAsset());
         assertEquals(tempMovement.getCourse(), createdTempMovement.getCourse());
         assertEquals(tempMovement.getPosition().getLatitude(), createdTempMovement.getPosition().getLatitude());
@@ -57,13 +46,13 @@ public class TempMovementRestIT extends AbstractRest {
     }
 
     @Test
-    public void createTempMovementNullInputShouldFail() throws Exception {
+    public void createTempMovementNullInputShouldFail() {
         ResponseDto<?> response = TempMovementRestHelper.createTempMovementResponse(new TempMovementType());
         checkErrorResponse(response);
     }
 
     @Test
-    public void createTempMovementNoPositionShouldFail() throws Exception {
+    public void createTempMovementNoPositionShouldFail() {
         TempMovementType tempMovement = getTempMovement();
         tempMovement.getPosition().setLatitude(null);
         tempMovement.getPosition().setLongitude(null);
@@ -72,7 +61,7 @@ public class TempMovementRestIT extends AbstractRest {
     }
 
     @Test
-    public void createTempMovementNoValidLatitudeShouldFail() throws Exception {
+    public void createTempMovementNoValidLatitudeShouldFail() {
         TempMovementType tempMovement = getTempMovement();
         tempMovement.getPosition().setLatitude(100d);
         ResponseDto<?> response = TempMovementRestHelper.createTempMovementResponse(tempMovement);
@@ -80,7 +69,7 @@ public class TempMovementRestIT extends AbstractRest {
     }
 
     @Test
-    public void getTempMovementTest() throws Exception {
+    public void getTempMovementTest() {
         TempMovementType tempMovement = getTempMovement();
         TempMovementType createdTempMovement = TempMovementRestHelper.createTempMovement(tempMovement);
 
@@ -89,19 +78,19 @@ public class TempMovementRestIT extends AbstractRest {
     }
 
     @Test
-    public void getTempMovementNullGuidShouldFail() throws Exception {
+    public void getTempMovementNullGuidShouldFail() {
         ResponseDto<?> response = TempMovementRestHelper.getTempMovementResponse(null);
         checkErrorResponse(response);
     }
 
     @Test
-    public void getTempMovementNonExistingGuidShouldFail() throws Exception {
+    public void getTempMovementNonExistingGuidShouldFail() {
         ResponseDto<?> response = TempMovementRestHelper.getTempMovementResponse(UUID.randomUUID().toString());
         checkErrorResponse(response);
     }
 
     @Test
-    public void removeTempMovementTest() throws Exception {
+    public void removeTempMovementTest() {
         TempMovementType tempMovement = getTempMovement();
         TempMovementType createdTempMovement = TempMovementRestHelper.createTempMovement(tempMovement);
         assertEquals(TempMovementStateEnum.SENT, createdTempMovement.getState());
@@ -111,13 +100,13 @@ public class TempMovementRestIT extends AbstractRest {
     }
 
     @Test
-    public void removeTempMovementNullGuidShouldFail() throws Exception {
+    public void removeTempMovementNullGuidShouldFail() {
         ResponseDto<?> response = TempMovementRestHelper.removeTempMovementResponse(null);
         checkErrorResponse(response);
     }
 
     @Test
-    public void updateTempMovementTest() throws Exception {
+    public void updateTempMovementTest() {
         TempMovementType tempMovement = getTempMovement();
         TempMovementType createdTempMovement = TempMovementRestHelper.createTempMovement(tempMovement);
 
@@ -129,15 +118,14 @@ public class TempMovementRestIT extends AbstractRest {
         assertEquals(createdTempMovement.getAsset(), updatedTempMovement.getAsset());
         assertEquals(newCourse, updatedTempMovement.getCourse());
         assertEquals(createdTempMovement.getPosition().getLatitude(), updatedTempMovement.getPosition().getLatitude());
-        assertEquals(createdTempMovement.getPosition().getLongitude(), updatedTempMovement.getPosition()
-                .getLongitude());
+        assertEquals(createdTempMovement.getPosition().getLongitude(), updatedTempMovement.getPosition().getLongitude());
         assertEquals(createdTempMovement.getSpeed(), updatedTempMovement.getSpeed());
         assertEquals(createdTempMovement.getState(), updatedTempMovement.getState());
         assertEquals(createdTempMovement.getTime(), updatedTempMovement.getTime());
     }
     
     @Test
-    public void sendTempMovementTest() throws Exception {
+    public void sendTempMovementTest() {
         Double latitude = 10d;
         Double longitude = 11d;
         AssetDTO asset = AssetTestHelper.createTestAsset();
@@ -155,7 +143,7 @@ public class TempMovementRestIT extends AbstractRest {
         
         MovementHelper.pollMovementCreated();
         
-        List<MovementDto> latestMovements = MovementHelper.getLatestMovements(Arrays.asList(asset.getId().toString()));
+        List<MovementDto> latestMovements = MovementHelper.getLatestMovements(Collections.singletonList(asset.getId().toString()));
         assertThat(latestMovements.size(), is(1));
         
         MovementDto createdMovement = latestMovements.get(0);
@@ -163,11 +151,6 @@ public class TempMovementRestIT extends AbstractRest {
         assertThat(createdMovement.getLongitude(), is(longitude));
     }
 
-    /**
-     * Creates the temp movement.
-     *
-     * @return the temp movement type
-     */
     private static TempMovementType getTempMovement() {
         final VesselType vesselType = new VesselType();
         vesselType.setCfr("T");
