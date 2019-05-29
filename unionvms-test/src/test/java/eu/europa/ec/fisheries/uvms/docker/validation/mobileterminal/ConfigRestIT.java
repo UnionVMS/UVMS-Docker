@@ -13,62 +13,50 @@ copy of the GNU General Public License along with the IFDM Suite. If not, see <h
 */
 package eu.europa.ec.fisheries.uvms.docker.validation.mobileterminal;
 
-import java.util.List;
-import java.util.Map;
-import org.apache.http.HttpResponse;
-import org.apache.http.client.fluent.Request;
-import org.junit.Test;
+import eu.europa.ec.fisheries.uvms.commons.rest.dto.ResponseDto;
 import eu.europa.ec.fisheries.uvms.docker.validation.common.AbstractRest;
+import org.junit.Test;
 
-/**
- * The Class ConfigRestIT.
- */
+import javax.ws.rs.core.HttpHeaders;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 
 public class ConfigRestIT extends AbstractRest {
 
-	/**
-	 * Gets the config transponders test.
-	 *
-	 * @return the config transponders test
-	 * @throws Exception
-	 *             the exception
-	 */
 	@Test
-	public void getConfigTranspondersTest() throws Exception {
-		final HttpResponse response = Request.Get(getBaseUrl() + "asset/rest/config/MT/transponders")
-				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken()).execute()
-				.returnResponse();
-		List dataList = checkSuccessResponseReturnType(response,List.class);
+	public void getConfigTranspondersTest() {
+		ResponseDto response = getWebTarget()
+				.path("asset/rest/config/MT/transponders")
+				.request(MediaType.APPLICATION_JSON)
+				.header(HttpHeaders.AUTHORIZATION, getValidJwtToken())
+				.get(ResponseDto.class);
+
+		assertEquals(Response.Status.OK.getStatusCode(), response.getCode());
+		assertNotNull(response.getData());
 	}
 
-	/**
-	 * Gets the config search fields test.
-	 *
-	 * @return the config search fields test
-	 * @throws Exception
-	 *             the exception
-	 */
 	@Test
-	public void getConfigSearchFieldsTest() throws Exception {
-		final HttpResponse response = Request.Get(getBaseUrl() + "asset/rest/config/MT/searchfields")
-				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken()).execute()
-				.returnResponse();
-		List dataList = checkSuccessResponseReturnType(response,List.class);
+	public void getConfigSearchFieldsTest() {
+		ResponseDto response = getWebTarget()
+				.path("asset/rest/config/MT/searchfields")
+				.request(MediaType.APPLICATION_JSON)
+				.header(HttpHeaders.AUTHORIZATION, getValidJwtToken())
+				.get(ResponseDto.class);
+
+		assertEquals(Response.Status.OK.getStatusCode(), response.getCode());
+		assertNotNull(response.getData());
 	}
 
-	/**
-	 * Gets the configuration test.
-	 *
-	 * @return the configuration test
-	 * @throws Exception
-	 *             the exception
-	 */
 	@Test
-	public void getConfigurationTest() throws Exception {
-		final HttpResponse response = Request.Get(getBaseUrl() + "asset/rest/config/MT")
-				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken()).execute()
-				.returnResponse();
-		Map<String, Object> dataMap = checkSuccessResponseReturnMap(response);
+	public void getConfigurationTest() {
+		ResponseDto response = getWebTarget()
+				.path("asset/rest/config/MT")
+				.request(MediaType.APPLICATION_JSON)
+				.header(HttpHeaders.AUTHORIZATION, getValidJwtToken())
+				.get(ResponseDto.class);
+
+		assertEquals(Response.Status.OK.getStatusCode(), response.getCode());
+		assertNotNull(response.getData());
 	}
 
 }

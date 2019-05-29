@@ -15,21 +15,13 @@ package eu.europa.ec.fisheries.uvms.docker.validation.mobileterminal;
 
 import eu.europa.ec.fisheries.schema.mobileterminal.types.v1.*;
 import eu.europa.ec.fisheries.uvms.asset.client.model.AssetDTO;
-import eu.europa.ec.fisheries.uvms.commons.rest.dto.ResponseDto;
 import eu.europa.ec.fisheries.uvms.docker.validation.asset.AssetTestHelper;
 import eu.europa.ec.fisheries.uvms.docker.validation.common.AbstractRest;
 import eu.europa.ec.fisheries.uvms.docker.validation.mobileterminal.dto.MobileTerminalDto;
-import org.apache.http.HttpResponse;
-import org.apache.http.client.fluent.Request;
 import org.junit.Test;
 
-import javax.ws.rs.client.Entity;
-import javax.ws.rs.core.GenericType;
-import javax.ws.rs.core.HttpHeaders;
-import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.util.List;
-import java.util.Map;
 
 public class MobileTerminalRestIT extends AbstractRest {
 
@@ -43,9 +35,7 @@ public class MobileTerminalRestIT extends AbstractRest {
 	@Test
 	public void getMobileTerminalByIdTest() {
 		MobileTerminalDto mobileTerminal = MobileTerminalTestHelper.createMobileTerminal();
-
 		MobileTerminalDto fetchedMobileTerminal = MobileTerminalTestHelper.getMobileTerminalById(mobileTerminal.getId());
-
 		assertNotNull(fetchedMobileTerminal);
 	}
 
@@ -56,7 +46,6 @@ public class MobileTerminalRestIT extends AbstractRest {
 		mobileTerminal.setArchived(true);
 
 		MobileTerminalDto updatedMobileTerminal = MobileTerminalTestHelper.updateMobileTerminal(mobileTerminal);
-
 		assertNotNull(updatedMobileTerminal);
 		assertTrue(mobileTerminal.getArchived());
 	}
@@ -79,7 +68,6 @@ public class MobileTerminalRestIT extends AbstractRest {
 		queryRequest.setMobileTerminalSearchCriteria(criteria);
 
 		Response response = MobileTerminalTestHelper.getMobileTerminalList(queryRequest);
-
 		assertNotNull(response);
 		assertEquals(Response.Status.OK.getStatusCode(), response.getStatus());
 	}
@@ -113,7 +101,6 @@ public class MobileTerminalRestIT extends AbstractRest {
 		MobileTerminalDto mobileTerminal = MobileTerminalTestHelper.createMobileTerminal();
 
 		MobileTerminalDto activated = MobileTerminalTestHelper.activateMobileTerminal(mobileTerminal.getId());
-
 		assertNotNull(activated);
 		assertFalse(activated.getInactivated());
 	}
@@ -123,7 +110,6 @@ public class MobileTerminalRestIT extends AbstractRest {
 		MobileTerminalDto mobileTerminal = MobileTerminalTestHelper.createMobileTerminal();
 
 		MobileTerminalDto inActivated = MobileTerminalTestHelper.inactivateMobileTerminal(mobileTerminal.getId());
-
 		assertNotNull(inActivated);
 		assertTrue(inActivated.getInactivated());
 	}
@@ -133,7 +119,6 @@ public class MobileTerminalRestIT extends AbstractRest {
 		MobileTerminalDto mobileTerminal = MobileTerminalTestHelper.createMobileTerminal();
 
 		MobileTerminalDto removed = MobileTerminalTestHelper.removeMobileTerminal(mobileTerminal.getId());
-
 		assertNotNull(removed);
 		assertTrue(removed.getInactivated());
 		assertTrue(removed.getArchived());
@@ -144,7 +129,6 @@ public class MobileTerminalRestIT extends AbstractRest {
 		MobileTerminalDto mobileTerminal = MobileTerminalTestHelper.createMobileTerminal();
 
 		List<MobileTerminalDto> historyList = MobileTerminalTestHelper.getMobileTerminalHistoryList(mobileTerminal.getId());
-
 		assertNotNull(historyList);
 		assertFalse(historyList.isEmpty());
 	}
