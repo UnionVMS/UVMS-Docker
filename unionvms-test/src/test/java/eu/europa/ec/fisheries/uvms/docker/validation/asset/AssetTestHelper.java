@@ -7,6 +7,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Random;
 import java.util.UUID;
+import java.util.concurrent.TimeUnit;
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.core.GenericType;
 import javax.ws.rs.core.HttpHeaders;
@@ -215,11 +216,13 @@ public class AssetTestHelper extends AbstractHelper {
 	
 	public static void assertAssetAuditLogCreated(UUID guid, AuditOperationEnum auditOperation, Date fromDate) throws Exception {
 		AuditLogListQuery auditLogListQuery = getAssetAuditLogListQuery(AuditObjectTypeEnum.ASSET);
+		TimeUnit.MILLISECONDS.sleep(500);
 		assertAuditLog(guid, auditOperation, auditLogListQuery, fromDate);
 	}
 	
 	public static void assertAssetGroupAuditLogCreated(UUID guid, AuditOperationEnum auditOperation, Date fromDate) throws Exception {
 		AuditLogListQuery auditLogListQuery = getAssetAuditLogListQuery(AuditObjectTypeEnum.ASSET_GROUP);
+		TimeUnit.MILLISECONDS.sleep(500);
 		assertAuditLog(guid, auditOperation, auditLogListQuery, fromDate);
 	}
 	
