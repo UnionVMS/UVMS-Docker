@@ -87,6 +87,7 @@ public class VMSSystemHelper {
             T reportRequest;
             try (MessageHelper messageHelper = new MessageHelper()) {
                 FLUXHelper.sendPositionToFluxPlugin(asset, position);
+                CustomRuleHelper.pollTicketCreated();
                 TextMessage message = (TextMessage) messageHelper.listenOnEventBus(selector, TIMEOUT);
                 assertThat(message, is(notNullValue()));
                 reportRequest = JAXBMarshaller.unmarshallTextMessage(message, expectedType);
