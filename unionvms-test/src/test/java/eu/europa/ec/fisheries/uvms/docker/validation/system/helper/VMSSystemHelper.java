@@ -39,6 +39,7 @@ import eu.europa.ec.fisheries.uvms.asset.client.model.AssetDTO;
 import eu.europa.ec.fisheries.uvms.commons.message.api.MessageConstants;
 import eu.europa.ec.fisheries.uvms.docker.validation.asset.AssetTestHelper;
 import eu.europa.ec.fisheries.uvms.docker.validation.common.MessageHelper;
+import eu.europa.ec.fisheries.uvms.docker.validation.common.TopicListener;
 import eu.europa.ec.fisheries.uvms.docker.validation.movement.LatLong;
 import eu.europa.ec.fisheries.uvms.exchange.model.constant.ExchangeModelConstants;
 import eu.europa.ec.fisheries.uvms.exchange.model.mapper.ExchangeModuleRequestMapper;
@@ -85,12 +86,10 @@ public class VMSSystemHelper {
             LatLong position = new LatLong(11d, 56d, new Date());
 
             T reportRequest;
-            try (MessageHelper messageHelper = new MessageHelper()) {
+            try (TopicListener topicListener = new TopicListener(selector)) {
                 FLUXHelper.sendPositionToFluxPlugin(asset, position);
                 CustomRuleHelper.pollTicketCreated();
-                TextMessage message = (TextMessage) messageHelper.listenOnEventBus(selector, TIMEOUT);
-                assertThat(message, is(notNullValue()));
-                reportRequest = JAXBMarshaller.unmarshallTextMessage(message, expectedType);
+                reportRequest = topicListener.listenOnEventBusForSpecificMessage(expectedType);
             }
             CustomRuleHelper.assertRuleTriggered(createdCustomRule, timestamp);
             return reportRequest;
