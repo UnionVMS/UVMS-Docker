@@ -10,7 +10,7 @@ services:
 env:
   - TAG=uvms/wildfly:15.0.1.Final               TAG_LATEST=uvms/wildfly:latest       IMAGE=wildfly-base
   - TAG=uvms/postgres:9.6                       TAG_LATEST=uvms/postgres:latest      IMAGE=postgres-base
-  - TAG=uvms/activemq:5.15.8                    TAG_LATEST=uvms/activemq:latest      IMAGE=amq
+  - TAG=uvms/activemq:5.15.9                    TAG_LATEST=uvms/activemq:latest      IMAGE=amq
   - TAG=uvms/wildfly-full:$TRAVIS_BUILD_NUMBER  TAG_LATEST=uvms/wildfly-full:latest  IMAGE=wildfly
   - TAG=uvms/postgres-full:$TRAVIS_BUILD_NUMBER TAG_LATEST=uvms/postgres-full:latest IMAGE=postgres
 
