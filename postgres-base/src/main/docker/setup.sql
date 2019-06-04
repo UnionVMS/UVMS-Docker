@@ -83,14 +83,6 @@ GRANT CONNECT ON DATABASE db71u TO spatial;
 GRANT SELECT, INSERT, UPDATE, DELETE ON ALL TABLES IN SCHEMA spatial TO spatial; 
 ALTER SCHEMA spatial OWNER TO spatial;
 
--- SpatialSwe
-CREATE USER spatialswe WITH PASSWORD 'spatialswe';
-CREATE SCHEMA AUTHORIZATION spatialswe;
-ALTER USER spatialswe SET search_path = spatialswe, public;
-GRANT CONNECT ON DATABASE db71u TO spatialswe;
-GRANT SELECT, INSERT, UPDATE, DELETE ON ALL TABLES IN SCHEMA spatialswe TO spatialswe;
-ALTER SCHEMA spatialswe OWNER TO spatialswe;
-
 -- User
 CREATE USER usm WITH PASSWORD 'usm'; 
 CREATE SCHEMA AUTHORIZATION usm; 

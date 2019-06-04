@@ -61,7 +61,6 @@ public class SpatialJmsPerformanceIT extends AbstractRest {
 	@Test
 	@PerfTest(threads = 2, duration = 10000)
 	@Required(max = 6900, average = 2500, percentile95 = 2500, throughput = 1)
-	//@Ignore				//all jms endpoints, wit hthe exceptions of config, has been removed
 	public void createSpatialEnrichmentRequestPerformanceTest() throws Exception {
 		LatLong position = createRutt.get(ThreadLocalRandom.current().nextInt(0, 30));
 

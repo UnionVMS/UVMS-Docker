@@ -36,7 +36,6 @@ import eu.europa.ec.fisheries.uvms.docker.validation.spatial.dto.ProjectionDto;
 public class SpatialConfigRestIT extends AbstractRest {
 
 	@Test
-	//@Ignore		//functionality has been removed
 	public void getReportMapConfig() throws Exception {
 
 		String uid = "rep_power";
@@ -68,7 +67,6 @@ public class SpatialConfigRestIT extends AbstractRest {
 	}
 
 	@Test
-	//@Ignore			//this functionality has been removed
 	public void getBasicReportMapConfig() throws Exception {
 
 		String uid = "rep_power";
@@ -136,7 +134,6 @@ public class SpatialConfigRestIT extends AbstractRest {
 	}
 
 	@Test
-	//@Ignore		//functionality has been removed
 	public void admin() throws Exception {
 
 		String uid = "rep_power";

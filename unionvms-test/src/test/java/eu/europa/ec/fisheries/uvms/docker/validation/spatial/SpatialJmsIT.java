@@ -54,7 +54,6 @@ public class SpatialJmsIT extends AbstractRest {
 	 * @throws Exception the exception
 	 */
 	@Test(timeout = 10000)
-    //@Ignore         //all jms endpoints, wit hthe exceptions of config, has been removed
 	public void createSpatialEnrichmentRequestTest() throws Exception {
 		LatLong position = movementHelper.createRutt(1).get(0);
 
@@ -85,7 +84,6 @@ public class SpatialJmsIT extends AbstractRest {
 
 
 	@Test(timeout = 40000)
-    //@Ignore         //all jms endpoints, wit hthe exceptions of config, has been removed
 	public void createSpatialEnrichmentRequestForRuttTest() throws Exception {
 		List<LatLong> position = movementHelper.createRutt(10);
 
@@ -121,7 +119,6 @@ public class SpatialJmsIT extends AbstractRest {
 	 * @throws Exception the exception
 	 */
 	@Test
-    //@Ignore     //all jms endpoints, wit hthe exceptions of config, has been removed
 	public void checkAllSpatialRequestProcessedOnQueue() throws Exception {
 		assertFalse(messageHelper.checkQueueHasElements("UVMSSpatialEvent"));
 	}

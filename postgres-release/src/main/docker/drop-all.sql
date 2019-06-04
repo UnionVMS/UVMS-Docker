@@ -27,9 +27,6 @@ DROP USER IF EXISTS movementrules;
 -- Spatial
 DROP USER IF EXISTS spatial;
 
--- SpatialSwe
-DROP USER IF EXISTS spatialswe;
-
 -- User
 DROP USER IF EXISTS usm; 
 
