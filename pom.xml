@@ -30,7 +30,8 @@
 		<unionvms.project.movement.module>5.2.9-UVMS</unionvms.project.movement.module>
 		<unionvms.project.exchange.module>5.0.4-UVMS</unionvms.project.exchange.module>
 		<unionvms.project.reporting.module>1.1.11-UVMS</unionvms.project.reporting.module>
-		<unionvms.project.spatial.module>1.1.21</unionvms.project.spatial.module>
+		<unionvms.project.spatial.module>2.0.0</unionvms.project.spatial.module>
+        <unionvms.project.spatialSwe.module>2.0.2-UVMS</unionvms.project.spatialSwe.module>
 		<unionvms.project.subscription.module>1.3</unionvms.project.subscription.module>
 		<unionvms.project.config.module>4.0.14</unionvms.project.config.module>
 		<unionvms.project.audit.module>4.0.15</unionvms.project.audit.module>
@@ -180,6 +181,18 @@
 				</exclusions>
 			</dependency>
 			<dependency>
+				<groupId>eu.europa.ec.fisheries.uvms.spatialSwe</groupId>
+				<artifactId>liquibase</artifactId>
+				<type>sql</type>
+				<version>${unionvms.project.spatialSwe.module}</version>
+				<exclusions>
+					<exclusion>
+						<groupId>com.oracle</groupId>
+						<artifactId>ojdbc6</artifactId>
+					</exclusion>
+				</exclusions>
+			</dependency>
+			<dependency>
 				<groupId>eu.europa.ec.fisheries.uvms.subscription</groupId>
 				<artifactId>liquibase</artifactId>
 				<type>sql</type>
@@ -292,6 +305,12 @@
 				<artifactId>spatial-module</artifactId>
 				<type>ear</type>
 				<version>${unionvms.project.spatial.module}</version>
+			</dependency>
+			<dependency>
+				<groupId>eu.europa.ec.fisheries.uvms.spatialSwe</groupId>
+				<artifactId>spatialSwe-module</artifactId>
+				<type>ear</type>
+				<version>${unionvms.project.spatialSwe.module}</version>
 			</dependency>
 			<dependency>
 				<groupId>eu.europa.ec.fisheries.uvms.subscription</groupId>

@@ -131,6 +131,7 @@
 			<version>${unionvms.project.spatial.module}</version>
 			<type>zip</type>
 		</dependency>
+
 		<dependency>
 			<groupId>eu.europa.ec.fisheries.uvms.activity</groupId>
 			<artifactId>liquibase</artifactId>
