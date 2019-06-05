@@ -13,27 +13,10 @@ copy of the GNU General Public License along with the IFDM Suite. If not, see <h
 */
 package eu.europa.ec.fisheries.uvms.docker.validation.reporting;
 
-import java.io.IOException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
-import java.util.TimeZone;
-
-import org.apache.http.HttpResponse;
-import org.apache.http.HttpStatus;
-import org.apache.http.client.ClientProtocolException;
-import org.apache.http.client.fluent.Request;
-import org.junit.AfterClass;
-import org.junit.BeforeClass;
-import org.junit.Ignore;
-import org.junit.Test;
-import com.fasterxml.jackson.core.JsonParseException;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import eu.europa.ec.fisheries.uvms.asset.client.model.AssetDTO;
+import eu.europa.ec.fisheries.uvms.commons.rest.dto.ResponseDto;
 import eu.europa.ec.fisheries.uvms.docker.validation.asset.AssetTestHelper;
 import eu.europa.ec.fisheries.uvms.docker.validation.common.AbstractRest;
 import eu.europa.ec.fisheries.uvms.docker.validation.mobileterminal.MobileTerminalTestHelper;
@@ -50,403 +33,409 @@ import eu.europa.ec.fisheries.uvms.reporting.service.entities.Position;
 import eu.europa.ec.fisheries.uvms.reporting.service.entities.Selector;
 import eu.europa.ec.fisheries.uvms.reporting.service.enums.ReportTypeEnum;
 import eu.europa.ec.fisheries.uvms.reporting.service.enums.VelocityType;
+import org.apache.http.HttpResponse;
+import org.apache.http.client.fluent.Request;
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
+import org.junit.Ignore;
+import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.jms.JMSException;
+import javax.ws.rs.client.Entity;
+import javax.ws.rs.core.GenericType;
+import javax.ws.rs.core.HttpHeaders;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.*;
+import java.util.Map.Entry;
 
 public class ReportingRestIT extends AbstractRest {
+    private static final Logger LOG = LoggerFactory.getLogger(ReportingRestIT.class.getSimpleName());
 
-	private static final Logger LOG  = LoggerFactory.getLogger(ReportingRestIT.class.getSimpleName());
+    private static MovementHelper movementHelper;
+    private static AssetDTO testAsset = null;
 
-	/** The movement helper. */
-	private static MovementHelper movementHelper;
+    @BeforeClass
+    public static void createTestAssetWithTerminalAndPositions() throws JMSException {
+        movementHelper = new MovementHelper();
+        try {
+            testAsset = AssetTestHelper.createTestAsset();
+            MobileTerminalDto mobileTerminal = MobileTerminalTestHelper.createMobileTerminal();
+            MobileTerminalTestHelper.assignMobileTerminal(testAsset, mobileTerminal);
+            List<LatLong> route = movementHelper.createRuttVarbergGrena(-1);
 
-	/** The test asset. */
-	private static AssetDTO testAsset =null;
-	
-	/**
-	 * Creates the test asset with terminal and positions.
-	 * @throws JMSException 
-	 */
-	@BeforeClass
-	public static void createTestAssetWithTerminalAndPositions() throws JMSException {
-	    movementHelper = new MovementHelper();
-		try {
-			testAsset = AssetTestHelper.createTestAsset();
-			MobileTerminalDto mobileTerminal = MobileTerminalTestHelper.createMobileTerminal();
-			MobileTerminalTestHelper.assignMobileTerminal(testAsset, mobileTerminal);
-			List<LatLong> route = movementHelper.createRuttVarbergGrena(-1);
+            for (LatLong position : route) {
+                IncomingMovement createMovementRequest = movementHelper.createIncomingMovement(testAsset, position);
+                MovementDto createMovementResponse = movementHelper.createMovement(createMovementRequest);
+                assertNotNull(createMovementResponse);
+            }
+        } catch (Exception e) {
+            LOG.error("Error occurred while creating Asset with MT & Positions", e);
+        }
+    }
 
-			for (LatLong position : route) {
-				IncomingMovement createMovementRequest = movementHelper.createIncomingMovement(testAsset, position);
-				MovementDto createMovementResponse = movementHelper.createMovement(createMovementRequest);
-				assertNotNull(createMovementResponse);
-			}
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
+    @AfterClass
+    public static void cleanup() {
+        movementHelper.close();
+    }
 
-	@AfterClass
-	public static void cleanup() {
-	    movementHelper.close();
-	}
+    @Test
+    public void listReportsTest() {
+        ResponseDto response = getWebTarget()
+                .path("reporting/rest/report/list")
+                .request(MediaType.APPLICATION_JSON)
+                .header("scopeName", "All Vessels")
+                .header("roleName", "AdminAllUVMS")
+                .header(HttpHeaders.AUTHORIZATION, getValidJwtToken())
+                .get(ResponseDto.class);
 
-	@Test
-	public void listReportsTest() throws Exception {
-		final HttpResponse response = Request.Get(getBaseUrl() + "reporting/rest/report/list")
-				.setHeader("Content-Type", "application/json").setHeader("scopeName", "All Vessels")
-				.setHeader("roleName", "AdminAllUVMS").setHeader("Authorization", getValidJwtToken()).execute()
-				.returnResponse();
-		List dataMap = checkSuccessResponseReturnType(response, List.class);
-		assertNotNull(dataMap);
-	}
+        Collection list = (Collection) response.getData();
+        assertNotNull(list);
+    }
 
-	@Test
-	public void listLastExecutedReportsTest() throws Exception {
-		final HttpResponse response = Request.Get(getBaseUrl() + "reporting/rest/report/list/lastexecuted/10")
-				.setHeader("Content-Type", "application/json").setHeader("scopeName", "All Vessels")
-				.setHeader("roleName", "AdminAllUVMS").setHeader("Authorization", getValidJwtToken()).execute()
-				.returnResponse();
-		List dataMap = checkSuccessResponseReturnType(response, List.class);
-		assertNotNull(dataMap);
-	}
+    @Test
+    public void listLastExecutedReportsTest() {
+        ResponseDto response = getWebTarget()
+                .path("reporting/rest/report/list/lastexecuted/10")
+                .request(MediaType.APPLICATION_JSON)
+                .header("scopeName", "All Vessels")
+                .header("roleName", "AdminAllUVMS")
+                .header(HttpHeaders.AUTHORIZATION, getValidJwtToken())
+                .get(ResponseDto.class);
 
-	@Test
-	public void getReportTest() throws Exception {
-		Long reportId = createTwoWeeksReport("createReportTest", "TwoWeeksReports").getId();
+        Collection list = (Collection) response.getData();
+        assertNotNull(list);
+    }
 
-		final HttpResponse response = Request.Get(getBaseUrl() + "reporting/rest/report/" + reportId)
-				.setHeader("Content-Type", "application/json").setHeader("scopeName", "All Vessels")
-				.setHeader("roleName", "AdminAllUVMS").setHeader("Authorization", getValidJwtToken()).execute()
-				.returnResponse();
-		Map<String, Object> dataMap = checkSuccessResponseReturnMap(response);
-		assertNotNull(dataMap);
-	}
+    @Test
+    public void getReportTest() throws Exception {
+        Long reportId = createTwoWeeksReport("createReportTest").getId();
 
-	@Test
-	public void createReportTest() throws Exception {
-		createTwoWeeksReport("createReportTest", "TwoWeeksReports");
-	}
+        ResponseDto<ReportDTO> response = getWebTarget()
+                .path("reporting/rest/report")
+                .path(String.valueOf(reportId))
+                .request(MediaType.APPLICATION_JSON)
+                .header("scopeName", "All Vessels")
+                .header("roleName", "AdminAllUVMS")
+                .header(HttpHeaders.AUTHORIZATION, getValidJwtToken())
+                .get(new GenericType<ResponseDto<ReportDTO>>() {
+                });
 
-	/**
-	 * Creates the two weeks report.
-	 *
-	 * @param name
-	 *            the name
-	 * @param description
-	 *            the description
-	 * @return the report DTO
-	 * @throws IOException
-	 *             Signals that an I/O exception has occurred.
-	 * @throws ClientProtocolException
-	 *             the client protocol exception
-	 * @throws JsonProcessingException
-	 *             the json processing exception
-	 * @throws JsonParseException
-	 *             the json parse exception
-	 * @throws JsonMappingException
-	 *             the json mapping exception
-	 */
-	private ReportDTO createTwoWeeksReport(final String name, final String description) throws IOException,
-			ClientProtocolException, JsonProcessingException, JsonParseException, JsonMappingException {
-		return createTwoWeeksReport(name, description,ReportTypeEnum.STANDARD,VisibilityEnum.PRIVATE,null);
-	}
+        ReportDTO report = response.getData();
+        assertNotNull(report);
+    }
 
-	/**
-	 * Creates the two weeks report.
-	 *
-	 * @param name the name
-	 * @param description the description
-	 * @param reportTypeEnum the report type enum
-	 * @param visibilityEnum the visibility enum
-	 * @param asset the asset
-	 * @return the report DTO
-	 * @throws IOException Signals that an I/O exception has occurred.
-	 * @throws ClientProtocolException the client protocol exception
-	 * @throws JsonProcessingException the json processing exception
-	 * @throws JsonParseException the json parse exception
-	 * @throws JsonMappingException the json mapping exception
-	 */
-	private ReportDTO createTwoWeeksReport(final String name, final String description, ReportTypeEnum reportTypeEnum,
-			VisibilityEnum visibilityEnum,AssetDTO asset) throws IOException, ClientProtocolException, JsonProcessingException,
-			JsonParseException, JsonMappingException {
-		ReportDTO reportDTO = new ReportDTO();
-		long time = new Date().getTime();
-		reportDTO.setDescription(name + time);
-		reportDTO.setName(description + time);
-		reportDTO.setReportTypeEnum(reportTypeEnum);
-		reportDTO.setVisibility(visibilityEnum);
-		reportDTO.setWithMap(true);
+    @Test
+    public void createReportTest() throws Exception {
+        createTwoWeeksReport("createReportTest");
+    }
 
-		CommonFilterDTO commonFilterDTO = new CommonFilterDTO();
-		commonFilterDTO.setStartDate(new Date(new Date().getTime() - (60 * 1000 * 60 * 24 * 7)));
-		commonFilterDTO.setEndDate(new Date(new Date().getTime() + (60 * 1000 * 60 * 24 * 7)));
-		PositionSelectorDTO positionSelector = new PositionSelectorDTO();
-		positionSelector.setSelector(Selector.all);
-		commonFilterDTO.setPositionSelector(positionSelector);
-		commonFilterDTO.setType(FilterType.common);
-		reportDTO.addFilter(commonFilterDTO);
+    @Test
+    public void deleteReportTest() throws Exception {
+        Long reportId = createTwoWeeksReport("deleteReportTest").getId();
 
-		if (asset != null) {
-			AssetFilterDTO assetFilterDTO = new AssetFilterDTO();
-			assetFilterDTO.setGuid(asset.getId().toString());
-			assetFilterDTO.setName(asset.getName());
-			reportDTO.addFilter(assetFilterDTO);
-		}
-		
-		String writeValueAsString = writeValueAsString(reportDTO);
-		final HttpResponse response = Request.Post(getBaseUrl() + "reporting/rest/report?projection=DEFAULT")
-				.setHeader("Content-Type", "application/json").setHeader("scopeName", "All Vessels")
-				.setHeader("roleName", "AdminAllUVMS").setHeader("Authorization", getValidJwtToken())
-				.bodyByteArray(writeValueAsString.getBytes()).execute().returnResponse();
-		reportDTO.setId(checkSuccessResponseReturnType(response, Integer.class).longValue());
+        ResponseDto response = getWebTarget()
+                .path("reporting/rest/report")
+                .path(String.valueOf(reportId))
+                .request(MediaType.APPLICATION_JSON)
+                .header("scopeName", "All Vessels")
+                .header("roleName", "AdminAllUVMS")
+                .header(HttpHeaders.AUTHORIZATION, getValidJwtToken())
+                .delete(ResponseDto.class);
 
-		return reportDTO;
-	}
+        assertEquals(Response.Status.OK.getStatusCode(), response.getCode());
+    }
 
-	private ReportDTO createTwoWeeksLastFourPositionsReport(final String name, final String description, ReportTypeEnum reportTypeEnum,
-			VisibilityEnum visibilityEnum,AssetDTO asset) throws IOException, ClientProtocolException, JsonProcessingException,
-			JsonParseException, JsonMappingException {
-		ReportDTO reportDTO = new ReportDTO();
-		long time = new Date().getTime();
-		reportDTO.setDescription(name + time);
-		reportDTO.setName(description + time);
-		reportDTO.setReportTypeEnum(reportTypeEnum);
-		reportDTO.setVisibility(visibilityEnum);
-		reportDTO.setWithMap(true);
+    @Test
+    public void updateReportTest() throws Exception {
+        ReportDTO twoWeeksReport = createTwoWeeksReport("updateReportTest");
 
-		CommonFilterDTO commonFilterDTO = new CommonFilterDTO();
-		commonFilterDTO.setStartDate(new Date(new Date().getTime() - (60 * 1000 * 60 * 24 * 7)));
-		commonFilterDTO.setEndDate(new Date(new Date().getTime() + (60 * 1000 * 60 * 24 * 7)));
-		PositionSelectorDTO positionSelector = new PositionSelectorDTO();
-		positionSelector.setSelector(Selector.last);
-		positionSelector.setValue(4f);
-		positionSelector.setPosition(Position.positions);
-		commonFilterDTO.setPositionSelector(positionSelector);
-		commonFilterDTO.setType(FilterType.common);
-		reportDTO.addFilter(commonFilterDTO);
+        assertTrue(twoWeeksReport.getDescription().startsWith("TwoWeeksReports"));
 
-		if (asset != null) {
-			AssetFilterDTO assetFilterDTO = new AssetFilterDTO();
-			assetFilterDTO.setGuid(asset.getId().toString());
-			assetFilterDTO.setName(asset.getName());
-			reportDTO.addFilter(assetFilterDTO);
-		}
-		
-		String writeValueAsString = writeValueAsString(reportDTO);
-		final HttpResponse response = Request.Post(getBaseUrl() + "reporting/rest/report?projection=DEFAULT")
-				.setHeader("Content-Type", "application/json").setHeader("scopeName", "All Vessels")
-				.setHeader("roleName", "AdminAllUVMS").setHeader("Authorization", getValidJwtToken())
-				.bodyByteArray(writeValueAsString.getBytes()).execute().returnResponse();
-		reportDTO.setId(checkSuccessResponseReturnType(response, Integer.class).longValue());
+        twoWeeksReport.setDescription("NewDescription");
 
-		return reportDTO;
-	}
+        Response response = getWebTarget()
+                .path("reporting/rest/report")
+                .path(String.valueOf(twoWeeksReport.getId()))
+                .request(MediaType.APPLICATION_JSON)
+                .header("scopeName", "All Vessels")
+                .header("roleName", "AdminAllUVMS")
+                .header(HttpHeaders.AUTHORIZATION, getValidJwtToken())
+                .put(Entity.json(twoWeeksReport));
 
-	@Test
-	public void deleteReportTest() throws Exception {
-		Long reportId = createTwoWeeksReport("deleteReportTest", "TwoWeeksReports").getId();
+        assertEquals(Response.Status.OK.getStatusCode(), response.getStatus());
+    }
 
-		final HttpResponse response = Request.Delete(getBaseUrl() + "reporting/rest/report/" + reportId)
-				.setHeader("Content-Type", "application/json").setHeader("scopeName", "All Vessels")
-				.setHeader("roleName", "AdminAllUVMS").setHeader("Authorization", getValidJwtToken()).execute()
-				.returnResponse();
-		assertEquals(HttpStatus.SC_OK, response.getStatusLine().getStatusCode());
-	}
+    @Test
+    public void shareReportTest() throws Exception {
+        ReportDTO twoWeeksReport = createTwoWeeksReport("shareReportTest");
 
-	@Test
-	public void updateReportTest() throws Exception {
-		ReportDTO twoWeeksReport = createTwoWeeksReport("updateReportTest", "TwoWeeksReports");
-		twoWeeksReport.setDescription("new Description");
+        Response response = getWebTarget()
+                .path("reporting/rest/report/share")
+                .path(String.valueOf(twoWeeksReport.getId()))
+                .path(VisibilityEnum.PUBLIC.getName())
+                .request(MediaType.APPLICATION_JSON)
+                .header("scopeName", "All Vessels")
+                .header("roleName", "AdminAllUVMS")
+                .header(HttpHeaders.AUTHORIZATION, getValidJwtToken())
+                .put(Entity.json(twoWeeksReport));
 
-		final HttpResponse response = Request.Put(getBaseUrl() + "reporting/rest/report/" + twoWeeksReport.getId())
-				.setHeader("Content-Type", "application/json").setHeader("scopeName", "All Vessels")
-				.setHeader("roleName", "AdminAllUVMS").setHeader("Authorization", getValidJwtToken())
-				.bodyByteArray(writeValueAsString(twoWeeksReport).getBytes()).execute().returnResponse();
-		assertEquals(HttpStatus.SC_OK, response.getStatusLine().getStatusCode());
-	}
+        assertEquals(Response.Status.OK.getStatusCode(), response.getStatus());
+    }
 
-	@Test
-	public void shareReportTest() throws Exception {
-		ReportDTO twoWeeksReport = createTwoWeeksReport("shareReportTest", "TwoWeeksReports");
-		twoWeeksReport.setDescription("new Description");
+    @Test
+    public void executeStandardTwoWeekReportWithIdForOneAssetTest() throws Exception {
+        ReportDTO twoWeeksReport = createTwoWeeksReport("executeStandardTwoWeekReportWithIdForOneAssetTest",
+                ReportTypeEnum.STANDARD, VisibilityEnum.PRIVATE, testAsset);
 
-		final HttpResponse response = Request
-				.Put(getBaseUrl() + "reporting/rest/report/share/" + twoWeeksReport.getId() + "/"
-						+ VisibilityEnum.PUBLIC)
-				.setHeader("Content-Type", "application/json").setHeader("scopeName", "All Vessels")
-				.setHeader("roleName", "AdminAllUVMS").setHeader("Authorization", getValidJwtToken()).execute()
-				.returnResponse();
-		assertEquals(HttpStatus.SC_OK, response.getStatusLine().getStatusCode());
-	}
+        DisplayFormat displayFormat = new DisplayFormat();
+        displayFormat.setLengthType(LengthType.NM);
+        displayFormat.setVelocityType(VelocityType.KTS);
+        HashMap<String, Object> additionalProperties = new HashMap<>();
+        HashMap<String, Object> valueMap = new HashMap<>();
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+        String timeStampValue = dateFormat.format(new Date());
+        valueMap.put("timestamp", timeStampValue);
+        additionalProperties.put("additionalProperties", valueMap);
+        additionalProperties.put("timestamp", timeStampValue);
 
-	/**
-	 * Execute standard two week report with id for one asset test.
-	 *
-	 * @throws Exception the exception
-	 */
-	@Test
-	public void executeStandardTwoWeekReportWithIdForOneAssetTest() throws Exception {
-		ReportDTO twoWeeksReport = createTwoWeeksReport("executeStandardTwoWeekReportWithIdForOneAssetTest", "TwoWeeksReports",ReportTypeEnum.STANDARD,VisibilityEnum.PRIVATE,testAsset);
-		
-		DisplayFormat displayFormat = new DisplayFormat();
-		displayFormat.setLengthType(LengthType.NM);
-		displayFormat.setVelocityType(VelocityType.KTS);
-		HashMap<String, Object> additionalProperties = new HashMap<String, Object>();
-		HashMap<String, Object> valueMap = new HashMap<String, Object>();
-		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
-		String timeStampValue = dateFormat.format(new Date());
-		valueMap.put("timestamp", timeStampValue);
-		additionalProperties.put("additionalProperties", valueMap);
-		additionalProperties.put("timestamp", timeStampValue);
+        displayFormat.setAdditionalProperties(additionalProperties);
 
-		displayFormat.setAdditionalProperties(additionalProperties);
+        ResponseDto<ObjectNode> response = getWebTarget()
+                .path("reporting/rest/report/execute")
+                .path(String.valueOf(twoWeeksReport.getId()))
+                .request(MediaType.APPLICATION_JSON)
+                .header("scopeName", "All Vessels")
+                .header("roleName", "AdminAllUVMS")
+                .header(HttpHeaders.AUTHORIZATION, getValidJwtToken())
+                .post(Entity.json(displayFormat), new GenericType<ResponseDto<ObjectNode>>() {
+                });
 
-		final HttpResponse response = Request
-				.Post(getBaseUrl() + "reporting/rest/report/execute/" + twoWeeksReport.getId())
-				.setHeader("Content-Type", "application/json").setHeader("scopeName", "All Vessels")
-				.setHeader("roleName", "AdminAllUVMS").setHeader("Authorization", getValidJwtToken())
-				.bodyByteArray(writeValueAsString(displayFormat).getBytes()).execute().returnResponse();
-		Map<String, Object> dataMap = checkSuccessResponseReturnMap(response);
-		assertNotNull(dataMap);
-		Map<String, Object> movementDataMap = (Map<String, Object>) dataMap.get("movements");
-		assertNotNull(movementDataMap);
-		List<Map<String,Object>> movementPropertyDataMap = (List<Map<String,Object>>) movementDataMap.get("features");
-		assertNotNull(movementPropertyDataMap);
+        ObjectNode node = response.getData();
+        JsonNode movements = node.get("movements");
+        JsonNode segments = node.get("segments");
+        JsonNode tracks = node.get("tracks");
+        JsonNode trips = node.get("trips");
+        JsonNode activities = node.get("activities");
+        JsonNode criteria = node.get("criteria");
 
-		//This part is never run since movementPropertyDataMap is empty, mostly due tu a bug in reporting. For mor info: https://jira.havochvatten.se/jira/browse/UV-124
-		for (Map map : movementPropertyDataMap) {
-			assertEquals(testAsset.getCfr(), ((Map) map.get("properties")).get("cfr"));
-		}
-	}
+        assertTrue(movements != null
+                && segments != null
+                && tracks != null
+                && trips != null
+                && activities != null
+                && criteria != null);
+        // Todo: Although this test passes, every node above is empty. Most likely there is a bug in Reporting.
+        // For more info: https://jira.havochvatten.se/jira/browse/UV-124
+    }
 
-	//The test can not work due tu a bug in reporting. For more information see: https://jira.havochvatten.se/jira/browse/UV-124
-	@Test
-	@Ignore
-	public void executeStandardTwoWeekReportWithIdForOneAssetFourLastPositionsTest() throws Exception {
-		ReportDTO twoWeeksReport = createTwoWeeksLastFourPositionsReport("executeStandardTwoWeekReportWithIdForOneAssetFourLastPositionsTest", "TwoWeeksReports",ReportTypeEnum.STANDARD,VisibilityEnum.PRIVATE,testAsset);
-		
-		DisplayFormat displayFormat = new DisplayFormat();
-		displayFormat.setLengthType(LengthType.NM);
-		displayFormat.setVelocityType(VelocityType.KTS);
-		HashMap<String, Object> additionalProperties = new HashMap<>();
-		HashMap<String, Object> valueMap = new HashMap<>();
-		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
-		dateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));  //added so that the system understands that it is supposed to handle time in utc value instead of local
-		String timeStampValue = dateFormat.format(new Date());
-		valueMap.put("timestamp", timeStampValue);
-		additionalProperties.put("additionalProperties", valueMap);
-		additionalProperties.put("timestamp", timeStampValue);
+    @Test // I will refactor this after working on Reporting. /Ksm
+    @Ignore("The test is not working due to a bug in Reporting. See: https://jira.havochvatten.se/jira/browse/UV-124")
+    public void executeStandardTwoWeekReportWithIdForOneAssetFourLastPositionsTest() throws Exception {
+        ReportDTO twoWeeksReport = createTwoWeeksLastFourPositionsReport(ReportTypeEnum.STANDARD, VisibilityEnum.PRIVATE, testAsset);
+        DisplayFormat displayFormat = new DisplayFormat();
+        displayFormat.setLengthType(LengthType.NM);
+        displayFormat.setVelocityType(VelocityType.KTS);
+        HashMap<String, Object> additionalProperties = new HashMap<>();
+        HashMap<String, Object> valueMap = new HashMap<>();
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+        // Added so that the system understands that it is supposed to handle time in utc value instead of local
+        dateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
+        String timeStampValue = dateFormat.format(new Date());
+        valueMap.put("timestamp", timeStampValue);
+        additionalProperties.put("additionalProperties", valueMap);
+        additionalProperties.put("timestamp", timeStampValue);
 
-		displayFormat.setAdditionalProperties(additionalProperties);
+        displayFormat.setAdditionalProperties(additionalProperties);
 
-		final HttpResponse response = Request
-				.Post(getBaseUrl() + "reporting/rest/report/execute/" + twoWeeksReport.getId())
-				.setHeader("Content-Type", "application/json").setHeader("scopeName", "All Vessels")
-				.setHeader("roleName", "AdminAllUVMS").setHeader("Authorization", getValidJwtToken())
-				.bodyByteArray(writeValueAsString(displayFormat).getBytes()).execute().returnResponse();
-		Map<String, Object> dataMap = checkSuccessResponseReturnMap(response);
-		assertNotNull(dataMap);
-		Map<String, Object> movementDataMap = (Map<String, Object>) dataMap.get("movements");
-		assertNotNull(movementDataMap);
-		List<Map<String,Object>> movementPropertyDataMap = (List<Map<String,Object>>) movementDataMap.get("features");
-		assertNotNull(movementPropertyDataMap);
-	
-		assertEquals(4,movementPropertyDataMap.size());
-		for (Map map : movementPropertyDataMap) {
-			assertEquals(testAsset.getCfr(), ((Map) map.get("properties")).get("cfr"));
-		}
-	}
+        final HttpResponse response = Request
+                .Post(getBaseUrl() + "reporting/rest/report/execute/" + twoWeeksReport.getId())
+                .setHeader("Content-Type", "application/json").setHeader("scopeName", "All Vessels")
+                .setHeader("roleName", "AdminAllUVMS").setHeader("Authorization", getValidJwtToken())
+                .bodyByteArray(writeValueAsString(displayFormat).getBytes()).execute().returnResponse();
+        Map<String, Object> dataMap = checkSuccessResponseReturnMap(response);
+        assertNotNull(dataMap);
+        Map<String, Object> movementDataMap = (Map<String, Object>) dataMap.get("movements");
+        assertNotNull(movementDataMap);
+        List<Map<String, Object>> movementPropertyDataMap = (List<Map<String, Object>>) movementDataMap.get("features");
+        assertNotNull(movementPropertyDataMap);
 
-    //The test can not work due tu a bug in reporting. For more information see: https://jira.havochvatten.se/jira/browse/UV-124
-	@Test
-	@Ignore
-	public void executeStandardTwoWeekReportWithIdForAllAssetFourLastPositionsKnownBugJira3215Test() throws Exception {
-		ReportDTO twoWeeksReport = createTwoWeeksLastFourPositionsReport("executeStandardTwoWeekReportWithIdForOneAssetFourLastPositionsTest", "TwoWeeksReports",ReportTypeEnum.STANDARD,VisibilityEnum.PRIVATE,null);
-		
-		DisplayFormat displayFormat = new DisplayFormat();
-		displayFormat.setLengthType(LengthType.NM);
-		displayFormat.setVelocityType(VelocityType.KTS);
-		HashMap<String, Object> additionalProperties = new HashMap<String, Object>();
-		HashMap<String, Object> valueMap = new HashMap<String, Object>();
-		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
-		String timeStampValue = dateFormat.format(new Date());
-		valueMap.put("timestamp", timeStampValue);
-		additionalProperties.put("additionalProperties", valueMap);
-		additionalProperties.put("timestamp", timeStampValue);
+        assertEquals(4, movementPropertyDataMap.size());
+        for (Map map : movementPropertyDataMap) {
+            assertEquals(testAsset.getCfr(), ((Map) map.get("properties")).get("cfr"));
+        }
+    }
 
-		displayFormat.setAdditionalProperties(additionalProperties);
+    @Test // I will refactor this after working on Reporting. /Ksm
+    @Ignore("The test is not working due to a bug in Reporting. See: https://jira.havochvatten.se/jira/browse/UV-124")
+    public void executeStandardTwoWeekReportWithIdForAllAssetFourLastPositionsKnownBugJira3215Test() throws Exception {
+        ReportDTO twoWeeksReport = createTwoWeeksLastFourPositionsReport(ReportTypeEnum.STANDARD, VisibilityEnum.PRIVATE, null);
+        DisplayFormat displayFormat = new DisplayFormat();
+        displayFormat.setLengthType(LengthType.NM);
+        displayFormat.setVelocityType(VelocityType.KTS);
+        HashMap<String, Object> additionalProperties = new HashMap<>();
+        HashMap<String, Object> valueMap = new HashMap<>();
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+        String timeStampValue = dateFormat.format(new Date());
+        valueMap.put("timestamp", timeStampValue);
+        additionalProperties.put("additionalProperties", valueMap);
+        additionalProperties.put("timestamp", timeStampValue);
 
-		final HttpResponse response = Request
-				.Post(getBaseUrl() + "reporting/rest/report/execute/" + twoWeeksReport.getId())
-				.setHeader("Content-Type", "application/json").setHeader("scopeName", "All Vessels")
-				.setHeader("roleName", "AdminAllUVMS").setHeader("Authorization", getValidJwtToken())
-				.bodyByteArray(writeValueAsString(displayFormat).getBytes()).execute().returnResponse();
-		Map<String, Object> dataMap = checkSuccessResponseReturnMap(response);
-		assertNotNull(dataMap);
-		Map<String, Object> movementDataMap = (Map<String, Object>) dataMap.get("movements");
-		assertNotNull(movementDataMap);
-		List<Map<String,Object>> movementPropertyDataMap = (List<Map<String,Object>>) movementDataMap.get("features");
-		assertNotNull(movementPropertyDataMap);
-	
-		Map<String,Integer> positionsPerShip = new HashMap<>();
-		for (Map map : movementPropertyDataMap) {
-			String cfr = (String) ((Map) map.get("properties")).get("cfr");			
-			if (positionsPerShip.get(cfr) == null) {
-				positionsPerShip.put(cfr, 1);
-			} else {
-				positionsPerShip.put(cfr, 1 +positionsPerShip.get(cfr));
-			}
-		}
-		
-		assertEquals("Do not contain all ships",AssetTestHelper.getAssetCountSweden(),Integer.valueOf(positionsPerShip.keySet().size()));
-		
-		for (Entry<String, Integer> map : positionsPerShip.entrySet()) {
-			assertEquals("Ship do not contain 4 positions:" + map.getKey(),new Integer(4),map.getValue());			
-		}
-		
-	}
+        displayFormat.setAdditionalProperties(additionalProperties);
 
-	/**
-	 * Execute summary two week report with id for one asset test.
-	 *
-	 * @throws Exception the exception
-	 */
-    //The test can not work due tu a bug in reporting. For more information see: https://jira.havochvatten.se/jira/browse/UV-124
-	@Test
-	@Ignore
-	public void executeSummaryTwoWeekReportTest() throws Exception {
-		ReportDTO twoWeeksReport = createTwoWeeksReport("executeSummaryTwoWeekReportTest", "TwoWeeksReports",ReportTypeEnum.SUMMARY,VisibilityEnum.PRIVATE,null);
-		
-		DisplayFormat displayFormat = new DisplayFormat();
-		displayFormat.setLengthType(LengthType.NM);
-		displayFormat.setVelocityType(VelocityType.KTS);
-		HashMap<String, Object> additionalProperties = new HashMap<String, Object>();
-		HashMap<String, Object> valueMap = new HashMap<String, Object>();
-		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
-		String timeStampValue = dateFormat.format(new Date());
-		valueMap.put("timestamp", timeStampValue);
-		additionalProperties.put("additionalProperties", valueMap);
-		additionalProperties.put("timestamp", timeStampValue);
+        final HttpResponse response = Request
+                .Post(getBaseUrl() + "reporting/rest/report/execute/" + twoWeeksReport.getId())
+                .setHeader("Content-Type", "application/json").setHeader("scopeName", "All Vessels")
+                .setHeader("roleName", "AdminAllUVMS").setHeader("Authorization", getValidJwtToken())
+                .bodyByteArray(writeValueAsString(displayFormat).getBytes()).execute().returnResponse();
+        Map<String, Object> dataMap = checkSuccessResponseReturnMap(response);
+        assertNotNull(dataMap);
+        Map<String, Object> movementDataMap = (Map<String, Object>) dataMap.get("movements");
+        assertNotNull(movementDataMap);
+        List<Map<String, Object>> movementPropertyDataMap = (List<Map<String, Object>>) movementDataMap.get("features");
+        assertNotNull(movementPropertyDataMap);
 
-		displayFormat.setAdditionalProperties(additionalProperties);
+        Map<String, Integer> positionsPerShip = new HashMap<>();
+        for (Map map : movementPropertyDataMap) {
+            String cfr = (String) ((Map) map.get("properties")).get("cfr");
+            int count = positionsPerShip.getOrDefault(cfr, 0);
+            positionsPerShip.put(cfr, count + 1);
+        }
 
-		final HttpResponse response = Request
-				.Post(getBaseUrl() + "reporting/rest/report/execute/" + twoWeeksReport.getId())
-				.setHeader("Content-Type", "application/json").setHeader("scopeName", "All Vessels")
-				.setHeader("roleName", "AdminAllUVMS").setHeader("Authorization", getValidJwtToken())
-				.bodyByteArray(writeValueAsString(displayFormat).getBytes()).execute().returnResponse();
-		Map<String, Object> dataMap = checkSuccessResponseReturnMap(response);
-		Map<String, Object> movementDataMap = (Map<String, Object>) dataMap.get("movements");
-		assertNotNull(movementDataMap);
-		List<Map<String,Object>> movementPropertyDataMap = (List<Map<String,Object>>) movementDataMap.get("features");
-		assertNotNull(movementPropertyDataMap);
-	
-		for (Map map : movementPropertyDataMap) {
-			assertEquals(testAsset.getCfr(), ((Map) map.get("properties")).get("cfr"));
-		}
-	}
+        assertEquals("Do not contain all ships", AssetTestHelper.getAssetCountSweden(), Integer.valueOf(positionsPerShip.keySet().size()));
+
+        for (Entry<String, Integer> map : positionsPerShip.entrySet()) {
+            assertEquals("Ship do not contain 4 positions:" + map.getKey(), new Integer(4), map.getValue());
+        }
+    }
+
+    @Test // I will refactor this after working on Reporting. /Ksm
+    @Ignore("The test is not working due to a bug in Reporting. See: https://jira.havochvatten.se/jira/browse/UV-124")
+    public void executeSummaryTwoWeekReportTest() throws Exception {
+        ReportDTO twoWeeksReport = createTwoWeeksReport("executeSummaryTwoWeekReportTest",
+                ReportTypeEnum.SUMMARY, VisibilityEnum.PRIVATE, null);
+
+        DisplayFormat displayFormat = new DisplayFormat();
+        displayFormat.setLengthType(LengthType.NM);
+        displayFormat.setVelocityType(VelocityType.KTS);
+        HashMap<String, Object> additionalProperties = new HashMap<>();
+        HashMap<String, Object> valueMap = new HashMap<>();
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+        String timeStampValue = dateFormat.format(new Date());
+        valueMap.put("timestamp", timeStampValue);
+        additionalProperties.put("additionalProperties", valueMap);
+        additionalProperties.put("timestamp", timeStampValue);
+
+        displayFormat.setAdditionalProperties(additionalProperties);
+
+        final HttpResponse response = Request
+                .Post(getBaseUrl() + "reporting/rest/report/execute/" + twoWeeksReport.getId())
+                .setHeader("Content-Type", "application/json").setHeader("scopeName", "All Vessels")
+                .setHeader("roleName", "AdminAllUVMS").setHeader("Authorization", getValidJwtToken())
+                .bodyByteArray(writeValueAsString(displayFormat).getBytes()).execute().returnResponse();
+        Map<String, Object> dataMap = checkSuccessResponseReturnMap(response);
+        Map<String, Object> movementDataMap = (Map<String, Object>) dataMap.get("movements");
+        assertNotNull(movementDataMap);
+        List<Map<String, Object>> movementPropertyDataMap = (List<Map<String, Object>>) movementDataMap.get("features");
+        assertNotNull(movementPropertyDataMap);
+
+        for (Map map : movementPropertyDataMap) {
+            assertEquals(testAsset.getCfr(), ((Map) map.get("properties")).get("cfr"));
+        }
+    }
+
+    private ReportDTO createTwoWeeksReport(final String name) throws IOException {
+        return createTwoWeeksReport(name, ReportTypeEnum.STANDARD, VisibilityEnum.PRIVATE, null);
+    }
+
+    private ReportDTO createTwoWeeksReport(final String name, ReportTypeEnum reportTypeEnum,
+                                           VisibilityEnum visibilityEnum, AssetDTO asset) throws IOException {
+        ReportDTO reportDTO = new ReportDTO();
+        long time = new Date().getTime();
+        reportDTO.setName(name + time);
+        reportDTO.setDescription("TwoWeeksReports" + time);
+        reportDTO.setReportTypeEnum(reportTypeEnum);
+        reportDTO.setVisibility(visibilityEnum);
+        reportDTO.setWithMap(true);
+
+        CommonFilterDTO commonFilterDTO = new CommonFilterDTO();
+        commonFilterDTO.setStartDate(new Date(new Date().getTime() - (60 * 1000 * 60 * 24 * 7)));
+        commonFilterDTO.setEndDate(new Date(new Date().getTime() + (60 * 1000 * 60 * 24 * 7)));
+        PositionSelectorDTO positionSelector = new PositionSelectorDTO();
+        positionSelector.setSelector(Selector.all);
+        commonFilterDTO.setPositionSelector(positionSelector);
+        commonFilterDTO.setType(FilterType.common);
+        reportDTO.addFilter(commonFilterDTO);
+
+        if (asset != null) {
+            addAssetFilterToReport(asset, reportDTO);
+        }
+
+        String writeValueAsString = writeValueAsString(reportDTO);
+
+        ResponseDto response = getWebTarget()
+                .path("reporting/rest/report")
+                .queryParam("projection", "DEFAULT")
+                .request(MediaType.APPLICATION_JSON)
+                .header("scopeName", "All Vessels")
+                .header("roleName", "AdminAllUVMS")
+                .header(HttpHeaders.AUTHORIZATION, getValidJwtToken())
+                .post(Entity.json(writeValueAsString), ResponseDto.class);
+
+        Integer reportId = (Integer) response.getData();
+        reportDTO.setId(reportId.longValue());
+        return reportDTO;
+    }
+
+    private ReportDTO createTwoWeeksLastFourPositionsReport(ReportTypeEnum reportTypeEnum, VisibilityEnum visibilityEnum,
+                                                            AssetDTO asset) throws IOException {
+        ReportDTO reportDTO = new ReportDTO();
+        long time = new Date().getTime();
+        reportDTO.setName("executeStandardTwoWeekReportWithIdForOneAssetFourLastPositionsTest" + time);
+        reportDTO.setDescription("TwoWeeksReports" + time);
+        reportDTO.setReportTypeEnum(reportTypeEnum);
+        reportDTO.setVisibility(visibilityEnum);
+        reportDTO.setWithMap(true);
+
+        CommonFilterDTO commonFilterDTO = new CommonFilterDTO();
+        commonFilterDTO.setStartDate(new Date(new Date().getTime() - (60 * 1000 * 60 * 24 * 7)));
+        commonFilterDTO.setEndDate(new Date(new Date().getTime() + (60 * 1000 * 60 * 24 * 7)));
+        PositionSelectorDTO positionSelector = new PositionSelectorDTO();
+        positionSelector.setSelector(Selector.last);
+        positionSelector.setValue(4f);
+        positionSelector.setPosition(Position.positions);
+        commonFilterDTO.setPositionSelector(positionSelector);
+        commonFilterDTO.setType(FilterType.common);
+        reportDTO.addFilter(commonFilterDTO);
+
+        if (asset != null) {
+            addAssetFilterToReport(asset, reportDTO);
+        }
+
+        String writeValueAsString = writeValueAsString(reportDTO);
+
+        ResponseDto response = getWebTarget()
+                .path("reporting/rest/report")
+                .queryParam("projection", "DEFAULT")
+                .request(MediaType.APPLICATION_JSON)
+                .header("scopeName", "All Vessels")
+                .header("roleName", "AdminAllUVMS")
+                .header(HttpHeaders.AUTHORIZATION, getValidJwtToken())
+                .post(Entity.json(writeValueAsString), ResponseDto.class);
+
+        Integer reportId = (Integer) response.getData();
+        reportDTO.setId(reportId.longValue());
+        return reportDTO;
+    }
+
+    private void addAssetFilterToReport(AssetDTO asset, ReportDTO reportDTO) {
+        AssetFilterDTO assetFilterDTO = new AssetFilterDTO();
+        assetFilterDTO.setGuid(asset.getId().toString());
+        assetFilterDTO.setName(asset.getName());
+        reportDTO.addFilter(assetFilterDTO);
+    }
 }

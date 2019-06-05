@@ -50,16 +50,12 @@ import eu.europa.ec.fisheries.uvms.docker.validation.system.helper.NAFHelper;
 import eu.europa.ec.fisheries.uvms.reporting.service.dto.rules.AlarmMovement;
 import eu.europa.ec.fisheries.uvms.reporting.service.dto.rules.AlarmMovementList;
 
-/**
- * The Class AlarmRestIT.
- */
-
 public class AlarmRestIT extends AbstractRest {
 
 	@Test
-	public void getAlarmsTest() throws Exception {
+	public void getAlarmsTest() {
 		AlarmMovementList alarmMovementList = new AlarmMovementList();
-		ArrayList<AlarmMovement> alarmMovementListContent = new ArrayList<AlarmMovement>();
+		ArrayList<AlarmMovement> alarmMovementListContent = new ArrayList<>();
 		AlarmMovement alarmMovement = new AlarmMovement();
 		alarmMovement.setMovementId("movementId");
 		alarmMovement.setxCoordinate("57.715434");
@@ -86,7 +82,7 @@ public class AlarmRestIT extends AbstractRest {
 							ConditionType.EQ, asset.getFlagStateCode())
 					.setAvailability(AvailabilityType.GLOBAL)
 					.build();
-			CustomRuleType createdCustomRule = CustomRuleHelper.createCustomRule(customRule);
+			CustomRuleHelper.createCustomRule(customRule);
 			NAFHelper.sendPositionToNAFPlugin(new LatLong(1, 1, new Date()), asset);
 
 			MovementHelper.pollMovementCreated();
@@ -108,7 +104,7 @@ public class AlarmRestIT extends AbstractRest {
 
 			// Query reporting
 			AlarmMovementList alarmMovementList = new AlarmMovementList();
-			ArrayList<AlarmMovement> alarmMovementListContent = new ArrayList<AlarmMovement>();
+			ArrayList<AlarmMovement> alarmMovementListContent = new ArrayList<>();
 			AlarmMovement alarmMovement = new AlarmMovement();
 			alarmMovement.setMovementId(movements.get(0).getGuid());
 			alarmMovement.setxCoordinate("1");
