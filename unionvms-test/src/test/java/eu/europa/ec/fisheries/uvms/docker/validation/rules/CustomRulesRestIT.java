@@ -13,8 +13,13 @@ copy of the GNU General Public License along with the IFDM Suite. If not, see <h
 */
 package eu.europa.ec.fisheries.uvms.docker.validation.rules;
 
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
+
+import com.fasterxml.jackson.databind.node.ObjectNode;
+import eu.europa.ec.fisheries.schema.movementrules.module.v1.GetCustomRuleListByQueryResponse;
+import eu.europa.ec.fisheries.uvms.commons.rest.dto.ResponseDto;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
 import org.apache.http.client.fluent.Request;
@@ -27,137 +32,169 @@ import eu.europa.ec.fisheries.schema.movementrules.search.v1.CustomRuleSearchKey
 import eu.europa.ec.fisheries.schema.movementrules.search.v1.ListPagination;
 import eu.europa.ec.fisheries.uvms.docker.validation.common.AbstractRest;
 
-/**
- * The Class CustomRulesRestIT.
- */
+import javax.ws.rs.client.Entity;
+import javax.ws.rs.core.GenericType;
+import javax.ws.rs.core.HttpHeaders;
+import javax.ws.rs.core.MediaType;
+
 public class CustomRulesRestIT extends AbstractRest {
 
-	/**
-	 * Creates the custom rule test.
-	 *
-	 * @throws Exception the exception
-	 */
-	//This and only this method returns a 511 response.........
-	//Weeeeeell in this and only this case 511 is not Network Authentication Required but rather "INPUT_ERROR"......
-	//Who the hell though that this was a good idea???????????
-	//Adding custom checks for the respons
 	@Test
-	public void createCustomRuleTest() throws Exception {
+	public void createCustomRuleTest() {
+		ResponseDto<CustomRuleType> response = createAndPersistCustomRule();
+		assertEquals(200, response.getCode());
+		assertNotNull(response.getData().getGuid());
+	}
+
+	// Todo: Replace 511 status code with '400 Bad Request' or '422 Unprocessable Entity' in MovementRules
+	@Test
+	public void createCustomRuleTest_WillFailWithInvalidEntity() {
 		CustomRuleType customRuleType = new CustomRuleType();
-		final HttpResponse response = Request.Post(getBaseUrl() + "movement-rules/rest/customrules/")
-				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken())
-				.bodyByteArray(writeValueAsString(customRuleType).getBytes()).execute().returnResponse();
-		assertEquals(HttpStatus.SC_OK, response.getStatusLine().getStatusCode());
-		final Map<String, Object> data = getJsonMap(response);
-		assertFalse(data.isEmpty());
-		assertNotNull(data.get("data"));
-		assertEquals("511", "" + data.get("code"));
+		ResponseDto response = getWebTarget()
+				.path("movement-rules/rest/customrules")
+				.request(MediaType.APPLICATION_JSON)
+				.header(HttpHeaders.AUTHORIZATION, getValidJwtToken())
+				.post(Entity.json(customRuleType), ResponseDto.class);
+		assertEquals(511, response.getCode());
 	}
 
-	/**
-	 * Gets the custom rules by user.
-	 *
-	 * @return the custom rules by user
-	 * @throws Exception the exception
-	 */
-	//changed {userName} to userName, so now it searches for "userName" and returns the list as a string rather then a map
 	@Test
-	public void getCustomRulesByUser() throws Exception {
-		CustomRuleQuery CustomRuleQuery = new CustomRuleQuery();
-		final HttpResponse response = Request.Get(getBaseUrl() + "movement-rules/rest/customrules/listAll/userName")
-				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken()).execute()
-				.returnResponse();
-		//Map<String, Object> dataMap = checkSuccessResponseReturnMap(response);
-		checkSuccessResponseReturnList(response, CustomRuleType.class);
+	public void getCustomRulesByUser() {
+		createAndPersistCustomRule();
+		ResponseDto<List<CustomRuleType>> response = getWebTarget()
+				.path("movement-rules/rest/customrules/listAll")
+				.path("vms_admin_com")
+				.request(MediaType.APPLICATION_JSON)
+				.header(HttpHeaders.AUTHORIZATION, getValidJwtToken())
+				.get(new GenericType<ResponseDto<List<CustomRuleType>>>(){});
+
+		List<CustomRuleType> customRuleList = response.getData();
+		assertFalse(customRuleList.isEmpty());
 	}
 
-	/**
-	 * Gets the custom rules by query test.
-	 *
-	 * @return the custom rules by query test
-	 * @throws Exception the exception
-	 */
-	//added all the needed info to the query so that it can complete
 	@Test
-	public void getCustomRulesByQueryTest() throws Exception {
+	public void getCustomRulesByQueryTest() {
+		ResponseDto<CustomRuleType> created = createAndPersistCustomRule();
+
 		CustomRuleQuery CustomRuleQuery = new CustomRuleQuery();
 		ListPagination lp = new ListPagination();
 		lp.setListSize(10);
-		lp.setPage(1); //this value can not be 0 or lower...... ;(
+		lp.setPage(1);
 		CustomRuleQuery.setPagination(lp);
 		CustomRuleListCriteria crlc = new CustomRuleListCriteria();
 		crlc.setKey(CustomRuleSearchKey.GUID);
-		crlc.setValue(UUID.randomUUID().toString());
+		crlc.setValue(created.getData().getGuid());
 		CustomRuleQuery.getCustomRuleSearchCriteria().add(crlc);
 		CustomRuleQuery.setDynamic(true);
-		final HttpResponse response = Request.Post(getBaseUrl() + "movement-rules/rest/customrules/listByQuery")
-				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken())
-				.bodyByteArray(writeValueAsString(CustomRuleQuery).getBytes()).execute().returnResponse();
-		Map<String, Object> dataMap = checkSuccessResponseReturnMap(response);
+
+		ResponseDto<GetCustomRuleListByQueryResponse> response = getWebTarget()
+				.path("movement-rules/rest/customrules/listByQuery")
+				.request(MediaType.APPLICATION_JSON)
+				.header(HttpHeaders.AUTHORIZATION, getValidJwtToken())
+				.post(Entity.json(CustomRuleQuery), new GenericType<ResponseDto<GetCustomRuleListByQueryResponse>>(){});
+
+		GetCustomRuleListByQueryResponse data = response.getData();
+		List<CustomRuleType> customRules = data.getCustomRules();
+		boolean found = customRules.stream().anyMatch(cr -> cr.getGuid().equals(created.getData().getGuid()));
+		assertTrue(found);
 	}
 
-	/**
-	 * Gets the custom rule by guid test.
-	 *
-	 * @return the custom rule by guid test
-	 * @throws Exception the exception
-	 */
-	//Is this one assuming that some other method creates a custom rule? And that we have some sort of magical access to its guid?
-	//This query is going to return a server error (500) since we dont have a custom rule with the guid "guid" (heck we dont have any custom rules whatsoever......)
 	@Test
-	public void getCustomRuleByGuidTest() throws Exception {
-		final HttpResponse response = Request.Get(getBaseUrl() + "movement-rules/rest/customrules/guid")
-				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken()).execute()
-				.returnResponse();
-		//internal server error aka 500
-		String responseCode = returnErrorResponse(response);
-		assertEquals("500", responseCode);
+	public void getCustomRuleByGuidTest() {
+		ResponseDto<CustomRuleType> created = createAndPersistCustomRule();
+		ResponseDto<CustomRuleType> response = getWebTarget()
+				.path("movement-rules/rest/customrules")
+				.path(created.getData().getGuid())
+				.request(MediaType.APPLICATION_JSON)
+				.header(HttpHeaders.AUTHORIZATION, getValidJwtToken())
+				.get(new GenericType<ResponseDto<CustomRuleType>>(){});
+		assertEquals(200, response.getCode());
+		assertEquals(created.getData().getGuid(), response.getData().getGuid());
 	}
 
-	/**
-	 * Delete custom rule test.
-	 *
-	 * @throws Exception the exception
-	 */
-	//this one is trying to delete a rule that does not exist, causing the server to respond with 500
+	// Todo: MovementRules API should return e.g. 204 or 200 with empty data as opposed to 500 which
+	// indicates a server error. This test will be updated after updating MovementRules API
 	@Test
-	public void deleteCustomRuleTest() throws Exception {
-		final HttpResponse response = Request.Delete(getBaseUrl() + "movement-rules/rest/customrules/guid")
-				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken()).execute()
-				.returnResponse();
-		//internal server error aka 500
-		String responseCode = returnErrorResponse(response);
-        assertEquals("500", responseCode);
+	public void getCustomRuleByGuidTest_WillFailWithInvalidUUID() {
+		ResponseDto<CustomRuleType> response = getWebTarget()
+				.path("movement-rules/rest/customrules")
+				.path(UUID.randomUUID().toString())
+				.request(MediaType.APPLICATION_JSON)
+				.header(HttpHeaders.AUTHORIZATION, getValidJwtToken())
+				.get(new GenericType<ResponseDto<CustomRuleType>>(){});
+		assertEquals(500, response.getCode());
 	}
 
-	/**
-	 * Update subscription test.
-	 *
-	 * @throws Exception the exception
-	 */
-	//not having any custom rules makes this one kinda hard to do, so ya500r......
 	@Test
-	public void updateSubscriptionTest() throws Exception {
-		UpdateSubscriptionType updateSubscriptionType = new UpdateSubscriptionType();
-		final HttpResponse response = Request.Post(getBaseUrl() + "movement-rules/rest/customrules/subscription")
-				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken())
-				.bodyByteArray(writeValueAsString(updateSubscriptionType).getBytes()).execute().returnResponse();
-		checkErrorResponse(response);
+	public void deleteCustomRuleTest() {
+		ResponseDto<CustomRuleType> created = createAndPersistCustomRule();
+		ResponseDto<CustomRuleType> response = getWebTarget()
+				.path("movement-rules/rest/customrules")
+				.path(created.getData().getGuid())
+				.request(MediaType.APPLICATION_JSON)
+				.header(HttpHeaders.AUTHORIZATION, getValidJwtToken())
+				.delete(new GenericType<ResponseDto<CustomRuleType>>(){});
+		assertEquals(200, response.getCode());
 	}
 
-	/**
-	 * Update test.
-	 *
-	 * @throws Exception the exception
-	 */
-	//not having any custom rules makes this one kinda hard to do, so ya500r......
+	// Todo: MovementRules API should return '204 Co Content' if there weren't a Server error
+	// This test will be updated after updating MovementRules API
 	@Test
-	public void updateTest() throws Exception {
+	public void deleteCustomRuleTest_WillFailWithInvalidUUID() {
+		ResponseDto<CustomRuleType> response = getWebTarget()
+				.path("movement-rules/rest/customrules")
+				.path(UUID.randomUUID().toString())
+				.request(MediaType.APPLICATION_JSON)
+				.header(HttpHeaders.AUTHORIZATION, getValidJwtToken())
+				.delete(new GenericType<ResponseDto<CustomRuleType>>(){});
+		assertEquals(500, response.getCode());
+	}
+
+	@Test
+	public void updateCustomRuleTest() {
+		ResponseDto<CustomRuleType> created = createAndPersistCustomRule();
+		CustomRuleType customRuleType = created.getData();
+		customRuleType.setName("NEW_TEST_NAME");
+		ResponseDto<CustomRuleType> response = getWebTarget()
+				.path("movement-rules/rest/customrules")
+				.request(MediaType.APPLICATION_JSON)
+				.header(HttpHeaders.AUTHORIZATION, getValidJwtToken())
+				.put(Entity.json(customRuleType), new GenericType<ResponseDto<CustomRuleType>>(){});
+		assertEquals(200, response.getCode());
+		assertEquals("NEW_TEST_NAME", response.getData().getName());
+	}
+
+	// Todo: Replace 511 status code with '400 Bad Request' or '422 Unprocessable Entity' in MovementRules
+	@Test
+	public void updateCustomRuleTest_WillFailWithInvalidEntity() {
 		CustomRuleType customRuleType = new CustomRuleType();
-		final HttpResponse response = Request.Put(getBaseUrl() + "movement-rules/rest/customrules/")
-				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken())
-				.bodyByteArray(writeValueAsString(customRuleType).getBytes()).execute().returnResponse();
-		String responseCode = returnErrorResponse(response);
-        assertEquals("511", responseCode);
+		ResponseDto<String> response = getWebTarget()
+				.path("movement-rules/rest/customrules")
+				.request(MediaType.APPLICATION_JSON)
+				.header(HttpHeaders.AUTHORIZATION, getValidJwtToken())
+				.put(Entity.json(customRuleType), new GenericType<ResponseDto<String>>(){});
+		assertEquals("Custom rule data is not correct", response.getData());
+		assertEquals(511, response.getCode());
+	}
+
+	// Todo: Replace 500 status code with '400 Bad Request' or '422 Unprocessable Entity' in MovementRules
+	@Test
+	public void updateSubscriptionTest() {
+		UpdateSubscriptionType updateSubscriptionType = new UpdateSubscriptionType();
+		ResponseDto<CustomRuleType> response = getWebTarget()
+				.path("movement-rules/rest/customrules/subscription")
+				.request(MediaType.APPLICATION_JSON)
+				.header(HttpHeaders.AUTHORIZATION, getValidJwtToken())
+				.post(Entity.json(updateSubscriptionType), new GenericType<ResponseDto<CustomRuleType>>(){});
+		assertEquals(500, response.getCode());
+	}
+
+	private ResponseDto<CustomRuleType> createAndPersistCustomRule() {
+		CustomRuleType customRuleType = CustomRulesTestHelper.getCompleteNewCustomRule();
+		return getWebTarget()
+				.path("movement-rules/rest/customrules")
+				.request(MediaType.APPLICATION_JSON)
+				.header(HttpHeaders.AUTHORIZATION, getValidJwtToken())
+				.post(Entity.json(customRuleType), new GenericType<ResponseDto<CustomRuleType>>(){});
 	}
 }
