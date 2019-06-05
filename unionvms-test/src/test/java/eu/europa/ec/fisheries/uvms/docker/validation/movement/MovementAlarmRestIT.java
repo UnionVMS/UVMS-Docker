@@ -145,7 +145,7 @@ public class MovementAlarmRestIT extends AbstractRest {
                 .path("movement/rest/alarms/reprocess")
                 .request(MediaType.APPLICATION_JSON)
                 .header(HttpHeaders.AUTHORIZATION, getValidJwtToken())
-                .post(Entity.json(Collections.singletonList(alarmReport.getId())), Response.class);
+                .post(Entity.json(Collections.singletonList(alarmReport.getId())));
 		assertEquals(Status.OK.getStatusCode(), response.getStatus());
         
         AlarmReport alarmReportAfter = getAlarmReportByGuid(alarmReport.getId().toString());
@@ -176,7 +176,7 @@ public class MovementAlarmRestIT extends AbstractRest {
                 .path("movement/rest/alarms/reprocess")
                 .request(MediaType.APPLICATION_JSON)
                 .header(HttpHeaders.AUTHORIZATION, getValidJwtToken())
-                .post(Entity.json(Collections.singletonList(alarmReport.getId())), Response.class);
+                .post(Entity.json(Collections.singletonList(alarmReport.getId())));
 		assertEquals(Status.OK.getStatusCode(), response.getStatus());
         
         AlarmReport alarmReportAfter = getAlarmReportByGuid(alarmReport.getId().toString());
