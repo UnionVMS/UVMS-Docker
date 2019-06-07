@@ -138,11 +138,6 @@
 			<artifactId>flux-movement-plugin-module</artifactId>
 			<type>ear</type>
 		</dependency>
-		<dependency>
-			<groupId>eu.europa.ec.fisheries.uvms.plugins.iridium</groupId>
-			<artifactId>siriusone-module</artifactId>
-			<type>ear</type>
-		</dependency>
 	</dependencies>
 	<build>
 		<pluginManagement>
@@ -312,10 +307,6 @@
 									</jar>
 
 									<jar destfile="${project.basedir}/target/dockerfile/deployments/flux-movement-plugin-module-${unionvms.project.plugins.flux}.ear" update="true">
-										<zipfileset dir="${project.basedir}/target/dockerfile/jboss-deployment/plugins" includes="*.xml" prefix="META-INF" />
-									</jar>
-
-									<jar destfile="${project.basedir}/target/dockerfile/deployments/siriusone-module-${unionvms.project.plugins.siriusone}.ear" update="true">
 										<zipfileset dir="${project.basedir}/target/dockerfile/jboss-deployment/plugins" includes="*.xml" prefix="META-INF" />
 									</jar>
 
