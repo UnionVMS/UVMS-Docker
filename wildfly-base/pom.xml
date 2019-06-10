@@ -14,7 +14,7 @@
 	<name>uvms-docker-wildfly-base</name>
 	<properties>
 		<focus-pom.java.version>1.9</focus-pom.java.version>
-		<wildfly.hibernate.module.spatial.version>5.3.9.Final</wildfly.hibernate.module.spatial.version>
+		<wildfly.hibernate.module.spatial.version>5.3.10.Final</wildfly.hibernate.module.spatial.version>
 		<wildfly.hibernate.module.geolatte.version>1.2.0</wildfly.hibernate.module.geolatte.version>
 		<wildfly.hibernate.module.jts.version>1.13</wildfly.hibernate.module.jts.version>
 		<wildfly.postgres.module.postgis.version>2.3.0</wildfly.postgres.module.postgis.version>

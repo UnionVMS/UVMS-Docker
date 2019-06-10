@@ -2,7 +2,7 @@ FROM adoptopenjdk/openjdk8-openj9:jdk8u181-b13_openj9-0.9.0-alpine-slim
 
 MAINTAINER Nils Jørgen Mittet <njmittet@gmail.com>
 
-ENV WILDFLY_VERSION 16.0.0.Final
+ENV WILDFLY_VERSION 17.0.0.Final
 ENV JBOSS_HOME /opt/jboss/wildfly
 
 USER root
@@ -10,7 +10,7 @@ RUN mkdir -p /opt/jboss && adduser -D -h /opt/jboss jboss && apk update && apk a
 
 USER jboss
 WORKDIR /opt/jboss
-RUN curl -O http://download.jboss.org/wildfly/$WILDFLY_VERSION/wildfly-$WILDFLY_VERSION.zip && unzip wildfly-$WILDFLY_VERSION.zip && mv $HOME/wildfly-$WILDFLY_VERSION $HOME/wildfly && rm wildfly-$WILDFLY_VERSION.zip
+RUN curl -LO http://download.jboss.org/wildfly/$WILDFLY_VERSION/wildfly-$WILDFLY_VERSION.zip && unzip wildfly-$WILDFLY_VERSION.zip && mv $HOME/wildfly-$WILDFLY_VERSION $HOME/wildfly && rm wildfly-$WILDFLY_VERSION.zip
 
 EXPOSE 8080 9990 5445 5455
 
