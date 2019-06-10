@@ -13,44 +13,46 @@ copy of the GNU General Public License along with the IFDM Suite. If not, see <h
 */
 package eu.europa.ec.fisheries.uvms.docker.validation.rules;
 
+import eu.europa.ec.fisheries.schema.movementrules.ticket.v1.TicketStatusType;
+import eu.europa.ec.fisheries.uvms.commons.rest.dto.ResponseDto;
+import eu.europa.ec.fisheries.uvms.docker.validation.common.AbstractRest;
+import org.junit.Test;
+
+import javax.ws.rs.core.GenericType;
+import javax.ws.rs.core.HttpHeaders;
+import javax.ws.rs.core.MediaType;
 import java.util.List;
 import java.util.Map;
-import org.apache.http.HttpResponse;
-import org.apache.http.client.fluent.Request;
-import org.junit.Test;
-import eu.europa.ec.fisheries.uvms.docker.validation.common.AbstractRest;
-
-/**
- * The Class RulesConfigRestIT.
- */
 
 public class RulesConfigRestIT extends AbstractRest {
 
-	/**
-	 * Gets the config test.
-	 *
-	 * @return the config test
-	 * @throws Exception the exception
-	 */
 	@Test
-	public void getConfigTest() throws Exception {
-		final HttpResponse response = Request.Get(getBaseUrl() + "movement-rules/rest/config")
-				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken()).execute().returnResponse();
-		Map<String, Object> dataMap = checkSuccessResponseReturnMap(response);
+	public void getConfigTest() {
+		ResponseDto<Map> response = getWebTarget()
+				.path("movement-rules/rest/config")
+				.request(MediaType.APPLICATION_JSON)
+				.header(HttpHeaders.AUTHORIZATION, getValidJwtToken())
+				.get(new GenericType<ResponseDto<Map>>(){});
+
+		assertEquals(200, response.getCode());
+
+		Map data = response.getData();
+		assertNotNull(data);
+
 	}
 
-	
-	/**
-	 * Gets the ticket statuses test.
-	 *
-	 * @return the ticket statuses test
-	 * @throws Exception the exception
-	 */
 	@Test
-	public void getTicketStatusesTest() throws Exception {
-		final HttpResponse response = Request.Get(getBaseUrl() + "movement-rules/rest/config/ticketstatus")
-				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken()).execute().returnResponse();
-		List dataList = checkSuccessResponseReturnType(response,List.class);
-	}
+	public void getTicketStatusesTest() {
+		ResponseDto<List<TicketStatusType>> response = getWebTarget()
+				.path("movement-rules/rest/config")
+				.path("ticketstatus")
+				.request(MediaType.APPLICATION_JSON)
+				.header(HttpHeaders.AUTHORIZATION, getValidJwtToken())
+				.get(new GenericType<ResponseDto<List<TicketStatusType>>>(){});
 
+		assertEquals(200, response.getCode());
+
+		List<TicketStatusType> data = response.getData();
+		assertNotNull(data);
+	}
 }

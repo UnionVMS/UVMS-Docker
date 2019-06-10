@@ -63,7 +63,7 @@ public class CustomRulesRestIT extends AbstractRest {
 		createAndPersistCustomRule();
 		ResponseDto<List<CustomRuleType>> response = getWebTarget()
 				.path("movement-rules/rest/customrules/listAll")
-				.path("vms_admin_com")
+				.path("vms_admin_se")
 				.request(MediaType.APPLICATION_JSON)
 				.header(HttpHeaders.AUTHORIZATION, getValidJwtToken())
 				.get(new GenericType<ResponseDto<List<CustomRuleType>>>(){});

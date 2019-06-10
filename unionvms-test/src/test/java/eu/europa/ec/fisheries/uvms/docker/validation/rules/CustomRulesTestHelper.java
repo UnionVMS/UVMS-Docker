@@ -11,18 +11,24 @@ copy of the GNU General Public License along with the IFDM Suite. If not, see <h
  */
 package eu.europa.ec.fisheries.uvms.docker.validation.rules;
 
+import eu.europa.ec.fisheries.schema.exchange.plugin.v1.SetReportRequest;
 import eu.europa.ec.fisheries.schema.movementrules.customrule.v1.*;
+import eu.europa.ec.fisheries.schema.movementrules.search.v1.ListPagination;
+import eu.europa.ec.fisheries.schema.movementrules.search.v1.TicketListCriteria;
+import eu.europa.ec.fisheries.schema.movementrules.search.v1.TicketQuery;
+import eu.europa.ec.fisheries.schema.movementrules.search.v1.TicketSearchKey;
+import eu.europa.ec.fisheries.uvms.docker.validation.system.helper.VMSSystemHelper;
 
 public class CustomRulesTestHelper {
 
     private CustomRulesTestHelper(){}
 
-    public static CustomRuleType getCompleteNewCustomRule(){
+    static CustomRuleType getCompleteNewCustomRule(){
         CustomRuleType customRule = new CustomRuleType();
 
         customRule.setName("Flag SWE && area DNK => Send to DNK" + " (" + System.currentTimeMillis() + ")");
         customRule.setAvailability(AvailabilityType.PRIVATE);
-        customRule.setUpdatedBy("vms_admin_com");
+        customRule.setUpdatedBy("vms_admin_se");
         customRule.setActive(true);
         customRule.setArchived(false);
 
@@ -55,9 +61,27 @@ public class CustomRulesTestHelper {
         action.setAction(ActionType.SEND_TO_FLUX);
         action.setValue("FLUX DNK");
         action.setOrder("0");
-
         customRule.getActions().add(action);
 
         return customRule;
+    }
+
+    static TicketQuery getTicketQuery() {
+        TicketQuery ticketQuery = new TicketQuery();
+        ListPagination listPagination = new ListPagination();
+        listPagination.setListSize(100);
+        listPagination.setPage(1);
+        ticketQuery.setPagination(listPagination);
+        TicketListCriteria ticketListCriteria = new TicketListCriteria();
+        ticketListCriteria.setKey(TicketSearchKey.STATUS);
+        ticketListCriteria.setValue("OPEN");
+        ticketQuery.getTicketSearchCriteria().add(ticketListCriteria);
+        return ticketQuery;
+    }
+
+    static String createRuleAndGetMovementGuid() throws Exception {
+        String fluxEndpoint = "DNK";
+        SetReportRequest reportRequest = VMSSystemHelper.triggerBasicRuleAndSendToFlux(fluxEndpoint);
+        return reportRequest.getReport().getMovement().getGuid();
     }
 }

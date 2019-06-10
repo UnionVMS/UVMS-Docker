@@ -12,6 +12,7 @@ import eu.europa.ec.fisheries.schema.movementrules.module.v1.SetMovementReportRe
 import eu.europa.ec.fisheries.schema.movementrules.movement.v1.*;
 import eu.europa.ec.fisheries.uvms.asset.client.model.AssetDTO;
 import eu.europa.ec.fisheries.uvms.docker.validation.asset.AssetTestHelper;
+import eu.europa.ec.fisheries.uvms.docker.validation.common.MessageHelper;
 import eu.europa.ec.fisheries.uvms.docker.validation.mobileterminal.MobileTerminalTestHelper;
 import eu.europa.ec.fisheries.uvms.docker.validation.mobileterminal.dto.MobileTerminalDto;
 import eu.europa.ec.fisheries.uvms.docker.validation.movement.LatLong;
@@ -21,11 +22,13 @@ import org.apache.activemq.artemis.api.core.TransportConfiguration;
 import org.apache.activemq.artemis.api.jms.ActiveMQJMSClient;
 import org.apache.activemq.artemis.api.jms.JMSFactoryType;
 import org.apache.activemq.artemis.core.remoting.impl.netty.NettyConnectorFactory;
-import org.junit.*;
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
+import org.junit.Ignore;
+import org.junit.Test;
 
 import javax.jms.*;
 import javax.jms.Queue;
-import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import java.time.Duration;
 import java.time.Instant;
@@ -33,19 +36,17 @@ import java.util.*;
 
 public class RulesPerformanceIT {
 
-
     private final ConnectionFactory connectionFactory;
 
     private static final String MOVEMENTRULES_QUEUE = "UVMSMovementRulesEvent";
     private static final String RESPONSE_QUEUE = "IntegrationTestsResponseQueue";
-
     private static MovementHelper movementHelper;
-
-    private static Map<String, JAXBContext> contexts = new HashMap<>();
+    private static MessageHelper messageHelper;
 
     @BeforeClass
     public static void setup() throws JMSException {
         movementHelper = new MovementHelper();
+        messageHelper = new MessageHelper();
     }
 
     @AfterClass
@@ -62,14 +63,13 @@ public class RulesPerformanceIT {
     }
 
     @Test
-    @Ignore
-    public void createRouteTestTitanic1000PositionsSync() throws Exception{   //Needs a special version of rules that respond on the test queue to work!!!!
-
+    @Ignore("Needs a special version of rules that respond on the test queue to work!")
+    public void createRouteTestTitanic1000PositionsSync() throws Exception {
         AssetDTO testAsset = AssetTestHelper.createTestAsset();
         MobileTerminalDto mobileTerminal = MobileTerminalTestHelper.createMobileTerminal();
         MobileTerminalTestHelper.assignMobileTerminal(testAsset, mobileTerminal);
-        List<LatLong> route = movementHelper.createRuttCobhNewYork(1000, 0.06f);                //0.1F = 654 pos    0.01 = 6543     0.07 = 934   0.06 = 1090
-
+        // 0.1F = 654 pos    0.01 = 6543     0.07 = 934   0.06 = 1090
+        List<LatLong> route = movementHelper.createRuttCobhNewYork(1000, 0.06f);
 
         AssetId assetId = new AssetId();
         assetId.setAssetType(AssetType.VESSEL);
@@ -83,7 +83,6 @@ public class RulesPerformanceIT {
         assetIdList.setValue(testAsset.getCfr());
         assetId.getAssetIdList().add(assetIdList);
 
-
         int i = 0;
         Instant b4 = Instant.now();
         Instant lastIteration = Instant.now();
@@ -91,11 +90,11 @@ public class RulesPerformanceIT {
 
         for(LatLong pos : route) {
             RawMovementType move = createBasicMovement(assetId, testAsset.getName(), pos);
-            String request = createSetMovementReportRequest(PluginType.FLUX, move, "PerformanceTester");
+            String request = createSetMovementReportRequest(PluginType.FLUX, move);
 
             String corrId = sendMessageToRules(request, RulesModuleMethod.SET_MOVEMENT_REPORT.value());
 
-            Message message = /*MessageHelper.*/listenForResponseOnQueue("PerformanceTester", "IntegrationTestsResponseQueue");
+            Message message = messageHelper.listenForResponseOnQueue("PerformanceTester", "IntegrationTestsResponseQueue");
 
             ProcessedMovementResponse movementResponse = JAXBMarshaller.unmarshallTextMessage((TextMessage) message, ProcessedMovementResponse.class);
             if(movementResponse.getMovementRefType().getType().equals(MovementRefTypeType.ALARM)){
@@ -103,60 +102,58 @@ public class RulesPerformanceIT {
             }
             i++;
             if((i % 10) == 0){
-                System.out.println("Created movement number: " + i + " Time so far: " + humanReadableFormat(Duration.between(b4, Instant.now())) + " Time since last 10: " + humanReadableFormat(Duration.between(lastIteration, Instant.now())));
-                //System.out.println("Time for 10 movement for last iteration: " + Duration.between(lastIteration,Instant.now()).toString());
+                System.out.println("Created movement number: " + i + " Time so far: " + humanReadableFormat(Duration.between(b4, Instant.now()))
+                        + " Time since last 10: " + humanReadableFormat(Duration.between(lastIteration, Instant.now())));
                 averageDurations.add(Duration.between(lastIteration, Instant.now()));
                 lastIteration = Instant.now();
-
             }
-
-
         }
-
-        averageDurations.stream().forEach(dur -> System.out.print(humanReadableFormat(dur) + ", "));
+        averageDurations.forEach(dur -> System.out.print(humanReadableFormat(dur) + ", "));
         System.out.println();
     }
 
     @Test
-    @Ignore
-    public void createRouteTestTitanic1000PositionsAsync() throws Exception{   //Needs a special version of rules that respond on the test queue to work!!!!
-
-        List<LatLong> route = movementHelper.createRuttCobhNewYork(1000, 0.06f);                //0.1F = 654 pos    0.01 = 6543     0.07 = 934   0.06 = 1090
+    @Ignore("Needs a special version of rules that respond on the test queue to work!")
+    public void createRouteTestTitanic1000PositionsAsync() throws Exception {
+        // 0.1F = 654 pos    0.01 = 6543     0.07 = 934   0.06 = 1090
+        List<LatLong> route = movementHelper.createRuttCobhNewYork(1000, 0.06f);
         sendRouteToRulesOnXShipsAsync(1, route);
-
     }
 
     @Test
-    @Ignore
-    public void createRouteTestTitanic10ships100PositionsEachAsync() throws Exception{   //Needs a special version of rules that respond on the test queue to work!!!!
-        List<LatLong> route = movementHelper.createRuttCobhNewYork(1000, 0.06f);                //0.1F = 654 pos    0.01 = 6543     0.07 = 934   0.06 = 1090
-        sendRouteToRulesOnXShipsAsync(10, route);
-
-    }
-
-    @Test
-    @Ignore
-    public void createRouteTestTitanic10ships600PositionsEachAsync() throws Exception{   //Needs a special version of rules that respond on the test queue to work!!!!
-        List<LatLong> route = movementHelper.createRuttCobhNewYork(6000, 0.01f);                //0.1F = 654 pos    0.01 = 6543     0.07 = 934   0.06 = 1090
+    @Ignore("Needs a special version of rules that respond on the test queue to work!")
+    public void createRouteTestTitanic10ships100PositionsEachAsync() throws Exception {
+        // 0.1F = 654 pos    0.01 = 6543     0.07 = 934   0.06 = 1090
+        List<LatLong> route = movementHelper.createRuttCobhNewYork(1000, 0.06f);
         sendRouteToRulesOnXShipsAsync(10, route);
     }
 
     @Test
-    @Ignore
-    public void createRouteTestTitanic10ships6000PositionsEachAsync() throws Exception{   //Needs a special version of rules that respond on the test queue to work!!!!
-        List<LatLong> route = movementHelper.createRuttCobhNewYork(60000, 0.001f);                //0.1F = 654 pos    0.01 = 6543     0.07 = 934   0.06 = 1090
+    @Ignore("Needs a special version of rules that respond on the test queue to work!")
+    public void createRouteTestTitanic10ships600PositionsEachAsync() throws Exception {
+        // 0.1F = 654 pos    0.01 = 6543     0.07 = 934   0.06 = 1090
+        List<LatLong> route = movementHelper.createRuttCobhNewYork(6000, 0.01f);
         sendRouteToRulesOnXShipsAsync(10, route);
     }
 
     @Test
-    @Ignore
-    public void createRouteTestTitanic60ships100PositionsEachAsync() throws Exception{   //Needs a special version of rules that respond on the test queue to work!!!!
-        List<LatLong> route = movementHelper.createRuttCobhNewYork(6000, 0.01f);                //0.1F = 654 pos    0.01 = 6543     0.07 = 934   0.06 = 1090
+    @Ignore("Needs a special version of rules that respond on the test queue to work!")
+    public void createRouteTestTitanic10ships6000PositionsEachAsync() throws Exception {
+        // 0.1F = 654 pos    0.01 = 6543     0.07 = 934   0.06 = 1090
+        List<LatLong> route = movementHelper.createRuttCobhNewYork(60000, 0.001f);
+        sendRouteToRulesOnXShipsAsync(10, route);
+    }
+
+    @Test
+    @Ignore("Needs a special version of rules that respond on the test queue to work!")
+    public void createRouteTestTitanic60ships100PositionsEachAsync() throws Exception {
+        // 0.1F = 654 pos    0.01 = 6543     0.07 = 934   0.06 = 1090
+        List<LatLong> route = movementHelper.createRuttCobhNewYork(6000, 0.01f);
         sendRouteToRulesOnXShipsAsync(60, route);
     }
 
-    public void sendRouteToRulesOnXShipsAsync(int nrOfShips, List<LatLong> route) throws Exception{   //Needs a special version of rules that respond on the test queue to work!!!! See ExchangeServiceBean in Movement-Rules
-
+    // Needs a special version of rules that respond on the test queue to work! See ExchangeServiceBean in Movement-Rules
+    private void sendRouteToRulesOnXShipsAsync(int nrOfShips, List<LatLong> route) throws Exception {
         List<AssetId> assetList = new ArrayList<>();
         List<String> nameList = new ArrayList<>();
 
@@ -165,8 +162,6 @@ public class RulesPerformanceIT {
             AssetDTO testAsset = AssetTestHelper.createTestAsset();
             MobileTerminalDto mobileTerminal = MobileTerminalTestHelper.createMobileTerminal();
             MobileTerminalTestHelper.assignMobileTerminal(testAsset, mobileTerminal);
-
-
 
             AssetId assetId = new AssetId();
             assetId.setAssetType(AssetType.VESSEL);
@@ -183,8 +178,8 @@ public class RulesPerformanceIT {
             assetList.add(assetId);
             nameList.add(testAsset.getName());
         }
-        System.out.println("Done with creating assets");
 
+        System.out.println("Done with creating assets");
 
         int i = 0;
         Instant b4 = Instant.now();
@@ -196,28 +191,24 @@ public class RulesPerformanceIT {
             AssetId assetId = assetList.get(i % nrOfShips);
 
             RawMovementType move = createBasicMovement(assetId, nameList.get(i % nrOfShips), pos);
-            String request = createSetMovementReportRequest(PluginType.FLUX, move, "PerformanceTester");
+            String request = createSetMovementReportRequest(PluginType.FLUX, move);
 
             String corrId = sendMessageToRules(request, RulesModuleMethod.SET_MOVEMENT_REPORT.value());
             corrList.add(corrId);
 
-
             i++;
             if((i % 10) == 0){
-                System.out.println("Created movement number: " + i + " Time so far: " + humanReadableFormat(Duration.between(b4, Instant.now())) + " Time since last 10: " + humanReadableFormat(Duration.between(lastIteration, Instant.now())));
-                //System.out.println("Time for 10 movement for last iteration: " + Duration.between(lastIteration,Instant.now()).toString());
+                System.out.println("Created movement number: " + i + " Time so far: " + humanReadableFormat(Duration.between(b4, Instant.now()))
+                        + " Time since last 10: " + humanReadableFormat(Duration.between(lastIteration, Instant.now())));
                 averageDurations.add(Duration.between(lastIteration, Instant.now()));
                 lastIteration = Instant.now();
-
             }
-
-
         }
 
         Instant middle = Instant.now();
         i = 0;
         for(String corr : corrList){
-            Message message = /*MessageHelper.*/listenForResponseOnQueue("PerformanceTester", "IntegrationTestsResponseQueue");
+            Message message = messageHelper.listenForResponseOnQueue("PerformanceTester", "IntegrationTestsResponseQueue");
             ProcessedMovementResponse movementResponse = JAXBMarshaller.unmarshallTextMessage((TextMessage) message, ProcessedMovementResponse.class);
             if(movementResponse.getMovementRefType().getType().equals(MovementRefTypeType.ALARM)){
                 System.out.println("Alarm: " + i + ", ");
@@ -225,21 +216,19 @@ public class RulesPerformanceIT {
             i++;
 
             if((i % 10) == 0){
-                System.out.println("Recieved movement number: " + i + " Time so far: " + humanReadableFormat(Duration.between(b4, Instant.now())) + " Time since last 10: " + humanReadableFormat(Duration.between(lastIteration, Instant.now())));
-                //System.out.println("Time for 10 movement for last iteration: " + Duration.between(lastIteration,Instant.now()).toString());
+                System.out.println("Recieved movement number: " + i + " Time so far: " + humanReadableFormat(Duration.between(b4, Instant.now()))
+                        + " Time since last 10: " + humanReadableFormat(Duration.between(lastIteration, Instant.now())));
                 averageDurations.add(Duration.between(lastIteration, Instant.now()));
                 lastIteration = Instant.now();
-
             }
         }
 
-        averageDurations.stream().forEach(dur -> System.out.print(humanReadableFormat(dur) + ", "));
+        averageDurations.forEach(dur -> System.out.print(humanReadableFormat(dur) + ", "));
         System.out.println();
     }
 
-    public String sendMessageToRules(String text, String requestType) throws Exception {
-        Connection connection = connectionFactory.createConnection("test", "test");
-        try {
+    private String sendMessageToRules(String text, String requestType) throws Exception {
+        try (Connection connection = connectionFactory.createConnection("test", "test")) {
             Session session = connection.createSession(false, Session.AUTO_ACKNOWLEDGE);
             Queue responseQueue = session.createQueue(RESPONSE_QUEUE);
             Queue assetQueue = session.createQueue(MOVEMENTRULES_QUEUE);
@@ -252,15 +241,11 @@ public class RulesPerformanceIT {
             session.createProducer(assetQueue).send(message);
 
             return message.getJMSMessageID();
-        } finally {
-            connection.close();
         }
     }
 
-    public static RawMovementType createBasicMovement(AssetId assetId, String assetName,  LatLong pos) {
+    private static RawMovementType createBasicMovement(AssetId assetId, String assetName, LatLong pos) {
         RawMovementType movement = new RawMovementType();
-
-
         movement.setAssetId(assetId);
         movement.setAssetName(assetName);
         movement.setFlagState("SWE");
@@ -280,31 +265,16 @@ public class RulesPerformanceIT {
         return movement;
     }
 
-    public static String createSetMovementReportRequest(PluginType type, RawMovementType rawMovementType, String username) throws JAXBException {
+    private static String createSetMovementReportRequest(PluginType type, RawMovementType rawMovementType) throws JAXBException {
         SetMovementReportRequest request = new SetMovementReportRequest();
         request.setMethod(RulesModuleMethod.SET_MOVEMENT_REPORT);
         request.setType(type);
-        request.setUsername(username);
+        request.setUsername("PerformanceTester");
         request.setRequest(rawMovementType);
         return JAXBMarshaller.marshallJaxBObjectToString(request);
     }
 
-
-    public Message listenForResponseOnQueue(String correlationId, String queue) throws Exception {
-        Connection connection = connectionFactory.createConnection("test", "test");
-        try {
-            connection.start();
-            Session session = connection.createSession(false, Session.AUTO_ACKNOWLEDGE);
-            Queue responseQueue = session.createQueue(queue);
-
-            //return session.createConsumer(responseQueue).receive(TIMEOUT);
-            return session.createConsumer(responseQueue, "FUNCTION='" + correlationId + "'").receive(60000);
-        } finally {
-            connection.close();
-        }
-    }
-
-    public static String humanReadableFormat(Duration duration) {
+    private static String humanReadableFormat(Duration duration) {
         return duration.toString()
                 .substring(2)
                 .replaceAll("(\\d[HMS])(?!$)", "$1 ")
