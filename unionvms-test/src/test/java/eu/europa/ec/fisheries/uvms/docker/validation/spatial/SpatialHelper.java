@@ -1,25 +1,20 @@
 package eu.europa.ec.fisheries.uvms.docker.validation.spatial;
 
-import java.io.StringReader;
-import java.io.StringWriter;
+import eu.europa.ec.fisheries.uvms.docker.validation.common.AbstractHelper;
+import eu.europa.ec.fisheries.uvms.docker.validation.common.MessageHelper;
+import eu.europa.ec.fisheries.uvms.spatial.model.schemas.SpatialEnrichmentRQ;
+import eu.europa.ec.fisheries.uvms.spatial.model.schemas.SpatialEnrichmentRS;
 
 import javax.jms.JMSException;
 import javax.jms.Message;
 import javax.jms.TextMessage;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
+import java.io.StringReader;
+import java.io.StringWriter;
 
-import eu.europa.ec.fisheries.uvms.docker.validation.common.AbstractHelper;
-import eu.europa.ec.fisheries.uvms.docker.validation.common.MessageHelper;
-import eu.europa.ec.fisheries.uvms.spatial.model.schemas.SpatialEnrichmentRQ;
-import eu.europa.ec.fisheries.uvms.spatial.model.schemas.SpatialEnrichmentRS;
-
-/**
- * The Class SpatialHelper.
- */
 public class SpatialHelper extends AbstractHelper {
 
-	/** The Constant UVMS_SPATIAL_REQUEST_QUEUE. */
 	private static final String UVMS_SPATIAL_REQUEST_QUEUE = "UVMSSpatialEvent";
 
 	private final MessageHelper messageHelper;
@@ -31,7 +26,6 @@ public class SpatialHelper extends AbstractHelper {
 	public void close() {
 		messageHelper.close();
 	}
-
 
 	public String marshall(final SpatialEnrichmentRQ request) throws JAXBException {
 		final StringWriter sw = new StringWriter();
