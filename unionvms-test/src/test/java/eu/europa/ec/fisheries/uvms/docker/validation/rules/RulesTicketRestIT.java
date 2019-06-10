@@ -13,178 +13,208 @@ copy of the GNU General Public License along with the IFDM Suite. If not, see <h
 */
 package eu.europa.ec.fisheries.uvms.docker.validation.rules;
 
-import java.net.URLEncoder;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.Map;
-import org.apache.http.HttpResponse;
-import org.apache.http.client.fluent.Request;
-import org.junit.Test;
-import eu.europa.ec.fisheries.schema.movementrules.search.v1.ListPagination;
-import eu.europa.ec.fisheries.schema.movementrules.search.v1.TicketListCriteria;
+import eu.europa.ec.fisheries.schema.movementrules.module.v1.GetTicketListByQueryResponse;
 import eu.europa.ec.fisheries.schema.movementrules.search.v1.TicketQuery;
-import eu.europa.ec.fisheries.schema.movementrules.search.v1.TicketSearchKey;
 import eu.europa.ec.fisheries.schema.movementrules.ticket.v1.TicketStatusType;
 import eu.europa.ec.fisheries.schema.movementrules.ticket.v1.TicketType;
+import eu.europa.ec.fisheries.uvms.commons.rest.dto.ResponseDto;
 import eu.europa.ec.fisheries.uvms.docker.validation.common.AbstractRest;
+import org.junit.Test;
 
-/**
- * The Class RulesTicketRestIT.
- */
+import javax.ws.rs.client.Entity;
+import javax.ws.rs.core.GenericType;
+import javax.ws.rs.core.HttpHeaders;
+import javax.ws.rs.core.MediaType;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 
 public class RulesTicketRestIT extends AbstractRest {
 
-	/**
-	 * Gets the ticket list test.
-	 *
-	 * @return the ticket list test
-	 * @throws Exception the exception
-	 */
 	@Test
-	public void getTicketListTest() throws Exception {
-		TicketQuery ticketQuery = new TicketQuery();
-		ListPagination listPagination = new ListPagination();
-		listPagination.setListSize(100);
-		listPagination.setPage(1);
-		ticketQuery.setPagination(listPagination);
-		TicketListCriteria ticketListCriteria = new TicketListCriteria();
-		ticketListCriteria.setKey(TicketSearchKey.STATUS);
-		ticketListCriteria.setValue("Open");
-		ticketQuery.getTicketSearchCriteria().add(ticketListCriteria);
-		final HttpResponse response = Request.Post(getBaseUrl() + "movement-rules/rest/tickets/list/" + URLEncoder.encode("vms_admin_com"))
-				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken())
-				.bodyByteArray(writeValueAsString(ticketQuery).getBytes()).execute().returnResponse();
-		Map<String, Object> dataMap = checkSuccessResponseReturnMap(response);
+	public void getTicketListTest() {
+		TicketQuery ticketQuery = CustomRulesTestHelper.getTicketQuery();
+
+		ResponseDto<GetTicketListByQueryResponse> response = getWebTarget()
+				.path("movement-rules/rest/tickets/list")
+				.path("vms_admin_se")
+				.request(MediaType.APPLICATION_JSON)
+				.header(HttpHeaders.AUTHORIZATION, getValidJwtToken())
+				.post(Entity.json(ticketQuery), new GenericType<ResponseDto<GetTicketListByQueryResponse>>(){});
+
+		assertEquals(200, response.getCode());
+		assertNotNull(response.getData());
 	}
 
-	/**
-	 * Gets the tickets by movements test.
-	 *
-	 * @return the tickets by movements test
-	 * @throws Exception the exception
-	 */
-	//Added enough to not fail the search
 	@Test
 	public void getTicketsByMovementsTest() throws Exception {
-	    ArrayList<String> list = new ArrayList<String>();
-	    list.add("dummyguid");
-		final HttpResponse response = Request.Post(getBaseUrl() + "movement-rules/rest/tickets/listByMovements")
-				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken())
-				.bodyByteArray(writeValueAsString(list).getBytes()).execute().returnResponse();
-        Map<String, Object> dataMap = checkSuccessResponseReturnMap(response);
+        String movementGuid = CustomRulesTestHelper.createRuleAndGetMovementGuid();
+	    ArrayList<String> list = new ArrayList<>();
+	    list.add(movementGuid);
+
+		ResponseDto<GetTicketListByQueryResponse> response = getWebTarget()
+				.path("movement-rules/rest/tickets/listByMovements")
+				.request(MediaType.APPLICATION_JSON)
+				.header(HttpHeaders.AUTHORIZATION, getValidJwtToken())
+				.post(Entity.json(list), new GenericType<ResponseDto<GetTicketListByQueryResponse>>(){});
+
+        List<TicketType> tickets = response.getData().getTickets();
+
+        assertEquals(200, response.getCode());
+		assertFalse(tickets.isEmpty());
 	}
 
-	/**
-	 * Count tickets by movements test.
-	 *
-	 * @throws Exception the exception
-	 */
-	//Added enough to make the query complete and changed the expected returntype to an int
 	@Test
 	public void countTicketsByMovementsTest() throws Exception {
-        ArrayList<String> list = new ArrayList<String>();
-        list.add("dummyguid");
-		final HttpResponse response = Request.Post(getBaseUrl() + "movement-rules/rest/tickets/countByMovements")
-				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken())
-				.bodyByteArray(writeValueAsString(list).getBytes()).execute().returnResponse();
-		checkSuccessResponseReturnInt(response);
+        String movementGuid = CustomRulesTestHelper.createRuleAndGetMovementGuid();
+        ArrayList<String> list = new ArrayList<>();
+        list.add(movementGuid);
+
+		ResponseDto<Long> response = getWebTarget()
+				.path("movement-rules/rest/tickets/countByMovements")
+				.request(MediaType.APPLICATION_JSON)
+				.header(HttpHeaders.AUTHORIZATION, getValidJwtToken())
+				.post(Entity.json(list), new GenericType<ResponseDto<Long>>(){});
+
+		assertEquals(200, response.getCode());
+		assertTrue(response.getData() > 0);
 	}
 
-	/**
-	 * Update ticket status.
-	 *
-	 * @throws Exception the exception
-	 */
-	//Added enough to complete the query but since we dont have any tickets in the DB we cant update anything so this is a 500
 	@Test
 	public void updateTicketStatus() throws Exception {
-		TicketType ticketType = new TicketType();
-		ticketType.setGuid("dummyguid");
-		ticketType.setComment("dummy comment");
-		ticketType.setStatus(TicketStatusType.OPEN);
-		ticketType.setAssetGuid("dummy asset guid");
-		ticketType.setChannelGuid("dummy channel guid");
-		ticketType.setMobileTerminalGuid("dummy mobile terminal guid");
-		ticketType.setMovementGuid("dummy movement guid");
-		ticketType.setOpenDate(new Date().toString());
-		ticketType.setRecipient("dummy recipient");
-		ticketType.setRuleGuid("dummy rule guid");
-		ticketType.setRuleName("dummy rule name");
-		ticketType.setTicketCount(1L);
-		ticketType.setUpdated(new Date().toString());
-		ticketType.setUpdatedBy("dummy updater");
+        String movementGuid = CustomRulesTestHelper.createRuleAndGetMovementGuid();
+        TicketQuery ticketQuery = CustomRulesTestHelper.getTicketQuery();
+        List<TicketType> tickets = getTicketTypeList(ticketQuery);
 
-		final HttpResponse response = Request.Put(getBaseUrl() + "movement-rules/rest/tickets/status")
-				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken())
-				.bodyByteArray(writeValueAsString(ticketType).getBytes()).execute().returnResponse();
-		checkErrorResponse(response);
+        Optional<TicketType> ticketOptional = tickets
+				.stream()
+				.filter(ticket -> movementGuid.equals(ticket.getMovementGuid()))
+				.findFirst();
+
+		TicketType ticketType = ticketOptional.orElse(null);
+
+		if (ticketType == null) {
+			fail("There is no ticket to update");
+		}
+
+		assertEquals(TicketStatusType.OPEN, ticketType.getStatus());
+
+		ticketType.setStatus(TicketStatusType.CLOSED);
+
+        ResponseDto<TicketType> updateResponse = getWebTarget()
+                .path("movement-rules/rest/tickets/status")
+                .request(MediaType.APPLICATION_JSON)
+                .header(HttpHeaders.AUTHORIZATION, getValidJwtToken())
+                .put(Entity.json(ticketType), new GenericType<ResponseDto<TicketType>>(){});
+
+        assertEquals(TicketStatusType.CLOSED, updateResponse.getData().getStatus());
 	}
 
-	/**
-	 * Update ticket status by query test.
-	 *
-	 * @throws Exception the exception
-	 */
-	//changed the input to match that of teh ectual method, added enough info for the query to be complete and then changed
-    //the expected output to match the actual output
-	@Test
+    @Test
 	public void updateTicketStatusByQueryTest() throws Exception {
-        TicketQuery ticketQuery = new TicketQuery();
-        ListPagination listPagination = new ListPagination();
-        listPagination.setListSize(100);
-        listPagination.setPage(1);
-        ticketQuery.setPagination(listPagination);
-        TicketListCriteria ticketListCriteria = new TicketListCriteria();
-        ticketListCriteria.setKey(TicketSearchKey.STATUS);
-        ticketListCriteria.setValue("Open");
-        ticketQuery.getTicketSearchCriteria().add(ticketListCriteria);
-		final HttpResponse response = Request.Post(getBaseUrl() + "movement-rules/rest/tickets/status/loggedInUser/OPEN")
-				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken())
-				.bodyByteArray(writeValueAsString(ticketQuery).getBytes()).execute().returnResponse();
-		checkSuccessResponseReturnList(response,ArrayList.class);
+        String movementGuid = CustomRulesTestHelper.createRuleAndGetMovementGuid();
+        TicketQuery ticketQuery = CustomRulesTestHelper.getTicketQuery();
+        List<TicketType> tickets = getTicketTypeList(ticketQuery);
+
+        TicketType ticketType = tickets
+                .stream()
+                .filter(ticket -> movementGuid.equals(ticket.getMovementGuid()))
+                .findFirst()
+                .orElse(null);
+
+		if (ticketType == null) {
+			fail("There is no ticket to update");
+		}
+
+		assertEquals(TicketStatusType.OPEN, ticketType.getStatus());
+
+		ticketType.setStatus(TicketStatusType.CLOSED);
+
+		ResponseDto<List<TicketType>> updatedTicketResponse = getWebTarget()
+				.path("movement-rules/rest/tickets/status")
+				.path("vms_admin_se")
+				.path(TicketStatusType.CLOSED.name())
+				.request(MediaType.APPLICATION_JSON)
+				.header(HttpHeaders.AUTHORIZATION, getValidJwtToken())
+				.post(Entity.json(ticketQuery), new GenericType<ResponseDto<List<TicketType>>>(){});
+
+		List<TicketType> updatedTicketList = updatedTicketResponse.getData();
+
+        TicketType updatedTicket = updatedTicketList
+                .stream()
+                .filter(ticket -> ticketType.getGuid().equals(ticket.getGuid()))
+                .findFirst()
+                .orElse(null);
+
+		if (updatedTicket == null) {
+			fail("Update Ticket Status failed");
+		}
+		assertEquals(TicketStatusType.CLOSED, updatedTicket.getStatus());
 	}
 
-	/**
-	 * Gets the ticket by guid test.
-	 *
-	 * @return the ticket by guid test
-	 * @throws Exception the exception
-	 */
-	//no tickets so this one is going to return a 500
-	@Test
+    @Test
 	public void getTicketByGuidTest() throws Exception {
-		final HttpResponse response = Request.Get(getBaseUrl() + "movement-rules/rest/tickets/guid")
-				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken()).execute()
-				.returnResponse();
-		checkErrorResponse(response);
+        String movementGuid = CustomRulesTestHelper.createRuleAndGetMovementGuid();
+        TicketQuery ticketQuery = CustomRulesTestHelper.getTicketQuery();
+        List<TicketType> tickets = getTicketTypeList(ticketQuery);
+
+        TicketType ticketType = tickets
+                .stream()
+                .filter(ticket -> movementGuid.equals(ticket.getMovementGuid()))
+                .findFirst()
+                .orElse(null);
+
+        if (ticketType == null) {
+            fail("There is no ticket to update");
+        }
+
+        TicketType ticketResponse = getWebTarget()
+                .path("movement-rules/rest/tickets")
+                .path(ticketType.getGuid())
+                .request(MediaType.APPLICATION_JSON)
+                .header(HttpHeaders.AUTHORIZATION, getValidJwtToken())
+                .get(new GenericType<ResponseDto<TicketType>>(){}).getData();
+
+        assertNotNull(ticketResponse);
+        assertEquals(ticketType.getGuid(), ticketResponse.getGuid());
 	}
 
-	/**
-	 * Gets the number of open ticket reports test.
-	 *
-	 * @return the number of open ticket reports test
-	 * @throws Exception the exception
-	 */
 	@Test
 	public void getNumberOfOpenTicketReportsTest() throws Exception {
-		final HttpResponse response = Request.Get(getBaseUrl() + "movement-rules/rest/tickets/countopen/" +URLEncoder.encode("vms_admin_com"))
-				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken()).execute()
-				.returnResponse();
-		Integer numberOpenTickets = checkSuccessResponseReturnType(response,Integer.class);
-	}
+        CustomRulesTestHelper.createRuleAndGetMovementGuid();
+        ResponseDto<Long> ticketResponse = getWebTarget()
+                .path("movement-rules/rest/tickets/countopen")
+                .path("vms_admin_se")
+                .request(MediaType.APPLICATION_JSON)
+                .header(HttpHeaders.AUTHORIZATION, getValidJwtToken())
+                .get(new GenericType<ResponseDto<Long>>(){});
 
-	/**
-	 * Gets the number of assets not sending test.
-	 *
-	 * @return the number of assets not sending test
-	 * @throws Exception the exception
-	 */
+        Long count = ticketResponse.getData();
+        assertTrue(count > 0);
+    }
+
 	@Test
-	public void getNumberOfAssetsNotSendingTest() throws Exception {
-		final HttpResponse response = Request.Get(getBaseUrl() + "movement-rules/rest/tickets/countAssetsNotSending")
-				.setHeader("Content-Type", "application/json").setHeader("Authorization", getValidJwtToken()).execute()
-				.returnResponse();
-		Integer numberAssetsNotSending = checkSuccessResponseReturnType(response,Integer.class);
+	public void getNumberOfAssetsNotSendingTest() {
+        ResponseDto<Long> ticketResponse = getWebTarget()
+                .path("movement-rules/rest/tickets/countAssetsNotSending")
+                .request(MediaType.APPLICATION_JSON)
+                .header(HttpHeaders.AUTHORIZATION, getValidJwtToken())
+                .get(new GenericType<ResponseDto<Long>>(){});
+
+        Long count = ticketResponse.getData();
+        assertNotNull(count);
 	}
 
+    private List<TicketType> getTicketTypeList(TicketQuery ticketQuery) {
+        ResponseDto<GetTicketListByQueryResponse> ticketListResponse = getWebTarget()
+                .path("movement-rules/rest/tickets/list")
+                .path("vms_admin_se")
+                .request(MediaType.APPLICATION_JSON)
+                .header(HttpHeaders.AUTHORIZATION, getValidJwtToken())
+                .post(Entity.json(ticketQuery), new GenericType<ResponseDto<GetTicketListByQueryResponse>>() {
+                });
+
+        GetTicketListByQueryResponse response = ticketListResponse.getData();
+        return response.getTickets();
+    }
 }
