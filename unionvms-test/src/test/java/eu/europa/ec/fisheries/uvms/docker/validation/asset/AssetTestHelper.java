@@ -9,9 +9,12 @@ import java.util.Random;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 import javax.ws.rs.client.Entity;
+import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.GenericType;
 import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.sse.SseEventSource;
+
 import eu.europa.ec.fisheries.schema.audit.search.v1.AuditLogListQuery;
 import eu.europa.ec.fisheries.schema.audit.search.v1.ListCriteria;
 import eu.europa.ec.fisheries.schema.audit.search.v1.SearchKey;
@@ -28,6 +31,7 @@ import eu.europa.ec.fisheries.uvms.asset.model.constants.AuditOperationEnum;
 import eu.europa.ec.fisheries.uvms.commons.date.DateUtils;
 import eu.europa.ec.fisheries.uvms.docker.validation.common.AbstractHelper;
 import eu.europa.ec.fisheries.uvms.docker.validation.common.AuditHelper;
+import eu.europa.ec.fisheries.uvms.docker.validation.movement.AuthorizationHeaderWebTarget;
 
 public class AssetTestHelper extends AbstractHelper {
 
@@ -147,7 +151,16 @@ public class AssetTestHelper extends AbstractHelper {
                 .post(Entity.json(note), Note.class);
     }
 
-	/*  AssetGroupResource */
+	public static SseEventSource getSseStream() {
+		WebTarget target = getWebTarget().path("asset/rest/sse/subscribe");
+		AuthorizationHeaderWebTarget jwtTarget = new AuthorizationHeaderWebTarget(target, getValidJwtToken());
+		return SseEventSource.
+				target(jwtTarget).build();
+	}
+
+	// ************************************************
+	//  AssetGroupResource
+	// ************************************************
 		
 	public static AssetGroup createAssetGroup(AssetGroup assetGroup) {
 		return getWebTarget()
