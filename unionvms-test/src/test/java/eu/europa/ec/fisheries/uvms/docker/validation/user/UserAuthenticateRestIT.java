@@ -32,22 +32,21 @@ import java.util.UUID;
 public class UserAuthenticateRestIT extends AbstractRest {
 
 	@Test
-	public void authenticateGetJwtTokenSuccessTest() throws Exception {
+	public void authenticateGetJwtTokenSuccessTest() {
 		final AuthenticationResponse data = UserHelper.authenticate("vms_admin_com", "password");
 		assertTrue(data.isAuthenticated());
 		assertNotNull(data.getJwtoken());
 	}
 
 	@Test
-	public void authenticateGetJwtTokenFailureTest() throws Exception {
+	public void authenticateGetJwtTokenFailureTest() {
 		final AuthenticationResponse data = UserHelper.authenticate("vms_admin_com", "invalidpassword");
 		assertFalse(data.isAuthenticated());
 		assertNull(data.getJwtoken());
 	}
 
 	@Test
-	public void getUserChallenge() throws Exception {
-
+	public void getUserChallenge() {
 		// logon
 		final AuthenticationResponse authData = UserHelper.authenticate("vms_admin_com", "password");
 		assertTrue(authData.isAuthenticated());
@@ -62,7 +61,7 @@ public class UserAuthenticateRestIT extends AbstractRest {
 	}
 
 	@Test
-	public void getUserChallengeTamperedJwt() throws Exception {
+	public void getUserChallengeTamperedJwt() {
 		final AuthenticationResponse authData = UserHelper.authenticate("vms_admin_com", "password");
 		assertTrue(authData.isAuthenticated());
 		assertNotNull(authData.getJwtoken());
@@ -81,7 +80,7 @@ public class UserAuthenticateRestIT extends AbstractRest {
 
 	@Test
 	@Ignore
-	public void challengeAuth() throws Exception {
+	public void challengeAuth() {
 
 		// until the backend jdbc code is corrected this test is
 		// undeterministical
@@ -119,7 +118,7 @@ public class UserAuthenticateRestIT extends AbstractRest {
 	}
 
 	@Test
-	public void challengeAuthVerifyWrongChallengeIsNotAccepted() throws Exception {
+	public void challengeAuthVerifyWrongChallengeIsNotAccepted() {
 
 		/*
 		 * in SCHEMA USM select t.response from usm.user_t u join
@@ -151,7 +150,7 @@ public class UserAuthenticateRestIT extends AbstractRest {
 	}
 
 	@Test
-	public void userContexts() throws Exception {
+	public void userContexts() {
 		final AuthenticationResponse authData = UserHelper.authenticate("vms_admin_com", "password");
 		assertTrue(authData.isAuthenticated());
 		assertNotNull(authData.getJwtoken());
@@ -171,7 +170,7 @@ public class UserAuthenticateRestIT extends AbstractRest {
 	}
 
 	@Test
-	public void ping() throws Exception {
+	public void ping() {
 		final AuthenticationResponse authData = UserHelper.authenticate("vms_admin_com", "password");
 		assertTrue(authData.isAuthenticated());
 		assertNotNull(authData.getJwtoken());

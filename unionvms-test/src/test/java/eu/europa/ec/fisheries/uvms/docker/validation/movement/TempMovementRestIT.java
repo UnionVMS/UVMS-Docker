@@ -26,6 +26,7 @@ import org.junit.Test;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
+import static javax.ws.rs.core.Response.Status.INTERNAL_SERVER_ERROR;
 import static org.hamcrest.CoreMatchers.is;
 
 public class TempMovementRestIT extends AbstractRest {
@@ -48,7 +49,7 @@ public class TempMovementRestIT extends AbstractRest {
     @Test
     public void createTempMovementNullInputShouldFail() {
         ResponseDto<?> response = TempMovementRestHelper.createTempMovementResponse(new TempMovementType());
-        checkErrorResponse(response);
+        assertEquals(INTERNAL_SERVER_ERROR.getStatusCode(), response.getCode());
     }
 
     @Test
@@ -57,7 +58,7 @@ public class TempMovementRestIT extends AbstractRest {
         tempMovement.getPosition().setLatitude(null);
         tempMovement.getPosition().setLongitude(null);
         ResponseDto<?> response = TempMovementRestHelper.createTempMovementResponse(tempMovement);
-        checkErrorResponse(response);
+        assertEquals(INTERNAL_SERVER_ERROR.getStatusCode(), response.getCode());
     }
 
     @Test
@@ -65,7 +66,7 @@ public class TempMovementRestIT extends AbstractRest {
         TempMovementType tempMovement = getTempMovement();
         tempMovement.getPosition().setLatitude(100d);
         ResponseDto<?> response = TempMovementRestHelper.createTempMovementResponse(tempMovement);
-        checkErrorResponse(response);
+        assertEquals(INTERNAL_SERVER_ERROR.getStatusCode(), response.getCode());
     }
 
     @Test
@@ -80,13 +81,13 @@ public class TempMovementRestIT extends AbstractRest {
     @Test
     public void getTempMovementNullGuidShouldFail() {
         ResponseDto<?> response = TempMovementRestHelper.getTempMovementResponse(null);
-        checkErrorResponse(response);
+        assertEquals(INTERNAL_SERVER_ERROR.getStatusCode(), response.getCode());
     }
 
     @Test
     public void getTempMovementNonExistingGuidShouldFail() {
         ResponseDto<?> response = TempMovementRestHelper.getTempMovementResponse(UUID.randomUUID().toString());
-        checkErrorResponse(response);
+        assertEquals(INTERNAL_SERVER_ERROR.getStatusCode(), response.getCode());
     }
 
     @Test
@@ -102,7 +103,7 @@ public class TempMovementRestIT extends AbstractRest {
     @Test
     public void removeTempMovementNullGuidShouldFail() {
         ResponseDto<?> response = TempMovementRestHelper.removeTempMovementResponse(null);
-        checkErrorResponse(response);
+        assertEquals(INTERNAL_SERVER_ERROR.getStatusCode(), response.getCode());
     }
 
     @Test

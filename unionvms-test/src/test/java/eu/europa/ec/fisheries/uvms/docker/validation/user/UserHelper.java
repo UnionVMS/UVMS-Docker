@@ -35,8 +35,7 @@ public class UserHelper extends AbstractRest {
                 .request(MediaType.APPLICATION_JSON)
                 .post(Entity.json(userPwd), AuthenticationResponse.class);
 	}
-	
-	
+
 	public static ChallengeResponse getChallenge(String jwtoken) {
 		ChallengeResponse challengeResponse = getWebTarget()
                 .path("usm-administration/rest/challenge")

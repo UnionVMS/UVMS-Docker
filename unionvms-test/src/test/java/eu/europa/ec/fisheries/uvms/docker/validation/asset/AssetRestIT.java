@@ -322,11 +322,8 @@ public class AssetRestIT extends AbstractRest {
         }
     }
 
-
     @Test
     public void testIfUserCanCreateAnAssetOkUser() {
-
-
         try {
             AssetDTO anAsset = AssetTestHelper.createBasicAsset();
             anAsset = AssetTestHelper.createAsset(anAsset);
@@ -336,8 +333,6 @@ public class AssetRestIT extends AbstractRest {
             assertFalse(true);
         }
     }
-
-
 
 	@Test(timeout = 10000)
 	public void assetSseTest() throws Exception {
@@ -366,7 +361,6 @@ public class AssetRestIT extends AbstractRest {
 				Thread.sleep(100);
 			}
 		}
-
 		assertThat(assets.size(), CoreMatchers.is(3));
 	}
 }
