@@ -1048,6 +1048,7 @@
                 <host name="default-host" alias="localhost">
                     <location name="/" handler="welcome-content"/>
                     <http-invoker security-realm="ApplicationRealm"/>
+                    <filter-ref name="gzipFilter" predicate="regex[pattern='(?:application/javascript|application/json|text/css|text/html)(;.*)?', value=%{o,Content-Type}, full-match=true]"/>
                 </host>
             </server>
             <servlet-container name="default">
@@ -1057,6 +1058,9 @@
             <handlers>
                 <file name="welcome-content" path="${jboss.home.dir}/welcome-content"/>
             </handlers>
+            <filters>
+                <gzip name="gzipFilter"/>
+            </filters>
         </subsystem>
         <subsystem xmlns="urn:jboss:domain:webservices:2.0" statistics-enabled="${wildfly.webservices.statistics-enabled:${wildfly.statistics-enabled:false}}">
             <wsdl-host>${jboss.bind.address:127.0.0.1}</wsdl-host>
