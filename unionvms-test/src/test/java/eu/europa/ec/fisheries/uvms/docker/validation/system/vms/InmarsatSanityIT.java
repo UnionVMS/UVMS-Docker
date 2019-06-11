@@ -1,37 +1,12 @@
 package eu.europa.ec.fisheries.uvms.docker.validation.system.vms;
 
-import static org.hamcrest.CoreMatchers.is;
-import java.time.OffsetDateTime;
-import java.time.ZoneOffset;
-import java.time.ZonedDateTime;
-import java.util.Date;
-import java.util.GregorianCalendar;
-import java.util.Set;
-import java.util.TimeZone;
-import javax.jms.JMSException;
-import org.hamcrest.CoreMatchers;
-import org.junit.After;
-import org.junit.AfterClass;
-import org.junit.Assert;
-import org.junit.BeforeClass;
-import org.junit.Test;
 import eu.europa.ec.fisheries.schema.exchange.movement.mobileterminal.v1.IdList;
 import eu.europa.ec.fisheries.schema.exchange.movement.mobileterminal.v1.IdType;
 import eu.europa.ec.fisheries.schema.exchange.movement.mobileterminal.v1.MobileTerminalId;
-import eu.europa.ec.fisheries.schema.exchange.movement.v1.MovementBaseType;
-import eu.europa.ec.fisheries.schema.exchange.movement.v1.MovementComChannelType;
-import eu.europa.ec.fisheries.schema.exchange.movement.v1.MovementPoint;
-import eu.europa.ec.fisheries.schema.exchange.movement.v1.MovementSourceType;
-import eu.europa.ec.fisheries.schema.exchange.movement.v1.MovementType;
-import eu.europa.ec.fisheries.schema.exchange.movement.v1.MovementTypeType;
-import eu.europa.ec.fisheries.schema.exchange.movement.v1.SetReportMovementType;
+import eu.europa.ec.fisheries.schema.exchange.movement.v1.*;
 import eu.europa.ec.fisheries.schema.exchange.plugin.types.v1.PluginType;
 import eu.europa.ec.fisheries.schema.exchange.plugin.v1.SetReportRequest;
-import eu.europa.ec.fisheries.schema.movementrules.customrule.v1.ActionType;
-import eu.europa.ec.fisheries.schema.movementrules.customrule.v1.ConditionType;
-import eu.europa.ec.fisheries.schema.movementrules.customrule.v1.CriteriaType;
-import eu.europa.ec.fisheries.schema.movementrules.customrule.v1.CustomRuleType;
-import eu.europa.ec.fisheries.schema.movementrules.customrule.v1.SubCriteriaType;
+import eu.europa.ec.fisheries.schema.movementrules.customrule.v1.*;
 import eu.europa.ec.fisheries.uvms.asset.client.model.AssetDTO;
 import eu.europa.ec.fisheries.uvms.commons.date.DateUtils;
 import eu.europa.ec.fisheries.uvms.docker.validation.asset.AssetTestHelper;
@@ -47,6 +22,19 @@ import eu.europa.ec.fisheries.uvms.docker.validation.system.helper.CustomRuleHel
 import eu.europa.ec.fisheries.uvms.docker.validation.system.helper.SanityRuleHelper;
 import eu.europa.ec.fisheries.uvms.exchange.model.exception.ExchangeModelMarshallException;
 import eu.europa.ec.fisheries.uvms.exchange.model.mapper.ExchangeModuleRequestMapper;
+import org.hamcrest.CoreMatchers;
+import org.junit.*;
+
+import javax.jms.JMSException;
+import java.time.OffsetDateTime;
+import java.time.ZoneOffset;
+import java.time.ZonedDateTime;
+import java.util.Date;
+import java.util.GregorianCalendar;
+import java.util.Set;
+import java.util.TimeZone;
+
+import static org.hamcrest.CoreMatchers.is;
 
 public class InmarsatSanityIT extends AbstractRest {
 
@@ -71,10 +59,9 @@ public class InmarsatSanityIT extends AbstractRest {
 
     @Test
     public void inmarsatPosition_MEMBER_NUMBER_and_DNID() throws Exception {
-
         OffsetDateTime timestamp = OffsetDateTime.now(ZoneOffset.UTC);
 
-        // create testdata
+        // create test data
         AssetDTO asset = AssetTestHelper.createTestAsset();
         MobileTerminalDto mobileTerminal = MobileTerminalTestHelper.createMobileTerminal();
         MobileTerminalTestHelper.assignMobileTerminal(asset, mobileTerminal);
@@ -92,7 +79,7 @@ public class InmarsatSanityIT extends AbstractRest {
         CustomRuleType createdCustomRule = CustomRuleHelper.createCustomRule(flagStateRule);
         assertNotNull(createdCustomRule);
 
-        // create the positionreport only containing DNID and MEMBER_NUMBER  OBS NO ASSET REFERENCES AT ALL
+        // create the position report only containing DNID and MEMBER_NUMBER  OBS NO ASSET REFERENCES AT ALL
         String request = createReportRequest(mobileTerminal);
         try (TopicListener topicListener = new TopicListener(SELECTOR)) {
             messageHelper.sendMessage("UVMSExchangeEvent", request);
@@ -167,10 +154,8 @@ public class InmarsatSanityIT extends AbstractRest {
         assertThat(alarmReport.getIncomingMovement().getMobileTerminalMemberNumber(), CoreMatchers.is(channel.getMemberNumber()));
     }
 
-    private SetReportRequest sendPositionAndReturnResponse(AssetDTO asset1, MobileTerminalDto mobileTerminal1)
-            throws ExchangeModelMarshallException, Exception {
+    private SetReportRequest sendPositionAndReturnResponse(AssetDTO asset1, MobileTerminalDto mobileTerminal1) throws Exception {
         OffsetDateTime timestamp = OffsetDateTime.now(ZoneOffset.UTC);
-
         String fluxEndpoint = "DNK";
 
         CustomRuleType flagStateRule = CustomRuleBuilder.getBuilder()
@@ -199,7 +184,6 @@ public class InmarsatSanityIT extends AbstractRest {
     }
 
     private String createReportRequest(MobileTerminalDto mobileTerminal) throws ExchangeModelMarshallException, IllegalArgumentException {
-
         Set<ChannelDto> channels = mobileTerminal.getChannels();
         Assert.assertEquals(1, channels.size());
         ChannelDto channel = channels.iterator().next();

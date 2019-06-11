@@ -11,17 +11,6 @@ copy of the GNU General Public License along with the IFDM Suite. If not, see <h
  */
 package eu.europa.ec.fisheries.uvms.docker.validation.system.helper;
 
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.CoreMatchers.notNullValue;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertThat;
-import java.time.OffsetDateTime;
-import java.time.ZoneOffset;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.List;
-import javax.jms.Message;
-import javax.jms.TextMessage;
 import eu.europa.ec.fisheries.schema.exchange.module.v1.GetServiceListResponse;
 import eu.europa.ec.fisheries.schema.exchange.plugin.types.v1.PluginType;
 import eu.europa.ec.fisheries.schema.exchange.plugin.v1.SetCommandRequest;
@@ -30,11 +19,7 @@ import eu.europa.ec.fisheries.schema.exchange.service.v1.CapabilityListType;
 import eu.europa.ec.fisheries.schema.exchange.service.v1.ServiceResponseType;
 import eu.europa.ec.fisheries.schema.exchange.service.v1.ServiceType;
 import eu.europa.ec.fisheries.schema.exchange.service.v1.SettingListType;
-import eu.europa.ec.fisheries.schema.movementrules.customrule.v1.ActionType;
-import eu.europa.ec.fisheries.schema.movementrules.customrule.v1.ConditionType;
-import eu.europa.ec.fisheries.schema.movementrules.customrule.v1.CriteriaType;
-import eu.europa.ec.fisheries.schema.movementrules.customrule.v1.CustomRuleType;
-import eu.europa.ec.fisheries.schema.movementrules.customrule.v1.SubCriteriaType;
+import eu.europa.ec.fisheries.schema.movementrules.customrule.v1.*;
 import eu.europa.ec.fisheries.uvms.asset.client.model.AssetDTO;
 import eu.europa.ec.fisheries.uvms.commons.message.api.MessageConstants;
 import eu.europa.ec.fisheries.uvms.docker.validation.asset.AssetTestHelper;
@@ -44,6 +29,17 @@ import eu.europa.ec.fisheries.uvms.docker.validation.movement.LatLong;
 import eu.europa.ec.fisheries.uvms.exchange.model.constant.ExchangeModelConstants;
 import eu.europa.ec.fisheries.uvms.exchange.model.mapper.ExchangeModuleRequestMapper;
 import eu.europa.ec.fisheries.uvms.exchange.model.mapper.JAXBMarshaller;
+
+import javax.jms.Message;
+import javax.jms.TextMessage;
+import java.time.OffsetDateTime;
+import java.time.ZoneOffset;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Date;
+import java.util.List;
+
+import static org.junit.Assert.assertNotNull;
 
 public class VMSSystemHelper {
 
@@ -68,7 +64,7 @@ public class VMSSystemHelper {
         return triggerBasicRuleWithAction(ActionType.EMAIL, email, SetCommandRequest.class, emailSelector);
     }
     
-    public static <T> T triggerBasicRuleWithAction(ActionType actionType, String actionValue, Class<T> expectedType, String selector) throws Exception {
+    private static <T> T triggerBasicRuleWithAction(ActionType actionType, String actionValue, Class<T> expectedType, String selector) throws Exception {
         try {
             OffsetDateTime timestamp = OffsetDateTime.now(ZoneOffset.UTC);
             AssetDTO asset = AssetTestHelper.createTestAsset();
@@ -100,7 +96,7 @@ public class VMSSystemHelper {
     
     public static void registerEmailPluginIfNotExisting() throws Exception {
         try (MessageHelper messageHelper = new MessageHelper()) {
-            String exchangeRequest = ExchangeModuleRequestMapper.createGetServiceListRequest(Arrays.asList(PluginType.EMAIL));
+            String exchangeRequest = ExchangeModuleRequestMapper.createGetServiceListRequest(Collections.singletonList(PluginType.EMAIL));
             Message exchangeResponse = messageHelper.getMessageResponse(MessageConstants.QUEUE_EXCHANGE_EVENT_NAME, exchangeRequest);
             GetServiceListResponse emailServices = JAXBMarshaller.unmarshallTextMessage((TextMessage) exchangeResponse, GetServiceListResponse.class);
             List<ServiceResponseType> service = emailServices.getService();

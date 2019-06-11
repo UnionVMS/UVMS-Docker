@@ -11,8 +11,19 @@ copy of the GNU General Public License along with the IFDM Suite. If not, see <h
  */
 package eu.europa.ec.fisheries.uvms.docker.validation.system.helper;
 
-import java.math.BigDecimal;
-import java.util.GregorianCalendar;
+import eu.europa.ec.fisheries.uvms.asset.client.model.AssetDTO;
+import eu.europa.ec.fisheries.uvms.docker.validation.common.AbstractHelper;
+import eu.europa.ec.fisheries.uvms.docker.validation.movement.LatLong;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import un.unece.uncefact.data.standard.fluxvesselpositionmessage._4.FLUXVesselPositionMessage;
+import un.unece.uncefact.data.standard.reusableaggregatebusinessinformationentity._18.*;
+import un.unece.uncefact.data.standard.unqualifieddatatype._18.*;
+import xeu.bridge_connector.v1.RequestType;
+import xeu.bridge_connector.v1.ResponseType;
+import xeu.bridge_connector.wsdl.v1.BridgeConnectorPortType;
+import xeu.bridge_connector.wsdl.v1.MovementService;
+
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
@@ -23,27 +34,8 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.ws.BindingProvider;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import eu.europa.ec.fisheries.uvms.asset.client.model.AssetDTO;
-import eu.europa.ec.fisheries.uvms.docker.validation.common.AbstractHelper;
-import eu.europa.ec.fisheries.uvms.docker.validation.movement.LatLong;
-import un.unece.uncefact.data.standard.fluxvesselpositionmessage._4.FLUXVesselPositionMessage;
-import un.unece.uncefact.data.standard.reusableaggregatebusinessinformationentity._18.FLUXPartyType;
-import un.unece.uncefact.data.standard.reusableaggregatebusinessinformationentity._18.FLUXReportDocumentType;
-import un.unece.uncefact.data.standard.reusableaggregatebusinessinformationentity._18.VesselCountryType;
-import un.unece.uncefact.data.standard.reusableaggregatebusinessinformationentity._18.VesselGeographicalCoordinateType;
-import un.unece.uncefact.data.standard.reusableaggregatebusinessinformationentity._18.VesselPositionEventType;
-import un.unece.uncefact.data.standard.reusableaggregatebusinessinformationentity._18.VesselTransportMeansType;
-import un.unece.uncefact.data.standard.unqualifieddatatype._18.CodeType;
-import un.unece.uncefact.data.standard.unqualifieddatatype._18.DateTimeType;
-import un.unece.uncefact.data.standard.unqualifieddatatype._18.IDType;
-import un.unece.uncefact.data.standard.unqualifieddatatype._18.MeasureType;
-import un.unece.uncefact.data.standard.unqualifieddatatype._18.TextType;
-import xeu.bridge_connector.v1.RequestType;
-import xeu.bridge_connector.v1.ResponseType;
-import xeu.bridge_connector.wsdl.v1.BridgeConnectorPortType;
-import xeu.bridge_connector.wsdl.v1.MovementService;
+import java.math.BigDecimal;
+import java.util.GregorianCalendar;
 
 public class FLUXHelper extends AbstractHelper {
 
@@ -59,7 +51,7 @@ public class FLUXHelper extends AbstractHelper {
         assertEquals("OK", responseType.getStatus());
     }
 
-    public static RequestType createVesselReport(AssetDTO testAsset, LatLong latLong) throws DatatypeConfigurationException, JAXBException, ParserConfigurationException {
+    private static RequestType createVesselReport(AssetDTO testAsset, LatLong latLong) throws DatatypeConfigurationException, JAXBException, ParserConfigurationException {
         FLUXVesselPositionMessage fluxVesselPositionMessage = createFluxMessage(testAsset, latLong);
         return createVesselReport(fluxVesselPositionMessage);
     }
@@ -94,19 +86,13 @@ public class FLUXHelper extends AbstractHelper {
         ircsId.setSchemeID("IRCS");
         ircsId.setValue(testAsset.getIrcs());
         vesselTransportMeansType.getIDS().add(ircsId);
-        
-//      IDType extMarkingId = new IDType();
-//      extMarkingId.setSchemeID("EXT_MARKING");
-//      extMarkingId.setValue(testAsset.getExternalMarking());
-//      vesselTransportMeansType.getIDS().add(extMarkingId);
 
         VesselCountryType vesselCountry = new VesselCountryType();
         IDType countryId = new IDType();
         countryId.setValue(testAsset.getFlagStateCode());
         vesselCountry.setID(countryId);
         vesselTransportMeansType.setRegistrationVesselCountry(vesselCountry);
-        
-        
+
         VesselPositionEventType vesselPositionEventType = new VesselPositionEventType();
         
         MeasureType measureType = new MeasureType();
@@ -170,9 +156,7 @@ public class FLUXHelper extends AbstractHelper {
         Document document = db.newDocument();
         Marshaller marshaller = jaxbContext.createMarshaller();
         marshaller.marshal(fLUXVesselPositionMessage, document);
-
-        Element documentElement = document.getDocumentElement();
-        return documentElement;
+        return document.getDocumentElement();
     }
     
     private static BridgeConnectorPortType createBridgeConnector() {
@@ -183,5 +167,4 @@ public class FLUXHelper extends AbstractHelper {
                 getBaseUrl() + "movement-service/MovementPositionService/FluxMovementPositionReceiverBean");
         return bridgeConnectorPortType;
     }
-    
 }

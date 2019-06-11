@@ -14,212 +14,122 @@ copy of the GNU General Public License along with the IFDM Suite. If not, see <h
 package eu.europa.ec.fisheries.uvms.docker.validation.system;
 
 import eu.europa.ec.fisheries.uvms.docker.validation.common.AbstractRest;
-import org.apache.http.HttpStatus;
-import org.apache.http.client.fluent.Request;
 import org.junit.Test;
 
-/**
- * The Class ModuleAvailableSystemIT.
- */
+import javax.ws.rs.client.Client;
+import javax.ws.rs.client.ClientBuilder;
+import javax.ws.rs.client.WebTarget;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
+
 public class ModuleAvailableSystemIT extends AbstractRest {
 
-	/**
-	 * Check union vms web access test.
-	 *
-	 * @throws Exception
-	 *             the exception
-	 */
 	@Test
-	public void checkUnionVmsWebAccessTest() throws Exception {
-		assertEquals(HttpStatus.SC_OK,
-				Request.Get(getBaseUrl()).execute().returnResponse().getStatusLine().getStatusCode());
+	public void checkUnionVmsWebAccessTest() {
+		assertEquals(Response.Status.OK.getStatusCode(), getResponseCodeForEndpoint(""));
 	}
 
-	/**
-	 * Check user access test.
-	 *
-	 * @throws Exception
-	 *             the exception
-	 */
 	@Test
-	public void checkUserAccessTest() throws Exception {
-		assertEquals(HttpStatus.SC_OK, Request.Get(getBaseUrl() + "usm-administration/").execute().returnResponse()
-				.getStatusLine().getStatusCode());
-		assertEquals(HttpStatus.SC_OK, Request.Get(getBaseUrl() + "user/monitoring").execute().returnResponse()
-				.getStatusLine().getStatusCode());		
-		assertEquals(HttpStatus.SC_FORBIDDEN, Request.Get(getBaseUrl() + "usm-administration/rest").execute()
-				.returnResponse().getStatusLine().getStatusCode());
+	public void checkUserAccessTest() {
+		assertEquals(Response.Status.OK.getStatusCode(), getResponseCodeForEndpoint("usm-administration/"));
+		assertEquals(Response.Status.OK.getStatusCode(), getResponseCodeForEndpoint("user/monitoring"));
+		assertEquals(Response.Status.FORBIDDEN.getStatusCode(), getResponseCodeForEndpoint("usm-administration/rest"));
 	}
 
-	/**
-	 * Check config access test.
-	 *
-	 * @throws Exception
-	 *             the exception
-	 */
 	@Test
-	public void checkConfigAccessTest() throws Exception {
-		assertEquals(HttpStatus.SC_OK,
-				Request.Get(getBaseUrl() + "config/").execute().returnResponse().getStatusLine().getStatusCode());
-		assertEquals(HttpStatus.SC_OK,
-				Request.Get(getBaseUrl() + "config/monitoring").execute().returnResponse().getStatusLine().getStatusCode());		
-		assertEquals(HttpStatus.SC_FORBIDDEN,
-				Request.Get(getBaseUrl() + "config/rest").execute().returnResponse().getStatusLine().getStatusCode());
+	public void checkConfigAccessTest() {
+		assertEquals(Response.Status.OK.getStatusCode(), getResponseCodeForEndpoint("config/"));
+		assertEquals(Response.Status.OK.getStatusCode(), getResponseCodeForEndpoint("config/monitoring"));
+		assertEquals(Response.Status.FORBIDDEN.getStatusCode(), getResponseCodeForEndpoint("config/rest"));
 	}
 
-	/**
-	 * Check exchange access test.
-	 *
-	 * @throws Exception
-	 *             the exception
-	 */
 	@Test
-	public void checkExchangeAccessTest() throws Exception {
-		assertEquals(HttpStatus.SC_FORBIDDEN,
-				Request.Get(getBaseUrl() + "exchange/").execute().returnResponse().getStatusLine().getStatusCode());
-		assertEquals(HttpStatus.SC_OK,
-				Request.Get(getBaseUrl() + "exchange/monitoring").execute().returnResponse().getStatusLine().getStatusCode());		
-		assertEquals(HttpStatus.SC_FORBIDDEN,
-				Request.Get(getBaseUrl() + "exchange/rest").execute().returnResponse().getStatusLine().getStatusCode());
+	public void checkExchangeAccessTest() {
+		assertEquals(Response.Status.FORBIDDEN.getStatusCode(), getResponseCodeForEndpoint("exchange/"));
+		assertEquals(Response.Status.OK.getStatusCode(), getResponseCodeForEndpoint("exchange/monitoring"));
+		assertEquals(Response.Status.FORBIDDEN.getStatusCode(), getResponseCodeForEndpoint("exchange/rest"));
 	}
 
-	/**
-	 * Check spatial access test.
-	 *
-	 * @throws Exception
-	 *             the exception
-	 */
 	@Test
-	public void checkSpatialAccessTest() throws Exception {
-		assertEquals(HttpStatus.SC_FORBIDDEN,
-				Request.Get(getBaseUrl() + "spatial/").execute().returnResponse().getStatusLine().getStatusCode());
-		assertEquals(HttpStatus.SC_OK,
-				Request.Get(getBaseUrl() + "spatial/monitoring").execute().returnResponse().getStatusLine().getStatusCode());		
-		assertEquals(HttpStatus.SC_FORBIDDEN,
-				Request.Get(getBaseUrl() + "spatial/rest").execute().returnResponse().getStatusLine().getStatusCode());
+	public void checkSpatialAccessTest() {
+		assertEquals(Response.Status.FORBIDDEN.getStatusCode(), getResponseCodeForEndpoint("spatial/"));
+		assertEquals(Response.Status.OK.getStatusCode(), getResponseCodeForEndpoint("spatial/monitoring"));
+		assertEquals(Response.Status.FORBIDDEN.getStatusCode(), getResponseCodeForEndpoint("spatial/rest"));
 	}
 
-	/**
-	 * Check movement access test.
-	 *
-	 * @throws Exception
-	 *             the exception
-	 */
 	@Test
-	public void checkMovementAccessTest() throws Exception {
-		assertEquals(HttpStatus.SC_FORBIDDEN,
-				Request.Get(getBaseUrl() + "movement/").execute().returnResponse().getStatusLine().getStatusCode());
-		assertEquals(HttpStatus.SC_OK,
-				Request.Get(getBaseUrl() + "movement/monitoring").execute().returnResponse().getStatusLine().getStatusCode());		
-		assertEquals(HttpStatus.SC_FORBIDDEN,
-                Request.Get(getBaseUrl() + "movement/rest/config").execute().returnResponse().getStatusLine().getStatusCode());
-		assertEquals(HttpStatus.SC_FORBIDDEN,
-                Request.Get(getBaseUrl() + "movement/rest/alarms").execute().returnResponse().getStatusLine().getStatusCode());
-		assertEquals(HttpStatus.SC_FORBIDDEN,
-                Request.Get(getBaseUrl() + "movement/rest/movement").execute().returnResponse().getStatusLine().getStatusCode());
-		assertEquals(HttpStatus.SC_FORBIDDEN,
-                Request.Get(getBaseUrl() + "movement/rest/search").execute().returnResponse().getStatusLine().getStatusCode());
-		assertEquals(HttpStatus.SC_FORBIDDEN,
-                Request.Get(getBaseUrl() + "movement/rest/tempmovement").execute().returnResponse().getStatusLine().getStatusCode());
-		assertEquals(HttpStatus.SC_FORBIDDEN,
-                Request.Get(getBaseUrl() + "movement/rest/sse").execute().returnResponse().getStatusLine().getStatusCode());
-		assertEquals(HttpStatus.SC_FORBIDDEN,
-                Request.Get(getBaseUrl() + "movement/rest/segment").execute().returnResponse().getStatusLine().getStatusCode());
-		assertEquals(HttpStatus.SC_FORBIDDEN,
-                Request.Get(getBaseUrl() + "movement/rest/track").execute().returnResponse().getStatusLine().getStatusCode());
-		assertEquals(HttpStatus.SC_OK, 
-		        Request.Get(getBaseUrl() + "movement/monitoring").execute().returnResponse().getStatusLine().getStatusCode());
+	public void checkMovementAccessTest() {
+		assertEquals(Response.Status.FORBIDDEN.getStatusCode(), getResponseCodeForEndpoint("movement/"));
+		assertEquals(Response.Status.OK.getStatusCode(), getResponseCodeForEndpoint("movement/monitoring"));
+		assertEquals(Response.Status.FORBIDDEN.getStatusCode(), getResponseCodeForEndpoint("movement/rest/config"));
+		assertEquals(Response.Status.FORBIDDEN.getStatusCode(), getResponseCodeForEndpoint("movement/rest/alarms"));
+		assertEquals(Response.Status.FORBIDDEN.getStatusCode(), getResponseCodeForEndpoint("movement/rest/movement"));
+		assertEquals(Response.Status.FORBIDDEN.getStatusCode(), getResponseCodeForEndpoint("movement/rest/search"));
+		assertEquals(Response.Status.FORBIDDEN.getStatusCode(), getResponseCodeForEndpoint("movement/rest/tempmovement"));
+		assertEquals(Response.Status.FORBIDDEN.getStatusCode(), getResponseCodeForEndpoint("movement/rest/sse"));
+		assertEquals(Response.Status.FORBIDDEN.getStatusCode(), getResponseCodeForEndpoint("movement/rest/segment"));
+		assertEquals(Response.Status.FORBIDDEN.getStatusCode(), getResponseCodeForEndpoint("movement/rest/track"));
+		assertEquals(Response.Status.OK.getStatusCode(), getResponseCodeForEndpoint("movement/monitoring"));
 	}
 
-	/**
-	 * Check audit access test.
-	 *
-	 * @throws Exception
-	 *             the exception
-	 */
 	@Test
-	public void checkAuditAccessTest() throws Exception {
-		assertEquals(HttpStatus.SC_OK,
-				Request.Get(getBaseUrl() + "audit/").execute().returnResponse().getStatusLine().getStatusCode());
-		assertEquals(HttpStatus.SC_OK,
-				Request.Get(getBaseUrl() + "audit/monitoring").execute().returnResponse().getStatusLine().getStatusCode());
-		assertEquals(HttpStatus.SC_FORBIDDEN,
-				Request.Get(getBaseUrl() + "audit/rest").execute().returnResponse().getStatusLine().getStatusCode());
+	public void checkAuditAccessTest() {
+		assertEquals(Response.Status.OK.getStatusCode(), getResponseCodeForEndpoint("audit/"));
+		assertEquals(Response.Status.OK.getStatusCode(), getResponseCodeForEndpoint("audit/monitoring"));
+		assertEquals(Response.Status.FORBIDDEN.getStatusCode(), getResponseCodeForEndpoint("audit/rest"));
 	}
 
-	/**
-	 * Check asset access test.
-	 *
-	 * @throws Exception
-	 *             the exception
-	 */
 	@Test
-	public void checkAssetAccessTest() throws Exception {
-		assertEquals(HttpStatus.SC_OK,
-				Request.Get(getBaseUrl() + "asset/").execute().returnResponse().getStatusLine().getStatusCode());
-		assertEquals(HttpStatus.SC_OK,
-				Request.Get(getBaseUrl() + "asset/monitoring").execute().returnResponse().getStatusLine().getStatusCode());		
-		assertEquals(HttpStatus.SC_FORBIDDEN,
-		        Request.Get(getBaseUrl() + "asset/rest/config").execute().returnResponse().getStatusLine().getStatusCode());
-		assertEquals(HttpStatus.SC_FORBIDDEN,
-		        Request.Get(getBaseUrl() + "asset/rest/asset").execute().returnResponse().getStatusLine().getStatusCode());
-		assertEquals(HttpStatus.SC_FORBIDDEN,
-		        Request.Get(getBaseUrl() + "asset/rest/group").execute().returnResponse().getStatusLine().getStatusCode());
-		assertEquals(HttpStatus.SC_FORBIDDEN,
-		        Request.Get(getBaseUrl() + "asset/rest/mobileterminal").execute().returnResponse().getStatusLine().getStatusCode());
+	public void checkAssetAccessTest() {
+		assertEquals(Response.Status.OK.getStatusCode(), getResponseCodeForEndpoint("asset/"));
+		assertEquals(Response.Status.OK.getStatusCode(), getResponseCodeForEndpoint("asset/monitoring"));
+		assertEquals(Response.Status.FORBIDDEN.getStatusCode(), getResponseCodeForEndpoint("asset/rest/config"));
+		assertEquals(Response.Status.FORBIDDEN.getStatusCode(), getResponseCodeForEndpoint("asset/rest/asset"));
+		assertEquals(Response.Status.FORBIDDEN.getStatusCode(), getResponseCodeForEndpoint("asset/rest/group"));
+		assertEquals(Response.Status.FORBIDDEN.getStatusCode(), getResponseCodeForEndpoint("asset/rest/mobileterminal"));
 	}
 
-	/**
-	 * Check rules access test.
-	 *
-	 * @throws Exception
-	 *             the exception
-	 */
 	@Test
-	public void checkRulesAccessTest() throws Exception {
-		assertEquals(HttpStatus.SC_FORBIDDEN,
-				Request.Get(getBaseUrl() + "movement-rules/").execute().returnResponse().getStatusLine().getStatusCode());
-		assertEquals(HttpStatus.SC_OK,
-				Request.Get(getBaseUrl() + "movement-rules/monitoring").execute().returnResponse().getStatusLine().getStatusCode());		
-		assertEquals(HttpStatus.SC_FORBIDDEN,
-				Request.Get(getBaseUrl() + "movement-rules/rest/customrules").execute().returnResponse().getStatusLine().getStatusCode());
-		assertEquals(HttpStatus.SC_FORBIDDEN,
-				Request.Get(getBaseUrl() + "movement-rules/rest/tickets").execute().returnResponse().getStatusLine().getStatusCode());
+	public void checkRulesAccessTest() {
+		assertEquals(Response.Status.FORBIDDEN.getStatusCode(), getResponseCodeForEndpoint("movement-rules/"));
+		assertEquals(Response.Status.OK.getStatusCode(), getResponseCodeForEndpoint("movement-rules/monitoring"));
+		assertEquals(Response.Status.FORBIDDEN.getStatusCode(), getResponseCodeForEndpoint("movement-rules/rest/customrules"));
+		assertEquals(Response.Status.FORBIDDEN.getStatusCode(), getResponseCodeForEndpoint("movement-rules/rest/tickets"));
 	}
 
-	/**
-	 * Check reporting access test.
-	 *
-	 * @throws Exception
-	 *             the exception
-	 */
 	@Test
-	public void checkReportingAccessTest() throws Exception {
-		assertEquals(HttpStatus.SC_FORBIDDEN,
-				Request.Get(getBaseUrl() + "reporting/").execute().returnResponse().getStatusLine().getStatusCode());
-		assertEquals(HttpStatus.SC_OK,
-				Request.Get(getBaseUrl() + "reporting/monitoring").execute().returnResponse().getStatusLine().getStatusCode());		
-	}
-	
-	/**
-	 * Check mapfish print access test.
-	 *
-	 * @throws Exception the exception
-	 */
-	@Test
-	public void checkMapfishPrintAccessTest() throws Exception {
-		assertEquals(HttpStatus.SC_FORBIDDEN,
-				Request.Get("http://localhost:28080/" + "mapfish-print/").execute().returnResponse().getStatusLine().getStatusCode());
+	public void checkReportingAccessTest() {
+		assertEquals(Response.Status.FORBIDDEN.getStatusCode(), getResponseCodeForEndpoint("reporting/"));
+		assertEquals(Response.Status.OK.getStatusCode(), getResponseCodeForEndpoint("reporting/monitoring"));
 	}
 
-	/**
-	 * Check geoserver access test.
-	 *
-	 * @throws Exception the exception
-	 */
 	@Test
-	public void checkGeoserverAccessTest() throws Exception {
-		assertEquals(HttpStatus.SC_OK,
-				Request.Get("http://localhost:28080/geoserver/").execute().returnResponse().getStatusLine().getStatusCode());
+	public void checkMapfishPrintAccessTest() {
+		Client client = ClientBuilder.newClient();
+		WebTarget target = client.target("http://localhost:28080/mapfish-print/");
+		Response response = target
+				.request(MediaType.APPLICATION_JSON)
+				.get();
+
+		assertEquals(Response.Status.FORBIDDEN.getStatusCode(), response.getStatus());
+	}
+
+	@Test
+	public void checkGeoServerAccessTest() {
+		Client client = ClientBuilder.newClient();
+		WebTarget target = client.target("http://localhost:28080/geoserver/");
+		Response response = target
+				.request(MediaType.APPLICATION_JSON)
+				.get();
+
+		assertEquals(Response.Status.FOUND.getStatusCode(), response.getStatus());
+	}
+
+	private int getResponseCodeForEndpoint(String relativePath) {
+		Response response = getWebTarget()
+				.path(relativePath)
+				.request(MediaType.APPLICATION_JSON)
+				.get();
+		return response.getStatus();
 	}
 }
