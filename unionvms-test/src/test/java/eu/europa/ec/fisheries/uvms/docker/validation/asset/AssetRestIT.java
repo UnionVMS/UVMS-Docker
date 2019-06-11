@@ -17,6 +17,10 @@ import eu.europa.ec.fisheries.uvms.asset.client.model.*;
 import eu.europa.ec.fisheries.uvms.asset.model.constants.AuditOperationEnum;
 import eu.europa.ec.fisheries.uvms.commons.date.DateUtils;
 import eu.europa.ec.fisheries.uvms.docker.validation.common.AbstractRest;
+import eu.europa.ec.fisheries.uvms.docker.validation.movement.LatLong;
+import eu.europa.ec.fisheries.uvms.docker.validation.movement.MovementHelper;
+import eu.europa.ec.fisheries.uvms.docker.validation.movement.model.IncomingMovement;
+import org.hamcrest.CoreMatchers;
 import org.junit.Ignore;
 import org.junit.Test;
 
@@ -25,6 +29,7 @@ import javax.ws.rs.client.Entity;
 import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import javax.ws.rs.sse.SseEventSource;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 import java.util.*;
@@ -336,4 +341,35 @@ public class AssetRestIT extends AbstractRest {
     }
 
 
+
+	@Test(timeout = 10000)
+	public void assetSseTest() throws Exception {
+		AssetDTO testAsset = AssetTestHelper.createTestAsset();
+
+		List<String> assets = new ArrayList<>();
+		try (SseEventSource source = AssetTestHelper.getSseStream()) {
+			source.register((inboundSseEvent) -> {
+				if (inboundSseEvent.getComment() != null && inboundSseEvent.getComment().equals("Updated Asset")) {
+					assets.add(inboundSseEvent.readData());
+				}
+			});
+			source.open();
+
+			testAsset.setName("new test name");
+			testAsset = AssetTestHelper.updateAsset(testAsset);
+			Thread.sleep(50);
+			testAsset.setFlagStateCode("UNK");
+			testAsset = AssetTestHelper.updateAsset(testAsset);
+			Thread.sleep(50);
+			testAsset.setLengthOverAll(42d);
+			testAsset = AssetTestHelper.updateAsset(testAsset);
+			Thread.sleep(50);
+
+			while(assets.size() < 3) {
+				Thread.sleep(100);
+			}
+		}
+
+		assertThat(assets.size(), CoreMatchers.is(3));
+	}
 }
