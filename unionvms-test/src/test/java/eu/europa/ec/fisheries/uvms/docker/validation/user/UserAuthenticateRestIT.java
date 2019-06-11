@@ -13,67 +13,44 @@ copy of the GNU General Public License along with the IFDM Suite. If not, see <h
 */
 package eu.europa.ec.fisheries.uvms.docker.validation.user;
 
-import java.util.Map;
-import java.util.UUID;
+import eu.europa.ec.fisheries.uvms.docker.validation.common.AbstractRest;
+import eu.europa.ec.fisheries.uvms.docker.validation.common.AuthenticationResponse;
+import eu.europa.ec.fisheries.uvms.docker.validation.user.dto.ChallengeResponse;
+import eu.europa.ec.fisheries.uvms.docker.validation.user.dto.ContextSet;
+import eu.europa.ec.fisheries.uvms.docker.validation.user.dto.StatusResponseDto;
+import eu.europa.ec.fisheries.uvms.docker.validation.user.dto.UserContext;
+import org.junit.Ignore;
+import org.junit.Test;
+
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
-import org.apache.http.HttpResponse;
-import org.apache.http.HttpStatus;
-import org.apache.http.client.fluent.Request;
-import org.junit.Ignore;
-import org.junit.Test;
-import eu.europa.ec.fisheries.uvms.docker.validation.common.AbstractRest;
-import eu.europa.ec.fisheries.uvms.docker.validation.common.AuthenticationResponse;
-import eu.europa.ec.fisheries.uvms.docker.validation.user.dto.ChallengeResponse;
-import eu.europa.ec.fisheries.uvms.docker.validation.user.dto.ContextSet;
-import eu.europa.ec.fisheries.uvms.docker.validation.user.dto.UserContext;
+import java.util.UUID;
 
-/**
- * The Class UserAuthenticateRestIT.
- */
 public class UserAuthenticateRestIT extends AbstractRest {
 
-	/**
-	 * Authenticate get jwt token success test.
-	 *
-	 * @throws Exception
-	 *             the exception
-	 */
 	@Test
 	public void authenticateGetJwtTokenSuccessTest() throws Exception {
-
 		final AuthenticationResponse data = UserHelper.authenticate("vms_admin_com", "password");
-		assertEquals(true, data.isAuthenticated());
+		assertTrue(data.isAuthenticated());
 		assertNotNull(data.getJwtoken());
 	}
 
-	/**
-	 * Authenticate get jwt token failure test.
-	 *
-	 * @throws Exception
-	 *             the exception
-	 */
 	@Test
 	public void authenticateGetJwtTokenFailureTest() throws Exception {
 		final AuthenticationResponse data = UserHelper.authenticate("vms_admin_com", "invalidpassword");
-		assertEquals(false, data.isAuthenticated());
+		assertFalse(data.isAuthenticated());
 		assertNull(data.getJwtoken());
 	}
 
-	/**
-	 * get challenge for an authenticated user
-	 *
-	 * @throws Exception
-	 */
 	@Test
 	public void getUserChallenge() throws Exception {
 
 		// logon
 		final AuthenticationResponse authData = UserHelper.authenticate("vms_admin_com", "password");
-		assertEquals(true, authData.isAuthenticated());
+		assertTrue(authData.isAuthenticated());
 		assertNotNull(authData.getJwtoken());
 
 		String jwtoken = authData.getJwtoken();
@@ -84,16 +61,10 @@ public class UserAuthenticateRestIT extends AbstractRest {
 		assertEquals("vms_admin_com", data.getUserName());
 	}
 
-	/**
-	 * check if its allowed to tamper with jwToken
-	 *
-	 * @throws Exception
-	 */
 	@Test
 	public void getUserChallengeTamperedJwt() throws Exception {
-
 		final AuthenticationResponse authData = UserHelper.authenticate("vms_admin_com", "password");
-		assertEquals(true, authData.isAuthenticated());
+		assertTrue(authData.isAuthenticated());
 		assertNotNull(authData.getJwtoken());
 
 		String jwtoken = authData.getJwtoken();
@@ -123,7 +94,7 @@ public class UserAuthenticateRestIT extends AbstractRest {
 		 */
 
 		final AuthenticationResponse authData = UserHelper.authenticate("vms_admin_com", "password");
-		assertEquals(true, authData.isAuthenticated());
+		assertTrue(authData.isAuthenticated());
 		assertNotNull(authData.getJwtoken());
 
 		String jwtoken = authData.getJwtoken();
@@ -157,7 +128,7 @@ public class UserAuthenticateRestIT extends AbstractRest {
 		 */
 
 		final AuthenticationResponse authData = UserHelper.authenticate("vms_admin_com", "password");
-		assertEquals(true, authData.isAuthenticated());
+		assertTrue(authData.isAuthenticated());
 		assertNotNull(authData.getJwtoken());
 
 		String jwtoken = authData.getJwtoken();
@@ -181,9 +152,8 @@ public class UserAuthenticateRestIT extends AbstractRest {
 
 	@Test
 	public void userContexts() throws Exception {
-
 		final AuthenticationResponse authData = UserHelper.authenticate("vms_admin_com", "password");
-		assertEquals(true, authData.isAuthenticated());
+		assertTrue(authData.isAuthenticated());
 		assertNotNull(authData.getJwtoken());
 
 		String jwtoken = authData.getJwtoken();
@@ -198,29 +168,27 @@ public class UserAuthenticateRestIT extends AbstractRest {
 
 		assertNotNull(contextSet);
 		assertTrue(contextSet.getContexts().size() > 0);
-
 	}
 
 	@Test
 	public void ping() throws Exception {
-
 		final AuthenticationResponse authData = UserHelper.authenticate("vms_admin_com", "password");
-		assertEquals(true, authData.isAuthenticated());
+		assertTrue(authData.isAuthenticated());
 		assertNotNull(authData.getJwtoken());
 
 		String jwtoken = authData.getJwtoken();
 
-		final HttpResponse response = Request.Get(getBaseUrl() + "usm-administration/rest/ping")
-				.setHeader("Content-Type", "application/json").setHeader("authorization", jwtoken).execute()
-				.returnResponse();
+		Response response = getWebTarget()
+				.path("usm-administration/rest/ping")
+				.request(MediaType.APPLICATION_JSON)
+				.header(HttpHeaders.AUTHORIZATION, jwtoken)
+				.get();
 
-		assertEquals(HttpStatus.SC_OK, response.getStatusLine().getStatusCode());
-		Map<String, Object> data2 = getJsonMap(response);
-		String statusCode = String.valueOf(data2.get("statusCode"));
-		String message = String.valueOf(data2.get("message"));
-		assertTrue(statusCode.equalsIgnoreCase("200"));
-		assertTrue(message.equalsIgnoreCase("OK"));
+		assertEquals(Status.OK.getStatusCode(), response.getStatus());
 
+		StatusResponseDto responseDto = response.readEntity(StatusResponseDto.class);
+
+		assertEquals(Status.OK.getStatusCode(), responseDto.getStatusCode());
+		assertEquals("OK", responseDto.getMessage());
 	}
-
 }

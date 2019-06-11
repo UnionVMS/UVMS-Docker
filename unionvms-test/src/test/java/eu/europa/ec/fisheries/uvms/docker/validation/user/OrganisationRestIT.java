@@ -11,20 +11,19 @@ copy of the GNU General Public License along with the IFDM Suite. If not, see <h
  */
 package eu.europa.ec.fisheries.uvms.docker.validation.user;
 
-import static org.hamcrest.CoreMatchers.is;
-import org.junit.Test;
 import eu.europa.ec.fisheries.uvms.docker.validation.common.AbstractRest;
 import eu.europa.ec.fisheries.uvms.docker.validation.user.dto.EndPoint;
 import eu.europa.ec.fisheries.uvms.docker.validation.user.dto.Organisation;
+import org.junit.Test;
+
+import static org.hamcrest.CoreMatchers.is;
 
 public class OrganisationRestIT extends AbstractRest {
 
     @Test
     public void createOrganisationTest() {
         Organisation organisation = UserHelper.getBasicOrganisation();
-        
         Organisation createdOrganisation = UserHelper.createOrganisation(organisation);
-        
         assertThat(createdOrganisation.getName(), is(organisation.getName()));
     }
     

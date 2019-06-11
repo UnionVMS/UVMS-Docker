@@ -13,11 +13,6 @@ copy of the GNU General Public License along with the IFDM Suite. If not, see <h
 */
 package eu.europa.ec.fisheries.uvms.docker.validation.user;
 
-import java.io.IOException;
-import javax.ws.rs.client.Entity;
-import javax.ws.rs.core.HttpHeaders;
-import javax.ws.rs.core.MediaType;
-import org.apache.http.client.ClientProtocolException;
 import eu.europa.ec.fisheries.uvms.docker.validation.common.AbstractRest;
 import eu.europa.ec.fisheries.uvms.docker.validation.common.AuthenticationRequest;
 import eu.europa.ec.fisheries.uvms.docker.validation.common.AuthenticationResponse;
@@ -26,12 +21,13 @@ import eu.europa.ec.fisheries.uvms.docker.validation.user.dto.Channel;
 import eu.europa.ec.fisheries.uvms.docker.validation.user.dto.EndPoint;
 import eu.europa.ec.fisheries.uvms.docker.validation.user.dto.Organisation;
 
-/**
- * UserHelper
- */
+import javax.ws.rs.client.Entity;
+import javax.ws.rs.core.HttpHeaders;
+import javax.ws.rs.core.MediaType;
+
 public class UserHelper extends AbstractRest {
 
-	public static AuthenticationResponse authenticate(String user, String password) throws ClientProtocolException, IOException {
+	public static AuthenticationResponse authenticate(String user, String password) {
 	    AuthenticationRequest userPwd = new AuthenticationRequest(user,password);
 		
 	    return getWebTarget()
@@ -41,7 +37,7 @@ public class UserHelper extends AbstractRest {
 	}
 	
 	
-	public static ChallengeResponse getChallenge(String jwtoken) throws ClientProtocolException, IOException{
+	public static ChallengeResponse getChallenge(String jwtoken) {
 		ChallengeResponse challengeResponse = getWebTarget()
                 .path("usm-administration/rest/challenge")
                 .request(MediaType.APPLICATION_JSON)
