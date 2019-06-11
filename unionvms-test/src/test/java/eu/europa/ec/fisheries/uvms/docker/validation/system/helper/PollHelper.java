@@ -11,8 +11,6 @@ copy of the GNU General Public License along with the IFDM Suite. If not, see <h
  */
 package eu.europa.ec.fisheries.uvms.docker.validation.system.helper;
 
-import java.io.IOException;
-import javax.jms.TextMessage;
 import eu.europa.ec.fisheries.schema.exchange.common.v1.AcknowledgeType;
 import eu.europa.ec.fisheries.schema.exchange.common.v1.AcknowledgeTypeType;
 import eu.europa.ec.fisheries.schema.exchange.common.v1.PollStatusAcknowledgeType;
@@ -26,37 +24,27 @@ import eu.europa.ec.fisheries.uvms.docker.validation.common.TopicListener;
 import eu.europa.ec.fisheries.uvms.docker.validation.mobileterminal.MobileTerminalTestHelper;
 import eu.europa.ec.fisheries.uvms.docker.validation.mobileterminal.dto.MobileTerminalDto;
 import eu.europa.ec.fisheries.uvms.exchange.model.mapper.ExchangePluginResponseMapper;
-import eu.europa.ec.fisheries.uvms.exchange.model.mapper.JAXBMarshaller;
 
 public class PollHelper {
     
-    public static SetCommandRequest createPollAndReturnSetCommandRequest() throws IOException, Exception {
+    public static SetCommandRequest createPollAndReturnSetCommandRequest() throws Exception {
         AssetDTO testAsset = AssetTestHelper.createTestAsset();
         return createPollAndReturnSetCommandRequest(testAsset);
     }
     
-    public static SetCommandRequest createPollAndReturnSetCommandRequest(AssetDTO testAsset) throws IOException, Exception {
+    private static SetCommandRequest createPollAndReturnSetCommandRequest(AssetDTO testAsset) throws Exception {
         try (TopicListener topicListener = new TopicListener(VMSSystemHelper.INMARSAT_SELECTOR)) {
             MobileTerminalTestHelper.createPoll_Helper(testAsset, PollType.MANUAL_POLL);
             return topicListener.listenOnEventBusForSpecificMessage(SetCommandRequest.class);
         }
     }
     
-    public static SetCommandRequest createPollAndReturnSetCommandRequest(AssetDTO testAsset, MobileTerminalDto mobileTerminal) throws IOException, Exception {
+    public static SetCommandRequest createPollAndReturnSetCommandRequest(AssetDTO testAsset, MobileTerminalDto mobileTerminal) throws Exception {
         try (TopicListener topicListener = new TopicListener(VMSSystemHelper.INMARSAT_SELECTOR)) {
             MobileTerminalTestHelper.createPollWithMT_Helper(testAsset, PollType.MANUAL_POLL, mobileTerminal);
             return topicListener.listenOnEventBusForSpecificMessage(SetCommandRequest.class);
         }
     }
-    
-    public static SetCommandRequest listenForCommandRequest() throws Exception {
-        TextMessage message = null;
-        try (TopicListener topicListener = new TopicListener(VMSSystemHelper.INMARSAT_SELECTOR)) {
-            message = (TextMessage) topicListener.listenOnEventBus();
-        }
-        return JAXBMarshaller.unmarshallString(message.getText(), SetCommandRequest.class);
-    }
-
 
     public static void ackPoll(String messageId, String pollId, ExchangeLogStatusTypeType status, String unsentMessageId) throws Exception {
         AcknowledgeType setCommandAck = ExchangePluginResponseMapper.mapToAcknowlegeType(messageId, AcknowledgeTypeType.OK);
@@ -72,5 +60,4 @@ public class PollHelper {
         }
         Thread.sleep(1000);
     }
-    
 }

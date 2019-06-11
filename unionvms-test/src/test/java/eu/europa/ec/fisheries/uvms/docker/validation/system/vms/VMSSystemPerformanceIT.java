@@ -57,7 +57,6 @@ public class VMSSystemPerformanceIT extends AbstractRest {
     @PerfTest(threads = 1)
     @Required(max = 45000)
     public void createPositionAndTriggerRulePerformanceTest() throws Exception {
-       
         AssetDTO asset = AssetTestHelper.createTestAsset();
         MobileTerminalDto mobileTerminal = MobileTerminalTestHelper.createMobileTerminal();
         MobileTerminalTestHelper.assignMobileTerminal(asset, mobileTerminal);
@@ -77,11 +76,9 @@ public class VMSSystemPerformanceIT extends AbstractRest {
         List<LatLong> postitions = new MovementHelper().createRuttGeneric(57d, 11d, 58d, 1d, NUMBER_OF_POSITIONS);
 
         try (TopicListener topicListener = new TopicListener(SELECTOR)) {
-
             for (LatLong position : postitions) {
                 FLUXHelper.sendPositionToFluxPlugin(asset, position);
             }
-
             int receivedReports = 0;
             while (receivedReports < postitions.size()) {
                 TextMessage message = (TextMessage) topicListener.listenOnEventBus();
@@ -102,7 +99,6 @@ public class VMSSystemPerformanceIT extends AbstractRest {
     @Test
     @PerfTest(threads = 1)
     public void createPositionAndTriggerRulePerformanceTestTenShips() throws Exception {
-        
         // Create rule
         String flagStateCode = "SWE";
         String fluxEndpoint = "DNK";
@@ -118,7 +114,6 @@ public class VMSSystemPerformanceIT extends AbstractRest {
         assertNotNull(createdCustomRule);
 
         try (TopicListener topicListener = new TopicListener(SELECTOR)) {
-
             int numberOfShips = 10;
             for (int i = 0; i < numberOfShips; i++) {
                 AssetDTO asset = AssetTestHelper.createBasicAsset();
@@ -131,7 +126,6 @@ public class VMSSystemPerformanceIT extends AbstractRest {
                     FLUXHelper.sendPositionToFluxPlugin(createdAsset, position);
                 }
             }
-
             int receivedReports = 0;
             while (receivedReports < numberOfShips * NUMBER_OF_POSITIONS) {
                 TextMessage message = (TextMessage) topicListener.listenOnEventBus();
@@ -142,7 +136,6 @@ public class VMSSystemPerformanceIT extends AbstractRest {
                 assertThat(setReportRequest.getReport().getRecipient(), is(fluxEndpoint));
                 receivedReports++;
             }
-
         }
         CustomRuleHelper.removeCustomRule(createdCustomRule.getGuid());
     }

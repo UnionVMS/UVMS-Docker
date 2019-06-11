@@ -11,14 +11,6 @@ copy of the GNU General Public License along with the IFDM Suite. If not, see <h
  */
 package eu.europa.ec.fisheries.uvms.docker.validation.system.helper;
 
-import java.time.ZonedDateTime;
-import java.time.format.DateTimeFormatter;
-import java.util.List;
-import java.util.concurrent.TimeUnit;
-import javax.ws.rs.client.Entity;
-import javax.ws.rs.core.HttpHeaders;
-import javax.ws.rs.core.MediaType;
-import org.hamcrest.CoreMatchers;
 import eu.europa.ec.fisheries.schema.movementrules.search.v1.AlarmListCriteria;
 import eu.europa.ec.fisheries.schema.movementrules.search.v1.AlarmQuery;
 import eu.europa.ec.fisheries.schema.movementrules.search.v1.AlarmSearchKey;
@@ -26,6 +18,15 @@ import eu.europa.ec.fisheries.schema.movementrules.search.v1.ListPagination;
 import eu.europa.ec.fisheries.uvms.docker.validation.common.AbstractHelper;
 import eu.europa.ec.fisheries.uvms.docker.validation.movement.model.AlarmListResponseDto;
 import eu.europa.ec.fisheries.uvms.docker.validation.movement.model.AlarmReport;
+import org.hamcrest.CoreMatchers;
+
+import javax.ws.rs.client.Entity;
+import javax.ws.rs.core.HttpHeaders;
+import javax.ws.rs.core.MediaType;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 public class SanityRuleHelper extends AbstractHelper {
     
@@ -66,7 +67,6 @@ public class SanityRuleHelper extends AbstractHelper {
                 .request(MediaType.APPLICATION_JSON)
                 .header(HttpHeaders.AUTHORIZATION, getValidJwtToken())
                 .post(Entity.json(query), AlarmListResponseDto.class);
-        
 
         assertThat(alarmResponse, CoreMatchers.is(CoreMatchers.notNullValue()));
         List<AlarmReport> alarms = alarmResponse.getAlarmList();
