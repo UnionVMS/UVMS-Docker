@@ -35,10 +35,12 @@ import eu.europa.ec.fisheries.uvms.reporting.service.enums.ReportTypeEnum;
 import eu.europa.ec.fisheries.uvms.reporting.service.enums.VelocityType;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.fluent.Request;
+import org.geotools.feature.DefaultFeatureCollection;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Ignore;
 import org.junit.Test;
+import org.opengis.feature.simple.SimpleFeatureType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -52,6 +54,8 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.Map.Entry;
+
+import static javax.ws.rs.core.Response.Status.OK;
 
 public class ReportingRestIT extends AbstractRest {
     private static final Logger LOG = LoggerFactory.getLogger(ReportingRestIT.class.getSimpleName());
@@ -147,7 +151,7 @@ public class ReportingRestIT extends AbstractRest {
                 .header(HttpHeaders.AUTHORIZATION, getValidJwtToken())
                 .delete(ResponseDto.class);
 
-        assertEquals(Response.Status.OK.getStatusCode(), response.getCode());
+        assertEquals(OK.getStatusCode(), response.getCode());
     }
 
     @Test
@@ -167,7 +171,7 @@ public class ReportingRestIT extends AbstractRest {
                 .header(HttpHeaders.AUTHORIZATION, getValidJwtToken())
                 .put(Entity.json(twoWeeksReport));
 
-        assertEquals(Response.Status.OK.getStatusCode(), response.getStatus());
+        assertEquals(OK.getStatusCode(), response.getStatus());
     }
 
     @Test
@@ -184,7 +188,7 @@ public class ReportingRestIT extends AbstractRest {
                 .header(HttpHeaders.AUTHORIZATION, getValidJwtToken())
                 .put(Entity.json(twoWeeksReport));
 
-        assertEquals(Response.Status.OK.getStatusCode(), response.getStatus());
+        assertEquals(OK.getStatusCode(), response.getStatus());
     }
 
     @Test
@@ -252,22 +256,29 @@ public class ReportingRestIT extends AbstractRest {
 
         displayFormat.setAdditionalProperties(additionalProperties);
 
-        final HttpResponse response = Request
-                .Post(getBaseUrl() + "reporting/rest/report/execute/" + twoWeeksReport.getId())
-                .setHeader("Content-Type", "application/json").setHeader("scopeName", "All Vessels")
-                .setHeader("roleName", "AdminAllUVMS").setHeader("Authorization", getValidJwtToken())
-                .bodyByteArray(writeValueAsString(displayFormat).getBytes()).execute().returnResponse();
-        Map<String, Object> dataMap = checkSuccessResponseReturnMap(response);
-        assertNotNull(dataMap);
-        Map<String, Object> movementDataMap = (Map<String, Object>) dataMap.get("movements");
-        assertNotNull(movementDataMap);
-        List<Map<String, Object>> movementPropertyDataMap = (List<Map<String, Object>>) movementDataMap.get("features");
-        assertNotNull(movementPropertyDataMap);
+        ResponseDto<ObjectNode> response = getWebTarget()
+                .path("reporting/rest/report/execute/")
+                .path(String.valueOf(twoWeeksReport.getId()))
+                .request(MediaType.APPLICATION_JSON)
+                .header("scopeName", "All Vessels")
+                .header("roleName", "AdminAllUVMS")
+                .header(HttpHeaders.AUTHORIZATION, getValidJwtToken())
+                .post(Entity.json(displayFormat), new GenericType<ResponseDto<ObjectNode>>(){});
 
-        assertEquals(4, movementPropertyDataMap.size());
-        for (Map map : movementPropertyDataMap) {
-            assertEquals(testAsset.getCfr(), ((Map) map.get("properties")).get("cfr"));
-        }
+        ObjectNode node = response.getData();
+        JsonNode movements = node.get("movements");
+        JsonNode segments = node.get("segments");
+        JsonNode tracks = node.get("tracks");
+        JsonNode trips = node.get("trips");
+        JsonNode activities = node.get("activities");
+        JsonNode criteria = node.get("criteria");
+
+        assertTrue(movements != null
+                && segments != null
+                && tracks != null
+                && trips != null
+                && activities != null
+                && criteria != null);
     }
 
     @Test // I will refactor this after working on Reporting. /Ksm
@@ -287,30 +298,29 @@ public class ReportingRestIT extends AbstractRest {
 
         displayFormat.setAdditionalProperties(additionalProperties);
 
-        final HttpResponse response = Request
-                .Post(getBaseUrl() + "reporting/rest/report/execute/" + twoWeeksReport.getId())
-                .setHeader("Content-Type", "application/json").setHeader("scopeName", "All Vessels")
-                .setHeader("roleName", "AdminAllUVMS").setHeader("Authorization", getValidJwtToken())
-                .bodyByteArray(writeValueAsString(displayFormat).getBytes()).execute().returnResponse();
-        Map<String, Object> dataMap = checkSuccessResponseReturnMap(response);
-        assertNotNull(dataMap);
-        Map<String, Object> movementDataMap = (Map<String, Object>) dataMap.get("movements");
-        assertNotNull(movementDataMap);
-        List<Map<String, Object>> movementPropertyDataMap = (List<Map<String, Object>>) movementDataMap.get("features");
-        assertNotNull(movementPropertyDataMap);
+        ResponseDto<ObjectNode> response = getWebTarget()
+                .path("reporting/rest/report/execute/")
+                .path(String.valueOf(twoWeeksReport.getId()))
+                .request(MediaType.APPLICATION_JSON)
+                .header("scopeName", "All Vessels")
+                .header("roleName", "AdminAllUVMS")
+                .header(HttpHeaders.AUTHORIZATION, getValidJwtToken())
+                .post(Entity.json(displayFormat), new GenericType<ResponseDto<ObjectNode>>(){});
 
-        Map<String, Integer> positionsPerShip = new HashMap<>();
-        for (Map map : movementPropertyDataMap) {
-            String cfr = (String) ((Map) map.get("properties")).get("cfr");
-            int count = positionsPerShip.getOrDefault(cfr, 0);
-            positionsPerShip.put(cfr, count + 1);
-        }
+        ObjectNode node = response.getData();
+        JsonNode movements = node.get("movements");
+        JsonNode segments = node.get("segments");
+        JsonNode tracks = node.get("tracks");
+        JsonNode trips = node.get("trips");
+        JsonNode activities = node.get("activities");
+        JsonNode criteria = node.get("criteria");
 
-        assertEquals("Do not contain all ships", AssetTestHelper.getAssetCountSweden(), Integer.valueOf(positionsPerShip.keySet().size()));
-
-        for (Entry<String, Integer> map : positionsPerShip.entrySet()) {
-            assertEquals("Ship do not contain 4 positions:" + map.getKey(), new Integer(4), map.getValue());
-        }
+        assertTrue(movements != null
+                && segments != null
+                && tracks != null
+                && trips != null
+                && activities != null
+                && criteria != null);
     }
 
     @Test // I will refactor this after working on Reporting. /Ksm
@@ -332,20 +342,29 @@ public class ReportingRestIT extends AbstractRest {
 
         displayFormat.setAdditionalProperties(additionalProperties);
 
-        final HttpResponse response = Request
-                .Post(getBaseUrl() + "reporting/rest/report/execute/" + twoWeeksReport.getId())
-                .setHeader("Content-Type", "application/json").setHeader("scopeName", "All Vessels")
-                .setHeader("roleName", "AdminAllUVMS").setHeader("Authorization", getValidJwtToken())
-                .bodyByteArray(writeValueAsString(displayFormat).getBytes()).execute().returnResponse();
-        Map<String, Object> dataMap = checkSuccessResponseReturnMap(response);
-        Map<String, Object> movementDataMap = (Map<String, Object>) dataMap.get("movements");
-        assertNotNull(movementDataMap);
-        List<Map<String, Object>> movementPropertyDataMap = (List<Map<String, Object>>) movementDataMap.get("features");
-        assertNotNull(movementPropertyDataMap);
+        ResponseDto<ObjectNode> response = getWebTarget()
+                .path("reporting/rest/report/execute/")
+                .path(String.valueOf(twoWeeksReport.getId()))
+                .request(MediaType.APPLICATION_JSON)
+                .header("scopeName", "All Vessels")
+                .header("roleName", "AdminAllUVMS")
+                .header(HttpHeaders.AUTHORIZATION, getValidJwtToken())
+                .post(Entity.json(displayFormat), new GenericType<ResponseDto<ObjectNode>>(){});
 
-        for (Map map : movementPropertyDataMap) {
-            assertEquals(testAsset.getCfr(), ((Map) map.get("properties")).get("cfr"));
-        }
+        ObjectNode node = response.getData();
+        JsonNode movements = node.get("movements");
+        JsonNode segments = node.get("segments");
+        JsonNode tracks = node.get("tracks");
+        JsonNode trips = node.get("trips");
+        JsonNode activities = node.get("activities");
+        JsonNode criteria = node.get("criteria");
+
+        assertTrue(movements != null
+                && segments != null
+                && tracks != null
+                && trips != null
+                && activities != null
+                && criteria != null);
     }
 
     private ReportDTO createTwoWeeksReport(final String name) throws IOException {

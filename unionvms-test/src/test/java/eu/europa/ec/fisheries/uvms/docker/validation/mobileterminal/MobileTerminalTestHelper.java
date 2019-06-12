@@ -21,7 +21,6 @@ import java.util.UUID;
 public final class MobileTerminalTestHelper extends AbstractHelper {
 
 	public static CreatePollResultDto createPollWithMT_Helper(AssetDTO testAsset, PollType pollType, MobileTerminalDto terminal) {
-
         terminal = assignMobileTerminal(testAsset, terminal);
         assertNotNull(terminal.getAsset());
 
@@ -68,7 +67,6 @@ public final class MobileTerminalTestHelper extends AbstractHelper {
 	}
 	
 	public static CreatePollResultDto createPoll_Helper(AssetDTO testAsset, PollType pollType) {
-
 		MobileTerminalDto createdTerminal = createMobileTerminal();
 
 		assertNotNull(createdTerminal);
