@@ -36,45 +36,44 @@ import javax.ws.rs.client.Entity;
 import javax.ws.rs.core.GenericType;
 import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
+import javax.ws.rs.core.Response.Status;
 
 public class CustomRulesRestIT extends AbstractRest {
 
 	@Test
 	public void createCustomRuleTest() {
-		ResponseDto<CustomRuleType> response = createAndPersistCustomRule();
-		assertEquals(200, response.getCode());
-		assertNotNull(response.getData().getGuid());
+		CustomRuleType response = createAndPersistCustomRule();
+		assertNotNull(response.getGuid());
 	}
 
-	// Todo: Replace 511 status code with '400 Bad Request' or '422 Unprocessable Entity' in MovementRules
 	@Test
 	public void createCustomRuleTest_WillFailWithInvalidEntity() {
 		CustomRuleType customRuleType = new CustomRuleType();
-		ResponseDto response = getWebTarget()
+		Response response = getWebTarget()
 				.path("movement-rules/rest/customrules")
 				.request(MediaType.APPLICATION_JSON)
 				.header(HttpHeaders.AUTHORIZATION, getValidJwtToken())
-				.post(Entity.json(customRuleType), ResponseDto.class);
-		assertEquals(511, response.getCode());
+				.post(Entity.json(customRuleType), Response.class);
+		assertEquals(Status.BAD_REQUEST.getStatusCode(), response.getStatus());
 	}
 
 	@Test
 	public void getCustomRulesByUser() {
 		createAndPersistCustomRule();
-		ResponseDto<List<CustomRuleType>> response = getWebTarget()
+		List<CustomRuleType> response = getWebTarget()
 				.path("movement-rules/rest/customrules/listAll")
 				.path("vms_admin_se")
 				.request(MediaType.APPLICATION_JSON)
 				.header(HttpHeaders.AUTHORIZATION, getValidJwtToken())
-				.get(new GenericType<ResponseDto<List<CustomRuleType>>>(){});
+				.get(new GenericType<List<CustomRuleType>>(){});
 
-		List<CustomRuleType> customRuleList = response.getData();
-		assertFalse(customRuleList.isEmpty());
+		assertFalse(response.isEmpty());
 	}
 
 	@Test
 	public void getCustomRulesByQueryTest() {
-		ResponseDto<CustomRuleType> created = createAndPersistCustomRule();
+		CustomRuleType created = createAndPersistCustomRule();
 
 		CustomRuleQuery CustomRuleQuery = new CustomRuleQuery();
 		ListPagination lp = new ListPagination();
@@ -83,118 +82,114 @@ public class CustomRulesRestIT extends AbstractRest {
 		CustomRuleQuery.setPagination(lp);
 		CustomRuleListCriteria crlc = new CustomRuleListCriteria();
 		crlc.setKey(CustomRuleSearchKey.GUID);
-		crlc.setValue(created.getData().getGuid());
+		crlc.setValue(created.getGuid());
 		CustomRuleQuery.getCustomRuleSearchCriteria().add(crlc);
 		CustomRuleQuery.setDynamic(true);
 
-		ResponseDto<GetCustomRuleListByQueryResponse> response = getWebTarget()
+		GetCustomRuleListByQueryResponse response = getWebTarget()
 				.path("movement-rules/rest/customrules/listByQuery")
 				.request(MediaType.APPLICATION_JSON)
 				.header(HttpHeaders.AUTHORIZATION, getValidJwtToken())
-				.post(Entity.json(CustomRuleQuery), new GenericType<ResponseDto<GetCustomRuleListByQueryResponse>>(){});
+				.post(Entity.json(CustomRuleQuery), GetCustomRuleListByQueryResponse.class);
 
-		GetCustomRuleListByQueryResponse data = response.getData();
-		List<CustomRuleType> customRules = data.getCustomRules();
-		boolean found = customRules.stream().anyMatch(cr -> cr.getGuid().equals(created.getData().getGuid()));
+		List<CustomRuleType> customRules = response.getCustomRules();
+		boolean found = customRules.stream().anyMatch(cr -> cr.getGuid().equals(created.getGuid()));
 		assertTrue(found);
 	}
 
 	@Test
 	public void getCustomRuleByGuidTest() {
-		ResponseDto<CustomRuleType> created = createAndPersistCustomRule();
-		ResponseDto<CustomRuleType> response = getWebTarget()
+		CustomRuleType created = createAndPersistCustomRule();
+		CustomRuleType fetched = getWebTarget()
 				.path("movement-rules/rest/customrules")
-				.path(created.getData().getGuid())
+				.path(created.getGuid())
 				.request(MediaType.APPLICATION_JSON)
 				.header(HttpHeaders.AUTHORIZATION, getValidJwtToken())
-				.get(new GenericType<ResponseDto<CustomRuleType>>(){});
-		assertEquals(200, response.getCode());
-		assertEquals(created.getData().getGuid(), response.getData().getGuid());
+				.get(CustomRuleType.class);
+		assertEquals(created.getGuid(), fetched.getGuid());
 	}
 
-	// Todo: MovementRules API should return e.g. 204 or 200 with empty data as opposed to 500 which
-	// indicates a server error. This test will be updated after updating MovementRules API
 	@Test
 	public void getCustomRuleByGuidTest_WillFailWithInvalidUUID() {
-		ResponseDto<CustomRuleType> response = getWebTarget()
+		Response response = getWebTarget()
 				.path("movement-rules/rest/customrules")
 				.path(UUID.randomUUID().toString())
 				.request(MediaType.APPLICATION_JSON)
 				.header(HttpHeaders.AUTHORIZATION, getValidJwtToken())
-				.get(new GenericType<ResponseDto<CustomRuleType>>(){});
-		assertEquals(500, response.getCode());
+				.get();
+		assertEquals(Status.INTERNAL_SERVER_ERROR.getStatusCode(), response.getStatus());
+
+		CustomRuleType customRuleType = response.readEntity(CustomRuleType.class);
+		assertNull(customRuleType.getGuid());
 	}
 
 	@Test
 	public void deleteCustomRuleTest() {
-		ResponseDto<CustomRuleType> created = createAndPersistCustomRule();
-		ResponseDto<CustomRuleType> response = getWebTarget()
+		CustomRuleType created = createAndPersistCustomRule();
+		Response response = getWebTarget()
 				.path("movement-rules/rest/customrules")
-				.path(created.getData().getGuid())
+				.path(created.getGuid())
 				.request(MediaType.APPLICATION_JSON)
 				.header(HttpHeaders.AUTHORIZATION, getValidJwtToken())
-				.delete(new GenericType<ResponseDto<CustomRuleType>>(){});
-		assertEquals(200, response.getCode());
+				.delete();
+		assertEquals(Status.OK.getStatusCode(), response.getStatus());
+
+		CustomRuleType customRuleType = response.readEntity(CustomRuleType.class);
+		assertFalse(customRuleType.isActive());
 	}
 
-	// Todo: MovementRules API should return '204 Co Content' if there weren't a Server error
-	// This test will be updated after updating MovementRules API
 	@Test
 	public void deleteCustomRuleTest_WillFailWithInvalidUUID() {
-		ResponseDto<CustomRuleType> response = getWebTarget()
+		Response response = getWebTarget()
 				.path("movement-rules/rest/customrules")
 				.path(UUID.randomUUID().toString())
 				.request(MediaType.APPLICATION_JSON)
 				.header(HttpHeaders.AUTHORIZATION, getValidJwtToken())
-				.delete(new GenericType<ResponseDto<CustomRuleType>>(){});
-		assertEquals(500, response.getCode());
+				.delete();
+		assertEquals(Status.INTERNAL_SERVER_ERROR.getStatusCode(), response.getStatus());
 	}
 
 	@Test
 	public void updateCustomRuleTest() {
-		ResponseDto<CustomRuleType> created = createAndPersistCustomRule();
-		CustomRuleType customRuleType = created.getData();
-		customRuleType.setName("NEW_TEST_NAME");
-		ResponseDto<CustomRuleType> response = getWebTarget()
+		CustomRuleType created = createAndPersistCustomRule();
+		created.setName("NEW_TEST_NAME");
+		CustomRuleType updated = getWebTarget()
 				.path("movement-rules/rest/customrules")
 				.request(MediaType.APPLICATION_JSON)
 				.header(HttpHeaders.AUTHORIZATION, getValidJwtToken())
-				.put(Entity.json(customRuleType), new GenericType<ResponseDto<CustomRuleType>>(){});
-		assertEquals(200, response.getCode());
-		assertEquals("NEW_TEST_NAME", response.getData().getName());
+				.put(Entity.json(created), CustomRuleType.class);
+
+		assertEquals("NEW_TEST_NAME", updated.getName());
 	}
 
-	// Todo: Replace 511 status code with '400 Bad Request' or '422 Unprocessable Entity' in MovementRules
 	@Test
 	public void updateCustomRuleTest_WillFailWithInvalidEntity() {
 		CustomRuleType customRuleType = new CustomRuleType();
-		ResponseDto<String> response = getWebTarget()
+		Response response = getWebTarget()
 				.path("movement-rules/rest/customrules")
 				.request(MediaType.APPLICATION_JSON)
 				.header(HttpHeaders.AUTHORIZATION, getValidJwtToken())
-				.put(Entity.json(customRuleType), new GenericType<ResponseDto<String>>(){});
-		assertEquals("Custom rule data is not correct", response.getData());
-		assertEquals(511, response.getCode());
+				.put(Entity.json(customRuleType));
+		assertEquals(Status.BAD_REQUEST.getStatusCode(), response.getStatus());
 	}
 
-	// Todo: Replace 500 status code with '400 Bad Request' or '422 Unprocessable Entity' in MovementRules
 	@Test
 	public void updateSubscriptionTest() {
 		UpdateSubscriptionType updateSubscriptionType = new UpdateSubscriptionType();
-		ResponseDto<CustomRuleType> response = getWebTarget()
+		Response response = getWebTarget()
 				.path("movement-rules/rest/customrules/subscription")
 				.request(MediaType.APPLICATION_JSON)
 				.header(HttpHeaders.AUTHORIZATION, getValidJwtToken())
-				.post(Entity.json(updateSubscriptionType), new GenericType<ResponseDto<CustomRuleType>>(){});
-		assertEquals(500, response.getCode());
+				.post(Entity.json(updateSubscriptionType));
+		assertEquals(Status.INTERNAL_SERVER_ERROR.getStatusCode(), response.getStatus());
 	}
 
-	private ResponseDto<CustomRuleType> createAndPersistCustomRule() {
+	private CustomRuleType createAndPersistCustomRule() {
 		CustomRuleType customRuleType = CustomRulesTestHelper.getCompleteNewCustomRule();
 		return getWebTarget()
 				.path("movement-rules/rest/customrules")
 				.request(MediaType.APPLICATION_JSON)
 				.header(HttpHeaders.AUTHORIZATION, getValidJwtToken())
-				.post(Entity.json(customRuleType), new GenericType<ResponseDto<CustomRuleType>>(){});
+				.post(Entity.json(customRuleType), CustomRuleType.class);
 	}
 }

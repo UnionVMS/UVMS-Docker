@@ -30,6 +30,7 @@ public class CustomRuleBuilder {
     private CustomRuleBuilder() {
         customRule = new CustomRuleType();
         customRule.setName("Rule: " + System.currentTimeMillis());
+        customRule.setDescription("Rule Description");
         customRule.setAvailability(AvailabilityType.PRIVATE);
         customRule.setUpdatedBy(DEFAULT_USER);
         customRule.setActive(true);

@@ -17,7 +17,6 @@ import eu.europa.ec.fisheries.schema.movementrules.module.v1.GetTicketListByQuer
 import eu.europa.ec.fisheries.schema.movementrules.search.v1.TicketQuery;
 import eu.europa.ec.fisheries.schema.movementrules.ticket.v1.TicketStatusType;
 import eu.europa.ec.fisheries.schema.movementrules.ticket.v1.TicketType;
-import eu.europa.ec.fisheries.uvms.commons.rest.dto.ResponseDto;
 import eu.europa.ec.fisheries.uvms.docker.validation.common.AbstractRest;
 import org.junit.Test;
 
@@ -35,15 +34,14 @@ public class RulesTicketRestIT extends AbstractRest {
 	public void getTicketListTest() {
 		TicketQuery ticketQuery = CustomRulesTestHelper.getTicketQuery();
 
-		ResponseDto<GetTicketListByQueryResponse> response = getWebTarget()
+		GetTicketListByQueryResponse response = getWebTarget()
 				.path("movement-rules/rest/tickets/list")
 				.path("vms_admin_se")
 				.request(MediaType.APPLICATION_JSON)
 				.header(HttpHeaders.AUTHORIZATION, getValidJwtToken())
-				.post(Entity.json(ticketQuery), new GenericType<ResponseDto<GetTicketListByQueryResponse>>(){});
+				.post(Entity.json(ticketQuery), new GenericType<GetTicketListByQueryResponse>(){});
 
-		assertEquals(200, response.getCode());
-		assertNotNull(response.getData());
+		assertNotNull(response);
 	}
 
 	@Test
@@ -52,15 +50,14 @@ public class RulesTicketRestIT extends AbstractRest {
 	    ArrayList<String> list = new ArrayList<>();
 	    list.add(movementGuid);
 
-		ResponseDto<GetTicketListByQueryResponse> response = getWebTarget()
+		GetTicketListByQueryResponse response = getWebTarget()
 				.path("movement-rules/rest/tickets/listByMovements")
 				.request(MediaType.APPLICATION_JSON)
 				.header(HttpHeaders.AUTHORIZATION, getValidJwtToken())
-				.post(Entity.json(list), new GenericType<ResponseDto<GetTicketListByQueryResponse>>(){});
+				.post(Entity.json(list), new GenericType<GetTicketListByQueryResponse>(){});
 
-        List<TicketType> tickets = response.getData().getTickets();
+        List<TicketType> tickets = response.getTickets();
 
-        assertEquals(200, response.getCode());
 		assertFalse(tickets.isEmpty());
 	}
 
@@ -70,14 +67,13 @@ public class RulesTicketRestIT extends AbstractRest {
         ArrayList<String> list = new ArrayList<>();
         list.add(movementGuid);
 
-		ResponseDto<Long> response = getWebTarget()
+		Long response = getWebTarget()
 				.path("movement-rules/rest/tickets/countByMovements")
 				.request(MediaType.APPLICATION_JSON)
 				.header(HttpHeaders.AUTHORIZATION, getValidJwtToken())
-				.post(Entity.json(list), new GenericType<ResponseDto<Long>>(){});
+				.post(Entity.json(list), new GenericType<Long>(){});
 
-		assertEquals(200, response.getCode());
-		assertTrue(response.getData() > 0);
+		assertTrue(response > 0);
 	}
 
 	@Test
@@ -101,13 +97,13 @@ public class RulesTicketRestIT extends AbstractRest {
 
 		ticketType.setStatus(TicketStatusType.CLOSED);
 
-        ResponseDto<TicketType> updateResponse = getWebTarget()
+        TicketType updateResponse = getWebTarget()
                 .path("movement-rules/rest/tickets/status")
                 .request(MediaType.APPLICATION_JSON)
                 .header(HttpHeaders.AUTHORIZATION, getValidJwtToken())
-                .put(Entity.json(ticketType), new GenericType<ResponseDto<TicketType>>(){});
+                .put(Entity.json(ticketType), new GenericType<TicketType>(){});
 
-        assertEquals(TicketStatusType.CLOSED, updateResponse.getData().getStatus());
+        assertEquals(TicketStatusType.CLOSED, updateResponse.getStatus());
 	}
 
     @Test
@@ -130,15 +126,13 @@ public class RulesTicketRestIT extends AbstractRest {
 
 		ticketType.setStatus(TicketStatusType.CLOSED);
 
-		ResponseDto<List<TicketType>> updatedTicketResponse = getWebTarget()
+		List<TicketType> updatedTicketList = getWebTarget()
 				.path("movement-rules/rest/tickets/status")
 				.path("vms_admin_se")
 				.path(TicketStatusType.CLOSED.name())
 				.request(MediaType.APPLICATION_JSON)
 				.header(HttpHeaders.AUTHORIZATION, getValidJwtToken())
-				.post(Entity.json(ticketQuery), new GenericType<ResponseDto<List<TicketType>>>(){});
-
-		List<TicketType> updatedTicketList = updatedTicketResponse.getData();
+				.post(Entity.json(ticketQuery), new GenericType<List<TicketType>>(){});
 
         TicketType updatedTicket = updatedTicketList
                 .stream()
@@ -173,7 +167,7 @@ public class RulesTicketRestIT extends AbstractRest {
                 .path(ticketType.getGuid())
                 .request(MediaType.APPLICATION_JSON)
                 .header(HttpHeaders.AUTHORIZATION, getValidJwtToken())
-                .get(new GenericType<ResponseDto<TicketType>>(){}).getData();
+                .get(TicketType.class);
 
         assertNotNull(ticketResponse);
         assertEquals(ticketType.getGuid(), ticketResponse.getGuid());
@@ -182,39 +176,35 @@ public class RulesTicketRestIT extends AbstractRest {
 	@Test
 	public void getNumberOfOpenTicketReportsTest() throws Exception {
         CustomRulesTestHelper.createRuleAndGetMovementGuid();
-        ResponseDto<Long> ticketResponse = getWebTarget()
+        Long count = getWebTarget()
                 .path("movement-rules/rest/tickets/countopen")
                 .path("vms_admin_se")
                 .request(MediaType.APPLICATION_JSON)
                 .header(HttpHeaders.AUTHORIZATION, getValidJwtToken())
-                .get(new GenericType<ResponseDto<Long>>(){});
+                .get(Long.class);
 
-        Long count = ticketResponse.getData();
         assertTrue(count > 0);
     }
 
 	@Test
 	public void getNumberOfAssetsNotSendingTest() {
-        ResponseDto<Long> ticketResponse = getWebTarget()
+        Long count = getWebTarget()
                 .path("movement-rules/rest/tickets/countAssetsNotSending")
                 .request(MediaType.APPLICATION_JSON)
                 .header(HttpHeaders.AUTHORIZATION, getValidJwtToken())
-                .get(new GenericType<ResponseDto<Long>>(){});
-
-        Long count = ticketResponse.getData();
+                .get(Long.class);
         assertNotNull(count);
 	}
 
     private List<TicketType> getTicketTypeList(TicketQuery ticketQuery) {
-        ResponseDto<GetTicketListByQueryResponse> ticketListResponse = getWebTarget()
+        GetTicketListByQueryResponse response = getWebTarget()
                 .path("movement-rules/rest/tickets/list")
                 .path("vms_admin_se")
                 .request(MediaType.APPLICATION_JSON)
                 .header(HttpHeaders.AUTHORIZATION, getValidJwtToken())
-                .post(Entity.json(ticketQuery), new GenericType<ResponseDto<GetTicketListByQueryResponse>>() {
+                .post(Entity.json(ticketQuery), new GenericType<GetTicketListByQueryResponse>() {
                 });
 
-        GetTicketListByQueryResponse response = ticketListResponse.getData();
         return response.getTickets();
     }
 }

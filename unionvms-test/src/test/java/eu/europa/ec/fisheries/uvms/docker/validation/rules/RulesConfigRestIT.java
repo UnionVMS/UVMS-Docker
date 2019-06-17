@@ -14,13 +14,13 @@ copy of the GNU General Public License along with the IFDM Suite. If not, see <h
 package eu.europa.ec.fisheries.uvms.docker.validation.rules;
 
 import eu.europa.ec.fisheries.schema.movementrules.ticket.v1.TicketStatusType;
-import eu.europa.ec.fisheries.uvms.commons.rest.dto.ResponseDto;
 import eu.europa.ec.fisheries.uvms.docker.validation.common.AbstractRest;
 import org.junit.Test;
 
 import javax.ws.rs.core.GenericType;
 import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 import java.util.List;
 import java.util.Map;
 
@@ -28,31 +28,27 @@ public class RulesConfigRestIT extends AbstractRest {
 
 	@Test
 	public void getConfigTest() {
-		ResponseDto<Map> response = getWebTarget()
+		Response response = getWebTarget()
 				.path("movement-rules/rest/config")
 				.request(MediaType.APPLICATION_JSON)
 				.header(HttpHeaders.AUTHORIZATION, getValidJwtToken())
-				.get(new GenericType<ResponseDto<Map>>(){});
+				.get();
 
-		assertEquals(200, response.getCode());
+		assertEquals(Response.Status.OK.getStatusCode(), response.getStatus());
 
-		Map data = response.getData();
-		assertNotNull(data);
-
+		Map data = response.readEntity(Map.class);
+		assertFalse(data.isEmpty());
 	}
 
 	@Test
 	public void getTicketStatusesTest() {
-		ResponseDto<List<TicketStatusType>> response = getWebTarget()
+		List<TicketStatusType> response = getWebTarget()
 				.path("movement-rules/rest/config")
 				.path("ticketstatus")
 				.request(MediaType.APPLICATION_JSON)
 				.header(HttpHeaders.AUTHORIZATION, getValidJwtToken())
-				.get(new GenericType<ResponseDto<List<TicketStatusType>>>(){});
+				.get(new GenericType<List<TicketStatusType>>(){});
 
-		assertEquals(200, response.getCode());
-
-		List<TicketStatusType> data = response.getData();
-		assertNotNull(data);
+		assertFalse(response.isEmpty());
 	}
 }

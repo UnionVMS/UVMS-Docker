@@ -12,7 +12,6 @@ copy of the GNU General Public License along with the IFDM Suite. If not, see <h
 package eu.europa.ec.fisheries.uvms.docker.validation.system.helper;
 
 import eu.europa.ec.fisheries.schema.movementrules.customrule.v1.CustomRuleType;
-import eu.europa.ec.fisheries.uvms.commons.rest.dto.ResponseDto;
 import eu.europa.ec.fisheries.uvms.docker.validation.common.AbstractHelper;
 
 import javax.ws.rs.client.Entity;
@@ -29,12 +28,11 @@ import static org.hamcrest.CoreMatchers.nullValue;
 public class CustomRuleHelper extends AbstractHelper {
 
     public static CustomRuleType createCustomRule(CustomRuleType customRule) {
-         ResponseDto<CustomRuleType> responseDto = getWebTarget()
-                .path("movement-rules/rest/customrules")
-                .request(MediaType.APPLICATION_JSON)
-                .header(HttpHeaders.AUTHORIZATION, getValidJwtToken())
-                .post(Entity.json(customRule), new GenericType<ResponseDto<CustomRuleType>>() {});
-         return responseDto.getData();
+        return getWebTarget()
+               .path("movement-rules/rest/customrules")
+               .request(MediaType.APPLICATION_JSON)
+               .header(HttpHeaders.AUTHORIZATION, getValidJwtToken())
+               .post(Entity.json(customRule), CustomRuleType.class);
     }
     
     public static void removeCustomRule(String guid) {
@@ -47,13 +45,12 @@ public class CustomRuleHelper extends AbstractHelper {
     }
 
     public static void removeCustomRulesByDefaultUser() {
-        ResponseDto<List<CustomRuleType>> responseDto = getWebTarget()
+        List<CustomRuleType> customRules = getWebTarget()
                 .path("movement-rules/rest/customrules/listAll")
                 .path(CustomRuleBuilder.DEFAULT_USER)
                 .request(MediaType.APPLICATION_JSON)
                 .header(HttpHeaders.AUTHORIZATION, getValidJwtToken())
-                .get(new GenericType<ResponseDto<List<CustomRuleType>>>() {});
-        List<CustomRuleType> customRules = responseDto.getData();
+                .get(new GenericType<List<CustomRuleType>>() {});
         
         for (CustomRuleType customRuleType : customRules) {
             removeCustomRule(customRuleType.getGuid());
@@ -61,13 +58,12 @@ public class CustomRuleHelper extends AbstractHelper {
     }
     
     public static void assertRuleTriggered(CustomRuleType rule, OffsetDateTime dateFrom) {
-        ResponseDto<CustomRuleType> responseDto = getWebTarget()
+        CustomRuleType fetchedCustomRule = getWebTarget()
                 .path("movement-rules/rest/customrules")
                 .path(rule.getGuid())
                 .request(MediaType.APPLICATION_JSON)
                 .header(HttpHeaders.AUTHORIZATION, getValidJwtToken())
-                .get(new GenericType<ResponseDto<CustomRuleType>>() {});
-        CustomRuleType fetchedCustomRule = responseDto.getData();
+                .get(CustomRuleType.class);
         
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss Z");
         OffsetDateTime lastTriggered = OffsetDateTime.parse(fetchedCustomRule.getLastTriggered(), formatter);
@@ -82,13 +78,13 @@ public class CustomRuleHelper extends AbstractHelper {
     }
     
     public static void assertRuleNotTriggered(CustomRuleType rule) {
-        ResponseDto<CustomRuleType> responseDto = getWebTarget()
+        CustomRuleType fetchedCustomRule = getWebTarget()
                 .path("movement-rules/rest/customrules")
                 .path(rule.getGuid())
                 .request(MediaType.APPLICATION_JSON)
                 .header(HttpHeaders.AUTHORIZATION, getValidJwtToken())
-                .get(new GenericType<ResponseDto<CustomRuleType>>() {});
-        CustomRuleType fetchedCustomRule = responseDto.getData();
+                .get(CustomRuleType.class);
+
         assertThat(fetchedCustomRule.getLastTriggered(), is(nullValue()));
     }
 
