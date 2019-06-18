@@ -87,6 +87,10 @@ public class AssetJMSHelper {
         return assetModuleResponse.getResponse();
     }
 
+    public void sendStringToAssetWithFunction(String message, String function) throws Exception{
+        messageHelper.sendMessageWithFunction(ASSET_QUEUE, message, function);
+    }
+
     public FlagStateType getFlagStateFromAssetGuidAndDate(String guid, Date date) throws Exception {
         String msg = AssetModuleRequestMapper.createFlagStateRequest(guid, date);
         TextMessage response = (TextMessage) messageHelper.getMessageResponse(ASSET_QUEUE, msg);
