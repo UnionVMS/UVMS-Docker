@@ -13,12 +13,14 @@ copy of the GNU General Public License along with the IFDM Suite. If not, see <h
 */
 package eu.europa.ec.fisheries.uvms.docker.validation.movement;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import eu.europa.ec.fisheries.schema.movement.search.v1.ListCriteria;
 import eu.europa.ec.fisheries.schema.movement.search.v1.ListPagination;
 import eu.europa.ec.fisheries.schema.movement.search.v1.MovementQuery;
 import eu.europa.ec.fisheries.schema.movement.search.v1.SearchKey;
 import eu.europa.ec.fisheries.schema.movement.v1.MovementType;
 import eu.europa.ec.fisheries.uvms.asset.client.model.AssetDTO;
+import eu.europa.ec.fisheries.uvms.docker.validation.asset.AssetJMSHelper;
 import eu.europa.ec.fisheries.uvms.docker.validation.asset.AssetTestHelper;
 import eu.europa.ec.fisheries.uvms.docker.validation.common.AbstractRest;
 import eu.europa.ec.fisheries.uvms.docker.validation.mobileterminal.MobileTerminalTestHelper;
@@ -42,15 +44,18 @@ import java.util.UUID;
 public class MovementMovementRestIT extends AbstractRest {
 
 	private static MovementHelper movementHelper;
+	private static AssetJMSHelper jmsHelper;
 
 	@BeforeClass
 	public static void setup() throws JMSException {
 		movementHelper = new MovementHelper();
+		jmsHelper = new AssetJMSHelper();
 	}
 
 	@AfterClass
 	public static void cleanup() {
 		movementHelper.close();
+		jmsHelper.close();
 	}
 
 	@Test
@@ -145,4 +150,49 @@ public class MovementMovementRestIT extends AbstractRest {
 
         assertNotNull(response);
     }
+
+    @Test
+	public void mergeAssetsAndMoveMovementsTest() throws Exception{
+		AssetDTO assetWithMMSI = AssetTestHelper.createBasicAsset();
+		assetWithMMSI.setIrcs(null);
+		assetWithMMSI.setCfr(null);
+		assetWithMMSI = AssetTestHelper.createAsset(assetWithMMSI);
+		AssetDTO assetWithIRCS = AssetTestHelper.createBasicAsset();
+		assetWithIRCS.setMmsi(null);
+		assetWithIRCS.setSource("NATIONAL");
+		assetWithIRCS = AssetTestHelper.createAsset(assetWithIRCS);
+
+		List<LatLong> latLongs = movementHelper.createRutt(10);
+		List<MovementDto> input = new ArrayList<>(10);
+
+		for (LatLong pos:latLongs) {
+			IncomingMovement incomingMovement = movementHelper.createIncomingMovement(assetWithMMSI, pos);
+			incomingMovement.setAssetMMSI(assetWithMMSI.getMmsi());
+			input.add(movementHelper.createMovement(incomingMovement));
+		}
+
+		AssetDTO mergeAsset = AssetTestHelper.createBasicAsset();
+		mergeAsset.setMmsi(assetWithMMSI.getMmsi());
+		mergeAsset.setIrcs(assetWithIRCS.getIrcs());
+		List<AssetDTO> assetDTOList = new ArrayList<>();
+		assetDTOList.add(mergeAsset);
+		ObjectMapper om = new ObjectMapper();
+		String assetMessage = om.writeValueAsString(assetDTOList);
+
+		jmsHelper.sendStringToAssetWithFunction(assetMessage, "ASSET_INFORMATION");
+		Thread.sleep(3000);
+
+		MovementQuery query = MovementHelper.getBasicMovementQuery();
+		ListCriteria criteria = new ListCriteria();
+		criteria.setKey(SearchKey.CONNECT_ID);
+		criteria.setValue(assetWithIRCS.getId().toString());
+		query.getMovementSearchCriteria().add(criteria);
+		List<MovementType> output = MovementHelper.getListByQuery(query);
+
+		assertEquals(assetWithIRCS.getId().toString(), input.size(), output.size());
+		for (MovementDto move :input) {
+			output.stream().anyMatch(o -> o.getGuid().equals(move.getMovementGUID()));
+		}
+
+	}
 }
