@@ -27,6 +27,7 @@ public class CustomRulesTestHelper {
         CustomRuleType customRule = new CustomRuleType();
 
         customRule.setName("Flag SWE && area DNK => Send to DNK" + " (" + System.currentTimeMillis() + ")");
+        customRule.setDescription("Test description.");
         customRule.setAvailability(AvailabilityType.PRIVATE);
         customRule.setUpdatedBy("vms_admin_se");
         customRule.setActive(true);
