@@ -13,19 +13,6 @@ copy of the GNU General Public License along with the IFDM Suite. If not, see <h
 */
 package eu.europa.ec.fisheries.uvms.docker.validation.reporting;
 
-import static org.hamcrest.CoreMatchers.is;
-import java.math.BigInteger;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import javax.ws.rs.client.Entity;
-import javax.ws.rs.core.GenericType;
-import javax.ws.rs.core.HttpHeaders;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
-import javax.ws.rs.core.Response.Status;
-import org.hamcrest.CoreMatchers;
-import org.junit.Test;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import eu.europa.ec.fisheries.schema.movement.search.v1.ListCriteria;
@@ -33,11 +20,7 @@ import eu.europa.ec.fisheries.schema.movement.search.v1.ListPagination;
 import eu.europa.ec.fisheries.schema.movement.search.v1.MovementQuery;
 import eu.europa.ec.fisheries.schema.movement.search.v1.SearchKey;
 import eu.europa.ec.fisheries.schema.movement.v1.MovementType;
-import eu.europa.ec.fisheries.schema.movementrules.customrule.v1.AvailabilityType;
-import eu.europa.ec.fisheries.schema.movementrules.customrule.v1.ConditionType;
-import eu.europa.ec.fisheries.schema.movementrules.customrule.v1.CriteriaType;
-import eu.europa.ec.fisheries.schema.movementrules.customrule.v1.CustomRuleType;
-import eu.europa.ec.fisheries.schema.movementrules.customrule.v1.SubCriteriaType;
+import eu.europa.ec.fisheries.schema.movementrules.customrule.v1.*;
 import eu.europa.ec.fisheries.uvms.asset.client.model.AssetDTO;
 import eu.europa.ec.fisheries.uvms.commons.rest.dto.ResponseDto;
 import eu.europa.ec.fisheries.uvms.docker.validation.asset.AssetTestHelper;
@@ -49,6 +32,20 @@ import eu.europa.ec.fisheries.uvms.docker.validation.system.helper.CustomRuleHel
 import eu.europa.ec.fisheries.uvms.docker.validation.system.helper.NAFHelper;
 import eu.europa.ec.fisheries.uvms.reporting.service.dto.rules.AlarmMovement;
 import eu.europa.ec.fisheries.uvms.reporting.service.dto.rules.AlarmMovementList;
+import org.junit.Test;
+
+import javax.ws.rs.client.Entity;
+import javax.ws.rs.core.GenericType;
+import javax.ws.rs.core.HttpHeaders;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
+import javax.ws.rs.core.Response.Status;
+import java.math.BigInteger;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+
+import static org.hamcrest.CoreMatchers.is;
 
 public class AlarmRestIT extends AbstractRest {
 
@@ -69,7 +66,8 @@ public class AlarmRestIT extends AbstractRest {
 		        .request(MediaType.APPLICATION_JSON)
 		        .header(HttpHeaders.AUTHORIZATION, getValidJwtToken())
 		        .post(Entity.json(alarmMovementList));
-		assertThat(response.getStatus(), CoreMatchers.is(Status.OK.getStatusCode()));
+
+		assertEquals(Status.OK.getStatusCode(), response.getStatus());
 	}
 	
 	@Test
