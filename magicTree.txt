@@ -1,0 +1,336 @@
+[INFO] Scanning for projects...
+[WARNING] 
+[WARNING] Some problems were encountered while building the effective model for eu.europa.ec.fisheries.uvms.docker:uvms-docker-postgres-release:pom:3.31.12.w15-SNAPSHOT
+[WARNING] The expression ${artifactId} is deprecated. Please use ${project.artifactId} instead.
+[WARNING] 
+[WARNING] Some problems were encountered while building the effective model for eu.europa.ec.fisheries.uvms.docker:uvms-docker-wildfly-base:pom:3.31.12.w15-SNAPSHOT
+[WARNING] The expression ${artifactId} is deprecated. Please use ${project.artifactId} instead.
+[WARNING] The expression ${artifactId} is deprecated. Please use ${project.artifactId} instead.
+[WARNING] 
+[WARNING] Some problems were encountered while building the effective model for eu.europa.ec.fisheries.uvms.docker:uvms-docker-wildfly-unionvms:pom:3.31.12.w15-SNAPSHOT
+[WARNING] The expression ${artifactId} is deprecated. Please use ${project.artifactId} instead.
+[WARNING] The expression ${artifactId} is deprecated. Please use ${project.artifactId} instead.
+[WARNING] 
+[WARNING] Some problems were encountered while building the effective model for eu.europa.ec.fisheries.uvms.docker:uvms-docker-wildfly-fluxfmc:pom:3.31.12.w15-SNAPSHOT
+[WARNING] The expression ${artifactId} is deprecated. Please use ${project.artifactId} instead.
+[WARNING] The expression ${artifactId} is deprecated. Please use ${project.artifactId} instead.
+[WARNING] 
+[WARNING] Some problems were encountered while building the effective model for eu.europa.ec.fisheries.uvms.docker:docker-compose:jar:3.31.12.w15-SNAPSHOT
+[WARNING] 'build.plugins.plugin.version' for org.codehaus.mojo:build-helper-maven-plugin is missing. @ line 28, column 12
+[WARNING] 
+[WARNING] It is highly recommended to fix these problems because they threaten the stability of your build.
+[WARNING] 
+[WARNING] For this reason, future Maven versions might no longer support building such malformed projects.
+[WARNING] 
+[INFO] ------------------------------------------------------------------------
+[INFO] Reactor Build Order:
+[INFO] 
+[INFO] uvms-docker                                                        [pom]
+[INFO] uvms-docker-postgres-base                                          [pom]
+[INFO] uvms-docker-postgres-release                                       [pom]
+[INFO] hibernate-spatial-4x-to-5x-wrapper                                 [jar]
+[INFO] uvms-docker-wildfly-base                                           [pom]
+[INFO] uvms-docker-wildfly-unionvms                                       [pom]
+[INFO] uvms-unionvms-test                                                 [jar]
+[INFO] uvms-docker-wildfly-fluxfmc                                        [pom]
+[INFO] docker-compose                                                     [jar]
+[INFO] 
+[INFO] -----------< eu.europa.ec.fisheries.uvms.docker:uvms-docker >-----------
+[INFO] Building uvms-docker 3.31.12.w15-SNAPSHOT                          [1/9]
+[INFO] --------------------------------[ pom ]---------------------------------
+[INFO] 
+[INFO] --- maven-dependency-plugin:3.0.2:tree (default-cli) @ uvms-docker ---
+[INFO] eu.europa.ec.fisheries.uvms.docker:uvms-docker:pom:3.31.12.w15-SNAPSHOT
+[INFO] 
+[INFO] ----< eu.europa.ec.fisheries.uvms.docker:uvms-docker-postgres-base >----
+[INFO] Building uvms-docker-postgres-base 3.31.12.w15-SNAPSHOT            [2/9]
+[INFO] --------------------------------[ pom ]---------------------------------
+[INFO] 
+[INFO] --- maven-dependency-plugin:3.0.2:tree (default-cli) @ uvms-docker-postgres-base ---
+[INFO] eu.europa.ec.fisheries.uvms.docker:uvms-docker-postgres-base:pom:3.31.12.w15-SNAPSHOT
+[INFO] 
+[INFO] --< eu.europa.ec.fisheries.uvms.docker:uvms-docker-postgres-release >---
+[INFO] Building uvms-docker-postgres-release 3.31.12.w15-SNAPSHOT         [3/9]
+[INFO] --------------------------------[ pom ]---------------------------------
+[INFO] 
+[INFO] --- maven-dependency-plugin:3.1.1:tree (default-cli) @ uvms-docker-postgres-release ---
+[INFO] eu.europa.ec.fisheries.uvms.docker:uvms-docker-postgres-release:pom:3.31.12.w15-SNAPSHOT
+[INFO] +- eu.europa.ec.fisheries.uvms.asset:liquibase:sql:6.0.26:compile
+[INFO] |  \- fish.focus.uvms.maven:uvms-pom-logging-deps:pom:1.18:compile
+[INFO] |     +- org.slf4j:jul-to-slf4j:jar:1.7.25:compile
+[INFO] |     \- org.slf4j:jcl-over-slf4j:jar:1.7.25:compile
+[INFO] +- eu.europa.ec.fisheries.uvms.audit:liquibase:sql:4.0.9:compile
+[INFO] +- eu.europa.ec.fisheries.uvms.config:liquibase:sql:4.0.11:compile
+[INFO] +- eu.europa.ec.fisheries.uvms.exchange:liquibase:sql:4.0.40-UVMS:compile
+[INFO] +- eu.europa.ec.fisheries.uvms.movement:liquibase:sql:5.1.13-UVMS:compile
+[INFO] +- eu.europa.ec.fisheries.uvms.rules:liquibase:sql:3.0.31:compile
+[INFO] |  +- ma.glasnost.orika:orika-core:jar:1.5.1:compile
+[INFO] |  |  +- org.javassist:javassist:jar:3.19.0-GA:compile
+[INFO] |  |  +- com.thoughtworks.paranamer:paranamer:jar:2.8:compile
+[INFO] |  |  +- com.googlecode.concurrentlinkedhashmap:concurrentlinkedhashmap-lru:jar:1.4.2:compile
+[INFO] |  |  +- com.carrotsearch:java-sizeof:jar:0.0.4:compile
+[INFO] |  |  \- org.codehaus.janino:janino:jar:2.7.5:compile
+[INFO] |  |     \- org.codehaus.janino:commons-compiler:jar:2.7.5:compile
+[INFO] |  +- org.slf4j:slf4j-api:jar:1.7.25:compile
+[INFO] |  +- ch.qos.logback:logback-classic:jar:1.2.3:compile
+[INFO] |  \- ch.qos.logback:logback-core:jar:1.2.3:compile
+[INFO] +- eu.europa.ec.fisheries.uvms.movement-rules:liquibase:sql:2.0.5:compile
+[INFO] +- eu.europa.ec.fisheries.uvms.spatial:liquibase:sql:1.0.6:compile
+[INFO] |  +- org.liquibase:liquibase-core:jar:3.5.1:compile
+[INFO] |  |  \- org.yaml:snakeyaml:jar:1.13:compile
+[INFO] |  \- com.github.lonnyj:liquibase-spatial:jar:1.2.1:compile
+[INFO] |     \- com.vividsolutions:jts:jar:1.13:compile
+[INFO] +- eu.europa.ec.fisheries.uvms.activity:liquibase:sql:1.1.6:compile
+[INFO] |  \- org.postgresql:postgresql:jar:42.2.1.jre7:compile
+[INFO] +- eu.europa.ec.fisheries.uvms.mdr:liquibase:sql:1.0.10:compile
+[INFO] +- eu.europa.ec.fisheries.uvms.reporting:liquibase:sql:1.0.4:compile
+[INFO] +- eu.europa.ec.fisheries.uvms.user:liquibase:sql:2.0.11:compile
+[INFO] \- eu.europa.ec.fisheries.uvms.subscription:liquibase:sql:1.3:compile
+[INFO] 
+[INFO] --< eu.europa.ec.fisheries.uvms.docker:hibernate-spatial-4x-to-5x-wrapper >--
+[INFO] Building hibernate-spatial-4x-to-5x-wrapper 3.31.12.w15-SNAPSHOT   [4/9]
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- maven-dependency-plugin:3.0.2:tree (default-cli) @ hibernate-spatial-4x-to-5x-wrapper ---
+[INFO] eu.europa.ec.fisheries.uvms.docker:hibernate-spatial-4x-to-5x-wrapper:jar:3.31.12.w15-SNAPSHOT
+[INFO] \- org.hibernate:hibernate-spatial:jar:5.1.10.Final:compile
+[INFO]    +- org.jboss.logging:jboss-logging:jar:3.3.0.Final:compile
+[INFO]    +- org.hibernate:hibernate-core:jar:5.1.10.Final:compile
+[INFO]    |  +- org.hibernate.javax.persistence:hibernate-jpa-2.1-api:jar:1.0.0.Final:compile
+[INFO]    |  +- org.javassist:javassist:jar:3.20.0-GA:compile
+[INFO]    |  +- antlr:antlr:jar:2.7.7:compile
+[INFO]    |  +- org.apache.geronimo.specs:geronimo-jta_1.1_spec:jar:1.1.1:compile
+[INFO]    |  +- org.jboss:jandex:jar:2.0.3.Final:compile
+[INFO]    |  +- com.fasterxml:classmate:jar:1.3.0:compile
+[INFO]    |  \- org.hibernate.common:hibernate-commons-annotations:jar:5.0.1.Final:compile
+[INFO]    +- org.postgresql:postgresql:jar:9.4-1200-jdbc41:compile
+[INFO]    |  +- com.github.dblock.waffle:waffle-jna:jar:1.7:runtime
+[INFO]    |  |  +- net.java.dev.jna:jna:jar:4.1.0:runtime
+[INFO]    |  |  +- net.java.dev.jna:jna-platform:jar:4.1.0:runtime
+[INFO]    |  |  \- com.google.guava:guava:jar:18.0:runtime
+[INFO]    |  \- org.slf4j:slf4j-simple:jar:1.7.7:runtime
+[INFO]    +- org.geolatte:geolatte-geom:jar:1.0.6:compile
+[INFO]    |  +- com.vividsolutions:jts:jar:1.13:compile
+[INFO]    |  \- org.slf4j:slf4j-api:jar:1.6.1:compile
+[INFO]    \- dom4j:dom4j:jar:1.6.1:compile
+[INFO]       \- xml-apis:xml-apis:jar:1.0.b2:compile
+[INFO] 
+[INFO] ----< eu.europa.ec.fisheries.uvms.docker:uvms-docker-wildfly-base >-----
+[INFO] Building uvms-docker-wildfly-base 3.31.12.w15-SNAPSHOT             [5/9]
+[INFO] --------------------------------[ pom ]---------------------------------
+[INFO] 
+[INFO] --- maven-dependency-plugin:3.1.1:tree (default-cli) @ uvms-docker-wildfly-base ---
+[INFO] eu.europa.ec.fisheries.uvms.docker:uvms-docker-wildfly-base:pom:3.31.12.w15-SNAPSHOT
+[INFO] +- org.hibernate:hibernate-spatial:jar:5.3.7.Final:compile
+[INFO] |  +- org.jboss.logging:jboss-logging:jar:3.3.2.Final:compile
+[INFO] |  +- org.hibernate:hibernate-core:jar:5.3.7.Final:compile
+[INFO] |  |  +- javax.persistence:javax.persistence-api:jar:2.2:compile
+[INFO] |  |  +- org.javassist:javassist:jar:3.23.1-GA:compile
+[INFO] |  |  +- net.bytebuddy:byte-buddy:jar:1.8.17:compile
+[INFO] |  |  +- antlr:antlr:jar:2.7.7:compile
+[INFO] |  |  +- org.jboss.spec.javax.transaction:jboss-transaction-api_1.2_spec:jar:1.1.1.Final:compile
+[INFO] |  |  +- org.jboss:jandex:jar:2.0.5.Final:compile
+[INFO] |  |  +- com.fasterxml:classmate:jar:1.3.4:compile
+[INFO] |  |  +- javax.activation:javax.activation-api:jar:1.2.0:compile
+[INFO] |  |  \- org.hibernate.common:hibernate-commons-annotations:jar:5.0.4.Final:compile
+[INFO] |  \- org.dom4j:dom4j:jar:2.1.1:compile
+[INFO] +- org.geolatte:geolatte-geom:jar:1.2.0:compile
+[INFO] |  \- org.slf4j:slf4j-api:jar:1.6.1:compile
+[INFO] +- com.vividsolutions:jts:jar:1.13:compile
+[INFO] +- eu.europa.ec.fisheries.uvms.docker:hibernate-spatial-4x-to-5x-wrapper:jar:3.31.12.w15-SNAPSHOT:compile
+[INFO] +- org.postgresql:postgresql:jar:42.1.4.jre7:compile
+[INFO] \- org.postgis:postgis-jdbc:jar:1.5.3:compile
+[INFO] 
+[INFO] --< eu.europa.ec.fisheries.uvms.docker:uvms-docker-wildfly-unionvms >---
+[INFO] Building uvms-docker-wildfly-unionvms 3.31.12.w15-SNAPSHOT         [6/9]
+[INFO] --------------------------------[ pom ]---------------------------------
+[WARNING] The POM for eu.europa.ec.fisheries.uvms.mapfish.print:mapfish-print:war:3.5 is missing, no dependency information available
+[INFO] 
+[INFO] --- maven-dependency-plugin:3.0.1:tree (default-cli) @ uvms-docker-wildfly-unionvms ---
+[INFO] eu.europa.ec.fisheries.uvms.docker:uvms-docker-wildfly-unionvms:pom:3.31.12.w15-SNAPSHOT
+[INFO] +- org.apache.activemq:artemis-console:war:2.6.3:compile
+[INFO] +- eu.europa.ec.fisheries.uvms:unionvms-web:war:3.0.44-UVMS:compile
+[INFO] +- eu.europa.ec.fisheries.uvms.mapfish.print:mapfish-print:war:3.5:compile
+[INFO] +- eu.europa.ec.fisheries.uvms.geoserver.web.overlay:gs-web-app:war:2.12.3:compile
+[INFO] +- eu.europa.ec.fisheries.uvms.asset:asset-module:ear:6.0.26:compile
+[INFO] +- eu.europa.ec.fisheries.uvms.audit:audit-module:ear:4.0.9:compile
+[INFO] +- eu.europa.ec.fisheries.uvms.config:config-module:ear:4.0.11:compile
+[INFO] +- eu.europa.ec.fisheries.uvms.exchange:exchange-module:ear:4.0.40-UVMS:compile
+[INFO] +- eu.europa.ec.fisheries.uvms.movement:movement-module:ear:5.1.13-UVMS:compile
+[INFO] +- eu.europa.ec.fisheries.uvms.movement-rules:movement-rules-module:ear:2.0.5:compile
+[INFO] +- eu.europa.ec.fisheries.uvms.spatial:spatial-module:ear:1.1.12:compile
+[INFO] +- eu.europa.ec.fisheries.uvms.user:user-module:ear:2.0.11:compile
+[INFO] +- eu.europa.ec.fisheries.uvms.reporting:reporting-module:ear:1.1.5-UVMS:compile
+[INFO] +- eu.europa.ec.fisheries.uvms.plugins:inmarsat-module:ear:3.0.49:compile
+[INFO] +- eu.europa.ec.fisheries.uvms.plugins:naf-module:ear:3.0.12:compile
+[INFO] +- eu.europa.ec.fisheries.uvms.plugins:flux-movement-plugin-module:ear:3.0.14:compile
+[INFO] \- eu.europa.ec.fisheries.uvms.plugins.iridium:siriusone-module:ear:3.0.7:compile
+[INFO] 
+[INFO] -------< eu.europa.ec.fisheries.uvms.docker:uvms-unionvms-test >--------
+[INFO] Building uvms-unionvms-test 3.31.12.w15-SNAPSHOT                   [7/9]
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- maven-dependency-plugin:3.0.2:tree (default-cli) @ uvms-unionvms-test ---
+[INFO] eu.europa.ec.fisheries.uvms.docker:uvms-unionvms-test:jar:3.31.12.w15-SNAPSHOT
+[INFO] +- org.postgresql:postgresql:jar:42.1.4.jre7:compile
+[INFO] +- eu.europa.ec.fisheries.uvms.movement:movement-model:jar:5.1.13-UVMS:compile
+[INFO] |  +- org.jvnet.jaxb2_commons:jaxb2-basics:jar:0.9.5:compile
+[INFO] |  |  +- org.jvnet.jaxb2_commons:jaxb2-basics-tools:jar:0.9.5:compile
+[INFO] |  |  |  \- commons-beanutils:commons-beanutils:jar:1.9.2:compile
+[INFO] |  |  \- com.google.code.javaparser:javaparser:jar:1.0.11:compile
+[INFO] |  +- org.apache.commons:commons-lang3:jar:3.7:compile
+[INFO] |  \- fish.focus.uvms.maven:uvms-pom-logging-deps:pom:1.21:compile
+[INFO] |     +- org.slf4j:jul-to-slf4j:jar:1.7.25:compile
+[INFO] |     \- org.slf4j:jcl-over-slf4j:jar:1.7.25:compile
+[INFO] +- eu.europa.ec.fisheries.uvms.movement-rules:movement-rules-model:jar:2.0.5:compile
+[INFO] +- org.apache.activemq:artemis-jms-client-all:jar:2.6.3:compile
+[INFO] +- eu.europa.ec.fisheries.uvms.exchange:exchange-model:jar:4.0.22:compile
+[INFO] |  \- eu.europa.ec.fisheries.uvms.commons:uvms-commons-date:jar:3.0.8:compile
+[INFO] +- eu.europa.ec.fisheries.uvms.asset:asset-model:jar:6.0.26:compile
+[INFO] +- eu.europa.ec.fisheries.uvms.asset:asset-client:jar:6.0.26:compile
+[INFO] +- eu.europa.ec.fisheries.uvms.user:user-model:jar:2.0.11:compile
+[INFO] +- eu.europa.ec.fisheries.uvms.reporting:service:jar:1.1.5-UVMS:compile
+[INFO] |  +- fish.focus.uvms.maven:uvms-pom-monitoring-deps:pom:1.18:compile
+[INFO] |  |  +- net.bull.javamelody:javamelody-core:jar:1.72.0.SE:compile
+[INFO] |  |  |  \- org.jrobin:jrobin:jar:1.5.9:compile
+[INFO] |  |  \- com.github.librepdf:openpdf:jar:1.0.5:compile
+[INFO] |  |     +- org.bouncycastle:bcprov-jdk15on:jar:1.58:compile
+[INFO] |  |     \- org.bouncycastle:bcpkix-jdk15on:jar:1.58:compile
+[INFO] |  +- eu.europa.ec.fisheries.uvms.activity:activity-model:jar:1.0.9:compile
+[INFO] |  |  +- com.sun.xml.bind:jaxb-impl:jar:2.3.0:compile
+[INFO] |  |  \- com.sun.xml.bind:jaxb-core:jar:2.3.0:compile
+[INFO] |  +- eu.europa.ec.fisheries.uvms.commons:uvms-commons-message:jar:3.0.25:compile
+[INFO] |  |  \- commons-collections:commons-collections:jar:3.2.2:compile
+[INFO] |  +- eu.europa.ec.fisheries.uvms:usm4uvms:jar:4.0.12:compile
+[INFO] |  |  +- io.jsonwebtoken:jjwt:jar:0.4:compile
+[INFO] |  |  +- eu.europa.ec.mare.usm:jwt-handler-api:jar:2.1.1:compile
+[INFO] |  |  \- eu.europa.ec.mare.usm:jwt-handler-impl:jar:2.1.1:compile
+[INFO] |  +- net.sf.ehcache.internal:ehcache-core:jar:2.10.4:compile
+[INFO] |  |  \- org.terracotta.internal:statistics:jar:1.0.2:compile
+[INFO] |  +- org.geotools:gt-geojson:jar:14.4:compile
+[INFO] |  |  +- org.geotools:gt-main:jar:14.4:compile
+[INFO] |  |  |  +- org.geotools:gt-api:jar:14.4:compile
+[INFO] |  |  |  +- com.vividsolutions:jts:jar:1.13:compile
+[INFO] |  |  |  \- org.jdom:jdom:jar:1.1.3:compile
+[INFO] |  |  +- com.googlecode.json-simple:json-simple:jar:1.1:compile
+[INFO] |  |  +- commons-lang:commons-lang:jar:2.6:compile
+[INFO] |  |  \- javax.media:jai_core:jar:1.1.3:compile
+[INFO] |  +- org.geotools:gt-epsg-wkt:jar:14.4:compile
+[INFO] |  |  \- org.geotools:gt-referencing:jar:14.4:compile
+[INFO] |  |     +- com.googlecode.efficient-java-matrix-library:core:jar:0.26:compile
+[INFO] |  |     +- commons-pool:commons-pool:jar:1.5.4:compile
+[INFO] |  |     +- org.geotools:gt-metadata:jar:14.4:compile
+[INFO] |  |     |  \- org.geotools:gt-opengis:jar:14.4:compile
+[INFO] |  |     |     \- net.java.dev.jsr-275:jsr-275:jar:1.0-beta-2:compile
+[INFO] |  |     +- jgridshift:jgridshift:jar:1.0:compile
+[INFO] |  |     \- net.sf.geographiclib:GeographicLib-Java:jar:1.44:compile
+[INFO] |  +- org.projectlombok:lombok:jar:1.16.18:compile
+[INFO] |  +- com.google.guava:guava:jar:20.0:compile
+[INFO] |  +- eu.europa.ec.fisheries.uvms.reporting:reporting-model:jar:1.0.4:compile
+[INFO] |  +- eu.europa.ec.fisheries.uvms.reporting:message:jar:1.1.5-UVMS:compile
+[INFO] |  +- eu.europa.ec.fisheries.uvms.commons:uvms-commons-service:jar:3.0.25:compile
+[INFO] |  +- eu.europa.ec.fisheries.uvms.commons:uvms-commons-domain:jar:3.0.25:compile
+[INFO] |  +- eu.europa.ec.fisheries.uvms.commons:uvms-commons-dao:jar:3.0.25:compile
+[INFO] |  +- eu.europa.ec.fisheries.uvms.commons:uvms-commons-geometry:jar:3.0.25:compile
+[INFO] |  +- eu.europa.ec.fisheries.uvms.commons:uvms-commons-rest:jar:3.0.25:compile
+[INFO] |  |  \- org.jboss.resteasy:resteasy-multipart-provider:jar:3.0.13.Final:compile
+[INFO] |  +- com.fasterxml.jackson.core:jackson-core:jar:2.9.6:compile
+[INFO] |  +- commons-io:commons-io:jar:2.6:compile
+[INFO] |  +- org.apache.commons:commons-collections4:jar:4.1:compile
+[INFO] |  +- org.mapstruct:mapstruct:jar:1.1.0.Final:compile
+[INFO] |  +- org.mapstruct:mapstruct-processor:jar:1.1.0.Final:compile
+[INFO] |  +- joda-time:joda-time:jar:2.9.9:compile
+[INFO] |  +- org.slf4j:slf4j-api:jar:1.7.25:compile
+[INFO] |  +- ch.qos.logback:logback-classic:jar:1.2.3:compile
+[INFO] |  \- ch.qos.logback:logback-core:jar:1.2.3:compile
+[INFO] +- eu.europa.ec.fisheries.uvms.config:config-model:jar:4.0.11:compile
+[INFO] +- eu.europa.ec.fisheries.uvms.audit:audit-model:jar:4.0.9:compile
+[INFO] +- eu.europa.ec.fisheries.uvms.spatial:spatial-model:jar:1.0.12:compile
+[INFO] |  \- org.jvnet.jaxb2_commons:jaxb2-basics-runtime:jar:0.9.4:compile
+[INFO] +- eu.europa.ec.fisheries.uvms.service.client.flux:flux-movement:jar:2.0.1:compile
+[INFO] +- junit:junit:jar:4.12:compile
+[INFO] |  \- org.hamcrest:hamcrest-core:jar:1.3:compile
+[INFO] +- org.apache.httpcomponents:fluent-hc:jar:4.5.4:compile
+[INFO] |  +- org.apache.httpcomponents:httpclient:jar:4.5.4:compile
+[INFO] |  |  +- org.apache.httpcomponents:httpcore:jar:4.4.7:compile
+[INFO] |  |  \- commons-codec:commons-codec:jar:1.10:compile
+[INFO] |  \- commons-logging:commons-logging:jar:1.2:compile
+[INFO] +- com.fasterxml.jackson.core:jackson-databind:jar:2.9.4:compile
+[INFO] +- com.fasterxml.jackson.module:jackson-module-jaxb-annotations:jar:2.9.4:compile
+[INFO] +- com.fasterxml.jackson.core:jackson-annotations:jar:2.9.4:compile
+[INFO] +- com.fasterxml.jackson.datatype:jackson-datatype-jsr310:jar:2.9.4:compile
+[INFO] +- org.jboss.resteasy:resteasy-client:jar:3.6.1.Final:provided
+[INFO] |  +- org.jboss.spec.javax.ws.rs:jboss-jaxrs-api_2.1_spec:jar:1.0.1.Final:provided
+[INFO] |  +- org.jboss.resteasy:resteasy-jaxrs:jar:3.6.1.Final:provided
+[INFO] |  |  +- org.jboss.spec.javax.xml.bind:jboss-jaxb-api_2.3_spec:jar:1.0.0.Final:provided
+[INFO] |  |  +- org.reactivestreams:reactive-streams:jar:1.0.2:provided
+[INFO] |  |  +- javax.validation:validation-api:jar:1.1.0.Final:provided
+[INFO] |  |  +- org.jboss.spec.javax.annotation:jboss-annotations-api_1.2_spec:jar:1.0.0.Final:provided
+[INFO] |  |  +- javax.activation:activation:jar:1.1.1:provided
+[INFO] |  |  +- net.jcip:jcip-annotations:jar:1.0:provided
+[INFO] |  |  \- javax.json.bind:javax.json.bind-api:jar:1.0:provided
+[INFO] |  \- org.jboss.logging:jboss-logging:jar:3.3.1.Final:provided
+[INFO] +- org.jboss.resteasy:resteasy-jackson2-provider:jar:3.6.1.Final:provided
+[INFO] |  +- com.fasterxml.jackson.jaxrs:jackson-jaxrs-json-provider:jar:2.9.5:provided
+[INFO] |  |  \- com.fasterxml.jackson.jaxrs:jackson-jaxrs-base:jar:2.9.5:provided
+[INFO] |  \- com.github.fge:json-patch:jar:1.3:provided
+[INFO] |     \- com.github.fge:jackson-coreutils:jar:1.0:provided
+[INFO] +- org.databene:contiperf:jar:2.4.4:compile
+[INFO] +- org.apache.cxf:cxf-rt-rs-client:jar:3.1.13:compile
+[INFO] |  +- org.apache.cxf:cxf-rt-transports-http:jar:3.1.13:compile
+[INFO] |  +- org.apache.cxf:cxf-core:jar:3.1.13:compile
+[INFO] |  |  +- org.codehaus.woodstox:woodstox-core-asl:jar:4.4.1:compile
+[INFO] |  |  |  \- org.codehaus.woodstox:stax2-api:jar:3.1.4:compile
+[INFO] |  |  \- org.apache.ws.xmlschema:xmlschema-core:jar:2.2.2:compile
+[INFO] |  \- org.apache.cxf:cxf-rt-frontend-jaxrs:jar:3.1.13:compile
+[INFO] |     +- javax.ws.rs:javax.ws.rs-api:jar:2.0.1:compile
+[INFO] |     \- javax.annotation:javax.annotation-api:jar:1.2:compile
+[INFO] +- org.apache.cxf:cxf-rt-frontend-jaxws:jar:3.1.13:compile
+[INFO] |  +- xml-resolver:xml-resolver:jar:1.2:compile
+[INFO] |  +- org.ow2.asm:asm:jar:5.0.4:compile
+[INFO] |  +- org.apache.cxf:cxf-rt-bindings-soap:jar:3.1.13:compile
+[INFO] |  |  +- org.apache.cxf:cxf-rt-wsdl:jar:3.1.13:compile
+[INFO] |  |  |  \- wsdl4j:wsdl4j:jar:1.6.3:compile
+[INFO] |  |  \- org.apache.cxf:cxf-rt-databinding-jaxb:jar:3.1.13:compile
+[INFO] |  +- org.apache.cxf:cxf-rt-bindings-xml:jar:3.1.13:compile
+[INFO] |  +- org.apache.cxf:cxf-rt-frontend-simple:jar:3.1.13:compile
+[INFO] |  \- org.apache.cxf:cxf-rt-ws-addr:jar:3.1.13:compile
+[INFO] |     \- org.apache.cxf:cxf-rt-ws-policy:jar:3.1.13:compile
+[INFO] |        \- org.apache.neethi:neethi:jar:3.1.0:compile
+[INFO] \- com.peertopark.java:geocalc:jar:1.1.0:compile
+[INFO] 
+[INFO] ---< eu.europa.ec.fisheries.uvms.docker:uvms-docker-wildfly-fluxfmc >---
+[INFO] Building uvms-docker-wildfly-fluxfmc 3.31.12.w15-SNAPSHOT          [8/9]
+[INFO] --------------------------------[ pom ]---------------------------------
+[INFO] 
+[INFO] --- maven-dependency-plugin:3.1.1:tree (default-cli) @ uvms-docker-wildfly-fluxfmc ---
+[INFO] eu.europa.ec.fisheries.uvms.docker:uvms-docker-wildfly-fluxfmc:pom:3.31.12.w15-SNAPSHOT
+[INFO] +- eu.europa.ec.fisheries.uvms.rules:rules-module:ear:3.0.31:compile
+[INFO] +- eu.europa.ec.fisheries.uvms.activity:activity-module-postgres:ear:1.1.6:compile
+[INFO] +- eu.europa.ec.fisheries.uvms.mdr:mdr-module:ear:1.0.10:compile
+[INFO] \- eu.europa.ec.fisheries.uvms.subscription:subscription-module:ear:1.3:compile
+[INFO] 
+[INFO] ---------< eu.europa.ec.fisheries.uvms.docker:docker-compose >----------
+[INFO] Building docker-compose 3.31.12.w15-SNAPSHOT                       [9/9]
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- maven-dependency-plugin:3.0.2:tree (default-cli) @ docker-compose ---
+[INFO] eu.europa.ec.fisheries.uvms.docker:docker-compose:jar:3.31.12.w15-SNAPSHOT
+[INFO] ------------------------------------------------------------------------
+[INFO] Reactor Summary:
+[INFO] 
+[INFO] uvms-docker 3.31.12.w15-SNAPSHOT ................... SUCCESS [  0.854 s]
+[INFO] uvms-docker-postgres-base .......................... SUCCESS [  0.016 s]
+[INFO] uvms-docker-postgres-release ....................... SUCCESS [  0.752 s]
+[INFO] hibernate-spatial-4x-to-5x-wrapper ................. SUCCESS [  0.105 s]
+[INFO] uvms-docker-wildfly-base ........................... SUCCESS [  0.119 s]
+[INFO] uvms-docker-wildfly-unionvms ....................... SUCCESS [  0.424 s]
+[INFO] uvms-unionvms-test ................................. SUCCESS [  1.307 s]
+[INFO] uvms-docker-wildfly-fluxfmc ........................ SUCCESS [  0.027 s]
+[INFO] docker-compose 3.31.12.w15-SNAPSHOT ................ SUCCESS [  0.019 s]
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD SUCCESS
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time: 5.331 s
+[INFO] Finished at: 2019-01-29T13:43:39+01:00
+[INFO] ------------------------------------------------------------------------
