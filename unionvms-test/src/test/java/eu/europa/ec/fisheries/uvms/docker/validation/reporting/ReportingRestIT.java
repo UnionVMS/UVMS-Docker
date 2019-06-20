@@ -16,7 +16,6 @@ package eu.europa.ec.fisheries.uvms.docker.validation.reporting;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import eu.europa.ec.fisheries.uvms.asset.client.model.AssetDTO;
-import eu.europa.ec.fisheries.uvms.commons.rest.dto.ResponseDto;
 import eu.europa.ec.fisheries.uvms.docker.validation.asset.AssetTestHelper;
 import eu.europa.ec.fisheries.uvms.docker.validation.common.AbstractRest;
 import eu.europa.ec.fisheries.uvms.docker.validation.mobileterminal.MobileTerminalTestHelper;
@@ -33,29 +32,22 @@ import eu.europa.ec.fisheries.uvms.reporting.service.entities.Position;
 import eu.europa.ec.fisheries.uvms.reporting.service.entities.Selector;
 import eu.europa.ec.fisheries.uvms.reporting.service.enums.ReportTypeEnum;
 import eu.europa.ec.fisheries.uvms.reporting.service.enums.VelocityType;
-import org.apache.http.HttpResponse;
-import org.apache.http.client.fluent.Request;
-import org.geotools.feature.DefaultFeatureCollection;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Ignore;
 import org.junit.Test;
-import org.opengis.feature.simple.SimpleFeatureType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.jms.JMSException;
 import javax.ws.rs.client.Entity;
-import javax.ws.rs.core.GenericType;
 import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import javax.ws.rs.core.Response.Status;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.*;
-import java.util.Map.Entry;
-
-import static javax.ws.rs.core.Response.Status.OK;
 
 public class ReportingRestIT extends AbstractRest {
     private static final Logger LOG = LoggerFactory.getLogger(ReportingRestIT.class.getSimpleName());
@@ -89,29 +81,31 @@ public class ReportingRestIT extends AbstractRest {
 
     @Test
     public void listReportsTest() {
-        ResponseDto response = getWebTarget()
+        Response response = getWebTarget()
                 .path("reporting/rest/report/list")
                 .request(MediaType.APPLICATION_JSON)
                 .header("scopeName", "All Vessels")
                 .header("roleName", "AdminAllUVMS")
                 .header(HttpHeaders.AUTHORIZATION, getValidJwtToken())
-                .get(ResponseDto.class);
+                .get();
 
-        Collection list = (Collection) response.getData();
+        assertEquals(Status.OK.getStatusCode(), response.getStatus());
+        Collection list = response.readEntity(List.class);
         assertNotNull(list);
     }
 
     @Test
     public void listLastExecutedReportsTest() {
-        ResponseDto response = getWebTarget()
+        Response response = getWebTarget()
                 .path("reporting/rest/report/list/lastexecuted/10")
                 .request(MediaType.APPLICATION_JSON)
                 .header("scopeName", "All Vessels")
                 .header("roleName", "AdminAllUVMS")
                 .header(HttpHeaders.AUTHORIZATION, getValidJwtToken())
-                .get(ResponseDto.class);
+                .get();
 
-        Collection list = (Collection) response.getData();
+        assertEquals(Status.OK.getStatusCode(), response.getStatus());
+        Collection list = response.readEntity(List.class);
         assertNotNull(list);
     }
 
@@ -119,18 +113,16 @@ public class ReportingRestIT extends AbstractRest {
     public void getReportTest() throws Exception {
         Long reportId = createTwoWeeksReport("createReportTest").getId();
 
-        ResponseDto<ReportDTO> response = getWebTarget()
+        ReportDTO response = getWebTarget()
                 .path("reporting/rest/report")
                 .path(String.valueOf(reportId))
                 .request(MediaType.APPLICATION_JSON)
                 .header("scopeName", "All Vessels")
                 .header("roleName", "AdminAllUVMS")
                 .header(HttpHeaders.AUTHORIZATION, getValidJwtToken())
-                .get(new GenericType<ResponseDto<ReportDTO>>() {
-                });
+                .get(ReportDTO.class);
 
-        ReportDTO report = response.getData();
-        assertNotNull(report);
+        assertNotNull(response);
     }
 
     @Test
@@ -142,16 +134,16 @@ public class ReportingRestIT extends AbstractRest {
     public void deleteReportTest() throws Exception {
         Long reportId = createTwoWeeksReport("deleteReportTest").getId();
 
-        ResponseDto response = getWebTarget()
+        Response response = getWebTarget()
                 .path("reporting/rest/report")
                 .path(String.valueOf(reportId))
                 .request(MediaType.APPLICATION_JSON)
                 .header("scopeName", "All Vessels")
                 .header("roleName", "AdminAllUVMS")
                 .header(HttpHeaders.AUTHORIZATION, getValidJwtToken())
-                .delete(ResponseDto.class);
+                .delete();
 
-        assertEquals(OK.getStatusCode(), response.getCode());
+        assertEquals(Status.OK.getStatusCode(), response.getStatus());
     }
 
     @Test
@@ -171,7 +163,7 @@ public class ReportingRestIT extends AbstractRest {
                 .header(HttpHeaders.AUTHORIZATION, getValidJwtToken())
                 .put(Entity.json(twoWeeksReport));
 
-        assertEquals(OK.getStatusCode(), response.getStatus());
+        assertEquals(Status.OK.getStatusCode(), response.getStatus());
     }
 
     @Test
@@ -188,7 +180,7 @@ public class ReportingRestIT extends AbstractRest {
                 .header(HttpHeaders.AUTHORIZATION, getValidJwtToken())
                 .put(Entity.json(twoWeeksReport));
 
-        assertEquals(OK.getStatusCode(), response.getStatus());
+        assertEquals(Status.OK.getStatusCode(), response.getStatus());
     }
 
     @Test
@@ -209,17 +201,15 @@ public class ReportingRestIT extends AbstractRest {
 
         displayFormat.setAdditionalProperties(additionalProperties);
 
-        ResponseDto<ObjectNode> response = getWebTarget()
+        ObjectNode node = getWebTarget()
                 .path("reporting/rest/report/execute")
                 .path(String.valueOf(twoWeeksReport.getId()))
                 .request(MediaType.APPLICATION_JSON)
                 .header("scopeName", "All Vessels")
                 .header("roleName", "AdminAllUVMS")
                 .header(HttpHeaders.AUTHORIZATION, getValidJwtToken())
-                .post(Entity.json(displayFormat), new GenericType<ResponseDto<ObjectNode>>() {
-                });
+                .post(Entity.json(displayFormat), ObjectNode.class);
 
-        ObjectNode node = response.getData();
         JsonNode movements = node.get("movements");
         JsonNode segments = node.get("segments");
         JsonNode tracks = node.get("tracks");
@@ -256,16 +246,15 @@ public class ReportingRestIT extends AbstractRest {
 
         displayFormat.setAdditionalProperties(additionalProperties);
 
-        ResponseDto<ObjectNode> response = getWebTarget()
+        ObjectNode node = getWebTarget()
                 .path("reporting/rest/report/execute/")
                 .path(String.valueOf(twoWeeksReport.getId()))
                 .request(MediaType.APPLICATION_JSON)
                 .header("scopeName", "All Vessels")
                 .header("roleName", "AdminAllUVMS")
                 .header(HttpHeaders.AUTHORIZATION, getValidJwtToken())
-                .post(Entity.json(displayFormat), new GenericType<ResponseDto<ObjectNode>>(){});
+                .post(Entity.json(displayFormat), ObjectNode.class);
 
-        ObjectNode node = response.getData();
         JsonNode movements = node.get("movements");
         JsonNode segments = node.get("segments");
         JsonNode tracks = node.get("tracks");
@@ -298,16 +287,15 @@ public class ReportingRestIT extends AbstractRest {
 
         displayFormat.setAdditionalProperties(additionalProperties);
 
-        ResponseDto<ObjectNode> response = getWebTarget()
+        ObjectNode node = getWebTarget()
                 .path("reporting/rest/report/execute/")
                 .path(String.valueOf(twoWeeksReport.getId()))
                 .request(MediaType.APPLICATION_JSON)
                 .header("scopeName", "All Vessels")
                 .header("roleName", "AdminAllUVMS")
                 .header(HttpHeaders.AUTHORIZATION, getValidJwtToken())
-                .post(Entity.json(displayFormat), new GenericType<ResponseDto<ObjectNode>>(){});
+                .post(Entity.json(displayFormat), ObjectNode.class);
 
-        ObjectNode node = response.getData();
         JsonNode movements = node.get("movements");
         JsonNode segments = node.get("segments");
         JsonNode tracks = node.get("tracks");
@@ -342,16 +330,15 @@ public class ReportingRestIT extends AbstractRest {
 
         displayFormat.setAdditionalProperties(additionalProperties);
 
-        ResponseDto<ObjectNode> response = getWebTarget()
+        ObjectNode node = getWebTarget()
                 .path("reporting/rest/report/execute/")
                 .path(String.valueOf(twoWeeksReport.getId()))
                 .request(MediaType.APPLICATION_JSON)
                 .header("scopeName", "All Vessels")
                 .header("roleName", "AdminAllUVMS")
                 .header(HttpHeaders.AUTHORIZATION, getValidJwtToken())
-                .post(Entity.json(displayFormat), new GenericType<ResponseDto<ObjectNode>>(){});
+                .post(Entity.json(displayFormat), ObjectNode.class);
 
-        ObjectNode node = response.getData();
         JsonNode movements = node.get("movements");
         JsonNode segments = node.get("segments");
         JsonNode tracks = node.get("tracks");
@@ -396,16 +383,16 @@ public class ReportingRestIT extends AbstractRest {
 
         String writeValueAsString = writeValueAsString(reportDTO);
 
-        ResponseDto response = getWebTarget()
+        Response response = getWebTarget()
                 .path("reporting/rest/report")
                 .queryParam("projection", "DEFAULT")
                 .request(MediaType.APPLICATION_JSON)
                 .header("scopeName", "All Vessels")
                 .header("roleName", "AdminAllUVMS")
                 .header(HttpHeaders.AUTHORIZATION, getValidJwtToken())
-                .post(Entity.json(writeValueAsString), ResponseDto.class);
+                .post(Entity.json(writeValueAsString));
 
-        Integer reportId = (Integer) response.getData();
+        Integer reportId = response.readEntity(Integer.class);
         reportDTO.setId(reportId.longValue());
         return reportDTO;
     }
@@ -437,16 +424,16 @@ public class ReportingRestIT extends AbstractRest {
 
         String writeValueAsString = writeValueAsString(reportDTO);
 
-        ResponseDto response = getWebTarget()
+        Response response = getWebTarget()
                 .path("reporting/rest/report")
                 .queryParam("projection", "DEFAULT")
                 .request(MediaType.APPLICATION_JSON)
                 .header("scopeName", "All Vessels")
                 .header("roleName", "AdminAllUVMS")
                 .header(HttpHeaders.AUTHORIZATION, getValidJwtToken())
-                .post(Entity.json(writeValueAsString), ResponseDto.class);
+                .post(Entity.json(writeValueAsString));
 
-        Integer reportId = (Integer) response.getData();
+        Integer reportId = response.readEntity(Integer.class);
         reportDTO.setId(reportId.longValue());
         return reportDTO;
     }

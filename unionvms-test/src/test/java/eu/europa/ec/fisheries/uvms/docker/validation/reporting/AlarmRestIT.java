@@ -22,7 +22,6 @@ import eu.europa.ec.fisheries.schema.movement.search.v1.SearchKey;
 import eu.europa.ec.fisheries.schema.movement.v1.MovementType;
 import eu.europa.ec.fisheries.schema.movementrules.customrule.v1.*;
 import eu.europa.ec.fisheries.uvms.asset.client.model.AssetDTO;
-import eu.europa.ec.fisheries.uvms.commons.rest.dto.ResponseDto;
 import eu.europa.ec.fisheries.uvms.docker.validation.asset.AssetTestHelper;
 import eu.europa.ec.fisheries.uvms.docker.validation.common.AbstractRest;
 import eu.europa.ec.fisheries.uvms.docker.validation.movement.LatLong;
@@ -35,7 +34,6 @@ import eu.europa.ec.fisheries.uvms.reporting.service.dto.rules.AlarmMovementList
 import org.junit.Test;
 
 import javax.ws.rs.client.Entity;
-import javax.ws.rs.core.GenericType;
 import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -110,13 +108,12 @@ public class AlarmRestIT extends AbstractRest {
 			alarmMovementListContent.add(alarmMovement);
 			alarmMovementList.setAlarmMovementList(alarmMovementListContent);
 			
-			ResponseDto<ObjectNode> response = getWebTarget()
+			ObjectNode data = getWebTarget()
 	                .path("reporting/rest/alarms")
 	                .request(MediaType.APPLICATION_JSON)
 	                .header(HttpHeaders.AUTHORIZATION, getValidJwtToken())
-	                .post(Entity.json(alarmMovementList), new GenericType<ResponseDto<ObjectNode>>() {});
+	                .post(Entity.json(alarmMovementList), ObjectNode.class);
 
-			JsonNode data = response.getData();
 			JsonNode alarms = data.get("alarms");
 			JsonNode features = alarms.get("features");
 			assertThat(features.size(), is(1));
