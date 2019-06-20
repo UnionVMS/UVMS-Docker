@@ -11,7 +11,7 @@
 
 	<groupId>eu.europa.ec.fisheries.uvms.docker</groupId>
 	<artifactId>uvms-docker</artifactId>
-	<version>3.37.7.w17-SNAPSHOT</version>
+	<version>3.37.8.w17-SNAPSHOT</version>
 	<packaging>pom</packaging>
 	<name>uvms-docker</name>
 
@@ -21,21 +21,21 @@
 		<scm.url>scm:git:https://github.com/UnionVMS/UVMS-Docker.git</scm.url>
 		<focus-pom.java.version>1.8</focus-pom.java.version>
 		<unionvms.project.unionvms.web.version>3.0.56-UVMS</unionvms.project.unionvms.web.version>
-		<unionvms.project.vms.web.version>0.2.0</unionvms.project.vms.web.version>
+		<unionvms.project.vms.web.version>0.2.1</unionvms.project.vms.web.version>
 		<unionvms.project.mapfishprint.version>3.16.0</unionvms.project.mapfishprint.version>
 		<unionvms.project.geoserver.version>2.12.6</unionvms.project.geoserver.version>
-		<unionvms.project.user.module>2.0.17</unionvms.project.user.module>
+		<unionvms.project.user.module>2.0.18</unionvms.project.user.module>
 		<unionvms.project.rules.module>3.0.49</unionvms.project.rules.module>
-		<unionvms.project.movementrules.module>2.1.13</unionvms.project.movementrules.module>
-		<unionvms.project.movement.module>5.2.13-UVMS</unionvms.project.movement.module>
-		<unionvms.project.exchange.module>5.0.6-UVMS</unionvms.project.exchange.module>
 		<unionvms.project.reporting.module>1.1.12-UVMS</unionvms.project.reporting.module>
+		<unionvms.project.movementrules.module>2.1.14</unionvms.project.movementrules.module>
+		<unionvms.project.movement.module>5.2.14-UVMS</unionvms.project.movement.module>
+		<unionvms.project.exchange.module>5.0.7-UVMS</unionvms.project.exchange.module>
 		<unionvms.project.spatial.module>2.0.0</unionvms.project.spatial.module>
-        <unionvms.project.spatialSwe.module>2.0.2-UVMS</unionvms.project.spatialSwe.module>
+    <unionvms.project.spatialSwe.module>2.0.2-UVMS</unionvms.project.spatialSwe.module>
 		<unionvms.project.subscription.module>1.3</unionvms.project.subscription.module>
 		<unionvms.project.config.module>4.0.14</unionvms.project.config.module>
-		<unionvms.project.audit.module>4.0.15</unionvms.project.audit.module>
-		<unionvms.project.asset.module>6.0.54</unionvms.project.asset.module>
+		<unionvms.project.audit.module>4.0.16</unionvms.project.audit.module>
+		<unionvms.project.asset.module>6.0.55</unionvms.project.asset.module>
 		<unionvms.project.activity.module>1.1.6</unionvms.project.activity.module>
 		<unionvms.project.mdr.module>1.0.10</unionvms.project.mdr.module>
 		<unionvms.project.plugins.naf>3.0.17</unionvms.project.plugins.naf>
