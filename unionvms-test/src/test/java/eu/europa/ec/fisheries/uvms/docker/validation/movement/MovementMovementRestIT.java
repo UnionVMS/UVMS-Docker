@@ -180,7 +180,7 @@ public class MovementMovementRestIT extends AbstractRest {
 		String assetMessage = om.writeValueAsString(assetDTOList);
 
 		jmsHelper.sendStringToAssetWithFunction(assetMessage, "ASSET_INFORMATION");
-		Thread.sleep(3000);
+		Thread.sleep(5000);
 
 		MovementQuery query = MovementHelper.getBasicMovementQuery();
 		ListCriteria criteria = new ListCriteria();
