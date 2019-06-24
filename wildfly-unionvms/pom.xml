@@ -14,6 +14,10 @@
 	<packaging>pom</packaging>
 	<name>uvms-docker-wildfly-unionvms</name>
 
+	<properties>
+		<docker.dependency.skip>true</docker.dependency.skip>
+	</properties>
+
 	<repositories>
 		<repository>
 			<id>focus-repo</id>
