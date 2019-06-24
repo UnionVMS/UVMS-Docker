@@ -5,7 +5,6 @@ import eu.europa.ec.fisheries.schema.movementrules.asset.v1.AssetIdList;
 import eu.europa.ec.fisheries.schema.movementrules.asset.v1.AssetIdType;
 import eu.europa.ec.fisheries.schema.movementrules.asset.v1.AssetType;
 import eu.europa.ec.fisheries.uvms.asset.client.model.AssetDTO;
-import eu.europa.ec.fisheries.uvms.commons.message.impl.JMSUtils;
 import eu.europa.ec.fisheries.uvms.docker.validation.asset.AssetTestHelper;
 import eu.europa.ec.fisheries.uvms.docker.validation.common.AbstractRest;
 import eu.europa.ec.fisheries.uvms.docker.validation.mobileterminal.MobileTerminalTestHelper;
@@ -69,7 +68,27 @@ public class NAFExchangePerformanceIT extends AbstractRest {
     @AfterClass
     public static void cleanup() {
         movementHelper.close();
-        JMSUtils.disconnectQueue(connection, session, messageProducer);
+        try {
+            if (messageProducer != null) {
+                messageProducer.close();
+            }
+        } catch (final JMSException e) {
+            e.printStackTrace();
+        }
+        try {
+            if (session != null) {
+                session.close();
+            }
+        } catch (final JMSException e) {
+            e.printStackTrace();
+        }
+        try {
+            if (connection != null) {
+                connection.close();
+            }
+        } catch (final JMSException e) {
+            e.printStackTrace();
+        }
     }
 
     @Test
