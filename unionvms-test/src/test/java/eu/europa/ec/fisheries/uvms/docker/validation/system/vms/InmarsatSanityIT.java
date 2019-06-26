@@ -26,6 +26,7 @@ import org.hamcrest.CoreMatchers;
 import org.junit.*;
 
 import javax.jms.JMSException;
+import java.time.Instant;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
@@ -183,7 +184,7 @@ public class InmarsatSanityIT extends AbstractRest {
         }
     }
 
-    private String createReportRequest(MobileTerminalDto mobileTerminal) throws ExchangeModelMarshallException, IllegalArgumentException {
+    private String createReportRequest(MobileTerminalDto mobileTerminal) throws IllegalArgumentException {
         Set<ChannelDto> channels = mobileTerminal.getChannels();
         Assert.assertEquals(1, channels.size());
         ChannelDto channel = channels.iterator().next();
@@ -239,8 +240,7 @@ public class InmarsatSanityIT extends AbstractRest {
                 reportType,
                 "TWOSTAGE",
                 null,
-                DateUtils.nowUTC().toDate(),
-                null,
+                Instant.now(),
                 PluginType.SATELLITE_RECEIVER,
                 "TWOSTAGE",
                 null);
