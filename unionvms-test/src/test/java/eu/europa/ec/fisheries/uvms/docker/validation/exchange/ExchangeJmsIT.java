@@ -1,6 +1,7 @@
 package eu.europa.ec.fisheries.uvms.docker.validation.exchange;
 
 import com.fasterxml.jackson.databind.SerializationFeature;
+import eu.europa.ec.fisheries.schema.exchange.plugin.types.v1.PluginType;
 import eu.europa.ec.fisheries.uvms.asset.client.model.AssetDTO;
 import eu.europa.ec.fisheries.uvms.docker.validation.asset.AssetTestHelper;
 import eu.europa.ec.fisheries.uvms.docker.validation.common.AbstractRest;
@@ -26,7 +27,7 @@ public class ExchangeJmsIT extends AbstractRest {
         String assets = OBJECT_MAPPER.writeValueAsString(Collections.singletonList(createdAsset));
 
         try (MessageHelper messageHelper = new MessageHelper()) {
-            String msg = ExchangeModuleRequestMapper.createReceiveAssetInformation(assets, "Test");
+            String msg = ExchangeModuleRequestMapper.createReceiveAssetInformation(assets, "Test", PluginType.OTHER);
             messageHelper.sendMessage("UVMSExchangeEvent", msg);
         }
 
@@ -53,7 +54,7 @@ public class ExchangeJmsIT extends AbstractRest {
         String assets = OBJECT_MAPPER.writeValueAsString(Collections.singletonList(createdAsset));
 
         try (MessageHelper messageHelper = new MessageHelper()) {
-            String msg = ExchangeModuleRequestMapper.createReceiveAssetInformation(assets, "Test");
+            String msg = ExchangeModuleRequestMapper.createReceiveAssetInformation(assets, "Test", PluginType.OTHER);
             messageHelper.sendMessage("UVMSExchangeEvent", msg);
         }
 

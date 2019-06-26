@@ -44,7 +44,7 @@
 		<dependency>
 			<groupId>eu.europa.ec.fisheries.uvms.exchange</groupId>
 			<artifactId>exchange-model</artifactId>
-			<version>4.0.22</version>
+			<version>5.0.8-UVMS</version>
 		</dependency>		
 		<dependency>
 			<groupId>eu.europa.ec.fisheries.uvms.asset</groupId>
