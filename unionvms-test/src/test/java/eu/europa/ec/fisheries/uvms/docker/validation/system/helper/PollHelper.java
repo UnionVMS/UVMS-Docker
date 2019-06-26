@@ -47,7 +47,7 @@ public class PollHelper {
     }
 
     public static void ackPoll(String messageId, String pollId, ExchangeLogStatusTypeType status, String unsentMessageId) throws Exception {
-        AcknowledgeType setCommandAck = ExchangePluginResponseMapper.mapToAcknowlegeType(messageId, AcknowledgeTypeType.OK);
+        AcknowledgeType setCommandAck = ExchangePluginResponseMapper.mapToAcknowledgeType(messageId, AcknowledgeTypeType.OK);
         setCommandAck.setUnsentMessageGuid(unsentMessageId);
         PollStatusAcknowledgeType pollAck = new PollStatusAcknowledgeType();
         pollAck.setStatus(status);

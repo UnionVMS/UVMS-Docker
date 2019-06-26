@@ -11,6 +11,7 @@ copy of the GNU General Public License along with the IFDM Suite. If not, see <h
  */
 package eu.europa.ec.fisheries.uvms.docker.validation.system.helper;
 
+import java.time.Instant;
 import java.util.GregorianCalendar;
 import java.util.TimeZone;
 import eu.europa.ec.fisheries.schema.exchange.movement.mobileterminal.v1.IdList;
@@ -69,7 +70,7 @@ public class InmarsatPluginMock {
         reportType.setPluginName("eu.europa.ec.fisheries.uvms.plugins.inmarsat");
         reportType.setPluginType(PluginType.SATELLITE_RECEIVER);
         
-        String text = ExchangeModuleRequestMapper.createSetMovementReportRequest(reportType, "TWOSTAGE", null, DateUtils.nowUTC().toDate(), null, PluginType.SATELLITE_RECEIVER, "TWOSTAGE", null);
+        String text = ExchangeModuleRequestMapper.createSetMovementReportRequest(reportType, "TWOSTAGE", null, Instant.now(), PluginType.SATELLITE_RECEIVER, "TWOSTAGE", null);
         try (MessageHelper messageHelper = new MessageHelper()) {
             messageHelper.sendMessage("UVMSExchangeEvent", text);
         }
