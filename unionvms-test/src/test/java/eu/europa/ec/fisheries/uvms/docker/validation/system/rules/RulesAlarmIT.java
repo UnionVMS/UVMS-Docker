@@ -592,7 +592,7 @@ public class RulesAlarmIT extends AbstractRest {
         MobileTerminalTestHelper.assignMobileTerminal(asset, mobileTerminal);
 
         CustomRuleType speedRule = CustomRuleBuilder.getBuilder()
-                .setName("Speed > 10 knots => Send poll")
+                .setName("Send poll")
                 .rule(CriteriaType.POSITION, SubCriteriaType.REPORTED_SPEED,
                         ConditionType.GT, "10")
                 .action(ActionType.MANUAL_POLL, "Not needed")

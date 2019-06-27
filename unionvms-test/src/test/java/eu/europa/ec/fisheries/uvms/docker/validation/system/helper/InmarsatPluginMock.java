@@ -24,7 +24,6 @@ import eu.europa.ec.fisheries.schema.exchange.movement.v1.MovementSourceType;
 import eu.europa.ec.fisheries.schema.exchange.movement.v1.MovementTypeType;
 import eu.europa.ec.fisheries.schema.exchange.movement.v1.SetReportMovementType;
 import eu.europa.ec.fisheries.schema.exchange.plugin.types.v1.PluginType;
-import eu.europa.ec.fisheries.uvms.commons.date.DateUtils;
 import eu.europa.ec.fisheries.uvms.docker.validation.common.MessageHelper;
 import eu.europa.ec.fisheries.uvms.docker.validation.mobileterminal.dto.ChannelDto;
 import eu.europa.ec.fisheries.uvms.docker.validation.mobileterminal.dto.MobileTerminalDto;
