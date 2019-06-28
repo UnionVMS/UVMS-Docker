@@ -18,11 +18,11 @@ import eu.europa.ec.fisheries.schema.movement.v1.MovementPoint;
 import eu.europa.ec.fisheries.schema.movement.v1.TempMovementStateEnum;
 import eu.europa.ec.fisheries.schema.movement.v1.TempMovementType;
 import eu.europa.ec.fisheries.uvms.asset.client.model.AssetDTO;
-import eu.europa.ec.fisheries.uvms.commons.rest.dto.ResponseDto;
 import eu.europa.ec.fisheries.uvms.docker.validation.asset.AssetTestHelper;
 import eu.europa.ec.fisheries.uvms.docker.validation.common.AbstractRest;
 import org.junit.Test;
 
+import javax.ws.rs.core.Response;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -48,8 +48,8 @@ public class TempMovementRestIT extends AbstractRest {
 
     @Test
     public void createTempMovementNullInputShouldFail() {
-        ResponseDto<?> response = TempMovementRestHelper.createTempMovementResponse(new TempMovementType());
-        assertEquals(INTERNAL_SERVER_ERROR.getStatusCode(), response.getCode());
+        Response response = TempMovementRestHelper.createTempMovementResponse(new TempMovementType());
+        assertEquals(INTERNAL_SERVER_ERROR.getStatusCode(), response.getStatus());
     }
 
     @Test
@@ -57,16 +57,16 @@ public class TempMovementRestIT extends AbstractRest {
         TempMovementType tempMovement = getTempMovement();
         tempMovement.getPosition().setLatitude(null);
         tempMovement.getPosition().setLongitude(null);
-        ResponseDto<?> response = TempMovementRestHelper.createTempMovementResponse(tempMovement);
-        assertEquals(INTERNAL_SERVER_ERROR.getStatusCode(), response.getCode());
+        Response response = TempMovementRestHelper.createTempMovementResponse(tempMovement);
+        assertEquals(INTERNAL_SERVER_ERROR.getStatusCode(), response.getStatus());
     }
 
     @Test
     public void createTempMovementNoValidLatitudeShouldFail() {
         TempMovementType tempMovement = getTempMovement();
         tempMovement.getPosition().setLatitude(100d);
-        ResponseDto<?> response = TempMovementRestHelper.createTempMovementResponse(tempMovement);
-        assertEquals(INTERNAL_SERVER_ERROR.getStatusCode(), response.getCode());
+        Response response = TempMovementRestHelper.createTempMovementResponse(tempMovement);
+        assertEquals(INTERNAL_SERVER_ERROR.getStatusCode(), response.getStatus());
     }
 
     @Test
@@ -80,14 +80,14 @@ public class TempMovementRestIT extends AbstractRest {
 
     @Test
     public void getTempMovementNullGuidShouldFail() {
-        ResponseDto<?> response = TempMovementRestHelper.getTempMovementResponse(null);
-        assertEquals(INTERNAL_SERVER_ERROR.getStatusCode(), response.getCode());
+        Response response = TempMovementRestHelper.getTempMovementResponse(null);
+        assertEquals(INTERNAL_SERVER_ERROR.getStatusCode(), response.getStatus());
     }
 
     @Test
     public void getTempMovementNonExistingGuidShouldFail() {
-        ResponseDto<?> response = TempMovementRestHelper.getTempMovementResponse(UUID.randomUUID().toString());
-        assertEquals(INTERNAL_SERVER_ERROR.getStatusCode(), response.getCode());
+        Response response = TempMovementRestHelper.getTempMovementResponse(UUID.randomUUID().toString());
+        assertEquals(INTERNAL_SERVER_ERROR.getStatusCode(), response.getStatus());
     }
 
     @Test
@@ -102,8 +102,8 @@ public class TempMovementRestIT extends AbstractRest {
 
     @Test
     public void removeTempMovementNullGuidShouldFail() {
-        ResponseDto<?> response = TempMovementRestHelper.removeTempMovementResponse(null);
-        assertEquals(INTERNAL_SERVER_ERROR.getStatusCode(), response.getCode());
+        Response response = TempMovementRestHelper.removeTempMovementResponse(null);
+        assertEquals(INTERNAL_SERVER_ERROR.getStatusCode(), response.getStatus());
     }
 
     @Test
