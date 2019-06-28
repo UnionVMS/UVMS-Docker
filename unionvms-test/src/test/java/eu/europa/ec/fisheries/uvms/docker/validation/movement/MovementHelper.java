@@ -12,7 +12,6 @@ import eu.europa.ec.fisheries.schema.movement.v1.MovementSourceType;
 import eu.europa.ec.fisheries.schema.movement.v1.MovementType;
 import eu.europa.ec.fisheries.schema.movement.v1.MovementTypeType;
 import eu.europa.ec.fisheries.uvms.asset.client.model.AssetDTO;
-import eu.europa.ec.fisheries.uvms.commons.rest.dto.ResponseDto;
 import eu.europa.ec.fisheries.uvms.docker.validation.common.AbstractHelper;
 import eu.europa.ec.fisheries.uvms.docker.validation.common.MessageHelper;
 import eu.europa.ec.fisheries.uvms.docker.validation.movement.model.IncomingMovement;
@@ -302,49 +301,46 @@ public class MovementHelper extends AbstractHelper {
 	}
 
 	public static MovementType getMovementById(String guid) {
-	    ResponseDto<MovementType> response = getWebTarget()
+	    return getWebTarget()
                 .path("movement/rest/movement/")
                 .path(guid)
                 .request(MediaType.APPLICATION_JSON)
                 .header(HttpHeaders.AUTHORIZATION, getValidJwtToken())
-                .get(new GenericType<ResponseDto<MovementType>>() {});
-        return response.getData();
+                .get(MovementType.class);
 	}
 	
 	public static List<MovementType> getListByQuery(MovementQuery movementQuery) {
-		ResponseDto<GetMovementListByQueryResponse> response = getWebTarget()
+		GetMovementListByQueryResponse response = getWebTarget()
 		        .path("movement/rest/movement/list")
 		        .request(MediaType.APPLICATION_JSON)
 		        .header(HttpHeaders.AUTHORIZATION, getValidJwtToken())
-		        .post(Entity.json(movementQuery), new GenericType<ResponseDto<GetMovementListByQueryResponse>>() {});
-		return response.getData().getMovement();
+		        .post(Entity.json(movementQuery), GetMovementListByQueryResponse.class);
+		return response.getMovement();
 	}
 
 	public static List<MovementType> getMinimalListByQuery(MovementQuery movementQuery) {
-		ResponseDto<GetMovementListByQueryResponse> response = getWebTarget()
+		GetMovementListByQueryResponse response = getWebTarget()
                 .path("movement/rest/movement/list/minimal")
                 .request(MediaType.APPLICATION_JSON)
                 .header(HttpHeaders.AUTHORIZATION, getValidJwtToken())
-                .post(Entity.json(movementQuery), new GenericType<ResponseDto<GetMovementListByQueryResponse>>() {});
-        return response.getData().getMovement();
+                .post(Entity.json(movementQuery), GetMovementListByQueryResponse.class);
+        return response.getMovement();
 	}
 	
 	public static List<MovementDto> getLatestMovements(List<String> connectIds) {
-	    ResponseDto<List<MovementDto>> response = getWebTarget()
+	    return getWebTarget()
                 .path("movement/rest/movement/latest/")
                 .request(MediaType.APPLICATION_JSON)
                 .header(HttpHeaders.AUTHORIZATION, getValidJwtToken())
-                .post(Entity.json(connectIds), new GenericType<ResponseDto<List<MovementDto>>>() {});
-        return response.getData();
+                .post(Entity.json(connectIds), new GenericType<List<MovementDto>>(){});
     }
 	
 	public static List<MovementDto> getLatestMovements(Integer amount) {
-        ResponseDto<List<MovementDto>> response = getWebTarget()
+        return getWebTarget()
                 .path("movement/rest/movement/latest/" + amount)
                 .request(MediaType.APPLICATION_JSON)
                 .header(HttpHeaders.AUTHORIZATION, getValidJwtToken())
-                .get(new GenericType<ResponseDto<List<MovementDto>>>() {});
-        return response.getData();
+                .get(new GenericType<List<MovementDto>>() {});
     }
 
 	public void createMovementBatch(List<IncomingMovement> createMovementBatchRequest) throws Exception {
@@ -352,18 +348,7 @@ public class MovementHelper extends AbstractHelper {
 				.writeValueAsString(createMovementBatchRequest), "CREATE_BATCH");
     }
 
-
-	public static String getMicroMovements(String date) {
-		String response = getWebTarget()
-				.path("movement/rest/movement/microMovementList/" + date)
-				.request(MediaType.APPLICATION_JSON)
-				.header(HttpHeaders.AUTHORIZATION, getValidJwtToken())
-				.get(String.class);
-		return response;
-	}
-
 	private List<LatLong> calculateReportedDataForRoute(List<LatLong> route) {
-
 		LatLong previousPosition = null;
 		LatLong currentPosition = null;
 		int i = 0;

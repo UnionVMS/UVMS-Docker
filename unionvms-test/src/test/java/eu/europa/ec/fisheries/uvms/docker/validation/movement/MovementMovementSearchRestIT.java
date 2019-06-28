@@ -17,7 +17,6 @@ import eu.europa.ec.fisheries.schema.movement.search.v1.GroupListCriteria;
 import eu.europa.ec.fisheries.schema.movement.search.v1.MovementSearchGroup;
 import eu.europa.ec.fisheries.schema.movement.search.v1.SearchKeyType;
 import eu.europa.ec.fisheries.uvms.asset.client.model.AssetDTO;
-import eu.europa.ec.fisheries.uvms.commons.rest.dto.ResponseDto;
 import eu.europa.ec.fisheries.uvms.docker.validation.asset.AssetTestHelper;
 import eu.europa.ec.fisheries.uvms.docker.validation.common.AbstractRest;
 import org.hamcrest.CoreMatchers;
@@ -50,13 +49,12 @@ public class MovementMovementSearchRestIT extends AbstractRest {
 		groupListCriteria.setKey("GUID");
 		groupListCriteria.setValue(testAsset.getId().toString());
 		movementSearchGroup.getSearchFields().add(groupListCriteria);
-		
-		ResponseDto<MovementSearchGroup> response = getWebTarget()
+
+		return getWebTarget()
                 .path("movement/rest/search/group")
                 .request(MediaType.APPLICATION_JSON)
                 .header(HttpHeaders.AUTHORIZATION, getValidJwtToken())
-                .post(Entity.json(movementSearchGroup), new GenericType<ResponseDto<MovementSearchGroup>>() {});
-        return response.getData();
+                .post(Entity.json(movementSearchGroup), new GenericType<MovementSearchGroup>() {});
 	}
 
 	@Test
@@ -64,14 +62,13 @@ public class MovementMovementSearchRestIT extends AbstractRest {
 		MovementSearchGroup createMovementSearchGroup = createMovementSearchGroup();
 		assertNotNull(createMovementSearchGroup);
 		
-		ResponseDto<MovementSearchGroup> response = getWebTarget()
+		MovementSearchGroup fetchedSearchGroup = getWebTarget()
                 .path("movement/rest/search/group/")
                 .path(createMovementSearchGroup.getId().toString())
                 .request(MediaType.APPLICATION_JSON)
                 .header(HttpHeaders.AUTHORIZATION, getValidJwtToken())
-                .get(new GenericType<ResponseDto<MovementSearchGroup>>() {});
-        
-		MovementSearchGroup fetchedSearchGroup = response.getData();
+                .get(new GenericType<MovementSearchGroup>() {});
+
         assertNotNull(fetchedSearchGroup);
         assertThat(fetchedSearchGroup.getId(), CoreMatchers.is(createMovementSearchGroup.getId()));
 	}
@@ -83,25 +80,24 @@ public class MovementMovementSearchRestIT extends AbstractRest {
 
 		movementSearchGroup.setName("ChangedName" + UUID.randomUUID().toString());
 		
-		ResponseDto<MovementSearchGroup> response = getWebTarget()
+		MovementSearchGroup fetchedSearchGroup = getWebTarget()
                 .path("movement/rest/search/group")
                 .request(MediaType.APPLICATION_JSON)
                 .header(HttpHeaders.AUTHORIZATION, getValidJwtToken())
-                .put(Entity.json(movementSearchGroup), new GenericType<ResponseDto<MovementSearchGroup>>() {});
-		
-		MovementSearchGroup fetchedSearchGroup = response.getData();
+                .put(Entity.json(movementSearchGroup), new GenericType<MovementSearchGroup>() {});
+
 		assertThat(fetchedSearchGroup.getName(), CoreMatchers.is(movementSearchGroup.getName()));
 	}
 
 	@Test
 	public void getMovementSearchGroupsByUserTest() {
-		ResponseDto<List<MovementSearchGroup>> response = getWebTarget()
+		List<MovementSearchGroup> searchGroups = getWebTarget()
                 .path("movement/rest/search/groups")
                 .queryParam("user", "vms_admin_com")
                 .request(MediaType.APPLICATION_JSON)
                 .header(HttpHeaders.AUTHORIZATION, getValidJwtToken())
-                .get(new GenericType<ResponseDto<List<MovementSearchGroup>>>() {});
-		List<MovementSearchGroup> searchGroups = response.getData();
+                .get(new GenericType<List<MovementSearchGroup>>() {});
+
 		assertThat(searchGroups, CoreMatchers.is(CoreMatchers.notNullValue()));
 	}
 
@@ -110,14 +106,13 @@ public class MovementMovementSearchRestIT extends AbstractRest {
 		MovementSearchGroup createMovementSearchGroup = createMovementSearchGroup();
 		assertNotNull(createMovementSearchGroup);
 
-		ResponseDto<MovementSearchGroup> response = getWebTarget()
+		MovementSearchGroup deletedGroup = getWebTarget()
                 .path("movement/rest/search/group/")
                 .path(createMovementSearchGroup.getId().toString())
                 .request(MediaType.APPLICATION_JSON)
                 .header(HttpHeaders.AUTHORIZATION, getValidJwtToken())
-                .delete(new GenericType<ResponseDto<MovementSearchGroup>>() {});
-		
-		MovementSearchGroup deletedGroup = response.getData();
+                .delete(new GenericType<MovementSearchGroup>() {});
+
 		assertThat(deletedGroup, CoreMatchers.is(CoreMatchers.notNullValue()));
 	}
 }

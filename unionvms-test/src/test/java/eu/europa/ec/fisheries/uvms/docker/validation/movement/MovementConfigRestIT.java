@@ -18,9 +18,7 @@ import eu.europa.ec.fisheries.schema.movement.search.v1.SearchKeyType;
 import eu.europa.ec.fisheries.schema.movement.v1.MovementSourceType;
 import eu.europa.ec.fisheries.schema.movement.v1.MovementTypeType;
 import eu.europa.ec.fisheries.schema.movement.v1.SegmentCategoryType;
-import eu.europa.ec.fisheries.uvms.commons.rest.dto.ResponseDto;
 import eu.europa.ec.fisheries.uvms.docker.validation.common.AbstractRest;
-import org.hamcrest.CoreMatchers;
 import org.junit.Test;
 
 import javax.ws.rs.core.GenericType;
@@ -34,52 +32,52 @@ public class MovementConfigRestIT extends AbstractRest {
 
 	@Test
 	public void getMovementTypesTest() {
-		ResponseDto<List<MovementTypeType>> response = getWebTarget()
+		List<MovementTypeType> response = getWebTarget()
 		        .path("movement/rest/config/movementTypes")
 		        .request(MediaType.APPLICATION_JSON)
 		        .header(HttpHeaders.AUTHORIZATION, getValidJwtToken())
-		        .get(new GenericType<ResponseDto<List<MovementTypeType>>>() {});
-		assertThat(response.getData(), CoreMatchers.is(CoreMatchers.notNullValue()));
+		        .get(new GenericType<List<MovementTypeType>>() {});
+		assertNotNull(response);
 	}
 
 	@Test
 	public void getSegmentTypesTest() {
-		ResponseDto<List<SegmentCategoryType>> response = getWebTarget()
+		List<SegmentCategoryType> response = getWebTarget()
                 .path("movement/rest/config/segmentCategoryTypes")
                 .request(MediaType.APPLICATION_JSON)
                 .header(HttpHeaders.AUTHORIZATION, getValidJwtToken())
-                .get(new GenericType<ResponseDto<List<SegmentCategoryType>>>() {});
-        assertThat(response.getData(), CoreMatchers.is(CoreMatchers.notNullValue()));
+                .get(new GenericType<List<SegmentCategoryType>>() {});
+		assertNotNull(response);
 	}
 
 	@Test
 	public void getMovementSearchKeysTest() {
-		ResponseDto<List<SearchKeyType>> response = getWebTarget()
+		List<SearchKeyType> response = getWebTarget()
                 .path("movement/rest/config/searchKeys")
                 .request(MediaType.APPLICATION_JSON)
                 .header(HttpHeaders.AUTHORIZATION, getValidJwtToken())
-                .get(new GenericType<ResponseDto<List<SearchKeyType>>>() {});
-        assertThat(response.getData(), CoreMatchers.is(CoreMatchers.notNullValue()));
+                .get(new GenericType<List<SearchKeyType>>() {});
+		assertNotNull(response);
 	}
 
 	@Test
 	public void getMovementSourceTypesTest() {
-		ResponseDto<List<MovementSourceType>> response = getWebTarget()
+		List<MovementSourceType> response = getWebTarget()
                 .path("movement/rest/config/movementSourceTypes")
                 .request(MediaType.APPLICATION_JSON)
                 .header(HttpHeaders.AUTHORIZATION, getValidJwtToken())
-                .get(new GenericType<ResponseDto<List<MovementSourceType>>>() {});
-        assertThat(response.getData(), CoreMatchers.is(CoreMatchers.notNullValue()));
+                .get(new GenericType<List<MovementSourceType>>() {});
+		assertNotNull(response);
 	}
 
 	@Test
 	public void getActivityTypesTest() {
-		ResponseDto<List<MovementActivityTypeType>> response = getWebTarget()
+		List<MovementActivityTypeType> response = getWebTarget()
                 .path("movement/rest/config/activityTypes")
                 .request(MediaType.APPLICATION_JSON)
                 .header(HttpHeaders.AUTHORIZATION, getValidJwtToken())
-                .get(new GenericType<ResponseDto<List<MovementActivityTypeType>>>() {});
-        assertThat(response.getData(), CoreMatchers.is(CoreMatchers.notNullValue()));
+                .get(new GenericType<List<MovementActivityTypeType>>() {});
+		assertNotNull(response);
 	}
 
 	@Test
@@ -89,19 +87,18 @@ public class MovementConfigRestIT extends AbstractRest {
                 .request(MediaType.APPLICATION_JSON)
                 .header(HttpHeaders.AUTHORIZATION, getValidJwtToken())
                 .get();
-        assertThat(response, CoreMatchers.is(CoreMatchers.notNullValue()));
-        assertThat(response.getStatus(), CoreMatchers.is(Status.OK.getStatusCode()));
+		assertNotNull(response);
+        assertEquals(Status.OK.getStatusCode(), response.getStatus());
 	}
 
     @Test
     public void getAlarmStatusesTest() {
-		ResponseDto response = getWebTarget()
+		List response = getWebTarget()
 				.path("movement/rest/config/alarmstatus")
 				.request(MediaType.APPLICATION_JSON)
 				.header(HttpHeaders.AUTHORIZATION, getValidJwtToken())
-				.get(ResponseDto.class);
+				.get(List.class);
 
-		List list = (List) response.getData();
-		assertEquals(3, list.size());
+		assertEquals(3, response.size());
     }
 }
