@@ -74,7 +74,7 @@ public class ConfigSynchronizationIT extends AbstractRest {
 
             SetConfigRequest configRequest = listener.listenOnEventBusForSpecificMessage(SetConfigRequest.class);
             assertThat(configRequest, is(notNullValue()));
-            assertThat(configRequest.getConfigurations().getSetting().size(), is(1));
+            assertThat(configRequest.getConfigurations().getSetting().size(), is(5));
             assertThat(configRequest.getConfigurations().getSetting().get(0).getKey(), is(expectedKey));
             assertThat(configRequest.getConfigurations().getSetting().get(0).getValue(), is(newValue));
         }
