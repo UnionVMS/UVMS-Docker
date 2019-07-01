@@ -11,85 +11,79 @@ copy of the GNU General Public License along with the IFDM Suite. If not, see <h
 package eu.europa.ec.fisheries.uvms.docker.validation.movement;
 
 import eu.europa.ec.fisheries.schema.movement.v1.TempMovementType;
-import eu.europa.ec.fisheries.uvms.commons.rest.dto.ResponseDto;
 import eu.europa.ec.fisheries.uvms.docker.validation.common.AbstractHelper;
 
 import javax.ws.rs.client.Entity;
-import javax.ws.rs.core.GenericType;
 import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 
 public class TempMovementRestHelper extends AbstractHelper {
 
     static TempMovementType createTempMovement(TempMovementType tempMovement) {
-        ResponseDto<TempMovementType> response = getWebTarget()
-                .path("movement/rest/tempmovement")
-                .request(MediaType.APPLICATION_JSON)
-                .header(HttpHeaders.AUTHORIZATION, getValidJwtToken())
-                .post(Entity.json(tempMovement), new GenericType<ResponseDto<TempMovementType>>() {});
-        return response.getData();
-    }
-
-    static ResponseDto<?> createTempMovementResponse(TempMovementType tempMovement) {
         return getWebTarget()
                 .path("movement/rest/tempmovement")
                 .request(MediaType.APPLICATION_JSON)
                 .header(HttpHeaders.AUTHORIZATION, getValidJwtToken())
-                .post(Entity.json(tempMovement), new GenericType<ResponseDto<?>>() {});
+                .post(Entity.json(tempMovement), TempMovementType.class);
+    }
+
+    static Response createTempMovementResponse(TempMovementType tempMovement) {
+        return getWebTarget()
+                .path("movement/rest/tempmovement")
+                .request(MediaType.APPLICATION_JSON)
+                .header(HttpHeaders.AUTHORIZATION, getValidJwtToken())
+                .post(Entity.json(tempMovement));
     }
 
     static TempMovementType getTempMovement(String guid) {
-        ResponseDto<TempMovementType> response = getWebTarget()
+        return getWebTarget()
                 .path("movement/rest/tempmovement/")
                 .path(guid)
                 .request(MediaType.APPLICATION_JSON)
                 .header(HttpHeaders.AUTHORIZATION, getValidJwtToken())
-                .get(new GenericType<ResponseDto<TempMovementType>>() {});
-        return response.getData();
+                .get(TempMovementType.class);
     }
 
-    static ResponseDto<?> getTempMovementResponse(String guid) {
+    static Response getTempMovementResponse(String guid) {
         return getWebTarget()
                 .path("movement/rest/tempmovement/" + guid)
                 .request(MediaType.APPLICATION_JSON)
                 .header(HttpHeaders.AUTHORIZATION, getValidJwtToken())
-                .get(new GenericType<ResponseDto<?>>() {});
+                .get();
     }
 
     static TempMovementType removeTempMovement(String guid) {
-        ResponseDto<TempMovementType> response = getWebTarget()
+        return getWebTarget()
                 .path("movement/rest/tempmovement/remove")
                 .path(guid)
                 .request(MediaType.APPLICATION_JSON)
                 .header(HttpHeaders.AUTHORIZATION, getValidJwtToken())
-                .put(null, new GenericType<ResponseDto<TempMovementType>>() {});
-        return response.getData();
+                .put(null, TempMovementType.class);
     }
 
-    static ResponseDto<?> removeTempMovementResponse(String guid) {
+    static Response removeTempMovementResponse(String guid) {
         return getWebTarget()
                 .path("movement/rest/tempmovement/remove/" + guid)
                 .request(MediaType.APPLICATION_JSON)
                 .header(HttpHeaders.AUTHORIZATION, getValidJwtToken())
-                .put(null, new GenericType<ResponseDto<?>>() {});
+                .put(null);
     }
 
     static TempMovementType updateTempMovement(TempMovementType tempMovement) {
-        ResponseDto<TempMovementType> response = getWebTarget()
+        return getWebTarget()
                 .path("movement/rest/tempmovement")
                 .request(MediaType.APPLICATION_JSON)
                 .header(HttpHeaders.AUTHORIZATION, getValidJwtToken())
-                .put(Entity.json(tempMovement), new GenericType<ResponseDto<TempMovementType>>() {});
-        return response.getData();
+                .put(Entity.json(tempMovement), TempMovementType.class);
     }
     
     static TempMovementType sendTempMovement(String guid) {
-        ResponseDto<TempMovementType> response = getWebTarget()
+        return getWebTarget()
                 .path("movement/rest/tempmovement/send")
                 .path(guid)
                 .request(MediaType.APPLICATION_JSON)
                 .header(HttpHeaders.AUTHORIZATION, getValidJwtToken())
-                .put(Entity.json(guid), new GenericType<ResponseDto<TempMovementType>>() {});
-        return response.getData();
+                .put(Entity.json(guid), TempMovementType.class);
     }
 }
