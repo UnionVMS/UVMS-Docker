@@ -46,15 +46,15 @@ public class ConfigSynchronizationIT extends AbstractRest {
     public void nafPluginConfigUpdateTest() throws Exception {
         String expectedKey = "eu.europa.ec.fisheries.uvms.plugins.naf.connectTimeout";
         
-        ResponseDto<List<SettingType>> response = getWebTarget()
+        List<SettingType> response = getWebTarget()
                 .path("config/rest/settings")
                 .queryParam("moduleName", "exchange")
                 .request(MediaType.APPLICATION_JSON)
                 .header(HttpHeaders.AUTHORIZATION, getValidJwtToken())
-                .get(new GenericType<ResponseDto<List<SettingType>>>() {});
+                .get(new GenericType<List<SettingType>>() {});
 
         SettingType expectedSetting = null;
-        for (SettingType settingType : response.getData()) {
+        for (SettingType settingType : response) {
             if (settingType.getKey().equals(expectedKey)) {
                 expectedSetting = settingType;
             }
