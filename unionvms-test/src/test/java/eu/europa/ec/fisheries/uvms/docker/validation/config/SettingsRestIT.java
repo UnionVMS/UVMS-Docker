@@ -22,6 +22,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.ws.rs.client.Entity;
+import javax.ws.rs.core.GenericType;
 import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -43,29 +44,29 @@ public class SettingsRestIT extends AbstractRest {
                 .header(HttpHeaders.AUTHORIZATION, getValidJwtToken())
                 .get();
 
-        ResponseDto responseDto = response.readEntity(ResponseDto.class);
-        assertNotNull(responseDto.getData());
+        assertEquals(200, response.getStatus());
+        assertNotNull(response.getEntity());
     }
 
     @Test
     public void getByModuleNameAllModulesTest() {
-        ResponseDto responseDto = getWebTarget()
+        Map<String, List<SettingType>> dataMap = getWebTarget()
                 .path("config/rest/catalog")
                 .request(MediaType.APPLICATION_JSON)
                 .header(HttpHeaders.AUTHORIZATION, getValidJwtToken())
-                .get(ResponseDto.class);
+                .get(new GenericType<Map<String, List<SettingType>>>() {});
 
-        Map<String, List<SettingType>> dataMap = (Map) responseDto.getData();
 
         for (String module : dataMap.keySet()) {
-            ResponseDto dto = getWebTarget()
+            Response response = getWebTarget()
                     .path("config/rest/settings")
                     .queryParam("moduleName", module)
                     .request(MediaType.APPLICATION_JSON)
                     .header(HttpHeaders.AUTHORIZATION, getValidJwtToken())
-                    .get(ResponseDto.class);
+                    .get(Response.class);
 
-            assertNotNull(dto.getData());
+            assertEquals(200, response.getStatus());
+            assertNotNull(response.getEntity());
         }
     }
 
@@ -80,14 +81,14 @@ public class SettingsRestIT extends AbstractRest {
         SettingType settingType = createTestSettingType();
         assertNotNull(settingType);
 
-        ResponseDto dto = getWebTarget()
+        SettingType setting = getWebTarget()
                 .path("config/rest/settings")
                 .path(String.valueOf(settingType.getId()))
                 .request(MediaType.APPLICATION_JSON)
                 .header(HttpHeaders.AUTHORIZATION, getValidJwtToken())
-                .get(ResponseDto.class);
+                .get(SettingType.class);
 
-        assertNotNull(dto.getData());
+        assertNotNull(setting);
     }
 
     @Test
@@ -95,14 +96,15 @@ public class SettingsRestIT extends AbstractRest {
         SettingType settingType = createTestSettingType();
         assertNotNull(settingType);
 
-        ResponseDto dto = getWebTarget()
+        Response response = getWebTarget()
                 .path("config/rest/settings")
                 .path(String.valueOf(settingType.getId()))
                 .request(MediaType.APPLICATION_JSON)
                 .header(HttpHeaders.AUTHORIZATION, getValidJwtToken())
-                .delete(ResponseDto.class);
+                .delete(Response.class);
 
-        assertNotNull(dto.getData());
+        assertEquals(200, response.getStatus());
+        assertNotNull(response.getEntity());
     }
 
     @Test
@@ -112,14 +114,15 @@ public class SettingsRestIT extends AbstractRest {
 
         settingType.setDescription("Updated Desc" + UUID.randomUUID().toString());
 
-        ResponseDto dto = getWebTarget()
+        Response response = getWebTarget()
                 .path("config/rest/settings")
                 .path(String.valueOf(settingType.getId()))
                 .request(MediaType.APPLICATION_JSON)
                 .header(HttpHeaders.AUTHORIZATION, getValidJwtToken())
-                .put(Entity.json(settingType), ResponseDto.class);
+                .put(Entity.json(settingType), Response.class);
 
-        assertNotNull(dto.getData());
+        assertEquals(200, response.getStatus());
+        assertNotNull(response.getEntity());
     }
 
     private SettingType createTestSettingType() {
@@ -133,52 +136,48 @@ public class SettingsRestIT extends AbstractRest {
         settingsCreateQuery.setModuleName("audit");
         settingsCreateQuery.setSetting(settingType);
 
-        ResponseDto dto = getWebTarget()
+        SettingType setting = getWebTarget()
                 .path("config/rest/settings")
                 .request(MediaType.APPLICATION_JSON)
                 .header(HttpHeaders.AUTHORIZATION, getValidJwtToken())
-                .post(Entity.json(settingsCreateQuery), ResponseDto.class);
+                .post(Entity.json(settingsCreateQuery), SettingType.class);
 
-        try {
-            String valueAsString = writeValueAsString(dto.getData());
-            return OBJECT_MAPPER.readValue(valueAsString, SettingType.class);
-        } catch (IOException e) {
-            log.error("Error occurred while retrieving Audit List", e);
-            return null;
-        }
+            return setting;
     }
 
     @Test
     public void catalogTest() {
 
-        ResponseDto dto = getWebTarget()
+        Map<String, List<SettingType>> catalog = getWebTarget()
                 .path("config/rest/catalog")
                 .request(MediaType.APPLICATION_JSON)
                 .header(HttpHeaders.AUTHORIZATION, getValidJwtToken())
-                .get(ResponseDto.class);
+                .get(new GenericType<Map<String, List<SettingType>>>() {});
 
-        assertNotNull(dto.getData());
+        assertNotNull(catalog);
     }
 
     @Test
     public void getPingsTest() {
-        ResponseDto dto = getWebTarget()
+        Response response = getWebTarget()
                 .path("config/rest/pings")
                 .request(MediaType.APPLICATION_JSON)
                 .header(HttpHeaders.AUTHORIZATION, getValidJwtToken())
-                .get(ResponseDto.class);
+                .get(Response.class);
 
-        assertNotNull(dto.getData());
+        assertEquals(200, response.getStatus());
+        assertNotNull(response.getEntity());
     }
 
     @Test
     public void getGlobalSettingsTest() {
-        ResponseDto dto = getWebTarget()
+        Response response = getWebTarget()
                 .path("config/rest/globals")
                 .request(MediaType.APPLICATION_JSON)
                 .header(HttpHeaders.AUTHORIZATION, getValidJwtToken())
-                .get(ResponseDto.class);
+                .get(Response.class);
 
-        assertNotNull(dto.getData());
+        assertEquals(200, response.getStatus());
+        assertNotNull(response.getEntity());
     }
 }
