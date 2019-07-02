@@ -929,7 +929,7 @@
                 <jms-queue name="DLQ" entries="java:/jms/queue/DLQ"/>
                 <connection-factory name="InVmConnectionFactory" entries="java:/ConnectionFactory" connectors="in-vm" compress-large-messages="true" thread-pool-max-size="60"/>
                 <connection-factory name="RemoteConnectionFactory" entries="java:jboss/exported/jms/RemoteConnectionFactory" connectors="http-connector"/>
-                <pooled-connection-factory name="activemq-ra" entries="java:/JmsXA java:jboss/DefaultJMSConnectionFactory" connectors="in-vm" transaction="xa" compress-large-messages="true" thread-pool-max-size="60" />
+                <pooled-connection-factory name="activemq-ra" entries="java:/JmsXA java:jboss/DefaultJMSConnectionFactory" connectors="in-vm" transaction="xa" compress-large-messages="true" thread-pool-max-size="100" max-pool-size="100"/>
 
                 <jms-queue name="UVMSReporting" entries="jms/queue/UVMSReporting java:jboss/exported/jms/queue/UVMSReporting" />
                 <jms-queue name="UVMSReportingEvent" entries="jms/queue/UVMSReportingEvent java:jboss/exported/jms/queue/UVMSReportingEvent" />
