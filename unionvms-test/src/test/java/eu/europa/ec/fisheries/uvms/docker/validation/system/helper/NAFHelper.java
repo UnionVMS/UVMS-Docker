@@ -11,12 +11,6 @@ copy of the GNU General Public License along with the IFDM Suite. If not, see <h
  */
 package eu.europa.ec.fisheries.uvms.docker.validation.system.helper;
 
-import eu.europa.ec.fisheries.uvms.asset.client.model.AssetDTO;
-import eu.europa.ec.fisheries.uvms.docker.validation.common.AbstractHelper;
-import eu.europa.ec.fisheries.uvms.docker.validation.movement.LatLong;
-import org.apache.http.HttpResponse;
-import org.apache.http.client.fluent.Request;
-
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
@@ -24,14 +18,24 @@ import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.time.ZoneId;
 import java.util.TimeZone;
+import javax.ws.rs.client.ClientBuilder;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
+import javax.ws.rs.core.Response.Status;
+import eu.europa.ec.fisheries.uvms.asset.client.model.AssetDTO;
+import eu.europa.ec.fisheries.uvms.docker.validation.common.AbstractHelper;
+import eu.europa.ec.fisheries.uvms.docker.validation.movement.LatLong;
 
 public class NAFHelper extends AbstractHelper {
 
     public static void sendPositionToNAFPlugin(LatLong position, AssetDTO asset) throws IOException {
         String nafString = convertToNafString(position, asset);
         String requestPath = "http://localhost:28080/naf/rest/message/" + nafString;
-        HttpResponse response = Request.Get(requestPath).execute().returnResponse();
-        assertEquals(200, response.getStatusLine().getStatusCode());
+        Response response = ClientBuilder.newClient()
+                .target(requestPath)
+                .request(MediaType.APPLICATION_JSON)
+                .get();
+        assertEquals(Status.OK.getStatusCode(), response.getStatus());
     }
     
     private static String convertToNafString(LatLong position, AssetDTO asset) throws UnsupportedEncodingException {

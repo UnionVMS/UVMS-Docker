@@ -11,9 +11,10 @@ copy of the GNU General Public License along with the IFDM Suite. If not, see <h
  */
 package eu.europa.ec.fisheries.uvms.docker.validation.asset;
 
-import org.apache.http.HttpResponse;
-import org.apache.http.HttpStatus;
-import org.apache.http.client.fluent.Request;
+import java.util.List;
+import javax.ws.rs.core.GenericType;
+import javax.ws.rs.core.HttpHeaders;
+import javax.ws.rs.core.MediaType;
 import org.junit.Test;
 import eu.europa.ec.fisheries.uvms.docker.validation.common.AbstractRest;
 
@@ -21,10 +22,11 @@ public class AssetCustomCodesRestIT extends AbstractRest {
     
     @Test
     public void listConstantsTest() throws Exception {
-        HttpResponse response = Request.Get(getBaseUrl() + "asset/rest/customcodes/listconstants")
-                .setHeader("Content-Type", "application/json")
-                .setHeader("Authorization", getValidJwtToken()).execute()
-                .returnResponse();
-        assertEquals(HttpStatus.SC_OK, response.getStatusLine().getStatusCode());
+        List<String> response = getWebTarget()
+                .path("asset/rest/customcodes/listconstants")
+                .request(MediaType.APPLICATION_JSON)
+                .header(HttpHeaders.AUTHORIZATION, getValidJwtToken())
+                .get(new GenericType<List<String>>() {});
+        assertFalse(response.isEmpty());
     }
 }

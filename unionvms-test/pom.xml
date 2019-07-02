@@ -9,8 +9,6 @@
 		<relativePath>../pom.xml</relativePath>
 	</parent>
 	
-	<groupId>eu.europa.ec.fisheries.uvms.docker</groupId>
-	<version>3.38.3.w17-SNAPSHOT</version>
 	<artifactId>uvms-unionvms-test</artifactId>
 	<packaging>jar</packaging>
 	<name>uvms-unionvms-test</name>
@@ -21,11 +19,6 @@
 	</properties>
 
 	<dependencies>
-		<dependency>
-			<groupId>org.postgresql</groupId>
-			<artifactId>postgresql</artifactId>
-			<version>42.1.4.jre7</version>
-		</dependency>
 		<dependency>
 			<artifactId>movement-model</artifactId>
 			<groupId>eu.europa.ec.fisheries.uvms.movement</groupId>
@@ -44,7 +37,7 @@
 		<dependency>
 			<groupId>eu.europa.ec.fisheries.uvms.exchange</groupId>
 			<artifactId>exchange-model</artifactId>
-			<version>5.0.8-UVMS</version>
+			<version>${unionvms.project.exchange.module}</version>
 		</dependency>		
 		<dependency>
 			<groupId>eu.europa.ec.fisheries.uvms.asset</groupId>
@@ -92,11 +85,6 @@
 			<version>4.12</version>		
 		</dependency>
 		<dependency>
-			<groupId>org.apache.httpcomponents</groupId>
-			<artifactId>fluent-hc</artifactId>
-			<version>4.5.4</version>
-		</dependency>
-		<dependency>
 			<groupId>com.fasterxml.jackson.core</groupId>
 			<artifactId>jackson-databind</artifactId>
 			<version>2.9.9</version>
@@ -119,13 +107,13 @@
 		<dependency>
 			<groupId>org.jboss.resteasy</groupId>
 			<artifactId>resteasy-client</artifactId>
-			<version>3.6.1.Final</version>
+			<version>3.7.0.Final</version>
 			<scope>provided</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.jboss.resteasy</groupId>
 			<artifactId>resteasy-jackson2-provider</artifactId>
-			<version>3.6.1.Final</version>
+			<version>3.7.0.Final</version>
 			<scope>provided</scope>
 		</dependency>
 		<dependency>
@@ -133,16 +121,6 @@
 			<artifactId>contiperf</artifactId>
 			<version>2.4.4</version>			
 		</dependency>
-		<dependency>
-			<groupId>org.apache.cxf</groupId>
-			<artifactId>cxf-rt-rs-client</artifactId>
-			<version>3.1.13</version>		
-		</dependency>
-		 <dependency>
-            <groupId>org.apache.cxf</groupId>
-            <artifactId>cxf-rt-frontend-jaxws</artifactId>
-            <version>3.1.13</version>
-        </dependency>
 		<dependency>
 			<groupId>com.peertopark.java</groupId>
 			<artifactId>geocalc</artifactId>

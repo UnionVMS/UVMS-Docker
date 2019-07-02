@@ -13,9 +13,10 @@ copy of the GNU General Public License along with the IFDM Suite. If not, see <h
 */
 package eu.europa.ec.fisheries.uvms.docker.validation.asset;
 
-import org.apache.http.HttpResponse;
-import org.apache.http.HttpStatus;
-import org.apache.http.client.fluent.Request;
+import javax.ws.rs.core.HttpHeaders;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
+import javax.ws.rs.core.Response.Status;
 import org.junit.Ignore;
 import org.junit.Test;
 import eu.europa.ec.fisheries.uvms.docker.validation.common.AbstractRest;
@@ -24,29 +25,32 @@ public class ConfigRestIT extends AbstractRest {
 
 	@Test
 	public void getConfigSearchFieldsTest() throws Exception {
-		final HttpResponse response = Request.Get(getBaseUrl() + "asset/rest/config/searchfields")
-				.setHeader("Content-Type", "application/json")
-				.setHeader("Authorization", getValidJwtToken()).execute()
-				.returnResponse();
-		assertEquals(HttpStatus.SC_OK, response.getStatusLine().getStatusCode());
+	    Response response = getWebTarget()
+                .path("asset/rest/config/searchfields")
+                .request(MediaType.APPLICATION_JSON)
+                .header(HttpHeaders.AUTHORIZATION, getValidJwtToken())
+                .get();
+	    assertEquals(Status.OK.getStatusCode(), response.getStatus());
 	}
 
 	@Test
 	@Ignore("This endpoint is removed.")
 	public void getConfigurationTest() throws Exception {
-		final HttpResponse response = Request.Get(getBaseUrl() + "asset/rest/config")
-				.setHeader("Content-Type", "application/json")
-				.setHeader("Authorization", getValidJwtToken()).execute()
-				.returnResponse();
-		assertEquals(HttpStatus.SC_OK, response.getStatusLine().getStatusCode());
+	    Response response = getWebTarget()
+                .path("asset/rest/config")
+                .request(MediaType.APPLICATION_JSON)
+                .header(HttpHeaders.AUTHORIZATION, getValidJwtToken())
+                .get();
+        assertEquals(Status.OK.getStatusCode(), response.getStatus());
 	}
 
 	@Test
 	public void getParametersTest() throws Exception {
-		final HttpResponse response = Request.Get(getBaseUrl() + "asset/rest/config/parameters")
-				.setHeader("Content-Type", "application/json")
-				.setHeader("Authorization", getValidJwtToken()).execute()
-				.returnResponse();
-		assertEquals(HttpStatus.SC_OK, response.getStatusLine().getStatusCode());
+	    Response response = getWebTarget()
+                .path("asset/rest/config/parameters")
+                .request(MediaType.APPLICATION_JSON)
+                .header(HttpHeaders.AUTHORIZATION, getValidJwtToken())
+                .get();
+        assertEquals(Status.OK.getStatusCode(), response.getStatus());
 	}
 }
