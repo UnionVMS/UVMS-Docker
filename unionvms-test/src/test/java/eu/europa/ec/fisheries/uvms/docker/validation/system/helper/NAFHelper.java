@@ -18,6 +18,8 @@ import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.time.ZoneId;
 import java.util.TimeZone;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -55,7 +57,7 @@ public class NAFHelper extends AbstractHelper {
                 "//XT/" + asset.getExternalMarking() +
                 "//LT/" + formatter.format(position.latitude).replace(",", ".") +
                 "//LG/" + formatter.format(position.longitude).replace(",", ".") +
-                "//SP/" + (int) position.speed +
+                "//SP/" + (int) (position.speed * 10) +
                 "//CO/" + (int) position.bearing +
                 "//DA/" + dateFormatter.format(position.positionTime) +
                 "//TI/" + timeFormatter.format(position.positionTime) +
@@ -63,5 +65,12 @@ public class NAFHelper extends AbstractHelper {
                 "//FS/" + asset.getFlagStateCode() +
                 "//ER//";
         return URLEncoder.encode(str, "UTF-8");
+    }
+
+    public static String readCodeValue(String code, String nafMessage) {
+        Pattern pattern = Pattern.compile("//" + code + "/" + "([^" + "/" + "]+)" + "//");
+        Matcher matcher = pattern.matcher(nafMessage);
+        matcher.find();
+        return matcher.group(1);
     }
 }
