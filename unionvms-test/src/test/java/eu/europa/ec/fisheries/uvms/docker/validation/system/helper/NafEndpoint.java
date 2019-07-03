@@ -47,7 +47,9 @@ public class NafEndpoint implements Closeable {
             TimeUnit.MILLISECONDS.sleep(100);
             timeoutInMillis -= 100;
         }
-        return message;
+        String returnMessage = message;
+        message = null;
+        return returnMessage;
     }
     
     @Override

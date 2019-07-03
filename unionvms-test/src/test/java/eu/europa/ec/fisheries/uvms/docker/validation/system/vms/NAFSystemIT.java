@@ -16,7 +16,7 @@ import java.io.IOException;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.Date;
+import org.joda.time.Instant;
 import org.junit.After;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -30,6 +30,7 @@ import eu.europa.ec.fisheries.uvms.asset.client.model.AssetDTO;
 import eu.europa.ec.fisheries.uvms.docker.validation.asset.AssetTestHelper;
 import eu.europa.ec.fisheries.uvms.docker.validation.common.AbstractRest;
 import eu.europa.ec.fisheries.uvms.docker.validation.movement.LatLong;
+import eu.europa.ec.fisheries.uvms.docker.validation.movement.MovementHelper;
 import eu.europa.ec.fisheries.uvms.docker.validation.system.helper.CustomRuleBuilder;
 import eu.europa.ec.fisheries.uvms.docker.validation.system.helper.CustomRuleHelper;
 import eu.europa.ec.fisheries.uvms.docker.validation.system.helper.NAFHelper;
@@ -51,7 +52,11 @@ public class NAFSystemIT extends AbstractRest {
     @Test
     @Ignore("Ignoring this test until docker on jenkins supports 'host.docker.internal'")
     public void sendPositionToNorwayAndVerifyMandatoryFields() throws IOException, Exception {
-        Organisation organisation = createOrganisation();
+        Organisation organisation = createOrganisationNorway();
+
+        AssetDTO asset = AssetTestHelper.createTestAsset();
+        NAFHelper.sendPositionToNAFPlugin(new LatLong(58.973, 5.781, Instant.now().minus(10 * 60 * 1000).toDate()), asset);
+        MovementHelper.pollMovementCreated(); // First position for an asset creates ENT, ignore this
         
         CustomRuleType flagStateRule = CustomRuleBuilder.getBuilder()
                 .setName("Area NOR => Send to NOR")
@@ -63,8 +68,7 @@ public class NAFSystemIT extends AbstractRest {
         CustomRuleType createdCustomRule = CustomRuleHelper.createCustomRule(flagStateRule);
         assertNotNull(createdCustomRule);
         
-        AssetDTO asset = AssetTestHelper.createTestAsset();
-        LatLong position = new LatLong(58.973, 5.781, new Date());
+        LatLong position = new LatLong(58.973, 5.781, Instant.now().toDate());
         position.speed = 5;
         
         String message;
@@ -74,7 +78,7 @@ public class NAFSystemIT extends AbstractRest {
         }
         
         assertThat(NAFHelper.readCodeValue("AD", message), is(organisation.getNation()));
-//        assertThat(NAFHelper.readCodeValue("FR", message), is("SWE");
+        assertThat(NAFHelper.readCodeValue("FR", message), is("UNK"));
         assertThat(NAFHelper.readCodeValue("TM", message), is(MovementTypeType.POS.toString()));
         assertThat(NAFHelper.readCodeValue("RC", message), is(asset.getIrcs()));
         assertThat(NAFHelper.readCodeValue("LT", message), is(String.valueOf(position.latitude)));
@@ -86,9 +90,51 @@ public class NAFSystemIT extends AbstractRest {
         assertThat(NAFHelper.readCodeValue("TI", message), is(positionTime.format(DateTimeFormatter.ofPattern("HHmm"))));
     }
 
-    private Organisation createOrganisation() {
+    @Test
+    @Ignore("Ignoring this test until docker on jenkins supports 'host.docker.internal'")
+    public void sendEntryReportToNorwayAndVerifyMandatoryFields() throws IOException, Exception {
+        Organisation organisation = createOrganisationNorway();
+
+        CustomRuleType flagStateRule = CustomRuleBuilder.getBuilder()
+                .setName("Enter NOR => Send to NOR")
+                .rule(CriteriaType.AREA, SubCriteriaType.AREA_CODE_ENT, 
+                        ConditionType.EQ, "NOR")
+                .action(ActionType.SEND_TO_NAF, organisation.getName())
+                .build();
+
+        CustomRuleType createdCustomRule = CustomRuleHelper.createCustomRule(flagStateRule);
+        assertNotNull(createdCustomRule);
+
+        AssetDTO asset = AssetTestHelper.createTestAsset();
+        LatLong swePosition = new LatLong(57.716673, 11.973996, Instant.now().minus(10 * 60 * 1000).toDate());
+        swePosition.speed = 5;
+        LatLong norPosition = new LatLong(58.973, 5.781, Instant.now().toDate());
+        norPosition.speed = 5;
+
+        String message;
+        try (NafEndpoint nafEndpoint = new NafEndpoint(ENDPOINT_PORT)) {
+            NAFHelper.sendPositionToNAFPlugin(swePosition, asset);
+            MovementHelper.pollMovementCreated();
+            NAFHelper.sendPositionToNAFPlugin(norPosition, asset);
+            message = nafEndpoint.getMessage(10000);
+        }
+
+        assertThat(NAFHelper.readCodeValue("AD", message), is(organisation.getNation()));
+        assertThat(NAFHelper.readCodeValue("FR", message), is("UNK"));
+        assertThat(NAFHelper.readCodeValue("TM", message), is(MovementTypeType.ENT.toString()));
+        assertThat(NAFHelper.readCodeValue("RC", message), is(asset.getIrcs()));
+        assertThat(NAFHelper.readCodeValue("LT", message), is(String.valueOf(norPosition.latitude)));
+        assertThat(NAFHelper.readCodeValue("LG", message), is(String.valueOf(norPosition.longitude)));
+        assertThat(NAFHelper.readCodeValue("SP", message), is(String.valueOf((int) norPosition.speed * 10)));
+        assertThat(NAFHelper.readCodeValue("CO", message), is(String.valueOf((int) norPosition.bearing)));
+        ZonedDateTime positionTime = ZonedDateTime.ofInstant(norPosition.positionTime.toInstant(), ZoneId.of("UTC"));
+        assertThat(NAFHelper.readCodeValue("DA", message), is(positionTime.format(DateTimeFormatter.ofPattern("yyyyMMdd"))));
+        assertThat(NAFHelper.readCodeValue("TI", message), is(positionTime.format(DateTimeFormatter.ofPattern("HHmm"))));
+    }
+
+    private Organisation createOrganisationNorway() {
         Organisation organisation = UserHelper.getBasicOrganisation();
-        organisation.setNation(generateARandomStringWithMaxLength(9));
+        organisation.setNation("NOR");
         UserHelper.createOrganisation(organisation);
         EndPoint endpoint = new EndPoint();
         endpoint.setName("NAF");
