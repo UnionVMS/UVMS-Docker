@@ -3,8 +3,6 @@
 rm -rf /app/logs/*
 rm -rf /opt/jboss/wildfly/standalone/log/*
 
-echo -e "`/sbin/ip route|awk '/default/ { print $3 }'`\tdocker.host.internal" | sudo tee -a /etc/hosts > /dev/null
-
 locked="y"
 printf "Waiting for database.\n"
 while :
