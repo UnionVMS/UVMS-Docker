@@ -18,6 +18,7 @@ import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import org.junit.After;
+import org.junit.Ignore;
 import org.junit.Test;
 import eu.europa.ec.fisheries.schema.exchange.movement.v1.MovementTypeType;
 import eu.europa.ec.fisheries.schema.movementrules.customrule.v1.ActionType;
@@ -48,6 +49,7 @@ public class NAFSystemIT extends AbstractRest {
     }
     
     @Test
+    @Ignore("Ignoring this test until docker on jenkins supports 'host.docker.internal'")
     public void sendPositionToNorwayAndVerifyMandatoryFields() throws IOException, Exception {
         Organisation organisation = createOrganisation();
         
