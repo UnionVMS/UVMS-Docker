@@ -23,6 +23,7 @@ public class Context implements Serializable {
     private static final long serialVersionUID = 1L;
     private Role role;
     private Scope scope;
+    private PreferencesList preferences;
 
     /**
      * Creates a new instance
@@ -63,6 +64,15 @@ public class Context implements Serializable {
      */
     public void setScope(Scope scope) {
         this.scope = scope;
+    }
+
+    
+    public PreferencesList getPreferences() {
+        return preferences;
+    }
+
+    public void setPreferences(PreferencesList preferences) {
+        this.preferences = preferences;
     }
 
     /**
