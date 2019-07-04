@@ -14,6 +14,7 @@ import org.junit.Test;
 
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.core.GenericType;
+import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.time.Instant;
@@ -300,6 +301,45 @@ public class SpatialSweRestIT extends AbstractRest {
 
             assertEquals(200, response.getStatus());
         }
+    }
+
+    @Test
+    public void getAllNonUserAreasTest() throws Exception {
+        Response response =  getWebTarget()
+                .path("spatialSwe/rest/area/allNonUserAreas")
+                .request(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON)
+                .header(HttpHeaders.AUTHORIZATION, getValidJwtToken())
+                .get(Response.class);
+
+        //System.out.println(response.readEntity(String.class));
+        assertEquals(200, response.getStatus());
+    }
+
+    @Test
+    public void getAllLayersTest() throws Exception {
+        Response response =  getWebTarget()
+                .path("spatialSwe/rest/area/layers")
+                .request(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON)
+                .header(HttpHeaders.AUTHORIZATION, getValidJwtToken())
+                .get(Response.class);
+
+        //System.out.println(response.readEntity(String.class));
+        assertEquals(200, response.getStatus());
+    }
+
+    @Test
+    public void getAAreaTypesAreasTest() throws Exception {
+        Response response =  getWebTarget()
+                .path("spatialSwe/rest/area/getAreaLayer/EEZ")
+                .request(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON)
+                .header(HttpHeaders.AUTHORIZATION, getValidJwtToken())
+                .get(Response.class);
+
+        //System.out.println(response.readEntity(String.class));
+        assertEquals(200, response.getStatus());
     }
 
     private AreaByCodeRequest createAreaByCodeRequest() {
