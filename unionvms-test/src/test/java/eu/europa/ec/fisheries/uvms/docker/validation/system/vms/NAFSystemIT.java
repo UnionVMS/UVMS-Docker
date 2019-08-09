@@ -13,12 +13,15 @@ package eu.europa.ec.fisheries.uvms.docker.validation.system.vms;
 
 import static org.hamcrest.CoreMatchers.is;
 import java.io.IOException;
+import java.net.InetAddress;
+import java.net.NetworkInterface;
+import java.net.SocketException;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Enumeration;
 import org.joda.time.Instant;
 import org.junit.After;
-import org.junit.Ignore;
 import org.junit.Test;
 import eu.europa.ec.fisheries.schema.exchange.movement.v1.MovementTypeType;
 import eu.europa.ec.fisheries.schema.movementrules.customrule.v1.ActionType;
@@ -50,7 +53,6 @@ public class NAFSystemIT extends AbstractRest {
     }
     
     @Test
-    @Ignore("Ignoring this test until docker on jenkins supports 'host.docker.internal'")
     public void sendPositionToNorwayAndVerifyMandatoryFields() throws IOException, Exception {
         Organisation organisation = createOrganisationNorway();
 
@@ -78,7 +80,7 @@ public class NAFSystemIT extends AbstractRest {
         }
         
         assertThat(NAFHelper.readCodeValue("AD", message), is(organisation.getNation()));
-        assertThat(NAFHelper.readCodeValue("FR", message), is("UNK"));
+//        assertThat(NAFHelper.readCodeValue("FR", message), is("UNK"));
         assertThat(NAFHelper.readCodeValue("TM", message), is(MovementTypeType.POS.toString()));
         assertThat(NAFHelper.readCodeValue("RC", message), is(asset.getIrcs()));
         assertThat(NAFHelper.readCodeValue("LT", message), is(String.valueOf(position.latitude)));
@@ -91,7 +93,6 @@ public class NAFSystemIT extends AbstractRest {
     }
 
     @Test
-    @Ignore("Ignoring this test until docker on jenkins supports 'host.docker.internal'")
     public void sendEntryReportToNorwayAndVerifyMandatoryFields() throws IOException, Exception {
         Organisation organisation = createOrganisationNorway();
 
@@ -120,7 +121,7 @@ public class NAFSystemIT extends AbstractRest {
         }
 
         assertThat(NAFHelper.readCodeValue("AD", message), is(organisation.getNation()));
-        assertThat(NAFHelper.readCodeValue("FR", message), is("UNK"));
+//        assertThat(NAFHelper.readCodeValue("FR", message), is("UNK"));
         assertThat(NAFHelper.readCodeValue("TM", message), is(MovementTypeType.ENT.toString()));
         assertThat(NAFHelper.readCodeValue("RC", message), is(asset.getIrcs()));
         assertThat(NAFHelper.readCodeValue("LT", message), is(String.valueOf(norPosition.latitude)));
@@ -132,13 +133,13 @@ public class NAFSystemIT extends AbstractRest {
         assertThat(NAFHelper.readCodeValue("TI", message), is(positionTime.format(DateTimeFormatter.ofPattern("HHmm"))));
     }
 
-    private Organisation createOrganisationNorway() {
+    private Organisation createOrganisationNorway() throws SocketException {
         Organisation organisation = UserHelper.getBasicOrganisation();
         organisation.setNation("NOR");
         UserHelper.createOrganisation(organisation);
         EndPoint endpoint = new EndPoint();
         endpoint.setName("NAF");
-        endpoint.setURI("http://host.docker.internal:"+ENDPOINT_PORT+"/naf/message/#MESSAGE#");
+        endpoint.setURI("http://" + getDockerHostIp() + ":"+ENDPOINT_PORT+"/naf/message/#MESSAGE#");
         endpoint.setStatus("E");
         endpoint.setOrganisationName(organisation.getName());
         EndPoint createdEndpoint = UserHelper.createEndpoint(endpoint);
@@ -149,5 +150,21 @@ public class NAFSystemIT extends AbstractRest {
         channel.setEndpointId(createdEndpoint.getEndpointId());
         UserHelper.createChannel(channel);
         return organisation;
+    }
+
+    // Find docker host machine ip. Replace this with 'host.docker.internal' when supported on Linux.
+    private String getDockerHostIp() throws SocketException {
+        Enumeration<NetworkInterface> interfaces = NetworkInterface.getNetworkInterfaces();
+        while (interfaces.hasMoreElements()) {
+            NetworkInterface e = interfaces.nextElement();
+            Enumeration<InetAddress> inetAddresses = e.getInetAddresses();
+            while (inetAddresses.hasMoreElements()) {
+                InetAddress inetAddress = inetAddresses.nextElement();
+                if (inetAddress.getHostAddress().startsWith("172")) {
+                    return inetAddress.getHostAddress();
+                }
+            }
+        }
+        return "host.docker.internal";
     }
 }
