@@ -80,7 +80,7 @@ public class NAFSystemIT extends AbstractRest {
         }
         
         assertThat(NAFHelper.readCodeValue("AD", message), is(organisation.getNation()));
-//        assertThat(NAFHelper.readCodeValue("FR", message), is("UNK"));
+        assertThat(NAFHelper.readCodeValue("FR", message), is("UNK"));
         assertThat(NAFHelper.readCodeValue("TM", message), is(MovementTypeType.POS.toString()));
         assertThat(NAFHelper.readCodeValue("RC", message), is(asset.getIrcs()));
         assertThat(NAFHelper.readCodeValue("LT", message), is(String.valueOf(position.latitude)));
@@ -121,7 +121,7 @@ public class NAFSystemIT extends AbstractRest {
         }
 
         assertThat(NAFHelper.readCodeValue("AD", message), is(organisation.getNation()));
-//        assertThat(NAFHelper.readCodeValue("FR", message), is("UNK"));
+        assertThat(NAFHelper.readCodeValue("FR", message), is("UNK"));
         assertThat(NAFHelper.readCodeValue("TM", message), is(MovementTypeType.ENT.toString()));
         assertThat(NAFHelper.readCodeValue("RC", message), is(asset.getIrcs()));
         assertThat(NAFHelper.readCodeValue("LT", message), is(String.valueOf(norPosition.latitude)));
