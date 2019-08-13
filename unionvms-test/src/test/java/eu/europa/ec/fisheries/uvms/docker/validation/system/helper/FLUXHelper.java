@@ -87,6 +87,11 @@ public class FLUXHelper extends AbstractHelper {
         ircsId.setValue(testAsset.getIrcs());
         vesselTransportMeansType.getIDS().add(ircsId);
 
+        IDType externalMarking = new IDType();
+        externalMarking.setSchemeID("EXT_MARK");
+        externalMarking.setValue(testAsset.getExternalMarking());
+        vesselTransportMeansType.getIDS().add(externalMarking);
+
         VesselCountryType vesselCountry = new VesselCountryType();
         IDType countryId = new IDType();
         countryId.setValue(testAsset.getFlagStateCode());
