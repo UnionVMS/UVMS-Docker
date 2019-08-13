@@ -295,8 +295,8 @@ public class VMSSystemIT extends AbstractRest {
         endpoint.setOrganisationName(organisation.getName());
         EndPoint createdEndpoint = UserHelper.createEndpoint(endpoint);
         Channel channel = new Channel();
-        channel.setDataflow("NOTNAF");
-        channel.setService("NOTNAF");
+        channel.setDataflow("NOT");
+        channel.setService("NOT");
         channel.setPriority(1);
         channel.setEndpointId(createdEndpoint.getEndpointId());
         UserHelper.createChannel(channel);
@@ -339,7 +339,7 @@ public class VMSSystemIT extends AbstractRest {
         assertThat(report.getReport().getRecipient(), is(uri));
         
         List<RecipientInfoType> recipientInfo = report.getReport().getRecipientInfo();
-        assertThat(recipientInfo.size(), is(0));
+        assertThat(recipientInfo.size(), is(1));
     }
 
     @Test
