@@ -358,7 +358,7 @@ public class VMSSystemIT extends AbstractRest {
         endpoint.setOrganisationName(organisation.getName());
         EndPoint createdEndpoint = UserHelper.createEndpoint(endpoint);
         Channel channel = new Channel();
-        channel.setDataflow("NOTFLUXVesselPositionMessage");
+        channel.setDataflow("NOTFLUXVesselPositionMsg");
         channel.setService("NOTFLUX");
         channel.setPriority(1);
         channel.setEndpointId(createdEndpoint.getEndpointId());
