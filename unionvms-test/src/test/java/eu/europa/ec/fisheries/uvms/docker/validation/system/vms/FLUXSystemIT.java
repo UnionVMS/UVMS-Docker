@@ -136,7 +136,6 @@ public class FLUXSystemIT extends AbstractRest {
     }
     
     @Test
-    @Ignore
     public void sendPositionToFLUXWithCustomDataflow() throws Exception {
         String customDataflow = "urn:un:unece:uncefact:data:standard:FLUXVesselPositionMessage:4:Custom";
         Organisation organisation = createOrganisationWithCustomDF(customDataflow);
