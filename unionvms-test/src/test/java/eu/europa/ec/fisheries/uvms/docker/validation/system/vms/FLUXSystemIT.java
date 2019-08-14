@@ -157,6 +157,7 @@ public class FLUXSystemIT extends AbstractRest {
         try (FLUXEndpoint fluxEndpoint = new FLUXEndpoint()) {
             FLUXHelper.sendPositionToFluxPlugin(asset, position);
             headers = fluxEndpoint.getHeaders(10000);
+            fluxEndpoint.getMessage(10000);
         }
 
         assertThat(headers.get(DEFAULT_CLIENT_HEADER), is(DEFAULT_CLIENT_HEADER_VALUE + "-" + destination));
