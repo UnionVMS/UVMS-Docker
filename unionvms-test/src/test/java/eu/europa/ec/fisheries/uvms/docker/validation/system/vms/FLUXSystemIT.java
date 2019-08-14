@@ -29,11 +29,9 @@ import javax.ws.rs.core.MediaType;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
-import javax.xml.datatype.DatatypeConfigurationException;
 import org.joda.time.Instant;
 import org.junit.After;
 import org.junit.BeforeClass;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.w3c.dom.Element;
 import eu.europa.ec.fisheries.schema.config.types.v1.SettingType;
@@ -68,6 +66,8 @@ import xeu.connector_bridge.v1.PostMsgType;
 public class FLUXSystemIT extends AbstractRest {
 
     public static String DEFAULT_DATAFLOW = "FLUX_DATAFLOW";
+    public static String DEFAULT_CLIENT_HEADER = "CLIENT_CERT_HEADER";
+    public static String DEFAULT_CLIENT_HEADER_VALUE = "CLIENT_CERT_USER";
     
     @BeforeClass
     public static void initFLUXSettings() throws InterruptedException, SocketException {
@@ -134,7 +134,34 @@ public class FLUXSystemIT extends AbstractRest {
         assertThat(message.getDF(), is(DEFAULT_DATAFLOW));
         assertThat(message.getID(), is(notNullValue()));
     }
-    
+
+    @Test
+    public void sendPositionToFLUXAndVerifyHeaders() throws Exception {
+        AssetDTO asset = AssetTestHelper.createTestAsset();
+
+        String destination = "NOR";
+        CustomRuleType flagStateRule = CustomRuleBuilder.getBuilder()
+                .setName("Area NOR => Send to NOR")
+                .rule(CriteriaType.AREA, SubCriteriaType.AREA_CODE,
+                        ConditionType.EQ, destination)
+                .action(ActionType.SEND_TO_FLUX, destination)
+                .build();
+
+        CustomRuleType createdCustomRule = CustomRuleHelper.createCustomRule(flagStateRule);
+        assertNotNull(createdCustomRule);
+
+        LatLong position = new LatLong(58.973, 5.781, Instant.now().toDate());
+        position.speed = 5;
+
+        Map<String, String> headers;
+        try (FLUXEndpoint fluxEndpoint = new FLUXEndpoint()) {
+            FLUXHelper.sendPositionToFluxPlugin(asset, position);
+            headers = fluxEndpoint.getHeaders(10000);
+        }
+
+        assertThat(headers.get(DEFAULT_CLIENT_HEADER), is(DEFAULT_CLIENT_HEADER_VALUE + "-" + destination));
+    }
+
     @Test
     public void sendPositionToFLUXWithCustomDataflow() throws Exception {
         String customDataflow = "urn:un:unece:uncefact:data:standard:FLUXVesselPositionMessage:4:Custom";

@@ -13,7 +13,10 @@ package eu.europa.ec.fisheries.uvms.docker.validation.system.helper;
 
 import java.io.Closeable;
 import java.io.IOException;
+import java.util.Collections;
+import java.util.Map;
 import java.util.concurrent.TimeUnit;
+import java.util.stream.Collectors;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -34,6 +37,7 @@ public class FLUXEndpoint implements Closeable {
     
     private Server server;
     private static PostMsgType message;
+    private static Map<String, String> headers;
     
     public FLUXEndpoint() throws Exception {
         this(ENDPOINT_PORT);
@@ -63,6 +67,16 @@ public class FLUXEndpoint implements Closeable {
         return returnMessage;
     }
     
+    public Map<String, String> getHeaders(int timeoutInMillis) throws InterruptedException {
+        while (message == null && timeoutInMillis > 0) {
+            TimeUnit.MILLISECONDS.sleep(100);
+            timeoutInMillis -= 100;
+        }
+        Map<String, String> returnMessage = headers;
+        headers = null;
+        return returnMessage;
+    }
+
     @Override
     public void close() throws IOException {
         if (server != null) {
@@ -84,6 +98,10 @@ public class FLUXEndpoint implements Closeable {
                 Unmarshaller unmarshaller = JAXBContext.newInstance(PostMsgType.class).createUnmarshaller();
                 JAXBElement<PostMsgType> postMsg = unmarshaller.unmarshal(soapMessage.getSOAPBody().extractContentAsDocument(), PostMsgType.class);
                 message = postMsg.getValue();
+                headers = Collections
+                        .list(httpRequest.getHeaderNames())
+                        .stream()
+                        .collect(Collectors.toMap(h -> h, httpRequest::getHeader));
             } catch (Exception e) {
                 e.printStackTrace();
             }
