@@ -143,7 +143,6 @@
 			<version>${unionvms.project.spatial.module}</version>
 			<type>zip</type>
 		</dependency>
-
 		<dependency>
 			<groupId>eu.europa.ec.fisheries.uvms.activity</groupId>
 			<artifactId>liquibase</artifactId>
@@ -187,6 +186,12 @@
 					<artifactId>ojdbc6</artifactId>
 				</exclusion>
 			</exclusions>
+		</dependency>
+		<dependency>
+			<groupId>eu.europa.ec.fisheries.uvms.user</groupId>
+			<artifactId>liquibase</artifactId>
+			<version>${unionvms.project.user.module}</version>
+			<type>zip</type>
 		</dependency>
 		<dependency>
 			<groupId>eu.europa.ec.fisheries.uvms.subscription</groupId>
