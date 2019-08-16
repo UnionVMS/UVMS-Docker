@@ -177,6 +177,12 @@
 			</exclusions>			
 		</dependency>
 		<dependency>
+			<groupId>eu.europa.ec.fisheries.uvms.reporting</groupId>
+			<artifactId>reporting-liquibase</artifactId>
+			<version>${unionvms.project.reporting.module}</version>
+			<type>zip</type>
+		</dependency>
+		<dependency>
 			<groupId>eu.europa.ec.fisheries.uvms.user</groupId>
 			<artifactId>liquibase</artifactId>
 			<type>sql</type>
