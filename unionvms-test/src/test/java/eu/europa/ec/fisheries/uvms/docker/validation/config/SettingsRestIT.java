@@ -15,7 +15,6 @@ package eu.europa.ec.fisheries.uvms.docker.validation.config;
 
 import eu.europa.ec.fisheries.schema.config.types.v1.SettingType;
 import eu.europa.ec.fisheries.schema.config.types.v1.SettingsCreateQuery;
-import eu.europa.ec.fisheries.uvms.commons.rest.dto.ResponseDto;
 import eu.europa.ec.fisheries.uvms.docker.validation.common.AbstractRest;
 import org.junit.Test;
 import org.slf4j.Logger;
@@ -26,7 +25,6 @@ import javax.ws.rs.core.GenericType;
 import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
