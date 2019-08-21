@@ -34,7 +34,9 @@ import org.junit.Ignore;
 import org.junit.Test;
 
 import javax.jms.JMSException;
+import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 import java.math.BigInteger;
 import java.time.Instant;
 import java.util.ArrayList;
@@ -195,5 +197,82 @@ public class MovementMovementRestIT extends AbstractRest {
 		for (MovementDto move :input) {
 			output.stream().anyMatch(o -> o.getGuid().equals(move.getMovementGUID()));
 		}
+	}
+
+	@Test
+	public void mergeAssetsAndCheckIfWeCanDeleteMCTest() throws Exception{
+		AssetDTO assetWithMMSI = AssetTestHelper.createBasicAsset();
+		assetWithMMSI.setIrcs(null);
+		assetWithMMSI.setCfr(null);
+		assetWithMMSI = AssetTestHelper.createAsset(assetWithMMSI);
+		AssetDTO assetWithIRCS = AssetTestHelper.createBasicAsset();
+		assetWithIRCS.setMmsi(null);
+		assetWithIRCS.setSource("NATIONAL");
+		assetWithIRCS = AssetTestHelper.createAsset(assetWithIRCS);
+
+		List<LatLong> latLongs = movementHelper.createRutt(10);
+		List<MovementDto> input = new ArrayList<>(10);
+
+		for (LatLong pos:latLongs) {
+			IncomingMovement incomingMovement = movementHelper.createIncomingMovement(assetWithMMSI, pos);
+			incomingMovement.setAssetMMSI(assetWithMMSI.getMmsi());
+			input.add(movementHelper.createMovement(incomingMovement));
+		}
+
+		AssetDTO mergeAsset = AssetTestHelper.createBasicAsset();
+		mergeAsset.setMmsi(assetWithMMSI.getMmsi());
+		mergeAsset.setIrcs(assetWithIRCS.getIrcs());
+		List<AssetDTO> assetDTOList = new ArrayList<>();
+		assetDTOList.add(mergeAsset);
+		ObjectMapper om = new ObjectMapper();
+		String assetMessage = om.writeValueAsString(assetDTOList);
+
+		jmsHelper.sendStringToAssetWithFunction(assetMessage, "ASSET_INFORMATION");
+		Thread.sleep(5000);
+
+		Response response = getWebTarget()
+				.path("movement/rest/internal/removeMovementConnect")
+				.queryParam("MovementConnectId", assetWithMMSI.getId().toString())
+				.request(MediaType.APPLICATION_JSON)
+				.header(HttpHeaders.AUTHORIZATION, getValidJwtToken())
+				.delete(Response.class);
+		assertEquals(200, response.getStatus());
+
+	}
+
+	@Test
+	public void tryToDeleteMCWithMovementsStillConnectedTest() throws Exception{
+		AssetDTO assetWithMMSI = AssetTestHelper.createBasicAsset();
+		assetWithMMSI.setIrcs(null);
+		assetWithMMSI.setCfr(null);
+		assetWithMMSI = AssetTestHelper.createAsset(assetWithMMSI);
+
+		List<LatLong> latLongs = movementHelper.createRutt(10);
+		List<MovementDto> input = new ArrayList<>(10);
+
+		for (LatLong pos:latLongs) {
+			IncomingMovement incomingMovement = movementHelper.createIncomingMovement(assetWithMMSI, pos);
+			incomingMovement.setAssetMMSI(assetWithMMSI.getMmsi());
+			input.add(movementHelper.createMovement(incomingMovement));
+		}
+
+		Response response = getWebTarget()
+				.path("movement/rest/internal/removeMovementConnect")
+				.queryParam("MovementConnectId", assetWithMMSI.getId().toString())
+				.request(MediaType.APPLICATION_JSON)
+				.header(HttpHeaders.AUTHORIZATION, getValidJwtToken())
+				.delete(Response.class);
+		assertEquals(500, response.getStatus());
+	}
+
+	@Test
+	public void tryToDeleteNonExistingMCTest() throws Exception{
+		Response response = getWebTarget()
+				.path("movement/rest/internal/removeMovementConnect")
+				.queryParam("MovementConnectId", UUID.randomUUID().toString())
+				.request(MediaType.APPLICATION_JSON)
+				.header(HttpHeaders.AUTHORIZATION, getValidJwtToken())
+				.delete(Response.class);
+		assertEquals(200, response.getStatus());
 	}
 }
