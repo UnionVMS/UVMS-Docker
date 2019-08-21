@@ -150,7 +150,6 @@ public class MovementMovementRestIT extends AbstractRest {
                 .path("movement/rest/internal/countMovementsInDateAndTheDayBeforeForAsset/" + assetId)
                 .queryParam("after", DateUtil.parseUTCDateToString(Instant.now()))    //yyyy-MM-dd HH:mm:ss Z
                 .request(MediaType.APPLICATION_JSON)
-				.header(HttpHeaders.AUTHORIZATION, getValidJwtToken())
                 .get(Long.class);
 
         assertNotNull(response);
