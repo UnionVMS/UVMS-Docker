@@ -24,6 +24,7 @@ import eu.europa.ec.fisheries.uvms.docker.validation.movement.MovementHelper;
 import eu.europa.ec.fisheries.uvms.docker.validation.system.helper.CustomRuleBuilder;
 import eu.europa.ec.fisheries.uvms.docker.validation.system.helper.CustomRuleHelper;
 import eu.europa.ec.fisheries.uvms.docker.validation.system.helper.FLUXHelper;
+import eu.europa.ec.fisheries.uvms.docker.validation.system.helper.VMSSystemHelper;
 import eu.europa.ec.fisheries.uvms.exchange.model.mapper.JAXBMarshaller;
 import org.databene.contiperf.PerfTest;
 import org.databene.contiperf.Required;
@@ -67,7 +68,7 @@ public class VMSSystemPerformanceIT extends AbstractRest {
                 .setName("Flag state => FLUX DNK")
                 .rule(CriteriaType.ASSET, SubCriteriaType.FLAG_STATE, 
                         ConditionType.EQ, asset.getFlagStateCode())
-                .action(ActionType.SEND_TO_FLUX, fluxEndpoint)
+                .action(ActionType.SEND_REPORT, VMSSystemHelper.FLUX_NAME, fluxEndpoint)
                 .build();
 
         CustomRuleType createdCustomRule = CustomRuleHelper.createCustomRule(flagStateRule);
@@ -107,7 +108,7 @@ public class VMSSystemPerformanceIT extends AbstractRest {
                 .setName("Flag state => FLUX DNK")
                 .rule(CriteriaType.ASSET, SubCriteriaType.FLAG_STATE, 
                         ConditionType.EQ, flagStateCode)
-                .action(ActionType.SEND_TO_FLUX, fluxEndpoint)
+                .action(ActionType.SEND_REPORT, VMSSystemHelper.FLUX_NAME, fluxEndpoint)
                 .build();
 
         CustomRuleType createdCustomRule = CustomRuleHelper.createCustomRule(flagStateRule);

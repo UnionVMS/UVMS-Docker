@@ -51,6 +51,7 @@ import eu.europa.ec.fisheries.uvms.docker.validation.system.helper.CustomRuleBui
 import eu.europa.ec.fisheries.uvms.docker.validation.system.helper.CustomRuleHelper;
 import eu.europa.ec.fisheries.uvms.docker.validation.system.helper.FLUXEndpoint;
 import eu.europa.ec.fisheries.uvms.docker.validation.system.helper.FLUXHelper;
+import eu.europa.ec.fisheries.uvms.docker.validation.system.helper.VMSSystemHelper;
 import eu.europa.ec.fisheries.uvms.docker.validation.user.UserHelper;
 import eu.europa.ec.fisheries.uvms.docker.validation.user.dto.Channel;
 import eu.europa.ec.fisheries.uvms.docker.validation.user.dto.EndPoint;
@@ -115,7 +116,7 @@ public class FLUXSystemIT extends AbstractRest {
                 .setName("Area NOR => Send to NOR")
                 .rule(CriteriaType.AREA, SubCriteriaType.AREA_CODE, 
                         ConditionType.EQ, destination)
-                .action(ActionType.SEND_TO_FLUX, destination)
+                .action(ActionType.SEND_REPORT, VMSSystemHelper.FLUX_NAME, destination)
                 .build();
         
         CustomRuleType createdCustomRule = CustomRuleHelper.createCustomRule(flagStateRule);
@@ -144,7 +145,7 @@ public class FLUXSystemIT extends AbstractRest {
                 .setName("Area NOR => Send to NOR")
                 .rule(CriteriaType.AREA, SubCriteriaType.AREA_CODE,
                         ConditionType.EQ, destination)
-                .action(ActionType.SEND_TO_FLUX, destination)
+                .action(ActionType.SEND_REPORT, VMSSystemHelper.FLUX_NAME, destination)
                 .build();
 
         CustomRuleType createdCustomRule = CustomRuleHelper.createCustomRule(flagStateRule);
@@ -173,7 +174,47 @@ public class FLUXSystemIT extends AbstractRest {
                 .setName("Area NOR => Send to NOR")
                 .rule(CriteriaType.AREA, SubCriteriaType.AREA_CODE, 
                         ConditionType.EQ, "NOR")
-                .action(ActionType.SEND_TO_FLUX, organisation.getName())
+                .action(ActionType.SEND_REPORT, VMSSystemHelper.FLUX_NAME, organisation.getName())
+                .build();
+        
+        CustomRuleType createdCustomRule = CustomRuleHelper.createCustomRule(flagStateRule);
+        assertNotNull(createdCustomRule);
+        
+        LatLong position = new LatLong(58.973, 5.781, Instant.now().toDate());
+        position.speed = 5;
+        
+        PostMsgType message;
+        try (FLUXEndpoint fluxEndpoint = new FLUXEndpoint()) {
+            FLUXHelper.sendPositionToFluxPlugin(asset, position);
+            message = fluxEndpoint.getMessage(10000);
+        }
+        
+        assertThat(message.getDF(), is(customDataflow));
+    }
+    
+    @Test
+    public void sendPositionToOrganisationWithTwoEndpoints() throws Exception {
+        String customDataflow = "urn:un:unece:uncefact:data:standard:FLUXVesselPositionMessage:4";
+        Organisation organisation = createOrganisationWithCustomDF(customDataflow);
+        EndPoint endpoint2 = new EndPoint();
+        endpoint2.setName("NAF");
+        endpoint2.setURI("nafEndpoint");
+        endpoint2.setStatus("E");
+        endpoint2.setOrganisationName(organisation.getName());
+        EndPoint createdEndpoint = UserHelper.createEndpoint(endpoint2);
+        Channel channel2 = new Channel();
+        channel2.setDataflow("NAF");
+        channel2.setService("NAF");
+        channel2.setPriority(1);
+        channel2.setEndpointId(createdEndpoint.getEndpointId());
+        UserHelper.createChannel(channel2);
+        AssetDTO asset = AssetTestHelper.createTestAsset();
+        
+        CustomRuleType flagStateRule = CustomRuleBuilder.getBuilder()
+                .setName("Area NOR => Send to NOR")
+                .rule(CriteriaType.AREA, SubCriteriaType.AREA_CODE, 
+                        ConditionType.EQ, "NOR")
+                .action(ActionType.SEND_REPORT, VMSSystemHelper.FLUX_NAME, organisation.getName())
                 .build();
         
         CustomRuleType createdCustomRule = CustomRuleHelper.createCustomRule(flagStateRule);
@@ -199,7 +240,7 @@ public class FLUXSystemIT extends AbstractRest {
                 .setName("Area NOR => Send to NOR")
                 .rule(CriteriaType.AREA, SubCriteriaType.AREA_CODE, 
                         ConditionType.EQ, "NOR")
-                .action(ActionType.SEND_TO_FLUX, "SWE")
+                .action(ActionType.SEND_REPORT, VMSSystemHelper.FLUX_NAME, "SWE")
                 .build();
         
         CustomRuleType createdCustomRule = CustomRuleHelper.createCustomRule(flagStateRule);
@@ -244,7 +285,7 @@ public class FLUXSystemIT extends AbstractRest {
                 .setName("Area NOR => Send to NOR")
                 .rule(CriteriaType.AREA, SubCriteriaType.AREA_CODE, 
                         ConditionType.EQ, "NOR")
-                .action(ActionType.SEND_TO_FLUX, "NOR")
+                .action(ActionType.SEND_REPORT, VMSSystemHelper.FLUX_NAME, "NOR")
                 .build();
         
         CustomRuleType createdCustomRule = CustomRuleHelper.createCustomRule(flagStateRule);
@@ -280,7 +321,7 @@ public class FLUXSystemIT extends AbstractRest {
                 .setName("Area NOR => Send to NOR")
                 .rule(CriteriaType.AREA, SubCriteriaType.AREA_CODE, 
                         ConditionType.EQ, "NOR")
-                .action(ActionType.SEND_TO_FLUX, organisation.getName())
+                .action(ActionType.SEND_REPORT, VMSSystemHelper.FLUX_NAME, organisation.getName())
                 .build();
         
         CustomRuleType createdCustomRule = CustomRuleHelper.createCustomRule(flagStateRule);
@@ -316,7 +357,7 @@ public class FLUXSystemIT extends AbstractRest {
                 .setName("Area NOR => Send to NOR")
                 .rule(CriteriaType.AREA, SubCriteriaType.AREA_CODE_EXT, 
                         ConditionType.EQ, "NOR")
-                .action(ActionType.SEND_TO_FLUX, organisation.getName())
+                .action(ActionType.SEND_REPORT, VMSSystemHelper.FLUX_NAME, organisation.getName())
                 .build();
         
         CustomRuleType createdCustomRule = CustomRuleHelper.createCustomRule(flagStateRule);

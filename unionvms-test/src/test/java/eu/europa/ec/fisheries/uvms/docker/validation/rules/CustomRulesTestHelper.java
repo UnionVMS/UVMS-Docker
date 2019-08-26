@@ -59,7 +59,8 @@ public class CustomRulesTestHelper {
 
         // then send to FLUX DNK
         CustomRuleActionType action = new CustomRuleActionType();
-        action.setAction(ActionType.SEND_TO_FLUX);
+        action.setAction(ActionType.SEND_REPORT);
+        action.setTarget(VMSSystemHelper.FLUX_NAME);
         action.setValue("FLUX DNK");
         action.setOrder("0");
         customRule.getActions().add(action);

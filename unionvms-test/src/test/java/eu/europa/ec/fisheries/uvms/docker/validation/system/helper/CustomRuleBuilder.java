@@ -100,8 +100,13 @@ public class CustomRuleBuilder {
     }
     
     public CustomRuleBuilder action(ActionType actionType, String value) {
+        return action(actionType, null, value);
+    }
+
+    public CustomRuleBuilder action(ActionType actionType, String target, String value) {
         CustomRuleActionType action = new CustomRuleActionType();
         action.setAction(actionType);
+        action.setTarget(target);
         action.setValue(value);
         action.setOrder(String.valueOf(actionOrder));
         actionOrder++;

@@ -20,6 +20,7 @@ import eu.europa.ec.fisheries.uvms.docker.validation.movement.model.AlarmReport;
 import eu.europa.ec.fisheries.uvms.docker.validation.system.helper.CustomRuleBuilder;
 import eu.europa.ec.fisheries.uvms.docker.validation.system.helper.CustomRuleHelper;
 import eu.europa.ec.fisheries.uvms.docker.validation.system.helper.SanityRuleHelper;
+import eu.europa.ec.fisheries.uvms.docker.validation.system.helper.VMSSystemHelper;
 import eu.europa.ec.fisheries.uvms.exchange.model.mapper.ExchangeModuleRequestMapper;
 import org.hamcrest.CoreMatchers;
 import org.junit.*;
@@ -73,7 +74,7 @@ public class InmarsatSanityIT extends AbstractRest {
                 .setName("Flag state => FLUX DNK")
                 .rule(CriteriaType.ASSET, SubCriteriaType.FLAG_STATE,
                         ConditionType.EQ, asset.getFlagStateCode())
-                .action(ActionType.SEND_TO_FLUX, fluxEndpoint)
+                .action(ActionType.SEND_REPORT, VMSSystemHelper.FLUX_NAME, fluxEndpoint)
                 .build();
 
         CustomRuleType createdCustomRule = CustomRuleHelper.createCustomRule(flagStateRule);
@@ -162,7 +163,7 @@ public class InmarsatSanityIT extends AbstractRest {
                 .setName("Flag state => FLUX DNK")
                 .rule(CriteriaType.ASSET, SubCriteriaType.ASSET_IRCS,
                         ConditionType.EQ, asset1.getIrcs())
-                .action(ActionType.SEND_TO_FLUX, fluxEndpoint)
+                .action(ActionType.SEND_REPORT, VMSSystemHelper.FLUX_NAME, fluxEndpoint)
                 .build();
 
         CustomRuleType createdCustomRule = CustomRuleHelper.createCustomRule(flagStateRule);

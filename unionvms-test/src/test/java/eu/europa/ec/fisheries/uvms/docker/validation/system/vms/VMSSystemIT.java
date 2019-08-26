@@ -79,7 +79,7 @@ public class VMSSystemIT extends AbstractRest {
                 .setName("Flag state => FLUX DNK")
                 .rule(CriteriaType.ASSET, SubCriteriaType.FLAG_STATE, 
                         ConditionType.EQ, asset.getFlagStateCode())
-                .action(ActionType.SEND_TO_FLUX, fluxEndpoint)
+                .action(ActionType.SEND_REPORT, VMSSystemHelper.FLUX_NAME, fluxEndpoint)
                 .build();
         
         CustomRuleType createdCustomRule = CustomRuleHelper.createCustomRule(flagStateRule);
@@ -107,7 +107,7 @@ public class VMSSystemIT extends AbstractRest {
                         ConditionType.EQ, asset.getFlagStateCode())
                 .and(CriteriaType.AREA, SubCriteriaType.AREA_CODE, 
                         ConditionType.EQ, areaCode)
-                .action(ActionType.SEND_TO_FLUX, fluxEndpoint)
+                .action(ActionType.SEND_REPORT, VMSSystemHelper.FLUX_NAME, fluxEndpoint)
                 .build();
         CustomRuleType createdCustomRule = CustomRuleHelper.createCustomRule(flagStateAndAreaRule);
         assertNotNull(createdCustomRule);
@@ -140,7 +140,7 @@ public class VMSSystemIT extends AbstractRest {
                 .rule(CriteriaType.ASSET, SubCriteriaType.FLAG_STATE, 
                         ConditionType.EQ, asset.getFlagStateCode())
                 .interval(ruleIntervalStart, ruleIntervalEnd)
-                .action(ActionType.SEND_TO_FLUX, fluxEndpoint)
+                .action(ActionType.SEND_REPORT, VMSSystemHelper.FLUX_NAME, fluxEndpoint)
                 .build();
         
         CustomRuleType createdCustomRule = CustomRuleHelper.createCustomRule(flagStateRuleWithInterval);
@@ -174,7 +174,7 @@ public class VMSSystemIT extends AbstractRest {
                 .rule(CriteriaType.ASSET, SubCriteriaType.FLAG_STATE, 
                         ConditionType.EQ, asset.getFlagStateCode())
                 .interval(ruleIntervalStart, ruleIntervalEnd)
-                .action(ActionType.SEND_TO_FLUX, fluxEndpoint)
+                .action(ActionType.SEND_REPORT, VMSSystemHelper.FLUX_NAME, fluxEndpoint)
                 .build();
         
         CustomRuleType createdCustomRuleWithInterval = CustomRuleHelper.createCustomRule(flagStateRuleWithInterval);
@@ -184,7 +184,7 @@ public class VMSSystemIT extends AbstractRest {
                 .setName("Flag state => FLUX DNK")
                 .rule(CriteriaType.ASSET, SubCriteriaType.FLAG_STATE, 
                         ConditionType.EQ, asset.getFlagStateCode())
-                .action(ActionType.SEND_TO_FLUX, fluxEndpoint)
+                .action(ActionType.SEND_REPORT, VMSSystemHelper.FLUX_NAME, fluxEndpoint)
                 .build();
         
         CustomRuleType createdCustomRuleWithoutInterval = CustomRuleHelper.createCustomRule(flagStateRuleWithoutInterval);
@@ -221,7 +221,7 @@ public class VMSSystemIT extends AbstractRest {
                 .rule(CriteriaType.ASSET, SubCriteriaType.FLAG_STATE, 
                         ConditionType.EQ, asset.getFlagStateCode())
                 .interval(ruleIntervalStart, ruleIntervalEnd)
-                .action(ActionType.SEND_TO_FLUX, fluxEndpoint)
+                .action(ActionType.SEND_REPORT, VMSSystemHelper.FLUX_NAME, fluxEndpoint)
                 .build();
         
         CustomRuleType createdCustomRuleWithInterval = CustomRuleHelper.createCustomRule(flagStateRuleWithInterval);
@@ -231,7 +231,7 @@ public class VMSSystemIT extends AbstractRest {
                 .setName("Flag state => FLUX DNK")
                 .rule(CriteriaType.ASSET, SubCriteriaType.FLAG_STATE, 
                         ConditionType.EQ, asset.getFlagStateCode())
-                .action(ActionType.SEND_TO_FLUX, fluxEndpoint)
+                .action(ActionType.SEND_REPORT, VMSSystemHelper.FLUX_NAME, fluxEndpoint)
                 .build();
         
         CustomRuleType createdCustomRuleWithoutInterval = CustomRuleHelper.createCustomRule(flagStateRuleWithoutInterval);
@@ -280,38 +280,6 @@ public class VMSSystemIT extends AbstractRest {
     }
 
     @Test
-    public void sendToNonExistingNafEndpointTest() throws Exception {
-        String nation = generateARandomStringWithMaxLength(9);
-        String uri = "Test URI" + generateARandomStringWithMaxLength(10);
-        String name = "NAF";
-
-        Organisation organisation = UserHelper.getBasicOrganisation();
-        organisation.setNation(nation);
-        UserHelper.createOrganisation(organisation);
-        EndPoint endpoint = new EndPoint();
-        endpoint.setName(name);
-        endpoint.setURI(uri);
-        endpoint.setStatus("E");
-        endpoint.setOrganisationName(organisation.getName());
-        EndPoint createdEndpoint = UserHelper.createEndpoint(endpoint);
-        Channel channel = new Channel();
-        channel.setDataflow("NOT");
-        channel.setService("NOT");
-        channel.setPriority(1);
-        channel.setEndpointId(createdEndpoint.getEndpointId());
-        UserHelper.createChannel(channel);
-
-        SetReportRequest report = VMSSystemHelper.triggerBasicRuleAndSendToNAF(organisation.getName());
-        assertThat(report, is(notNullValue()));
-        assertThat(report.getReport(), is(notNullValue()));
-        assertThat(report.getReport().getRecipient(), is(nation));
-
-        List<RecipientInfoType> recipientInfo = report.getReport().getRecipientInfo();
-
-        assertThat(recipientInfo.size(), is(0));
-    }
-    
-    @Test
     public void sendToExistingFLUXEndpointTest() throws Exception {
         String nation = generateARandomStringWithMaxLength(9);
         String uri = "FLUX:" + generateARandomStringWithMaxLength(10);
@@ -343,26 +311,37 @@ public class VMSSystemIT extends AbstractRest {
     }
 
     @Test
-    public void sendToNonExistingFLUXEndpointTest() throws Exception {
+    public void sendToOrganisatioWithTwoEndpointsTest() throws Exception {
         String nation = generateARandomStringWithMaxLength(9);
         String uri = "Test URI" + generateARandomStringWithMaxLength(10);
-        String name = "FLUX";
 
         Organisation organisation = UserHelper.getBasicOrganisation();
         organisation.setNation(nation);
         UserHelper.createOrganisation(organisation);
         EndPoint endpoint = new EndPoint();
-        endpoint.setName(name);
+        endpoint.setName("FLUX");
         endpoint.setURI(uri);
         endpoint.setStatus("E");
         endpoint.setOrganisationName(organisation.getName());
         EndPoint createdEndpoint = UserHelper.createEndpoint(endpoint);
         Channel channel = new Channel();
-        channel.setDataflow("NOTFLUXVesselPositionMsg");
-        channel.setService("NOTFLUX");
+        channel.setDataflow("FLUXVesselPositionMsg");
+        channel.setService("FLUX");
         channel.setPriority(1);
         channel.setEndpointId(createdEndpoint.getEndpointId());
         UserHelper.createChannel(channel);
+        EndPoint endpoint2 = new EndPoint();
+        endpoint2.setName("NAF");
+        endpoint2.setURI(uri);
+        endpoint2.setStatus("E");
+        endpoint2.setOrganisationName(organisation.getName());
+        EndPoint createdEndpoint2 = UserHelper.createEndpoint(endpoint2);
+        Channel channel2 = new Channel();
+        channel2.setDataflow("NAF");
+        channel2.setService("NAF");
+        channel2.setPriority(1);
+        channel2.setEndpointId(createdEndpoint2.getEndpointId());
+        UserHelper.createChannel(channel2);
 
         SetReportRequest report = VMSSystemHelper.triggerBasicRuleAndSendToFlux(organisation.getName());
         assertThat(report, is(notNullValue()));
@@ -370,7 +349,7 @@ public class VMSSystemIT extends AbstractRest {
         assertThat(report.getReport().getRecipient(), is(nation));
 
         List<RecipientInfoType> recipientInfo = report.getReport().getRecipientInfo();
-        assertThat(recipientInfo.size(), is(0));
+        assertThat(recipientInfo.size(), is(2));
     }
 
     private void sendPositionToFluxAndVerifyMessage(AssetDTO asset, LatLong position) throws Exception {

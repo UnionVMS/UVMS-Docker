@@ -511,7 +511,7 @@ public class RulesAlarmIT extends AbstractRest {
                 .setName("Area entry DNK")
                 .rule(CriteriaType.AREA, SubCriteriaType.AREA_CODE_ENT, 
                         ConditionType.EQ, "DNK")
-                .action(ActionType.SEND_TO_FLUX, fluxEndpoint)
+                .action(ActionType.SEND_REPORT, VMSSystemHelper.FLUX_NAME, fluxEndpoint)
                 .build();
         
         CustomRuleType createdAreaRule = CustomRuleHelper.createCustomRule(areaEntryRule);
@@ -535,7 +535,7 @@ public class RulesAlarmIT extends AbstractRest {
                 .setName("Area entry SWE")
                 .rule(CriteriaType.AREA, SubCriteriaType.AREA_CODE_ENT, 
                         ConditionType.EQ, "SWE")
-                .action(ActionType.SEND_TO_FLUX, fluxEndpoint)
+                .action(ActionType.SEND_REPORT, VMSSystemHelper.FLUX_NAME, fluxEndpoint)
                 .build();
         
         CustomRuleType createdAreaRule = CustomRuleHelper.createCustomRule(areaEntryRule);
@@ -573,7 +573,7 @@ public class RulesAlarmIT extends AbstractRest {
                 .setName("Area exit SWE")
                 .rule(CriteriaType.AREA, SubCriteriaType.AREA_CODE_EXT, 
                         ConditionType.EQ, "SWE")
-                .action(ActionType.SEND_TO_FLUX, fluxEndpoint)
+                .action(ActionType.SEND_REPORT, VMSSystemHelper.FLUX_NAME, fluxEndpoint)
                 .build();
         
         CustomRuleType createdAreaRule = CustomRuleHelper.createCustomRule(areaEntryRule);

@@ -38,6 +38,7 @@ import eu.europa.ec.fisheries.uvms.docker.validation.system.helper.CustomRuleBui
 import eu.europa.ec.fisheries.uvms.docker.validation.system.helper.CustomRuleHelper;
 import eu.europa.ec.fisheries.uvms.docker.validation.system.helper.NAFHelper;
 import eu.europa.ec.fisheries.uvms.docker.validation.system.helper.NafEndpoint;
+import eu.europa.ec.fisheries.uvms.docker.validation.system.helper.VMSSystemHelper;
 import eu.europa.ec.fisheries.uvms.docker.validation.user.UserHelper;
 import eu.europa.ec.fisheries.uvms.docker.validation.user.dto.Channel;
 import eu.europa.ec.fisheries.uvms.docker.validation.user.dto.EndPoint;
@@ -64,7 +65,59 @@ public class NAFSystemIT extends AbstractRest {
                 .setName("Area NOR => Send to NOR")
                 .rule(CriteriaType.AREA, SubCriteriaType.AREA_CODE, 
                         ConditionType.EQ, "NOR")
-                .action(ActionType.SEND_TO_NAF, organisation.getName())
+                .action(ActionType.SEND_REPORT, VMSSystemHelper.NAF_NAME, organisation.getName())
+                .build();
+        
+        CustomRuleType createdCustomRule = CustomRuleHelper.createCustomRule(flagStateRule);
+        assertNotNull(createdCustomRule);
+        
+        LatLong position = new LatLong(58.973, 5.781, Instant.now().toDate());
+        position.speed = 5;
+        
+        String message;
+        try (NafEndpoint nafEndpoint = new NafEndpoint(ENDPOINT_PORT)) {
+            NAFHelper.sendPositionToNAFPlugin(position, asset);
+            message = nafEndpoint.getMessage(10000);
+        }
+        
+        assertThat(NAFHelper.readCodeValue("AD", message), is(organisation.getNation()));
+        assertThat(NAFHelper.readCodeValue("FR", message), is("UNK"));
+        assertThat(NAFHelper.readCodeValue("TM", message), is(MovementTypeType.POS.toString()));
+        assertThat(NAFHelper.readCodeValue("RC", message), is(asset.getIrcs()));
+        assertThat(NAFHelper.readCodeValue("LT", message), is(String.valueOf(position.latitude)));
+        assertThat(NAFHelper.readCodeValue("LG", message), is(String.valueOf(position.longitude)));
+        assertThat(NAFHelper.readCodeValue("SP", message), is(String.valueOf((int)position.speed * 10)));
+        assertThat(NAFHelper.readCodeValue("CO", message), is(String.valueOf((int)position.bearing)));
+        ZonedDateTime positionTime = ZonedDateTime.ofInstant(position.positionTime.toInstant(), ZoneId.of("UTC"));
+        assertThat(NAFHelper.readCodeValue("DA", message), is(positionTime.format(DateTimeFormatter.ofPattern("yyyyMMdd"))));
+        assertThat(NAFHelper.readCodeValue("TI", message), is(positionTime.format(DateTimeFormatter.ofPattern("HHmm"))));
+    }
+
+    @Test
+    public void sendPositionToOrganisationWithTwoEndpoints() throws IOException, Exception {
+        Organisation organisation = createOrganisationNorway();
+        EndPoint endpoint = new EndPoint();
+        endpoint.setName("FLUX");
+        endpoint.setURI("URI");
+        endpoint.setStatus("E");
+        endpoint.setOrganisationName(organisation.getName());
+        EndPoint createdEndpoint = UserHelper.createEndpoint(endpoint);
+        Channel channel = new Channel();
+        channel.setDataflow("FLUX");
+        channel.setService("FLUX");
+        channel.setPriority(1);
+        channel.setEndpointId(createdEndpoint.getEndpointId());
+        UserHelper.createChannel(channel);
+
+        AssetDTO asset = AssetTestHelper.createTestAsset();
+        NAFHelper.sendPositionToNAFPlugin(new LatLong(58.973, 5.781, Instant.now().minus(10 * 60 * 1000).toDate()), asset);
+        MovementHelper.pollMovementCreated(); // First position for an asset creates ENT, ignore this
+        
+        CustomRuleType flagStateRule = CustomRuleBuilder.getBuilder()
+                .setName("Area NOR => Send to NOR")
+                .rule(CriteriaType.AREA, SubCriteriaType.AREA_CODE, 
+                        ConditionType.EQ, "NOR")
+                .action(ActionType.SEND_REPORT, VMSSystemHelper.NAF_NAME, organisation.getName())
                 .build();
         
         CustomRuleType createdCustomRule = CustomRuleHelper.createCustomRule(flagStateRule);
@@ -100,7 +153,7 @@ public class NAFSystemIT extends AbstractRest {
                 .setName("Enter NOR => Send to NOR")
                 .rule(CriteriaType.AREA, SubCriteriaType.AREA_CODE_ENT, 
                         ConditionType.EQ, "NOR")
-                .action(ActionType.SEND_TO_NAF, organisation.getName())
+                .action(ActionType.SEND_REPORT, VMSSystemHelper.NAF_NAME, organisation.getName())
                 .build();
 
         CustomRuleType createdCustomRule = CustomRuleHelper.createCustomRule(flagStateRule);

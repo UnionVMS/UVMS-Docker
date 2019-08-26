@@ -34,7 +34,6 @@ import javax.jms.Message;
 import javax.jms.TextMessage;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
@@ -51,13 +50,15 @@ public class VMSSystemHelper {
     public static final String INMARSAT_SELECTOR = "ServiceName='eu.europa.ec.fisheries.uvms.plugins.inmarsat'";
     public static String emailSelector = "ServiceName='" + SERVICE_NAME + "'";
     public static String emailPluginName = "TEST EMAIL";
+    public static String FLUX_NAME = "FLUX Movement Plugin";
+    public static String NAF_NAME = "naf";
     
     public static SetReportRequest triggerBasicRuleAndSendToFlux(String fluxEndpoint) throws Exception {
-        return triggerBasicRuleWithAction(ActionType.SEND_TO_FLUX, fluxEndpoint, SetReportRequest.class, FLUX_SELECTOR);
+        return triggerBasicRuleWithAction(ActionType.SEND_REPORT, FLUX_NAME, fluxEndpoint, SetReportRequest.class, FLUX_SELECTOR);
     }
 
     public static SetReportRequest triggerBasicRuleAndSendToNAF(String nation) throws Exception {
-        return triggerBasicRuleWithAction(ActionType.SEND_TO_NAF, nation, SetReportRequest.class, NAF_SELECTOR);
+        return triggerBasicRuleWithAction(ActionType.SEND_REPORT, NAF_NAME, nation, SetReportRequest.class, NAF_SELECTOR);
     }
 
     public static SetCommandRequest triggerBasicRuleAndSendEmail(String email) throws Exception {
@@ -65,6 +66,10 @@ public class VMSSystemHelper {
     }
     
     private static <T> T triggerBasicRuleWithAction(ActionType actionType, String actionValue, Class<T> expectedType, String selector) throws Exception {
+        return triggerBasicRuleWithAction(actionType, null, actionValue, expectedType, selector);
+    }
+    
+    private static <T> T triggerBasicRuleWithAction(ActionType actionType, String target, String actionValue, Class<T> expectedType, String selector) throws Exception {
         try {
             OffsetDateTime timestamp = OffsetDateTime.now(ZoneOffset.UTC);
             AssetDTO asset = AssetTestHelper.createTestAsset();
@@ -73,7 +78,7 @@ public class VMSSystemHelper {
                     .setName("Flag state => FLUX DNK")
                     .rule(CriteriaType.ASSET, SubCriteriaType.FLAG_STATE, 
                             ConditionType.EQ, asset.getFlagStateCode())
-                    .action(actionType, actionValue)
+                    .action(actionType, target, actionValue)
                     .build();
             
             CustomRuleType createdCustomRule = CustomRuleHelper.createCustomRule(flagStateRule);
