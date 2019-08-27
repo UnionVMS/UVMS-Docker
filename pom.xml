@@ -44,6 +44,7 @@
 		<unionvms.project.plugins.siriusone>3.0.8</unionvms.project.plugins.siriusone>
 		<unionvms.project.plugins.fluxActivity>1.0.6</unionvms.project.plugins.fluxActivity>
 		<unionvms.project.plugins.mdr>1.0.2</unionvms.project.plugins.mdr>
+		<unionvms.project.plugins.flux-rest>1.0</unionvms.project.plugins.flux-rest>
 		<unionvms.project.hawtio-wildfly>2.6.0</unionvms.project.hawtio-wildfly>
 	</properties>
 
@@ -416,6 +417,12 @@
 				<artifactId>siriusone-module</artifactId>
 				<type>ear</type>
 				<version>${unionvms.project.plugins.siriusone}</version>
+			</dependency>
+			<dependency>
+				<groupId>eu.europa.ec.fisheries.uvms.plugins</groupId>
+				<artifactId>flux-vesselposition-rest-module</artifactId>
+				<type>ear</type>
+				<version>${unionvms.project.plugins.flux-rest}</version>
 			</dependency>
 		</dependencies>
 

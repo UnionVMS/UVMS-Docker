@@ -142,6 +142,11 @@
 			<artifactId>flux-movement-plugin-module</artifactId>
 			<type>ear</type>
 		</dependency>
+		<dependency>
+			<groupId>eu.europa.ec.fisheries.uvms.plugins</groupId>
+			<artifactId>flux-vesselposition-rest-module</artifactId>
+			<type>ear</type>
+		</dependency>
 	</dependencies>
 	<build>
 		<pluginManagement>

@@ -52,6 +52,7 @@ public class VMSSystemHelper {
     public static String emailPluginName = "TEST EMAIL";
     public static String FLUX_NAME = "FLUX Movement Plugin";
     public static String NAF_NAME = "naf";
+    public static String REST_NAME = "REST Plugin";
     
     public static SetReportRequest triggerBasicRuleAndSendToFlux(String fluxEndpoint) throws Exception {
         return triggerBasicRuleWithAction(ActionType.SEND_REPORT, FLUX_NAME, fluxEndpoint, SetReportRequest.class, FLUX_SELECTOR);
