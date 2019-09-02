@@ -987,8 +987,8 @@
                 <simple name="java:global/exchange_endpoint" value="http://localhost:8080/unionvms/exchange/unsecured/rest"/>
                 <simple name="java:global/movement_endpoint" value="http://localhost:8080/unionvms/movement/rest"/>
                 <simple name="java:global/user_endpoint" value="http://localhost:8080/unionvms/user/rest"/>
-                <simple name="java:global/corsAllowedOriginList" type="java.lang.String"
-                        value="localhost:28080,localhost:8080,127.0.0.1:28080,127.0.0.1:8080,192.168.222.29:28080,192.168.222.200:28080,192.168.218.26:28080" />
+                <simple name="java:global/cors_allowed_host_regex" type="java.lang.String"
+                        value="((192\.168\.\d{1,3}\.\d{1,3})|(127\.0\.0\.1)|(localhost)|(\w{10}\.hav\.havochvatten\.se)):2?8080" />
             </bindings>
         </subsystem>
         <subsystem xmlns="urn:jboss:domain:pojo:1.0"/>
