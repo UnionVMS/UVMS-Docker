@@ -11,38 +11,33 @@ copy of the GNU General Public License along with the IFDM Suite. If not, see <h
  */
 package eu.europa.ec.fisheries.uvms.docker.validation.system.vms;
 
-import static org.hamcrest.CoreMatchers.is;
-import java.io.IOException;
-import java.net.InetAddress;
-import java.net.NetworkInterface;
-import java.net.SocketException;
-import java.time.ZoneId;
-import java.time.ZonedDateTime;
-import java.time.format.DateTimeFormatter;
-import java.util.Enumeration;
-import org.joda.time.Instant;
-import org.junit.After;
-import org.junit.Test;
 import eu.europa.ec.fisheries.schema.exchange.movement.v1.MovementTypeType;
-import eu.europa.ec.fisheries.schema.movementrules.customrule.v1.ActionType;
-import eu.europa.ec.fisheries.schema.movementrules.customrule.v1.ConditionType;
-import eu.europa.ec.fisheries.schema.movementrules.customrule.v1.CriteriaType;
-import eu.europa.ec.fisheries.schema.movementrules.customrule.v1.CustomRuleType;
-import eu.europa.ec.fisheries.schema.movementrules.customrule.v1.SubCriteriaType;
+import eu.europa.ec.fisheries.schema.movementrules.customrule.v1.*;
 import eu.europa.ec.fisheries.uvms.asset.client.model.AssetDTO;
 import eu.europa.ec.fisheries.uvms.docker.validation.asset.AssetTestHelper;
 import eu.europa.ec.fisheries.uvms.docker.validation.common.AbstractRest;
 import eu.europa.ec.fisheries.uvms.docker.validation.movement.LatLong;
 import eu.europa.ec.fisheries.uvms.docker.validation.movement.MovementHelper;
-import eu.europa.ec.fisheries.uvms.docker.validation.system.helper.CustomRuleBuilder;
-import eu.europa.ec.fisheries.uvms.docker.validation.system.helper.CustomRuleHelper;
-import eu.europa.ec.fisheries.uvms.docker.validation.system.helper.NAFHelper;
-import eu.europa.ec.fisheries.uvms.docker.validation.system.helper.NafEndpoint;
-import eu.europa.ec.fisheries.uvms.docker.validation.system.helper.VMSSystemHelper;
+import eu.europa.ec.fisheries.uvms.docker.validation.system.helper.*;
 import eu.europa.ec.fisheries.uvms.docker.validation.user.UserHelper;
 import eu.europa.ec.fisheries.uvms.docker.validation.user.dto.Channel;
 import eu.europa.ec.fisheries.uvms.docker.validation.user.dto.EndPoint;
 import eu.europa.ec.fisheries.uvms.docker.validation.user.dto.Organisation;
+import org.junit.After;
+import org.junit.Test;
+
+import java.io.IOException;
+import java.net.InetAddress;
+import java.net.NetworkInterface;
+import java.net.SocketException;
+import java.time.Instant;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.Date;
+import java.util.Enumeration;
+
+import static org.hamcrest.CoreMatchers.is;
 
 public class NAFSystemIT extends AbstractRest {
 
@@ -58,7 +53,7 @@ public class NAFSystemIT extends AbstractRest {
         Organisation organisation = createOrganisationNorway();
 
         AssetDTO asset = AssetTestHelper.createTestAsset();
-        NAFHelper.sendPositionToNAFPlugin(new LatLong(58.973, 5.781, Instant.now().minus(10 * 60 * 1000).toDate()), asset);
+        NAFHelper.sendPositionToNAFPlugin(new LatLong(58.973, 5.781, Date.from(Instant.now().minusMillis(10 * 60 * 1000))), asset);
         MovementHelper.pollMovementCreated(); // First position for an asset creates ENT, ignore this
         
         CustomRuleType flagStateRule = CustomRuleBuilder.getBuilder()
@@ -71,7 +66,7 @@ public class NAFSystemIT extends AbstractRest {
         CustomRuleType createdCustomRule = CustomRuleHelper.createCustomRule(flagStateRule);
         assertNotNull(createdCustomRule);
         
-        LatLong position = new LatLong(58.973, 5.781, Instant.now().toDate());
+        LatLong position = new LatLong(58.973, 5.781, Date.from(Instant.now()));
         position.speed = 5;
         
         String message;
@@ -110,7 +105,7 @@ public class NAFSystemIT extends AbstractRest {
         UserHelper.createChannel(channel);
 
         AssetDTO asset = AssetTestHelper.createTestAsset();
-        NAFHelper.sendPositionToNAFPlugin(new LatLong(58.973, 5.781, Instant.now().minus(10 * 60 * 1000).toDate()), asset);
+        NAFHelper.sendPositionToNAFPlugin(new LatLong(58.973, 5.781, Date.from(Instant.now().minusMillis(10 * 60 * 1000))), asset);
         MovementHelper.pollMovementCreated(); // First position for an asset creates ENT, ignore this
         
         CustomRuleType flagStateRule = CustomRuleBuilder.getBuilder()
@@ -123,7 +118,7 @@ public class NAFSystemIT extends AbstractRest {
         CustomRuleType createdCustomRule = CustomRuleHelper.createCustomRule(flagStateRule);
         assertNotNull(createdCustomRule);
         
-        LatLong position = new LatLong(58.973, 5.781, Instant.now().toDate());
+        LatLong position = new LatLong(58.973, 5.781, Date.from(Instant.now()));
         position.speed = 5;
         
         String message;
@@ -160,9 +155,9 @@ public class NAFSystemIT extends AbstractRest {
         assertNotNull(createdCustomRule);
 
         AssetDTO asset = AssetTestHelper.createTestAsset();
-        LatLong swePosition = new LatLong(57.716673, 11.973996, Instant.now().minus(10 * 60 * 1000).toDate());
+        LatLong swePosition = new LatLong(57.716673, 11.973996, Date.from(Instant.now().minusMillis(10 * 60 * 1000)));
         swePosition.speed = 5;
-        LatLong norPosition = new LatLong(58.973, 5.781, Instant.now().toDate());
+        LatLong norPosition = new LatLong(58.973, 5.781, Date.from(Instant.now()));
         norPosition.speed = 5;
 
         String message;
