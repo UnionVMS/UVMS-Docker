@@ -23,6 +23,7 @@ import eu.europa.ec.fisheries.uvms.docker.validation.exchange.dto.PluginType;
 import eu.europa.ec.fisheries.uvms.docker.validation.exchange.dto.SendingGroupLog;
 import eu.europa.ec.fisheries.uvms.docker.validation.exchange.dto.SendingLog;
 import eu.europa.ec.fisheries.uvms.docker.validation.system.helper.VMSSystemHelper;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import javax.ws.rs.client.Entity;
