@@ -41,7 +41,6 @@ import static org.hamcrest.CoreMatchers.notNullValue;
 public class ExchangeSendingQueueRestIT extends AbstractRest {
     
     @Test
-	@Ignore   // ignore temporary
 	public void getSendingQueueTest() throws Exception {
 	    String fluxEndpoint = "DNK";
 	    SetReportRequest reportRequest = VMSSystemHelper.triggerBasicRuleAndSendToFlux(fluxEndpoint);
