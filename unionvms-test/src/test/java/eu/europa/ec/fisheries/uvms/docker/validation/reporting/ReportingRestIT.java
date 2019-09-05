@@ -193,7 +193,7 @@ public class ReportingRestIT extends AbstractRest {
         displayFormat.setVelocityType(VelocityType.KTS);
         HashMap<String, Object> additionalProperties = new HashMap<>();
         HashMap<String, Object> valueMap = new HashMap<>();
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss Z");
         String timeStampValue = dateFormat.format(new Date());
         valueMap.put("timestamp", timeStampValue);
         additionalProperties.put("additionalProperties", valueMap);
