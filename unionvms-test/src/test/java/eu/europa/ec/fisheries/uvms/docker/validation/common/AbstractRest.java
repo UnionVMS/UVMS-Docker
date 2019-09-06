@@ -73,7 +73,7 @@ public abstract class AbstractRest extends Assert {
                 .request(MediaType.APPLICATION_JSON)
                 .post(Entity.json(new AuthenticationRequest(username, password)), AuthenticationResponse.class);
 
-        assertTrue(response.isAuthenticated());
+        assertTrue(response.getErrorDescription(), response.isAuthenticated());
         return response.getJwtoken();
     }
 

@@ -256,7 +256,7 @@ public class AssetTestHelper extends AbstractHelper {
 
 		ListCriteria fromDateListCriteria = new ListCriteria();
 		fromDateListCriteria.setKey(SearchKey.FROM_DATE);
-		fromDateListCriteria.setValue(DateUtils.parseUTCDateToString(fromDate));
+		fromDateListCriteria.setValue(DateUtils.parseUTCDateToString(fromDate.toInstant()));
 		auditLogListQuery.getAuditSearchCriteria().add(fromDateListCriteria);
 		
 		List<AuditLogType> auditLogs = AuditHelper.getAuditLogs(auditLogListQuery);

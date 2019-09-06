@@ -123,14 +123,14 @@ public class AssetRestIT extends AbstractRest {
 
     @Test
     public void createAssetAuditLogCreatedTest() throws Exception {
-        Date fromDate = DateUtils.getNowDateUTC();
+        Date fromDate = new Date();
         AssetDTO asset = AssetTestHelper.createTestAsset();
         AssetTestHelper.assertAssetAuditLogCreated(asset.getId(), AuditOperationEnum.CREATE, fromDate);
     }
 
     @Test
     public void updateAssetAuditLogCreatedTest() throws Exception {
-        Date fromDate = DateUtils.getNowDateUTC();
+        Date fromDate = new Date();
         AssetDTO testAsset = AssetTestHelper.createTestAsset();
         String newName = testAsset.getName() + "Changed";
         testAsset.setName(newName);
@@ -148,7 +148,7 @@ public class AssetRestIT extends AbstractRest {
 
     @Test
     public void archiveAssetAuditLogCreatedTest() throws Exception {
-        Date fromDate = DateUtils.getNowDateUTC();
+        Date fromDate = new Date();
         AssetDTO testAsset = AssetTestHelper.createTestAsset();
         testAsset.setActive(false);
         AssetTestHelper.archiveAsset(testAsset);

@@ -11,41 +11,36 @@ copy of the GNU General Public License along with the IFDM Suite. If not, see <h
  */
 package eu.europa.ec.fisheries.uvms.docker.validation.system.vms;
 
-import static org.hamcrest.CoreMatchers.is;
-import java.io.IOException;
-import java.net.InetAddress;
-import java.net.NetworkInterface;
-import java.net.SocketException;
-import java.util.Enumeration;
-import java.util.Map;
-import java.util.stream.Collectors;
-import org.hamcrest.CoreMatchers;
-import org.joda.time.Instant;
-import org.junit.After;
-import org.junit.Test;
-import eu.europa.ec.fisheries.schema.movementrules.customrule.v1.ActionType;
-import eu.europa.ec.fisheries.schema.movementrules.customrule.v1.ConditionType;
-import eu.europa.ec.fisheries.schema.movementrules.customrule.v1.CriteriaType;
-import eu.europa.ec.fisheries.schema.movementrules.customrule.v1.CustomRuleType;
-import eu.europa.ec.fisheries.schema.movementrules.customrule.v1.SubCriteriaType;
+import eu.europa.ec.fisheries.schema.movementrules.customrule.v1.*;
 import eu.europa.ec.fisheries.uvms.asset.client.model.AssetDTO;
 import eu.europa.ec.fisheries.uvms.docker.validation.asset.AssetTestHelper;
 import eu.europa.ec.fisheries.uvms.docker.validation.common.AbstractRest;
 import eu.europa.ec.fisheries.uvms.docker.validation.movement.LatLong;
-import eu.europa.ec.fisheries.uvms.docker.validation.system.helper.CustomRuleBuilder;
-import eu.europa.ec.fisheries.uvms.docker.validation.system.helper.CustomRuleHelper;
-import eu.europa.ec.fisheries.uvms.docker.validation.system.helper.FLUXHelper;
-import eu.europa.ec.fisheries.uvms.docker.validation.system.helper.RESTEndpoint;
-import eu.europa.ec.fisheries.uvms.docker.validation.system.helper.VMSSystemHelper;
+import eu.europa.ec.fisheries.uvms.docker.validation.system.helper.*;
 import eu.europa.ec.fisheries.uvms.docker.validation.user.UserHelper;
 import eu.europa.ec.fisheries.uvms.docker.validation.user.dto.Channel;
 import eu.europa.ec.fisheries.uvms.docker.validation.user.dto.EndPoint;
 import eu.europa.ec.fisheries.uvms.docker.validation.user.dto.Organisation;
+import org.hamcrest.CoreMatchers;
+import org.junit.After;
+import org.junit.Test;
 import un.unece.uncefact.data.standard.fluxvesselpositionmessage._4.FLUXVesselPositionMessage;
 import un.unece.uncefact.data.standard.reusableaggregatebusinessinformationentity._18.VesselGeographicalCoordinateType;
 import un.unece.uncefact.data.standard.reusableaggregatebusinessinformationentity._18.VesselPositionEventType;
 import un.unece.uncefact.data.standard.reusableaggregatebusinessinformationentity._18.VesselTransportMeansType;
 import un.unece.uncefact.data.standard.unqualifieddatatype._18.IDType;
+
+import java.io.IOException;
+import java.net.InetAddress;
+import java.net.NetworkInterface;
+import java.net.SocketException;
+import java.time.Instant;
+import java.util.Date;
+import java.util.Enumeration;
+import java.util.Map;
+import java.util.stream.Collectors;
+
+import static org.hamcrest.CoreMatchers.is;
 
 public class RestSystemIT extends AbstractRest {
 
@@ -69,7 +64,7 @@ public class RestSystemIT extends AbstractRest {
         CustomRuleType createdCustomRule = CustomRuleHelper.createCustomRule(flagStateRule);
         assertNotNull(createdCustomRule);
         
-        LatLong position = new LatLong(58.973, 5.781, Instant.now().toDate());
+        LatLong position = new LatLong(58.973, 5.781, Date.from(Instant.now()));
         position.speed = 5;
         position.bearing = 123;
         

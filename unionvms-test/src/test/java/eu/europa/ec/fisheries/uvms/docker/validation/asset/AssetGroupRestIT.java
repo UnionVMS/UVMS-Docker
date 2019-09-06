@@ -80,7 +80,7 @@ public class AssetGroupRestIT extends AbstractRest {
 	@Ignore("No audit logs sent by asset groups")
 	@Test
 	public void createAssetGroupAuditLogCreatedTest() throws Exception {
-		Date fromDate = DateUtils.getNowDateUTC();
+		Date fromDate = Date.from(DateUtils.getNowDateUTC());
 		AssetGroup testAssetGroup = AssetTestHelper.createBasicAssetGroup();
 		AssetGroup createdAssetGroup = AssetTestHelper.createAssetGroup(testAssetGroup);
 		
@@ -101,7 +101,7 @@ public class AssetGroupRestIT extends AbstractRest {
 	@Ignore
 	@Test
 	public void updateAssetGroupAuditLogCreatedTest() throws Exception {
-		Date fromDate = DateUtils.getNowDateUTC();
+		Date fromDate = Date.from(DateUtils.getNowDateUTC());
 		AssetGroup testAssetGroup = AssetTestHelper.createBasicAssetGroup();
 		testAssetGroup = AssetTestHelper.createAssetGroup(testAssetGroup);
 		testAssetGroup.setName("ChangedName" + UUID.randomUUID().toString());
@@ -131,7 +131,7 @@ public class AssetGroupRestIT extends AbstractRest {
 	@Ignore
 	@Test
 	public void deleteAssetGroupAuditLogCreatedTest() throws Exception {
-		Date fromDate = DateUtils.getNowDateUTC();
+		Date fromDate = Date.from(DateUtils.getNowDateUTC());
 		AssetGroup testAssetGroup = AssetTestHelper.createBasicAssetGroup();
 		testAssetGroup = AssetTestHelper.createAssetGroup(testAssetGroup);
 
