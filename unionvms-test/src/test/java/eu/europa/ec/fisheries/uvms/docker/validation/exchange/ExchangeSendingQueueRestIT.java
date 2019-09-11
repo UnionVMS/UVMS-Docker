@@ -94,21 +94,21 @@ public class ExchangeSendingQueueRestIT extends AbstractRest {
 	
 	private void assertSendingLogContainsUnsentMessageGuid(String msgType, String unsentMessageGuid) {
 	    List<SendingLog> list = getSendingLogListForMsgType(msgType);
-        assertThat(list, is(notNullValue()));
         assertFalse(list.isEmpty());
         assertTrue(list.stream().anyMatch(log -> log.getMessageId().equals(unsentMessageGuid)));
 	}
 	
 	private List<SendingLog> getSendingLogListForMsgType(String pluginName) {
+    	List<SendingLog> sendingLogs = new ArrayList<>();
 	    List<SendingGroupLog> sendGroupList = getSendGroupList();
 	    for (SendingGroupLog sendingGroupLog : sendGroupList) {
             for (PluginType plugin : sendingGroupLog.getPluginList()) {
                 if (plugin.getName().equals(pluginName)) {
-                    return plugin.getSendingLogList();
+                    sendingLogs.addAll(plugin.getSendingLogList());
                 }
             }
         }
-	    return null;
+	    return sendingLogs;
 	}
 	
 	private List<SendingGroupLog> getSendGroupList() {
