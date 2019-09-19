@@ -24,11 +24,11 @@ pwd
 printf "\n\nCreating the Docker images from "$BASE_DOCKER_DIR" folder...\n\n" &&
 
 printf "\n-->> Building postgres-base image...\n\n" &&
-cd $BASE_DOCKER_DIR/postgres-base && mvn clean install -U -DskipTests -DkipITs=true &&     # Build postgres image
+cd $BASE_DOCKER_DIR/postgres-base && mvn clean install -U -DskipTests -DkipITs=true -Ddocker.noCache=true &&     # Build postgres image
 printf "\n-->> Finished building postgres-base image...\n\n" &&
 
 printf "\n-->> Building postgres-release image...\n\n" &&
-cd $BASE_DOCKER_DIR/postgres-release && mvn clean install -U -DskipTests -DkipITs=true &&     # Build postgres image
+cd $BASE_DOCKER_DIR/postgres-release && mvn clean install -U -DskipTests -DkipITs=true -Ddocker.noCache=true &&     # Build postgres image
 printf "\n-->> Finished building postgres-release image...\n\n" &&
 
 ## Runinng postgres container phase :

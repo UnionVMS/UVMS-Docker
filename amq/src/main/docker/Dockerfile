@@ -20,7 +20,7 @@ RUN set -x && \
     mkdir -p $HAWTIO_HOME
 
 RUN set -x && \
-    curl -s -S https://oss.sonatype.org/content/repositories/public/io/hawt/hawtio-app/2.1.0/hawtio-app-2.1.0.jar > $HAWTIO_HOME/hawtio-app-2.1.0.jar && \
+    curl -s -S https://repo1.maven.org/maven2/io/hawt/hawtio-app/2.1.0/hawtio-app-2.1.0.jar > $HAWTIO_HOME/hawtio-app-2.1.0.jar && \
     chown activemq:activemq $HAWTIO_HOME/hawtio-app-2.1.0.jar && \
     apk del build-dependencies && \
     rm -rf /var/cache/apk/*

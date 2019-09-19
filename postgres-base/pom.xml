@@ -13,15 +13,6 @@
 	<packaging>pom</packaging>
 	<name>uvms-docker-postgres-base</name>
 	<build>
-		<pluginManagement>
-			<plugins>
-				<plugin>
-					<groupId>io.fabric8</groupId>
-					<artifactId>docker-maven-plugin</artifactId>
-					<version>0.25.0</version>
-				</plugin>
-			</plugins>
-		</pluginManagement>
 		<plugins>
 			<plugin>
 				<groupId>io.fabric8</groupId>

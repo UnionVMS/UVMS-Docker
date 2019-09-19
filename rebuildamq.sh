@@ -24,7 +24,7 @@ pwd
 printf "\n\nCreating the Docker images from "$BASE_DOCKER_DIR" folder...\n\n" 
 
 printf "\n-->> Building activemq image...\n\n" &&
-cd $BASE_DOCKER_DIR/amq && mvn clean install -DskipTests -DkipITs=true &&     # Build activemq image
+cd $BASE_DOCKER_DIR/amq && mvn clean install -DskipTests -DkipITs=true -Ddocker.noCache=true &&     # Build activemq image
 
 ## Runinng activemq container phase :
 printf "\n\nGoing to run activemq container..\n\n"

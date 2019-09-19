@@ -27,13 +27,13 @@ pwd
 printf "\n\nCreating the Docker images from "$BASE_DOCKER_DIR" folder...\n\n" 
 
 printf "\n-->> Building WILDFLY BASE image...\n\n" &&
-cd $BASE_DOCKER_DIR/wildfly-base && mvn clean install -DskipTests -DkipITs=true &&     # Build wildfly-base image
+cd $BASE_DOCKER_DIR/wildfly-base && mvn clean install -DskipTests -DkipITs=true -Ddocker.noCache=true &&     # Build wildfly-base image
 
 printf "\n-->> Building WILDFLY UNIONVMS image...\n\n" &&
-cd $BASE_DOCKER_DIR/wildfly-unionvms && mvn clean install -DskipTests -DkipITs=true && # Build wildfly-unionvms image
+cd $BASE_DOCKER_DIR/wildfly-unionvms && mvn clean install -DskipTests -DkipITs=true -Ddocker.noCache=true && # Build wildfly-unionvms image
 
 printf "\n-->> Building WILDFLY FLUXFMC...\n\n" &&
-cd $BASE_DOCKER_DIR/wildfly-fluxfmc && mvn clean install -DskipTests -DkipITs=true &&  # Build wildfly-fluxfmc image
+cd $BASE_DOCKER_DIR/wildfly-fluxfmc && mvn clean install -DskipTests -DkipITs=true -Ddocker.noCache=true &&  # Build wildfly-fluxfmc image
 
 ## Runinng wildfly container phase : 
 printf "\n\nGoing to run WILDFLY container..\n\n"
