@@ -2,6 +2,9 @@ package eu.europa.ec.fisheries.uvms.docker.validation.mobileterminal;
 
 import eu.europa.ec.fisheries.schema.mobileterminal.polltypes.v1.*;
 import eu.europa.ec.fisheries.schema.mobileterminal.types.v1.MobileTerminalListQuery;
+import eu.europa.ec.fisheries.schema.mobileterminal.types.v1.PluginCapability;
+import eu.europa.ec.fisheries.schema.mobileterminal.types.v1.PluginCapabilityType;
+import eu.europa.ec.fisheries.schema.mobileterminal.types.v1.PluginService;
 import eu.europa.ec.fisheries.uvms.asset.client.model.AssetDTO;
 import eu.europa.ec.fisheries.uvms.docker.validation.common.AbstractHelper;
 import eu.europa.ec.fisheries.uvms.docker.validation.mobileterminal.dto.ChannelDto;
@@ -14,6 +17,7 @@ import javax.ws.rs.core.GenericType;
 import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.List;
 import java.util.UUID;
@@ -64,6 +68,53 @@ public final class MobileTerminalTestHelper extends AbstractHelper {
 
         assertNotNull(response);
         return response;
+	}
+
+	static CreatePollResultDto createConfigPollWithMT_Helper(AssetDTO testAsset, MobileTerminalDto terminal) {
+		terminal = assignMobileTerminal(testAsset, terminal);
+		assertNotNull(terminal.getAsset());
+
+		PluginCapability configurable = new PluginCapability();
+		configurable.setName(PluginCapabilityType.CONFIGURABLE);
+		configurable.setValue("TRUE");
+
+		PluginCapability pollable = new PluginCapability();
+		pollable.setName(PluginCapabilityType.POLLABLE);
+		pollable.setValue("TRUE");
+
+        PollRequestType pollRequest = new PollRequestType();
+
+		PollMobileTerminal pmt = new PollMobileTerminal();
+		pmt.setComChannelId(terminal.getChannels().iterator().next().getId().toString());
+		pmt.setConnectId(terminal.getAsset().getId().toString());
+		pmt.setMobileTerminalId(terminal.getId().toString());
+		pollRequest.getMobileTerminals().add(pmt);
+
+		PollAttribute attrFrequency = new PollAttribute();
+		attrFrequency.setKey(PollAttributeType.REPORT_FREQUENCY);
+		attrFrequency.setValue("11000");
+
+		PollAttribute attrGracePeriod = new PollAttribute();
+		attrGracePeriod.setKey(PollAttributeType.GRACE_PERIOD);
+		attrGracePeriod.setValue("11020");
+
+		PollAttribute attrInPortGrace = new PollAttribute();
+		attrInPortGrace.setKey(PollAttributeType.IN_PORT_GRACE);
+		attrInPortGrace.setValue("11040");
+
+		pollRequest.getAttributes().addAll(Arrays.asList(attrFrequency, attrGracePeriod, attrInPortGrace));
+
+		pollRequest.setPollType(PollType.CONFIGURATION_POLL);
+		pollRequest.setComment("Configuration poll created by test");
+		pollRequest.setUserName("vms_admin_com");
+
+		CreatePollResultDto createdPoll = getWebTarget()
+				.path("asset/rest/poll")
+				.request(MediaType.APPLICATION_JSON)
+				.header(HttpHeaders.AUTHORIZATION, getValidJwtToken())
+				.post(Entity.json(pollRequest), CreatePollResultDto.class);
+
+		return createdPoll;
 	}
 	
 	public static CreatePollResultDto createPoll_Helper(AssetDTO testAsset, PollType pollType) {
