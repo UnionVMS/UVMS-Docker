@@ -13,6 +13,7 @@ package eu.europa.ec.fisheries.uvms.docker.validation.system.helper;
 
 import java.io.Closeable;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.Collections;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
@@ -102,6 +103,16 @@ public class FLUXEndpoint implements Closeable {
                         .list(httpRequest.getHeaderNames())
                         .stream()
                         .collect(Collectors.toMap(h -> h, httpRequest::getHeader));
+                PrintWriter out = response.getWriter();
+                out.println("<?xml version=\"1.0\" ?>\n" + 
+                        "<soap:Envelope xmlns:soap=\"http://schemas.xmlsoap.org/soap/envelope/\">\n" + 
+                        "        <soap:Body>\n" + 
+                        "                <POSTMSGOUT xmlns=\"urn:xeu:connector-bridge:v1\">\n" + 
+                        "                        <AssignedON/>\n" + 
+                        "                </POSTMSGOUT>\n" + 
+                        "        </soap:Body>\n" + 
+                        "</soap:Envelope>");
+                out.close();
             } catch (Exception e) {
                 e.printStackTrace();
             }
