@@ -531,6 +531,8 @@ public class RulesAlarmIT extends AbstractRest {
         MovementHelper.pollMovementCreated();
         String fluxEndpoint = "DNK";
 
+        Thread.sleep(1500);     //since sometimes we are fast enough to create the rule b4 the previous position as cleared MR
+
         CustomRuleType areaEntryRule = CustomRuleBuilder.getBuilder()
                 .setName("Area entry SWE")
                 .rule(CriteriaType.AREA, SubCriteriaType.AREA_CODE_ENT, 
