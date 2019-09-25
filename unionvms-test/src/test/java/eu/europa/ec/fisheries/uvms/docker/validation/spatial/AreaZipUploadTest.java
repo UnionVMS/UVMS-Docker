@@ -2,9 +2,9 @@ package eu.europa.ec.fisheries.uvms.docker.validation.spatial;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import eu.europa.ec.fisheries.uvms.docker.validation.common.AbstractRest;
-import eu.europa.ec.fisheries.uvms.spatial.service.dto.upload.AreaUploadMapping;
-import eu.europa.ec.fisheries.uvms.spatial.service.dto.upload.AreaUploadMappingProperty;
-import eu.europa.ec.fisheries.uvms.spatial.service.dto.upload.AreaUploadMetadata;
+import eu.europa.ec.fisheries.uvms.docker.validation.spatial.dto.upload.AreaUploadMapping;
+import eu.europa.ec.fisheries.uvms.docker.validation.spatial.dto.upload.AreaUploadMappingProperty;
+import eu.europa.ec.fisheries.uvms.docker.validation.spatial.dto.upload.AreaUploadMetadata;
 import org.jboss.resteasy.plugins.providers.multipart.MultipartFormDataOutput;
 import org.junit.Test;
 
