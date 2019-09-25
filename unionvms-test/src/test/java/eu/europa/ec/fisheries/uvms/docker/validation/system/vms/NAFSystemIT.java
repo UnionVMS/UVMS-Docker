@@ -52,23 +52,31 @@ public class NAFSystemIT extends AbstractRest {
     public void sendPositionToNorwayAndVerifyMandatoryFields() throws IOException, Exception {
         Organisation organisation = createOrganisationNorway();
 
-        AssetDTO asset = AssetTestHelper.createTestAsset();
-        NAFHelper.sendPositionToNAFPlugin(new LatLong(58.973, 5.781, Date.from(Instant.now().minusMillis(10 * 60 * 1000))), asset);
-        MovementHelper.pollMovementCreated(); // First position for an asset creates ENT, ignore this
-        
         CustomRuleType flagStateRule = CustomRuleBuilder.getBuilder()
                 .setName("Area NOR => Send to NOR")
-                .rule(CriteriaType.AREA, SubCriteriaType.AREA_CODE, 
+                .rule(CriteriaType.AREA, SubCriteriaType.AREA_CODE,
                         ConditionType.EQ, "NOR")
                 .action(ActionType.SEND_REPORT, VMSSystemHelper.NAF_NAME, organisation.getName())
                 .build();
-        
+
         CustomRuleType createdCustomRule = CustomRuleHelper.createCustomRule(flagStateRule);
         assertNotNull(createdCustomRule);
-        
-        LatLong position = new LatLong(58.973, 5.781, Date.from(Instant.now()));
+
+        AssetDTO asset = AssetTestHelper.createTestAsset();
+        LatLong position = new LatLong(58.973, 5.781, Date.from(Instant.now().minusMillis(10 * 60 * 1000)));
         position.speed = 5;
+
+        try (NafEndpoint nafEndpoint = new NafEndpoint(ENDPOINT_PORT)) {
+            NAFHelper.sendPositionToNAFPlugin(position, asset);
+            nafEndpoint.getMessage(10000);
+        }
+
+
+
         
+        position = new LatLong(58.973, 5.781, Date.from(Instant.now()));
+        position.speed = 5;
+
         String message;
         try (NafEndpoint nafEndpoint = new NafEndpoint(ENDPOINT_PORT)) {
             NAFHelper.sendPositionToNAFPlugin(position, asset);
