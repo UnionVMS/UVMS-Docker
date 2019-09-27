@@ -16,7 +16,7 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 
-public class AreaZipUploadTest extends AbstractRest {
+public class AreaZipUploadIT extends AbstractRest {
 
     @Test
     public void uploadNewFaoDefinitionsTest() throws IOException {
