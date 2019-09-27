@@ -44,7 +44,7 @@
         </dependency>
         <dependency>
             <groupId>eu.europa.ec.fisheries.uvms.activity</groupId>
-            <artifactId>activity-module-postgres</artifactId>
+            <artifactId>activity-module</artifactId>
             <type>ear</type>
             <version>${unionvms.project.activity.module}</version>
         </dependency>
