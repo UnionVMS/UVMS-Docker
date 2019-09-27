@@ -152,7 +152,13 @@
 					<groupId>com.oracle</groupId>
 					<artifactId>ojdbc6</artifactId>
 				</exclusion>
-			</exclusions>			
+			</exclusions>
+		</dependency>
+		<dependency>
+			<groupId>eu.europa.ec.fisheries.uvms.activity</groupId>
+			<artifactId>liquibase</artifactId>
+			<version>${unionvms.project.activity.module}</version>
+			<type>zip</type>
 		</dependency>
 		<dependency>
 			<groupId>eu.europa.ec.fisheries.uvms.mdr</groupId>
@@ -288,7 +294,7 @@
 									<filtering>true</filtering>
 									<includes>
 										<include>updateDb.sh</include>
-										<include>updateDbOnly.sh</include>										
+										<include>updateDbOnly.sh</include>
 									</includes>
 								</resource>
 							</resources>
@@ -303,7 +309,7 @@
 					<descriptors>
 						<descriptor>src/main/assembly/assembly.xml</descriptor>
 					</descriptors>
-					<finalName>${artifactId}</finalName>
+					<finalName>${project.artifactId}</finalName>
 					<appendAssemblyId>false</appendAssemblyId>
 				</configuration>
 				<executions>

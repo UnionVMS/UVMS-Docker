@@ -131,7 +131,7 @@
                     <descriptors>
                         <descriptor>src/main/assembly/assembly.xml</descriptor>
                     </descriptors>
-                    <finalName>${artifactId}</finalName>
+                    <finalName>${project.artifactId}</finalName>
                     <appendAssemblyId>false</appendAssemblyId>
                 </configuration>
                 <executions>
@@ -155,7 +155,7 @@
                     <artifactId>${project.artifactId}</artifactId>
                     <groupId>${project.groupId}</groupId>
                     <version>${project.version}</version>
-                    <file>target/${artifactId}.zip</file>
+                    <file>target/${project.artifactId}.zip</file>
                 </configuration>
             </plugin>
             <plugin>
