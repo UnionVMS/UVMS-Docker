@@ -38,7 +38,7 @@
 		<unionvms.project.asset.module>6.0.67</unionvms.project.asset.module>
 		<unionvms.project.activity.module>1.1.6</unionvms.project.activity.module>
 		<unionvms.project.mdr.module>1.0.10</unionvms.project.mdr.module>
-		<unionvms.project.plugins.naf>3.0.21</unionvms.project.plugins.naf>
+		<unionvms.project.plugins.naf>3.0.22</unionvms.project.plugins.naf>
 		<unionvms.project.plugins.flux>3.0.23</unionvms.project.plugins.flux>
 		<unionvms.project.plugins.inmarsat>3.0.71</unionvms.project.plugins.inmarsat>
 		<unionvms.project.plugins.siriusone>3.0.8</unionvms.project.plugins.siriusone>
