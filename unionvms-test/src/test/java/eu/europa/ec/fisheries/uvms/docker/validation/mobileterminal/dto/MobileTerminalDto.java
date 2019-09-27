@@ -26,6 +26,7 @@ public class MobileTerminalDto implements Serializable {
     private String antenna;
     private String transceiverType;
     private String softwareVersion;
+    private Boolean indianOceanRegion;
 
     public UUID getId() {
         return id;
@@ -130,5 +131,11 @@ public class MobileTerminalDto implements Serializable {
     }
     public void setSoftwareVersion(String softwareVersion) {
         this.softwareVersion = softwareVersion;
+    }
+    public Boolean getIndianOceanRegion() {
+        return indianOceanRegion;
+    }
+    public void setIndianOceanRegion(Boolean indianOceanRegion) {
+        this.indianOceanRegion = indianOceanRegion;
     }
 }

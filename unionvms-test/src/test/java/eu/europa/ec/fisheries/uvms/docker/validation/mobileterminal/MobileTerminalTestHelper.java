@@ -70,7 +70,7 @@ public final class MobileTerminalTestHelper extends AbstractHelper {
         return response;
 	}
 
-	static CreatePollResultDto createConfigPollWithMT_Helper(AssetDTO testAsset, MobileTerminalDto terminal) {
+	public static CreatePollResultDto createConfigPollWithMT_Helper(AssetDTO testAsset, MobileTerminalDto terminal) {
 		terminal = assignMobileTerminal(testAsset, terminal);
 		assertNotNull(terminal.getAsset());
 
@@ -238,6 +238,7 @@ public final class MobileTerminalTestHelper extends AbstractHelper {
 		mobileTerminal.setAntenna("A");
 		mobileTerminal.setTransceiverType("A");
 		mobileTerminal.setSoftwareVersion("A");
+		mobileTerminal.setIndianOceanRegion(true);
 
 		ChannelDto channel = new ChannelDto();
 		channel.setName("VMS");
