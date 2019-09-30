@@ -19,11 +19,15 @@ import java.net.NetworkInterface;
 import java.net.SocketException;
 import java.util.Enumeration;
 import java.util.List;
+import java.util.Set;
 import java.util.concurrent.TimeUnit;
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.core.GenericType;
 import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
+
+import eu.europa.ec.fisheries.uvms.docker.validation.mobileterminal.dto.ChannelDto;
+import eu.europa.ec.fisheries.uvms.docker.validation.user.dto.Channel;
 import org.junit.BeforeClass;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -85,7 +89,6 @@ public class InmarsatSystemIT extends AbstractRest {
     }
     
     @Test
-    @Ignore("Ignoring until inmarsatPollHandler can update settings")
     public void createManualPollTest() throws IOException, Exception {
         try (LESMock les = new LESMock(PORT)) {
             AssetDTO dto = AssetTestHelper.createBasicAsset();
@@ -94,8 +97,40 @@ public class InmarsatSystemIT extends AbstractRest {
             MobileTerminalTestHelper.createPollWithMT_Helper(asset, PollType.MANUAL_POLL, mt);
             
             String message = les.getMessage(10);
-            assertTrue(message.startsWith("POLL"));
-//            System.out.println(message);
+            String satelliteNumber = mt.getSatelliteNumber();
+
+            Set<ChannelDto> channels = mt.getChannels();
+            ChannelDto[] arr = channels.stream().toArray(ChannelDto[] ::new);
+            String memberNumber = arr[0].getMemberNumber();
+            String DNID = arr[0].getDNID();
+
+
+
+            assertTrue(message.startsWith("POLL "));
+            message = message.substring(5);
+            message = message.replace(" ", "");
+            String splited[]   = message.split(",");
+            assertTrue(splited[0].trim().equals("3"));               // Ocean Region 3 = Indian Ocean
+            assertTrue(splited[1].trim().equals("I"));               // Poll Type I = Individual poll
+            assertTrue(splited[2].trim().equals(DNID));              // DNID
+            assertTrue(splited[3].trim().equals("D"));               // Response type
+            assertTrue(splited[4].trim().equals("1"));               // Sub-address
+            assertTrue(splited[5].trim().equals(satelliteNumber));   // satellite number
+            assertTrue(splited[6].trim().equals("0"));               // command type  0 = unreserved as required in response
+            assertTrue(splited[7].trim().equals(memberNumber));      // member number
+            assertTrue(splited[8].trim().equals("0"));               // startfram   N/A here
+            assertTrue(splited[9].trim().equals(""));                // reports per 24 hours n/A here
+            assertTrue(splited[10].trim().equals("0"));              // ack  0
+
+
+
+
+
+
+
+
+//            assertTrue(message.startsWith("POLL"));
+            System.out.println(message);
         }
     }
     
