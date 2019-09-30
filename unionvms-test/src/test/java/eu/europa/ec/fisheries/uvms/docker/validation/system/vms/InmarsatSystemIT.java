@@ -130,7 +130,7 @@ public class InmarsatSystemIT extends AbstractRest {
 
 
 //            assertTrue(message.startsWith("POLL"));
-            System.out.println(message);
+           // System.out.println(message);
         }
     }
     
