@@ -64,9 +64,11 @@ public class PollRestIT extends AbstractRest {
 		AssetDTO dto = AssetTestHelper.createBasicAsset();
 		AssetDTO asset = AssetTestHelper.createAsset(dto);
 		MobileTerminalDto mt = MobileTerminalTestHelper.createMobileTerminal();
-		CreatePollResultDto pollResultDto = MobileTerminalTestHelper.createConfigPollWithMT_Helper(asset, mt);
+		String newDNID = "1111";
+		String newMemberNr = "111";
+		CreatePollResultDto pollResultDto = MobileTerminalTestHelper.createConfigPollWithMT_Helper(asset, mt, newDNID, newMemberNr);
 		assertNotNull(pollResultDto);
-        assertEquals(1, pollResultDto.getSentPolls().size());
+		assertEquals(1, pollResultDto.getSentPolls().size());
 	}
 
 	@Test

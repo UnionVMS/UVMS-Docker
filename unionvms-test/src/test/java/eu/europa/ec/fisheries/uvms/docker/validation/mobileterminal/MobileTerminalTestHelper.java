@@ -40,23 +40,24 @@ public final class MobileTerminalTestHelper extends AbstractHelper {
         pollMobileTerminal.setConnectId(testAsset.getId().toString());
         pollMobileTerminal.setMobileTerminalId(terminal.getId().toString());
 
-        List<PollAttribute> pollAttributes = pollRequestType.getAttributes();
+		List<PollAttribute> pollAttributes = pollRequestType.getAttributes();
 
-        PollAttribute frequency = new PollAttribute();
-        PollAttribute startDate = new PollAttribute();
-        PollAttribute endDate = new PollAttribute();
+		if(pollType.equals(PollType.PROGRAM_POLL)) {
+			PollAttribute frequency = new PollAttribute();
+			frequency.setKey(PollAttributeType.FREQUENCY);
+			frequency.setValue("1000");
+			pollAttributes.add(frequency);
 
-        pollAttributes.add(frequency);
-        frequency.setKey(PollAttributeType.FREQUENCY);
-        frequency.setValue("1000");
+			PollAttribute startDate = new PollAttribute();
+			startDate.setKey(PollAttributeType.START_DATE);
+			startDate.setValue(getDateAsString(2001, Calendar.JANUARY, 7, 1, 7, 23, 45));
+			pollAttributes.add(startDate);
 
-        pollAttributes.add(startDate);
-        startDate.setKey(PollAttributeType.START_DATE);
-        startDate.setValue(getDateAsString(2001, Calendar.JANUARY, 7, 1, 7, 23, 45));
-
-        pollAttributes.add(endDate);
-        endDate.setKey(PollAttributeType.END_DATE);
-        endDate.setValue(getDateAsString(2027, Calendar.DECEMBER, 24, 11, 45, 7, 980));
+			PollAttribute endDate = new PollAttribute();
+			endDate.setKey(PollAttributeType.END_DATE);
+			endDate.setValue(getDateAsString(2027, Calendar.DECEMBER, 24, 11, 45, 7, 980));
+			pollAttributes.add(endDate);
+		}
 
         pollRequestType.getMobileTerminals().add(pollMobileTerminal);
 
@@ -70,7 +71,7 @@ public final class MobileTerminalTestHelper extends AbstractHelper {
         return response;
 	}
 
-	public static CreatePollResultDto createConfigPollWithMT_Helper(AssetDTO testAsset, MobileTerminalDto terminal) {
+	public static CreatePollResultDto createConfigPollWithMT_Helper(AssetDTO testAsset, MobileTerminalDto terminal, String newDnid, String newMemberNr) {
 		terminal = assignMobileTerminal(testAsset, terminal);
 		assertNotNull(terminal.getAsset());
 
@@ -102,7 +103,16 @@ public final class MobileTerminalTestHelper extends AbstractHelper {
 		attrInPortGrace.setKey(PollAttributeType.IN_PORT_GRACE);
 		attrInPortGrace.setValue("11040");
 
-		pollRequest.getAttributes().addAll(Arrays.asList(attrFrequency, attrGracePeriod, attrInPortGrace));
+		PollAttribute attrDnid = new PollAttribute();
+		attrDnid.setKey(PollAttributeType.DNID);
+		attrDnid.setValue(newDnid);
+
+		PollAttribute attrMemberNo = new PollAttribute();
+		attrMemberNo.setKey(PollAttributeType.MEMBER_NUMBER);
+		attrMemberNo.setValue(newMemberNr);
+
+		pollRequest.getAttributes().addAll(
+				Arrays.asList(attrFrequency, attrGracePeriod, attrInPortGrace, attrDnid, attrMemberNo));
 
 		pollRequest.setPollType(PollType.CONFIGURATION_POLL);
 		pollRequest.setComment("Configuration poll created by test");
@@ -234,11 +244,10 @@ public final class MobileTerminalTestHelper extends AbstractHelper {
 		mobileTerminal.setArchived(false);
 		mobileTerminal.setInactivated(false);
 
-		mobileTerminal.setSatelliteNumber("S" + generateARandomStringWithMaxLength(4));
+		mobileTerminal.setSatelliteNumber(generateARandomStringWithMaxLength(9));
 		mobileTerminal.setAntenna("A");
 		mobileTerminal.setTransceiverType("A");
 		mobileTerminal.setSoftwareVersion("A");
-		mobileTerminal.setIndianOceanRegion(true);
 
 		ChannelDto channel = new ChannelDto();
 		channel.setName("VMS");
@@ -262,6 +271,11 @@ public final class MobileTerminalTestHelper extends AbstractHelper {
 
 		mobileTerminal.getChannels().clear();
 		mobileTerminal.getChannels().add(channel);
+
+		mobileTerminal.setWestAtlanticOceanRegion(true); // 0
+		mobileTerminal.setEastAtlanticOceanRegion(false); // 1
+		mobileTerminal.setPacificOceanRegion(false); // 2
+		mobileTerminal.setIndianOceanRegion(false); // 3
 
 		MobileTerminalPluginDto plugin = new MobileTerminalPluginDto();
 		plugin.setPluginServiceName("eu.europa.ec.fisheries.uvms.plugins.inmarsat");
