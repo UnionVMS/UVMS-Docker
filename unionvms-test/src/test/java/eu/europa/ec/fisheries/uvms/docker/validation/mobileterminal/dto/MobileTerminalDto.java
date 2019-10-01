@@ -26,6 +26,9 @@ public class MobileTerminalDto implements Serializable {
     private String antenna;
     private String transceiverType;
     private String softwareVersion;
+    private Boolean eastAtlanticOceanRegion;
+    private Boolean westAtlanticOceanRegion;
+    private Boolean pacificOceanRegion;
     private Boolean indianOceanRegion;
 
     public UUID getId() {
@@ -131,6 +134,24 @@ public class MobileTerminalDto implements Serializable {
     }
     public void setSoftwareVersion(String softwareVersion) {
         this.softwareVersion = softwareVersion;
+    }
+    public Boolean getEastAtlanticOceanRegion() {
+        return eastAtlanticOceanRegion;
+    }
+    public void setEastAtlanticOceanRegion(Boolean eastAtlanticOceanRegion) {
+        this.eastAtlanticOceanRegion = eastAtlanticOceanRegion;
+    }
+    public Boolean getWestAtlanticOceanRegion() {
+        return westAtlanticOceanRegion;
+    }
+    public void setWestAtlanticOceanRegion(Boolean westAtlanticOceanRegion) {
+        this.westAtlanticOceanRegion = westAtlanticOceanRegion;
+    }
+    public Boolean getPacificOceanRegion() {
+        return pacificOceanRegion;
+    }
+    public void setPacificOceanRegion(Boolean pacificOceanRegion) {
+        this.pacificOceanRegion = pacificOceanRegion;
     }
     public Boolean getIndianOceanRegion() {
         return indianOceanRegion;
