@@ -272,8 +272,8 @@ public final class MobileTerminalTestHelper extends AbstractHelper {
 		mobileTerminal.getChannels().clear();
 		mobileTerminal.getChannels().add(channel);
 
-		mobileTerminal.setEastAtlanticOceanRegion(true);
-		mobileTerminal.setWestAtlanticOceanRegion(false);
+		mobileTerminal.setEastAtlanticOceanRegion(false);
+		mobileTerminal.setWestAtlanticOceanRegion(true);
 		mobileTerminal.setPacificOceanRegion(false);
 		mobileTerminal.setIndianOceanRegion(false);
 
