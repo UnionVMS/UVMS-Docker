@@ -102,7 +102,7 @@ public class MobileTerminalRestIT extends AbstractRest {
 
 		MobileTerminalDto activated = MobileTerminalTestHelper.activateMobileTerminal(mobileTerminal.getId());
 		assertNotNull(activated);
-		assertFalse(activated.getInactivated());
+		assertTrue(activated.getActive());
 	}
 
 	@Test
@@ -111,7 +111,7 @@ public class MobileTerminalRestIT extends AbstractRest {
 
 		MobileTerminalDto inActivated = MobileTerminalTestHelper.inactivateMobileTerminal(mobileTerminal.getId());
 		assertNotNull(inActivated);
-		assertTrue(inActivated.getInactivated());
+		assertFalse(inActivated.getActive());
 	}
 
 	@Test
@@ -120,7 +120,7 @@ public class MobileTerminalRestIT extends AbstractRest {
 
 		MobileTerminalDto removed = MobileTerminalTestHelper.removeMobileTerminal(mobileTerminal.getId());
 		assertNotNull(removed);
-		assertTrue(removed.getInactivated());
+		assertFalse(removed.getActive());
 		assertTrue(removed.getArchived());
 	}
 

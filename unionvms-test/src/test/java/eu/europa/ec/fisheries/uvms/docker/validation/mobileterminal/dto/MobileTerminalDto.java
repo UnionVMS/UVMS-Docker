@@ -11,7 +11,7 @@ public class MobileTerminalDto implements Serializable {
 
     private UUID id;
     private Boolean archived = false;
-    private Boolean inactivated = false;
+    private Boolean active = false;
     private String source;
     private String mobileTerminalType;
     private String updateuser;
@@ -43,11 +43,11 @@ public class MobileTerminalDto implements Serializable {
     public void setArchived(Boolean archived) {
         this.archived = archived;
     }
-    public Boolean getInactivated() {
-        return inactivated;
+    public Boolean getActive() {
+        return active;
     }
-    public void setInactivated(Boolean inactivated) {
-        this.inactivated = inactivated;
+    public void setActive(Boolean active) {
+        this.active = active;
     }
     public String getSource() {
         return source;

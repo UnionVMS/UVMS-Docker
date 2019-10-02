@@ -242,7 +242,7 @@ public final class MobileTerminalTestHelper extends AbstractHelper {
 		mobileTerminal.setMobileTerminalType("INMARSAT_C");
 		mobileTerminal.setSerialNo(generateARandomStringWithMaxLength(10));
 		mobileTerminal.setArchived(false);
-		mobileTerminal.setInactivated(false);
+		mobileTerminal.setActive(true);
 
 		mobileTerminal.setSatelliteNumber(generateARandomStringWithMaxLength(9));
 		mobileTerminal.setAntenna("A");
