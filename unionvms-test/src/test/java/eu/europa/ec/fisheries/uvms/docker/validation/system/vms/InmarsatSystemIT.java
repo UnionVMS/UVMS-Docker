@@ -88,7 +88,7 @@ public class InmarsatSystemIT extends AbstractRest {
     }
     
     @Test
-    @Ignore("Will run this test after we have fixed the Inmarsat settings sync problem")
+    @Ignore("Will run this test after we have released a new version of inmarsat")
     public void createManualPollTest() throws Exception {
         try (LESMock les = new LESMock(PORT)) {
             AssetDTO dto = AssetTestHelper.createBasicAsset();
