@@ -79,7 +79,7 @@ public class MobileTerminalRestIT extends AbstractRest {
 
 		MobileTerminalDto mobileTerminalDto = MobileTerminalTestHelper.assignMobileTerminal(testAsset, createdMobileTerminalType);
 		assertNotNull(mobileTerminalDto);
-		assertNotNull(mobileTerminalDto.getAsset().getId());
+		assertNotNull(mobileTerminalDto.getAssetId());
 	}
 
 	@Test
@@ -89,11 +89,11 @@ public class MobileTerminalRestIT extends AbstractRest {
 
 		MobileTerminalDto mobileTerminalDto = MobileTerminalTestHelper.assignMobileTerminal(testAsset, createdMobileTerminalType);
 		assertNotNull(mobileTerminalDto);
-		assertNotNull(mobileTerminalDto.getAsset().getId());
+		assertNotNull(mobileTerminalDto.getAssetId());
 
 		MobileTerminalDto unAssignMobileTerminal = MobileTerminalTestHelper.unAssignMobileTerminal(testAsset, createdMobileTerminalType);
 		assertNotNull(unAssignMobileTerminal);
-		assertNull(unAssignMobileTerminal.getAsset());
+		assertNull(unAssignMobileTerminal.getAssetId());
 	}
 
 	@Test

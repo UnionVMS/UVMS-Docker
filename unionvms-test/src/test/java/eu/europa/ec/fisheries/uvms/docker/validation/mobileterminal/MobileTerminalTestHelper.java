@@ -26,7 +26,7 @@ public final class MobileTerminalTestHelper extends AbstractHelper {
 
 	public static CreatePollResultDto createPollWithMT_Helper(AssetDTO testAsset, PollType pollType, MobileTerminalDto terminal) {
         terminal = assignMobileTerminal(testAsset, terminal);
-        assertNotNull(terminal.getAsset());
+        assertNotNull(terminal.getAssetId());
 
         String comChannelId = terminal.getChannels().iterator().next().getId().toString();
 
@@ -73,7 +73,7 @@ public final class MobileTerminalTestHelper extends AbstractHelper {
 
 	public static CreatePollResultDto createConfigPollWithMT_Helper(AssetDTO testAsset, MobileTerminalDto terminal, String newDnid, String newMemberNr) {
 		terminal = assignMobileTerminal(testAsset, terminal);
-		assertNotNull(terminal.getAsset());
+		assertNotNull(terminal.getAssetId());
 
 		PluginCapability configurable = new PluginCapability();
 		configurable.setName(PluginCapabilityType.CONFIGURABLE);
@@ -87,7 +87,7 @@ public final class MobileTerminalTestHelper extends AbstractHelper {
 
 		PollMobileTerminal pmt = new PollMobileTerminal();
 		pmt.setComChannelId(terminal.getChannels().iterator().next().getId().toString());
-		pmt.setConnectId(terminal.getAsset().getId().toString());
+		pmt.setConnectId(terminal.getAssetId());
 		pmt.setMobileTerminalId(terminal.getId().toString());
 		pollRequest.getMobileTerminals().add(pmt);
 

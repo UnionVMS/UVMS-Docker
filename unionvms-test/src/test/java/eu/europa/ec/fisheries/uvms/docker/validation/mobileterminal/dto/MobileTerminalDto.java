@@ -21,6 +21,7 @@ public class MobileTerminalDto implements Serializable {
     private ChannelDto configChannel;
     private ChannelDto pollChannel;
     private AssetDTO asset;
+    private String assetId;
     private Set<ChannelDto> channels;
     private String satelliteNumber;
     private String antenna;
@@ -102,6 +103,12 @@ public class MobileTerminalDto implements Serializable {
     }
     public void setAsset(AssetDTO asset) {
         this.asset = asset;
+    }
+    public String getAssetId() {
+        return assetId;
+    }
+    public void setAssetId(String assetId) {
+        this.assetId = assetId;
     }
     public Set<ChannelDto> getChannels() {
         if(channels == null)
