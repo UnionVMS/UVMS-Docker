@@ -55,7 +55,7 @@ public class SetMovementReportRequestJmsIT extends AbstractRest {
 		MobileTerminalDto assignMobileTerminal = MobileTerminalTestHelper.assignMobileTerminal(testAsset, mobileTerminal);
 
 		assertNotNull(assignMobileTerminal);
-		assertNotNull(assignMobileTerminal.getAsset().getId());
+		assertNotNull(assignMobileTerminal.getAssetId());
 
 		LatLong latLong = movementHelper.createRutt(1).get(0);
 		IncomingMovement createMovementRequest = movementHelper.createIncomingMovement(testAsset, latLong);
@@ -124,7 +124,7 @@ public class SetMovementReportRequestJmsIT extends AbstractRest {
 		movementBaseType.setMmsi(testAsset.getMmsi());
 
 		MobileTerminalId mobileTerminalId = new MobileTerminalId();
-		mobileTerminalId.setConnectId(mobileTerminal.getAsset().getId().toString());
+		mobileTerminalId.setConnectId(mobileTerminal.getAssetId());
 		mobileTerminalId.setGuid(mobileTerminal.getId().toString());
 		movementBaseType.setMobileTerminalId(mobileTerminalId);
 		movementBaseType.setMovementType(MovementTypeType.POS);
