@@ -2,7 +2,7 @@ FROM adoptopenjdk/openjdk8-openj9:jdk8u181-b13_openj9-0.9.0-alpine-slim
 
 MAINTAINER Nils Jørgen Mittet <njmittet@gmail.com>
 
-ENV WILDFLY_VERSION 17.0.1.Final
+ENV WILDFLY_VERSION 18.0.0.Final
 ENV JBOSS_HOME /opt/jboss/wildfly
 
 USER root
