@@ -2,6 +2,9 @@ package eu.europa.ec.fisheries.uvms.docker.validation.mobileterminal;
 
 import eu.europa.ec.fisheries.schema.mobileterminal.polltypes.v1.*;
 import eu.europa.ec.fisheries.schema.mobileterminal.types.v1.MobileTerminalListQuery;
+import eu.europa.ec.fisheries.schema.mobileterminal.types.v1.PluginCapability;
+import eu.europa.ec.fisheries.schema.mobileterminal.types.v1.PluginCapabilityType;
+import eu.europa.ec.fisheries.schema.mobileterminal.types.v1.PluginService;
 import eu.europa.ec.fisheries.uvms.asset.client.model.AssetDTO;
 import eu.europa.ec.fisheries.uvms.docker.validation.common.AbstractHelper;
 import eu.europa.ec.fisheries.uvms.docker.validation.mobileterminal.dto.ChannelDto;
@@ -14,6 +17,7 @@ import javax.ws.rs.core.GenericType;
 import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.List;
 import java.util.UUID;
@@ -22,7 +26,7 @@ public final class MobileTerminalTestHelper extends AbstractHelper {
 
 	public static CreatePollResultDto createPollWithMT_Helper(AssetDTO testAsset, PollType pollType, MobileTerminalDto terminal) {
         terminal = assignMobileTerminal(testAsset, terminal);
-        assertNotNull(terminal.getAsset());
+        assertNotNull(terminal.getAssetId());
 
         String comChannelId = terminal.getChannels().iterator().next().getId().toString();
 
@@ -36,23 +40,24 @@ public final class MobileTerminalTestHelper extends AbstractHelper {
         pollMobileTerminal.setConnectId(testAsset.getId().toString());
         pollMobileTerminal.setMobileTerminalId(terminal.getId().toString());
 
-        List<PollAttribute> pollAttributes = pollRequestType.getAttributes();
+		List<PollAttribute> pollAttributes = pollRequestType.getAttributes();
 
-        PollAttribute frequency = new PollAttribute();
-        PollAttribute startDate = new PollAttribute();
-        PollAttribute endDate = new PollAttribute();
+		if(pollType.equals(PollType.PROGRAM_POLL)) {
+			PollAttribute frequency = new PollAttribute();
+			frequency.setKey(PollAttributeType.FREQUENCY);
+			frequency.setValue("1000");
+			pollAttributes.add(frequency);
 
-        pollAttributes.add(frequency);
-        frequency.setKey(PollAttributeType.FREQUENCY);
-        frequency.setValue("1000");
+			PollAttribute startDate = new PollAttribute();
+			startDate.setKey(PollAttributeType.START_DATE);
+			startDate.setValue(getDateAsString(2001, Calendar.JANUARY, 7, 1, 7, 23, 45));
+			pollAttributes.add(startDate);
 
-        pollAttributes.add(startDate);
-        startDate.setKey(PollAttributeType.START_DATE);
-        startDate.setValue(getDateAsString(2001, Calendar.JANUARY, 7, 1, 7, 23, 45));
-
-        pollAttributes.add(endDate);
-        endDate.setKey(PollAttributeType.END_DATE);
-        endDate.setValue(getDateAsString(2027, Calendar.DECEMBER, 24, 11, 45, 7, 980));
+			PollAttribute endDate = new PollAttribute();
+			endDate.setKey(PollAttributeType.END_DATE);
+			endDate.setValue(getDateAsString(2027, Calendar.DECEMBER, 24, 11, 45, 7, 980));
+			pollAttributes.add(endDate);
+		}
 
         pollRequestType.getMobileTerminals().add(pollMobileTerminal);
 
@@ -64,6 +69,62 @@ public final class MobileTerminalTestHelper extends AbstractHelper {
 
         assertNotNull(response);
         return response;
+	}
+
+	public static CreatePollResultDto createConfigPollWithMT_Helper(AssetDTO testAsset, MobileTerminalDto terminal, String newDnid, String newMemberNr) {
+		terminal = assignMobileTerminal(testAsset, terminal);
+		assertNotNull(terminal.getAssetId());
+
+		PluginCapability configurable = new PluginCapability();
+		configurable.setName(PluginCapabilityType.CONFIGURABLE);
+		configurable.setValue("TRUE");
+
+		PluginCapability pollable = new PluginCapability();
+		pollable.setName(PluginCapabilityType.POLLABLE);
+		pollable.setValue("TRUE");
+
+        PollRequestType pollRequest = new PollRequestType();
+
+		PollMobileTerminal pmt = new PollMobileTerminal();
+		pmt.setComChannelId(terminal.getChannels().iterator().next().getId().toString());
+		pmt.setConnectId(terminal.getAssetId());
+		pmt.setMobileTerminalId(terminal.getId().toString());
+		pollRequest.getMobileTerminals().add(pmt);
+
+		PollAttribute attrFrequency = new PollAttribute();
+		attrFrequency.setKey(PollAttributeType.REPORT_FREQUENCY);
+		attrFrequency.setValue("11000");
+
+		PollAttribute attrGracePeriod = new PollAttribute();
+		attrGracePeriod.setKey(PollAttributeType.GRACE_PERIOD);
+		attrGracePeriod.setValue("11020");
+
+		PollAttribute attrInPortGrace = new PollAttribute();
+		attrInPortGrace.setKey(PollAttributeType.IN_PORT_GRACE);
+		attrInPortGrace.setValue("11040");
+
+		PollAttribute attrDnid = new PollAttribute();
+		attrDnid.setKey(PollAttributeType.DNID);
+		attrDnid.setValue(newDnid);
+
+		PollAttribute attrMemberNo = new PollAttribute();
+		attrMemberNo.setKey(PollAttributeType.MEMBER_NUMBER);
+		attrMemberNo.setValue(newMemberNr);
+
+		pollRequest.getAttributes().addAll(
+				Arrays.asList(attrFrequency, attrGracePeriod, attrInPortGrace, attrDnid, attrMemberNo));
+
+		pollRequest.setPollType(PollType.CONFIGURATION_POLL);
+		pollRequest.setComment("Configuration poll created by test");
+		pollRequest.setUserName("vms_admin_com");
+
+		CreatePollResultDto createdPoll = getWebTarget()
+				.path("asset/rest/poll")
+				.request(MediaType.APPLICATION_JSON)
+				.header(HttpHeaders.AUTHORIZATION, getValidJwtToken())
+				.post(Entity.json(pollRequest), CreatePollResultDto.class);
+
+		return createdPoll;
 	}
 	
 	public static CreatePollResultDto createPoll_Helper(AssetDTO testAsset, PollType pollType) {
@@ -181,9 +242,9 @@ public final class MobileTerminalTestHelper extends AbstractHelper {
 		mobileTerminal.setMobileTerminalType("INMARSAT_C");
 		mobileTerminal.setSerialNo(generateARandomStringWithMaxLength(10));
 		mobileTerminal.setArchived(false);
-		mobileTerminal.setInactivated(false);
+		mobileTerminal.setActive(true);
 
-		mobileTerminal.setSatelliteNumber("S" + generateARandomStringWithMaxLength(4));
+		mobileTerminal.setSatelliteNumber(generateARandomStringWithMaxLength(9));
 		mobileTerminal.setAntenna("A");
 		mobileTerminal.setTransceiverType("A");
 		mobileTerminal.setSoftwareVersion("A");
@@ -210,6 +271,11 @@ public final class MobileTerminalTestHelper extends AbstractHelper {
 
 		mobileTerminal.getChannels().clear();
 		mobileTerminal.getChannels().add(channel);
+
+		mobileTerminal.setWestAtlanticOceanRegion(true); // 0
+		mobileTerminal.setEastAtlanticOceanRegion(false); // 1
+		mobileTerminal.setPacificOceanRegion(false); // 2
+		mobileTerminal.setIndianOceanRegion(false); // 3
 
 		MobileTerminalPluginDto plugin = new MobileTerminalPluginDto();
 		plugin.setPluginServiceName("eu.europa.ec.fisheries.uvms.plugins.inmarsat");

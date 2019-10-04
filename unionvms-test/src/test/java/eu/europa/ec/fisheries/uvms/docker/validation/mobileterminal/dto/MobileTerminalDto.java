@@ -11,7 +11,7 @@ public class MobileTerminalDto implements Serializable {
 
     private UUID id;
     private Boolean archived = false;
-    private Boolean inactivated = false;
+    private Boolean active = false;
     private String source;
     private String mobileTerminalType;
     private String updateuser;
@@ -21,11 +21,16 @@ public class MobileTerminalDto implements Serializable {
     private ChannelDto configChannel;
     private ChannelDto pollChannel;
     private AssetDTO asset;
+    private String assetId;
     private Set<ChannelDto> channels;
     private String satelliteNumber;
     private String antenna;
     private String transceiverType;
     private String softwareVersion;
+    private Boolean eastAtlanticOceanRegion;
+    private Boolean westAtlanticOceanRegion;
+    private Boolean pacificOceanRegion;
+    private Boolean indianOceanRegion;
 
     public UUID getId() {
         return id;
@@ -39,11 +44,11 @@ public class MobileTerminalDto implements Serializable {
     public void setArchived(Boolean archived) {
         this.archived = archived;
     }
-    public Boolean getInactivated() {
-        return inactivated;
+    public Boolean getActive() {
+        return active;
     }
-    public void setInactivated(Boolean inactivated) {
-        this.inactivated = inactivated;
+    public void setActive(Boolean active) {
+        this.active = active;
     }
     public String getSource() {
         return source;
@@ -99,6 +104,12 @@ public class MobileTerminalDto implements Serializable {
     public void setAsset(AssetDTO asset) {
         this.asset = asset;
     }
+    public String getAssetId() {
+        return assetId;
+    }
+    public void setAssetId(String assetId) {
+        this.assetId = assetId;
+    }
     public Set<ChannelDto> getChannels() {
         if(channels == null)
             channels = new HashSet<>();
@@ -130,5 +141,29 @@ public class MobileTerminalDto implements Serializable {
     }
     public void setSoftwareVersion(String softwareVersion) {
         this.softwareVersion = softwareVersion;
+    }
+    public Boolean getEastAtlanticOceanRegion() {
+        return eastAtlanticOceanRegion;
+    }
+    public void setEastAtlanticOceanRegion(Boolean eastAtlanticOceanRegion) {
+        this.eastAtlanticOceanRegion = eastAtlanticOceanRegion;
+    }
+    public Boolean getWestAtlanticOceanRegion() {
+        return westAtlanticOceanRegion;
+    }
+    public void setWestAtlanticOceanRegion(Boolean westAtlanticOceanRegion) {
+        this.westAtlanticOceanRegion = westAtlanticOceanRegion;
+    }
+    public Boolean getPacificOceanRegion() {
+        return pacificOceanRegion;
+    }
+    public void setPacificOceanRegion(Boolean pacificOceanRegion) {
+        this.pacificOceanRegion = pacificOceanRegion;
+    }
+    public Boolean getIndianOceanRegion() {
+        return indianOceanRegion;
+    }
+    public void setIndianOceanRegion(Boolean indianOceanRegion) {
+        this.indianOceanRegion = indianOceanRegion;
     }
 }
