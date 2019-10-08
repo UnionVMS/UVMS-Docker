@@ -78,11 +78,13 @@ public class AssetTestHelper extends AbstractHelper {
 
 	public static AssetDTO archiveAsset(AssetDTO asset) {
 		return getWebTarget()
-                .path("asset/rest/asset2/archive")
+                .path("asset/rest/asset2")
+				.path(asset.getId().toString())
+				.path("archive")
                 .queryParam("comment", "Archive")
                 .request(MediaType.APPLICATION_JSON)
                 .header(HttpHeaders.AUTHORIZATION, getValidJwtToken())
-                .put(Entity.json(asset), AssetDTO.class);
+                .put(Entity.json(""), AssetDTO.class);
 	}
 	
 	public static AssetListResponse assetListQuery(AssetQuery query) {
@@ -103,8 +105,9 @@ public class AssetTestHelper extends AbstractHelper {
 
 	public static List<AssetDTO> getAssetHistoryFromAssetGuid(UUID assetId) {
 		return getWebTarget()
-                .path("asset/rest/asset2/history/asset/")
+                .path("asset/rest/asset2")
                 .path(assetId.toString())
+				.path("history")
                 .request(MediaType.APPLICATION_JSON)
                 .header(HttpHeaders.AUTHORIZATION, getValidJwtToken())
                 .get(new GenericType<List<AssetDTO>>() {});
@@ -122,19 +125,20 @@ public class AssetTestHelper extends AbstractHelper {
 	public static AssetDTO getAssetFromAssetIdAndDate(String type, String value, OffsetDateTime date) {
 		String dateStr = date.format(DateTimeFormatter.ISO_OFFSET_DATE_TIME);
 		return getWebTarget()
-                .path("asset/rest/asset2/history")
+                .path("asset/rest/asset2")
                 .path(type)
                 .path(value)
-                .path(dateStr)
+				.path("history")
+                .queryParam("date", dateStr)
                 .request(MediaType.APPLICATION_JSON)
                 .header(HttpHeaders.AUTHORIZATION, getValidJwtToken())
                 .get(AssetDTO.class);
 	}
 	
 	public static ContactInfo createContactInfoForAsset(AssetDTO asset, ContactInfo contact) {
+		contact.setAssetId(asset.getId());
         return getWebTarget()
                 .path("asset/rest/asset2/")
-                .path(asset.getId().toString())
                 .path("contacts")
                 .request(MediaType.APPLICATION_JSON)
                 .header(HttpHeaders.AUTHORIZATION, getValidJwtToken())
@@ -142,9 +146,9 @@ public class AssetTestHelper extends AbstractHelper {
 	}
 	
 	public static Note createNoteForAsset(AssetDTO asset, Note note) {
+		note.setAssetId(asset.getId());
         return getWebTarget()
                 .path("asset/rest/asset2/")
-                .path(asset.getId().toString())
                 .path("notes")
                 .request(MediaType.APPLICATION_JSON)
                 .header(HttpHeaders.AUTHORIZATION, getValidJwtToken())
