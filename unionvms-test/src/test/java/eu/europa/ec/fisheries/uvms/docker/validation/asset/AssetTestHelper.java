@@ -44,7 +44,7 @@ public class AssetTestHelper extends AbstractHelper {
 
 	public static AssetDTO getAssetByGuid(UUID assetGuid) {
 		return getWebTarget()
-		        .path("asset/rest/asset")
+		        .path("asset/rest/asset2")
                 .path(assetGuid.toString())
                 .request(MediaType.APPLICATION_JSON)
                 .header(HttpHeaders.AUTHORIZATION, getValidJwtToken())
@@ -53,7 +53,7 @@ public class AssetTestHelper extends AbstractHelper {
 
 	public static AssetDTO createAsset(AssetDTO asset) {
 	    return getWebTarget()
-                .path("asset/rest/asset")
+                .path("asset/rest/asset2")
                 .request(MediaType.APPLICATION_JSON)
                 .header(HttpHeaders.AUTHORIZATION, getValidJwtToken())
                 .post(Entity.json(asset), AssetDTO.class);
@@ -61,7 +61,7 @@ public class AssetTestHelper extends AbstractHelper {
 
 	public static AssetDTO createAsset(AssetDTO asset, String user, String pwd) {
 		return getWebTarget()
-				.path("asset/rest/asset")
+				.path("asset/rest/asset2")
 				.request(MediaType.APPLICATION_JSON)
 				.header(HttpHeaders.AUTHORIZATION, getValidJwtToken(user, pwd))
 				.post(Entity.json(asset), AssetDTO.class);
@@ -69,7 +69,7 @@ public class AssetTestHelper extends AbstractHelper {
 
 	public static AssetDTO updateAsset(AssetDTO asset) {
 		return getWebTarget()
-                .path("asset/rest/asset")
+                .path("asset/rest/asset2")
                 .queryParam("comment", "UpdatedAsset")
                 .request(MediaType.APPLICATION_JSON)
                 .header(HttpHeaders.AUTHORIZATION, getValidJwtToken())
@@ -78,7 +78,7 @@ public class AssetTestHelper extends AbstractHelper {
 
 	public static AssetDTO archiveAsset(AssetDTO asset) {
 		return getWebTarget()
-                .path("asset/rest/asset/archive")
+                .path("asset/rest/asset2/archive")
                 .queryParam("comment", "Archive")
                 .request(MediaType.APPLICATION_JSON)
                 .header(HttpHeaders.AUTHORIZATION, getValidJwtToken())
@@ -87,7 +87,7 @@ public class AssetTestHelper extends AbstractHelper {
 	
 	public static AssetListResponse assetListQuery(AssetQuery query) {
 		return getWebTarget()
-                .path("asset/rest/asset/list")
+                .path("asset/rest/asset2/list")
                 .request(MediaType.APPLICATION_JSON)
                 .header(HttpHeaders.AUTHORIZATION, getValidJwtToken())
                 .post(Entity.json(query), AssetListResponse.class);
@@ -95,7 +95,7 @@ public class AssetTestHelper extends AbstractHelper {
 
 	public static Integer assetListQueryCount(AssetQuery query) {
 		return getWebTarget()
-                .path("asset/rest/asset/listcount")
+                .path("asset/rest/asset2/listcount")
                 .request(MediaType.APPLICATION_JSON)
                 .header(HttpHeaders.AUTHORIZATION, getValidJwtToken())
                 .post(Entity.json(query), Integer.class);
@@ -103,7 +103,7 @@ public class AssetTestHelper extends AbstractHelper {
 
 	public static List<AssetDTO> getAssetHistoryFromAssetGuid(UUID assetId) {
 		return getWebTarget()
-                .path("asset/rest/asset/history/asset/")
+                .path("asset/rest/asset2/history/asset/")
                 .path(assetId.toString())
                 .request(MediaType.APPLICATION_JSON)
                 .header(HttpHeaders.AUTHORIZATION, getValidJwtToken())
@@ -112,7 +112,7 @@ public class AssetTestHelper extends AbstractHelper {
 	
 	public static AssetDTO getAssetHistoryFromHistoryGuid(UUID historyId) {
 		return getWebTarget()
-                .path("asset/rest/asset/history")
+                .path("asset/rest/asset2/history")
                 .path(historyId.toString())
                 .request(MediaType.APPLICATION_JSON)
                 .header(HttpHeaders.AUTHORIZATION, getValidJwtToken())
@@ -122,7 +122,7 @@ public class AssetTestHelper extends AbstractHelper {
 	public static AssetDTO getAssetFromAssetIdAndDate(String type, String value, OffsetDateTime date) {
 		String dateStr = date.format(DateTimeFormatter.ISO_OFFSET_DATE_TIME);
 		return getWebTarget()
-                .path("asset/rest/asset/history")
+                .path("asset/rest/asset2/history")
                 .path(type)
                 .path(value)
                 .path(dateStr)
@@ -133,7 +133,7 @@ public class AssetTestHelper extends AbstractHelper {
 	
 	public static ContactInfo createContactInfoForAsset(AssetDTO asset, ContactInfo contact) {
         return getWebTarget()
-                .path("asset/rest/asset/")
+                .path("asset/rest/asset2/")
                 .path(asset.getId().toString())
                 .path("contacts")
                 .request(MediaType.APPLICATION_JSON)
@@ -143,7 +143,7 @@ public class AssetTestHelper extends AbstractHelper {
 	
 	public static Note createNoteForAsset(AssetDTO asset, Note note) {
         return getWebTarget()
-                .path("asset/rest/asset/")
+                .path("asset/rest/asset2/")
                 .path(asset.getId().toString())
                 .path("notes")
                 .request(MediaType.APPLICATION_JSON)
@@ -164,7 +164,7 @@ public class AssetTestHelper extends AbstractHelper {
 		
 	public static AssetGroup createAssetGroup(AssetGroup assetGroup) {
 		return getWebTarget()
-                .path("asset/rest/group")
+                .path("asset/rest/group2")
                 .request(MediaType.APPLICATION_JSON)
                 .header(HttpHeaders.AUTHORIZATION, getValidJwtToken())
                 .post(Entity.json(assetGroup), AssetGroup.class);
@@ -172,7 +172,7 @@ public class AssetTestHelper extends AbstractHelper {
 	
 	public static AssetGroup updateAssetGroup(AssetGroup assetGroup) {
 	    return getWebTarget()
-	            .path("asset/rest/group")
+	            .path("asset/rest/group2")
 	            .request(MediaType.APPLICATION_JSON)
 	            .header(HttpHeaders.AUTHORIZATION, getValidJwtToken())
 	            .put(Entity.json(assetGroup), AssetGroup.class);
@@ -180,7 +180,7 @@ public class AssetTestHelper extends AbstractHelper {
 	
 	public static void deleteAssetGroup(AssetGroup assetGroup) {
 	    getWebTarget()
-	        .path("asset/rest/group")
+	        .path("asset/rest/group2")
 	        .path(assetGroup.getId().toString())
 	        .request(MediaType.APPLICATION_JSON)
 	        .header(HttpHeaders.AUTHORIZATION, getValidJwtToken())
@@ -189,7 +189,7 @@ public class AssetTestHelper extends AbstractHelper {
 	
 	public static AssetGroup getAssetGroupById(UUID assetGroupId) {
 		return getWebTarget()
-		        .path("asset/rest/group")
+		        .path("asset/rest/group2")
 		        .path(assetGroupId.toString())
 	            .request(MediaType.APPLICATION_JSON)
 	            .header(HttpHeaders.AUTHORIZATION, getValidJwtToken())
@@ -198,7 +198,7 @@ public class AssetTestHelper extends AbstractHelper {
 	
 	public static List<AssetGroup> getAssetGroupListByUser(String user) {
         return getWebTarget()
-                .path("asset/rest/group/list")
+                .path("asset/rest/group2/list")
                 .queryParam("user", user)
                 .request(MediaType.APPLICATION_JSON)
                 .header(HttpHeaders.AUTHORIZATION, getValidJwtToken())
@@ -207,7 +207,7 @@ public class AssetTestHelper extends AbstractHelper {
 	
 	public static AssetGroupField createAssetGroupField(UUID assetGroupId, AssetGroupField assetGroupField) {
         return getWebTarget()
-                .path("asset/rest/group")
+                .path("asset/rest/group2")
                 .path(assetGroupId.toString())
                 .path("field")
                 .request(MediaType.APPLICATION_JSON)
@@ -217,7 +217,7 @@ public class AssetTestHelper extends AbstractHelper {
 	
 	public static List<AssetGroupField> getAssetGroupFieldByAssetGroup(UUID assetGroupId) {
         return getWebTarget()
-                .path("asset/rest/group")
+                .path("asset/rest/group2")
                 .path(assetGroupId.toString())
                 .path("fieldsForGroup")
                 .request(MediaType.APPLICATION_JSON)
