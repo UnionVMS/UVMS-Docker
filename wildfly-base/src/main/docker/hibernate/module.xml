@@ -23,11 +23,11 @@
 <!-- Represents Hibernate 5.1.x, will later become 5.3.x for WF 14  -->
 <module name="org.hibernate" xmlns="urn:jboss:module:1.7">
     <resources>
-        <resource-root path="hibernate-core-5.3.12.Final.jar"/>
-        <resource-root path="hibernate-envers-5.3.12.Final.jar"/> 
+        <resource-root path="hibernate-core-${wildfly.hibernate.module.spatial.version}.jar"/>
+        <resource-root path="hibernate-envers-${wildfly.hibernate.module.spatial.version}.jar"/> 
 
         <resource-root path="hibernate-spatial-${wildfly.hibernate.module.spatial.version}.jar"/>
-		<resource-root path="jts-${wildfly.hibernate.module.jts.version}.jar"/>
+		<resource-root path="jts-core-${wildfly.hibernate.module.jts.version}.jar"/>
 		<resource-root path="geolatte-geom-${wildfly.hibernate.module.geolatte.version}.jar"/>
     </resources>
 

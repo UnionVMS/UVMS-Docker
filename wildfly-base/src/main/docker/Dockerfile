@@ -34,8 +34,10 @@ COPY dependencies/postgresql-${wildfly.postgres.module.postgres.version}.jar $PO
 COPY dependencies/postgis-jdbc-${wildfly.postgres.module.postgis.version}.jar $POSTGRES_MODULE
 
 COPY hibernate/module.xml $HIBERNATE_MODULE
+COPY dependencies/hibernate-core-${wildfly.hibernate.module.spatial.version}.jar $HIBERNATE_MODULE
+COPY dependencies/hibernate-envers-${wildfly.hibernate.module.spatial.version}.jar $HIBERNATE_MODULE
 COPY dependencies/hibernate-spatial-${wildfly.hibernate.module.spatial.version}.jar $HIBERNATE_MODULE
-COPY dependencies/jts-${wildfly.hibernate.module.jts.version}.jar $HIBERNATE_MODULE
+COPY dependencies/jts-core-${wildfly.hibernate.module.jts.version}.jar $HIBERNATE_MODULE
 COPY dependencies/geolatte-geom-${wildfly.hibernate.module.geolatte.version}.jar $HIBERNATE_MODULE
 
 # Standalone config
