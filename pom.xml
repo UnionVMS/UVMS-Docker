@@ -22,7 +22,7 @@
 		<focus-pom.java.version>1.8</focus-pom.java.version>
 		<unionvms.project.unionvms.web.version>3.0.60-UVMS</unionvms.project.unionvms.web.version>
 		<unionvms.project.vms.web.version>0.4.4</unionvms.project.vms.web.version>
-		<unionvms.project.mapfishprint.version>3.16.0</unionvms.project.mapfishprint.version>
+		<unionvms.project.mapfishprint.version>3.20.2.0</unionvms.project.mapfishprint.version>
 		<unionvms.project.geoserver.version>2.16.0</unionvms.project.geoserver.version>
 		<unionvms.project.user.module>2.0.24</unionvms.project.user.module>
 		<unionvms.project.rules.module>3.0.49</unionvms.project.rules.module>
@@ -269,7 +269,7 @@
 
 			<!-- frontend modules -->
 			<dependency>
-				<groupId>eu.europa.ec.fisheries.uvms.mapfish.print</groupId>
+				<groupId>eu.europa.ec.fisheries.uvms.mapfish.print-servlet-overlay</groupId>
 				<artifactId>print-servlet</artifactId>
 				<type>war</type>
 				<version>${unionvms.project.mapfishprint.version}</version>

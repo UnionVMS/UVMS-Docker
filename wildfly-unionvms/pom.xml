@@ -62,7 +62,7 @@
         </dependency>
 
 		<dependency>
-			<groupId>eu.europa.ec.fisheries.uvms.mapfish.print</groupId>
+			<groupId>eu.europa.ec.fisheries.uvms.mapfish.print-servlet-overlay</groupId>
 			<artifactId>print-servlet</artifactId>
 			<type>war</type>
 		</dependency>
