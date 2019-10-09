@@ -38,6 +38,7 @@
 		<unionvms.project.asset.module>6.0.72</unionvms.project.asset.module>
 		<unionvms.project.activity.module>1.1.13-SNAPSHOT</unionvms.project.activity.module>
 		<unionvms.project.mdr.module>1.0.10</unionvms.project.mdr.module>
+		<unionvms.project.mdrSwe.module>1.0.18</unionvms.project.mdrSwe.module>
 		<unionvms.project.plugins.naf>3.0.22</unionvms.project.plugins.naf>
 		<unionvms.project.plugins.flux>3.0.23</unionvms.project.plugins.flux>
 		<unionvms.project.plugins.inmarsat>3.0.72</unionvms.project.plugins.inmarsat>
@@ -230,6 +231,18 @@
 				</exclusions>
 			</dependency>
 			<dependency>
+				<groupId>eu.europa.ec.fisheries.uvms.mdrSwe</groupId>
+				<artifactId>liquibase</artifactId>
+				<type>sql</type>
+				<version>${unionvms.project.mdrSwe.module}</version>
+				<exclusions>
+					<exclusion>
+						<groupId>com.oracle</groupId>
+						<artifactId>ojdbc6</artifactId>
+					</exclusion>
+				</exclusions>
+			</dependency>
+			<dependency>
 				<groupId>eu.europa.ec.fisheries.uvms.reporting</groupId>
 				<artifactId>reporting-liquibase</artifactId>
 				<type>sql</type>
@@ -391,6 +404,12 @@
 				<artifactId>mdr-module</artifactId>
 				<type>ear</type>
 				<version>${unionvms.project.mdr.module}</version>
+			</dependency>
+			<dependency>
+				<groupId>eu.europa.ec.fisheries.uvms.mdrSwe</groupId>
+				<artifactId>mdrSwe-module</artifactId>
+				<type>ear</type>
+				<version>${unionvms.project.mdrSwe.module}</version>
 			</dependency>
 			<dependency>
 				<groupId>eu.europa.ec.fisheries.uvms.reporting</groupId>
