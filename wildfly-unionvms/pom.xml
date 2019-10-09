@@ -75,6 +75,11 @@
 
 
 		<!-- app modules -->
+		<dependency>
+			<groupId>eu.europa.ec.fisheries.uvms.activity</groupId>
+			<artifactId>activity-module</artifactId>
+			<type>ear</type>
+		</dependency>
 
 		<dependency>
 			<groupId>eu.europa.ec.fisheries.uvms.mdrSwe</groupId>
@@ -337,6 +342,10 @@
 
 									<jar destfile="${project.basedir}/target/dockerfile/deployments/unionvms-web-${unionvms.project.unionvms.web.version}.war" update="true">
 										<zipfileset dir="${project.basedir}/target/dockerfile/jboss-deployment/web-app" includes="*.xml" prefix="WEB-INF" />
+									</jar>
+
+									<jar destfile="${project.basedir}/target/dockerfile/deployments/activity-module-${unionvms.project.activity.module}.ear" update="true">
+										<zipfileset dir="${project.basedir}/target/dockerfile/jboss-deployment/activity" includes="*.xml" prefix="META-INF" />
 									</jar>
 
 									<jar destfile="${project.basedir}/target/dockerfile/deployments/mdrSwe-module-${unionvms.project.mdrSwe.module}.ear" update="true">

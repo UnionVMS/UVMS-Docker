@@ -30,6 +30,11 @@
 			<version>${unionvms.project.movementrules.module}</version>
 		</dependency>
 		<dependency>
+			<groupId>eu.europa.ec.fisheries.uvms.activity</groupId>
+			<artifactId>client-model</artifactId>
+			<version>${unionvms.project.activity.module}</version>
+		</dependency>
+		<dependency>
 			<groupId>org.apache.activemq</groupId>
 			<artifactId>artemis-jms-client-all</artifactId>
 			<version>2.6.3</version>

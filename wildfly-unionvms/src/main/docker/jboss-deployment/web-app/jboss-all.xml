@@ -9,6 +9,7 @@
 		<dependency name="movement-rules-module-${unionvms.project.movementrules.module}.ear" />
 		<dependency name="asset-module-${unionvms.project.asset.module}.ear" />
 		<dependency name="inmarsat-module-${unionvms.project.plugins.inmarsat}.ear" />
+		<dependency name="activity-module-${unionvms.project.activity.module}.ear" />
 		<dependency name="mdrSwe-module-${unionvms.project.mdr.module}.ear" />
 	</jboss-deployment-dependencies>
 </jboss>
