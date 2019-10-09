@@ -39,7 +39,7 @@ public class PollRestIT extends AbstractRest {
 	@Test
 	public void getRunningProgramPollsTest() {
 		Response response = getWebTarget()
-				.path("asset/rest/poll/running")
+				.path("asset/rest/poll2/running")
 				.request(MediaType.APPLICATION_JSON)
 				.header(HttpHeaders.AUTHORIZATION, getValidJwtToken())
 				.get();
@@ -79,11 +79,12 @@ public class PollRestIT extends AbstractRest {
 		String uid = unsentPolls.get(0);
 
 		Response response = getWebTarget()
-				.path("asset/rest/poll/start")
+				.path("asset/rest/poll2")
 				.path(uid)
+                .path("start")
 				.request(MediaType.APPLICATION_JSON)
 				.header(HttpHeaders.AUTHORIZATION, getValidJwtToken())
-				.get();
+				.put(Entity.json(""));
 
 		assertEquals(Response.Status.OK.getStatusCode(), response.getStatus());
 		PollDto pollDto = response.readEntity(PollDto.class);
@@ -99,11 +100,12 @@ public class PollRestIT extends AbstractRest {
 		String uid = unsentPolls.get(0);
 
 		Response started = getWebTarget()
-				.path("asset/rest/poll/start")
+				.path("asset/rest/poll2")
 				.path(uid)
+                .path("start")
 				.request(MediaType.APPLICATION_JSON)
 				.header(HttpHeaders.AUTHORIZATION, getValidJwtToken())
-				.get();
+				.put(Entity.json(""));
 
 		assertEquals(Response.Status.OK.getStatusCode(), started.getStatus());
 		PollDto startedPollDto = started.readEntity(PollDto.class);
@@ -111,11 +113,12 @@ public class PollRestIT extends AbstractRest {
 		assertEquals(10, startedPollDto.getValue().size());
 
 		Response stopped = getWebTarget()
-				.path("asset/rest/poll/stop")
+				.path("asset/rest/poll2")
 				.path(uid)
+                .path("stop")
 				.request(MediaType.APPLICATION_JSON)
 				.header(HttpHeaders.AUTHORIZATION, getValidJwtToken())
-				.get();
+				.put(Entity.json(""));
 
 		assertEquals(Response.Status.OK.getStatusCode(), stopped.getStatus());
 		PollDto stoppedPollDto = stopped.readEntity(PollDto.class);
@@ -141,11 +144,12 @@ public class PollRestIT extends AbstractRest {
 		String uid = unsentPolls.get(0);
 
 		Response started = getWebTarget()
-				.path("asset/rest/poll/start")
+				.path("asset/rest/poll2")
 				.path(uid)
+                .path("start")
 				.request(MediaType.APPLICATION_JSON)
 				.header(HttpHeaders.AUTHORIZATION, getValidJwtToken())
-				.get();
+				.put(Entity.json(""));
 
 		assertEquals(Response.Status.OK.getStatusCode(), started.getStatus());
 		PollDto startedPollDto = started.readEntity(PollDto.class);
@@ -153,11 +157,12 @@ public class PollRestIT extends AbstractRest {
 		assertEquals(10, startedPollDto.getValue().size());
 
 		Response inactivated = getWebTarget()
-				.path("asset/rest/poll/inactivate")
+				.path("asset/rest/poll2")
 				.path(uid)
+                .path("archive")
 				.request(MediaType.APPLICATION_JSON)
 				.header(HttpHeaders.AUTHORIZATION, getValidJwtToken())
-				.get();
+				.put(Entity.json(""));
 
 		assertEquals(Response.Status.OK.getStatusCode(), inactivated.getStatus());
 		PollDto inactivatedPollDto = inactivated.readEntity(PollDto.class);
@@ -188,7 +193,7 @@ public class PollRestIT extends AbstractRest {
 		pollSearchCriteria.setIsDynamic(true);
 
 		Response response = getWebTarget()
-				.path("asset/rest/poll/list")
+				.path("asset/rest/poll2/list")
 				.request(MediaType.APPLICATION_JSON)
 				.header(HttpHeaders.AUTHORIZATION, getValidJwtToken())
 				.post(Entity.json(pollListQuery));
@@ -206,7 +211,7 @@ public class PollRestIT extends AbstractRest {
 		pollableQuery.getConnectIdList().add("00000000-0000-0000-0000-000000000001");
 
 		Response response = getWebTarget()
-				.path("asset/rest/poll/pollable")
+				.path("asset/rest/poll2/getPollable")
 				.request(MediaType.APPLICATION_JSON)
 				.header(HttpHeaders.AUTHORIZATION, getValidJwtToken())
 				.post(Entity.json(pollableQuery));

@@ -14,6 +14,7 @@ copy of the GNU General Public License along with the IFDM Suite. If not, see <h
 package eu.europa.ec.fisheries.uvms.docker.validation.system;
 
 import eu.europa.ec.fisheries.uvms.docker.validation.common.AbstractRest;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import javax.ws.rs.client.Client;
@@ -104,6 +105,7 @@ public class ModuleAvailableSystemIT extends AbstractRest {
 	}
 
 	@Test
+	@Ignore
 	public void checkMapfishPrintAccessTest() {
 		Client client = ClientBuilder.newClient();
 		WebTarget target = client.target("http://localhost:28080/mapfish-print/");

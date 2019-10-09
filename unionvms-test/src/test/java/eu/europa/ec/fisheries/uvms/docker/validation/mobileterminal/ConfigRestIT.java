@@ -25,38 +25,44 @@ public class ConfigRestIT extends AbstractRest {
 
 	@Test
 	public void getConfigTranspondersTest() {
-		ResponseDto response = getWebTarget()
-				.path("asset/rest/config/MT/transponders")
+		Response response = getWebTarget()
+				.path("asset/rest/config2/MT/transponders")
 				.request(MediaType.APPLICATION_JSON)
 				.header(HttpHeaders.AUTHORIZATION, getValidJwtToken())
-				.get(ResponseDto.class);
+				.get(Response.class);
 
-		assertEquals(Response.Status.OK.getStatusCode(), response.getCode());
-		assertNotNull(response.getData());
+		assertEquals(Response.Status.OK.getStatusCode(), response.getStatus());
+		String json = response.readEntity(String.class);
+		assertNotNull(json);
+		assertFalse(json.isEmpty());
 	}
 
 	@Test
 	public void getConfigSearchFieldsTest() {
-		ResponseDto response = getWebTarget()
-				.path("asset/rest/config/MT/searchfields")
+		Response response = getWebTarget()
+				.path("asset/rest/config2/MT/searchfields")
 				.request(MediaType.APPLICATION_JSON)
 				.header(HttpHeaders.AUTHORIZATION, getValidJwtToken())
-				.get(ResponseDto.class);
+				.get(Response.class);
 
-		assertEquals(Response.Status.OK.getStatusCode(), response.getCode());
-		assertNotNull(response.getData());
+		assertEquals(Response.Status.OK.getStatusCode(), response.getStatus());
+		String json = response.readEntity(String.class);
+		assertNotNull(json);
+		assertFalse(json.isEmpty());
 	}
 
 	@Test
 	public void getConfigurationTest() {
-		ResponseDto response = getWebTarget()
-				.path("asset/rest/config/MT")
+		Response response = getWebTarget()
+				.path("asset/rest/config2/MT")
 				.request(MediaType.APPLICATION_JSON)
 				.header(HttpHeaders.AUTHORIZATION, getValidJwtToken())
-				.get(ResponseDto.class);
+				.get(Response.class);
 
-		assertEquals(Response.Status.OK.getStatusCode(), response.getCode());
-		assertNotNull(response.getData());
+		assertEquals(Response.Status.OK.getStatusCode(), response.getStatus());
+		String json = response.readEntity(String.class);
+		assertNotNull(json);
+		assertFalse(json.isEmpty());
 	}
 
 }
