@@ -22,7 +22,7 @@
 		<focus-pom.java.version>1.8</focus-pom.java.version>
 		<unionvms.project.unionvms.web.version>3.0.60-UVMS</unionvms.project.unionvms.web.version>
 		<unionvms.project.vms.web.version>0.4.4</unionvms.project.vms.web.version>
-		<unionvms.project.mapfishprint.version>3.16.0</unionvms.project.mapfishprint.version>
+		<unionvms.project.mapfishprint.version>3.20.2.0</unionvms.project.mapfishprint.version>
 		<unionvms.project.geoserver.version>2.16.0</unionvms.project.geoserver.version>
 		<unionvms.project.user.module>2.0.24</unionvms.project.user.module>
 		<unionvms.project.rules.module>3.0.49</unionvms.project.rules.module>
@@ -31,13 +31,14 @@
 		<unionvms.project.movement.module>5.2.28-UVMS</unionvms.project.movement.module>
 		<unionvms.project.exchange.module>5.0.15-UVMS</unionvms.project.exchange.module>
 		<unionvms.project.spatial.module>2.0.4</unionvms.project.spatial.module>
-		<unionvms.project.spatialSwe.module>2.0.8-UVMS</unionvms.project.spatialSwe.module>
+		<unionvms.project.spatialSwe.module>2.0.11-UVMS</unionvms.project.spatialSwe.module>
 		<unionvms.project.subscription.module>1.3</unionvms.project.subscription.module>
 		<unionvms.project.config.module>4.1.3</unionvms.project.config.module>
 		<unionvms.project.audit.module>4.1.4</unionvms.project.audit.module>
 		<unionvms.project.asset.module>6.0.72</unionvms.project.asset.module>
 		<unionvms.project.activity.module>1.1.13-SNAPSHOT</unionvms.project.activity.module>
 		<unionvms.project.mdr.module>1.0.10</unionvms.project.mdr.module>
+		<unionvms.project.mdrSwe.module>1.0.18</unionvms.project.mdrSwe.module>
 		<unionvms.project.plugins.naf>3.0.22</unionvms.project.plugins.naf>
 		<unionvms.project.plugins.flux>3.0.23</unionvms.project.plugins.flux>
 		<unionvms.project.plugins.inmarsat>3.0.72</unionvms.project.plugins.inmarsat>
@@ -230,6 +231,18 @@
 				</exclusions>
 			</dependency>
 			<dependency>
+				<groupId>eu.europa.ec.fisheries.uvms.mdrSwe</groupId>
+				<artifactId>liquibase</artifactId>
+				<type>sql</type>
+				<version>${unionvms.project.mdrSwe.module}</version>
+				<exclusions>
+					<exclusion>
+						<groupId>com.oracle</groupId>
+						<artifactId>ojdbc6</artifactId>
+					</exclusion>
+				</exclusions>
+			</dependency>
+			<dependency>
 				<groupId>eu.europa.ec.fisheries.uvms.reporting</groupId>
 				<artifactId>reporting-liquibase</artifactId>
 				<type>sql</type>
@@ -256,7 +269,7 @@
 
 			<!-- frontend modules -->
 			<dependency>
-				<groupId>eu.europa.ec.fisheries.uvms.mapfish.print</groupId>
+				<groupId>eu.europa.ec.fisheries.uvms.mapfish.print-servlet-overlay</groupId>
 				<artifactId>print-servlet</artifactId>
 				<type>war</type>
 				<version>${unionvms.project.mapfishprint.version}</version>
@@ -391,6 +404,12 @@
 				<artifactId>mdr-module</artifactId>
 				<type>ear</type>
 				<version>${unionvms.project.mdr.module}</version>
+			</dependency>
+			<dependency>
+				<groupId>eu.europa.ec.fisheries.uvms.mdrSwe</groupId>
+				<artifactId>mdrSwe-module</artifactId>
+				<type>ear</type>
+				<version>${unionvms.project.mdrSwe.module}</version>
 			</dependency>
 			<dependency>
 				<groupId>eu.europa.ec.fisheries.uvms.reporting</groupId>

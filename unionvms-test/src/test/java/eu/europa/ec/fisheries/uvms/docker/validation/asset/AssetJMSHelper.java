@@ -7,6 +7,8 @@ import java.util.Random;
 import java.util.UUID;
 import javax.jms.JMSException;
 import javax.jms.TextMessage;
+
+import eu.europa.ec.fisheries.uvms.asset.model.exception.AssetException;
 import eu.europa.ec.fisheries.uvms.asset.model.mapper.AssetModuleRequestMapper;
 import eu.europa.ec.fisheries.uvms.asset.model.mapper.JAXBMarshaller;
 import eu.europa.ec.fisheries.uvms.docker.validation.common.MessageHelper;
@@ -42,6 +44,10 @@ public class AssetJMSHelper {
         messageHelper.close();
     }
 
+    public void upsertAsset(Asset asset, String username) throws Exception {
+        String upsertAssetModuleRequest = AssetModuleRequestMapper.createUpsertAssetModuleRequest(asset, username);
+        messageHelper.sendMessage(ASSET_QUEUE, upsertAssetModuleRequest);
+    }
 
     public Asset getAssetById(String value, AssetIdType type) throws Exception {
         String msg = AssetModuleRequestMapper.createGetAssetModuleRequest(value, type);
