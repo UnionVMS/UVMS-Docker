@@ -58,7 +58,28 @@
 			<groupId>eu.europa.ec.fisheries.uvms.reporting</groupId>
 			<artifactId>reporting-service</artifactId>
 			<version>${unionvms.project.reporting.module}</version>
-		</dependency>		
+			<exclusions>
+				<exclusion>
+					<groupId>*</groupId>
+					<artifactId>*</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		<dependency>
+			<groupId>eu.europa.ec.fisheries.uvms.commons</groupId>
+			<artifactId>uvms-commons-rest</artifactId>
+			<version>4.0.6</version>
+		</dependency>
+		<dependency>
+			<groupId>eu.europa.ec.fisheries.uvms.commons</groupId>
+			<artifactId>uvms-commons-message</artifactId>
+			<version>4.0.6</version>
+		</dependency>
+		<dependency>
+			<groupId>org.locationtech.jts</groupId>
+			<artifactId>jts-core</artifactId>
+			<version>1.16.1</version>
+		</dependency>
 		<dependency>
 			<groupId>eu.europa.ec.fisheries.uvms.config</groupId>
 			<artifactId>config-model</artifactId>
@@ -112,13 +133,13 @@
 		<dependency>
 			<groupId>org.jboss.resteasy</groupId>
 			<artifactId>resteasy-client</artifactId>
-			<version>3.7.0.Final</version>
+			<version>3.9.0.Final</version>
 			<scope>provided</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.jboss.resteasy</groupId>
 			<artifactId>resteasy-jackson2-provider</artifactId>
-			<version>3.7.0.Final</version>
+			<version>3.9.0.Final</version>
 			<scope>provided</scope>
 		</dependency>
 		<dependency>
