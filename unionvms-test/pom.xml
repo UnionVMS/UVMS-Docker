@@ -60,25 +60,10 @@
 			<version>${unionvms.project.reporting.module}</version>
 			<exclusions>
 				<exclusion>
-					<groupId>*</groupId>
-					<artifactId>*</artifactId>
+					<groupId>javax</groupId>
+					<artifactId>javaee-api</artifactId>
 				</exclusion>
 			</exclusions>
-		</dependency>
-		<dependency>
-			<groupId>eu.europa.ec.fisheries.uvms.commons</groupId>
-			<artifactId>uvms-commons-rest</artifactId>
-			<version>4.0.6</version>
-		</dependency>
-		<dependency>
-			<groupId>eu.europa.ec.fisheries.uvms.commons</groupId>
-			<artifactId>uvms-commons-message</artifactId>
-			<version>4.0.6</version>
-		</dependency>
-		<dependency>
-			<groupId>org.locationtech.jts</groupId>
-			<artifactId>jts-core</artifactId>
-			<version>1.16.1</version>
 		</dependency>
 		<dependency>
 			<groupId>eu.europa.ec.fisheries.uvms.config</groupId>
