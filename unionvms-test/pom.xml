@@ -33,6 +33,24 @@
 			<groupId>eu.europa.ec.fisheries.uvms.activity</groupId>
 			<artifactId>client-model</artifactId>
 			<version>${unionvms.project.activity.module}</version>
+			<exclusions>
+				<exclusion>
+					<groupId>eu.europa.ec.fisheries.uvms.activity</groupId>
+					<artifactId>activity-model</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>eu.europa.ec.fisheries.uvms.commons</groupId>
+					<artifactId>uvms-commons-rest</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>eu.europa.ec.fisheries.uvms.commons</groupId>
+					<artifactId>uvms-commons-date</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>org.projectlombok</groupId>
+					<artifactId>lombok</artifactId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 		<dependency>
 			<groupId>org.apache.activemq</groupId>
