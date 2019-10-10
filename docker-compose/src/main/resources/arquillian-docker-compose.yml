@@ -19,7 +19,7 @@ services:
      - activemq
     command: ["/opt/jboss/start.sh", "/opt/jboss/wildfly/bin/standalone.sh", "-c", "standalone-uvms.xml", "-b", "0.0.0.0", "-bmanagement", "0.0.0.0", "--debug"]
   postgres:
-    image: uvms/postgres-base:${project.version}
+    image: uvms/postgres-release:${project.version}
     container_name: postgres
     ports: 
      - "25432:5432"
