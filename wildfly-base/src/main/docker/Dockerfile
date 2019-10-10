@@ -1,4 +1,5 @@
-FROM adoptopenjdk/openjdk11-openj9:jdk-11.0.4_11_openj9-0.15.1-alpine-slim
+FROM adoptopenjdk/openjdk8-openj9:jdk8u181-b13_openj9-0.9.0-alpine-slim
+
 
 MAINTAINER Nils Jørgen Mittet <njmittet@gmail.com>
 
