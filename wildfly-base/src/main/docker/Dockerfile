@@ -1,8 +1,9 @@
 FROM adoptopenjdk/openjdk8-openj9:jdk8u181-b13_openj9-0.9.0-alpine-slim
 
+
 MAINTAINER Nils Jørgen Mittet <njmittet@gmail.com>
 
-ENV WILDFLY_VERSION 17.0.1.Final
+ENV WILDFLY_VERSION 18.0.0.Final
 ENV JBOSS_HOME /opt/jboss/wildfly
 
 USER root
@@ -34,8 +35,10 @@ COPY dependencies/postgresql-${wildfly.postgres.module.postgres.version}.jar $PO
 COPY dependencies/postgis-jdbc-${wildfly.postgres.module.postgis.version}.jar $POSTGRES_MODULE
 
 COPY hibernate/module.xml $HIBERNATE_MODULE
+COPY dependencies/hibernate-core-${wildfly.hibernate.module.spatial.version}.jar $HIBERNATE_MODULE
+COPY dependencies/hibernate-envers-${wildfly.hibernate.module.spatial.version}.jar $HIBERNATE_MODULE
 COPY dependencies/hibernate-spatial-${wildfly.hibernate.module.spatial.version}.jar $HIBERNATE_MODULE
-COPY dependencies/jts-${wildfly.hibernate.module.jts.version}.jar $HIBERNATE_MODULE
+COPY dependencies/jts-core-${wildfly.hibernate.module.jts.version}.jar $HIBERNATE_MODULE
 COPY dependencies/geolatte-geom-${wildfly.hibernate.module.geolatte.version}.jar $HIBERNATE_MODULE
 
 # Standalone config

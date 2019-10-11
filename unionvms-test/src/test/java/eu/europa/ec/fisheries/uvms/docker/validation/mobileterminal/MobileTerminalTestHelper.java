@@ -1,10 +1,7 @@
 package eu.europa.ec.fisheries.uvms.docker.validation.mobileterminal;
 
 import eu.europa.ec.fisheries.schema.mobileterminal.polltypes.v1.*;
-import eu.europa.ec.fisheries.schema.mobileterminal.types.v1.MobileTerminalListQuery;
-import eu.europa.ec.fisheries.schema.mobileterminal.types.v1.PluginCapability;
-import eu.europa.ec.fisheries.schema.mobileterminal.types.v1.PluginCapabilityType;
-import eu.europa.ec.fisheries.schema.mobileterminal.types.v1.PluginService;
+import eu.europa.ec.fisheries.schema.mobileterminal.types.v1.*;
 import eu.europa.ec.fisheries.uvms.asset.client.model.AssetDTO;
 import eu.europa.ec.fisheries.uvms.docker.validation.common.AbstractHelper;
 import eu.europa.ec.fisheries.uvms.docker.validation.mobileterminal.dto.ChannelDto;
@@ -62,7 +59,7 @@ public final class MobileTerminalTestHelper extends AbstractHelper {
         pollRequestType.getMobileTerminals().add(pollMobileTerminal);
 
         CreatePollResultDto response = getWebTarget()
-                .path("asset/rest/poll")
+                .path("asset/rest/poll2")
                 .request(MediaType.APPLICATION_JSON)
                 .header(HttpHeaders.AUTHORIZATION, getValidJwtToken())
                 .post(Entity.json(pollRequestType), CreatePollResultDto.class);
@@ -119,7 +116,7 @@ public final class MobileTerminalTestHelper extends AbstractHelper {
 		pollRequest.setUserName("vms_admin_com");
 
 		CreatePollResultDto createdPoll = getWebTarget()
-				.path("asset/rest/poll")
+				.path("asset/rest/poll2")
 				.request(MediaType.APPLICATION_JSON)
 				.header(HttpHeaders.AUTHORIZATION, getValidJwtToken())
 				.post(Entity.json(pollRequest), CreatePollResultDto.class);
@@ -143,7 +140,7 @@ public final class MobileTerminalTestHelper extends AbstractHelper {
 
 	public static MobileTerminalDto persistMobileTerminal(MobileTerminalDto terminal) {
 	    MobileTerminalDto createdTerminal = getWebTarget()
-                .path("asset/rest/mobileterminal")
+                .path("asset/rest/mobileterminal2")
                 .request(MediaType.APPLICATION_JSON)
                 .header(HttpHeaders.AUTHORIZATION, getValidJwtToken())
                 .post(Entity.json(terminal), MobileTerminalDto.class);
@@ -154,7 +151,7 @@ public final class MobileTerminalTestHelper extends AbstractHelper {
 	
 	static MobileTerminalDto getMobileTerminalById(UUID uuid) {
 		return getWebTarget()
-				.path("asset/rest/mobileterminal")
+				.path("asset/rest/mobileterminal2")
 				.path(uuid.toString())
 				.request(MediaType.APPLICATION_JSON)
 				.header(HttpHeaders.AUTHORIZATION, getValidJwtToken())
@@ -163,7 +160,7 @@ public final class MobileTerminalTestHelper extends AbstractHelper {
 
 	static MobileTerminalDto updateMobileTerminal(MobileTerminalDto mobileTerminal) {
 		return getWebTarget()
-				.path("asset/rest/mobileterminal")
+				.path("asset/rest/mobileterminal2")
 				.queryParam("comment", "MobileTerminal is Archived")
 				.request(MediaType.APPLICATION_JSON)
 				.header(HttpHeaders.AUTHORIZATION, getValidJwtToken())
@@ -172,7 +169,7 @@ public final class MobileTerminalTestHelper extends AbstractHelper {
 
 	static Response getMobileTerminalList(MobileTerminalListQuery queryRequest) {
 		return getWebTarget()
-				.path("asset/rest/mobileterminal/list")
+				.path("asset/rest/mobileterminal2/list")
 				.request(MediaType.APPLICATION_JSON)
 				.header(HttpHeaders.AUTHORIZATION, getValidJwtToken())
 				.post(Entity.json(queryRequest));
@@ -180,57 +177,68 @@ public final class MobileTerminalTestHelper extends AbstractHelper {
 
 	static MobileTerminalDto activateMobileTerminal(UUID uuid) {
 		return getWebTarget()
-				.path("asset/rest/mobileterminal/status/activate")
+				.path("asset/rest/mobileterminal2")
+				.path(uuid.toString())
+				.path("status")
 				.queryParam("comment", "Activate MobileTerminal")
 				.request(MediaType.APPLICATION_JSON)
 				.header(HttpHeaders.AUTHORIZATION, getValidJwtToken())
-				.put(Entity.json(uuid), MobileTerminalDto.class);
+				.put(Entity.json("\"ACTIVE\""), MobileTerminalDto.class);
 	}
 
 	static MobileTerminalDto removeMobileTerminal(UUID uuid) {
 		return getWebTarget()
-				.path("asset/rest/mobileterminal/status/remove")
+				.path("asset/rest/mobileterminal2")
+				.path(uuid.toString())
+				.path("status")
 				.queryParam("comment", "Remove MobileTerminal")
 				.request(MediaType.APPLICATION_JSON)
 				.header(HttpHeaders.AUTHORIZATION, getValidJwtToken())
-				.put(Entity.json(uuid), MobileTerminalDto.class);
+				.put(Entity.json("\"ARCHIVE\""), MobileTerminalDto.class);
 	}
 
 	static MobileTerminalDto inactivateMobileTerminal(UUID uuid) {
 		return getWebTarget()
-				.path("asset/rest/mobileterminal/status/inactivate")
+				.path("asset/rest/mobileterminal2")
+				.path(uuid.toString())
+				.path("status")
 				.queryParam("comment", "InActivate MobileTerminal")
 				.request(MediaType.APPLICATION_JSON)
 				.header(HttpHeaders.AUTHORIZATION, getValidJwtToken())
-				.put(Entity.json(uuid), MobileTerminalDto.class);
+				.put(Entity.json("\"INACTIVE\""), MobileTerminalDto.class);
 	}
 
 	public static MobileTerminalDto assignMobileTerminal(AssetDTO asset, MobileTerminalDto mobileTerminal) {
 
 		return getWebTarget()
-				.path("asset/rest/mobileterminal/assign")
+				.path("asset/rest/mobileterminal2")
+				.path(mobileTerminal.getId().toString())
+				.path("assign")
+				.path(asset.getId().toString())
 				.queryParam("comment", "comment")
-				.queryParam("connectId", asset.getId())
 				.request(MediaType.APPLICATION_JSON)
 				.header(HttpHeaders.AUTHORIZATION, getValidJwtToken())
-				.put(Entity.json(mobileTerminal.getId()), MobileTerminalDto.class);
+				.put(Entity.json(""), MobileTerminalDto.class);
 	}
 
 	static MobileTerminalDto unAssignMobileTerminal(AssetDTO asset, MobileTerminalDto mobileTerminal) {
 
 		return getWebTarget()
-				.path("asset/rest/mobileterminal/unassign")
+				.path("asset/rest/mobileterminal2")
+				.path(mobileTerminal.getId().toString())
+				.path("unassign")
+				.path(asset.getId().toString())
 				.queryParam("comment", "MobileTerminal Unassigned")
-				.queryParam("connectId", asset.getId())
 				.request(MediaType.APPLICATION_JSON)
 				.header(HttpHeaders.AUTHORIZATION, getValidJwtToken())
-				.put(Entity.json(mobileTerminal.getId()), MobileTerminalDto.class);
+				.put(Entity.json(""), MobileTerminalDto.class);
 	}
 
 	static List<MobileTerminalDto> getMobileTerminalHistoryList(UUID uuid) {
 		return getWebTarget()
-				.path("asset/rest/mobileterminal/history")
+				.path("asset/rest/mobileterminal2")
 				.path(uuid.toString())
+				.path("history")
 				.request(MediaType.APPLICATION_JSON)
 				.header(HttpHeaders.AUTHORIZATION, getValidJwtToken())
 				.get(new GenericType<List<MobileTerminalDto>>(){});

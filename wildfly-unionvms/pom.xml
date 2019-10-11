@@ -4,13 +4,13 @@
 	<parent>
 		<groupId>eu.europa.ec.fisheries.uvms.docker</groupId>
 		<artifactId>uvms-docker</artifactId>
-		<version>3.39.11.w17-ers-SNAPSHOT</version>
+		<version>3.40.1.w18-ers-SNAPSHOT</version>
 		<relativePath>../pom.xml</relativePath>
 	</parent>
 
 	<groupId>eu.europa.ec.fisheries.uvms.docker</groupId>
 	<artifactId>uvms-docker-wildfly-unionvms</artifactId>
-	<version>3.39.11.w17-ers-SNAPSHOT</version>
+	<version>3.40.1.w18-ers-SNAPSHOT</version>
 	<packaging>pom</packaging>
 	<name>uvms-docker-wildfly-unionvms</name>
 
@@ -66,13 +66,13 @@
 			<artifactId>print-servlet</artifactId>
 			<type>war</type>
 		</dependency>
-
+		
 		<dependency>
-			<groupId>eu.europa.ec.fisheries.uvms.geoserver.web.overlay</groupId>
+			<groupId>eu.europa.ec.fisheries.uvms.geoserver.web.overlay</groupId>			
 			<artifactId>gs-web-app</artifactId>
 			<type>war</type>
 		</dependency>
-
+		
 
 		<!-- app modules -->
 		<dependency>
@@ -260,7 +260,7 @@
 					<version>${project.version}</version>
 					<file>target/${project.artifactId}.zip</file>
 				</configuration>
-			</plugin>
+			</plugin>												
 			<plugin>
 				<artifactId>maven-antrun-plugin</artifactId>
 				<version>1.8</version>
@@ -270,7 +270,7 @@
 						<configuration>
 							<tasks>
 								<taskdef resource="net/sf/antcontrib/antcontrib.properties" classpathref="maven.plugin.classpath" />
-
+								
 								<if>
 								    <not><equals arg1="${docker.dependency.skip}" arg2="true" /></not>
 								    <then>
@@ -279,7 +279,7 @@
 									<jar destfile="${project.basedir}/target/dockerfile/deployments/user-module-${unionvms.project.user.module}.ear" update="true">
 										<zipfileset dir="${project.basedir}/target/dockerfile/jboss-deployment/user" includes="*.xml" prefix="META-INF" />
 									</jar>
-
+	
 									<jar destfile="${project.basedir}/target/dockerfile/deployments/config-module-${unionvms.project.config.module}.ear" update="true">
 										<zipfileset dir="${project.basedir}/target/dockerfile/jboss-deployment/config" includes="*.xml" prefix="META-INF" />
 									</jar>
@@ -299,7 +299,7 @@
 									<jar destfile="${project.basedir}/target/dockerfile/deployments/spatialSwe-module-${unionvms.project.spatialSwe.module}.ear" update="true">
 										<zipfileset dir="${project.basedir}/target/dockerfile/jboss-deployment/spatial" includes="*.xml" prefix="META-INF" />
 									</jar>
-
+	
 									<jar destfile="${project.basedir}/target/dockerfile/deployments/movement-module-${unionvms.project.movement.module}.ear" update="true">
 										<zipfileset dir="${project.basedir}/target/dockerfile/jboss-deployment/movement" includes="*.xml" prefix="META-INF" />
 									</jar>
@@ -311,11 +311,11 @@
 									<jar destfile="${project.basedir}/target/dockerfile/deployments/asset-module-${unionvms.project.asset.module}.ear" update="true">
 										<zipfileset dir="${project.basedir}/target/dockerfile/jboss-deployment/asset" includes="*.xml" prefix="META-INF" />
 									</jar>
-
+	
 									<jar destfile="${project.basedir}/target/dockerfile/deployments/audit-module-${unionvms.project.audit.module}.ear" update="true">
 										<zipfileset dir="${project.basedir}/target/dockerfile/jboss-deployment/audit" includes="*.xml" prefix="META-INF" />
 									</jar>
-
+	
 									<jar destfile="${project.basedir}/target/dockerfile/deployments/exchange-module-${unionvms.project.exchange.module}.ear" update="true">
 										<zipfileset dir="${project.basedir}/target/dockerfile/jboss-deployment/exchange" includes="*.xml" prefix="META-INF" />
 									</jar>
@@ -323,11 +323,11 @@
 									<jar destfile="${project.basedir}/target/dockerfile/deployments/gs-web-app-${unionvms.project.geoserver.version}.war" update="true">
 										<zipfileset dir="${project.basedir}/target/dockerfile/jboss-deployment/web-app" includes="*.xml" prefix="WEB-INF" />
 									</jar>
-
+		
 									<jar destfile="${project.basedir}/target/dockerfile/deployments/print-servlet-${unionvms.project.mapfishprint.version}.war" update="true">
 										<zipfileset dir="${project.basedir}/target/dockerfile/jboss-deployment/web-app" includes="*.xml" prefix="WEB-INF" />
 									</jar>
-
+									
 									<jar destfile="${project.basedir}/target/dockerfile/deployments/inmarsat-module-${unionvms.project.plugins.inmarsat}.ear" update="true">
 										<zipfileset dir="${project.basedir}/target/dockerfile/jboss-deployment/plugins" includes="*.xml" prefix="META-INF" />
 									</jar>
@@ -356,7 +356,7 @@
 								        <echo message="Ignore dependency order at startup, no ear/war:s is modified " />
 								</else>
 							</if>
-
+								
 							<move file="${project.basedir}/target/dockerfile/deployments/print-servlet-${unionvms.project.mapfishprint.version}.war" tofile="${project.basedir}/target/dockerfile/deployments/mapfish-print.war" />
 							<move file="${project.basedir}/target/dockerfile/deployments/gs-web-app-${unionvms.project.geoserver.version}.war" tofile="${project.basedir}/target/dockerfile/deployments/geoserver.war" />
 							<move file="${project.basedir}/target/dockerfile/deployments/hawtio-wildfly-${unionvms.project.hawtio-wildfly}.war" tofile="${project.basedir}/target/dockerfile/deployments/hawtio-wildfly.war" />
