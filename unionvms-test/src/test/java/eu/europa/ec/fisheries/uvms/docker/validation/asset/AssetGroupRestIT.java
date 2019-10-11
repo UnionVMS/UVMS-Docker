@@ -13,6 +13,7 @@ copy of the GNU General Public License along with the IFDM Suite. If not, see <h
 */
 package eu.europa.ec.fisheries.uvms.docker.validation.asset;
 
+import java.time.temporal.ChronoUnit;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
@@ -63,7 +64,7 @@ public class AssetGroupRestIT extends AbstractRest {
 		
 		AssetGroup assetGroupById = AssetTestHelper.getAssetGroupById(testAssetGroup.getId());
 		assertEquals(testAssetGroup.getId(), assetGroupById.getId());
-		assertEquals(testAssetGroup.getUpdateTime(), assetGroupById.getUpdateTime());
+		assertEquals(testAssetGroup.getUpdateTime().truncatedTo(ChronoUnit.MILLIS), assetGroupById.getUpdateTime().truncatedTo(ChronoUnit.MILLIS));
 	}
 
 	@Test
