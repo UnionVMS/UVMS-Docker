@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>eu.europa.ec.fisheries.uvms.docker</groupId>
 		<artifactId>uvms-docker</artifactId>
-		<version>3.39.11.w17-ers</version>
+		<version>3.39.12.w17-ers-SNAPSHOT</version>
 		<relativePath>../pom.xml</relativePath>
 	</parent>
 	
