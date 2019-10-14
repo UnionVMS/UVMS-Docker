@@ -88,7 +88,6 @@ public class InmarsatSystemIT extends AbstractRest {
     }
     
     @Test
-    @Ignore("Will run this test after we have released a new version of inmarsat")
     public void createManualPollTest() throws Exception {
         try (LESMock les = new LESMock(PORT)) {
             AssetDTO dto = AssetTestHelper.createBasicAsset();
@@ -119,9 +118,6 @@ public class InmarsatSystemIT extends AbstractRest {
             assertEquals(satelliteNumber, split[5].trim());  // satellite number
             assertEquals("0", split[6].trim());     // command type  0 = unreserved as required in response
             assertEquals(memberNumber, split[7].trim());     // member number
-            assertEquals("0", split[8].trim());     // start frame   N/A here
-            assertEquals("", split[9].trim());      // reports per 24 hours A/A here
-            assertEquals("0", split[10].trim());    // ack  0
         }
     }
     
