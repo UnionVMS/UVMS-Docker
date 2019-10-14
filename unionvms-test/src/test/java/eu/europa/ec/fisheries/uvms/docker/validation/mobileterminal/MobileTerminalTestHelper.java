@@ -260,7 +260,7 @@ public final class MobileTerminalTestHelper extends AbstractHelper {
 		ChannelDto channel = new ChannelDto();
 		channel.setName("VMS");
 		channel.setFrequencyGracePeriod("54000");
-		channel.setMemberNumber(generateARandomStringWithMaxLength(3));
+		channel.setMemberNumber("1" + generateARandomStringWithMaxLength(2));
 		channel.setExpectedFrequency("7200");
 		channel.setExpectedFrequencyInPort("10800");
 		channel.setLesDescription("Thrane&Thrane");
