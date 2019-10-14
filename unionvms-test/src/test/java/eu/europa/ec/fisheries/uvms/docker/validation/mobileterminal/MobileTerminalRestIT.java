@@ -13,16 +13,15 @@ copy of the GNU General Public License along with the IFDM Suite. If not, see <h
 */
 package eu.europa.ec.fisheries.uvms.docker.validation.mobileterminal;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import eu.europa.ec.fisheries.schema.mobileterminal.types.v1.*;
 import eu.europa.ec.fisheries.uvms.asset.client.model.AssetDTO;
 import eu.europa.ec.fisheries.uvms.docker.validation.asset.AssetTestHelper;
 import eu.europa.ec.fisheries.uvms.docker.validation.common.AbstractRest;
+import eu.europa.ec.fisheries.uvms.docker.validation.mobileterminal.dto.MTQuery;
 import eu.europa.ec.fisheries.uvms.docker.validation.mobileterminal.dto.MobileTerminalDto;
 import org.junit.Test;
 
 import javax.ws.rs.core.Response;
+import java.util.Arrays;
 import java.util.List;
 
 public class MobileTerminalRestIT extends AbstractRest {
@@ -54,22 +53,10 @@ public class MobileTerminalRestIT extends AbstractRest {
 
 	@Test
 	public void getMobileTerminalListTest() {
-		MobileTerminalListQuery queryRequest = new MobileTerminalListQuery();
-		ListPagination pagination = new ListPagination();
-		pagination.setListSize(100);
-		pagination.setPage(1);
-		queryRequest.setPagination(pagination);
-		MobileTerminalSearchCriteria criteria = new MobileTerminalSearchCriteria();
+		MTQuery mtQuery = new MTQuery();
+		mtQuery.setTranceiverTypes(Arrays.asList("dummy"));
 
-		ListCriteria cr = new ListCriteria();
-		cr.setKey(SearchKey.TRANSPONDER_TYPE);
-		cr.setValue("dummy");
-
-		criteria.getCriterias().add(cr);
-		criteria.setIsDynamic(true);
-		queryRequest.setMobileTerminalSearchCriteria(criteria);
-
-		Response response = MobileTerminalTestHelper.getMobileTerminalList(queryRequest);
+		Response response = MobileTerminalTestHelper.getMobileTerminalList(mtQuery);
 		assertNotNull(response);
 		assertEquals(Response.Status.OK.getStatusCode(), response.getStatus());
 	}

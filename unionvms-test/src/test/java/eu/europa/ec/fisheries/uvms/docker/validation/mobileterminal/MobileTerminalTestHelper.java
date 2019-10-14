@@ -6,6 +6,7 @@ import eu.europa.ec.fisheries.uvms.asset.client.model.AssetDTO;
 import eu.europa.ec.fisheries.uvms.docker.validation.common.AbstractHelper;
 import eu.europa.ec.fisheries.uvms.docker.validation.mobileterminal.dto.ChannelDto;
 import eu.europa.ec.fisheries.uvms.docker.validation.mobileterminal.dto.CreatePollResultDto;
+import eu.europa.ec.fisheries.uvms.docker.validation.mobileterminal.dto.MTQuery;
 import eu.europa.ec.fisheries.uvms.docker.validation.mobileterminal.dto.MobileTerminalDto;
 import eu.europa.ec.fisheries.uvms.docker.validation.mobileterminal.dto.MobileTerminalPluginDto;
 
@@ -167,7 +168,7 @@ public final class MobileTerminalTestHelper extends AbstractHelper {
 				.put(Entity.json(mobileTerminal), MobileTerminalDto.class);
 	}
 
-	static Response getMobileTerminalList(MobileTerminalListQuery queryRequest) {
+	static Response getMobileTerminalList(MTQuery queryRequest) {
 		return getWebTarget()
 				.path("asset/rest/mobileterminal2/list")
 				.request(MediaType.APPLICATION_JSON)
