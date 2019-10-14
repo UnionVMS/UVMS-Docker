@@ -21,7 +21,6 @@ import eu.europa.ec.fisheries.uvms.docker.validation.mobileterminal.dto.ChannelD
 import eu.europa.ec.fisheries.uvms.docker.validation.mobileterminal.dto.MobileTerminalDto;
 import eu.europa.ec.fisheries.uvms.docker.validation.system.helper.LESMock;
 import org.junit.BeforeClass;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import javax.ws.rs.client.Entity;
@@ -42,12 +41,12 @@ import static org.hamcrest.CoreMatchers.notNullValue;
 public class InmarsatSystemIT extends AbstractRest {
 
     private static final int PORT = 29006;
-    
+
     @BeforeClass
     public static void initSettings() throws SocketException, InterruptedException {
         String urlKey = "eu.europa.ec.fisheries.uvms.plugins.inmarsat.URL";
         String portKey = "eu.europa.ec.fisheries.uvms.plugins.inmarsat.PORT";
-        
+
         List<SettingType> response = getWebTarget()
                 .path("config/rest/settings")
                 .queryParam("moduleName", "exchange")
@@ -69,24 +68,24 @@ public class InmarsatSystemIT extends AbstractRest {
 
         urlSetting.setValue(getDockerHostIp());
         portSetting.setValue(String.valueOf(PORT));
-        
+
         getWebTarget()
             .path("config/rest/settings")
             .path(urlSetting.getId().toString())
             .request(MediaType.APPLICATION_JSON)
             .header(HttpHeaders.AUTHORIZATION, getValidJwtToken())
             .put(Entity.json(urlSetting));
-        
+
         getWebTarget()
             .path("config/rest/settings")
             .path(portSetting.getId().toString())
             .request(MediaType.APPLICATION_JSON)
             .header(HttpHeaders.AUTHORIZATION, getValidJwtToken())
             .put(Entity.json(portSetting));
-        
+
         TimeUnit.SECONDS.sleep(1);
     }
-    
+
     @Test
     public void createManualPollTest() throws Exception {
         try (LESMock les = new LESMock(PORT)) {
@@ -94,7 +93,7 @@ public class InmarsatSystemIT extends AbstractRest {
             AssetDTO asset = AssetTestHelper.createAsset(dto);
             MobileTerminalDto mt = MobileTerminalTestHelper.createMobileTerminal();
             MobileTerminalTestHelper.createPollWithMT_Helper(asset, PollType.MANUAL_POLL, mt);
-            
+
             String message = les.getMessage(10);
             String satelliteNumber = mt.getSatelliteNumber();
 
@@ -103,7 +102,7 @@ public class InmarsatSystemIT extends AbstractRest {
             String memberNumber = arr[0].getMemberNumber();
             String DNID = arr[0].getDNID();
 
-            assertTrue(message.startsWith("POLL "));
+            assertTrue(message.startsWith("poll "));
 
             message = message.substring(5);
             message = message.replace(" ", "");
@@ -120,7 +119,7 @@ public class InmarsatSystemIT extends AbstractRest {
             assertEquals(memberNumber, split[7].trim());     // member number
         }
     }
-    
+
     // Find docker host machine ip. Replace this with 'host.docker.internal' when supported on Linux.
     private static String getDockerHostIp() throws SocketException {
         Enumeration<NetworkInterface> interfaces = NetworkInterface.getNetworkInterfaces();

@@ -90,15 +90,15 @@ public final class MobileTerminalTestHelper extends AbstractHelper {
 
 		PollAttribute attrFrequency = new PollAttribute();
 		attrFrequency.setKey(PollAttributeType.REPORT_FREQUENCY);
-		attrFrequency.setValue("11000");
+		attrFrequency.setValue("7200"); // 2:00
 
 		PollAttribute attrGracePeriod = new PollAttribute();
 		attrGracePeriod.setKey(PollAttributeType.GRACE_PERIOD);
-		attrGracePeriod.setValue("11020");
+		attrGracePeriod.setValue("48600"); // 13:30
 
 		PollAttribute attrInPortGrace = new PollAttribute();
 		attrInPortGrace.setKey(PollAttributeType.IN_PORT_GRACE);
-		attrInPortGrace.setValue("11040");
+		attrInPortGrace.setValue("48600");
 
 		PollAttribute attrDnid = new PollAttribute();
 		attrDnid.setKey(PollAttributeType.DNID);
