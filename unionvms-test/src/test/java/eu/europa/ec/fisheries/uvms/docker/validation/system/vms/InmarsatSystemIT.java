@@ -21,6 +21,7 @@ import eu.europa.ec.fisheries.uvms.docker.validation.mobileterminal.dto.ChannelD
 import eu.europa.ec.fisheries.uvms.docker.validation.mobileterminal.dto.MobileTerminalDto;
 import eu.europa.ec.fisheries.uvms.docker.validation.system.helper.LESMock;
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import javax.ws.rs.client.Entity;
@@ -117,6 +118,45 @@ public class InmarsatSystemIT extends AbstractRest {
             assertEquals(satelliteNumber, split[5].trim());  // satellite number
             assertEquals("0", split[6].trim());     // command type  0 = unreserved as required in response
             assertEquals(memberNumber, split[7].trim());     // member number
+        }
+    }
+
+    @Test
+    @Ignore("Not working correctly yet")
+    public void createConfigPollTest() throws Exception {
+        try (LESMock les = new LESMock(PORT)) {
+            AssetDTO dto = AssetTestHelper.createBasicAsset();
+            AssetDTO asset = AssetTestHelper.createAsset(dto);
+            MobileTerminalDto mt = MobileTerminalTestHelper.createMobileTerminal();
+
+            MobileTerminalTestHelper.createConfigPollWithMT_Helper(asset, mt, null, null);
+
+            String message = les.getMessage(10);
+            String satelliteNumber = mt.getSatelliteNumber();
+
+            Set<ChannelDto> channels = mt.getChannels();
+            ChannelDto[] arr = channels.toArray(new ChannelDto[0]);
+            String memberNumber = arr[0].getMemberNumber();
+            String DNID = arr[0].getDNID();
+
+            assertTrue(message.startsWith("poll "));
+
+            message = message.substring(5);
+            message = message.replace(" ", "");
+
+            String[] split = message.split(",");
+
+            assertEquals("0", split[0].trim());     // Ocean Region 0 = West Atlantic Ocean Region
+            assertEquals("I", split[1].trim());     // Poll Type I = Individual poll
+            assertEquals(DNID, split[2].trim());             // DNID
+            assertEquals("N", split[3].trim());     // Response type
+            assertEquals("1", split[4].trim());     // Sub-address
+            assertEquals(satelliteNumber, split[5].trim());  // satellite number
+            assertEquals("6", split[6].trim());     // command type  0 = unreserved as required in response
+            assertEquals(memberNumber, split[7].trim());     // member number
+            assertEquals("", split[8].trim());      // start frame   N/A here
+            assertEquals("", split[9].trim());      // reports per 24 hours A/A here
+            assertEquals("1", split[10].trim());    // ack  1
         }
     }
 

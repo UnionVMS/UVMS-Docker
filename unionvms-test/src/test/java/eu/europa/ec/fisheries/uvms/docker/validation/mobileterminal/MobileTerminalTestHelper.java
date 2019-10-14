@@ -252,7 +252,7 @@ public final class MobileTerminalTestHelper extends AbstractHelper {
 		mobileTerminal.setArchived(false);
 		mobileTerminal.setActive(true);
 
-		mobileTerminal.setSatelliteNumber(generateARandomStringWithMaxLength(9));
+		mobileTerminal.setSatelliteNumber("4" + generateARandomStringWithMaxLength(8));
 		mobileTerminal.setAntenna("A");
 		mobileTerminal.setTransceiverType("A");
 		mobileTerminal.setSoftwareVersion("A");
