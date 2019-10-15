@@ -20,9 +20,12 @@ import eu.europa.ec.fisheries.uvms.docker.validation.mobileterminal.MobileTermin
 import eu.europa.ec.fisheries.uvms.docker.validation.mobileterminal.dto.ChannelDto;
 import eu.europa.ec.fisheries.uvms.docker.validation.mobileterminal.dto.MobileTerminalDto;
 import eu.europa.ec.fisheries.uvms.docker.validation.system.helper.LESMock;
+import net.bull.javamelody.internal.common.LOG;
 import org.junit.BeforeClass;
 import org.junit.Ignore;
 import org.junit.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.core.GenericType;
@@ -40,6 +43,8 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.notNullValue;
 
 public class InmarsatSystemIT extends AbstractRest {
+
+    private static final Logger LOG = LoggerFactory.getLogger(InmarsatSystemIT.class.getSimpleName());
 
     private static final int PORT = 29006;
 
@@ -102,6 +107,9 @@ public class InmarsatSystemIT extends AbstractRest {
             ChannelDto[] arr = channels.toArray(new ChannelDto[0]);
             String memberNumber = arr[0].getMemberNumber();
             String DNID = arr[0].getDNID();
+
+            LOG.info("POLL COMMAND: " + message);
+            LOG.info("EXPECTED POLL COMMAND: " + "poll 0,I,"+DNID+",D,1,"+satelliteNumber+",0,"+memberNumber);
 
             assertTrue(message.startsWith("poll "));
 
