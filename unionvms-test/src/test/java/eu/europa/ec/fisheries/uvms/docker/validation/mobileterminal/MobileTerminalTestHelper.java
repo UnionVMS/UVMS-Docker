@@ -69,7 +69,7 @@ public final class MobileTerminalTestHelper extends AbstractHelper {
         return response;
 	}
 
-	public static CreatePollResultDto createConfigPollWithMT_Helper(AssetDTO testAsset, MobileTerminalDto terminal, String newDnid, String newMemberNr) {
+	public static CreatePollResultDto createConfigPollWithMT_Helper(AssetDTO testAsset, MobileTerminalDto terminal) {
 		terminal = assignMobileTerminal(testAsset, terminal);
 		assertNotNull(terminal.getAssetId());
 
@@ -91,26 +91,18 @@ public final class MobileTerminalTestHelper extends AbstractHelper {
 
 		PollAttribute attrFrequency = new PollAttribute();
 		attrFrequency.setKey(PollAttributeType.REPORT_FREQUENCY);
-		attrFrequency.setValue("11000");
+		attrFrequency.setValue("7200"); // 2:00
 
 		PollAttribute attrGracePeriod = new PollAttribute();
 		attrGracePeriod.setKey(PollAttributeType.GRACE_PERIOD);
-		attrGracePeriod.setValue("11020");
+		attrGracePeriod.setValue("48600"); // 13:30
 
 		PollAttribute attrInPortGrace = new PollAttribute();
 		attrInPortGrace.setKey(PollAttributeType.IN_PORT_GRACE);
-		attrInPortGrace.setValue("11040");
-
-		PollAttribute attrDnid = new PollAttribute();
-		attrDnid.setKey(PollAttributeType.DNID);
-		attrDnid.setValue(newDnid);
-
-		PollAttribute attrMemberNo = new PollAttribute();
-		attrMemberNo.setKey(PollAttributeType.MEMBER_NUMBER);
-		attrMemberNo.setValue(newMemberNr);
+		attrInPortGrace.setValue("48600");
 
 		pollRequest.getAttributes().addAll(
-				Arrays.asList(attrFrequency, attrGracePeriod, attrInPortGrace, attrDnid, attrMemberNo));
+				Arrays.asList(attrFrequency, attrGracePeriod, attrInPortGrace));
 
 		pollRequest.setPollType(PollType.CONFIGURATION_POLL);
 		pollRequest.setComment("Configuration poll created by test");
@@ -253,7 +245,7 @@ public final class MobileTerminalTestHelper extends AbstractHelper {
 		mobileTerminal.setArchived(false);
 		mobileTerminal.setActive(true);
 
-		mobileTerminal.setSatelliteNumber(generateARandomStringWithMaxLength(9));
+		mobileTerminal.setSatelliteNumber("4" + generateARandomStringWithMaxLength(8));
 		mobileTerminal.setAntenna("A");
 		mobileTerminal.setTransceiverType("A");
 		mobileTerminal.setSoftwareVersion("A");
@@ -261,7 +253,7 @@ public final class MobileTerminalTestHelper extends AbstractHelper {
 		ChannelDto channel = new ChannelDto();
 		channel.setName("VMS");
 		channel.setFrequencyGracePeriod("54000");
-		channel.setMemberNumber(generateARandomStringWithMaxLength(3));
+		channel.setMemberNumber("1" + generateARandomStringWithMaxLength(2));
 		channel.setExpectedFrequency("7200");
 		channel.setExpectedFrequencyInPort("10800");
 		channel.setLesDescription("Thrane&Thrane");
