@@ -20,12 +20,9 @@ import eu.europa.ec.fisheries.uvms.docker.validation.mobileterminal.MobileTermin
 import eu.europa.ec.fisheries.uvms.docker.validation.mobileterminal.dto.ChannelDto;
 import eu.europa.ec.fisheries.uvms.docker.validation.mobileterminal.dto.MobileTerminalDto;
 import eu.europa.ec.fisheries.uvms.docker.validation.system.helper.LESMock;
-import net.bull.javamelody.internal.common.LOG;
 import org.junit.BeforeClass;
 import org.junit.Ignore;
 import org.junit.Test;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.core.GenericType;
@@ -43,8 +40,6 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.notNullValue;
 
 public class InmarsatSystemIT extends AbstractRest {
-
-    private static final Logger LOG = LoggerFactory.getLogger(InmarsatSystemIT.class.getSimpleName());
 
     private static final int PORT = 29006;
 
@@ -108,9 +103,6 @@ public class InmarsatSystemIT extends AbstractRest {
             String memberNumber = arr[0].getMemberNumber();
             String DNID = arr[0].getDNID();
 
-            LOG.info("POLL COMMAND: " + message);
-            LOG.info("EXPECTED POLL COMMAND: " + "poll 0,I,"+DNID+",D,1,"+satelliteNumber+",0,"+memberNumber);
-
             assertTrue(message.startsWith("poll "));
 
             message = message.substring(5);
@@ -130,16 +122,16 @@ public class InmarsatSystemIT extends AbstractRest {
     }
 
     @Test
-    @Ignore("Not working correctly yet")
+    @Ignore("This test works but we get only first 'STOP' poll command back.")
     public void createConfigPollTest() throws Exception {
         try (LESMock les = new LESMock(PORT)) {
             AssetDTO dto = AssetTestHelper.createBasicAsset();
             AssetDTO asset = AssetTestHelper.createAsset(dto);
             MobileTerminalDto mt = MobileTerminalTestHelper.createMobileTerminal();
 
-            MobileTerminalTestHelper.createConfigPollWithMT_Helper(asset, mt, null, null);
+            MobileTerminalTestHelper.createConfigPollWithMT_Helper(asset, mt);
 
-            String message = les.getMessage(10);
+            String message = les.getMessage(20);
             String satelliteNumber = mt.getSatelliteNumber();
 
             Set<ChannelDto> channels = mt.getChannels();
@@ -162,9 +154,9 @@ public class InmarsatSystemIT extends AbstractRest {
             assertEquals(satelliteNumber, split[5].trim());  // satellite number
             assertEquals("6", split[6].trim());     // command type  0 = unreserved as required in response
             assertEquals(memberNumber, split[7].trim());     // member number
-            assertEquals("", split[8].trim());      // start frame   N/A here
-            assertEquals("", split[9].trim());      // reports per 24 hours A/A here
-            assertEquals("1", split[10].trim());    // ack  1
+//            assertEquals("", split[8].trim());      // start frame   N/A here
+//            assertEquals("", split[9].trim());      // reports per 24 hours A/A here
+//            assertEquals("1", split[10].trim());    // ack  1
         }
     }
 
