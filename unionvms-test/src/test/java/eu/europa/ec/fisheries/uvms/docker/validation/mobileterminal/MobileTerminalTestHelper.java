@@ -69,7 +69,7 @@ public final class MobileTerminalTestHelper extends AbstractHelper {
         return response;
 	}
 
-	public static CreatePollResultDto createConfigPollWithMT_Helper(AssetDTO testAsset, MobileTerminalDto terminal, String newDnid, String newMemberNr) {
+	public static CreatePollResultDto createConfigPollWithMT_Helper(AssetDTO testAsset, MobileTerminalDto terminal) {
 		terminal = assignMobileTerminal(testAsset, terminal);
 		assertNotNull(terminal.getAssetId());
 
@@ -101,16 +101,8 @@ public final class MobileTerminalTestHelper extends AbstractHelper {
 		attrInPortGrace.setKey(PollAttributeType.IN_PORT_GRACE);
 		attrInPortGrace.setValue("48600");
 
-		PollAttribute attrDnid = new PollAttribute();
-		attrDnid.setKey(PollAttributeType.DNID);
-		attrDnid.setValue(newDnid);
-
-		PollAttribute attrMemberNo = new PollAttribute();
-		attrMemberNo.setKey(PollAttributeType.MEMBER_NUMBER);
-		attrMemberNo.setValue(newMemberNr);
-
 		pollRequest.getAttributes().addAll(
-				Arrays.asList(attrFrequency, attrGracePeriod, attrInPortGrace, attrDnid, attrMemberNo));
+				Arrays.asList(attrFrequency, attrGracePeriod, attrInPortGrace));
 
 		pollRequest.setPollType(PollType.CONFIGURATION_POLL);
 		pollRequest.setComment("Configuration poll created by test");
