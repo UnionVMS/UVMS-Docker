@@ -104,10 +104,10 @@ public class InmarsatSystemIT extends AbstractRest {
             String DNID = arr[0].getDNID();
 
             assertEquals(1, message.size());
-            String str = message.get(0);
-            assertTrue(str.startsWith("poll "));
+            String command = message.get(0);
+            assertTrue(command.startsWith("poll "));
 
-            String[] split = splitCommand(str);
+            String[] split = splitCommand(command);
 
             assertEquals("0", split[0].trim());
             assertEquals("I", split[1].trim());
