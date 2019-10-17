@@ -12,6 +12,7 @@ copy of the GNU General Public License along with the IFDM Suite. If not, see <h
 package eu.europa.ec.fisheries.uvms.docker.validation.movement.model;
 
 import java.time.Instant;
+import java.util.Date;
 
 public class IncomingMovement {
 
@@ -61,8 +62,18 @@ public class IncomingMovement {
     private boolean active;
     
     private String updatedBy;
+    
+    private Date lesReportTime;
 
-    public String getAssetHistoryId() {
+    public Date getLesReportTime() {
+		return lesReportTime;
+	}
+
+	public void setLesReportTime(Date lesReportTime) {
+		this.lesReportTime = lesReportTime;
+	}
+
+	public String getAssetHistoryId() {
         return assetHistoryId;
     }
 

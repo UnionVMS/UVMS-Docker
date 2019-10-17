@@ -214,7 +214,8 @@ public class InmarsatSanityIT extends AbstractRest {
         movement.setComChannelType(MovementComChannelType.MOBILE_TERMINAL);
         movement.setMobileTerminalId(mobileTerminalId);
         movement.setMovementType(MovementTypeType.POS);
-
+        movement.setLesReportTime(new Date());
+        
         MovementPoint mp = new MovementPoint();
         mp.setAltitude(0.0);
         mp.setLatitude(1d);
