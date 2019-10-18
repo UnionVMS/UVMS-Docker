@@ -84,7 +84,7 @@ public class InmarsatSystemIT extends AbstractRest {
                 .header(HttpHeaders.AUTHORIZATION, getValidJwtToken())
                 .put(Entity.json(portSetting));
 
-        TimeUnit.SECONDS.sleep(1);
+        TimeUnit.SECONDS.sleep(3);
     }
 
     @Test
