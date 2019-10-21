@@ -11,26 +11,28 @@ copy of the GNU General Public License along with the IFDM Suite. If not, see <h
  */
 package eu.europa.ec.fisheries.uvms.docker.validation.system.helper;
 
-import java.io.BufferedReader;
-import java.io.Closeable;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.PrintWriter;
+import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.TimeUnit;
 
 public class LESMock implements Closeable {
 
-    private CompletableFuture<String> completableFuture;
-    
-    public LESMock(int port) throws Exception {
+    private CompletableFuture<List<String>> completableFuture;
+
+    public LESMock(int port) {
         completableFuture = CompletableFuture.supplyAsync(() -> {
             try (ServerSocket server = new ServerSocket(port)) {
                 Socket clientSocket = server.accept();
                 PrintWriter out = new PrintWriter(clientSocket.getOutputStream(), true);
                 BufferedReader in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
+
+                // Username & Password
                 out.write("name:");
                 out.flush();
                 in.readLine();
@@ -38,23 +40,74 @@ public class LESMock implements Closeable {
                 out.flush();
                 in.readLine();
                 in.readLine();
+
+                // Stop poll
                 out.write(">");
                 out.flush();
-                return in.readLine();
+
+                String firstCommand = in.readLine();
+                in.readLine();
+
+                out.write("Text:");
+                out.flush();
+                in.readLine();
+                in.readLine();
+                out.write("ref number 1234");
+                out.flush();
+
+                // Config poll or QUIT if this is a Manual poll
+                out.write(">");
+                out.flush();
+
+                String secondCommand = in.readLine();
+                in.readLine();
+
+                if ("quit".equalsIgnoreCase(secondCommand)) {
+                    return Collections.singletonList(firstCommand);
+                }
+
+                out.write("Text:");
+                out.flush();
+                in.readLine();
+                in.readLine();
+                out.write("ref number 1234");
+                out.flush();
+
+                // Start poll
+                out.write(">");
+                out.flush();
+
+                String thirdCommand = in.readLine();
+                in.readLine();
+
+                out.write("Text:");
+                out.flush();
+                in.readLine();
+                in.readLine();
+                out.write("ref number 1234");
+                out.flush();
+
+                // Config poll
+                out.write(">");
+                out.flush();
+
+                in.readLine();
+
+                return Arrays.asList(firstCommand, secondCommand, thirdCommand);
             } catch (Exception e) {
-                return "";
+                return new ArrayList<>();
             }
         });
     }
-    
-    public String getMessage(int timeoutInSeconds) throws InterruptedException {
+
+    public List<String> getMessage(int timeoutInSeconds) {
         try {
             return completableFuture.get(timeoutInSeconds, TimeUnit.SECONDS);
         } catch (Exception e) {
-            return "";
+            return new ArrayList<>();
         }
     }
-    
+
     @Override
     public void close() throws IOException {
         completableFuture.cancel(true);
