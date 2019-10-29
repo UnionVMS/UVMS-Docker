@@ -987,6 +987,7 @@
                 <simple name="java:global/exchange_endpoint" value="http://localhost:8080/unionvms/exchange/unsecured/rest"/>
                 <simple name="java:global/movement_endpoint" value="http://localhost:8080/unionvms/movement/rest"/>
                 <simple name="java:global/user_endpoint" value="http://localhost:8080/unionvms/user/rest"/>
+                <simple name="java:global/mdr_endpoint" value="http://localhost:8080/unionvms/mdr"/>
                 <simple name="java:global/cors_allowed_host_regex" type="java.lang.String" value=".*" />
             </bindings>
         </subsystem>
