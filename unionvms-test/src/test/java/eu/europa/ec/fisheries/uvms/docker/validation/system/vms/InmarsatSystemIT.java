@@ -109,7 +109,7 @@ public class InmarsatSystemIT extends AbstractRest {
 
             String[] split = splitCommand(command);
 
-            assertEquals("0", split[0].trim());
+            assertEquals("3", split[0].trim());
             assertEquals("I", split[1].trim());
             assertEquals(DNID, split[2].trim());
             assertEquals("D", split[3].trim());
@@ -143,7 +143,7 @@ public class InmarsatSystemIT extends AbstractRest {
                 assertTrue(command.startsWith("poll "));
                 String[] split = splitCommand(command);
 
-                assertEquals("0", split[0].trim());
+                assertEquals("3", split[0].trim());
                 assertEquals("I", split[1].trim());
                 assertEquals(DNID, split[2].trim());
                 assertEquals("1", split[4].trim());
