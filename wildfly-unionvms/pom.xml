@@ -126,6 +126,12 @@
 			<type>ear</type>
 		</dependency>
 
+		<dependency>
+			<groupId>eu.europa.ec.fisheries.uvms.stream-collector</groupId>
+			<artifactId>stream-collector</artifactId>
+			<type>war</type>
+		</dependency>
+
 		<!-- plugin modules -->
 		<dependency>
 			<groupId>eu.europa.ec.fisheries.uvms.plugins</groupId>
@@ -321,6 +327,10 @@
 
 									<jar destfile="${project.basedir}/target/dockerfile/deployments/unionvms-web-${unionvms.project.unionvms.web.version}.war" update="true">
 										<zipfileset dir="${project.basedir}/target/dockerfile/jboss-deployment/web-app" includes="*.xml" prefix="WEB-INF" />
+									</jar>
+
+									<jar destfile="${project.basedir}/target/dockerfile/deployments/stream-collector-module-${unionvms.project.stream-collector}.war" update="true">
+										<zipfileset dir="${project.basedir}/target/dockerfile/jboss-deployment/stream-collector" includes="*.xml" prefix="META-INF" />
 									</jar>
 
 								</then>

@@ -45,6 +45,7 @@
 		<unionvms.project.plugins.fluxActivity>1.0.6</unionvms.project.plugins.fluxActivity>
 		<unionvms.project.plugins.mdr>1.0.2</unionvms.project.plugins.mdr>
 		<unionvms.project.plugins.flux-rest>1.0</unionvms.project.plugins.flux-rest>
+		<unionvms.project.stream-collector>0.9.3</unionvms.project.stream-collector>
 		<unionvms.project.hawtio-wildfly>2.7.1</unionvms.project.hawtio-wildfly>
 	</properties>
 
@@ -397,6 +398,13 @@
 				<artifactId>reporting-module</artifactId>
 				<type>ear</type>
 				<version>${unionvms.project.reporting.module}</version>
+			</dependency>
+
+			<dependency>
+				<groupId>eu.europa.ec.fisheries.uvms.stream-collector</groupId>
+				<artifactId>stream-collector</artifactId>
+				<type>war</type>
+				<version>${unionvms.project.stream-collector}</version>
 			</dependency>
 
 			<!-- plugin modules -->
