@@ -273,10 +273,10 @@ public final class MobileTerminalTestHelper extends AbstractHelper {
 		mobileTerminal.getChannels().clear();
 		mobileTerminal.getChannels().add(channel);
 
-		mobileTerminal.setWestAtlanticOceanRegion(true); // 0
+		mobileTerminal.setWestAtlanticOceanRegion(false); // 0
 		mobileTerminal.setEastAtlanticOceanRegion(false); // 1
 		mobileTerminal.setPacificOceanRegion(false); // 2
-		mobileTerminal.setIndianOceanRegion(false); // 3
+		mobileTerminal.setIndianOceanRegion(true); // 3
 
 		MobileTerminalPluginDto plugin = new MobileTerminalPluginDto();
 		plugin.setPluginServiceName("eu.europa.ec.fisheries.uvms.plugins.inmarsat");
