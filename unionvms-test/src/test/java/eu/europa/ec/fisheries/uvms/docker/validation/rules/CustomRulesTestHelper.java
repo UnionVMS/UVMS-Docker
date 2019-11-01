@@ -23,7 +23,7 @@ public class CustomRulesTestHelper {
 
     private CustomRulesTestHelper(){}
 
-    static CustomRuleType getCompleteNewCustomRule(){
+    public static CustomRuleType getCompleteNewCustomRule(){
         CustomRuleType customRule = new CustomRuleType();
 
         customRule.setName("Flag SWE && area DNK => Send to DNK" + " (" + System.currentTimeMillis() + ")");
@@ -68,7 +68,7 @@ public class CustomRulesTestHelper {
         return customRule;
     }
 
-    static TicketQuery getTicketQuery() {
+    public static TicketQuery getTicketQuery() {
         TicketQuery ticketQuery = new TicketQuery();
         ListPagination listPagination = new ListPagination();
         listPagination.setListSize(100);
@@ -81,7 +81,7 @@ public class CustomRulesTestHelper {
         return ticketQuery;
     }
 
-    static String createRuleAndGetMovementGuid() throws Exception {
+    public static String createRuleAndGetMovementGuid() throws Exception {
         String fluxEndpoint = "DNK";
         SetReportRequest reportRequest = VMSSystemHelper.triggerBasicRuleAndSendToFlux(fluxEndpoint);
         return reportRequest.getReport().getMovement().getGuid();
