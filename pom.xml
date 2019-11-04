@@ -128,7 +128,7 @@
         <dependencies>
             <dependency>
                 <groupId>eu.europa.ec.fisheries.uvms.mobileterminal</groupId>
-                <artifactId>mobileterminal.liquibase</artifactId>
+                <artifactId>mobileterminal-liquibase</artifactId>
                 <type>sql</type>
                 <version>${unionvms.project.mobileterminal.module}</version>
                 <exclusions>
@@ -140,7 +140,7 @@
             </dependency>
             <dependency>
                 <groupId>eu.europa.ec.fisheries.uvms.asset</groupId>
-                <artifactId>asset.liquibase</artifactId>
+                <artifactId>asset-liquibase</artifactId>
                 <type>sql</type>
                 <version>${unionvms.project.asset.module}</version>
                 <exclusions>
@@ -152,7 +152,7 @@
             </dependency>
             <dependency>
                 <groupId>eu.europa.ec.fisheries.uvms.audit</groupId>
-                <artifactId>audit.liquibase</artifactId>
+                <artifactId>audit-liquibase</artifactId>
                 <type>sql</type>
                 <version>${unionvms.project.audit.module}</version>
                 <exclusions>
@@ -164,7 +164,7 @@
             </dependency>
             <dependency>
                 <groupId>eu.europa.ec.fisheries.uvms.config</groupId>
-                <artifactId>config.liquibase</artifactId>
+                <artifactId>config-liquibase</artifactId>
                 <type>sql</type>
                 <version>${unionvms.project.config.module}</version>
                 <exclusions>
@@ -176,7 +176,7 @@
             </dependency>
             <dependency>
                 <groupId>eu.europa.ec.fisheries.uvms.exchange</groupId>
-                <artifactId>exchange.liquibase</artifactId>
+                <artifactId>exchange-liquibase</artifactId>
                 <type>sql</type>
                 <version>${unionvms.project.exchange.module}</version>
                 <exclusions>
@@ -188,7 +188,7 @@
             </dependency>
             <dependency>
                 <groupId>eu.europa.ec.fisheries.uvms.movement</groupId>
-                <artifactId>movement.liquibase</artifactId>
+                <artifactId>movement-liquibase</artifactId>
                 <type>sql</type>
                 <version>${unionvms.project.movement.module}</version>
                 <exclusions>
@@ -212,7 +212,7 @@
             </dependency>
             <dependency>
                 <groupId>eu.europa.ec.fisheries.uvms.rules</groupId>
-                <artifactId>rules.liquibase</artifactId>
+                <artifactId>rules-liquibase</artifactId>
                 <type>sql</type>
                 <version>${unionvms.project.rules.module}</version>
                 <exclusions>
@@ -224,7 +224,7 @@
             </dependency>
             <dependency>
                 <groupId>eu.europa.ec.fisheries.uvms.sales</groupId>
-                <artifactId>sales.liquibase</artifactId>
+                <artifactId>sales-liquibase</artifactId>
                 <type>sql</type>
                 <version>${unionvms.project.sales.module}</version>
                 <exclusions>
@@ -236,7 +236,7 @@
             </dependency>
             <dependency>
                 <groupId>eu.europa.ec.fisheries.uvms.spatial</groupId>
-                <artifactId>spatial.liquibase</artifactId>
+                <artifactId>spatial-liquibase</artifactId>
                 <type>sql</type>
                 <version>${unionvms.project.spatial.module}</version>
                 <exclusions>
@@ -248,7 +248,7 @@
             </dependency>
             <dependency>
                 <groupId>eu.europa.ec.fisheries.uvms.subscription</groupId>
-                <artifactId>subscription.liquibase</artifactId>
+                <artifactId>subscription-liquibase</artifactId>
                 <type>sql</type>
                 <version>${unionvms.project.subscription.module}</version>
                 <exclusions>
@@ -260,7 +260,7 @@
             </dependency>
             <dependency>
                 <groupId>eu.europa.ec.fisheries.uvms.activity</groupId>
-                <artifactId>activity.liquibase</artifactId>
+                <artifactId>activity-liquibase</artifactId>
                 <type>sql</type>
                 <version>${unionvms.project.activity.module}</version>
                 <exclusions>
@@ -272,7 +272,7 @@
             </dependency>
             <dependency>
                 <groupId>eu.europa.ec.fisheries.uvms.mdr</groupId>
-                <artifactId>mdr.liquibase</artifactId>
+                <artifactId>mdr-liquibase</artifactId>
                 <type>sql</type>
                 <version>${unionvms.project.mdr.module}</version>
                 <exclusions>
@@ -284,7 +284,7 @@
             </dependency>
             <dependency>
                 <groupId>eu.europa.ec.fisheries.uvms.reporting</groupId>
-                <artifactId>reporting.liquibase</artifactId>
+                <artifactId>reporting-liquibase</artifactId>
                 <type>sql</type>
                 <version>${unionvms.project.reporting.module}</version>
                 <exclusions>
@@ -296,7 +296,7 @@
             </dependency>
             <dependency>
                 <groupId>eu.europa.ec.fisheries.uvms.user</groupId>
-                <artifactId>user.liquibase</artifactId>
+                <artifactId>user-liquibase</artifactId>
                 <type>sql</type>
                 <version>${unionvms.project.user.module}</version>
                 <exclusions>
