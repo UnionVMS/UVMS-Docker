@@ -190,7 +190,7 @@
 					<artifactId>${project.artifactId}</artifactId>
 					<groupId>${project.groupId}</groupId>
 					<version>${project.version}</version>
-					<file>target/${artifactId}.zip</file>
+					<file>target/${project.artifactId}.zip</file>
 				</configuration>
 			</plugin>									
 			<plugin>
