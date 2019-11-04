@@ -4,13 +4,12 @@
 	<parent>
 		<groupId>eu.europa.ec.fisheries.uvms.docker</groupId>
 		<artifactId>uvms-docker</artifactId>
-		<version>1.5.0-MARE</version>
+		<version>1.6.0-MARE${sha1}</version>
 		<relativePath>../pom.xml</relativePath>
 	</parent>
 
 	<groupId>eu.europa.ec.fisheries.uvms.docker</groupId>
 	<artifactId>uvms-docker-wildfly-unionvms</artifactId>
-	<version>1.5.0-MARE</version>
 	<packaging>pom</packaging>
 	<name>uvms-docker-wildfly-unionvms</name>
 
