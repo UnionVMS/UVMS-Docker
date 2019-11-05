@@ -19,6 +19,7 @@
 		<wildfly.postgres.module.postgis.version>1.5.3</wildfly.postgres.module.postgis.version>
 		<wildfly.postgres.module.postgres.version>42.2.5.jre7</wildfly.postgres.module.postgres.version>
 		<wildfly.activemq.rar.version>5.15.9</wildfly.activemq.rar.version>
+		<wildfly.hibernate.spatial.wrapper.version>${project.version}</wildfly.hibernate.spatial.wrapper.version>
 	</properties>
 	<dependencies>
 		<dependency>
@@ -39,7 +40,7 @@
 		<dependency>
 			<groupId>eu.europa.ec.fisheries.uvms.docker</groupId>
 			<artifactId>hibernate-spatial-4x-to-5x-wrapper</artifactId>
-			<version>1.6.0-MARE${sha1}</version>
+			<version>${wildfly.hibernate.spatial.wrapper.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.postgresql</groupId>
