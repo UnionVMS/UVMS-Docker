@@ -1,31 +1,25 @@
 version: '2'
 services:
-  wildfly:
+  wildfly-release:
     image: uvms/wildfly-release:${project.version}
-    container_name: wildfly
+    hostname: wildfly
     ports:
-     - "29990:9990"
-     - "28787:8787"
-     - "28080:8080"
-     - "28443:8443"
-#    volumes:
-#     - /app/logs:/app/logs
-#     - /opt/jboss/wildfly/standalone/log:/opt/jboss/wildfly/standalone/log
-    depends_on:
-     - postgres
-     - activemq
+     - "39990:9990"
+     - "38787:8787"
+     - "38080:8080"
+     - "38443:8443"
     links:
-     - postgres
-     - activemq
+     - postgres-release:postgres
+     - activemq-release:activemq
+    depends_on:
+     - postgres-release
+     - activemq-release
     command: ["/opt/jboss/start.sh", "/opt/jboss/wildfly/bin/standalone.sh", "-c", "standalone-uvms.xml", "-b", "0.0.0.0", "-bmanagement", "0.0.0.0", "--debug"]
-  postgres:
+  postgres-release:
     image: uvms/postgres-release:${project.version}
-    container_name: postgres
+    hostname: postgres
     ports: 
-     - "25432:5432"
-  activemq:
+     - "35432:5432"
+  activemq-release:
     image: uvms/activemq:${project.version}
-    container_name: activemq
-    ports:
-     - "18161:8161"
-     - "61616:61616"
+    hostname: activemq
