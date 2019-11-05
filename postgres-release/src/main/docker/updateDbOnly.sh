@@ -24,7 +24,7 @@ psql -U rules -d $1 --host=$2 -a --single-transaction -q -f  eu.europa.ec.fisher
 echo "Running movementrules.sql to create tables and init data"
 psql -U movementrules -d $1 --host=$2 -a --single-transaction -q -f  eu.europa.ec.fisheries.uvms.movement-rules.liquibase-${unionvms.project.movementrules.module}.sql >/dev/null
 echo "Running usm.sql to create tables and init data"
-psql -U usm -d $1 --host=$2 --single-transaction -q -f eu.europa.ec.fisheries${unionvms.project.user.liquibase.version}.sql >/dev/null
+psql -U usm -d $1 --host=$2 --single-transaction -q -f eu.europa.ec.fisheries${unionvms.project.user.module}.sql >/dev/null
 echo "Running spatial.sql to create tables and init data"
 psql -U spatial -d $1 --host=$2 --single-transaction -q -f eu.europa.ec.fisheries${unionvms.project.spatial.module}.sql >/dev/null
 echo "Running mdr.sql to create tables and init data"
