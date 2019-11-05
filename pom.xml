@@ -43,8 +43,8 @@
         <unionvms.project.mdr.module>${uvms.mdr.module.version}</unionvms.project.mdr.module>
         <unionvms.project.rules.module>${uvms.rules.module.version}</unionvms.project.rules.module>
         <unionvms.project.subscription.module>${uvms.subscription.module.version}</unionvms.project.subscription.module>
-        <unionvms.project.exchange.module>${uvms.exchange.model.version}</unionvms.project.exchange.module>
-        <unionvms.project.activity.module>${uvms.activity.model.version}</unionvms.project.activity.module>
+        <unionvms.project.exchange.module>${uvms.exchange.module.version}</unionvms.project.exchange.module>
+        <unionvms.project.activity.module>${uvms.activity.module.version}</unionvms.project.activity.module>
 
         <unionvms.project.movement.module>${uvms.movement.module.version}</unionvms.project.movement.module>
         <unionvms.project.reporting.module>${uvms.reporting.module.version}</unionvms.project.reporting.module>
