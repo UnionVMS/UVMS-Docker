@@ -21,7 +21,6 @@ import eu.europa.ec.fisheries.uvms.docker.validation.mobileterminal.dto.ChannelD
 import eu.europa.ec.fisheries.uvms.docker.validation.mobileterminal.dto.MobileTerminalDto;
 import eu.europa.ec.fisheries.uvms.docker.validation.system.helper.LESMock;
 import org.junit.BeforeClass;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import javax.ws.rs.client.Entity;
@@ -42,18 +41,19 @@ import static org.hamcrest.CoreMatchers.notNullValue;
 public class InmarsatSystemIT extends AbstractRest {
 
     private static final int PORT = 29006;
-    
+
     @BeforeClass
     public static void initSettings() throws SocketException, InterruptedException {
         String urlKey = "eu.europa.ec.fisheries.uvms.plugins.inmarsat.URL";
         String portKey = "eu.europa.ec.fisheries.uvms.plugins.inmarsat.PORT";
-        
+
         List<SettingType> response = getWebTarget()
                 .path("config/rest/settings")
                 .queryParam("moduleName", "exchange")
                 .request(MediaType.APPLICATION_JSON)
                 .header(HttpHeaders.AUTHORIZATION, getValidJwtToken())
-                .get(new GenericType<List<SettingType>>() {});
+                .get(new GenericType<List<SettingType>>() {
+                });
 
         SettingType urlSetting = null;
         SettingType portSetting = null;
@@ -69,34 +69,33 @@ public class InmarsatSystemIT extends AbstractRest {
 
         urlSetting.setValue(getDockerHostIp());
         portSetting.setValue(String.valueOf(PORT));
-        
+
         getWebTarget()
-            .path("config/rest/settings")
-            .path(urlSetting.getId().toString())
-            .request(MediaType.APPLICATION_JSON)
-            .header(HttpHeaders.AUTHORIZATION, getValidJwtToken())
-            .put(Entity.json(urlSetting));
-        
+                .path("config/rest/settings")
+                .path(urlSetting.getId().toString())
+                .request(MediaType.APPLICATION_JSON)
+                .header(HttpHeaders.AUTHORIZATION, getValidJwtToken())
+                .put(Entity.json(urlSetting));
+
         getWebTarget()
-            .path("config/rest/settings")
-            .path(portSetting.getId().toString())
-            .request(MediaType.APPLICATION_JSON)
-            .header(HttpHeaders.AUTHORIZATION, getValidJwtToken())
-            .put(Entity.json(portSetting));
-        
-        TimeUnit.SECONDS.sleep(1);
+                .path("config/rest/settings")
+                .path(portSetting.getId().toString())
+                .request(MediaType.APPLICATION_JSON)
+                .header(HttpHeaders.AUTHORIZATION, getValidJwtToken())
+                .put(Entity.json(portSetting));
+
+        TimeUnit.SECONDS.sleep(3);
     }
-    
+
     @Test
-    @Ignore("Will run this test after we have released a new version of inmarsat")
     public void createManualPollTest() throws Exception {
         try (LESMock les = new LESMock(PORT)) {
             AssetDTO dto = AssetTestHelper.createBasicAsset();
             AssetDTO asset = AssetTestHelper.createAsset(dto);
             MobileTerminalDto mt = MobileTerminalTestHelper.createMobileTerminal();
             MobileTerminalTestHelper.createPollWithMT_Helper(asset, PollType.MANUAL_POLL, mt);
-            
-            String message = les.getMessage(10);
+
+            List<String> message = les.getMessage(10);
             String satelliteNumber = mt.getSatelliteNumber();
 
             Set<ChannelDto> channels = mt.getChannels();
@@ -104,27 +103,65 @@ public class InmarsatSystemIT extends AbstractRest {
             String memberNumber = arr[0].getMemberNumber();
             String DNID = arr[0].getDNID();
 
-            assertTrue(message.startsWith("POLL "));
+            assertEquals(1, message.size());
+            String command = message.get(0);
+            assertTrue(command.startsWith("poll "));
 
-            message = message.substring(5);
-            message = message.replace(" ", "");
+            String[] split = splitCommand(command);
 
-            String[] split = message.split(",");
-
-            assertEquals("0", split[0].trim());     // Ocean Region 0 = West Atlantic Ocean Region
-            assertEquals("I", split[1].trim());     // Poll Type I = Individual poll
-            assertEquals(DNID, split[2].trim());             // DNID
-            assertEquals("D", split[3].trim());     // Response type
-            assertEquals("1", split[4].trim());     // Sub-address
-            assertEquals(satelliteNumber, split[5].trim());  // satellite number
-            assertEquals("0", split[6].trim());     // command type  0 = unreserved as required in response
-            assertEquals(memberNumber, split[7].trim());     // member number
-            assertEquals("0", split[8].trim());     // start frame   N/A here
-            assertEquals("", split[9].trim());      // reports per 24 hours A/A here
-            assertEquals("0", split[10].trim());    // ack  0
+            assertEquals("3", split[0].trim());
+            assertEquals("I", split[1].trim());
+            assertEquals(DNID, split[2].trim());
+            assertEquals("D", split[3].trim());
+            assertEquals("1", split[4].trim());
+            assertEquals(satelliteNumber, split[5].trim());
+            assertEquals("0", split[6].trim());
+            assertEquals(memberNumber, split[7].trim());
         }
     }
-    
+
+    @Test
+    public void createConfigPollTest() throws Exception {
+        try (LESMock les = new LESMock(PORT)) {
+            AssetDTO dto = AssetTestHelper.createBasicAsset();
+            AssetDTO asset = AssetTestHelper.createAsset(dto);
+            MobileTerminalDto mt = MobileTerminalTestHelper.createMobileTerminal();
+            MobileTerminalTestHelper.createConfigPollWithMT_Helper(asset, mt);
+
+            List<String> messageList = les.getMessage(30);
+
+            Set<ChannelDto> channels = mt.getChannels();
+            ChannelDto[] arr = channels.toArray(new ChannelDto[0]);
+            String DNID = arr[0].getDNID();
+            String satelliteNumber = mt.getSatelliteNumber();
+            String memberNumber = arr[0].getMemberNumber();
+
+            assertEquals(3, messageList.size());
+
+            // validation for common fields.
+            for (String command : messageList) {
+                assertTrue(command.startsWith("poll "));
+                String[] split = splitCommand(command);
+
+                assertEquals("3", split[0].trim());
+                assertEquals("I", split[1].trim());
+                assertEquals(DNID, split[2].trim());
+                assertEquals("1", split[4].trim());
+                assertEquals(satelliteNumber, split[5].trim());
+                assertEquals(memberNumber, split[7].trim());
+            }
+
+            String stop = messageList.get(0);
+            validateCommand(stop, "stop");
+
+            String config = messageList.get(1);
+            validateCommand(config, "config");
+
+            String start = messageList.get(2);
+            validateCommand(start, "start");
+        }
+    }
+
     // Find docker host machine ip. Replace this with 'host.docker.internal' when supported on Linux.
     private static String getDockerHostIp() throws SocketException {
         Enumeration<NetworkInterface> interfaces = NetworkInterface.getNetworkInterfaces();
@@ -139,5 +176,29 @@ public class InmarsatSystemIT extends AbstractRest {
             }
         }
         return "host.docker.internal";
+    }
+
+    private void validateCommand(String command, String type) {
+        String[] split = splitCommand(command);
+
+        // validate different parts of different polls
+        if (type.equalsIgnoreCase("stop")) {
+            assertEquals("N", split[3].trim());
+            assertEquals("6", split[6].trim());
+        } else if (type.equalsIgnoreCase("config")) {
+            assertEquals("N", split[3].trim());
+            assertEquals("4", split[6].trim());
+            assertEquals("5625", split[8].trim());
+            assertEquals("12", split[9].trim());
+        } else if (type.equalsIgnoreCase("start")) {
+            assertEquals("D", split[3].trim());
+            assertEquals("5", split[6].trim());
+        }
+    }
+
+    private String[] splitCommand(String command) {
+        command = command.substring(5);
+        command = command.replace(" ", "");
+        return command.split(",");
     }
 }
