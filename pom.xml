@@ -297,7 +297,7 @@
             <dependency>
                 <groupId>eu.europa.ec.fisheries.uvms.user</groupId>
                 <artifactId>user-liquibase</artifactId>
-                <type>sql</type>
+                <type>test-sql</type>
                 <version>${unionvms.project.user.module}</version>
                 <exclusions>
                     <exclusion>
