@@ -6,13 +6,13 @@
   <parent>
     <groupId>eu.europa.ec.fisheries.uvms</groupId>
     <artifactId>mare-pom</artifactId>
-    <version>1.6.0-MARE</version>
+    <version>1.6.0-MARE-SNAPSHOT</version>
     <relativePath />
   </parent>
 
 	<groupId>eu.europa.ec.fisheries.uvms.docker</groupId>
 	<artifactId>uvms-docker</artifactId>
-	<version>1.6.0-MARE${sha1}</version>
+    <version>${uvms.docker.version}</version>
 	<packaging>pom</packaging>
 	<name>uvms-docker</name>
 

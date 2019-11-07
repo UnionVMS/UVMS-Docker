@@ -7,3 +7,6 @@ changelog/
 *.project
 .DS_Store
 .Rhistory
+.classpath
+pom.xml.versionsBackup
+.flattened-pom.xml
