@@ -11,7 +11,7 @@
         </ram:CreationDateTime>
         <ram:PurposeCode listID="FLUX_GP_PURPOSE">9</ram:PurposeCode>
         <ram:OwnerFLUXParty>
-            <ram:ID schemeID="FLUX_GP_PARTY">XEU</ram:ID>
+            <ram:ID schemeID="FLUX_GP_PARTY">SWE</ram:ID>
         </ram:OwnerFLUXParty>
     </rsm:FLUXReportDocument>
     <rsm:FAReportDocument>
@@ -26,7 +26,7 @@
             </ram:CreationDateTime>
             <ram:PurposeCode listID="FLUX_GP_PURPOSE">9</ram:PurposeCode>
             <ram:OwnerFLUXParty>
-                <ram:ID schemeID="FLUX_GP_PARTY">CYP</ram:ID>
+                <ram:ID schemeID="FLUX_GP_PARTY">SWE</ram:ID>
             </ram:OwnerFLUXParty>
         </ram:RelatedFLUXReportDocument>
         <ram:SpecifiedFishingActivity>
@@ -40,7 +40,7 @@
                 <ram:WeightMeasure unitCode="KGM">150</ram:WeightMeasure>
                 <ram:TypeCode listID="FA_CATCH_TYPE">ONBOARD</ram:TypeCode>
                 <ram:RelatedFishingTrip>
-                    <ram:ID schemeID="EU_TRIP_ID">CYP-TRP-20170531000000000009</ram:ID>
+                    <ram:ID schemeID="EU_TRIP_ID">fishing-trip-1</ram:ID>
                 </ram:RelatedFishingTrip>
                 <ram:SpecifiedSizeDistribution>
                     <ram:ClassCode listID="FISH_SIZE_CLASS">LSC</ram:ClassCode>
@@ -84,7 +84,7 @@
                 </ram:ApplicableGearCharacteristic>
             </ram:SpecifiedFishingGear>
             <ram:SpecifiedFishingTrip>
-                <ram:ID schemeID="EU_TRIP_ID">CYP-TRP-20170608000000000010</ram:ID>
+                <ram:ID schemeID="EU_TRIP_ID">fishing-trip-1</ram:ID>
             </ram:SpecifiedFishingTrip>
         </ram:SpecifiedFishingActivity>
         <ram:SpecifiedVesselTransportMeans>
@@ -100,7 +100,7 @@
                 <ram:SpecifiedStructuredAddress>
                     <ram:StreetName>Street Q</ram:StreetName>
                     <ram:CityName>City R</ram:CityName>
-                    <ram:CountryID schemeID="TERRITORY">CYP</ram:CountryID>
+                    <ram:CountryID schemeID="TERRITORY">SWE</ram:CountryID>
                 </ram:SpecifiedStructuredAddress>
                 <ram:SpecifiedContactPerson>
                     <ram:GivenName>Jamie</ram:GivenName>
