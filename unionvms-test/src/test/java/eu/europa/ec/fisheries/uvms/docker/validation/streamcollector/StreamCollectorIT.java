@@ -42,7 +42,7 @@ public class StreamCollectorIT extends AbstractRest {
         messageHelper.close();
     }
 
-    @Test(timeout = 10000)
+    @Test(timeout = 15000)
     public void sseTest() throws Exception {
         List<String> sseMessages = new ArrayList<>();
         String movementGuid;
