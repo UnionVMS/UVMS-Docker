@@ -50,9 +50,9 @@ public class VMSSystemHelper {
     public static final String INMARSAT_SELECTOR = "ServiceName='eu.europa.ec.fisheries.uvms.plugins.inmarsat'";
     public static String emailSelector = "ServiceName='" + SERVICE_NAME + "'";
     public static String emailPluginName = "TEST EMAIL";
-    public static String FLUX_NAME = "FLUX Movement Plugin";
-    public static String NAF_NAME = "naf";
-    public static String REST_NAME = "REST Plugin";
+    public static String FLUX_NAME = "eu.europa.ec.fisheries.uvms.plugins.flux.movement";
+    public static String NAF_NAME = "eu.europa.ec.fisheries.uvms.plugins.naf";
+    public static String REST_NAME = "eu.europa.ec.fisheries.uvms.plugins.rest.movement";
     
     public static SetReportRequest triggerBasicRuleAndSendToFlux(String fluxEndpoint) throws Exception {
         return triggerBasicRuleWithAction(ActionType.SEND_REPORT, FLUX_NAME, fluxEndpoint, SetReportRequest.class, FLUX_SELECTOR);
