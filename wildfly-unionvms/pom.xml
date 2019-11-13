@@ -135,6 +135,11 @@
 		<!-- plugin modules -->
 		<dependency>
 			<groupId>eu.europa.ec.fisheries.uvms.plugins</groupId>
+			<artifactId>ais-module</artifactId>
+			<type>ear</type>
+		</dependency>
+		<dependency>
+			<groupId>eu.europa.ec.fisheries.uvms.plugins</groupId>
 			<artifactId>inmarsat-module</artifactId>
   			<type>ear</type>
 		</dependency>
@@ -312,7 +317,11 @@
 									<jar destfile="${project.basedir}/target/dockerfile/deployments/print-servlet-${unionvms.project.mapfishprint.version}.war" update="true">
 										<zipfileset dir="${project.basedir}/target/dockerfile/jboss-deployment/web-app" includes="*.xml" prefix="WEB-INF" />
 									</jar>
-									
+
+									<jar destfile="${project.basedir}/target/dockerfile/deployments/ais-module-${unionvms.project.plugins.ais}.ear" update="true">
+										<zipfileset dir="${project.basedir}/target/dockerfile/jboss-deployment/plugins" includes="*.xml" prefix="META-INF" />
+									</jar>
+
 									<jar destfile="${project.basedir}/target/dockerfile/deployments/inmarsat-module-${unionvms.project.plugins.inmarsat}.ear" update="true">
 										<zipfileset dir="${project.basedir}/target/dockerfile/jboss-deployment/plugins" includes="*.xml" prefix="META-INF" />
 									</jar>
