@@ -135,6 +135,11 @@
 		<!-- plugin modules -->
 		<dependency>
 			<groupId>eu.europa.ec.fisheries.uvms.plugins</groupId>
+			<artifactId>ais-module</artifactId>
+			<type>ear</type>
+		</dependency>
+		<dependency>
+			<groupId>eu.europa.ec.fisheries.uvms.plugins</groupId>
 			<artifactId>inmarsat-module</artifactId>
   			<type>ear</type>
 		</dependency>
