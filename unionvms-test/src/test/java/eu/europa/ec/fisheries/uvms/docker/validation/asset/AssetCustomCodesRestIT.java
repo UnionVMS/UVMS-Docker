@@ -23,7 +23,7 @@ public class AssetCustomCodesRestIT extends AbstractRest {
     @Test
     public void listConstantsTest() throws Exception {
         List<String> response = getWebTarget()
-                .path("asset/rest/customcodes2/listconstants")
+                .path("asset/rest/customcodes/listconstants")
                 .request(MediaType.APPLICATION_JSON)
                 .header(HttpHeaders.AUTHORIZATION, getValidJwtToken())
                 .get(new GenericType<List<String>>() {});

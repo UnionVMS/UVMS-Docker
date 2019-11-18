@@ -13,12 +13,13 @@ copy of the GNU General Public License along with the IFDM Suite. If not, see <h
 */
 package eu.europa.ec.fisheries.uvms.docker.validation.asset;
 
+import eu.europa.ec.fisheries.uvms.asset.client.model.AssetDTO;
+import eu.europa.ec.fisheries.uvms.docker.validation.common.AbstractRest;
+import org.junit.Test;
+
 import java.time.OffsetDateTime;
 import java.time.ZoneId;
 import java.util.List;
-import org.junit.Test;
-import eu.europa.ec.fisheries.uvms.asset.client.model.AssetDTO;
-import eu.europa.ec.fisheries.uvms.docker.validation.common.AbstractRest;
 
 public class AssetHistoryRestIT extends AbstractRest {
 
