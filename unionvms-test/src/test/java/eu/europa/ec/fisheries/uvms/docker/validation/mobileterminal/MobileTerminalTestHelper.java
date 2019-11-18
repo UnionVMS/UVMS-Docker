@@ -1,14 +1,11 @@
 package eu.europa.ec.fisheries.uvms.docker.validation.mobileterminal;
 
 import eu.europa.ec.fisheries.schema.mobileterminal.polltypes.v1.*;
-import eu.europa.ec.fisheries.schema.mobileterminal.types.v1.*;
+import eu.europa.ec.fisheries.schema.mobileterminal.types.v1.PluginCapability;
+import eu.europa.ec.fisheries.schema.mobileterminal.types.v1.PluginCapabilityType;
 import eu.europa.ec.fisheries.uvms.asset.client.model.AssetDTO;
 import eu.europa.ec.fisheries.uvms.docker.validation.common.AbstractHelper;
-import eu.europa.ec.fisheries.uvms.docker.validation.mobileterminal.dto.ChannelDto;
-import eu.europa.ec.fisheries.uvms.docker.validation.mobileterminal.dto.CreatePollResultDto;
-import eu.europa.ec.fisheries.uvms.docker.validation.mobileterminal.dto.MTQuery;
-import eu.europa.ec.fisheries.uvms.docker.validation.mobileterminal.dto.MobileTerminalDto;
-import eu.europa.ec.fisheries.uvms.docker.validation.mobileterminal.dto.MobileTerminalPluginDto;
+import eu.europa.ec.fisheries.uvms.docker.validation.mobileterminal.dto.*;
 
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.core.GenericType;
@@ -60,7 +57,7 @@ public final class MobileTerminalTestHelper extends AbstractHelper {
         pollRequestType.getMobileTerminals().add(pollMobileTerminal);
 
         CreatePollResultDto response = getWebTarget()
-                .path("asset/rest/poll2")
+                .path("asset/rest/poll")
                 .request(MediaType.APPLICATION_JSON)
                 .header(HttpHeaders.AUTHORIZATION, getValidJwtToken())
                 .post(Entity.json(pollRequestType), CreatePollResultDto.class);
@@ -109,7 +106,7 @@ public final class MobileTerminalTestHelper extends AbstractHelper {
 		pollRequest.setUserName("vms_admin_com");
 
 		CreatePollResultDto createdPoll = getWebTarget()
-				.path("asset/rest/poll2")
+				.path("asset/rest/poll")
 				.request(MediaType.APPLICATION_JSON)
 				.header(HttpHeaders.AUTHORIZATION, getValidJwtToken())
 				.post(Entity.json(pollRequest), CreatePollResultDto.class);
@@ -133,7 +130,7 @@ public final class MobileTerminalTestHelper extends AbstractHelper {
 
 	public static MobileTerminalDto persistMobileTerminal(MobileTerminalDto terminal) {
 	    MobileTerminalDto createdTerminal = getWebTarget()
-                .path("asset/rest/mobileterminal2")
+                .path("asset/rest/mobileterminal")
                 .request(MediaType.APPLICATION_JSON)
                 .header(HttpHeaders.AUTHORIZATION, getValidJwtToken())
                 .post(Entity.json(terminal), MobileTerminalDto.class);
@@ -144,7 +141,7 @@ public final class MobileTerminalTestHelper extends AbstractHelper {
 	
 	static MobileTerminalDto getMobileTerminalById(UUID uuid) {
 		return getWebTarget()
-				.path("asset/rest/mobileterminal2")
+				.path("asset/rest/mobileterminal")
 				.path(uuid.toString())
 				.request(MediaType.APPLICATION_JSON)
 				.header(HttpHeaders.AUTHORIZATION, getValidJwtToken())
@@ -153,7 +150,7 @@ public final class MobileTerminalTestHelper extends AbstractHelper {
 
 	static MobileTerminalDto updateMobileTerminal(MobileTerminalDto mobileTerminal) {
 		return getWebTarget()
-				.path("asset/rest/mobileterminal2")
+				.path("asset/rest/mobileterminal")
 				.queryParam("comment", "MobileTerminal is Archived")
 				.request(MediaType.APPLICATION_JSON)
 				.header(HttpHeaders.AUTHORIZATION, getValidJwtToken())
@@ -162,7 +159,7 @@ public final class MobileTerminalTestHelper extends AbstractHelper {
 
 	static Response getMobileTerminalList(MTQuery queryRequest) {
 		return getWebTarget()
-				.path("asset/rest/mobileterminal2/list")
+				.path("asset/rest/mobileterminal/list")
 				.request(MediaType.APPLICATION_JSON)
 				.header(HttpHeaders.AUTHORIZATION, getValidJwtToken())
 				.post(Entity.json(queryRequest));
@@ -170,7 +167,7 @@ public final class MobileTerminalTestHelper extends AbstractHelper {
 
 	static MobileTerminalDto activateMobileTerminal(UUID uuid) {
 		return getWebTarget()
-				.path("asset/rest/mobileterminal2")
+				.path("asset/rest/mobileterminal")
 				.path(uuid.toString())
 				.path("status")
 				.queryParam("comment", "Activate MobileTerminal")
@@ -181,7 +178,7 @@ public final class MobileTerminalTestHelper extends AbstractHelper {
 
 	static MobileTerminalDto removeMobileTerminal(UUID uuid) {
 		return getWebTarget()
-				.path("asset/rest/mobileterminal2")
+				.path("asset/rest/mobileterminal")
 				.path(uuid.toString())
 				.path("status")
 				.queryParam("comment", "Remove MobileTerminal")
@@ -192,7 +189,7 @@ public final class MobileTerminalTestHelper extends AbstractHelper {
 
 	static MobileTerminalDto inactivateMobileTerminal(UUID uuid) {
 		return getWebTarget()
-				.path("asset/rest/mobileterminal2")
+				.path("asset/rest/mobileterminal")
 				.path(uuid.toString())
 				.path("status")
 				.queryParam("comment", "InActivate MobileTerminal")
@@ -204,7 +201,7 @@ public final class MobileTerminalTestHelper extends AbstractHelper {
 	public static MobileTerminalDto assignMobileTerminal(AssetDTO asset, MobileTerminalDto mobileTerminal) {
 
 		return getWebTarget()
-				.path("asset/rest/mobileterminal2")
+				.path("asset/rest/mobileterminal")
 				.path(mobileTerminal.getId().toString())
 				.path("assign")
 				.path(asset.getId().toString())
@@ -217,7 +214,7 @@ public final class MobileTerminalTestHelper extends AbstractHelper {
 	static MobileTerminalDto unAssignMobileTerminal(AssetDTO asset, MobileTerminalDto mobileTerminal) {
 
 		return getWebTarget()
-				.path("asset/rest/mobileterminal2")
+				.path("asset/rest/mobileterminal")
 				.path(mobileTerminal.getId().toString())
 				.path("unassign")
 				.path(asset.getId().toString())
@@ -229,7 +226,7 @@ public final class MobileTerminalTestHelper extends AbstractHelper {
 
 	static List<MobileTerminalDto> getMobileTerminalHistoryList(UUID uuid) {
 		return getWebTarget()
-				.path("asset/rest/mobileterminal2")
+				.path("asset/rest/mobileterminal")
 				.path(uuid.toString())
 				.path("history")
 				.request(MediaType.APPLICATION_JSON)

@@ -1,32 +1,20 @@
 package eu.europa.ec.fisheries.uvms.docker.validation.asset;
 
-import java.math.BigDecimal;
-import java.util.Date;
-import java.util.List;
-import java.util.Random;
-import java.util.UUID;
-import javax.jms.JMSException;
-import javax.jms.TextMessage;
 import eu.europa.ec.fisheries.uvms.asset.model.mapper.AssetModuleRequestMapper;
 import eu.europa.ec.fisheries.uvms.asset.model.mapper.JAXBMarshaller;
 import eu.europa.ec.fisheries.uvms.docker.validation.common.MessageHelper;
 import eu.europa.ec.fisheries.wsdl.asset.group.AssetGroup;
 import eu.europa.ec.fisheries.wsdl.asset.group.ListAssetGroupResponse;
-import eu.europa.ec.fisheries.wsdl.asset.module.AssetModuleMethod;
-import eu.europa.ec.fisheries.wsdl.asset.module.FlagStateTypeResponse;
-import eu.europa.ec.fisheries.wsdl.asset.module.GetAssetModuleRequest;
-import eu.europa.ec.fisheries.wsdl.asset.module.GetAssetModuleResponse;
-import eu.europa.ec.fisheries.wsdl.asset.module.PingResponse;
-import eu.europa.ec.fisheries.wsdl.asset.types.Asset;
-import eu.europa.ec.fisheries.wsdl.asset.types.AssetId;
-import eu.europa.ec.fisheries.wsdl.asset.types.AssetIdType;
-import eu.europa.ec.fisheries.wsdl.asset.types.AssetListCriteria;
-import eu.europa.ec.fisheries.wsdl.asset.types.AssetListPagination;
-import eu.europa.ec.fisheries.wsdl.asset.types.AssetListQuery;
-import eu.europa.ec.fisheries.wsdl.asset.types.AssetProdOrgModel;
-import eu.europa.ec.fisheries.wsdl.asset.types.CarrierSource;
-import eu.europa.ec.fisheries.wsdl.asset.types.FlagStateType;
-import eu.europa.ec.fisheries.wsdl.asset.types.ListAssetResponse;
+import eu.europa.ec.fisheries.wsdl.asset.module.*;
+import eu.europa.ec.fisheries.wsdl.asset.types.*;
+
+import javax.jms.JMSException;
+import javax.jms.TextMessage;
+import java.math.BigDecimal;
+import java.util.Date;
+import java.util.List;
+import java.util.Random;
+import java.util.UUID;
 
 public class AssetJMSHelper {
 
