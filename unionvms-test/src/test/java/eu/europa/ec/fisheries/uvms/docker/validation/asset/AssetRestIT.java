@@ -15,7 +15,6 @@ package eu.europa.ec.fisheries.uvms.docker.validation.asset;
 
 import eu.europa.ec.fisheries.uvms.asset.client.model.*;
 import eu.europa.ec.fisheries.uvms.asset.model.constants.AuditOperationEnum;
-import eu.europa.ec.fisheries.uvms.commons.date.DateUtils;
 import eu.europa.ec.fisheries.uvms.docker.validation.common.AbstractRest;
 import org.hamcrest.CoreMatchers;
 import org.junit.Ignore;

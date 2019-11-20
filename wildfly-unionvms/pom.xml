@@ -4,13 +4,13 @@
 	<parent>
 		<groupId>eu.europa.ec.fisheries.uvms.docker</groupId>
 		<artifactId>uvms-docker</artifactId>
-		<version>3.40.5.w18-ERS-SNAPSHOT</version>
+		<version>3.40.10.w18-ERS-SNAPSHOT</version>
 		<relativePath>../pom.xml</relativePath>
 	</parent>
 
 	<groupId>eu.europa.ec.fisheries.uvms.docker</groupId>
 	<artifactId>uvms-docker-wildfly-unionvms</artifactId>
-	<version>3.40.5.w18-ERS-SNAPSHOT</version>
+	<version>3.40.10.w18-ERS-SNAPSHOT</version>
 	<packaging>pom</packaging>
 	<name>uvms-docker-wildfly-unionvms</name>
 
@@ -144,6 +144,11 @@
 		</dependency>
 
 		<!-- plugin modules -->
+		<dependency>
+			<groupId>eu.europa.ec.fisheries.uvms.plugins</groupId>
+			<artifactId>ais-module</artifactId>
+			<type>ear</type>
+		</dependency>
 		<dependency>
 			<groupId>eu.europa.ec.fisheries.uvms.plugins</groupId>
 			<artifactId>inmarsat-module</artifactId>
@@ -327,7 +332,11 @@
 									<jar destfile="${project.basedir}/target/dockerfile/deployments/print-servlet-${unionvms.project.mapfishprint.version}.war" update="true">
 										<zipfileset dir="${project.basedir}/target/dockerfile/jboss-deployment/web-app" includes="*.xml" prefix="WEB-INF" />
 									</jar>
-									
+
+									<jar destfile="${project.basedir}/target/dockerfile/deployments/ais-module-${unionvms.project.plugins.ais}.ear" update="true">
+										<zipfileset dir="${project.basedir}/target/dockerfile/jboss-deployment/plugins" includes="*.xml" prefix="META-INF" />
+									</jar>
+
 									<jar destfile="${project.basedir}/target/dockerfile/deployments/inmarsat-module-${unionvms.project.plugins.inmarsat}.ear" update="true">
 										<zipfileset dir="${project.basedir}/target/dockerfile/jboss-deployment/plugins" includes="*.xml" prefix="META-INF" />
 									</jar>

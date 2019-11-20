@@ -1,14 +1,5 @@
 package eu.europa.ec.fisheries.uvms.docker.validation.asset;
 
-import java.math.BigDecimal;
-import java.util.Date;
-import java.util.List;
-import java.util.Random;
-import java.util.UUID;
-import javax.jms.JMSException;
-import javax.jms.TextMessage;
-
-import eu.europa.ec.fisheries.uvms.asset.model.exception.AssetException;
 import eu.europa.ec.fisheries.uvms.asset.model.mapper.AssetModuleRequestMapper;
 import eu.europa.ec.fisheries.uvms.asset.model.mapper.JAXBMarshaller;
 import eu.europa.ec.fisheries.uvms.docker.validation.common.MessageHelper;
@@ -29,6 +20,14 @@ import eu.europa.ec.fisheries.wsdl.asset.types.AssetProdOrgModel;
 import eu.europa.ec.fisheries.wsdl.asset.types.CarrierSource;
 import eu.europa.ec.fisheries.wsdl.asset.types.FlagStateType;
 import eu.europa.ec.fisheries.wsdl.asset.types.ListAssetResponse;
+
+import javax.jms.JMSException;
+import javax.jms.TextMessage;
+import java.math.BigDecimal;
+import java.util.Date;
+import java.util.List;
+import java.util.Random;
+import java.util.UUID;
 
 public class AssetJMSHelper {
 

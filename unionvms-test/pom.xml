@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>eu.europa.ec.fisheries.uvms.docker</groupId>
 		<artifactId>uvms-docker</artifactId>
-		<version>3.40.5.w18-ERS-SNAPSHOT</version>
+		<version>3.40.10.w18-ERS-SNAPSHOT</version>
 		<relativePath>../pom.xml</relativePath>
 	</parent>
 	
@@ -86,6 +86,10 @@
 					<groupId>javax</groupId>
 					<artifactId>javaee-api</artifactId>
 				</exclusion>
+				<exclusion>
+					<groupId>org.projectlombok</groupId>
+					<artifactId>lombok</artifactId>
+				</exclusion>
 			</exclusions>
 		</dependency>
 		<dependency>
@@ -165,6 +169,13 @@
 		    <artifactId>jetty-servlet</artifactId>
 		    <version>9.4.19.v20190610</version>
 		</dependency>
+
+		<dependency>
+			<groupId>fish.focus.uvms.maven</groupId>
+			<artifactId>uvms-pom-java11-deps</artifactId>
+			<version>2.4</version>
+			<type>pom</type>
+		</dependency>
 	</dependencies>
 	<build>
 		<pluginManagement>
@@ -180,7 +191,7 @@
 			<plugin>
                 <groupId>org.apache.cxf</groupId>
                 <artifactId>cxf-codegen-plugin</artifactId>
-                <version>3.1.13</version>
+                <version>3.3.4</version>
                 <executions>
                     <execution>
                         <id>wsdl-services</id>

@@ -13,7 +13,6 @@ copy of the GNU General Public License along with the IFDM Suite. If not, see <h
 */
 package eu.europa.ec.fisheries.uvms.docker.validation.mobileterminal;
 
-import eu.europa.ec.fisheries.uvms.commons.rest.dto.ResponseDto;
 import eu.europa.ec.fisheries.uvms.docker.validation.common.AbstractRest;
 import org.junit.Test;
 
@@ -26,7 +25,7 @@ public class ConfigRestIT extends AbstractRest {
 	@Test
 	public void getConfigTranspondersTest() {
 		Response response = getWebTarget()
-				.path("asset/rest/config2/MT/transponders")
+				.path("asset/rest/config/MT/transponders")
 				.request(MediaType.APPLICATION_JSON)
 				.header(HttpHeaders.AUTHORIZATION, getValidJwtToken())
 				.get(Response.class);
@@ -40,7 +39,7 @@ public class ConfigRestIT extends AbstractRest {
 	@Test
 	public void getConfigSearchFieldsTest() {
 		Response response = getWebTarget()
-				.path("asset/rest/config2/MT/searchfields")
+				.path("asset/rest/config/MT/searchfields")
 				.request(MediaType.APPLICATION_JSON)
 				.header(HttpHeaders.AUTHORIZATION, getValidJwtToken())
 				.get(Response.class);
@@ -54,7 +53,7 @@ public class ConfigRestIT extends AbstractRest {
 	@Test
 	public void getConfigurationTest() {
 		Response response = getWebTarget()
-				.path("asset/rest/config2/MT")
+				.path("asset/rest/config/MT")
 				.request(MediaType.APPLICATION_JSON)
 				.header(HttpHeaders.AUTHORIZATION, getValidJwtToken())
 				.get(Response.class);
