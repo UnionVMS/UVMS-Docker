@@ -41,6 +41,10 @@
 		                  <file>${project.build.directory}/classes/docker-compose.yml</file>
 		                  <type>yml</type>
 		                </artifact>
+		                <artifact>
+		                  <file>${project.build.directory}/classes/arquillian-docker-compose.yml</file>
+		                  <type>yml</type>
+		                </artifact>
 		              </artifacts>
 		            </configuration>
 		          </execution>

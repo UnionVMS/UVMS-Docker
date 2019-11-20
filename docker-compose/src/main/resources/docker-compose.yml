@@ -23,3 +23,7 @@ services:
   activemq-release:
     image: uvms/activemq:${project.version}
     hostname: activemq
+    ports: 
+     - "38161:8161"
+     - "31616:61616"
+     - "30080:8080"
