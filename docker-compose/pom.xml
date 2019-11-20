@@ -44,6 +44,7 @@
 		                <artifact>
 		                  <file>${project.build.directory}/classes/arquillian-docker-compose.yml</file>
 		                  <type>yml</type>
+                          <classifier>arquillian</classifier>
 		                </artifact>
 		              </artifacts>
 		            </configuration>
