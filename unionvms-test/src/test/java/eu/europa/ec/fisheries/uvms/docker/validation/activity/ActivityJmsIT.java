@@ -23,6 +23,7 @@ import eu.europa.ec.fisheries.wsdl.asset.types.Asset;
 import eu.europa.ec.fisheries.wsdl.asset.types.AssetIdType;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Test;
 import un.unece.uncefact.data.standard.fluxfareportmessage._3.FLUXFAReportMessage;
 import un.unece.uncefact.data.standard.reusableaggregatebusinessinformationentity._20.FAReportDocument;
@@ -69,6 +70,7 @@ public class ActivityJmsIT extends AbstractRest {
 		messageHelper.close();
 	}
 
+	@Ignore
 	@Test(timeout = 15000)
 	public void createFishingReport() throws Exception {
 		Asset asset = createShipAsset();
