@@ -1,12 +1,12 @@
 package eu.europa.ec.fisheries.uvms.docker.validation.activity;
 
 import com.google.common.collect.Lists;
-import eu.europa.ec.fisheries.ers.service.dto.FishingActivityReportDTO;
-import eu.europa.ec.fisheries.ers.service.dto.FluxReportIdentifierDTO;
-import eu.europa.ec.fisheries.ers.service.search.FishingActivityQuery;
 import eu.europa.ec.fisheries.uvms.activity.model.exception.ActivityModelMarshallException;
 import eu.europa.ec.fisheries.uvms.activity.model.mapper.JAXBMarshaller;
 import eu.europa.ec.fisheries.uvms.activity.model.schemas.*;
+import eu.europa.ec.fisheries.uvms.activity.service.dto.FishingActivityReportDTO;
+import eu.europa.ec.fisheries.uvms.activity.service.dto.FluxReportIdentifierDTO;
+import eu.europa.ec.fisheries.uvms.activity.service.search.FishingActivityQuery;
 import eu.europa.ec.fisheries.uvms.asset.client.model.AssetDTO;
 import eu.europa.ec.fisheries.uvms.asset.client.model.AssetGroup;
 import eu.europa.ec.fisheries.uvms.asset.client.model.AssetListResponse;
