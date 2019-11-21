@@ -1,0 +1,2913 @@
+<ns0:FLUXFAReportMessage xmlns="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ns0="urn:un:unece:uncefact:data:standard:FLUXFAReportMessage:3">
+	<ns0:FLUXReportDocument>
+		<ns1:ID schemeID="UUID" xmlns:ns1="urn:un:unece:uncefact:data:standard:ReusableAggregateBusinessInformationEntity:20">placeholder-flux-report-document-id</ns1:ID>
+		<ns1:ReferencedID schemeID="UUID" xmlns:ns1="urn:un:unece:uncefact:data:standard:ReusableAggregateBusinessInformationEntity:20">placeholder-flux-report-document-reference-id</ns1:ReferencedID>
+		<ns1:CreationDateTime xmlns:ns1="urn:un:unece:uncefact:data:standard:ReusableAggregateBusinessInformationEntity:20">
+			<ns2:DateTime xmlns:ns2="urn:un:unece:uncefact:data:standard:UnqualifiedDataType:20">2012-05-20T19:13:15.254Z</ns2:DateTime>
+		</ns1:CreationDateTime>
+		<ns1:PurposeCode listID="FLUX_GP_PURPOSE" xmlns:ns1="urn:un:unece:uncefact:data:standard:ReusableAggregateBusinessInformationEntity:20">9</ns1:PurposeCode>
+		<ns1:OwnerFLUXParty xmlns:ns1="urn:un:unece:uncefact:data:standard:ReusableAggregateBusinessInformationEntity:20">
+			<ns1:ID schemeID="FLUX_GP_PARTY">SWE</ns1:ID>
+		</ns1:OwnerFLUXParty>
+	</ns0:FLUXReportDocument>
+	<ns0:FAReportDocument>
+		<ns6:TypeCode listID="FLUX_FA_REPORT_TYPE" xmlns:ns6="urn:un:unece:uncefact:data:standard:ReusableAggregateBusinessInformationEntity:20">DECLARATION</ns6:TypeCode>
+		<ns6:AcceptanceDateTime xmlns:ns6="urn:un:unece:uncefact:data:standard:ReusableAggregateBusinessInformationEntity:20">
+			<ns8:DateTime xmlns:ns8="urn:un:unece:uncefact:data:standard:UnqualifiedDataType:20">2012-05-18T22:55:36.093Z</ns8:DateTime>
+		</ns6:AcceptanceDateTime>
+		<ns6:RelatedFLUXReportDocument xmlns:ns6="urn:un:unece:uncefact:data:standard:ReusableAggregateBusinessInformationEntity:20">
+			<ns6:ID schemeID="UUID">placeholder-fishing-activity-report-document-id</ns6:ID>
+			<ns6:CreationDateTime>
+				<ns8:DateTime xmlns:ns8="urn:un:unece:uncefact:data:standard:UnqualifiedDataType:20">2012-05-20T19:13:16.342Z</ns8:DateTime>
+			</ns6:CreationDateTime>
+			<ns6:PurposeCode listID="FLUX_GP_PURPOSE">9</ns6:PurposeCode>
+			<ns6:OwnerFLUXParty>
+				<ns6:ID schemeID="FLUX_GP_PARTY">SWE</ns6:ID>
+			</ns6:OwnerFLUXParty>
+		</ns6:RelatedFLUXReportDocument>
+		<ns6:SpecifiedFishingActivity xmlns:ns6="urn:un:unece:uncefact:data:standard:ReusableAggregateBusinessInformationEntity:20">
+			<ns6:TypeCode listID="FLUX_FA_TYPE">DEPARTURE</ns6:TypeCode>
+			<ns6:OccurrenceDateTime>
+				<ns8:DateTime xmlns:ns8="urn:un:unece:uncefact:data:standard:UnqualifiedDataType:20">2012-05-18T22:56:51.093Z</ns8:DateTime>
+			</ns6:OccurrenceDateTime>
+			<ns6:ReasonCode listID="FA_REASON_DEPARTURE">FIS</ns6:ReasonCode>
+			<ns6:RelatedFLUXLocation>
+				<ns6:TypeCode listID="FLUX_LOCATION_TYPE">LOCATION</ns6:TypeCode>
+				<ns6:CountryID schemeID="TERRITORY">SWE</ns6:CountryID>
+				<ns6:ID schemeID="LOCATION">SEHKL</ns6:ID>
+			</ns6:RelatedFLUXLocation>
+			<ns6:SpecifiedFishingGear>
+				<ns6:TypeCode listID="GEAR_TYPE">OTB</ns6:TypeCode>
+				<ns6:RoleCode listID="FA_GEAR_ROLE">ONBOARD</ns6:RoleCode>
+				<ns6:ApplicableGearCharacteristic>
+					<ns6:TypeCode listID="FA_GEAR_CHARACTERISTIC">GM</ns6:TypeCode>
+					<ns6:ValueMeasure unitCode="MTR">1</ns6:ValueMeasure>
+				</ns6:ApplicableGearCharacteristic>
+				<ns6:ApplicableGearCharacteristic>
+					<ns6:TypeCode listID="FA_GEAR_CHARACTERISTIC">ME</ns6:TypeCode>
+					<ns6:ValueMeasure unitCode="MMT">122</ns6:ValueMeasure>
+				</ns6:ApplicableGearCharacteristic>
+				<ns6:ApplicableGearCharacteristic>
+					<ns6:TypeCode listID="FA_GEAR_CHARACTERISTIC">GD</ns6:TypeCode>
+					<ns6:Value>OTB</ns6:Value>
+				</ns6:ApplicableGearCharacteristic>
+			</ns6:SpecifiedFishingGear>
+			<ns6:SpecifiedFishingGear>
+				<ns6:TypeCode listID="GEAR_TYPE">OTB</ns6:TypeCode>
+				<ns6:RoleCode listID="FA_GEAR_ROLE">ONBOARD</ns6:RoleCode>
+				<ns6:ApplicableGearCharacteristic>
+					<ns6:TypeCode listID="FA_GEAR_CHARACTERISTIC">GM</ns6:TypeCode>
+					<ns6:ValueMeasure unitCode="MTR">2</ns6:ValueMeasure>
+				</ns6:ApplicableGearCharacteristic>
+				<ns6:ApplicableGearCharacteristic>
+					<ns6:TypeCode listID="FA_GEAR_CHARACTERISTIC">ME</ns6:TypeCode>
+					<ns6:ValueMeasure unitCode="MMT">90</ns6:ValueMeasure>
+				</ns6:ApplicableGearCharacteristic>
+				<ns6:ApplicableGearCharacteristic>
+					<ns6:TypeCode listID="FA_GEAR_CHARACTERISTIC">GD</ns6:TypeCode>
+					<ns6:Value>OTB</ns6:Value>
+				</ns6:ApplicableGearCharacteristic>
+			</ns6:SpecifiedFishingGear>
+			<ns6:SpecifiedFishingTrip>
+				<ns6:ID schemeID="EU_TRIP_ID">placeholder-fishing-trip-id</ns6:ID>
+			</ns6:SpecifiedFishingTrip>
+		</ns6:SpecifiedFishingActivity>
+		<ns6:SpecifiedVesselTransportMeans xmlns:ns6="urn:un:unece:uncefact:data:standard:ReusableAggregateBusinessInformationEntity:20">
+			<ns2:ID schemeID="CFR" xmlns:ns2="urn:un:unece:uncefact:data:standard:ReusableAggregateBusinessInformationEntity:20">placeholder-vessel-cfr-id</ns2:ID>
+			<ns2:RoleCode listID="FA_VESSEL_ROLE" xmlns:ns2="urn:un:unece:uncefact:data:standard:ReusableAggregateBusinessInformationEntity:20">CATCHING_VESSEL</ns2:RoleCode>
+			<ns2:RegistrationVesselCountry xmlns:ns2="urn:un:unece:uncefact:data:standard:ReusableAggregateBusinessInformationEntity:20">
+				<ns2:ID schemeID="TERRITORY">SWE</ns2:ID>
+			</ns2:RegistrationVesselCountry>
+			<ns2:SpecifiedContactParty xmlns:ns2="urn:un:unece:uncefact:data:standard:ReusableAggregateBusinessInformationEntity:20">
+				<ns3:RoleCode listID="FLUX_CONTACT_ROLE" xmlns:ns3="urn:un:unece:uncefact:data:standard:ReusableAggregateBusinessInformationEntity:20">MASTER</ns3:RoleCode>
+				<ns3:SpecifiedStructuredAddress xmlns:ns3="urn:un:unece:uncefact:data:standard:ReusableAggregateBusinessInformationEntity:20">
+					<ns3:StreetName>placeholder-street-name</ns3:StreetName>
+					<ns3:CityName>placeholder-city-name</ns3:CityName>
+					<ns3:CountryID schemeID="TERRITORY">SWE</ns3:CountryID>
+					<ns3:PlotIdentification languageID="GBR">N/A</ns3:PlotIdentification>
+					<ns3:PostalArea>placeholder-postal-area</ns3:PostalArea>
+				</ns3:SpecifiedStructuredAddress>
+				<ns3:SpecifiedContactPerson xmlns:ns3="urn:un:unece:uncefact:data:standard:ReusableAggregateBusinessInformationEntity:20">
+					<ns3:GivenName>placeholder-contact-person-given-name</ns3:GivenName>
+					<ns3:FamilyName>placeholder-contact-person-family-name</ns3:FamilyName>
+				</ns3:SpecifiedContactPerson>
+			</ns2:SpecifiedContactParty>
+		</ns6:SpecifiedVesselTransportMeans>
+	</ns0:FAReportDocument>
+	<ns0:FAReportDocument>
+		<ns6:TypeCode listID="FLUX_FA_REPORT_TYPE" xmlns:ns6="urn:un:unece:uncefact:data:standard:ReusableAggregateBusinessInformationEntity:20">DECLARATION</ns6:TypeCode>
+		<ns6:AcceptanceDateTime xmlns:ns6="urn:un:unece:uncefact:data:standard:ReusableAggregateBusinessInformationEntity:20">
+			<ns8:DateTime xmlns:ns8="urn:un:unece:uncefact:data:standard:UnqualifiedDataType:20">2012-05-20T16:23:45.093Z</ns8:DateTime>
+		</ns6:AcceptanceDateTime>
+		<ns6:RelatedFLUXReportDocument xmlns:ns6="urn:un:unece:uncefact:data:standard:ReusableAggregateBusinessInformationEntity:20">
+			<ns6:ID schemeID="UUID">placeholder-fishing-activity-report-document-id</ns6:ID>
+			<ns6:ReferencedID schemeID="UUID">placeholder-fishing-activity-report-document-reference-id</ns6:ReferencedID>
+			<ns6:CreationDateTime>
+				<ns8:DateTime xmlns:ns8="urn:un:unece:uncefact:data:standard:UnqualifiedDataType:20">2012-05-20T19:13:16.344Z</ns8:DateTime>
+			</ns6:CreationDateTime>
+			<ns6:PurposeCode listID="FLUX_GP_PURPOSE">5</ns6:PurposeCode>
+			<ns6:OwnerFLUXParty>
+				<ns6:ID schemeID="FLUX_GP_PARTY">SWE</ns6:ID>
+			</ns6:OwnerFLUXParty>
+		</ns6:RelatedFLUXReportDocument>
+		<ns6:SpecifiedFishingActivity xmlns:ns6="urn:un:unece:uncefact:data:standard:ReusableAggregateBusinessInformationEntity:20">
+			<ns6:TypeCode listID="FLUX_FA_TYPE">FISHING_OPERATION</ns6:TypeCode>
+			<ns6:OccurrenceDateTime>
+				<ns8:DateTime xmlns:ns8="urn:un:unece:uncefact:data:standard:UnqualifiedDataType:20">2012-05-19T02:54:51.093Z</ns8:DateTime>
+			</ns6:OccurrenceDateTime>
+			<ns6:VesselRelatedActivityCode listID="VESSEL_ACTIVITY">FIS</ns6:VesselRelatedActivityCode>
+			<ns6:OperationsQuantity unitCode="C62">1</ns6:OperationsQuantity>
+			<ns6:SpecifiedFishingGear>
+				<ns6:TypeCode listID="GEAR_TYPE">OTB</ns6:TypeCode>
+				<ns6:RoleCode listID="FA_GEAR_ROLE">DEPLOYED</ns6:RoleCode>
+				<ns6:ApplicableGearCharacteristic>
+					<ns6:TypeCode listID="FA_GEAR_CHARACTERISTIC">GM</ns6:TypeCode>
+					<ns6:ValueMeasure unitCode="MTR">2</ns6:ValueMeasure>
+				</ns6:ApplicableGearCharacteristic>
+				<ns6:ApplicableGearCharacteristic>
+					<ns6:TypeCode listID="FA_GEAR_CHARACTERISTIC">ME</ns6:TypeCode>
+					<ns6:ValueMeasure unitCode="MMT">90</ns6:ValueMeasure>
+				</ns6:ApplicableGearCharacteristic>
+				<ns6:ApplicableGearCharacteristic>
+					<ns6:TypeCode listID="FA_GEAR_CHARACTERISTIC">GD</ns6:TypeCode>
+					<ns6:Value>OTB</ns6:Value>
+				</ns6:ApplicableGearCharacteristic>
+			</ns6:SpecifiedFishingGear>
+			<ns6:RelatedFishingActivity>
+				<ns6:TypeCode listID="FLUX_FA_TYPE">GEAR_SHOT</ns6:TypeCode>
+				<ns6:OccurrenceDateTime>
+					<ns8:DateTime xmlns:ns8="urn:un:unece:uncefact:data:standard:UnqualifiedDataType:20">2012-05-19T02:54:51.093Z</ns8:DateTime>
+				</ns6:OccurrenceDateTime>
+				<ns6:RelatedFLUXLocation>
+					<ns6:TypeCode listID="FLUX_LOCATION_TYPE">POSITION</ns6:TypeCode>
+					<ns6:SpecifiedPhysicalFLUXGeographicalCoordinate>
+						<ns6:LongitudeMeasure>10.880</ns6:LongitudeMeasure>
+						<ns6:LatitudeMeasure>58.070</ns6:LatitudeMeasure>
+					</ns6:SpecifiedPhysicalFLUXGeographicalCoordinate>
+				</ns6:RelatedFLUXLocation>
+			</ns6:RelatedFishingActivity>
+			<ns6:SpecifiedDelimitedPeriod>
+				<ns6:StartDateTime>
+					<ns8:DateTime xmlns:ns8="urn:un:unece:uncefact:data:standard:UnqualifiedDataType:20">2012-05-19T02:54:51.093Z</ns8:DateTime>
+				</ns6:StartDateTime>
+			</ns6:SpecifiedDelimitedPeriod>
+			<ns6:SpecifiedFishingTrip>
+				<ns6:ID schemeID="EU_TRIP_ID">placeholder-fishing-trip-id</ns6:ID>
+			</ns6:SpecifiedFishingTrip>
+		</ns6:SpecifiedFishingActivity>
+		<ns6:SpecifiedVesselTransportMeans xmlns:ns6="urn:un:unece:uncefact:data:standard:ReusableAggregateBusinessInformationEntity:20">
+			<ns2:ID schemeID="CFR" xmlns:ns2="urn:un:unece:uncefact:data:standard:ReusableAggregateBusinessInformationEntity:20">placeholder-vessel-cfr-id</ns2:ID>
+			<ns2:RoleCode listID="FA_VESSEL_ROLE" xmlns:ns2="urn:un:unece:uncefact:data:standard:ReusableAggregateBusinessInformationEntity:20">CATCHING_VESSEL</ns2:RoleCode>
+			<ns2:RegistrationVesselCountry xmlns:ns2="urn:un:unece:uncefact:data:standard:ReusableAggregateBusinessInformationEntity:20">
+				<ns2:ID schemeID="TERRITORY">SWE</ns2:ID>
+			</ns2:RegistrationVesselCountry>
+			<ns2:SpecifiedContactParty xmlns:ns2="urn:un:unece:uncefact:data:standard:ReusableAggregateBusinessInformationEntity:20">
+				<ns3:RoleCode listID="FLUX_CONTACT_ROLE" xmlns:ns3="urn:un:unece:uncefact:data:standard:ReusableAggregateBusinessInformationEntity:20">MASTER</ns3:RoleCode>
+				<ns3:SpecifiedStructuredAddress xmlns:ns3="urn:un:unece:uncefact:data:standard:ReusableAggregateBusinessInformationEntity:20">
+					<ns3:StreetName>placeholder-street-name</ns3:StreetName>
+					<ns3:CityName>placeholder-city-name</ns3:CityName>
+					<ns3:CountryID schemeID="TERRITORY">SWE</ns3:CountryID>
+					<ns3:PlotIdentification languageID="GBR">N/A</ns3:PlotIdentification>
+					<ns3:PostalArea>placeholder-postal-area</ns3:PostalArea>
+				</ns3:SpecifiedStructuredAddress>
+				<ns3:SpecifiedContactPerson xmlns:ns3="urn:un:unece:uncefact:data:standard:ReusableAggregateBusinessInformationEntity:20">
+					<ns3:GivenName>placeholder-contact-person-given-name</ns3:GivenName>
+					<ns3:FamilyName>placeholder-contact-person-family-name</ns3:FamilyName>
+				</ns3:SpecifiedContactPerson>
+			</ns2:SpecifiedContactParty>
+		</ns6:SpecifiedVesselTransportMeans>
+	</ns0:FAReportDocument>
+	<ns0:FAReportDocument>
+		<ns6:TypeCode listID="FLUX_FA_REPORT_TYPE" xmlns:ns6="urn:un:unece:uncefact:data:standard:ReusableAggregateBusinessInformationEntity:20">DECLARATION</ns6:TypeCode>
+		<ns6:AcceptanceDateTime xmlns:ns6="urn:un:unece:uncefact:data:standard:ReusableAggregateBusinessInformationEntity:20">
+			<ns8:DateTime xmlns:ns8="urn:un:unece:uncefact:data:standard:UnqualifiedDataType:20">2012-05-20T16:23:45.093Z</ns8:DateTime>
+		</ns6:AcceptanceDateTime>
+		<ns6:RelatedFLUXReportDocument xmlns:ns6="urn:un:unece:uncefact:data:standard:ReusableAggregateBusinessInformationEntity:20">
+			<ns6:ID schemeID="UUID">placeholder-fishing-activity-report-document-id</ns6:ID>
+			<ns6:ReferencedID schemeID="UUID">placeholder-fishing-activity-report-document-reference-id</ns6:ReferencedID>
+			<ns6:CreationDateTime>
+				<ns8:DateTime xmlns:ns8="urn:un:unece:uncefact:data:standard:UnqualifiedDataType:20">2012-05-20T19:13:16.344Z</ns8:DateTime>
+			</ns6:CreationDateTime>
+			<ns6:PurposeCode listID="FLUX_GP_PURPOSE">5</ns6:PurposeCode>
+			<ns6:OwnerFLUXParty>
+				<ns6:ID schemeID="FLUX_GP_PARTY">SWE</ns6:ID>
+			</ns6:OwnerFLUXParty>
+		</ns6:RelatedFLUXReportDocument>
+		<ns6:SpecifiedFishingActivity xmlns:ns6="urn:un:unece:uncefact:data:standard:ReusableAggregateBusinessInformationEntity:20">
+			<ns6:TypeCode listID="FLUX_FA_TYPE">FISHING_OPERATION</ns6:TypeCode>
+			<ns6:OccurrenceDateTime>
+				<ns8:DateTime xmlns:ns8="urn:un:unece:uncefact:data:standard:UnqualifiedDataType:20">2012-05-19T03:59:51.093Z</ns8:DateTime>
+			</ns6:OccurrenceDateTime>
+			<ns6:VesselRelatedActivityCode listID="VESSEL_ACTIVITY">FIS</ns6:VesselRelatedActivityCode>
+			<ns6:OperationsQuantity unitCode="C62">1</ns6:OperationsQuantity>
+			<ns6:SpecifiedFACatch>
+				<ns6:SpeciesCode listID="FAO_SPECIES">LIN</ns6:SpeciesCode>
+				<ns6:WeightMeasure unitCode="KGM">11.4</ns6:WeightMeasure>
+				<ns6:WeighingMeansCode listID="WEIGHT_MEANS">ONBOARD</ns6:WeighingMeansCode>
+				<ns6:TypeCode listID="FA_CATCH_TYPE">ONBOARD</ns6:TypeCode>
+				<ns6:SpecifiedSizeDistribution>
+					<ns6:ClassCode listID="FISH_SIZE_CLASS">LSC</ns6:ClassCode>
+				</ns6:SpecifiedSizeDistribution>
+				<ns6:AppliedAAPProcess>
+					<ns6:TypeCode listID="FISH_PRESENTATION">GUT</ns6:TypeCode>
+					<ns6:TypeCode listID="FISH_PRESERVATION">FRE</ns6:TypeCode>
+					<ns6:ConversionFactorNumeric>1.14</ns6:ConversionFactorNumeric>
+				</ns6:AppliedAAPProcess>
+				<ns6:SpecifiedFLUXLocation>
+					<ns6:TypeCode listID="FLUX_LOCATION_TYPE">POSITION</ns6:TypeCode>
+					<ns6:SpecifiedPhysicalFLUXGeographicalCoordinate>
+						<ns6:LongitudeMeasure>10.850</ns6:LongitudeMeasure>
+						<ns6:LatitudeMeasure>58.120</ns6:LatitudeMeasure>
+					</ns6:SpecifiedPhysicalFLUXGeographicalCoordinate>
+				</ns6:SpecifiedFLUXLocation>
+				<ns6:SpecifiedFLUXLocation>
+					<ns6:TypeCode listID="FLUX_LOCATION_TYPE">AREA</ns6:TypeCode>
+					<ns6:ID schemeID="FAO_AREA">27.3.a.n</ns6:ID>
+				</ns6:SpecifiedFLUXLocation>
+			</ns6:SpecifiedFACatch>
+			<ns6:SpecifiedFACatch>
+				<ns6:SpeciesCode listID="FAO_SPECIES">WIT</ns6:SpeciesCode>
+				<ns6:WeightMeasure unitCode="KGM">10.6</ns6:WeightMeasure>
+				<ns6:WeighingMeansCode listID="WEIGHT_MEANS">ONBOARD</ns6:WeighingMeansCode>
+				<ns6:TypeCode listID="FA_CATCH_TYPE">ONBOARD</ns6:TypeCode>
+				<ns6:SpecifiedSizeDistribution>
+					<ns6:ClassCode listID="FISH_SIZE_CLASS">LSC</ns6:ClassCode>
+				</ns6:SpecifiedSizeDistribution>
+				<ns6:AppliedAAPProcess>
+					<ns6:TypeCode listID="FISH_PRESENTATION">GUT</ns6:TypeCode>
+					<ns6:TypeCode listID="FISH_PRESERVATION">FRE</ns6:TypeCode>
+					<ns6:ConversionFactorNumeric>1.06</ns6:ConversionFactorNumeric>
+				</ns6:AppliedAAPProcess>
+				<ns6:SpecifiedFLUXLocation>
+					<ns6:TypeCode listID="FLUX_LOCATION_TYPE">POSITION</ns6:TypeCode>
+					<ns6:SpecifiedPhysicalFLUXGeographicalCoordinate>
+						<ns6:LongitudeMeasure>10.850</ns6:LongitudeMeasure>
+						<ns6:LatitudeMeasure>58.120</ns6:LatitudeMeasure>
+					</ns6:SpecifiedPhysicalFLUXGeographicalCoordinate>
+				</ns6:SpecifiedFLUXLocation>
+				<ns6:SpecifiedFLUXLocation>
+					<ns6:TypeCode listID="FLUX_LOCATION_TYPE">AREA</ns6:TypeCode>
+					<ns6:ID schemeID="FAO_AREA">27.3.a.n</ns6:ID>
+				</ns6:SpecifiedFLUXLocation>
+			</ns6:SpecifiedFACatch>
+			<ns6:SpecifiedFishingGear>
+				<ns6:TypeCode listID="GEAR_TYPE">OTB</ns6:TypeCode>
+				<ns6:RoleCode listID="FA_GEAR_ROLE">DEPLOYED</ns6:RoleCode>
+				<ns6:ApplicableGearCharacteristic>
+					<ns6:TypeCode listID="FA_GEAR_CHARACTERISTIC">GM</ns6:TypeCode>
+					<ns6:ValueMeasure unitCode="MTR">2</ns6:ValueMeasure>
+				</ns6:ApplicableGearCharacteristic>
+				<ns6:ApplicableGearCharacteristic>
+					<ns6:TypeCode listID="FA_GEAR_CHARACTERISTIC">ME</ns6:TypeCode>
+					<ns6:ValueMeasure unitCode="MMT">90</ns6:ValueMeasure>
+				</ns6:ApplicableGearCharacteristic>
+				<ns6:ApplicableGearCharacteristic>
+					<ns6:TypeCode listID="FA_GEAR_CHARACTERISTIC">GD</ns6:TypeCode>
+					<ns6:Value>OTB</ns6:Value>
+				</ns6:ApplicableGearCharacteristic>
+			</ns6:SpecifiedFishingGear>
+			<ns6:RelatedFishingActivity>
+				<ns6:TypeCode listID="FLUX_FA_TYPE">GEAR_RETRIEVAL</ns6:TypeCode>
+				<ns6:OccurrenceDateTime>
+					<ns8:DateTime xmlns:ns8="urn:un:unece:uncefact:data:standard:UnqualifiedDataType:20">2012-05-19T03:59:51.093Z</ns8:DateTime>
+				</ns6:OccurrenceDateTime>
+				<ns6:RelatedFLUXLocation>
+					<ns6:TypeCode listID="FLUX_LOCATION_TYPE">POSITION</ns6:TypeCode>
+					<ns6:SpecifiedPhysicalFLUXGeographicalCoordinate>
+						<ns6:LongitudeMeasure>10.850</ns6:LongitudeMeasure>
+						<ns6:LatitudeMeasure>58.120</ns6:LatitudeMeasure>
+					</ns6:SpecifiedPhysicalFLUXGeographicalCoordinate>
+				</ns6:RelatedFLUXLocation>
+			</ns6:RelatedFishingActivity>
+			<ns6:SpecifiedDelimitedPeriod>
+				<ns6:StartDateTime>
+					<ns8:DateTime xmlns:ns8="urn:un:unece:uncefact:data:standard:UnqualifiedDataType:20">2012-05-19T03:59:51.093Z</ns8:DateTime>
+				</ns6:StartDateTime>
+				<ns6:DurationMeasure unitCode="MIN">60</ns6:DurationMeasure>
+			</ns6:SpecifiedDelimitedPeriod>
+			<ns6:SpecifiedFishingTrip>
+				<ns6:ID schemeID="EU_TRIP_ID">placeholder-fishing-trip-id</ns6:ID>
+			</ns6:SpecifiedFishingTrip>
+		</ns6:SpecifiedFishingActivity>
+		<ns6:SpecifiedVesselTransportMeans xmlns:ns6="urn:un:unece:uncefact:data:standard:ReusableAggregateBusinessInformationEntity:20">
+			<ns2:ID schemeID="CFR" xmlns:ns2="urn:un:unece:uncefact:data:standard:ReusableAggregateBusinessInformationEntity:20">placeholder-vessel-cfr-id</ns2:ID>
+			<ns2:RoleCode listID="FA_VESSEL_ROLE" xmlns:ns2="urn:un:unece:uncefact:data:standard:ReusableAggregateBusinessInformationEntity:20">CATCHING_VESSEL</ns2:RoleCode>
+			<ns2:RegistrationVesselCountry xmlns:ns2="urn:un:unece:uncefact:data:standard:ReusableAggregateBusinessInformationEntity:20">
+				<ns2:ID schemeID="TERRITORY">SWE</ns2:ID>
+			</ns2:RegistrationVesselCountry>
+			<ns2:SpecifiedContactParty xmlns:ns2="urn:un:unece:uncefact:data:standard:ReusableAggregateBusinessInformationEntity:20">
+				<ns3:RoleCode listID="FLUX_CONTACT_ROLE" xmlns:ns3="urn:un:unece:uncefact:data:standard:ReusableAggregateBusinessInformationEntity:20">MASTER</ns3:RoleCode>
+				<ns3:SpecifiedStructuredAddress xmlns:ns3="urn:un:unece:uncefact:data:standard:ReusableAggregateBusinessInformationEntity:20">
+					<ns3:StreetName>placeholder-street-name</ns3:StreetName>
+					<ns3:CityName>placeholder-city-name</ns3:CityName>
+					<ns3:CountryID schemeID="TERRITORY">SWE</ns3:CountryID>
+					<ns3:PlotIdentification languageID="GBR">N/A</ns3:PlotIdentification>
+					<ns3:PostalArea>placeholder-postal-area</ns3:PostalArea>
+				</ns3:SpecifiedStructuredAddress>
+				<ns3:SpecifiedContactPerson xmlns:ns3="urn:un:unece:uncefact:data:standard:ReusableAggregateBusinessInformationEntity:20">
+					<ns3:GivenName>placeholder-contact-person-given-name</ns3:GivenName>
+					<ns3:FamilyName>placeholder-contact-person-family-name</ns3:FamilyName>
+				</ns3:SpecifiedContactPerson>
+			</ns2:SpecifiedContactParty>
+		</ns6:SpecifiedVesselTransportMeans>
+	</ns0:FAReportDocument>
+	<ns0:FAReportDocument>
+		<ns6:TypeCode listID="FLUX_FA_REPORT_TYPE" xmlns:ns6="urn:un:unece:uncefact:data:standard:ReusableAggregateBusinessInformationEntity:20">DECLARATION</ns6:TypeCode>
+		<ns6:AcceptanceDateTime xmlns:ns6="urn:un:unece:uncefact:data:standard:ReusableAggregateBusinessInformationEntity:20">
+			<ns8:DateTime xmlns:ns8="urn:un:unece:uncefact:data:standard:UnqualifiedDataType:20">2012-05-20T16:24:40.093Z</ns8:DateTime>
+		</ns6:AcceptanceDateTime>
+		<ns6:RelatedFLUXReportDocument xmlns:ns6="urn:un:unece:uncefact:data:standard:ReusableAggregateBusinessInformationEntity:20">
+			<ns6:ID schemeID="UUID">placeholder-fishing-activity-report-document-id</ns6:ID>
+			<ns6:ReferencedID schemeID="UUID">placeholder-fishing-activity-report-document-reference-id</ns6:ReferencedID>
+			<ns6:CreationDateTime>
+				<ns8:DateTime xmlns:ns8="urn:un:unece:uncefact:data:standard:UnqualifiedDataType:20">2012-05-20T19:13:16.344Z</ns8:DateTime>
+			</ns6:CreationDateTime>
+			<ns6:PurposeCode listID="FLUX_GP_PURPOSE">5</ns6:PurposeCode>
+			<ns6:OwnerFLUXParty>
+				<ns6:ID schemeID="FLUX_GP_PARTY">SWE</ns6:ID>
+			</ns6:OwnerFLUXParty>
+		</ns6:RelatedFLUXReportDocument>
+		<ns6:SpecifiedFishingActivity xmlns:ns6="urn:un:unece:uncefact:data:standard:ReusableAggregateBusinessInformationEntity:20">
+			<ns6:TypeCode listID="FLUX_FA_TYPE">FISHING_OPERATION</ns6:TypeCode>
+			<ns6:OccurrenceDateTime>
+				<ns8:DateTime xmlns:ns8="urn:un:unece:uncefact:data:standard:UnqualifiedDataType:20">2012-05-19T08:54:51.093Z</ns8:DateTime>
+			</ns6:OccurrenceDateTime>
+			<ns6:VesselRelatedActivityCode listID="VESSEL_ACTIVITY">FIS</ns6:VesselRelatedActivityCode>
+			<ns6:OperationsQuantity unitCode="C62">1</ns6:OperationsQuantity>
+			<ns6:SpecifiedFishingGear>
+				<ns6:TypeCode listID="GEAR_TYPE">OTB</ns6:TypeCode>
+				<ns6:RoleCode listID="FA_GEAR_ROLE">DEPLOYED</ns6:RoleCode>
+				<ns6:ApplicableGearCharacteristic>
+					<ns6:TypeCode listID="FA_GEAR_CHARACTERISTIC">GM</ns6:TypeCode>
+					<ns6:ValueMeasure unitCode="MTR">2</ns6:ValueMeasure>
+				</ns6:ApplicableGearCharacteristic>
+				<ns6:ApplicableGearCharacteristic>
+					<ns6:TypeCode listID="FA_GEAR_CHARACTERISTIC">ME</ns6:TypeCode>
+					<ns6:ValueMeasure unitCode="MMT">90</ns6:ValueMeasure>
+				</ns6:ApplicableGearCharacteristic>
+				<ns6:ApplicableGearCharacteristic>
+					<ns6:TypeCode listID="FA_GEAR_CHARACTERISTIC">GD</ns6:TypeCode>
+					<ns6:Value>OTB</ns6:Value>
+				</ns6:ApplicableGearCharacteristic>
+			</ns6:SpecifiedFishingGear>
+			<ns6:RelatedFishingActivity>
+				<ns6:TypeCode listID="FLUX_FA_TYPE">GEAR_SHOT</ns6:TypeCode>
+				<ns6:OccurrenceDateTime>
+					<ns8:DateTime xmlns:ns8="urn:un:unece:uncefact:data:standard:UnqualifiedDataType:20">2012-05-19T08:54:51.093Z</ns8:DateTime>
+				</ns6:OccurrenceDateTime>
+				<ns6:RelatedFLUXLocation>
+					<ns6:TypeCode listID="FLUX_LOCATION_TYPE">POSITION</ns6:TypeCode>
+					<ns6:SpecifiedPhysicalFLUXGeographicalCoordinate>
+						<ns6:LongitudeMeasure>9.820</ns6:LongitudeMeasure>
+						<ns6:LatitudeMeasure>58.020</ns6:LatitudeMeasure>
+					</ns6:SpecifiedPhysicalFLUXGeographicalCoordinate>
+				</ns6:RelatedFLUXLocation>
+			</ns6:RelatedFishingActivity>
+			<ns6:SpecifiedDelimitedPeriod>
+				<ns6:StartDateTime>
+					<ns8:DateTime xmlns:ns8="urn:un:unece:uncefact:data:standard:UnqualifiedDataType:20">2012-05-19T08:54:51.093Z</ns8:DateTime>
+				</ns6:StartDateTime>
+			</ns6:SpecifiedDelimitedPeriod>
+			<ns6:SpecifiedFishingTrip>
+				<ns6:ID schemeID="EU_TRIP_ID">placeholder-fishing-trip-id</ns6:ID>
+			</ns6:SpecifiedFishingTrip>
+		</ns6:SpecifiedFishingActivity>
+		<ns6:SpecifiedVesselTransportMeans xmlns:ns6="urn:un:unece:uncefact:data:standard:ReusableAggregateBusinessInformationEntity:20">
+			<ns2:ID schemeID="CFR" xmlns:ns2="urn:un:unece:uncefact:data:standard:ReusableAggregateBusinessInformationEntity:20">placeholder-vessel-cfr-id</ns2:ID>
+			<ns2:RoleCode listID="FA_VESSEL_ROLE" xmlns:ns2="urn:un:unece:uncefact:data:standard:ReusableAggregateBusinessInformationEntity:20">CATCHING_VESSEL</ns2:RoleCode>
+			<ns2:RegistrationVesselCountry xmlns:ns2="urn:un:unece:uncefact:data:standard:ReusableAggregateBusinessInformationEntity:20">
+				<ns2:ID schemeID="TERRITORY">SWE</ns2:ID>
+			</ns2:RegistrationVesselCountry>
+			<ns2:SpecifiedContactParty xmlns:ns2="urn:un:unece:uncefact:data:standard:ReusableAggregateBusinessInformationEntity:20">
+				<ns3:RoleCode listID="FLUX_CONTACT_ROLE" xmlns:ns3="urn:un:unece:uncefact:data:standard:ReusableAggregateBusinessInformationEntity:20">MASTER</ns3:RoleCode>
+				<ns3:SpecifiedStructuredAddress xmlns:ns3="urn:un:unece:uncefact:data:standard:ReusableAggregateBusinessInformationEntity:20">
+					<ns3:StreetName>placeholder-street-name</ns3:StreetName>
+					<ns3:CityName>placeholder-city-name</ns3:CityName>
+					<ns3:CountryID schemeID="TERRITORY">SWE</ns3:CountryID>
+					<ns3:PlotIdentification languageID="GBR">N/A</ns3:PlotIdentification>
+					<ns3:PostalArea>placeholder-postal-area</ns3:PostalArea>
+				</ns3:SpecifiedStructuredAddress>
+				<ns3:SpecifiedContactPerson xmlns:ns3="urn:un:unece:uncefact:data:standard:ReusableAggregateBusinessInformationEntity:20">
+					<ns3:GivenName>placeholder-contact-person-given-name</ns3:GivenName>
+					<ns3:FamilyName>placeholder-contact-person-family-name</ns3:FamilyName>
+				</ns3:SpecifiedContactPerson>
+			</ns2:SpecifiedContactParty>
+		</ns6:SpecifiedVesselTransportMeans>
+	</ns0:FAReportDocument>
+	<ns0:FAReportDocument>
+		<ns6:TypeCode listID="FLUX_FA_REPORT_TYPE" xmlns:ns6="urn:un:unece:uncefact:data:standard:ReusableAggregateBusinessInformationEntity:20">DECLARATION</ns6:TypeCode>
+		<ns6:AcceptanceDateTime xmlns:ns6="urn:un:unece:uncefact:data:standard:ReusableAggregateBusinessInformationEntity:20">
+			<ns8:DateTime xmlns:ns8="urn:un:unece:uncefact:data:standard:UnqualifiedDataType:20">2012-05-20T16:24:40.093Z</ns8:DateTime>
+		</ns6:AcceptanceDateTime>
+		<ns6:RelatedFLUXReportDocument xmlns:ns6="urn:un:unece:uncefact:data:standard:ReusableAggregateBusinessInformationEntity:20">
+			<ns6:ID schemeID="UUID">placeholder-fishing-activity-report-document-id</ns6:ID>
+			<ns6:ReferencedID schemeID="UUID">placeholder-fishing-activity-report-document-reference-id</ns6:ReferencedID>
+			<ns6:CreationDateTime>
+				<ns8:DateTime xmlns:ns8="urn:un:unece:uncefact:data:standard:UnqualifiedDataType:20">2012-05-20T19:13:16.344Z</ns8:DateTime>
+			</ns6:CreationDateTime>
+			<ns6:PurposeCode listID="FLUX_GP_PURPOSE">5</ns6:PurposeCode>
+			<ns6:OwnerFLUXParty>
+				<ns6:ID schemeID="FLUX_GP_PARTY">SWE</ns6:ID>
+			</ns6:OwnerFLUXParty>
+		</ns6:RelatedFLUXReportDocument>
+		<ns6:SpecifiedFishingActivity xmlns:ns6="urn:un:unece:uncefact:data:standard:ReusableAggregateBusinessInformationEntity:20">
+			<ns6:TypeCode listID="FLUX_FA_TYPE">FISHING_OPERATION</ns6:TypeCode>
+			<ns6:OccurrenceDateTime>
+				<ns8:DateTime xmlns:ns8="urn:un:unece:uncefact:data:standard:UnqualifiedDataType:20">2012-05-19T16:09:51.093Z</ns8:DateTime>
+			</ns6:OccurrenceDateTime>
+			<ns6:VesselRelatedActivityCode listID="VESSEL_ACTIVITY">FIS</ns6:VesselRelatedActivityCode>
+			<ns6:OperationsQuantity unitCode="C62">1</ns6:OperationsQuantity>
+			<ns6:SpecifiedFACatch>
+				<ns6:SpeciesCode listID="FAO_SPECIES">COD</ns6:SpeciesCode>
+				<ns6:WeightMeasure unitCode="KGM">333.9</ns6:WeightMeasure>
+				<ns6:WeighingMeansCode listID="WEIGHT_MEANS">ONBOARD</ns6:WeighingMeansCode>
+				<ns6:TypeCode listID="FA_CATCH_TYPE">ONBOARD</ns6:TypeCode>
+				<ns6:SpecifiedSizeDistribution>
+					<ns6:ClassCode listID="FISH_SIZE_CLASS">LSC</ns6:ClassCode>
+				</ns6:SpecifiedSizeDistribution>
+				<ns6:AppliedAAPProcess>
+					<ns6:TypeCode listID="FISH_PRESENTATION">GUT</ns6:TypeCode>
+					<ns6:TypeCode listID="FISH_PRESERVATION">FRE</ns6:TypeCode>
+					<ns6:ConversionFactorNumeric>1.18</ns6:ConversionFactorNumeric>
+				</ns6:AppliedAAPProcess>
+				<ns6:SpecifiedFLUXLocation>
+					<ns6:TypeCode listID="FLUX_LOCATION_TYPE">POSITION</ns6:TypeCode>
+					<ns6:SpecifiedPhysicalFLUXGeographicalCoordinate>
+						<ns6:LongitudeMeasure>9.320</ns6:LongitudeMeasure>
+						<ns6:LatitudeMeasure>58.020</ns6:LatitudeMeasure>
+					</ns6:SpecifiedPhysicalFLUXGeographicalCoordinate>
+				</ns6:SpecifiedFLUXLocation>
+				<ns6:SpecifiedFLUXLocation>
+					<ns6:TypeCode listID="FLUX_LOCATION_TYPE">AREA</ns6:TypeCode>
+					<ns6:ID schemeID="FAO_AREA">27.3.a.n</ns6:ID>
+				</ns6:SpecifiedFLUXLocation>
+			</ns6:SpecifiedFACatch>
+			<ns6:SpecifiedFACatch>
+				<ns6:SpeciesCode listID="FAO_SPECIES">HAD</ns6:SpeciesCode>
+				<ns6:WeightMeasure unitCode="KGM">9.1</ns6:WeightMeasure>
+				<ns6:WeighingMeansCode listID="WEIGHT_MEANS">ONBOARD</ns6:WeighingMeansCode>
+				<ns6:TypeCode listID="FA_CATCH_TYPE">ONBOARD</ns6:TypeCode>
+				<ns6:SpecifiedSizeDistribution>
+					<ns6:ClassCode listID="FISH_SIZE_CLASS">LSC</ns6:ClassCode>
+				</ns6:SpecifiedSizeDistribution>
+				<ns6:AppliedAAPProcess>
+					<ns6:TypeCode listID="FISH_PRESENTATION">GUT</ns6:TypeCode>
+					<ns6:TypeCode listID="FISH_PRESERVATION">FRE</ns6:TypeCode>
+					<ns6:ConversionFactorNumeric>1.17</ns6:ConversionFactorNumeric>
+				</ns6:AppliedAAPProcess>
+				<ns6:SpecifiedFLUXLocation>
+					<ns6:TypeCode listID="FLUX_LOCATION_TYPE">POSITION</ns6:TypeCode>
+					<ns6:SpecifiedPhysicalFLUXGeographicalCoordinate>
+						<ns6:LongitudeMeasure>9.320</ns6:LongitudeMeasure>
+						<ns6:LatitudeMeasure>58.020</ns6:LatitudeMeasure>
+					</ns6:SpecifiedPhysicalFLUXGeographicalCoordinate>
+				</ns6:SpecifiedFLUXLocation>
+				<ns6:SpecifiedFLUXLocation>
+					<ns6:TypeCode listID="FLUX_LOCATION_TYPE">AREA</ns6:TypeCode>
+					<ns6:ID schemeID="FAO_AREA">27.3.a.n</ns6:ID>
+				</ns6:SpecifiedFLUXLocation>
+			</ns6:SpecifiedFACatch>
+			<ns6:SpecifiedFACatch>
+				<ns6:SpeciesCode listID="FAO_SPECIES">HKE</ns6:SpeciesCode>
+				<ns6:WeightMeasure unitCode="KGM">240.0</ns6:WeightMeasure>
+				<ns6:WeighingMeansCode listID="WEIGHT_MEANS">ONBOARD</ns6:WeighingMeansCode>
+				<ns6:TypeCode listID="FA_CATCH_TYPE">ONBOARD</ns6:TypeCode>
+				<ns6:SpecifiedSizeDistribution>
+					<ns6:ClassCode listID="FISH_SIZE_CLASS">LSC</ns6:ClassCode>
+				</ns6:SpecifiedSizeDistribution>
+				<ns6:AppliedAAPProcess>
+					<ns6:TypeCode listID="FISH_PRESENTATION">GUT</ns6:TypeCode>
+					<ns6:TypeCode listID="FISH_PRESERVATION">FRE</ns6:TypeCode>
+					<ns6:ConversionFactorNumeric>1.11</ns6:ConversionFactorNumeric>
+				</ns6:AppliedAAPProcess>
+				<ns6:SpecifiedFLUXLocation>
+					<ns6:TypeCode listID="FLUX_LOCATION_TYPE">POSITION</ns6:TypeCode>
+					<ns6:SpecifiedPhysicalFLUXGeographicalCoordinate>
+						<ns6:LongitudeMeasure>9.320</ns6:LongitudeMeasure>
+						<ns6:LatitudeMeasure>58.020</ns6:LatitudeMeasure>
+					</ns6:SpecifiedPhysicalFLUXGeographicalCoordinate>
+				</ns6:SpecifiedFLUXLocation>
+				<ns6:SpecifiedFLUXLocation>
+					<ns6:TypeCode listID="FLUX_LOCATION_TYPE">AREA</ns6:TypeCode>
+					<ns6:ID schemeID="FAO_AREA">27.3.a.n</ns6:ID>
+				</ns6:SpecifiedFLUXLocation>
+			</ns6:SpecifiedFACatch>
+			<ns6:SpecifiedFACatch>
+				<ns6:SpeciesCode listID="FAO_SPECIES">HOM</ns6:SpeciesCode>
+				<ns6:WeightMeasure unitCode="KGM">36.0</ns6:WeightMeasure>
+				<ns6:WeighingMeansCode listID="WEIGHT_MEANS">ONBOARD</ns6:WeighingMeansCode>
+				<ns6:TypeCode listID="FA_CATCH_TYPE">ONBOARD</ns6:TypeCode>
+				<ns6:SpecifiedSizeDistribution>
+					<ns6:ClassCode listID="FISH_SIZE_CLASS">LSC</ns6:ClassCode>
+				</ns6:SpecifiedSizeDistribution>
+				<ns6:AppliedAAPProcess>
+					<ns6:TypeCode listID="FISH_PRESENTATION">WHL</ns6:TypeCode>
+					<ns6:TypeCode listID="FISH_PRESERVATION">FRE</ns6:TypeCode>
+					<ns6:ConversionFactorNumeric>1</ns6:ConversionFactorNumeric>
+				</ns6:AppliedAAPProcess>
+				<ns6:SpecifiedFLUXLocation>
+					<ns6:TypeCode listID="FLUX_LOCATION_TYPE">POSITION</ns6:TypeCode>
+					<ns6:SpecifiedPhysicalFLUXGeographicalCoordinate>
+						<ns6:LongitudeMeasure>9.320</ns6:LongitudeMeasure>
+						<ns6:LatitudeMeasure>58.020</ns6:LatitudeMeasure>
+					</ns6:SpecifiedPhysicalFLUXGeographicalCoordinate>
+				</ns6:SpecifiedFLUXLocation>
+				<ns6:SpecifiedFLUXLocation>
+					<ns6:TypeCode listID="FLUX_LOCATION_TYPE">AREA</ns6:TypeCode>
+					<ns6:ID schemeID="FAO_AREA">27.3.a.n</ns6:ID>
+				</ns6:SpecifiedFLUXLocation>
+			</ns6:SpecifiedFACatch>
+			<ns6:SpecifiedFACatch>
+				<ns6:SpeciesCode listID="FAO_SPECIES">NEP</ns6:SpeciesCode>
+				<ns6:WeightMeasure unitCode="KGM">142.0</ns6:WeightMeasure>
+				<ns6:WeighingMeansCode listID="WEIGHT_MEANS">ONBOARD</ns6:WeighingMeansCode>
+				<ns6:TypeCode listID="FA_CATCH_TYPE">ONBOARD</ns6:TypeCode>
+				<ns6:SpecifiedSizeDistribution>
+					<ns6:ClassCode listID="FISH_SIZE_CLASS">LSC</ns6:ClassCode>
+				</ns6:SpecifiedSizeDistribution>
+				<ns6:AppliedAAPProcess>
+					<ns6:TypeCode listID="FISH_PRESENTATION">WHL</ns6:TypeCode>
+					<ns6:TypeCode listID="FISH_PRESERVATION">FRE</ns6:TypeCode>
+					<ns6:ConversionFactorNumeric>1</ns6:ConversionFactorNumeric>
+				</ns6:AppliedAAPProcess>
+				<ns6:SpecifiedFLUXLocation>
+					<ns6:TypeCode listID="FLUX_LOCATION_TYPE">POSITION</ns6:TypeCode>
+					<ns6:SpecifiedPhysicalFLUXGeographicalCoordinate>
+						<ns6:LongitudeMeasure>9.320</ns6:LongitudeMeasure>
+						<ns6:LatitudeMeasure>58.020</ns6:LatitudeMeasure>
+					</ns6:SpecifiedPhysicalFLUXGeographicalCoordinate>
+				</ns6:SpecifiedFLUXLocation>
+				<ns6:SpecifiedFLUXLocation>
+					<ns6:TypeCode listID="FLUX_LOCATION_TYPE">AREA</ns6:TypeCode>
+					<ns6:ID schemeID="FAO_AREA">27.3.a.n</ns6:ID>
+				</ns6:SpecifiedFLUXLocation>
+			</ns6:SpecifiedFACatch>
+			<ns6:SpecifiedFACatch>
+				<ns6:SpeciesCode listID="FAO_SPECIES">NEP</ns6:SpeciesCode>
+				<ns6:WeightMeasure unitCode="KGM">87.0</ns6:WeightMeasure>
+				<ns6:WeighingMeansCode listID="WEIGHT_MEANS">ONBOARD</ns6:WeighingMeansCode>
+				<ns6:TypeCode listID="FA_CATCH_TYPE">ONBOARD</ns6:TypeCode>
+				<ns6:SpecifiedSizeDistribution>
+					<ns6:ClassCode listID="FISH_SIZE_CLASS">LSC</ns6:ClassCode>
+				</ns6:SpecifiedSizeDistribution>
+				<ns6:AppliedAAPProcess>
+					<ns6:TypeCode listID="FISH_PRESENTATION">TAL</ns6:TypeCode>
+					<ns6:TypeCode listID="FISH_PRESERVATION">FRE</ns6:TypeCode>
+					<ns6:ConversionFactorNumeric>3</ns6:ConversionFactorNumeric>
+				</ns6:AppliedAAPProcess>
+				<ns6:SpecifiedFLUXLocation>
+					<ns6:TypeCode listID="FLUX_LOCATION_TYPE">POSITION</ns6:TypeCode>
+					<ns6:SpecifiedPhysicalFLUXGeographicalCoordinate>
+						<ns6:LongitudeMeasure>9.320</ns6:LongitudeMeasure>
+						<ns6:LatitudeMeasure>58.020</ns6:LatitudeMeasure>
+					</ns6:SpecifiedPhysicalFLUXGeographicalCoordinate>
+				</ns6:SpecifiedFLUXLocation>
+				<ns6:SpecifiedFLUXLocation>
+					<ns6:TypeCode listID="FLUX_LOCATION_TYPE">AREA</ns6:TypeCode>
+					<ns6:ID schemeID="FAO_AREA">27.3.a.n</ns6:ID>
+				</ns6:SpecifiedFLUXLocation>
+			</ns6:SpecifiedFACatch>
+			<ns6:SpecifiedFACatch>
+				<ns6:SpeciesCode listID="FAO_SPECIES">POK</ns6:SpeciesCode>
+				<ns6:WeightMeasure unitCode="KGM">42.0</ns6:WeightMeasure>
+				<ns6:WeighingMeansCode listID="WEIGHT_MEANS">ONBOARD</ns6:WeighingMeansCode>
+				<ns6:TypeCode listID="FA_CATCH_TYPE">ONBOARD</ns6:TypeCode>
+				<ns6:SpecifiedSizeDistribution>
+					<ns6:ClassCode listID="FISH_SIZE_CLASS">LSC</ns6:ClassCode>
+				</ns6:SpecifiedSizeDistribution>
+				<ns6:AppliedAAPProcess>
+					<ns6:TypeCode listID="FISH_PRESENTATION">GUT</ns6:TypeCode>
+					<ns6:TypeCode listID="FISH_PRESERVATION">FRE</ns6:TypeCode>
+					<ns6:ConversionFactorNumeric>1.19</ns6:ConversionFactorNumeric>
+				</ns6:AppliedAAPProcess>
+				<ns6:SpecifiedFLUXLocation>
+					<ns6:TypeCode listID="FLUX_LOCATION_TYPE">POSITION</ns6:TypeCode>
+					<ns6:SpecifiedPhysicalFLUXGeographicalCoordinate>
+						<ns6:LongitudeMeasure>9.320</ns6:LongitudeMeasure>
+						<ns6:LatitudeMeasure>58.020</ns6:LatitudeMeasure>
+					</ns6:SpecifiedPhysicalFLUXGeographicalCoordinate>
+				</ns6:SpecifiedFLUXLocation>
+				<ns6:SpecifiedFLUXLocation>
+					<ns6:TypeCode listID="FLUX_LOCATION_TYPE">AREA</ns6:TypeCode>
+					<ns6:ID schemeID="FAO_AREA">27.3.a.n</ns6:ID>
+				</ns6:SpecifiedFLUXLocation>
+			</ns6:SpecifiedFACatch>
+			<ns6:SpecifiedFACatch>
+				<ns6:SpeciesCode listID="FAO_SPECIES">WIT</ns6:SpeciesCode>
+				<ns6:WeightMeasure unitCode="KGM">45.1</ns6:WeightMeasure>
+				<ns6:WeighingMeansCode listID="WEIGHT_MEANS">ONBOARD</ns6:WeighingMeansCode>
+				<ns6:TypeCode listID="FA_CATCH_TYPE">ONBOARD</ns6:TypeCode>
+				<ns6:SpecifiedSizeDistribution>
+					<ns6:ClassCode listID="FISH_SIZE_CLASS">LSC</ns6:ClassCode>
+				</ns6:SpecifiedSizeDistribution>
+				<ns6:AppliedAAPProcess>
+					<ns6:TypeCode listID="FISH_PRESENTATION">GUT</ns6:TypeCode>
+					<ns6:TypeCode listID="FISH_PRESERVATION">FRE</ns6:TypeCode>
+					<ns6:ConversionFactorNumeric>1.06</ns6:ConversionFactorNumeric>
+				</ns6:AppliedAAPProcess>
+				<ns6:SpecifiedFLUXLocation>
+					<ns6:TypeCode listID="FLUX_LOCATION_TYPE">POSITION</ns6:TypeCode>
+					<ns6:SpecifiedPhysicalFLUXGeographicalCoordinate>
+						<ns6:LongitudeMeasure>9.320</ns6:LongitudeMeasure>
+						<ns6:LatitudeMeasure>58.020</ns6:LatitudeMeasure>
+					</ns6:SpecifiedPhysicalFLUXGeographicalCoordinate>
+				</ns6:SpecifiedFLUXLocation>
+				<ns6:SpecifiedFLUXLocation>
+					<ns6:TypeCode listID="FLUX_LOCATION_TYPE">AREA</ns6:TypeCode>
+					<ns6:ID schemeID="FAO_AREA">27.3.a.n</ns6:ID>
+				</ns6:SpecifiedFLUXLocation>
+			</ns6:SpecifiedFACatch>
+			<ns6:SpecifiedFACatch>
+				<ns6:SpeciesCode listID="FAO_SPECIES">MON</ns6:SpeciesCode>
+				<ns6:WeightMeasure unitCode="KGM">61.6</ns6:WeightMeasure>
+				<ns6:WeighingMeansCode listID="WEIGHT_MEANS">ONBOARD</ns6:WeighingMeansCode>
+				<ns6:TypeCode listID="FA_CATCH_TYPE">ONBOARD</ns6:TypeCode>
+				<ns6:SpecifiedSizeDistribution>
+					<ns6:ClassCode listID="FISH_SIZE_CLASS">LSC</ns6:ClassCode>
+				</ns6:SpecifiedSizeDistribution>
+				<ns6:AppliedAAPProcess>
+					<ns6:TypeCode listID="FISH_PRESENTATION">GUH</ns6:TypeCode>
+					<ns6:TypeCode listID="FISH_PRESERVATION">FRE</ns6:TypeCode>
+					<ns6:ConversionFactorNumeric>3</ns6:ConversionFactorNumeric>
+				</ns6:AppliedAAPProcess>
+				<ns6:SpecifiedFLUXLocation>
+					<ns6:TypeCode listID="FLUX_LOCATION_TYPE">POSITION</ns6:TypeCode>
+					<ns6:SpecifiedPhysicalFLUXGeographicalCoordinate>
+						<ns6:LongitudeMeasure>9.320</ns6:LongitudeMeasure>
+						<ns6:LatitudeMeasure>58.020</ns6:LatitudeMeasure>
+					</ns6:SpecifiedPhysicalFLUXGeographicalCoordinate>
+				</ns6:SpecifiedFLUXLocation>
+				<ns6:SpecifiedFLUXLocation>
+					<ns6:TypeCode listID="FLUX_LOCATION_TYPE">AREA</ns6:TypeCode>
+					<ns6:ID schemeID="FAO_AREA">27.3.a.n</ns6:ID>
+				</ns6:SpecifiedFLUXLocation>
+			</ns6:SpecifiedFACatch>
+			<ns6:SpecifiedFishingGear>
+				<ns6:TypeCode listID="GEAR_TYPE">OTB</ns6:TypeCode>
+				<ns6:RoleCode listID="FA_GEAR_ROLE">DEPLOYED</ns6:RoleCode>
+				<ns6:ApplicableGearCharacteristic>
+					<ns6:TypeCode listID="FA_GEAR_CHARACTERISTIC">GM</ns6:TypeCode>
+					<ns6:ValueMeasure unitCode="MTR">2</ns6:ValueMeasure>
+				</ns6:ApplicableGearCharacteristic>
+				<ns6:ApplicableGearCharacteristic>
+					<ns6:TypeCode listID="FA_GEAR_CHARACTERISTIC">ME</ns6:TypeCode>
+					<ns6:ValueMeasure unitCode="MMT">90</ns6:ValueMeasure>
+				</ns6:ApplicableGearCharacteristic>
+				<ns6:ApplicableGearCharacteristic>
+					<ns6:TypeCode listID="FA_GEAR_CHARACTERISTIC">GD</ns6:TypeCode>
+					<ns6:Value>OTB</ns6:Value>
+				</ns6:ApplicableGearCharacteristic>
+			</ns6:SpecifiedFishingGear>
+			<ns6:RelatedFishingActivity>
+				<ns6:TypeCode listID="FLUX_FA_TYPE">GEAR_RETRIEVAL</ns6:TypeCode>
+				<ns6:OccurrenceDateTime>
+					<ns8:DateTime xmlns:ns8="urn:un:unece:uncefact:data:standard:UnqualifiedDataType:20">2012-05-19T16:09:51.093Z</ns8:DateTime>
+				</ns6:OccurrenceDateTime>
+				<ns6:RelatedFLUXLocation>
+					<ns6:TypeCode listID="FLUX_LOCATION_TYPE">POSITION</ns6:TypeCode>
+					<ns6:SpecifiedPhysicalFLUXGeographicalCoordinate>
+						<ns6:LongitudeMeasure>9.320</ns6:LongitudeMeasure>
+						<ns6:LatitudeMeasure>58.020</ns6:LatitudeMeasure>
+					</ns6:SpecifiedPhysicalFLUXGeographicalCoordinate>
+				</ns6:RelatedFLUXLocation>
+			</ns6:RelatedFishingActivity>
+			<ns6:SpecifiedDelimitedPeriod>
+				<ns6:StartDateTime>
+					<ns8:DateTime xmlns:ns8="urn:un:unece:uncefact:data:standard:UnqualifiedDataType:20">2012-05-19T16:09:51.093Z</ns8:DateTime>
+				</ns6:StartDateTime>
+				<ns6:DurationMeasure unitCode="MIN">420</ns6:DurationMeasure>
+			</ns6:SpecifiedDelimitedPeriod>
+			<ns6:SpecifiedFishingTrip>
+				<ns6:ID schemeID="EU_TRIP_ID">placeholder-fishing-trip-id</ns6:ID>
+			</ns6:SpecifiedFishingTrip>
+		</ns6:SpecifiedFishingActivity>
+		<ns6:SpecifiedVesselTransportMeans xmlns:ns6="urn:un:unece:uncefact:data:standard:ReusableAggregateBusinessInformationEntity:20">
+			<ns2:ID schemeID="CFR" xmlns:ns2="urn:un:unece:uncefact:data:standard:ReusableAggregateBusinessInformationEntity:20">placeholder-vessel-cfr-id</ns2:ID>
+			<ns2:RoleCode listID="FA_VESSEL_ROLE" xmlns:ns2="urn:un:unece:uncefact:data:standard:ReusableAggregateBusinessInformationEntity:20">CATCHING_VESSEL</ns2:RoleCode>
+			<ns2:RegistrationVesselCountry xmlns:ns2="urn:un:unece:uncefact:data:standard:ReusableAggregateBusinessInformationEntity:20">
+				<ns2:ID schemeID="TERRITORY">SWE</ns2:ID>
+			</ns2:RegistrationVesselCountry>
+			<ns2:SpecifiedContactParty xmlns:ns2="urn:un:unece:uncefact:data:standard:ReusableAggregateBusinessInformationEntity:20">
+				<ns3:RoleCode listID="FLUX_CONTACT_ROLE" xmlns:ns3="urn:un:unece:uncefact:data:standard:ReusableAggregateBusinessInformationEntity:20">MASTER</ns3:RoleCode>
+				<ns3:SpecifiedStructuredAddress xmlns:ns3="urn:un:unece:uncefact:data:standard:ReusableAggregateBusinessInformationEntity:20">
+					<ns3:StreetName>placeholder-street-name</ns3:StreetName>
+					<ns3:CityName>placeholder-city-name</ns3:CityName>
+					<ns3:CountryID schemeID="TERRITORY">SWE</ns3:CountryID>
+					<ns3:PlotIdentification languageID="GBR">N/A</ns3:PlotIdentification>
+					<ns3:PostalArea>placeholder-postal-area</ns3:PostalArea>
+				</ns3:SpecifiedStructuredAddress>
+				<ns3:SpecifiedContactPerson xmlns:ns3="urn:un:unece:uncefact:data:standard:ReusableAggregateBusinessInformationEntity:20">
+					<ns3:GivenName>placeholder-contact-person-given-name</ns3:GivenName>
+					<ns3:FamilyName>placeholder-contact-person-family-name</ns3:FamilyName>
+				</ns3:SpecifiedContactPerson>
+			</ns2:SpecifiedContactParty>
+		</ns6:SpecifiedVesselTransportMeans>
+	</ns0:FAReportDocument>
+	<ns0:FAReportDocument>
+		<ns6:TypeCode listID="FLUX_FA_REPORT_TYPE" xmlns:ns6="urn:un:unece:uncefact:data:standard:ReusableAggregateBusinessInformationEntity:20">DECLARATION</ns6:TypeCode>
+		<ns6:AcceptanceDateTime xmlns:ns6="urn:un:unece:uncefact:data:standard:ReusableAggregateBusinessInformationEntity:20">
+			<ns8:DateTime xmlns:ns8="urn:un:unece:uncefact:data:standard:UnqualifiedDataType:20">2012-05-20T11:59:30.093Z</ns8:DateTime>
+		</ns6:AcceptanceDateTime>
+		<ns6:RelatedFLUXReportDocument xmlns:ns6="urn:un:unece:uncefact:data:standard:ReusableAggregateBusinessInformationEntity:20">
+			<ns6:ID schemeID="UUID">placeholder-fishing-activity-report-document-id</ns6:ID>
+			<ns6:CreationDateTime>
+				<ns8:DateTime xmlns:ns8="urn:un:unece:uncefact:data:standard:UnqualifiedDataType:20">2012-05-20T19:13:16.344Z</ns8:DateTime>
+			</ns6:CreationDateTime>
+			<ns6:PurposeCode listID="FLUX_GP_PURPOSE">9</ns6:PurposeCode>
+			<ns6:OwnerFLUXParty>
+				<ns6:ID schemeID="FLUX_GP_PARTY">SWE</ns6:ID>
+			</ns6:OwnerFLUXParty>
+		</ns6:RelatedFLUXReportDocument>
+		<ns6:SpecifiedFishingActivity xmlns:ns6="urn:un:unece:uncefact:data:standard:ReusableAggregateBusinessInformationEntity:20">
+			<ns6:TypeCode listID="FLUX_FA_TYPE">FISHING_OPERATION</ns6:TypeCode>
+			<ns6:OccurrenceDateTime>
+				<ns8:DateTime xmlns:ns8="urn:un:unece:uncefact:data:standard:UnqualifiedDataType:20">2012-05-20T02:09:51.093Z</ns8:DateTime>
+			</ns6:OccurrenceDateTime>
+			<ns6:VesselRelatedActivityCode listID="VESSEL_ACTIVITY">FIS</ns6:VesselRelatedActivityCode>
+			<ns6:OperationsQuantity unitCode="C62">1</ns6:OperationsQuantity>
+			<ns6:SpecifiedFishingGear>
+				<ns6:TypeCode listID="GEAR_TYPE">OTB</ns6:TypeCode>
+				<ns6:RoleCode listID="FA_GEAR_ROLE">DEPLOYED</ns6:RoleCode>
+				<ns6:ApplicableGearCharacteristic>
+					<ns6:TypeCode listID="FA_GEAR_CHARACTERISTIC">GM</ns6:TypeCode>
+					<ns6:ValueMeasure unitCode="MTR">2</ns6:ValueMeasure>
+				</ns6:ApplicableGearCharacteristic>
+				<ns6:ApplicableGearCharacteristic>
+					<ns6:TypeCode listID="FA_GEAR_CHARACTERISTIC">ME</ns6:TypeCode>
+					<ns6:ValueMeasure unitCode="MMT">90</ns6:ValueMeasure>
+				</ns6:ApplicableGearCharacteristic>
+				<ns6:ApplicableGearCharacteristic>
+					<ns6:TypeCode listID="FA_GEAR_CHARACTERISTIC">GD</ns6:TypeCode>
+					<ns6:Value>OTB</ns6:Value>
+				</ns6:ApplicableGearCharacteristic>
+			</ns6:SpecifiedFishingGear>
+			<ns6:RelatedFishingActivity>
+				<ns6:TypeCode listID="FLUX_FA_TYPE">GEAR_SHOT</ns6:TypeCode>
+				<ns6:OccurrenceDateTime>
+					<ns8:DateTime xmlns:ns8="urn:un:unece:uncefact:data:standard:UnqualifiedDataType:20">2012-05-20T02:09:51.093Z</ns8:DateTime>
+				</ns6:OccurrenceDateTime>
+				<ns6:RelatedFLUXLocation>
+					<ns6:TypeCode listID="FLUX_LOCATION_TYPE">POSITION</ns6:TypeCode>
+					<ns6:SpecifiedPhysicalFLUXGeographicalCoordinate>
+						<ns6:LongitudeMeasure>9.900</ns6:LongitudeMeasure>
+						<ns6:LatitudeMeasure>58.070</ns6:LatitudeMeasure>
+					</ns6:SpecifiedPhysicalFLUXGeographicalCoordinate>
+				</ns6:RelatedFLUXLocation>
+			</ns6:RelatedFishingActivity>
+			<ns6:SpecifiedDelimitedPeriod>
+				<ns6:StartDateTime>
+					<ns8:DateTime xmlns:ns8="urn:un:unece:uncefact:data:standard:UnqualifiedDataType:20">2012-05-20T02:09:51.093Z</ns8:DateTime>
+				</ns6:StartDateTime>
+			</ns6:SpecifiedDelimitedPeriod>
+			<ns6:SpecifiedFishingTrip>
+				<ns6:ID schemeID="EU_TRIP_ID">placeholder-fishing-trip-id</ns6:ID>
+			</ns6:SpecifiedFishingTrip>
+		</ns6:SpecifiedFishingActivity>
+		<ns6:SpecifiedVesselTransportMeans xmlns:ns6="urn:un:unece:uncefact:data:standard:ReusableAggregateBusinessInformationEntity:20">
+			<ns2:ID schemeID="CFR" xmlns:ns2="urn:un:unece:uncefact:data:standard:ReusableAggregateBusinessInformationEntity:20">placeholder-vessel-cfr-id</ns2:ID>
+			<ns2:RoleCode listID="FA_VESSEL_ROLE" xmlns:ns2="urn:un:unece:uncefact:data:standard:ReusableAggregateBusinessInformationEntity:20">CATCHING_VESSEL</ns2:RoleCode>
+			<ns2:RegistrationVesselCountry xmlns:ns2="urn:un:unece:uncefact:data:standard:ReusableAggregateBusinessInformationEntity:20">
+				<ns2:ID schemeID="TERRITORY">SWE</ns2:ID>
+			</ns2:RegistrationVesselCountry>
+			<ns2:SpecifiedContactParty xmlns:ns2="urn:un:unece:uncefact:data:standard:ReusableAggregateBusinessInformationEntity:20">
+				<ns3:RoleCode listID="FLUX_CONTACT_ROLE" xmlns:ns3="urn:un:unece:uncefact:data:standard:ReusableAggregateBusinessInformationEntity:20">MASTER</ns3:RoleCode>
+				<ns3:SpecifiedStructuredAddress xmlns:ns3="urn:un:unece:uncefact:data:standard:ReusableAggregateBusinessInformationEntity:20">
+					<ns3:StreetName>placeholder-street-name</ns3:StreetName>
+					<ns3:CityName>placeholder-city-name</ns3:CityName>
+					<ns3:CountryID schemeID="TERRITORY">SWE</ns3:CountryID>
+					<ns3:PlotIdentification languageID="GBR">N/A</ns3:PlotIdentification>
+					<ns3:PostalArea>placeholder-postal-area</ns3:PostalArea>
+				</ns3:SpecifiedStructuredAddress>
+				<ns3:SpecifiedContactPerson xmlns:ns3="urn:un:unece:uncefact:data:standard:ReusableAggregateBusinessInformationEntity:20">
+					<ns3:GivenName>placeholder-contact-person-given-name</ns3:GivenName>
+					<ns3:FamilyName>placeholder-contact-person-family-name</ns3:FamilyName>
+				</ns3:SpecifiedContactPerson>
+			</ns2:SpecifiedContactParty>
+		</ns6:SpecifiedVesselTransportMeans>
+	</ns0:FAReportDocument>
+	<ns0:FAReportDocument>
+		<ns6:TypeCode listID="FLUX_FA_REPORT_TYPE" xmlns:ns6="urn:un:unece:uncefact:data:standard:ReusableAggregateBusinessInformationEntity:20">DECLARATION</ns6:TypeCode>
+		<ns6:AcceptanceDateTime xmlns:ns6="urn:un:unece:uncefact:data:standard:ReusableAggregateBusinessInformationEntity:20">
+			<ns8:DateTime xmlns:ns8="urn:un:unece:uncefact:data:standard:UnqualifiedDataType:20">2012-05-20T11:59:30.093Z</ns8:DateTime>
+		</ns6:AcceptanceDateTime>
+		<ns6:RelatedFLUXReportDocument xmlns:ns6="urn:un:unece:uncefact:data:standard:ReusableAggregateBusinessInformationEntity:20">
+			<ns6:ID schemeID="UUID">placeholder-fishing-activity-report-document-id</ns6:ID>
+			<ns6:CreationDateTime>
+				<ns8:DateTime xmlns:ns8="urn:un:unece:uncefact:data:standard:UnqualifiedDataType:20">2012-05-20T19:13:16.344Z</ns8:DateTime>
+			</ns6:CreationDateTime>
+			<ns6:PurposeCode listID="FLUX_GP_PURPOSE">9</ns6:PurposeCode>
+			<ns6:OwnerFLUXParty>
+				<ns6:ID schemeID="FLUX_GP_PARTY">SWE</ns6:ID>
+			</ns6:OwnerFLUXParty>
+		</ns6:RelatedFLUXReportDocument>
+		<ns6:SpecifiedFishingActivity xmlns:ns6="urn:un:unece:uncefact:data:standard:ReusableAggregateBusinessInformationEntity:20">
+			<ns6:TypeCode listID="FLUX_FA_TYPE">FISHING_OPERATION</ns6:TypeCode>
+			<ns6:OccurrenceDateTime>
+				<ns8:DateTime xmlns:ns8="urn:un:unece:uncefact:data:standard:UnqualifiedDataType:20">2012-05-20T09:39:51.093Z</ns8:DateTime>
+			</ns6:OccurrenceDateTime>
+			<ns6:VesselRelatedActivityCode listID="VESSEL_ACTIVITY">FIS</ns6:VesselRelatedActivityCode>
+			<ns6:OperationsQuantity unitCode="C62">1</ns6:OperationsQuantity>
+			<ns6:SpecifiedFACatch>
+				<ns6:SpeciesCode listID="FAO_SPECIES">COD</ns6:SpeciesCode>
+				<ns6:WeightMeasure unitCode="KGM">22.2</ns6:WeightMeasure>
+				<ns6:WeighingMeansCode listID="WEIGHT_MEANS">ONBOARD</ns6:WeighingMeansCode>
+				<ns6:TypeCode listID="FA_CATCH_TYPE">ONBOARD</ns6:TypeCode>
+				<ns6:SpecifiedSizeDistribution>
+					<ns6:ClassCode listID="FISH_SIZE_CLASS">LSC</ns6:ClassCode>
+				</ns6:SpecifiedSizeDistribution>
+				<ns6:AppliedAAPProcess>
+					<ns6:TypeCode listID="FISH_PRESENTATION">GUT</ns6:TypeCode>
+					<ns6:TypeCode listID="FISH_PRESERVATION">FRE</ns6:TypeCode>
+					<ns6:ConversionFactorNumeric>1.17</ns6:ConversionFactorNumeric>
+				</ns6:AppliedAAPProcess>
+				<ns6:SpecifiedFLUXLocation>
+					<ns6:TypeCode listID="FLUX_LOCATION_TYPE">POSITION</ns6:TypeCode>
+					<ns6:SpecifiedPhysicalFLUXGeographicalCoordinate>
+						<ns6:LongitudeMeasure>9.420</ns6:LongitudeMeasure>
+						<ns6:LatitudeMeasure>57.930</ns6:LatitudeMeasure>
+					</ns6:SpecifiedPhysicalFLUXGeographicalCoordinate>
+				</ns6:SpecifiedFLUXLocation>
+				<ns6:SpecifiedFLUXLocation>
+					<ns6:TypeCode listID="FLUX_LOCATION_TYPE">AREA</ns6:TypeCode>
+					<ns6:ID schemeID="FAO_AREA">27.3.a.n</ns6:ID>
+				</ns6:SpecifiedFLUXLocation>
+			</ns6:SpecifiedFACatch>
+			<ns6:SpecifiedFACatch>
+				<ns6:SpeciesCode listID="FAO_SPECIES">HAD</ns6:SpeciesCode>
+				<ns6:WeightMeasure unitCode="KGM">24.6</ns6:WeightMeasure>
+				<ns6:WeighingMeansCode listID="WEIGHT_MEANS">ONBOARD</ns6:WeighingMeansCode>
+				<ns6:TypeCode listID="FA_CATCH_TYPE">ONBOARD</ns6:TypeCode>
+				<ns6:SpecifiedSizeDistribution>
+					<ns6:ClassCode listID="FISH_SIZE_CLASS">LSC</ns6:ClassCode>
+				</ns6:SpecifiedSizeDistribution>
+				<ns6:AppliedAAPProcess>
+					<ns6:TypeCode listID="FISH_PRESENTATION">GUT</ns6:TypeCode>
+					<ns6:TypeCode listID="FISH_PRESERVATION">FRE</ns6:TypeCode>
+					<ns6:ConversionFactorNumeric>1.17</ns6:ConversionFactorNumeric>
+				</ns6:AppliedAAPProcess>
+				<ns6:SpecifiedFLUXLocation>
+					<ns6:TypeCode listID="FLUX_LOCATION_TYPE">POSITION</ns6:TypeCode>
+					<ns6:SpecifiedPhysicalFLUXGeographicalCoordinate>
+						<ns6:LongitudeMeasure>9.420</ns6:LongitudeMeasure>
+						<ns6:LatitudeMeasure>57.930</ns6:LatitudeMeasure>
+					</ns6:SpecifiedPhysicalFLUXGeographicalCoordinate>
+				</ns6:SpecifiedFLUXLocation>
+				<ns6:SpecifiedFLUXLocation>
+					<ns6:TypeCode listID="FLUX_LOCATION_TYPE">AREA</ns6:TypeCode>
+					<ns6:ID schemeID="FAO_AREA">27.3.a.n</ns6:ID>
+				</ns6:SpecifiedFLUXLocation>
+			</ns6:SpecifiedFACatch>
+			<ns6:SpecifiedFACatch>
+				<ns6:SpeciesCode listID="FAO_SPECIES">HKE</ns6:SpeciesCode>
+				<ns6:WeightMeasure unitCode="KGM">35.5</ns6:WeightMeasure>
+				<ns6:WeighingMeansCode listID="WEIGHT_MEANS">ONBOARD</ns6:WeighingMeansCode>
+				<ns6:TypeCode listID="FA_CATCH_TYPE">ONBOARD</ns6:TypeCode>
+				<ns6:SpecifiedSizeDistribution>
+					<ns6:ClassCode listID="FISH_SIZE_CLASS">LSC</ns6:ClassCode>
+				</ns6:SpecifiedSizeDistribution>
+				<ns6:AppliedAAPProcess>
+					<ns6:TypeCode listID="FISH_PRESENTATION">GUT</ns6:TypeCode>
+					<ns6:TypeCode listID="FISH_PRESERVATION">FRE</ns6:TypeCode>
+					<ns6:ConversionFactorNumeric>1.11</ns6:ConversionFactorNumeric>
+				</ns6:AppliedAAPProcess>
+				<ns6:SpecifiedFLUXLocation>
+					<ns6:TypeCode listID="FLUX_LOCATION_TYPE">POSITION</ns6:TypeCode>
+					<ns6:SpecifiedPhysicalFLUXGeographicalCoordinate>
+						<ns6:LongitudeMeasure>9.420</ns6:LongitudeMeasure>
+						<ns6:LatitudeMeasure>57.930</ns6:LatitudeMeasure>
+					</ns6:SpecifiedPhysicalFLUXGeographicalCoordinate>
+				</ns6:SpecifiedFLUXLocation>
+				<ns6:SpecifiedFLUXLocation>
+					<ns6:TypeCode listID="FLUX_LOCATION_TYPE">AREA</ns6:TypeCode>
+					<ns6:ID schemeID="FAO_AREA">27.3.a.n</ns6:ID>
+				</ns6:SpecifiedFLUXLocation>
+			</ns6:SpecifiedFACatch>
+			<ns6:SpecifiedFACatch>
+				<ns6:SpeciesCode listID="FAO_SPECIES">NEP</ns6:SpeciesCode>
+				<ns6:WeightMeasure unitCode="KGM">11.0</ns6:WeightMeasure>
+				<ns6:WeighingMeansCode listID="WEIGHT_MEANS">ONBOARD</ns6:WeighingMeansCode>
+				<ns6:TypeCode listID="FA_CATCH_TYPE">ONBOARD</ns6:TypeCode>
+				<ns6:SpecifiedSizeDistribution>
+					<ns6:ClassCode listID="FISH_SIZE_CLASS">LSC</ns6:ClassCode>
+				</ns6:SpecifiedSizeDistribution>
+				<ns6:AppliedAAPProcess>
+					<ns6:TypeCode listID="FISH_PRESENTATION">WHL</ns6:TypeCode>
+					<ns6:TypeCode listID="FISH_PRESERVATION">FRE</ns6:TypeCode>
+					<ns6:ConversionFactorNumeric>1</ns6:ConversionFactorNumeric>
+				</ns6:AppliedAAPProcess>
+				<ns6:SpecifiedFLUXLocation>
+					<ns6:TypeCode listID="FLUX_LOCATION_TYPE">POSITION</ns6:TypeCode>
+					<ns6:SpecifiedPhysicalFLUXGeographicalCoordinate>
+						<ns6:LongitudeMeasure>9.420</ns6:LongitudeMeasure>
+						<ns6:LatitudeMeasure>57.930</ns6:LatitudeMeasure>
+					</ns6:SpecifiedPhysicalFLUXGeographicalCoordinate>
+				</ns6:SpecifiedFLUXLocation>
+				<ns6:SpecifiedFLUXLocation>
+					<ns6:TypeCode listID="FLUX_LOCATION_TYPE">AREA</ns6:TypeCode>
+					<ns6:ID schemeID="FAO_AREA">27.3.a.n</ns6:ID>
+				</ns6:SpecifiedFLUXLocation>
+			</ns6:SpecifiedFACatch>
+			<ns6:SpecifiedFACatch>
+				<ns6:SpeciesCode listID="FAO_SPECIES">POK</ns6:SpeciesCode>
+				<ns6:WeightMeasure unitCode="KGM">125.0</ns6:WeightMeasure>
+				<ns6:WeighingMeansCode listID="WEIGHT_MEANS">ONBOARD</ns6:WeighingMeansCode>
+				<ns6:TypeCode listID="FA_CATCH_TYPE">ONBOARD</ns6:TypeCode>
+				<ns6:SpecifiedSizeDistribution>
+					<ns6:ClassCode listID="FISH_SIZE_CLASS">LSC</ns6:ClassCode>
+				</ns6:SpecifiedSizeDistribution>
+				<ns6:AppliedAAPProcess>
+					<ns6:TypeCode listID="FISH_PRESENTATION">GUT</ns6:TypeCode>
+					<ns6:TypeCode listID="FISH_PRESERVATION">FRE</ns6:TypeCode>
+					<ns6:ConversionFactorNumeric>1.19</ns6:ConversionFactorNumeric>
+				</ns6:AppliedAAPProcess>
+				<ns6:SpecifiedFLUXLocation>
+					<ns6:TypeCode listID="FLUX_LOCATION_TYPE">POSITION</ns6:TypeCode>
+					<ns6:SpecifiedPhysicalFLUXGeographicalCoordinate>
+						<ns6:LongitudeMeasure>9.420</ns6:LongitudeMeasure>
+						<ns6:LatitudeMeasure>57.930</ns6:LatitudeMeasure>
+					</ns6:SpecifiedPhysicalFLUXGeographicalCoordinate>
+				</ns6:SpecifiedFLUXLocation>
+				<ns6:SpecifiedFLUXLocation>
+					<ns6:TypeCode listID="FLUX_LOCATION_TYPE">AREA</ns6:TypeCode>
+					<ns6:ID schemeID="FAO_AREA">27.3.a.n</ns6:ID>
+				</ns6:SpecifiedFLUXLocation>
+			</ns6:SpecifiedFACatch>
+			<ns6:SpecifiedFACatch>
+				<ns6:SpeciesCode listID="FAO_SPECIES">WIT</ns6:SpeciesCode>
+				<ns6:WeightMeasure unitCode="KGM">51.9</ns6:WeightMeasure>
+				<ns6:WeighingMeansCode listID="WEIGHT_MEANS">ONBOARD</ns6:WeighingMeansCode>
+				<ns6:TypeCode listID="FA_CATCH_TYPE">ONBOARD</ns6:TypeCode>
+				<ns6:SpecifiedSizeDistribution>
+					<ns6:ClassCode listID="FISH_SIZE_CLASS">LSC</ns6:ClassCode>
+				</ns6:SpecifiedSizeDistribution>
+				<ns6:AppliedAAPProcess>
+					<ns6:TypeCode listID="FISH_PRESENTATION">GUT</ns6:TypeCode>
+					<ns6:TypeCode listID="FISH_PRESERVATION">FRE</ns6:TypeCode>
+					<ns6:ConversionFactorNumeric>1.06</ns6:ConversionFactorNumeric>
+				</ns6:AppliedAAPProcess>
+				<ns6:SpecifiedFLUXLocation>
+					<ns6:TypeCode listID="FLUX_LOCATION_TYPE">POSITION</ns6:TypeCode>
+					<ns6:SpecifiedPhysicalFLUXGeographicalCoordinate>
+						<ns6:LongitudeMeasure>9.420</ns6:LongitudeMeasure>
+						<ns6:LatitudeMeasure>57.930</ns6:LatitudeMeasure>
+					</ns6:SpecifiedPhysicalFLUXGeographicalCoordinate>
+				</ns6:SpecifiedFLUXLocation>
+				<ns6:SpecifiedFLUXLocation>
+					<ns6:TypeCode listID="FLUX_LOCATION_TYPE">AREA</ns6:TypeCode>
+					<ns6:ID schemeID="FAO_AREA">27.3.a.n</ns6:ID>
+				</ns6:SpecifiedFLUXLocation>
+			</ns6:SpecifiedFACatch>
+			<ns6:SpecifiedFACatch>
+				<ns6:SpeciesCode listID="FAO_SPECIES">MON</ns6:SpeciesCode>
+				<ns6:WeightMeasure unitCode="KGM">45.0</ns6:WeightMeasure>
+				<ns6:WeighingMeansCode listID="WEIGHT_MEANS">ONBOARD</ns6:WeighingMeansCode>
+				<ns6:TypeCode listID="FA_CATCH_TYPE">ONBOARD</ns6:TypeCode>
+				<ns6:SpecifiedSizeDistribution>
+					<ns6:ClassCode listID="FISH_SIZE_CLASS">LSC</ns6:ClassCode>
+				</ns6:SpecifiedSizeDistribution>
+				<ns6:AppliedAAPProcess>
+					<ns6:TypeCode listID="FISH_PRESENTATION">GUH</ns6:TypeCode>
+					<ns6:TypeCode listID="FISH_PRESERVATION">FRE</ns6:TypeCode>
+					<ns6:ConversionFactorNumeric>3</ns6:ConversionFactorNumeric>
+				</ns6:AppliedAAPProcess>
+				<ns6:SpecifiedFLUXLocation>
+					<ns6:TypeCode listID="FLUX_LOCATION_TYPE">POSITION</ns6:TypeCode>
+					<ns6:SpecifiedPhysicalFLUXGeographicalCoordinate>
+						<ns6:LongitudeMeasure>9.420</ns6:LongitudeMeasure>
+						<ns6:LatitudeMeasure>57.930</ns6:LatitudeMeasure>
+					</ns6:SpecifiedPhysicalFLUXGeographicalCoordinate>
+				</ns6:SpecifiedFLUXLocation>
+				<ns6:SpecifiedFLUXLocation>
+					<ns6:TypeCode listID="FLUX_LOCATION_TYPE">AREA</ns6:TypeCode>
+					<ns6:ID schemeID="FAO_AREA">27.3.a.n</ns6:ID>
+				</ns6:SpecifiedFLUXLocation>
+			</ns6:SpecifiedFACatch>
+			<ns6:SpecifiedFACatch>
+				<ns6:SpeciesCode listID="FAO_SPECIES">LIN</ns6:SpeciesCode>
+				<ns6:WeightMeasure unitCode="KGM">31.9</ns6:WeightMeasure>
+				<ns6:WeighingMeansCode listID="WEIGHT_MEANS">ONBOARD</ns6:WeighingMeansCode>
+				<ns6:TypeCode listID="FA_CATCH_TYPE">ONBOARD</ns6:TypeCode>
+				<ns6:SpecifiedSizeDistribution>
+					<ns6:ClassCode listID="FISH_SIZE_CLASS">LSC</ns6:ClassCode>
+				</ns6:SpecifiedSizeDistribution>
+				<ns6:AppliedAAPProcess>
+					<ns6:TypeCode listID="FISH_PRESENTATION">GUT</ns6:TypeCode>
+					<ns6:TypeCode listID="FISH_PRESERVATION">FRE</ns6:TypeCode>
+					<ns6:ConversionFactorNumeric>1.14</ns6:ConversionFactorNumeric>
+				</ns6:AppliedAAPProcess>
+				<ns6:SpecifiedFLUXLocation>
+					<ns6:TypeCode listID="FLUX_LOCATION_TYPE">POSITION</ns6:TypeCode>
+					<ns6:SpecifiedPhysicalFLUXGeographicalCoordinate>
+						<ns6:LongitudeMeasure>9.420</ns6:LongitudeMeasure>
+						<ns6:LatitudeMeasure>57.930</ns6:LatitudeMeasure>
+					</ns6:SpecifiedPhysicalFLUXGeographicalCoordinate>
+				</ns6:SpecifiedFLUXLocation>
+				<ns6:SpecifiedFLUXLocation>
+					<ns6:TypeCode listID="FLUX_LOCATION_TYPE">AREA</ns6:TypeCode>
+					<ns6:ID schemeID="FAO_AREA">27.3.a.n</ns6:ID>
+				</ns6:SpecifiedFLUXLocation>
+			</ns6:SpecifiedFACatch>
+			<ns6:SpecifiedFACatch>
+				<ns6:SpeciesCode listID="FAO_SPECIES">MON</ns6:SpeciesCode>
+				<ns6:WeightMeasure unitCode="KGM">74.4</ns6:WeightMeasure>
+				<ns6:WeighingMeansCode listID="WEIGHT_MEANS">ONBOARD</ns6:WeighingMeansCode>
+				<ns6:TypeCode listID="FA_CATCH_TYPE">ONBOARD</ns6:TypeCode>
+				<ns6:SpecifiedSizeDistribution>
+					<ns6:ClassCode listID="FISH_SIZE_CLASS">LSC</ns6:ClassCode>
+				</ns6:SpecifiedSizeDistribution>
+				<ns6:AppliedAAPProcess>
+					<ns6:TypeCode listID="FISH_PRESENTATION">GUT</ns6:TypeCode>
+					<ns6:TypeCode listID="FISH_PRESERVATION">FRE</ns6:TypeCode>
+					<ns6:ConversionFactorNumeric>1.22</ns6:ConversionFactorNumeric>
+				</ns6:AppliedAAPProcess>
+				<ns6:SpecifiedFLUXLocation>
+					<ns6:TypeCode listID="FLUX_LOCATION_TYPE">POSITION</ns6:TypeCode>
+					<ns6:SpecifiedPhysicalFLUXGeographicalCoordinate>
+						<ns6:LongitudeMeasure>9.420</ns6:LongitudeMeasure>
+						<ns6:LatitudeMeasure>57.930</ns6:LatitudeMeasure>
+					</ns6:SpecifiedPhysicalFLUXGeographicalCoordinate>
+				</ns6:SpecifiedFLUXLocation>
+				<ns6:SpecifiedFLUXLocation>
+					<ns6:TypeCode listID="FLUX_LOCATION_TYPE">AREA</ns6:TypeCode>
+					<ns6:ID schemeID="FAO_AREA">27.3.a.n</ns6:ID>
+				</ns6:SpecifiedFLUXLocation>
+			</ns6:SpecifiedFACatch>
+			<ns6:SpecifiedFACatch>
+				<ns6:SpeciesCode listID="FAO_SPECIES">CAT</ns6:SpeciesCode>
+				<ns6:WeightMeasure unitCode="KGM">3.5</ns6:WeightMeasure>
+				<ns6:WeighingMeansCode listID="WEIGHT_MEANS">ONBOARD</ns6:WeighingMeansCode>
+				<ns6:TypeCode listID="FA_CATCH_TYPE">ONBOARD</ns6:TypeCode>
+				<ns6:SpecifiedSizeDistribution>
+					<ns6:ClassCode listID="FISH_SIZE_CLASS">LSC</ns6:ClassCode>
+				</ns6:SpecifiedSizeDistribution>
+				<ns6:AppliedAAPProcess>
+					<ns6:TypeCode listID="FISH_PRESENTATION">GUT</ns6:TypeCode>
+					<ns6:TypeCode listID="FISH_PRESERVATION">FRE</ns6:TypeCode>
+					<ns6:ConversionFactorNumeric>1.18</ns6:ConversionFactorNumeric>
+				</ns6:AppliedAAPProcess>
+				<ns6:SpecifiedFLUXLocation>
+					<ns6:TypeCode listID="FLUX_LOCATION_TYPE">POSITION</ns6:TypeCode>
+					<ns6:SpecifiedPhysicalFLUXGeographicalCoordinate>
+						<ns6:LongitudeMeasure>9.420</ns6:LongitudeMeasure>
+						<ns6:LatitudeMeasure>57.930</ns6:LatitudeMeasure>
+					</ns6:SpecifiedPhysicalFLUXGeographicalCoordinate>
+				</ns6:SpecifiedFLUXLocation>
+				<ns6:SpecifiedFLUXLocation>
+					<ns6:TypeCode listID="FLUX_LOCATION_TYPE">AREA</ns6:TypeCode>
+					<ns6:ID schemeID="FAO_AREA">27.3.a.n</ns6:ID>
+				</ns6:SpecifiedFLUXLocation>
+			</ns6:SpecifiedFACatch>
+			<ns6:SpecifiedFACatch>
+				<ns6:SpeciesCode listID="FAO_SPECIES">POL</ns6:SpeciesCode>
+				<ns6:WeightMeasure unitCode="KGM">4.7</ns6:WeightMeasure>
+				<ns6:WeighingMeansCode listID="WEIGHT_MEANS">ONBOARD</ns6:WeighingMeansCode>
+				<ns6:TypeCode listID="FA_CATCH_TYPE">ONBOARD</ns6:TypeCode>
+				<ns6:SpecifiedSizeDistribution>
+					<ns6:ClassCode listID="FISH_SIZE_CLASS">LSC</ns6:ClassCode>
+				</ns6:SpecifiedSizeDistribution>
+				<ns6:AppliedAAPProcess>
+					<ns6:TypeCode listID="FISH_PRESENTATION">GUT</ns6:TypeCode>
+					<ns6:TypeCode listID="FISH_PRESERVATION">FRE</ns6:TypeCode>
+					<ns6:ConversionFactorNumeric>1.17</ns6:ConversionFactorNumeric>
+				</ns6:AppliedAAPProcess>
+				<ns6:SpecifiedFLUXLocation>
+					<ns6:TypeCode listID="FLUX_LOCATION_TYPE">POSITION</ns6:TypeCode>
+					<ns6:SpecifiedPhysicalFLUXGeographicalCoordinate>
+						<ns6:LongitudeMeasure>9.420</ns6:LongitudeMeasure>
+						<ns6:LatitudeMeasure>57.930</ns6:LatitudeMeasure>
+					</ns6:SpecifiedPhysicalFLUXGeographicalCoordinate>
+				</ns6:SpecifiedFLUXLocation>
+				<ns6:SpecifiedFLUXLocation>
+					<ns6:TypeCode listID="FLUX_LOCATION_TYPE">AREA</ns6:TypeCode>
+					<ns6:ID schemeID="FAO_AREA">27.3.a.n</ns6:ID>
+				</ns6:SpecifiedFLUXLocation>
+			</ns6:SpecifiedFACatch>
+			<ns6:SpecifiedFACatch>
+				<ns6:SpeciesCode listID="FAO_SPECIES">WHG</ns6:SpeciesCode>
+				<ns6:WeightMeasure unitCode="KGM">11.8</ns6:WeightMeasure>
+				<ns6:WeighingMeansCode listID="WEIGHT_MEANS">ONBOARD</ns6:WeighingMeansCode>
+				<ns6:TypeCode listID="FA_CATCH_TYPE">ONBOARD</ns6:TypeCode>
+				<ns6:SpecifiedSizeDistribution>
+					<ns6:ClassCode listID="FISH_SIZE_CLASS">LSC</ns6:ClassCode>
+				</ns6:SpecifiedSizeDistribution>
+				<ns6:AppliedAAPProcess>
+					<ns6:TypeCode listID="FISH_PRESENTATION">GUT</ns6:TypeCode>
+					<ns6:TypeCode listID="FISH_PRESERVATION">FRE</ns6:TypeCode>
+					<ns6:ConversionFactorNumeric>1.18</ns6:ConversionFactorNumeric>
+				</ns6:AppliedAAPProcess>
+				<ns6:SpecifiedFLUXLocation>
+					<ns6:TypeCode listID="FLUX_LOCATION_TYPE">POSITION</ns6:TypeCode>
+					<ns6:SpecifiedPhysicalFLUXGeographicalCoordinate>
+						<ns6:LongitudeMeasure>9.420</ns6:LongitudeMeasure>
+						<ns6:LatitudeMeasure>57.930</ns6:LatitudeMeasure>
+					</ns6:SpecifiedPhysicalFLUXGeographicalCoordinate>
+				</ns6:SpecifiedFLUXLocation>
+				<ns6:SpecifiedFLUXLocation>
+					<ns6:TypeCode listID="FLUX_LOCATION_TYPE">AREA</ns6:TypeCode>
+					<ns6:ID schemeID="FAO_AREA">27.3.a.n</ns6:ID>
+				</ns6:SpecifiedFLUXLocation>
+			</ns6:SpecifiedFACatch>
+			<ns6:SpecifiedFishingGear>
+				<ns6:TypeCode listID="GEAR_TYPE">OTB</ns6:TypeCode>
+				<ns6:RoleCode listID="FA_GEAR_ROLE">DEPLOYED</ns6:RoleCode>
+				<ns6:ApplicableGearCharacteristic>
+					<ns6:TypeCode listID="FA_GEAR_CHARACTERISTIC">GM</ns6:TypeCode>
+					<ns6:ValueMeasure unitCode="MTR">2</ns6:ValueMeasure>
+				</ns6:ApplicableGearCharacteristic>
+				<ns6:ApplicableGearCharacteristic>
+					<ns6:TypeCode listID="FA_GEAR_CHARACTERISTIC">ME</ns6:TypeCode>
+					<ns6:ValueMeasure unitCode="MMT">90</ns6:ValueMeasure>
+				</ns6:ApplicableGearCharacteristic>
+				<ns6:ApplicableGearCharacteristic>
+					<ns6:TypeCode listID="FA_GEAR_CHARACTERISTIC">GD</ns6:TypeCode>
+					<ns6:Value>OTB</ns6:Value>
+				</ns6:ApplicableGearCharacteristic>
+			</ns6:SpecifiedFishingGear>
+			<ns6:RelatedFishingActivity>
+				<ns6:TypeCode listID="FLUX_FA_TYPE">GEAR_RETRIEVAL</ns6:TypeCode>
+				<ns6:OccurrenceDateTime>
+					<ns8:DateTime xmlns:ns8="urn:un:unece:uncefact:data:standard:UnqualifiedDataType:20">2012-05-20T09:39:51.093Z</ns8:DateTime>
+				</ns6:OccurrenceDateTime>
+				<ns6:RelatedFLUXLocation>
+					<ns6:TypeCode listID="FLUX_LOCATION_TYPE">POSITION</ns6:TypeCode>
+					<ns6:SpecifiedPhysicalFLUXGeographicalCoordinate>
+						<ns6:LongitudeMeasure>9.420</ns6:LongitudeMeasure>
+						<ns6:LatitudeMeasure>57.930</ns6:LatitudeMeasure>
+					</ns6:SpecifiedPhysicalFLUXGeographicalCoordinate>
+				</ns6:RelatedFLUXLocation>
+			</ns6:RelatedFishingActivity>
+			<ns6:SpecifiedDelimitedPeriod>
+				<ns6:StartDateTime>
+					<ns8:DateTime xmlns:ns8="urn:un:unece:uncefact:data:standard:UnqualifiedDataType:20">2012-05-20T09:39:51.093Z</ns8:DateTime>
+				</ns6:StartDateTime>
+				<ns6:DurationMeasure unitCode="MIN">420</ns6:DurationMeasure>
+			</ns6:SpecifiedDelimitedPeriod>
+			<ns6:SpecifiedFishingTrip>
+				<ns6:ID schemeID="EU_TRIP_ID">placeholder-fishing-trip-id</ns6:ID>
+			</ns6:SpecifiedFishingTrip>
+		</ns6:SpecifiedFishingActivity>
+		<ns6:SpecifiedVesselTransportMeans xmlns:ns6="urn:un:unece:uncefact:data:standard:ReusableAggregateBusinessInformationEntity:20">
+			<ns2:ID schemeID="CFR" xmlns:ns2="urn:un:unece:uncefact:data:standard:ReusableAggregateBusinessInformationEntity:20">placeholder-vessel-cfr-id</ns2:ID>
+			<ns2:RoleCode listID="FA_VESSEL_ROLE" xmlns:ns2="urn:un:unece:uncefact:data:standard:ReusableAggregateBusinessInformationEntity:20">CATCHING_VESSEL</ns2:RoleCode>
+			<ns2:RegistrationVesselCountry xmlns:ns2="urn:un:unece:uncefact:data:standard:ReusableAggregateBusinessInformationEntity:20">
+				<ns2:ID schemeID="TERRITORY">SWE</ns2:ID>
+			</ns2:RegistrationVesselCountry>
+			<ns2:SpecifiedContactParty xmlns:ns2="urn:un:unece:uncefact:data:standard:ReusableAggregateBusinessInformationEntity:20">
+				<ns3:RoleCode listID="FLUX_CONTACT_ROLE" xmlns:ns3="urn:un:unece:uncefact:data:standard:ReusableAggregateBusinessInformationEntity:20">MASTER</ns3:RoleCode>
+				<ns3:SpecifiedStructuredAddress xmlns:ns3="urn:un:unece:uncefact:data:standard:ReusableAggregateBusinessInformationEntity:20">
+					<ns3:StreetName>placeholder-street-name</ns3:StreetName>
+					<ns3:CityName>placeholder-city-name</ns3:CityName>
+					<ns3:CountryID schemeID="TERRITORY">SWE</ns3:CountryID>
+					<ns3:PlotIdentification languageID="GBR">N/A</ns3:PlotIdentification>
+					<ns3:PostalArea>placeholder-postal-area</ns3:PostalArea>
+				</ns3:SpecifiedStructuredAddress>
+				<ns3:SpecifiedContactPerson xmlns:ns3="urn:un:unece:uncefact:data:standard:ReusableAggregateBusinessInformationEntity:20">
+					<ns3:GivenName>placeholder-contact-person-given-name</ns3:GivenName>
+					<ns3:FamilyName>placeholder-contact-person-family-name</ns3:FamilyName>
+				</ns3:SpecifiedContactPerson>
+			</ns2:SpecifiedContactParty>
+		</ns6:SpecifiedVesselTransportMeans>
+	</ns0:FAReportDocument>
+	<ns0:FAReportDocument>
+		<ns6:TypeCode listID="FLUX_FA_REPORT_TYPE" xmlns:ns6="urn:un:unece:uncefact:data:standard:ReusableAggregateBusinessInformationEntity:20">DECLARATION</ns6:TypeCode>
+		<ns6:AcceptanceDateTime xmlns:ns6="urn:un:unece:uncefact:data:standard:ReusableAggregateBusinessInformationEntity:20">
+			<ns8:DateTime xmlns:ns8="urn:un:unece:uncefact:data:standard:UnqualifiedDataType:20">2012-05-20T09:39:06.093Z</ns8:DateTime>
+		</ns6:AcceptanceDateTime>
+		<ns6:RelatedFLUXReportDocument xmlns:ns6="urn:un:unece:uncefact:data:standard:ReusableAggregateBusinessInformationEntity:20">
+			<ns6:ID schemeID="UUID">placeholder-fishing-activity-report-document-id</ns6:ID>
+			<ns6:CreationDateTime>
+				<ns8:DateTime xmlns:ns8="urn:un:unece:uncefact:data:standard:UnqualifiedDataType:20">2012-05-20T19:13:16.344Z</ns8:DateTime>
+			</ns6:CreationDateTime>
+			<ns6:PurposeCode listID="FLUX_GP_PURPOSE">9</ns6:PurposeCode>
+			<ns6:OwnerFLUXParty>
+				<ns6:ID schemeID="FLUX_GP_PARTY">SWE</ns6:ID>
+			</ns6:OwnerFLUXParty>
+		</ns6:RelatedFLUXReportDocument>
+		<ns6:SpecifiedFishingActivity xmlns:ns6="urn:un:unece:uncefact:data:standard:ReusableAggregateBusinessInformationEntity:20">
+			<ns6:TypeCode listID="FLUX_FA_TYPE">FISHING_OPERATION</ns6:TypeCode>
+			<ns6:OccurrenceDateTime>
+				<ns8:DateTime xmlns:ns8="urn:un:unece:uncefact:data:standard:UnqualifiedDataType:20">2012-05-19T17:09:51.093Z</ns8:DateTime>
+			</ns6:OccurrenceDateTime>
+			<ns6:VesselRelatedActivityCode listID="VESSEL_ACTIVITY">FIS</ns6:VesselRelatedActivityCode>
+			<ns6:OperationsQuantity unitCode="C62">1</ns6:OperationsQuantity>
+			<ns6:SpecifiedFishingGear>
+				<ns6:TypeCode listID="GEAR_TYPE">OTB</ns6:TypeCode>
+				<ns6:RoleCode listID="FA_GEAR_ROLE">DEPLOYED</ns6:RoleCode>
+				<ns6:ApplicableGearCharacteristic>
+					<ns6:TypeCode listID="FA_GEAR_CHARACTERISTIC">GM</ns6:TypeCode>
+					<ns6:ValueMeasure unitCode="MTR">2</ns6:ValueMeasure>
+				</ns6:ApplicableGearCharacteristic>
+				<ns6:ApplicableGearCharacteristic>
+					<ns6:TypeCode listID="FA_GEAR_CHARACTERISTIC">ME</ns6:TypeCode>
+					<ns6:ValueMeasure unitCode="MMT">90</ns6:ValueMeasure>
+				</ns6:ApplicableGearCharacteristic>
+				<ns6:ApplicableGearCharacteristic>
+					<ns6:TypeCode listID="FA_GEAR_CHARACTERISTIC">GD</ns6:TypeCode>
+					<ns6:Value>OTB</ns6:Value>
+				</ns6:ApplicableGearCharacteristic>
+			</ns6:SpecifiedFishingGear>
+			<ns6:RelatedFishingActivity>
+				<ns6:TypeCode listID="FLUX_FA_TYPE">GEAR_SHOT</ns6:TypeCode>
+				<ns6:OccurrenceDateTime>
+					<ns8:DateTime xmlns:ns8="urn:un:unece:uncefact:data:standard:UnqualifiedDataType:20">2012-05-19T17:09:51.093Z</ns8:DateTime>
+				</ns6:OccurrenceDateTime>
+				<ns6:RelatedFLUXLocation>
+					<ns6:TypeCode listID="FLUX_LOCATION_TYPE">POSITION</ns6:TypeCode>
+					<ns6:SpecifiedPhysicalFLUXGeographicalCoordinate>
+						<ns6:LongitudeMeasure>9.350</ns6:LongitudeMeasure>
+						<ns6:LatitudeMeasure>57.880</ns6:LatitudeMeasure>
+					</ns6:SpecifiedPhysicalFLUXGeographicalCoordinate>
+				</ns6:RelatedFLUXLocation>
+			</ns6:RelatedFishingActivity>
+			<ns6:SpecifiedDelimitedPeriod>
+				<ns6:StartDateTime>
+					<ns8:DateTime xmlns:ns8="urn:un:unece:uncefact:data:standard:UnqualifiedDataType:20">2012-05-19T17:09:51.093Z</ns8:DateTime>
+				</ns6:StartDateTime>
+			</ns6:SpecifiedDelimitedPeriod>
+			<ns6:SpecifiedFishingTrip>
+				<ns6:ID schemeID="EU_TRIP_ID">placeholder-fishing-trip-id</ns6:ID>
+			</ns6:SpecifiedFishingTrip>
+		</ns6:SpecifiedFishingActivity>
+		<ns6:SpecifiedVesselTransportMeans xmlns:ns6="urn:un:unece:uncefact:data:standard:ReusableAggregateBusinessInformationEntity:20">
+			<ns2:ID schemeID="CFR" xmlns:ns2="urn:un:unece:uncefact:data:standard:ReusableAggregateBusinessInformationEntity:20">placeholder-vessel-cfr-id</ns2:ID>
+			<ns2:RoleCode listID="FA_VESSEL_ROLE" xmlns:ns2="urn:un:unece:uncefact:data:standard:ReusableAggregateBusinessInformationEntity:20">CATCHING_VESSEL</ns2:RoleCode>
+			<ns2:RegistrationVesselCountry xmlns:ns2="urn:un:unece:uncefact:data:standard:ReusableAggregateBusinessInformationEntity:20">
+				<ns2:ID schemeID="TERRITORY">SWE</ns2:ID>
+			</ns2:RegistrationVesselCountry>
+			<ns2:SpecifiedContactParty xmlns:ns2="urn:un:unece:uncefact:data:standard:ReusableAggregateBusinessInformationEntity:20">
+				<ns3:RoleCode listID="FLUX_CONTACT_ROLE" xmlns:ns3="urn:un:unece:uncefact:data:standard:ReusableAggregateBusinessInformationEntity:20">MASTER</ns3:RoleCode>
+				<ns3:SpecifiedStructuredAddress xmlns:ns3="urn:un:unece:uncefact:data:standard:ReusableAggregateBusinessInformationEntity:20">
+					<ns3:StreetName>placeholder-street-name</ns3:StreetName>
+					<ns3:CityName>placeholder-city-name</ns3:CityName>
+					<ns3:CountryID schemeID="TERRITORY">SWE</ns3:CountryID>
+					<ns3:PlotIdentification languageID="GBR">N/A</ns3:PlotIdentification>
+					<ns3:PostalArea>placeholder-postal-area</ns3:PostalArea>
+				</ns3:SpecifiedStructuredAddress>
+				<ns3:SpecifiedContactPerson xmlns:ns3="urn:un:unece:uncefact:data:standard:ReusableAggregateBusinessInformationEntity:20">
+					<ns3:GivenName>placeholder-contact-person-given-name</ns3:GivenName>
+					<ns3:FamilyName>placeholder-contact-person-family-name</ns3:FamilyName>
+				</ns3:SpecifiedContactPerson>
+			</ns2:SpecifiedContactParty>
+		</ns6:SpecifiedVesselTransportMeans>
+	</ns0:FAReportDocument>
+	<ns0:FAReportDocument>
+		<ns6:TypeCode listID="FLUX_FA_REPORT_TYPE" xmlns:ns6="urn:un:unece:uncefact:data:standard:ReusableAggregateBusinessInformationEntity:20">DECLARATION</ns6:TypeCode>
+		<ns6:AcceptanceDateTime xmlns:ns6="urn:un:unece:uncefact:data:standard:ReusableAggregateBusinessInformationEntity:20">
+			<ns8:DateTime xmlns:ns8="urn:un:unece:uncefact:data:standard:UnqualifiedDataType:20">2012-05-20T09:39:06.093Z</ns8:DateTime>
+		</ns6:AcceptanceDateTime>
+		<ns6:RelatedFLUXReportDocument xmlns:ns6="urn:un:unece:uncefact:data:standard:ReusableAggregateBusinessInformationEntity:20">
+			<ns6:ID schemeID="UUID">placeholder-fishing-activity-report-document-id</ns6:ID>
+			<ns6:CreationDateTime>
+				<ns8:DateTime xmlns:ns8="urn:un:unece:uncefact:data:standard:UnqualifiedDataType:20">2012-05-20T19:13:16.344Z</ns8:DateTime>
+			</ns6:CreationDateTime>
+			<ns6:PurposeCode listID="FLUX_GP_PURPOSE">9</ns6:PurposeCode>
+			<ns6:OwnerFLUXParty>
+				<ns6:ID schemeID="FLUX_GP_PARTY">SWE</ns6:ID>
+			</ns6:OwnerFLUXParty>
+		</ns6:RelatedFLUXReportDocument>
+		<ns6:SpecifiedFishingActivity xmlns:ns6="urn:un:unece:uncefact:data:standard:ReusableAggregateBusinessInformationEntity:20">
+			<ns6:TypeCode listID="FLUX_FA_TYPE">FISHING_OPERATION</ns6:TypeCode>
+			<ns6:OccurrenceDateTime>
+				<ns8:DateTime xmlns:ns8="urn:un:unece:uncefact:data:standard:UnqualifiedDataType:20">2012-05-20T01:09:51.093Z</ns8:DateTime>
+			</ns6:OccurrenceDateTime>
+			<ns6:VesselRelatedActivityCode listID="VESSEL_ACTIVITY">FIS</ns6:VesselRelatedActivityCode>
+			<ns6:OperationsQuantity unitCode="C62">1</ns6:OperationsQuantity>
+			<ns6:SpecifiedFACatch>
+				<ns6:SpeciesCode listID="FAO_SPECIES">COD</ns6:SpeciesCode>
+				<ns6:WeightMeasure unitCode="KGM">318.2</ns6:WeightMeasure>
+				<ns6:WeighingMeansCode listID="WEIGHT_MEANS">ONBOARD</ns6:WeighingMeansCode>
+				<ns6:TypeCode listID="FA_CATCH_TYPE">ONBOARD</ns6:TypeCode>
+				<ns6:SpecifiedSizeDistribution>
+					<ns6:ClassCode listID="FISH_SIZE_CLASS">LSC</ns6:ClassCode>
+				</ns6:SpecifiedSizeDistribution>
+				<ns6:AppliedAAPProcess>
+					<ns6:TypeCode listID="FISH_PRESENTATION">GUT</ns6:TypeCode>
+					<ns6:TypeCode listID="FISH_PRESERVATION">FRE</ns6:TypeCode>
+					<ns6:ConversionFactorNumeric>1.17</ns6:ConversionFactorNumeric>
+				</ns6:AppliedAAPProcess>
+				<ns6:SpecifiedFLUXLocation>
+					<ns6:TypeCode listID="FLUX_LOCATION_TYPE">POSITION</ns6:TypeCode>
+					<ns6:SpecifiedPhysicalFLUXGeographicalCoordinate>
+						<ns6:LongitudeMeasure>9.930</ns6:LongitudeMeasure>
+						<ns6:LatitudeMeasure>58.050</ns6:LatitudeMeasure>
+					</ns6:SpecifiedPhysicalFLUXGeographicalCoordinate>
+				</ns6:SpecifiedFLUXLocation>
+				<ns6:SpecifiedFLUXLocation>
+					<ns6:TypeCode listID="FLUX_LOCATION_TYPE">AREA</ns6:TypeCode>
+					<ns6:ID schemeID="FAO_AREA">27.3.a.n</ns6:ID>
+				</ns6:SpecifiedFLUXLocation>
+			</ns6:SpecifiedFACatch>
+			<ns6:SpecifiedFACatch>
+				<ns6:SpeciesCode listID="FAO_SPECIES">HAD</ns6:SpeciesCode>
+				<ns6:WeightMeasure unitCode="KGM">39.8</ns6:WeightMeasure>
+				<ns6:WeighingMeansCode listID="WEIGHT_MEANS">ONBOARD</ns6:WeighingMeansCode>
+				<ns6:TypeCode listID="FA_CATCH_TYPE">ONBOARD</ns6:TypeCode>
+				<ns6:SpecifiedSizeDistribution>
+					<ns6:ClassCode listID="FISH_SIZE_CLASS">LSC</ns6:ClassCode>
+				</ns6:SpecifiedSizeDistribution>
+				<ns6:AppliedAAPProcess>
+					<ns6:TypeCode listID="FISH_PRESENTATION">GUT</ns6:TypeCode>
+					<ns6:TypeCode listID="FISH_PRESERVATION">FRE</ns6:TypeCode>
+					<ns6:ConversionFactorNumeric>1.17</ns6:ConversionFactorNumeric>
+				</ns6:AppliedAAPProcess>
+				<ns6:SpecifiedFLUXLocation>
+					<ns6:TypeCode listID="FLUX_LOCATION_TYPE">POSITION</ns6:TypeCode>
+					<ns6:SpecifiedPhysicalFLUXGeographicalCoordinate>
+						<ns6:LongitudeMeasure>9.930</ns6:LongitudeMeasure>
+						<ns6:LatitudeMeasure>58.050</ns6:LatitudeMeasure>
+					</ns6:SpecifiedPhysicalFLUXGeographicalCoordinate>
+				</ns6:SpecifiedFLUXLocation>
+				<ns6:SpecifiedFLUXLocation>
+					<ns6:TypeCode listID="FLUX_LOCATION_TYPE">AREA</ns6:TypeCode>
+					<ns6:ID schemeID="FAO_AREA">27.3.a.n</ns6:ID>
+				</ns6:SpecifiedFLUXLocation>
+			</ns6:SpecifiedFACatch>
+			<ns6:SpecifiedFACatch>
+				<ns6:SpeciesCode listID="FAO_SPECIES">HKE</ns6:SpeciesCode>
+				<ns6:WeightMeasure unitCode="KGM">218.7</ns6:WeightMeasure>
+				<ns6:WeighingMeansCode listID="WEIGHT_MEANS">ONBOARD</ns6:WeighingMeansCode>
+				<ns6:TypeCode listID="FA_CATCH_TYPE">ONBOARD</ns6:TypeCode>
+				<ns6:SpecifiedSizeDistribution>
+					<ns6:ClassCode listID="FISH_SIZE_CLASS">LSC</ns6:ClassCode>
+				</ns6:SpecifiedSizeDistribution>
+				<ns6:AppliedAAPProcess>
+					<ns6:TypeCode listID="FISH_PRESENTATION">GUT</ns6:TypeCode>
+					<ns6:TypeCode listID="FISH_PRESERVATION">FRE</ns6:TypeCode>
+					<ns6:ConversionFactorNumeric>1.11</ns6:ConversionFactorNumeric>
+				</ns6:AppliedAAPProcess>
+				<ns6:SpecifiedFLUXLocation>
+					<ns6:TypeCode listID="FLUX_LOCATION_TYPE">POSITION</ns6:TypeCode>
+					<ns6:SpecifiedPhysicalFLUXGeographicalCoordinate>
+						<ns6:LongitudeMeasure>9.930</ns6:LongitudeMeasure>
+						<ns6:LatitudeMeasure>58.050</ns6:LatitudeMeasure>
+					</ns6:SpecifiedPhysicalFLUXGeographicalCoordinate>
+				</ns6:SpecifiedFLUXLocation>
+				<ns6:SpecifiedFLUXLocation>
+					<ns6:TypeCode listID="FLUX_LOCATION_TYPE">AREA</ns6:TypeCode>
+					<ns6:ID schemeID="FAO_AREA">27.3.a.n</ns6:ID>
+				</ns6:SpecifiedFLUXLocation>
+			</ns6:SpecifiedFACatch>
+			<ns6:SpecifiedFACatch>
+				<ns6:SpeciesCode listID="FAO_SPECIES">HOM</ns6:SpeciesCode>
+				<ns6:WeightMeasure unitCode="KGM">53.0</ns6:WeightMeasure>
+				<ns6:WeighingMeansCode listID="WEIGHT_MEANS">ONBOARD</ns6:WeighingMeansCode>
+				<ns6:TypeCode listID="FA_CATCH_TYPE">ONBOARD</ns6:TypeCode>
+				<ns6:SpecifiedSizeDistribution>
+					<ns6:ClassCode listID="FISH_SIZE_CLASS">LSC</ns6:ClassCode>
+				</ns6:SpecifiedSizeDistribution>
+				<ns6:AppliedAAPProcess>
+					<ns6:TypeCode listID="FISH_PRESENTATION">WHL</ns6:TypeCode>
+					<ns6:TypeCode listID="FISH_PRESERVATION">FRE</ns6:TypeCode>
+					<ns6:ConversionFactorNumeric>1</ns6:ConversionFactorNumeric>
+				</ns6:AppliedAAPProcess>
+				<ns6:SpecifiedFLUXLocation>
+					<ns6:TypeCode listID="FLUX_LOCATION_TYPE">POSITION</ns6:TypeCode>
+					<ns6:SpecifiedPhysicalFLUXGeographicalCoordinate>
+						<ns6:LongitudeMeasure>9.930</ns6:LongitudeMeasure>
+						<ns6:LatitudeMeasure>58.050</ns6:LatitudeMeasure>
+					</ns6:SpecifiedPhysicalFLUXGeographicalCoordinate>
+				</ns6:SpecifiedFLUXLocation>
+				<ns6:SpecifiedFLUXLocation>
+					<ns6:TypeCode listID="FLUX_LOCATION_TYPE">AREA</ns6:TypeCode>
+					<ns6:ID schemeID="FAO_AREA">27.3.a.n</ns6:ID>
+				</ns6:SpecifiedFLUXLocation>
+			</ns6:SpecifiedFACatch>
+			<ns6:SpecifiedFACatch>
+				<ns6:SpeciesCode listID="FAO_SPECIES">NEP</ns6:SpeciesCode>
+				<ns6:WeightMeasure unitCode="KGM">103.0</ns6:WeightMeasure>
+				<ns6:WeighingMeansCode listID="WEIGHT_MEANS">ONBOARD</ns6:WeighingMeansCode>
+				<ns6:TypeCode listID="FA_CATCH_TYPE">ONBOARD</ns6:TypeCode>
+				<ns6:SpecifiedSizeDistribution>
+					<ns6:ClassCode listID="FISH_SIZE_CLASS">LSC</ns6:ClassCode>
+				</ns6:SpecifiedSizeDistribution>
+				<ns6:AppliedAAPProcess>
+					<ns6:TypeCode listID="FISH_PRESENTATION">WHL</ns6:TypeCode>
+					<ns6:TypeCode listID="FISH_PRESERVATION">FRE</ns6:TypeCode>
+					<ns6:ConversionFactorNumeric>1</ns6:ConversionFactorNumeric>
+				</ns6:AppliedAAPProcess>
+				<ns6:SpecifiedFLUXLocation>
+					<ns6:TypeCode listID="FLUX_LOCATION_TYPE">POSITION</ns6:TypeCode>
+					<ns6:SpecifiedPhysicalFLUXGeographicalCoordinate>
+						<ns6:LongitudeMeasure>9.930</ns6:LongitudeMeasure>
+						<ns6:LatitudeMeasure>58.050</ns6:LatitudeMeasure>
+					</ns6:SpecifiedPhysicalFLUXGeographicalCoordinate>
+				</ns6:SpecifiedFLUXLocation>
+				<ns6:SpecifiedFLUXLocation>
+					<ns6:TypeCode listID="FLUX_LOCATION_TYPE">AREA</ns6:TypeCode>
+					<ns6:ID schemeID="FAO_AREA">27.3.a.n</ns6:ID>
+				</ns6:SpecifiedFLUXLocation>
+			</ns6:SpecifiedFACatch>
+			<ns6:SpecifiedFACatch>
+				<ns6:SpeciesCode listID="FAO_SPECIES">NEP</ns6:SpeciesCode>
+				<ns6:WeightMeasure unitCode="KGM">66.0</ns6:WeightMeasure>
+				<ns6:WeighingMeansCode listID="WEIGHT_MEANS">ONBOARD</ns6:WeighingMeansCode>
+				<ns6:TypeCode listID="FA_CATCH_TYPE">ONBOARD</ns6:TypeCode>
+				<ns6:SpecifiedSizeDistribution>
+					<ns6:ClassCode listID="FISH_SIZE_CLASS">LSC</ns6:ClassCode>
+				</ns6:SpecifiedSizeDistribution>
+				<ns6:AppliedAAPProcess>
+					<ns6:TypeCode listID="FISH_PRESENTATION">TAL</ns6:TypeCode>
+					<ns6:TypeCode listID="FISH_PRESERVATION">FRE</ns6:TypeCode>
+					<ns6:ConversionFactorNumeric>3</ns6:ConversionFactorNumeric>
+				</ns6:AppliedAAPProcess>
+				<ns6:SpecifiedFLUXLocation>
+					<ns6:TypeCode listID="FLUX_LOCATION_TYPE">POSITION</ns6:TypeCode>
+					<ns6:SpecifiedPhysicalFLUXGeographicalCoordinate>
+						<ns6:LongitudeMeasure>9.930</ns6:LongitudeMeasure>
+						<ns6:LatitudeMeasure>58.050</ns6:LatitudeMeasure>
+					</ns6:SpecifiedPhysicalFLUXGeographicalCoordinate>
+				</ns6:SpecifiedFLUXLocation>
+				<ns6:SpecifiedFLUXLocation>
+					<ns6:TypeCode listID="FLUX_LOCATION_TYPE">AREA</ns6:TypeCode>
+					<ns6:ID schemeID="FAO_AREA">27.3.a.n</ns6:ID>
+				</ns6:SpecifiedFLUXLocation>
+			</ns6:SpecifiedFACatch>
+			<ns6:SpecifiedFACatch>
+				<ns6:SpeciesCode listID="FAO_SPECIES">POK</ns6:SpeciesCode>
+				<ns6:WeightMeasure unitCode="KGM">151.1</ns6:WeightMeasure>
+				<ns6:WeighingMeansCode listID="WEIGHT_MEANS">ONBOARD</ns6:WeighingMeansCode>
+				<ns6:TypeCode listID="FA_CATCH_TYPE">ONBOARD</ns6:TypeCode>
+				<ns6:SpecifiedSizeDistribution>
+					<ns6:ClassCode listID="FISH_SIZE_CLASS">LSC</ns6:ClassCode>
+				</ns6:SpecifiedSizeDistribution>
+				<ns6:AppliedAAPProcess>
+					<ns6:TypeCode listID="FISH_PRESENTATION">GUT</ns6:TypeCode>
+					<ns6:TypeCode listID="FISH_PRESERVATION">FRE</ns6:TypeCode>
+					<ns6:ConversionFactorNumeric>1.19</ns6:ConversionFactorNumeric>
+				</ns6:AppliedAAPProcess>
+				<ns6:SpecifiedFLUXLocation>
+					<ns6:TypeCode listID="FLUX_LOCATION_TYPE">POSITION</ns6:TypeCode>
+					<ns6:SpecifiedPhysicalFLUXGeographicalCoordinate>
+						<ns6:LongitudeMeasure>9.930</ns6:LongitudeMeasure>
+						<ns6:LatitudeMeasure>58.050</ns6:LatitudeMeasure>
+					</ns6:SpecifiedPhysicalFLUXGeographicalCoordinate>
+				</ns6:SpecifiedFLUXLocation>
+				<ns6:SpecifiedFLUXLocation>
+					<ns6:TypeCode listID="FLUX_LOCATION_TYPE">AREA</ns6:TypeCode>
+					<ns6:ID schemeID="FAO_AREA">27.3.a.n</ns6:ID>
+				</ns6:SpecifiedFLUXLocation>
+			</ns6:SpecifiedFACatch>
+			<ns6:SpecifiedFACatch>
+				<ns6:SpeciesCode listID="FAO_SPECIES">WIT</ns6:SpeciesCode>
+				<ns6:WeightMeasure unitCode="KGM">20.1</ns6:WeightMeasure>
+				<ns6:WeighingMeansCode listID="WEIGHT_MEANS">ONBOARD</ns6:WeighingMeansCode>
+				<ns6:TypeCode listID="FA_CATCH_TYPE">ONBOARD</ns6:TypeCode>
+				<ns6:SpecifiedSizeDistribution>
+					<ns6:ClassCode listID="FISH_SIZE_CLASS">LSC</ns6:ClassCode>
+				</ns6:SpecifiedSizeDistribution>
+				<ns6:AppliedAAPProcess>
+					<ns6:TypeCode listID="FISH_PRESENTATION">GUT</ns6:TypeCode>
+					<ns6:TypeCode listID="FISH_PRESERVATION">FRE</ns6:TypeCode>
+					<ns6:ConversionFactorNumeric>1.06</ns6:ConversionFactorNumeric>
+				</ns6:AppliedAAPProcess>
+				<ns6:SpecifiedFLUXLocation>
+					<ns6:TypeCode listID="FLUX_LOCATION_TYPE">POSITION</ns6:TypeCode>
+					<ns6:SpecifiedPhysicalFLUXGeographicalCoordinate>
+						<ns6:LongitudeMeasure>9.930</ns6:LongitudeMeasure>
+						<ns6:LatitudeMeasure>58.050</ns6:LatitudeMeasure>
+					</ns6:SpecifiedPhysicalFLUXGeographicalCoordinate>
+				</ns6:SpecifiedFLUXLocation>
+				<ns6:SpecifiedFLUXLocation>
+					<ns6:TypeCode listID="FLUX_LOCATION_TYPE">AREA</ns6:TypeCode>
+					<ns6:ID schemeID="FAO_AREA">27.3.a.n</ns6:ID>
+				</ns6:SpecifiedFLUXLocation>
+			</ns6:SpecifiedFACatch>
+			<ns6:SpecifiedFACatch>
+				<ns6:SpeciesCode listID="FAO_SPECIES">MON</ns6:SpeciesCode>
+				<ns6:WeightMeasure unitCode="KGM">33.0</ns6:WeightMeasure>
+				<ns6:WeighingMeansCode listID="WEIGHT_MEANS">ONBOARD</ns6:WeighingMeansCode>
+				<ns6:TypeCode listID="FA_CATCH_TYPE">ONBOARD</ns6:TypeCode>
+				<ns6:SpecifiedSizeDistribution>
+					<ns6:ClassCode listID="FISH_SIZE_CLASS">LSC</ns6:ClassCode>
+				</ns6:SpecifiedSizeDistribution>
+				<ns6:AppliedAAPProcess>
+					<ns6:TypeCode listID="FISH_PRESENTATION">GUH</ns6:TypeCode>
+					<ns6:TypeCode listID="FISH_PRESERVATION">FRE</ns6:TypeCode>
+					<ns6:ConversionFactorNumeric>3</ns6:ConversionFactorNumeric>
+				</ns6:AppliedAAPProcess>
+				<ns6:SpecifiedFLUXLocation>
+					<ns6:TypeCode listID="FLUX_LOCATION_TYPE">POSITION</ns6:TypeCode>
+					<ns6:SpecifiedPhysicalFLUXGeographicalCoordinate>
+						<ns6:LongitudeMeasure>9.930</ns6:LongitudeMeasure>
+						<ns6:LatitudeMeasure>58.050</ns6:LatitudeMeasure>
+					</ns6:SpecifiedPhysicalFLUXGeographicalCoordinate>
+				</ns6:SpecifiedFLUXLocation>
+				<ns6:SpecifiedFLUXLocation>
+					<ns6:TypeCode listID="FLUX_LOCATION_TYPE">AREA</ns6:TypeCode>
+					<ns6:ID schemeID="FAO_AREA">27.3.a.n</ns6:ID>
+				</ns6:SpecifiedFLUXLocation>
+			</ns6:SpecifiedFACatch>
+			<ns6:SpecifiedFACatch>
+				<ns6:SpeciesCode listID="FAO_SPECIES">LIN</ns6:SpeciesCode>
+				<ns6:WeightMeasure unitCode="KGM">16.0</ns6:WeightMeasure>
+				<ns6:WeighingMeansCode listID="WEIGHT_MEANS">ONBOARD</ns6:WeighingMeansCode>
+				<ns6:TypeCode listID="FA_CATCH_TYPE">ONBOARD</ns6:TypeCode>
+				<ns6:SpecifiedSizeDistribution>
+					<ns6:ClassCode listID="FISH_SIZE_CLASS">LSC</ns6:ClassCode>
+				</ns6:SpecifiedSizeDistribution>
+				<ns6:AppliedAAPProcess>
+					<ns6:TypeCode listID="FISH_PRESENTATION">GUT</ns6:TypeCode>
+					<ns6:TypeCode listID="FISH_PRESERVATION">FRE</ns6:TypeCode>
+					<ns6:ConversionFactorNumeric>1.14</ns6:ConversionFactorNumeric>
+				</ns6:AppliedAAPProcess>
+				<ns6:SpecifiedFLUXLocation>
+					<ns6:TypeCode listID="FLUX_LOCATION_TYPE">POSITION</ns6:TypeCode>
+					<ns6:SpecifiedPhysicalFLUXGeographicalCoordinate>
+						<ns6:LongitudeMeasure>9.930</ns6:LongitudeMeasure>
+						<ns6:LatitudeMeasure>58.050</ns6:LatitudeMeasure>
+					</ns6:SpecifiedPhysicalFLUXGeographicalCoordinate>
+				</ns6:SpecifiedFLUXLocation>
+				<ns6:SpecifiedFLUXLocation>
+					<ns6:TypeCode listID="FLUX_LOCATION_TYPE">AREA</ns6:TypeCode>
+					<ns6:ID schemeID="FAO_AREA">27.3.a.n</ns6:ID>
+				</ns6:SpecifiedFLUXLocation>
+			</ns6:SpecifiedFACatch>
+			<ns6:SpecifiedFACatch>
+				<ns6:SpeciesCode listID="FAO_SPECIES">HAL</ns6:SpeciesCode>
+				<ns6:WeightMeasure unitCode="KGM">14.6</ns6:WeightMeasure>
+				<ns6:WeighingMeansCode listID="WEIGHT_MEANS">ONBOARD</ns6:WeighingMeansCode>
+				<ns6:TypeCode listID="FA_CATCH_TYPE">ONBOARD</ns6:TypeCode>
+				<ns6:SpecifiedSizeDistribution>
+					<ns6:ClassCode listID="FISH_SIZE_CLASS">LSC</ns6:ClassCode>
+				</ns6:SpecifiedSizeDistribution>
+				<ns6:AppliedAAPProcess>
+					<ns6:TypeCode listID="FISH_PRESENTATION">GUT</ns6:TypeCode>
+					<ns6:TypeCode listID="FISH_PRESERVATION">FRE</ns6:TypeCode>
+					<ns6:ConversionFactorNumeric>1.04</ns6:ConversionFactorNumeric>
+				</ns6:AppliedAAPProcess>
+				<ns6:SpecifiedFLUXLocation>
+					<ns6:TypeCode listID="FLUX_LOCATION_TYPE">POSITION</ns6:TypeCode>
+					<ns6:SpecifiedPhysicalFLUXGeographicalCoordinate>
+						<ns6:LongitudeMeasure>9.930</ns6:LongitudeMeasure>
+						<ns6:LatitudeMeasure>58.050</ns6:LatitudeMeasure>
+					</ns6:SpecifiedPhysicalFLUXGeographicalCoordinate>
+				</ns6:SpecifiedFLUXLocation>
+				<ns6:SpecifiedFLUXLocation>
+					<ns6:TypeCode listID="FLUX_LOCATION_TYPE">AREA</ns6:TypeCode>
+					<ns6:ID schemeID="FAO_AREA">27.3.a.n</ns6:ID>
+				</ns6:SpecifiedFLUXLocation>
+			</ns6:SpecifiedFACatch>
+			<ns6:SpecifiedFACatch>
+				<ns6:SpeciesCode listID="FAO_SPECIES">MAC</ns6:SpeciesCode>
+				<ns6:WeightMeasure unitCode="KGM">18.0</ns6:WeightMeasure>
+				<ns6:WeighingMeansCode listID="WEIGHT_MEANS">ONBOARD</ns6:WeighingMeansCode>
+				<ns6:TypeCode listID="FA_CATCH_TYPE">ONBOARD</ns6:TypeCode>
+				<ns6:SpecifiedSizeDistribution>
+					<ns6:ClassCode listID="FISH_SIZE_CLASS">LSC</ns6:ClassCode>
+				</ns6:SpecifiedSizeDistribution>
+				<ns6:AppliedAAPProcess>
+					<ns6:TypeCode listID="FISH_PRESENTATION">WHL</ns6:TypeCode>
+					<ns6:TypeCode listID="FISH_PRESERVATION">FRE</ns6:TypeCode>
+					<ns6:ConversionFactorNumeric>1</ns6:ConversionFactorNumeric>
+				</ns6:AppliedAAPProcess>
+				<ns6:SpecifiedFLUXLocation>
+					<ns6:TypeCode listID="FLUX_LOCATION_TYPE">POSITION</ns6:TypeCode>
+					<ns6:SpecifiedPhysicalFLUXGeographicalCoordinate>
+						<ns6:LongitudeMeasure>9.930</ns6:LongitudeMeasure>
+						<ns6:LatitudeMeasure>58.050</ns6:LatitudeMeasure>
+					</ns6:SpecifiedPhysicalFLUXGeographicalCoordinate>
+				</ns6:SpecifiedFLUXLocation>
+				<ns6:SpecifiedFLUXLocation>
+					<ns6:TypeCode listID="FLUX_LOCATION_TYPE">AREA</ns6:TypeCode>
+					<ns6:ID schemeID="FAO_AREA">27.3.a.n</ns6:ID>
+				</ns6:SpecifiedFLUXLocation>
+			</ns6:SpecifiedFACatch>
+			<ns6:SpecifiedFACatch>
+				<ns6:SpeciesCode listID="FAO_SPECIES">MON</ns6:SpeciesCode>
+				<ns6:WeightMeasure unitCode="KGM">51.2</ns6:WeightMeasure>
+				<ns6:WeighingMeansCode listID="WEIGHT_MEANS">ONBOARD</ns6:WeighingMeansCode>
+				<ns6:TypeCode listID="FA_CATCH_TYPE">ONBOARD</ns6:TypeCode>
+				<ns6:SpecifiedSizeDistribution>
+					<ns6:ClassCode listID="FISH_SIZE_CLASS">LSC</ns6:ClassCode>
+				</ns6:SpecifiedSizeDistribution>
+				<ns6:AppliedAAPProcess>
+					<ns6:TypeCode listID="FISH_PRESENTATION">GUT</ns6:TypeCode>
+					<ns6:TypeCode listID="FISH_PRESERVATION">FRE</ns6:TypeCode>
+					<ns6:ConversionFactorNumeric>1.22</ns6:ConversionFactorNumeric>
+				</ns6:AppliedAAPProcess>
+				<ns6:SpecifiedFLUXLocation>
+					<ns6:TypeCode listID="FLUX_LOCATION_TYPE">POSITION</ns6:TypeCode>
+					<ns6:SpecifiedPhysicalFLUXGeographicalCoordinate>
+						<ns6:LongitudeMeasure>9.930</ns6:LongitudeMeasure>
+						<ns6:LatitudeMeasure>58.050</ns6:LatitudeMeasure>
+					</ns6:SpecifiedPhysicalFLUXGeographicalCoordinate>
+				</ns6:SpecifiedFLUXLocation>
+				<ns6:SpecifiedFLUXLocation>
+					<ns6:TypeCode listID="FLUX_LOCATION_TYPE">AREA</ns6:TypeCode>
+					<ns6:ID schemeID="FAO_AREA">27.3.a.n</ns6:ID>
+				</ns6:SpecifiedFLUXLocation>
+			</ns6:SpecifiedFACatch>
+			<ns6:SpecifiedFishingGear>
+				<ns6:TypeCode listID="GEAR_TYPE">OTB</ns6:TypeCode>
+				<ns6:RoleCode listID="FA_GEAR_ROLE">DEPLOYED</ns6:RoleCode>
+				<ns6:ApplicableGearCharacteristic>
+					<ns6:TypeCode listID="FA_GEAR_CHARACTERISTIC">GM</ns6:TypeCode>
+					<ns6:ValueMeasure unitCode="MTR">2</ns6:ValueMeasure>
+				</ns6:ApplicableGearCharacteristic>
+				<ns6:ApplicableGearCharacteristic>
+					<ns6:TypeCode listID="FA_GEAR_CHARACTERISTIC">ME</ns6:TypeCode>
+					<ns6:ValueMeasure unitCode="MMT">90</ns6:ValueMeasure>
+				</ns6:ApplicableGearCharacteristic>
+				<ns6:ApplicableGearCharacteristic>
+					<ns6:TypeCode listID="FA_GEAR_CHARACTERISTIC">GD</ns6:TypeCode>
+					<ns6:Value>OTB</ns6:Value>
+				</ns6:ApplicableGearCharacteristic>
+			</ns6:SpecifiedFishingGear>
+			<ns6:RelatedFishingActivity>
+				<ns6:TypeCode listID="FLUX_FA_TYPE">GEAR_RETRIEVAL</ns6:TypeCode>
+				<ns6:OccurrenceDateTime>
+					<ns8:DateTime xmlns:ns8="urn:un:unece:uncefact:data:standard:UnqualifiedDataType:20">2012-05-20T01:09:51.093Z</ns8:DateTime>
+				</ns6:OccurrenceDateTime>
+				<ns6:RelatedFLUXLocation>
+					<ns6:TypeCode listID="FLUX_LOCATION_TYPE">POSITION</ns6:TypeCode>
+					<ns6:SpecifiedPhysicalFLUXGeographicalCoordinate>
+						<ns6:LongitudeMeasure>9.930</ns6:LongitudeMeasure>
+						<ns6:LatitudeMeasure>58.050</ns6:LatitudeMeasure>
+					</ns6:SpecifiedPhysicalFLUXGeographicalCoordinate>
+				</ns6:RelatedFLUXLocation>
+			</ns6:RelatedFishingActivity>
+			<ns6:SpecifiedDelimitedPeriod>
+				<ns6:StartDateTime>
+					<ns8:DateTime xmlns:ns8="urn:un:unece:uncefact:data:standard:UnqualifiedDataType:20">2012-05-20T01:09:51.093Z</ns8:DateTime>
+				</ns6:StartDateTime>
+				<ns6:DurationMeasure unitCode="MIN">480</ns6:DurationMeasure>
+			</ns6:SpecifiedDelimitedPeriod>
+			<ns6:SpecifiedFishingTrip>
+				<ns6:ID schemeID="EU_TRIP_ID">placeholder-fishing-trip-id</ns6:ID>
+			</ns6:SpecifiedFishingTrip>
+		</ns6:SpecifiedFishingActivity>
+		<ns6:SpecifiedVesselTransportMeans xmlns:ns6="urn:un:unece:uncefact:data:standard:ReusableAggregateBusinessInformationEntity:20">
+			<ns2:ID schemeID="CFR" xmlns:ns2="urn:un:unece:uncefact:data:standard:ReusableAggregateBusinessInformationEntity:20">placeholder-vessel-cfr-id</ns2:ID>
+			<ns2:RoleCode listID="FA_VESSEL_ROLE" xmlns:ns2="urn:un:unece:uncefact:data:standard:ReusableAggregateBusinessInformationEntity:20">CATCHING_VESSEL</ns2:RoleCode>
+			<ns2:RegistrationVesselCountry xmlns:ns2="urn:un:unece:uncefact:data:standard:ReusableAggregateBusinessInformationEntity:20">
+				<ns2:ID schemeID="TERRITORY">SWE</ns2:ID>
+			</ns2:RegistrationVesselCountry>
+			<ns2:SpecifiedContactParty xmlns:ns2="urn:un:unece:uncefact:data:standard:ReusableAggregateBusinessInformationEntity:20">
+				<ns3:RoleCode listID="FLUX_CONTACT_ROLE" xmlns:ns3="urn:un:unece:uncefact:data:standard:ReusableAggregateBusinessInformationEntity:20">MASTER</ns3:RoleCode>
+				<ns3:SpecifiedStructuredAddress xmlns:ns3="urn:un:unece:uncefact:data:standard:ReusableAggregateBusinessInformationEntity:20">
+					<ns3:StreetName>placeholder-street-name</ns3:StreetName>
+					<ns3:CityName>placeholder-city-name</ns3:CityName>
+					<ns3:CountryID schemeID="TERRITORY">SWE</ns3:CountryID>
+					<ns3:PlotIdentification languageID="GBR">N/A</ns3:PlotIdentification>
+					<ns3:PostalArea>placeholder-postal-area</ns3:PostalArea>
+				</ns3:SpecifiedStructuredAddress>
+				<ns3:SpecifiedContactPerson xmlns:ns3="urn:un:unece:uncefact:data:standard:ReusableAggregateBusinessInformationEntity:20">
+					<ns3:GivenName>placeholder-contact-person-given-name</ns3:GivenName>
+					<ns3:FamilyName>placeholder-contact-person-family-name</ns3:FamilyName>
+				</ns3:SpecifiedContactPerson>
+			</ns2:SpecifiedContactParty>
+		</ns6:SpecifiedVesselTransportMeans>
+	</ns0:FAReportDocument>
+	<ns0:FAReportDocument>
+		<ns6:TypeCode listID="FLUX_FA_REPORT_TYPE" xmlns:ns6="urn:un:unece:uncefact:data:standard:ReusableAggregateBusinessInformationEntity:20">NOTIFICATION</ns6:TypeCode>
+		<ns6:AcceptanceDateTime xmlns:ns6="urn:un:unece:uncefact:data:standard:ReusableAggregateBusinessInformationEntity:20">
+			<ns8:DateTime xmlns:ns8="urn:un:unece:uncefact:data:standard:UnqualifiedDataType:20">2012-05-20T09:59:37.093Z</ns8:DateTime>
+		</ns6:AcceptanceDateTime>
+		<ns6:RelatedFLUXReportDocument xmlns:ns6="urn:un:unece:uncefact:data:standard:ReusableAggregateBusinessInformationEntity:20">
+			<ns6:ID schemeID="UUID">placeholder-fishing-activity-report-document-id</ns6:ID>
+			<ns6:CreationDateTime>
+				<ns8:DateTime xmlns:ns8="urn:un:unece:uncefact:data:standard:UnqualifiedDataType:20">2012-05-20T19:13:16.358Z</ns8:DateTime>
+			</ns6:CreationDateTime>
+			<ns6:PurposeCode listID="FLUX_GP_PURPOSE">9</ns6:PurposeCode>
+			<ns6:OwnerFLUXParty>
+				<ns6:ID schemeID="FLUX_GP_PARTY">SWE</ns6:ID>
+			</ns6:OwnerFLUXParty>
+		</ns6:RelatedFLUXReportDocument>
+		<ns6:SpecifiedFishingActivity xmlns:ns6="urn:un:unece:uncefact:data:standard:ReusableAggregateBusinessInformationEntity:20">
+			<ns6:TypeCode listID="FLUX_FA_TYPE">ARRIVAL</ns6:TypeCode>
+			<ns6:OccurrenceDateTime>
+				<ns8:DateTime xmlns:ns8="urn:un:unece:uncefact:data:standard:UnqualifiedDataType:20">2012-05-20T14:39:51.093Z</ns8:DateTime>
+			</ns6:OccurrenceDateTime>
+			<ns6:ReasonCode listID="FA_REASON_ARRIVAL">LAN</ns6:ReasonCode>
+			<ns6:SpecifiedFACatch>
+				<ns6:SpeciesCode listID="FAO_SPECIES">WHG</ns6:SpeciesCode>
+				<ns6:WeightMeasure unitCode="KGM">11.8</ns6:WeightMeasure>
+				<ns6:WeighingMeansCode listID="WEIGHT_MEANS">ONBOARD</ns6:WeighingMeansCode>
+				<ns6:TypeCode listID="FA_CATCH_TYPE">ONBOARD</ns6:TypeCode>
+				<ns6:SpecifiedSizeDistribution>
+					<ns6:ClassCode listID="FISH_SIZE_CLASS">LSC</ns6:ClassCode>
+				</ns6:SpecifiedSizeDistribution>
+				<ns6:SpecifiedFLUXLocation>
+					<ns6:TypeCode listID="FLUX_LOCATION_TYPE">POSITION</ns6:TypeCode>
+					<ns6:SpecifiedPhysicalFLUXGeographicalCoordinate>
+						<ns6:LongitudeMeasure>9.833</ns6:LongitudeMeasure>
+						<ns6:LatitudeMeasure>58.050</ns6:LatitudeMeasure>
+					</ns6:SpecifiedPhysicalFLUXGeographicalCoordinate>
+				</ns6:SpecifiedFLUXLocation>
+				<ns6:SpecifiedFLUXLocation>
+					<ns6:TypeCode listID="FLUX_LOCATION_TYPE">AREA</ns6:TypeCode>
+					<ns6:ID schemeID="FAO_AREA">27.3.a.n</ns6:ID>
+				</ns6:SpecifiedFLUXLocation>
+			</ns6:SpecifiedFACatch>
+			<ns6:SpecifiedFACatch>
+				<ns6:SpeciesCode listID="FAO_SPECIES">MON</ns6:SpeciesCode>
+				<ns6:WeightMeasure unitCode="KGM">144</ns6:WeightMeasure>
+				<ns6:WeighingMeansCode listID="WEIGHT_MEANS">ONBOARD</ns6:WeighingMeansCode>
+				<ns6:TypeCode listID="FA_CATCH_TYPE">ONBOARD</ns6:TypeCode>
+				<ns6:SpecifiedSizeDistribution>
+					<ns6:ClassCode listID="FISH_SIZE_CLASS">LSC</ns6:ClassCode>
+				</ns6:SpecifiedSizeDistribution>
+				<ns6:SpecifiedFLUXLocation>
+					<ns6:TypeCode listID="FLUX_LOCATION_TYPE">POSITION</ns6:TypeCode>
+					<ns6:SpecifiedPhysicalFLUXGeographicalCoordinate>
+						<ns6:LongitudeMeasure>9.833</ns6:LongitudeMeasure>
+						<ns6:LatitudeMeasure>58.050</ns6:LatitudeMeasure>
+					</ns6:SpecifiedPhysicalFLUXGeographicalCoordinate>
+				</ns6:SpecifiedFLUXLocation>
+				<ns6:SpecifiedFLUXLocation>
+					<ns6:TypeCode listID="FLUX_LOCATION_TYPE">AREA</ns6:TypeCode>
+					<ns6:ID schemeID="FAO_AREA">27.3.a.n</ns6:ID>
+				</ns6:SpecifiedFLUXLocation>
+			</ns6:SpecifiedFACatch>
+			<ns6:SpecifiedFACatch>
+				<ns6:SpeciesCode listID="FAO_SPECIES">HAD</ns6:SpeciesCode>
+				<ns6:WeightMeasure unitCode="KGM">73.8</ns6:WeightMeasure>
+				<ns6:WeighingMeansCode listID="WEIGHT_MEANS">ONBOARD</ns6:WeighingMeansCode>
+				<ns6:TypeCode listID="FA_CATCH_TYPE">ONBOARD</ns6:TypeCode>
+				<ns6:SpecifiedSizeDistribution>
+					<ns6:ClassCode listID="FISH_SIZE_CLASS">LSC</ns6:ClassCode>
+				</ns6:SpecifiedSizeDistribution>
+				<ns6:SpecifiedFLUXLocation>
+					<ns6:TypeCode listID="FLUX_LOCATION_TYPE">POSITION</ns6:TypeCode>
+					<ns6:SpecifiedPhysicalFLUXGeographicalCoordinate>
+						<ns6:LongitudeMeasure>9.833</ns6:LongitudeMeasure>
+						<ns6:LatitudeMeasure>58.050</ns6:LatitudeMeasure>
+					</ns6:SpecifiedPhysicalFLUXGeographicalCoordinate>
+				</ns6:SpecifiedFLUXLocation>
+				<ns6:SpecifiedFLUXLocation>
+					<ns6:TypeCode listID="FLUX_LOCATION_TYPE">AREA</ns6:TypeCode>
+					<ns6:ID schemeID="FAO_AREA">27.3.a.n</ns6:ID>
+				</ns6:SpecifiedFLUXLocation>
+			</ns6:SpecifiedFACatch>
+			<ns6:SpecifiedFACatch>
+				<ns6:SpeciesCode listID="FAO_SPECIES">LIN</ns6:SpeciesCode>
+				<ns6:WeightMeasure unitCode="KGM">59.3</ns6:WeightMeasure>
+				<ns6:WeighingMeansCode listID="WEIGHT_MEANS">ONBOARD</ns6:WeighingMeansCode>
+				<ns6:TypeCode listID="FA_CATCH_TYPE">ONBOARD</ns6:TypeCode>
+				<ns6:SpecifiedSizeDistribution>
+					<ns6:ClassCode listID="FISH_SIZE_CLASS">LSC</ns6:ClassCode>
+				</ns6:SpecifiedSizeDistribution>
+				<ns6:SpecifiedFLUXLocation>
+					<ns6:TypeCode listID="FLUX_LOCATION_TYPE">POSITION</ns6:TypeCode>
+					<ns6:SpecifiedPhysicalFLUXGeographicalCoordinate>
+						<ns6:LongitudeMeasure>9.833</ns6:LongitudeMeasure>
+						<ns6:LatitudeMeasure>58.050</ns6:LatitudeMeasure>
+					</ns6:SpecifiedPhysicalFLUXGeographicalCoordinate>
+				</ns6:SpecifiedFLUXLocation>
+				<ns6:SpecifiedFLUXLocation>
+					<ns6:TypeCode listID="FLUX_LOCATION_TYPE">AREA</ns6:TypeCode>
+					<ns6:ID schemeID="FAO_AREA">27.3.a.n</ns6:ID>
+				</ns6:SpecifiedFLUXLocation>
+			</ns6:SpecifiedFACatch>
+			<ns6:SpecifiedFACatch>
+				<ns6:SpeciesCode listID="FAO_SPECIES">WIT</ns6:SpeciesCode>
+				<ns6:WeightMeasure unitCode="KGM">126.1</ns6:WeightMeasure>
+				<ns6:WeighingMeansCode listID="WEIGHT_MEANS">ONBOARD</ns6:WeighingMeansCode>
+				<ns6:TypeCode listID="FA_CATCH_TYPE">ONBOARD</ns6:TypeCode>
+				<ns6:SpecifiedSizeDistribution>
+					<ns6:ClassCode listID="FISH_SIZE_CLASS">LSC</ns6:ClassCode>
+				</ns6:SpecifiedSizeDistribution>
+				<ns6:SpecifiedFLUXLocation>
+					<ns6:TypeCode listID="FLUX_LOCATION_TYPE">POSITION</ns6:TypeCode>
+					<ns6:SpecifiedPhysicalFLUXGeographicalCoordinate>
+						<ns6:LongitudeMeasure>9.833</ns6:LongitudeMeasure>
+						<ns6:LatitudeMeasure>58.050</ns6:LatitudeMeasure>
+					</ns6:SpecifiedPhysicalFLUXGeographicalCoordinate>
+				</ns6:SpecifiedFLUXLocation>
+				<ns6:SpecifiedFLUXLocation>
+					<ns6:TypeCode listID="FLUX_LOCATION_TYPE">AREA</ns6:TypeCode>
+					<ns6:ID schemeID="FAO_AREA">27.3.a.n</ns6:ID>
+				</ns6:SpecifiedFLUXLocation>
+			</ns6:SpecifiedFACatch>
+			<ns6:SpecifiedFACatch>
+				<ns6:SpeciesCode listID="FAO_SPECIES">HAL</ns6:SpeciesCode>
+				<ns6:WeightMeasure unitCode="KGM">14.6</ns6:WeightMeasure>
+				<ns6:WeighingMeansCode listID="WEIGHT_MEANS">ONBOARD</ns6:WeighingMeansCode>
+				<ns6:TypeCode listID="FA_CATCH_TYPE">ONBOARD</ns6:TypeCode>
+				<ns6:SpecifiedSizeDistribution>
+					<ns6:ClassCode listID="FISH_SIZE_CLASS">LSC</ns6:ClassCode>
+				</ns6:SpecifiedSizeDistribution>
+				<ns6:SpecifiedFLUXLocation>
+					<ns6:TypeCode listID="FLUX_LOCATION_TYPE">POSITION</ns6:TypeCode>
+					<ns6:SpecifiedPhysicalFLUXGeographicalCoordinate>
+						<ns6:LongitudeMeasure>9.833</ns6:LongitudeMeasure>
+						<ns6:LatitudeMeasure>58.050</ns6:LatitudeMeasure>
+					</ns6:SpecifiedPhysicalFLUXGeographicalCoordinate>
+				</ns6:SpecifiedFLUXLocation>
+				<ns6:SpecifiedFLUXLocation>
+					<ns6:TypeCode listID="FLUX_LOCATION_TYPE">AREA</ns6:TypeCode>
+					<ns6:ID schemeID="FAO_AREA">27.3.a.n</ns6:ID>
+				</ns6:SpecifiedFLUXLocation>
+			</ns6:SpecifiedFACatch>
+			<ns6:SpecifiedFACatch>
+				<ns6:SpeciesCode listID="FAO_SPECIES">POL</ns6:SpeciesCode>
+				<ns6:WeightMeasure unitCode="KGM">4.7</ns6:WeightMeasure>
+				<ns6:WeighingMeansCode listID="WEIGHT_MEANS">ONBOARD</ns6:WeighingMeansCode>
+				<ns6:TypeCode listID="FA_CATCH_TYPE">ONBOARD</ns6:TypeCode>
+				<ns6:SpecifiedSizeDistribution>
+					<ns6:ClassCode listID="FISH_SIZE_CLASS">LSC</ns6:ClassCode>
+				</ns6:SpecifiedSizeDistribution>
+				<ns6:SpecifiedFLUXLocation>
+					<ns6:TypeCode listID="FLUX_LOCATION_TYPE">POSITION</ns6:TypeCode>
+					<ns6:SpecifiedPhysicalFLUXGeographicalCoordinate>
+						<ns6:LongitudeMeasure>9.833</ns6:LongitudeMeasure>
+						<ns6:LatitudeMeasure>58.050</ns6:LatitudeMeasure>
+					</ns6:SpecifiedPhysicalFLUXGeographicalCoordinate>
+				</ns6:SpecifiedFLUXLocation>
+				<ns6:SpecifiedFLUXLocation>
+					<ns6:TypeCode listID="FLUX_LOCATION_TYPE">AREA</ns6:TypeCode>
+					<ns6:ID schemeID="FAO_AREA">27.3.a.n</ns6:ID>
+				</ns6:SpecifiedFLUXLocation>
+			</ns6:SpecifiedFACatch>
+			<ns6:SpecifiedFACatch>
+				<ns6:SpeciesCode listID="FAO_SPECIES">NEP</ns6:SpeciesCode>
+				<ns6:WeightMeasure unitCode="KGM">153</ns6:WeightMeasure>
+				<ns6:WeighingMeansCode listID="WEIGHT_MEANS">ONBOARD</ns6:WeighingMeansCode>
+				<ns6:TypeCode listID="FA_CATCH_TYPE">ONBOARD</ns6:TypeCode>
+				<ns6:SpecifiedSizeDistribution>
+					<ns6:ClassCode listID="FISH_SIZE_CLASS">LSC</ns6:ClassCode>
+				</ns6:SpecifiedSizeDistribution>
+				<ns6:SpecifiedFLUXLocation>
+					<ns6:TypeCode listID="FLUX_LOCATION_TYPE">POSITION</ns6:TypeCode>
+					<ns6:SpecifiedPhysicalFLUXGeographicalCoordinate>
+						<ns6:LongitudeMeasure>9.833</ns6:LongitudeMeasure>
+						<ns6:LatitudeMeasure>58.050</ns6:LatitudeMeasure>
+					</ns6:SpecifiedPhysicalFLUXGeographicalCoordinate>
+				</ns6:SpecifiedFLUXLocation>
+				<ns6:SpecifiedFLUXLocation>
+					<ns6:TypeCode listID="FLUX_LOCATION_TYPE">AREA</ns6:TypeCode>
+					<ns6:ID schemeID="FAO_AREA">27.3.a.n</ns6:ID>
+				</ns6:SpecifiedFLUXLocation>
+			</ns6:SpecifiedFACatch>
+			<ns6:SpecifiedFACatch>
+				<ns6:SpeciesCode listID="FAO_SPECIES">HOM</ns6:SpeciesCode>
+				<ns6:WeightMeasure unitCode="KGM">89</ns6:WeightMeasure>
+				<ns6:WeighingMeansCode listID="WEIGHT_MEANS">ONBOARD</ns6:WeighingMeansCode>
+				<ns6:TypeCode listID="FA_CATCH_TYPE">ONBOARD</ns6:TypeCode>
+				<ns6:SpecifiedSizeDistribution>
+					<ns6:ClassCode listID="FISH_SIZE_CLASS">LSC</ns6:ClassCode>
+				</ns6:SpecifiedSizeDistribution>
+				<ns6:SpecifiedFLUXLocation>
+					<ns6:TypeCode listID="FLUX_LOCATION_TYPE">POSITION</ns6:TypeCode>
+					<ns6:SpecifiedPhysicalFLUXGeographicalCoordinate>
+						<ns6:LongitudeMeasure>9.833</ns6:LongitudeMeasure>
+						<ns6:LatitudeMeasure>58.050</ns6:LatitudeMeasure>
+					</ns6:SpecifiedPhysicalFLUXGeographicalCoordinate>
+				</ns6:SpecifiedFLUXLocation>
+				<ns6:SpecifiedFLUXLocation>
+					<ns6:TypeCode listID="FLUX_LOCATION_TYPE">AREA</ns6:TypeCode>
+					<ns6:ID schemeID="FAO_AREA">27.3.a.n</ns6:ID>
+				</ns6:SpecifiedFLUXLocation>
+			</ns6:SpecifiedFACatch>
+			<ns6:SpecifiedFACatch>
+				<ns6:SpeciesCode listID="FAO_SPECIES">POK</ns6:SpeciesCode>
+				<ns6:WeightMeasure unitCode="KGM">317.6</ns6:WeightMeasure>
+				<ns6:WeighingMeansCode listID="WEIGHT_MEANS">ONBOARD</ns6:WeighingMeansCode>
+				<ns6:TypeCode listID="FA_CATCH_TYPE">ONBOARD</ns6:TypeCode>
+				<ns6:SpecifiedSizeDistribution>
+					<ns6:ClassCode listID="FISH_SIZE_CLASS">LSC</ns6:ClassCode>
+				</ns6:SpecifiedSizeDistribution>
+				<ns6:SpecifiedFLUXLocation>
+					<ns6:TypeCode listID="FLUX_LOCATION_TYPE">POSITION</ns6:TypeCode>
+					<ns6:SpecifiedPhysicalFLUXGeographicalCoordinate>
+						<ns6:LongitudeMeasure>9.833</ns6:LongitudeMeasure>
+						<ns6:LatitudeMeasure>58.050</ns6:LatitudeMeasure>
+					</ns6:SpecifiedPhysicalFLUXGeographicalCoordinate>
+				</ns6:SpecifiedFLUXLocation>
+				<ns6:SpecifiedFLUXLocation>
+					<ns6:TypeCode listID="FLUX_LOCATION_TYPE">AREA</ns6:TypeCode>
+					<ns6:ID schemeID="FAO_AREA">27.3.a.n</ns6:ID>
+				</ns6:SpecifiedFLUXLocation>
+			</ns6:SpecifiedFACatch>
+			<ns6:SpecifiedFACatch>
+				<ns6:SpeciesCode listID="FAO_SPECIES">MON</ns6:SpeciesCode>
+				<ns6:WeightMeasure unitCode="KGM">125.6</ns6:WeightMeasure>
+				<ns6:WeighingMeansCode listID="WEIGHT_MEANS">ONBOARD</ns6:WeighingMeansCode>
+				<ns6:TypeCode listID="FA_CATCH_TYPE">ONBOARD</ns6:TypeCode>
+				<ns6:SpecifiedSizeDistribution>
+					<ns6:ClassCode listID="FISH_SIZE_CLASS">LSC</ns6:ClassCode>
+				</ns6:SpecifiedSizeDistribution>
+				<ns6:SpecifiedFLUXLocation>
+					<ns6:TypeCode listID="FLUX_LOCATION_TYPE">POSITION</ns6:TypeCode>
+					<ns6:SpecifiedPhysicalFLUXGeographicalCoordinate>
+						<ns6:LongitudeMeasure>9.833</ns6:LongitudeMeasure>
+						<ns6:LatitudeMeasure>58.050</ns6:LatitudeMeasure>
+					</ns6:SpecifiedPhysicalFLUXGeographicalCoordinate>
+				</ns6:SpecifiedFLUXLocation>
+				<ns6:SpecifiedFLUXLocation>
+					<ns6:TypeCode listID="FLUX_LOCATION_TYPE">AREA</ns6:TypeCode>
+					<ns6:ID schemeID="FAO_AREA">27.3.a.n</ns6:ID>
+				</ns6:SpecifiedFLUXLocation>
+			</ns6:SpecifiedFACatch>
+			<ns6:SpecifiedFACatch>
+				<ns6:SpeciesCode listID="FAO_SPECIES">NEP</ns6:SpeciesCode>
+				<ns6:WeightMeasure unitCode="KGM">256</ns6:WeightMeasure>
+				<ns6:WeighingMeansCode listID="WEIGHT_MEANS">ONBOARD</ns6:WeighingMeansCode>
+				<ns6:TypeCode listID="FA_CATCH_TYPE">ONBOARD</ns6:TypeCode>
+				<ns6:SpecifiedSizeDistribution>
+					<ns6:ClassCode listID="FISH_SIZE_CLASS">LSC</ns6:ClassCode>
+				</ns6:SpecifiedSizeDistribution>
+				<ns6:SpecifiedFLUXLocation>
+					<ns6:TypeCode listID="FLUX_LOCATION_TYPE">POSITION</ns6:TypeCode>
+					<ns6:SpecifiedPhysicalFLUXGeographicalCoordinate>
+						<ns6:LongitudeMeasure>9.833</ns6:LongitudeMeasure>
+						<ns6:LatitudeMeasure>58.050</ns6:LatitudeMeasure>
+					</ns6:SpecifiedPhysicalFLUXGeographicalCoordinate>
+				</ns6:SpecifiedFLUXLocation>
+				<ns6:SpecifiedFLUXLocation>
+					<ns6:TypeCode listID="FLUX_LOCATION_TYPE">AREA</ns6:TypeCode>
+					<ns6:ID schemeID="FAO_AREA">27.3.a.n</ns6:ID>
+				</ns6:SpecifiedFLUXLocation>
+			</ns6:SpecifiedFACatch>
+			<ns6:SpecifiedFACatch>
+				<ns6:SpeciesCode listID="FAO_SPECIES">MAC</ns6:SpeciesCode>
+				<ns6:WeightMeasure unitCode="KGM">18</ns6:WeightMeasure>
+				<ns6:WeighingMeansCode listID="WEIGHT_MEANS">ONBOARD</ns6:WeighingMeansCode>
+				<ns6:TypeCode listID="FA_CATCH_TYPE">ONBOARD</ns6:TypeCode>
+				<ns6:SpecifiedSizeDistribution>
+					<ns6:ClassCode listID="FISH_SIZE_CLASS">LSC</ns6:ClassCode>
+				</ns6:SpecifiedSizeDistribution>
+				<ns6:SpecifiedFLUXLocation>
+					<ns6:TypeCode listID="FLUX_LOCATION_TYPE">POSITION</ns6:TypeCode>
+					<ns6:SpecifiedPhysicalFLUXGeographicalCoordinate>
+						<ns6:LongitudeMeasure>9.833</ns6:LongitudeMeasure>
+						<ns6:LatitudeMeasure>58.050</ns6:LatitudeMeasure>
+					</ns6:SpecifiedPhysicalFLUXGeographicalCoordinate>
+				</ns6:SpecifiedFLUXLocation>
+				<ns6:SpecifiedFLUXLocation>
+					<ns6:TypeCode listID="FLUX_LOCATION_TYPE">AREA</ns6:TypeCode>
+					<ns6:ID schemeID="FAO_AREA">27.3.a.n</ns6:ID>
+				</ns6:SpecifiedFLUXLocation>
+			</ns6:SpecifiedFACatch>
+			<ns6:SpecifiedFACatch>
+				<ns6:SpeciesCode listID="FAO_SPECIES">COD</ns6:SpeciesCode>
+				<ns6:WeightMeasure unitCode="KGM">671.5</ns6:WeightMeasure>
+				<ns6:WeighingMeansCode listID="WEIGHT_MEANS">ONBOARD</ns6:WeighingMeansCode>
+				<ns6:TypeCode listID="FA_CATCH_TYPE">ONBOARD</ns6:TypeCode>
+				<ns6:SpecifiedSizeDistribution>
+					<ns6:ClassCode listID="FISH_SIZE_CLASS">LSC</ns6:ClassCode>
+				</ns6:SpecifiedSizeDistribution>
+				<ns6:SpecifiedFLUXLocation>
+					<ns6:TypeCode listID="FLUX_LOCATION_TYPE">POSITION</ns6:TypeCode>
+					<ns6:SpecifiedPhysicalFLUXGeographicalCoordinate>
+						<ns6:LongitudeMeasure>9.833</ns6:LongitudeMeasure>
+						<ns6:LatitudeMeasure>58.050</ns6:LatitudeMeasure>
+					</ns6:SpecifiedPhysicalFLUXGeographicalCoordinate>
+				</ns6:SpecifiedFLUXLocation>
+				<ns6:SpecifiedFLUXLocation>
+					<ns6:TypeCode listID="FLUX_LOCATION_TYPE">AREA</ns6:TypeCode>
+					<ns6:ID schemeID="FAO_AREA">27.3.a.n</ns6:ID>
+				</ns6:SpecifiedFLUXLocation>
+			</ns6:SpecifiedFACatch>
+			<ns6:SpecifiedFACatch>
+				<ns6:SpeciesCode listID="FAO_SPECIES">HKE</ns6:SpeciesCode>
+				<ns6:WeightMeasure unitCode="KGM">476.2</ns6:WeightMeasure>
+				<ns6:WeighingMeansCode listID="WEIGHT_MEANS">ONBOARD</ns6:WeighingMeansCode>
+				<ns6:TypeCode listID="FA_CATCH_TYPE">ONBOARD</ns6:TypeCode>
+				<ns6:SpecifiedSizeDistribution>
+					<ns6:ClassCode listID="FISH_SIZE_CLASS">LSC</ns6:ClassCode>
+				</ns6:SpecifiedSizeDistribution>
+				<ns6:SpecifiedFLUXLocation>
+					<ns6:TypeCode listID="FLUX_LOCATION_TYPE">POSITION</ns6:TypeCode>
+					<ns6:SpecifiedPhysicalFLUXGeographicalCoordinate>
+						<ns6:LongitudeMeasure>9.833</ns6:LongitudeMeasure>
+						<ns6:LatitudeMeasure>58.050</ns6:LatitudeMeasure>
+					</ns6:SpecifiedPhysicalFLUXGeographicalCoordinate>
+				</ns6:SpecifiedFLUXLocation>
+				<ns6:SpecifiedFLUXLocation>
+					<ns6:TypeCode listID="FLUX_LOCATION_TYPE">AREA</ns6:TypeCode>
+					<ns6:ID schemeID="FAO_AREA">27.3.a.n</ns6:ID>
+				</ns6:SpecifiedFLUXLocation>
+			</ns6:SpecifiedFACatch>
+			<ns6:SpecifiedFACatch>
+				<ns6:SpeciesCode listID="FAO_SPECIES">CAT</ns6:SpeciesCode>
+				<ns6:WeightMeasure unitCode="KGM">3.5</ns6:WeightMeasure>
+				<ns6:WeighingMeansCode listID="WEIGHT_MEANS">ONBOARD</ns6:WeighingMeansCode>
+				<ns6:TypeCode listID="FA_CATCH_TYPE">ONBOARD</ns6:TypeCode>
+				<ns6:SpecifiedSizeDistribution>
+					<ns6:ClassCode listID="FISH_SIZE_CLASS">LSC</ns6:ClassCode>
+				</ns6:SpecifiedSizeDistribution>
+				<ns6:SpecifiedFLUXLocation>
+					<ns6:TypeCode listID="FLUX_LOCATION_TYPE">POSITION</ns6:TypeCode>
+					<ns6:SpecifiedPhysicalFLUXGeographicalCoordinate>
+						<ns6:LongitudeMeasure>9.833</ns6:LongitudeMeasure>
+						<ns6:LatitudeMeasure>58.050</ns6:LatitudeMeasure>
+					</ns6:SpecifiedPhysicalFLUXGeographicalCoordinate>
+				</ns6:SpecifiedFLUXLocation>
+				<ns6:SpecifiedFLUXLocation>
+					<ns6:TypeCode listID="FLUX_LOCATION_TYPE">AREA</ns6:TypeCode>
+					<ns6:ID schemeID="FAO_AREA">27.3.a.n</ns6:ID>
+				</ns6:SpecifiedFLUXLocation>
+			</ns6:SpecifiedFACatch>
+			<ns6:SpecifiedFACatch>
+				<ns6:SpeciesCode listID="FAO_SPECIES">MON</ns6:SpeciesCode>
+				<ns6:WeightMeasure unitCode="KGM">144</ns6:WeightMeasure>
+				<ns6:WeighingMeansCode listID="WEIGHT_MEANS">ONBOARD</ns6:WeighingMeansCode>
+				<ns6:TypeCode listID="FA_CATCH_TYPE">UNLOADED</ns6:TypeCode>
+				<ns6:SpecifiedSizeDistribution>
+					<ns6:ClassCode listID="FISH_SIZE_CLASS">LSC</ns6:ClassCode>
+				</ns6:SpecifiedSizeDistribution>
+				<ns6:SpecifiedFLUXLocation>
+					<ns6:TypeCode listID="FLUX_LOCATION_TYPE">POSITION</ns6:TypeCode>
+					<ns6:SpecifiedPhysicalFLUXGeographicalCoordinate>
+						<ns6:LongitudeMeasure>9.833</ns6:LongitudeMeasure>
+						<ns6:LatitudeMeasure>58.050</ns6:LatitudeMeasure>
+					</ns6:SpecifiedPhysicalFLUXGeographicalCoordinate>
+				</ns6:SpecifiedFLUXLocation>
+				<ns6:SpecifiedFLUXLocation>
+					<ns6:TypeCode listID="FLUX_LOCATION_TYPE">AREA</ns6:TypeCode>
+					<ns6:ID schemeID="FAO_AREA">27.3.a.n</ns6:ID>
+				</ns6:SpecifiedFLUXLocation>
+			</ns6:SpecifiedFACatch>
+			<ns6:SpecifiedFACatch>
+				<ns6:SpeciesCode listID="FAO_SPECIES">WIT</ns6:SpeciesCode>
+				<ns6:WeightMeasure unitCode="KGM">126.1</ns6:WeightMeasure>
+				<ns6:WeighingMeansCode listID="WEIGHT_MEANS">ONBOARD</ns6:WeighingMeansCode>
+				<ns6:TypeCode listID="FA_CATCH_TYPE">UNLOADED</ns6:TypeCode>
+				<ns6:SpecifiedSizeDistribution>
+					<ns6:ClassCode listID="FISH_SIZE_CLASS">LSC</ns6:ClassCode>
+				</ns6:SpecifiedSizeDistribution>
+				<ns6:SpecifiedFLUXLocation>
+					<ns6:TypeCode listID="FLUX_LOCATION_TYPE">POSITION</ns6:TypeCode>
+					<ns6:SpecifiedPhysicalFLUXGeographicalCoordinate>
+						<ns6:LongitudeMeasure>9.833</ns6:LongitudeMeasure>
+						<ns6:LatitudeMeasure>58.050</ns6:LatitudeMeasure>
+					</ns6:SpecifiedPhysicalFLUXGeographicalCoordinate>
+				</ns6:SpecifiedFLUXLocation>
+				<ns6:SpecifiedFLUXLocation>
+					<ns6:TypeCode listID="FLUX_LOCATION_TYPE">AREA</ns6:TypeCode>
+					<ns6:ID schemeID="FAO_AREA">27.3.a.n</ns6:ID>
+				</ns6:SpecifiedFLUXLocation>
+			</ns6:SpecifiedFACatch>
+			<ns6:SpecifiedFACatch>
+				<ns6:SpeciesCode listID="FAO_SPECIES">HAL</ns6:SpeciesCode>
+				<ns6:WeightMeasure unitCode="KGM">14.6</ns6:WeightMeasure>
+				<ns6:WeighingMeansCode listID="WEIGHT_MEANS">ONBOARD</ns6:WeighingMeansCode>
+				<ns6:TypeCode listID="FA_CATCH_TYPE">UNLOADED</ns6:TypeCode>
+				<ns6:SpecifiedSizeDistribution>
+					<ns6:ClassCode listID="FISH_SIZE_CLASS">LSC</ns6:ClassCode>
+				</ns6:SpecifiedSizeDistribution>
+				<ns6:SpecifiedFLUXLocation>
+					<ns6:TypeCode listID="FLUX_LOCATION_TYPE">POSITION</ns6:TypeCode>
+					<ns6:SpecifiedPhysicalFLUXGeographicalCoordinate>
+						<ns6:LongitudeMeasure>9.833</ns6:LongitudeMeasure>
+						<ns6:LatitudeMeasure>58.050</ns6:LatitudeMeasure>
+					</ns6:SpecifiedPhysicalFLUXGeographicalCoordinate>
+				</ns6:SpecifiedFLUXLocation>
+				<ns6:SpecifiedFLUXLocation>
+					<ns6:TypeCode listID="FLUX_LOCATION_TYPE">AREA</ns6:TypeCode>
+					<ns6:ID schemeID="FAO_AREA">27.3.a.n</ns6:ID>
+				</ns6:SpecifiedFLUXLocation>
+			</ns6:SpecifiedFACatch>
+			<ns6:SpecifiedFACatch>
+				<ns6:SpeciesCode listID="FAO_SPECIES">NEP</ns6:SpeciesCode>
+				<ns6:WeightMeasure unitCode="KGM">153</ns6:WeightMeasure>
+				<ns6:WeighingMeansCode listID="WEIGHT_MEANS">ONBOARD</ns6:WeighingMeansCode>
+				<ns6:TypeCode listID="FA_CATCH_TYPE">UNLOADED</ns6:TypeCode>
+				<ns6:SpecifiedSizeDistribution>
+					<ns6:ClassCode listID="FISH_SIZE_CLASS">LSC</ns6:ClassCode>
+				</ns6:SpecifiedSizeDistribution>
+				<ns6:SpecifiedFLUXLocation>
+					<ns6:TypeCode listID="FLUX_LOCATION_TYPE">POSITION</ns6:TypeCode>
+					<ns6:SpecifiedPhysicalFLUXGeographicalCoordinate>
+						<ns6:LongitudeMeasure>9.833</ns6:LongitudeMeasure>
+						<ns6:LatitudeMeasure>58.050</ns6:LatitudeMeasure>
+					</ns6:SpecifiedPhysicalFLUXGeographicalCoordinate>
+				</ns6:SpecifiedFLUXLocation>
+				<ns6:SpecifiedFLUXLocation>
+					<ns6:TypeCode listID="FLUX_LOCATION_TYPE">AREA</ns6:TypeCode>
+					<ns6:ID schemeID="FAO_AREA">27.3.a.n</ns6:ID>
+				</ns6:SpecifiedFLUXLocation>
+			</ns6:SpecifiedFACatch>
+			<ns6:SpecifiedFACatch>
+				<ns6:SpeciesCode listID="FAO_SPECIES">MON</ns6:SpeciesCode>
+				<ns6:WeightMeasure unitCode="KGM">125.6</ns6:WeightMeasure>
+				<ns6:WeighingMeansCode listID="WEIGHT_MEANS">ONBOARD</ns6:WeighingMeansCode>
+				<ns6:TypeCode listID="FA_CATCH_TYPE">UNLOADED</ns6:TypeCode>
+				<ns6:SpecifiedSizeDistribution>
+					<ns6:ClassCode listID="FISH_SIZE_CLASS">LSC</ns6:ClassCode>
+				</ns6:SpecifiedSizeDistribution>
+				<ns6:SpecifiedFLUXLocation>
+					<ns6:TypeCode listID="FLUX_LOCATION_TYPE">POSITION</ns6:TypeCode>
+					<ns6:SpecifiedPhysicalFLUXGeographicalCoordinate>
+						<ns6:LongitudeMeasure>9.833</ns6:LongitudeMeasure>
+						<ns6:LatitudeMeasure>58.050</ns6:LatitudeMeasure>
+					</ns6:SpecifiedPhysicalFLUXGeographicalCoordinate>
+				</ns6:SpecifiedFLUXLocation>
+				<ns6:SpecifiedFLUXLocation>
+					<ns6:TypeCode listID="FLUX_LOCATION_TYPE">AREA</ns6:TypeCode>
+					<ns6:ID schemeID="FAO_AREA">27.3.a.n</ns6:ID>
+				</ns6:SpecifiedFLUXLocation>
+			</ns6:SpecifiedFACatch>
+			<ns6:SpecifiedFACatch>
+				<ns6:SpeciesCode listID="FAO_SPECIES">HOM</ns6:SpeciesCode>
+				<ns6:WeightMeasure unitCode="KGM">89</ns6:WeightMeasure>
+				<ns6:WeighingMeansCode listID="WEIGHT_MEANS">ONBOARD</ns6:WeighingMeansCode>
+				<ns6:TypeCode listID="FA_CATCH_TYPE">UNLOADED</ns6:TypeCode>
+				<ns6:SpecifiedSizeDistribution>
+					<ns6:ClassCode listID="FISH_SIZE_CLASS">LSC</ns6:ClassCode>
+				</ns6:SpecifiedSizeDistribution>
+				<ns6:SpecifiedFLUXLocation>
+					<ns6:TypeCode listID="FLUX_LOCATION_TYPE">POSITION</ns6:TypeCode>
+					<ns6:SpecifiedPhysicalFLUXGeographicalCoordinate>
+						<ns6:LongitudeMeasure>9.833</ns6:LongitudeMeasure>
+						<ns6:LatitudeMeasure>58.050</ns6:LatitudeMeasure>
+					</ns6:SpecifiedPhysicalFLUXGeographicalCoordinate>
+				</ns6:SpecifiedFLUXLocation>
+				<ns6:SpecifiedFLUXLocation>
+					<ns6:TypeCode listID="FLUX_LOCATION_TYPE">AREA</ns6:TypeCode>
+					<ns6:ID schemeID="FAO_AREA">27.3.a.n</ns6:ID>
+				</ns6:SpecifiedFLUXLocation>
+			</ns6:SpecifiedFACatch>
+			<ns6:SpecifiedFACatch>
+				<ns6:SpeciesCode listID="FAO_SPECIES">POL</ns6:SpeciesCode>
+				<ns6:WeightMeasure unitCode="KGM">4.7</ns6:WeightMeasure>
+				<ns6:WeighingMeansCode listID="WEIGHT_MEANS">ONBOARD</ns6:WeighingMeansCode>
+				<ns6:TypeCode listID="FA_CATCH_TYPE">UNLOADED</ns6:TypeCode>
+				<ns6:SpecifiedSizeDistribution>
+					<ns6:ClassCode listID="FISH_SIZE_CLASS">LSC</ns6:ClassCode>
+				</ns6:SpecifiedSizeDistribution>
+				<ns6:SpecifiedFLUXLocation>
+					<ns6:TypeCode listID="FLUX_LOCATION_TYPE">POSITION</ns6:TypeCode>
+					<ns6:SpecifiedPhysicalFLUXGeographicalCoordinate>
+						<ns6:LongitudeMeasure>9.833</ns6:LongitudeMeasure>
+						<ns6:LatitudeMeasure>58.050</ns6:LatitudeMeasure>
+					</ns6:SpecifiedPhysicalFLUXGeographicalCoordinate>
+				</ns6:SpecifiedFLUXLocation>
+				<ns6:SpecifiedFLUXLocation>
+					<ns6:TypeCode listID="FLUX_LOCATION_TYPE">AREA</ns6:TypeCode>
+					<ns6:ID schemeID="FAO_AREA">27.3.a.n</ns6:ID>
+				</ns6:SpecifiedFLUXLocation>
+			</ns6:SpecifiedFACatch>
+			<ns6:SpecifiedFACatch>
+				<ns6:SpeciesCode listID="FAO_SPECIES">POK</ns6:SpeciesCode>
+				<ns6:WeightMeasure unitCode="KGM">317.6</ns6:WeightMeasure>
+				<ns6:WeighingMeansCode listID="WEIGHT_MEANS">ONBOARD</ns6:WeighingMeansCode>
+				<ns6:TypeCode listID="FA_CATCH_TYPE">UNLOADED</ns6:TypeCode>
+				<ns6:SpecifiedSizeDistribution>
+					<ns6:ClassCode listID="FISH_SIZE_CLASS">LSC</ns6:ClassCode>
+				</ns6:SpecifiedSizeDistribution>
+				<ns6:SpecifiedFLUXLocation>
+					<ns6:TypeCode listID="FLUX_LOCATION_TYPE">POSITION</ns6:TypeCode>
+					<ns6:SpecifiedPhysicalFLUXGeographicalCoordinate>
+						<ns6:LongitudeMeasure>9.833</ns6:LongitudeMeasure>
+						<ns6:LatitudeMeasure>58.050</ns6:LatitudeMeasure>
+					</ns6:SpecifiedPhysicalFLUXGeographicalCoordinate>
+				</ns6:SpecifiedFLUXLocation>
+				<ns6:SpecifiedFLUXLocation>
+					<ns6:TypeCode listID="FLUX_LOCATION_TYPE">AREA</ns6:TypeCode>
+					<ns6:ID schemeID="FAO_AREA">27.3.a.n</ns6:ID>
+				</ns6:SpecifiedFLUXLocation>
+			</ns6:SpecifiedFACatch>
+			<ns6:SpecifiedFACatch>
+				<ns6:SpeciesCode listID="FAO_SPECIES">HKE</ns6:SpeciesCode>
+				<ns6:WeightMeasure unitCode="KGM">476.2</ns6:WeightMeasure>
+				<ns6:WeighingMeansCode listID="WEIGHT_MEANS">ONBOARD</ns6:WeighingMeansCode>
+				<ns6:TypeCode listID="FA_CATCH_TYPE">UNLOADED</ns6:TypeCode>
+				<ns6:SpecifiedSizeDistribution>
+					<ns6:ClassCode listID="FISH_SIZE_CLASS">LSC</ns6:ClassCode>
+				</ns6:SpecifiedSizeDistribution>
+				<ns6:SpecifiedFLUXLocation>
+					<ns6:TypeCode listID="FLUX_LOCATION_TYPE">POSITION</ns6:TypeCode>
+					<ns6:SpecifiedPhysicalFLUXGeographicalCoordinate>
+						<ns6:LongitudeMeasure>9.833</ns6:LongitudeMeasure>
+						<ns6:LatitudeMeasure>58.050</ns6:LatitudeMeasure>
+					</ns6:SpecifiedPhysicalFLUXGeographicalCoordinate>
+				</ns6:SpecifiedFLUXLocation>
+				<ns6:SpecifiedFLUXLocation>
+					<ns6:TypeCode listID="FLUX_LOCATION_TYPE">AREA</ns6:TypeCode>
+					<ns6:ID schemeID="FAO_AREA">27.3.a.n</ns6:ID>
+				</ns6:SpecifiedFLUXLocation>
+			</ns6:SpecifiedFACatch>
+			<ns6:SpecifiedFACatch>
+				<ns6:SpeciesCode listID="FAO_SPECIES">NEP</ns6:SpeciesCode>
+				<ns6:WeightMeasure unitCode="KGM">256</ns6:WeightMeasure>
+				<ns6:WeighingMeansCode listID="WEIGHT_MEANS">ONBOARD</ns6:WeighingMeansCode>
+				<ns6:TypeCode listID="FA_CATCH_TYPE">UNLOADED</ns6:TypeCode>
+				<ns6:SpecifiedSizeDistribution>
+					<ns6:ClassCode listID="FISH_SIZE_CLASS">LSC</ns6:ClassCode>
+				</ns6:SpecifiedSizeDistribution>
+				<ns6:SpecifiedFLUXLocation>
+					<ns6:TypeCode listID="FLUX_LOCATION_TYPE">POSITION</ns6:TypeCode>
+					<ns6:SpecifiedPhysicalFLUXGeographicalCoordinate>
+						<ns6:LongitudeMeasure>9.833</ns6:LongitudeMeasure>
+						<ns6:LatitudeMeasure>58.050</ns6:LatitudeMeasure>
+					</ns6:SpecifiedPhysicalFLUXGeographicalCoordinate>
+				</ns6:SpecifiedFLUXLocation>
+				<ns6:SpecifiedFLUXLocation>
+					<ns6:TypeCode listID="FLUX_LOCATION_TYPE">AREA</ns6:TypeCode>
+					<ns6:ID schemeID="FAO_AREA">27.3.a.n</ns6:ID>
+				</ns6:SpecifiedFLUXLocation>
+			</ns6:SpecifiedFACatch>
+			<ns6:SpecifiedFACatch>
+				<ns6:SpeciesCode listID="FAO_SPECIES">MAC</ns6:SpeciesCode>
+				<ns6:WeightMeasure unitCode="KGM">18</ns6:WeightMeasure>
+				<ns6:WeighingMeansCode listID="WEIGHT_MEANS">ONBOARD</ns6:WeighingMeansCode>
+				<ns6:TypeCode listID="FA_CATCH_TYPE">UNLOADED</ns6:TypeCode>
+				<ns6:SpecifiedSizeDistribution>
+					<ns6:ClassCode listID="FISH_SIZE_CLASS">LSC</ns6:ClassCode>
+				</ns6:SpecifiedSizeDistribution>
+				<ns6:SpecifiedFLUXLocation>
+					<ns6:TypeCode listID="FLUX_LOCATION_TYPE">POSITION</ns6:TypeCode>
+					<ns6:SpecifiedPhysicalFLUXGeographicalCoordinate>
+						<ns6:LongitudeMeasure>9.833</ns6:LongitudeMeasure>
+						<ns6:LatitudeMeasure>58.050</ns6:LatitudeMeasure>
+					</ns6:SpecifiedPhysicalFLUXGeographicalCoordinate>
+				</ns6:SpecifiedFLUXLocation>
+				<ns6:SpecifiedFLUXLocation>
+					<ns6:TypeCode listID="FLUX_LOCATION_TYPE">AREA</ns6:TypeCode>
+					<ns6:ID schemeID="FAO_AREA">27.3.a.n</ns6:ID>
+				</ns6:SpecifiedFLUXLocation>
+			</ns6:SpecifiedFACatch>
+			<ns6:SpecifiedFACatch>
+				<ns6:SpeciesCode listID="FAO_SPECIES">HAD</ns6:SpeciesCode>
+				<ns6:WeightMeasure unitCode="KGM">73.8</ns6:WeightMeasure>
+				<ns6:WeighingMeansCode listID="WEIGHT_MEANS">ONBOARD</ns6:WeighingMeansCode>
+				<ns6:TypeCode listID="FA_CATCH_TYPE">UNLOADED</ns6:TypeCode>
+				<ns6:SpecifiedSizeDistribution>
+					<ns6:ClassCode listID="FISH_SIZE_CLASS">LSC</ns6:ClassCode>
+				</ns6:SpecifiedSizeDistribution>
+				<ns6:SpecifiedFLUXLocation>
+					<ns6:TypeCode listID="FLUX_LOCATION_TYPE">POSITION</ns6:TypeCode>
+					<ns6:SpecifiedPhysicalFLUXGeographicalCoordinate>
+						<ns6:LongitudeMeasure>9.833</ns6:LongitudeMeasure>
+						<ns6:LatitudeMeasure>58.050</ns6:LatitudeMeasure>
+					</ns6:SpecifiedPhysicalFLUXGeographicalCoordinate>
+				</ns6:SpecifiedFLUXLocation>
+				<ns6:SpecifiedFLUXLocation>
+					<ns6:TypeCode listID="FLUX_LOCATION_TYPE">AREA</ns6:TypeCode>
+					<ns6:ID schemeID="FAO_AREA">27.3.a.n</ns6:ID>
+				</ns6:SpecifiedFLUXLocation>
+			</ns6:SpecifiedFACatch>
+			<ns6:SpecifiedFACatch>
+				<ns6:SpeciesCode listID="FAO_SPECIES">WHG</ns6:SpeciesCode>
+				<ns6:WeightMeasure unitCode="KGM">11.8</ns6:WeightMeasure>
+				<ns6:WeighingMeansCode listID="WEIGHT_MEANS">ONBOARD</ns6:WeighingMeansCode>
+				<ns6:TypeCode listID="FA_CATCH_TYPE">UNLOADED</ns6:TypeCode>
+				<ns6:SpecifiedSizeDistribution>
+					<ns6:ClassCode listID="FISH_SIZE_CLASS">LSC</ns6:ClassCode>
+				</ns6:SpecifiedSizeDistribution>
+				<ns6:SpecifiedFLUXLocation>
+					<ns6:TypeCode listID="FLUX_LOCATION_TYPE">POSITION</ns6:TypeCode>
+					<ns6:SpecifiedPhysicalFLUXGeographicalCoordinate>
+						<ns6:LongitudeMeasure>9.833</ns6:LongitudeMeasure>
+						<ns6:LatitudeMeasure>58.050</ns6:LatitudeMeasure>
+					</ns6:SpecifiedPhysicalFLUXGeographicalCoordinate>
+				</ns6:SpecifiedFLUXLocation>
+				<ns6:SpecifiedFLUXLocation>
+					<ns6:TypeCode listID="FLUX_LOCATION_TYPE">AREA</ns6:TypeCode>
+					<ns6:ID schemeID="FAO_AREA">27.3.a.n</ns6:ID>
+				</ns6:SpecifiedFLUXLocation>
+			</ns6:SpecifiedFACatch>
+			<ns6:SpecifiedFACatch>
+				<ns6:SpeciesCode listID="FAO_SPECIES">COD</ns6:SpeciesCode>
+				<ns6:WeightMeasure unitCode="KGM">671.5</ns6:WeightMeasure>
+				<ns6:WeighingMeansCode listID="WEIGHT_MEANS">ONBOARD</ns6:WeighingMeansCode>
+				<ns6:TypeCode listID="FA_CATCH_TYPE">UNLOADED</ns6:TypeCode>
+				<ns6:SpecifiedSizeDistribution>
+					<ns6:ClassCode listID="FISH_SIZE_CLASS">LSC</ns6:ClassCode>
+				</ns6:SpecifiedSizeDistribution>
+				<ns6:SpecifiedFLUXLocation>
+					<ns6:TypeCode listID="FLUX_LOCATION_TYPE">POSITION</ns6:TypeCode>
+					<ns6:SpecifiedPhysicalFLUXGeographicalCoordinate>
+						<ns6:LongitudeMeasure>9.833</ns6:LongitudeMeasure>
+						<ns6:LatitudeMeasure>58.050</ns6:LatitudeMeasure>
+					</ns6:SpecifiedPhysicalFLUXGeographicalCoordinate>
+				</ns6:SpecifiedFLUXLocation>
+				<ns6:SpecifiedFLUXLocation>
+					<ns6:TypeCode listID="FLUX_LOCATION_TYPE">AREA</ns6:TypeCode>
+					<ns6:ID schemeID="FAO_AREA">27.3.a.n</ns6:ID>
+				</ns6:SpecifiedFLUXLocation>
+			</ns6:SpecifiedFACatch>
+			<ns6:SpecifiedFACatch>
+				<ns6:SpeciesCode listID="FAO_SPECIES">CAT</ns6:SpeciesCode>
+				<ns6:WeightMeasure unitCode="KGM">3.5</ns6:WeightMeasure>
+				<ns6:WeighingMeansCode listID="WEIGHT_MEANS">ONBOARD</ns6:WeighingMeansCode>
+				<ns6:TypeCode listID="FA_CATCH_TYPE">UNLOADED</ns6:TypeCode>
+				<ns6:SpecifiedSizeDistribution>
+					<ns6:ClassCode listID="FISH_SIZE_CLASS">LSC</ns6:ClassCode>
+				</ns6:SpecifiedSizeDistribution>
+				<ns6:SpecifiedFLUXLocation>
+					<ns6:TypeCode listID="FLUX_LOCATION_TYPE">POSITION</ns6:TypeCode>
+					<ns6:SpecifiedPhysicalFLUXGeographicalCoordinate>
+						<ns6:LongitudeMeasure>9.833</ns6:LongitudeMeasure>
+						<ns6:LatitudeMeasure>58.050</ns6:LatitudeMeasure>
+					</ns6:SpecifiedPhysicalFLUXGeographicalCoordinate>
+				</ns6:SpecifiedFLUXLocation>
+				<ns6:SpecifiedFLUXLocation>
+					<ns6:TypeCode listID="FLUX_LOCATION_TYPE">AREA</ns6:TypeCode>
+					<ns6:ID schemeID="FAO_AREA">27.3.a.n</ns6:ID>
+				</ns6:SpecifiedFLUXLocation>
+			</ns6:SpecifiedFACatch>
+			<ns6:SpecifiedFACatch>
+				<ns6:SpeciesCode listID="FAO_SPECIES">LIN</ns6:SpeciesCode>
+				<ns6:WeightMeasure unitCode="KGM">59.3</ns6:WeightMeasure>
+				<ns6:WeighingMeansCode listID="WEIGHT_MEANS">ONBOARD</ns6:WeighingMeansCode>
+				<ns6:TypeCode listID="FA_CATCH_TYPE">UNLOADED</ns6:TypeCode>
+				<ns6:SpecifiedSizeDistribution>
+					<ns6:ClassCode listID="FISH_SIZE_CLASS">LSC</ns6:ClassCode>
+				</ns6:SpecifiedSizeDistribution>
+				<ns6:SpecifiedFLUXLocation>
+					<ns6:TypeCode listID="FLUX_LOCATION_TYPE">POSITION</ns6:TypeCode>
+					<ns6:SpecifiedPhysicalFLUXGeographicalCoordinate>
+						<ns6:LongitudeMeasure>9.833</ns6:LongitudeMeasure>
+						<ns6:LatitudeMeasure>58.050</ns6:LatitudeMeasure>
+					</ns6:SpecifiedPhysicalFLUXGeographicalCoordinate>
+				</ns6:SpecifiedFLUXLocation>
+				<ns6:SpecifiedFLUXLocation>
+					<ns6:TypeCode listID="FLUX_LOCATION_TYPE">AREA</ns6:TypeCode>
+					<ns6:ID schemeID="FAO_AREA">27.3.a.n</ns6:ID>
+				</ns6:SpecifiedFLUXLocation>
+			</ns6:SpecifiedFACatch>
+			<ns6:RelatedFLUXLocation>
+				<ns6:TypeCode listID="FLUX_LOCATION_TYPE">LOCATION</ns6:TypeCode>
+				<ns6:CountryID schemeID="TERRITORY">DNK</ns6:CountryID>
+				<ns6:ID schemeID="LOCATION">DKHIR</ns6:ID>
+			</ns6:RelatedFLUXLocation>
+			<ns6:SpecifiedFishingTrip>
+				<ns6:ID schemeID="EU_TRIP_ID">placeholder-fishing-trip-id</ns6:ID>
+				<ns6:SpecifiedDelimitedPeriod>
+					<ns6:StartDateTime>
+						<ns8:DateTime xmlns:ns8="urn:un:unece:uncefact:data:standard:UnqualifiedDataType:20">2012-05-20T14:39:51.093Z</ns8:DateTime>
+					</ns6:StartDateTime>
+				</ns6:SpecifiedDelimitedPeriod>
+			</ns6:SpecifiedFishingTrip>
+		</ns6:SpecifiedFishingActivity>
+		<ns6:SpecifiedVesselTransportMeans xmlns:ns6="urn:un:unece:uncefact:data:standard:ReusableAggregateBusinessInformationEntity:20">
+			<ns2:ID schemeID="CFR" xmlns:ns2="urn:un:unece:uncefact:data:standard:ReusableAggregateBusinessInformationEntity:20">placeholder-vessel-cfr-id</ns2:ID>
+			<ns2:RoleCode listID="FA_VESSEL_ROLE" xmlns:ns2="urn:un:unece:uncefact:data:standard:ReusableAggregateBusinessInformationEntity:20">CATCHING_VESSEL</ns2:RoleCode>
+			<ns2:RegistrationVesselCountry xmlns:ns2="urn:un:unece:uncefact:data:standard:ReusableAggregateBusinessInformationEntity:20">
+				<ns2:ID schemeID="TERRITORY">SWE</ns2:ID>
+			</ns2:RegistrationVesselCountry>
+			<ns2:SpecifiedContactParty xmlns:ns2="urn:un:unece:uncefact:data:standard:ReusableAggregateBusinessInformationEntity:20">
+				<ns3:RoleCode listID="FLUX_CONTACT_ROLE" xmlns:ns3="urn:un:unece:uncefact:data:standard:ReusableAggregateBusinessInformationEntity:20">MASTER</ns3:RoleCode>
+				<ns3:SpecifiedStructuredAddress xmlns:ns3="urn:un:unece:uncefact:data:standard:ReusableAggregateBusinessInformationEntity:20">
+					<ns3:StreetName>placeholder-street-name</ns3:StreetName>
+					<ns3:CityName>placeholder-city-name</ns3:CityName>
+					<ns3:CountryID schemeID="TERRITORY">SWE</ns3:CountryID>
+					<ns3:PlotIdentification languageID="GBR">N/A</ns3:PlotIdentification>
+					<ns3:PostalArea>placeholder-postal-area</ns3:PostalArea>
+				</ns3:SpecifiedStructuredAddress>
+				<ns3:SpecifiedContactPerson xmlns:ns3="urn:un:unece:uncefact:data:standard:ReusableAggregateBusinessInformationEntity:20">
+					<ns3:GivenName>placeholder-contact-person-given-name</ns3:GivenName>
+					<ns3:FamilyName>placeholder-contact-person-family-name</ns3:FamilyName>
+				</ns3:SpecifiedContactPerson>
+			</ns2:SpecifiedContactParty>
+		</ns6:SpecifiedVesselTransportMeans>
+	</ns0:FAReportDocument>
+	<ns0:FAReportDocument>
+		<ns6:TypeCode listID="FLUX_FA_REPORT_TYPE" xmlns:ns6="urn:un:unece:uncefact:data:standard:ReusableAggregateBusinessInformationEntity:20">DECLARATION</ns6:TypeCode>
+		<ns6:AcceptanceDateTime xmlns:ns6="urn:un:unece:uncefact:data:standard:ReusableAggregateBusinessInformationEntity:20">
+			<ns8:DateTime xmlns:ns8="urn:un:unece:uncefact:data:standard:UnqualifiedDataType:20">2012-05-20T15:03:16.093Z</ns8:DateTime>
+		</ns6:AcceptanceDateTime>
+		<ns6:RelatedFLUXReportDocument xmlns:ns6="urn:un:unece:uncefact:data:standard:ReusableAggregateBusinessInformationEntity:20">
+			<ns6:ID schemeID="UUID">placeholder-fishing-activity-report-document-id</ns6:ID>
+			<ns6:CreationDateTime>
+				<ns8:DateTime xmlns:ns8="urn:un:unece:uncefact:data:standard:UnqualifiedDataType:20">2012-05-20T19:13:16.363Z</ns8:DateTime>
+			</ns6:CreationDateTime>
+			<ns6:PurposeCode listID="FLUX_GP_PURPOSE">9</ns6:PurposeCode>
+			<ns6:OwnerFLUXParty>
+				<ns6:ID schemeID="FLUX_GP_PARTY">SWE</ns6:ID>
+			</ns6:OwnerFLUXParty>
+		</ns6:RelatedFLUXReportDocument>
+		<ns6:SpecifiedFishingActivity xmlns:ns6="urn:un:unece:uncefact:data:standard:ReusableAggregateBusinessInformationEntity:20">
+			<ns6:TypeCode listID="FLUX_FA_TYPE">ARRIVAL</ns6:TypeCode>
+			<ns6:OccurrenceDateTime>
+				<ns8:DateTime xmlns:ns8="urn:un:unece:uncefact:data:standard:UnqualifiedDataType:20">2012-05-20T15:01:51.093Z</ns8:DateTime>
+			</ns6:OccurrenceDateTime>
+			<ns6:RelatedFLUXLocation>
+				<ns6:TypeCode listID="FLUX_LOCATION_TYPE">LOCATION</ns6:TypeCode>
+				<ns6:CountryID schemeID="TERRITORY">DNK</ns6:CountryID>
+				<ns6:ID schemeID="LOCATION">DKHIR</ns6:ID>
+			</ns6:RelatedFLUXLocation>
+			<ns6:SpecifiedFishingGear>
+				<ns6:TypeCode listID="GEAR_TYPE">OTB</ns6:TypeCode>
+				<ns6:RoleCode listID="FA_GEAR_ROLE">ONBOARD</ns6:RoleCode>
+				<ns6:ApplicableGearCharacteristic>
+					<ns6:TypeCode listID="FA_GEAR_CHARACTERISTIC">GM</ns6:TypeCode>
+					<ns6:ValueMeasure unitCode="MTR">1</ns6:ValueMeasure>
+				</ns6:ApplicableGearCharacteristic>
+				<ns6:ApplicableGearCharacteristic>
+					<ns6:TypeCode listID="FA_GEAR_CHARACTERISTIC">ME</ns6:TypeCode>
+					<ns6:ValueMeasure unitCode="MMT">122</ns6:ValueMeasure>
+				</ns6:ApplicableGearCharacteristic>
+				<ns6:ApplicableGearCharacteristic>
+					<ns6:TypeCode listID="FA_GEAR_CHARACTERISTIC">GD</ns6:TypeCode>
+					<ns6:Value>OTB</ns6:Value>
+				</ns6:ApplicableGearCharacteristic>
+			</ns6:SpecifiedFishingGear>
+			<ns6:SpecifiedFishingGear>
+				<ns6:TypeCode listID="GEAR_TYPE">OTB</ns6:TypeCode>
+				<ns6:RoleCode listID="FA_GEAR_ROLE">ONBOARD</ns6:RoleCode>
+				<ns6:ApplicableGearCharacteristic>
+					<ns6:TypeCode listID="FA_GEAR_CHARACTERISTIC">GM</ns6:TypeCode>
+					<ns6:ValueMeasure unitCode="MTR">2</ns6:ValueMeasure>
+				</ns6:ApplicableGearCharacteristic>
+				<ns6:ApplicableGearCharacteristic>
+					<ns6:TypeCode listID="FA_GEAR_CHARACTERISTIC">ME</ns6:TypeCode>
+					<ns6:ValueMeasure unitCode="MMT">90</ns6:ValueMeasure>
+				</ns6:ApplicableGearCharacteristic>
+				<ns6:ApplicableGearCharacteristic>
+					<ns6:TypeCode listID="FA_GEAR_CHARACTERISTIC">GD</ns6:TypeCode>
+					<ns6:Value>OTB</ns6:Value>
+				</ns6:ApplicableGearCharacteristic>
+			</ns6:SpecifiedFishingGear>
+			<ns6:SpecifiedFishingTrip>
+				<ns6:ID schemeID="EU_TRIP_ID">placeholder-fishing-trip-id</ns6:ID>
+			</ns6:SpecifiedFishingTrip>
+		</ns6:SpecifiedFishingActivity>
+		<ns6:SpecifiedVesselTransportMeans xmlns:ns6="urn:un:unece:uncefact:data:standard:ReusableAggregateBusinessInformationEntity:20">
+			<ns2:ID schemeID="CFR" xmlns:ns2="urn:un:unece:uncefact:data:standard:ReusableAggregateBusinessInformationEntity:20">placeholder-vessel-cfr-id</ns2:ID>
+			<ns2:RoleCode listID="FA_VESSEL_ROLE" xmlns:ns2="urn:un:unece:uncefact:data:standard:ReusableAggregateBusinessInformationEntity:20">CATCHING_VESSEL</ns2:RoleCode>
+			<ns2:RegistrationVesselCountry xmlns:ns2="urn:un:unece:uncefact:data:standard:ReusableAggregateBusinessInformationEntity:20">
+				<ns2:ID schemeID="TERRITORY">SWE</ns2:ID>
+			</ns2:RegistrationVesselCountry>
+			<ns2:SpecifiedContactParty xmlns:ns2="urn:un:unece:uncefact:data:standard:ReusableAggregateBusinessInformationEntity:20">
+				<ns3:RoleCode listID="FLUX_CONTACT_ROLE" xmlns:ns3="urn:un:unece:uncefact:data:standard:ReusableAggregateBusinessInformationEntity:20">MASTER</ns3:RoleCode>
+				<ns3:SpecifiedStructuredAddress xmlns:ns3="urn:un:unece:uncefact:data:standard:ReusableAggregateBusinessInformationEntity:20">
+					<ns3:StreetName>placeholder-street-name</ns3:StreetName>
+					<ns3:CityName>placeholder-city-name</ns3:CityName>
+					<ns3:CountryID schemeID="TERRITORY">SWE</ns3:CountryID>
+					<ns3:PlotIdentification languageID="GBR">N/A</ns3:PlotIdentification>
+					<ns3:PostalArea>placeholder-postal-area</ns3:PostalArea>
+				</ns3:SpecifiedStructuredAddress>
+				<ns3:SpecifiedContactPerson xmlns:ns3="urn:un:unece:uncefact:data:standard:ReusableAggregateBusinessInformationEntity:20">
+					<ns3:GivenName>placeholder-contact-person-given-name</ns3:GivenName>
+					<ns3:FamilyName>placeholder-contact-person-family-name</ns3:FamilyName>
+				</ns3:SpecifiedContactPerson>
+			</ns2:SpecifiedContactParty>
+		</ns6:SpecifiedVesselTransportMeans>
+	</ns0:FAReportDocument>
+	<ns0:FAReportDocument>
+		<ns6:TypeCode listID="FLUX_FA_REPORT_TYPE" xmlns:ns6="urn:un:unece:uncefact:data:standard:ReusableAggregateBusinessInformationEntity:20">DECLARATION</ns6:TypeCode>
+		<ns6:AcceptanceDateTime xmlns:ns6="urn:un:unece:uncefact:data:standard:ReusableAggregateBusinessInformationEntity:20">
+			<ns8:DateTime xmlns:ns8="urn:un:unece:uncefact:data:standard:UnqualifiedDataType:20">2012-05-20T15:35:31.093Z</ns8:DateTime>
+		</ns6:AcceptanceDateTime>
+		<ns6:RelatedFLUXReportDocument xmlns:ns6="urn:un:unece:uncefact:data:standard:ReusableAggregateBusinessInformationEntity:20">
+			<ns6:ID schemeID="UUID">placeholder-fishing-activity-report-document-id</ns6:ID>
+			<ns6:CreationDateTime>
+				<ns8:DateTime xmlns:ns8="urn:un:unece:uncefact:data:standard:UnqualifiedDataType:20">2012-05-20T19:13:16.364Z</ns8:DateTime>
+			</ns6:CreationDateTime>
+			<ns6:PurposeCode listID="FLUX_GP_PURPOSE">9</ns6:PurposeCode>
+			<ns6:OwnerFLUXParty>
+				<ns6:ID schemeID="FLUX_GP_PARTY">SWE</ns6:ID>
+			</ns6:OwnerFLUXParty>
+		</ns6:RelatedFLUXReportDocument>
+		<ns6:SpecifiedFishingActivity xmlns:ns6="urn:un:unece:uncefact:data:standard:ReusableAggregateBusinessInformationEntity:20">
+			<ns6:TypeCode listID="FLUX_FA_TYPE">LANDING</ns6:TypeCode>
+			<ns6:SpecifiedFACatch>
+				<ns6:SpeciesCode listID="FAO_SPECIES">NEP</ns6:SpeciesCode>
+				<ns6:WeightMeasure unitCode="KGM">156.0</ns6:WeightMeasure>
+				<ns6:WeighingMeansCode listID="WEIGHT_MEANS">ESTIMATED</ns6:WeighingMeansCode>
+				<ns6:TypeCode listID="FA_CATCH_TYPE">UNLOADED</ns6:TypeCode>
+				<ns6:SpecifiedSizeDistribution>
+					<ns6:ClassCode listID="FISH_SIZE_CLASS">LSC</ns6:ClassCode>
+				</ns6:SpecifiedSizeDistribution>
+				<ns6:AppliedAAPProcess>
+					<ns6:TypeCode listID="FISH_PRESENTATION">TAL</ns6:TypeCode>
+					<ns6:TypeCode listID="FISH_PRESERVATION">FRE</ns6:TypeCode>
+					<ns6:TypeCode listID="FISH_FRESHNESS">A</ns6:TypeCode>
+					<ns6:ConversionFactorNumeric>3</ns6:ConversionFactorNumeric>
+					<ns6:ResultAAPProduct>
+						<ns6:WeightMeasure unitCode="KGM">156.0</ns6:WeightMeasure>
+					</ns6:ResultAAPProduct>
+				</ns6:AppliedAAPProcess>
+				<ns6:SpecifiedFLUXLocation>
+					<ns6:TypeCode listID="FLUX_LOCATION_TYPE">AREA</ns6:TypeCode>
+					<ns6:ID schemeID="TERRITORY">DNK</ns6:ID>
+				</ns6:SpecifiedFLUXLocation>
+				<ns6:SpecifiedFLUXLocation>
+					<ns6:TypeCode listID="FLUX_LOCATION_TYPE">AREA</ns6:TypeCode>
+					<ns6:ID schemeID="FAO_AREA">27.3.a.n</ns6:ID>
+				</ns6:SpecifiedFLUXLocation>
+			</ns6:SpecifiedFACatch>
+			<ns6:SpecifiedFACatch>
+				<ns6:SpeciesCode listID="FAO_SPECIES">MON</ns6:SpeciesCode>
+				<ns6:WeightMeasure unitCode="KGM">144.0</ns6:WeightMeasure>
+				<ns6:WeighingMeansCode listID="WEIGHT_MEANS">ESTIMATED</ns6:WeighingMeansCode>
+				<ns6:TypeCode listID="FA_CATCH_TYPE">UNLOADED</ns6:TypeCode>
+				<ns6:SpecifiedSizeDistribution>
+					<ns6:ClassCode listID="FISH_SIZE_CLASS">LSC</ns6:ClassCode>
+				</ns6:SpecifiedSizeDistribution>
+				<ns6:AppliedAAPProcess>
+					<ns6:TypeCode listID="FISH_PRESENTATION">GUH</ns6:TypeCode>
+					<ns6:TypeCode listID="FISH_PRESERVATION">FRE</ns6:TypeCode>
+					<ns6:TypeCode listID="FISH_FRESHNESS">A</ns6:TypeCode>
+					<ns6:ConversionFactorNumeric>3</ns6:ConversionFactorNumeric>
+					<ns6:ResultAAPProduct>
+						<ns6:WeightMeasure unitCode="KGM">144.0</ns6:WeightMeasure>
+					</ns6:ResultAAPProduct>
+				</ns6:AppliedAAPProcess>
+				<ns6:SpecifiedFLUXLocation>
+					<ns6:TypeCode listID="FLUX_LOCATION_TYPE">AREA</ns6:TypeCode>
+					<ns6:ID schemeID="TERRITORY">DNK</ns6:ID>
+				</ns6:SpecifiedFLUXLocation>
+				<ns6:SpecifiedFLUXLocation>
+					<ns6:TypeCode listID="FLUX_LOCATION_TYPE">AREA</ns6:TypeCode>
+					<ns6:ID schemeID="FAO_AREA">27.3.a.n</ns6:ID>
+				</ns6:SpecifiedFLUXLocation>
+			</ns6:SpecifiedFACatch>
+			<ns6:SpecifiedFACatch>
+				<ns6:SpeciesCode listID="FAO_SPECIES">WHG</ns6:SpeciesCode>
+				<ns6:WeightMeasure unitCode="KGM">11.8</ns6:WeightMeasure>
+				<ns6:WeighingMeansCode listID="WEIGHT_MEANS">ESTIMATED</ns6:WeighingMeansCode>
+				<ns6:TypeCode listID="FA_CATCH_TYPE">UNLOADED</ns6:TypeCode>
+				<ns6:SpecifiedSizeDistribution>
+					<ns6:ClassCode listID="FISH_SIZE_CLASS">LSC</ns6:ClassCode>
+				</ns6:SpecifiedSizeDistribution>
+				<ns6:AppliedAAPProcess>
+					<ns6:TypeCode listID="FISH_PRESENTATION">GUT</ns6:TypeCode>
+					<ns6:TypeCode listID="FISH_PRESERVATION">FRE</ns6:TypeCode>
+					<ns6:TypeCode listID="FISH_FRESHNESS">A</ns6:TypeCode>
+					<ns6:ConversionFactorNumeric>1.18</ns6:ConversionFactorNumeric>
+					<ns6:ResultAAPProduct>
+						<ns6:WeightMeasure unitCode="KGM">11.8</ns6:WeightMeasure>
+					</ns6:ResultAAPProduct>
+				</ns6:AppliedAAPProcess>
+				<ns6:SpecifiedFLUXLocation>
+					<ns6:TypeCode listID="FLUX_LOCATION_TYPE">AREA</ns6:TypeCode>
+					<ns6:ID schemeID="TERRITORY">DNK</ns6:ID>
+				</ns6:SpecifiedFLUXLocation>
+				<ns6:SpecifiedFLUXLocation>
+					<ns6:TypeCode listID="FLUX_LOCATION_TYPE">AREA</ns6:TypeCode>
+					<ns6:ID schemeID="FAO_AREA">27.3.a.n</ns6:ID>
+				</ns6:SpecifiedFLUXLocation>
+			</ns6:SpecifiedFACatch>
+			<ns6:SpecifiedFACatch>
+				<ns6:SpeciesCode listID="FAO_SPECIES">POL</ns6:SpeciesCode>
+				<ns6:WeightMeasure unitCode="KGM">4.7</ns6:WeightMeasure>
+				<ns6:WeighingMeansCode listID="WEIGHT_MEANS">ESTIMATED</ns6:WeighingMeansCode>
+				<ns6:TypeCode listID="FA_CATCH_TYPE">UNLOADED</ns6:TypeCode>
+				<ns6:SpecifiedSizeDistribution>
+					<ns6:ClassCode listID="FISH_SIZE_CLASS">LSC</ns6:ClassCode>
+				</ns6:SpecifiedSizeDistribution>
+				<ns6:AppliedAAPProcess>
+					<ns6:TypeCode listID="FISH_PRESENTATION">GUT</ns6:TypeCode>
+					<ns6:TypeCode listID="FISH_PRESERVATION">FRE</ns6:TypeCode>
+					<ns6:TypeCode listID="FISH_FRESHNESS">A</ns6:TypeCode>
+					<ns6:ConversionFactorNumeric>1.175</ns6:ConversionFactorNumeric>
+					<ns6:ResultAAPProduct>
+						<ns6:WeightMeasure unitCode="KGM">4.7</ns6:WeightMeasure>
+					</ns6:ResultAAPProduct>
+				</ns6:AppliedAAPProcess>
+				<ns6:SpecifiedFLUXLocation>
+					<ns6:TypeCode listID="FLUX_LOCATION_TYPE">AREA</ns6:TypeCode>
+					<ns6:ID schemeID="TERRITORY">DNK</ns6:ID>
+				</ns6:SpecifiedFLUXLocation>
+				<ns6:SpecifiedFLUXLocation>
+					<ns6:TypeCode listID="FLUX_LOCATION_TYPE">AREA</ns6:TypeCode>
+					<ns6:ID schemeID="FAO_AREA">27.3.a.n</ns6:ID>
+				</ns6:SpecifiedFLUXLocation>
+			</ns6:SpecifiedFACatch>
+			<ns6:SpecifiedFACatch>
+				<ns6:SpeciesCode listID="FAO_SPECIES">CAT</ns6:SpeciesCode>
+				<ns6:WeightMeasure unitCode="KGM">3.5</ns6:WeightMeasure>
+				<ns6:WeighingMeansCode listID="WEIGHT_MEANS">ESTIMATED</ns6:WeighingMeansCode>
+				<ns6:TypeCode listID="FA_CATCH_TYPE">UNLOADED</ns6:TypeCode>
+				<ns6:SpecifiedSizeDistribution>
+					<ns6:ClassCode listID="FISH_SIZE_CLASS">LSC</ns6:ClassCode>
+				</ns6:SpecifiedSizeDistribution>
+				<ns6:AppliedAAPProcess>
+					<ns6:TypeCode listID="FISH_PRESENTATION">GUT</ns6:TypeCode>
+					<ns6:TypeCode listID="FISH_PRESERVATION">FRE</ns6:TypeCode>
+					<ns6:TypeCode listID="FISH_FRESHNESS">A</ns6:TypeCode>
+					<ns6:ConversionFactorNumeric>1.167</ns6:ConversionFactorNumeric>
+					<ns6:ResultAAPProduct>
+						<ns6:WeightMeasure unitCode="KGM">3.5</ns6:WeightMeasure>
+					</ns6:ResultAAPProduct>
+				</ns6:AppliedAAPProcess>
+				<ns6:SpecifiedFLUXLocation>
+					<ns6:TypeCode listID="FLUX_LOCATION_TYPE">AREA</ns6:TypeCode>
+					<ns6:ID schemeID="TERRITORY">DNK</ns6:ID>
+				</ns6:SpecifiedFLUXLocation>
+				<ns6:SpecifiedFLUXLocation>
+					<ns6:TypeCode listID="FLUX_LOCATION_TYPE">AREA</ns6:TypeCode>
+					<ns6:ID schemeID="FAO_AREA">27.3.a.n</ns6:ID>
+				</ns6:SpecifiedFLUXLocation>
+			</ns6:SpecifiedFACatch>
+			<ns6:SpecifiedFACatch>
+				<ns6:SpeciesCode listID="FAO_SPECIES">MON</ns6:SpeciesCode>
+				<ns6:WeightMeasure unitCode="KGM">125.7</ns6:WeightMeasure>
+				<ns6:WeighingMeansCode listID="WEIGHT_MEANS">ESTIMATED</ns6:WeighingMeansCode>
+				<ns6:TypeCode listID="FA_CATCH_TYPE">UNLOADED</ns6:TypeCode>
+				<ns6:SpecifiedSizeDistribution>
+					<ns6:ClassCode listID="FISH_SIZE_CLASS">LSC</ns6:ClassCode>
+				</ns6:SpecifiedSizeDistribution>
+				<ns6:AppliedAAPProcess>
+					<ns6:TypeCode listID="FISH_PRESENTATION">GUT</ns6:TypeCode>
+					<ns6:TypeCode listID="FISH_PRESERVATION">FRE</ns6:TypeCode>
+					<ns6:TypeCode listID="FISH_FRESHNESS">A</ns6:TypeCode>
+					<ns6:ConversionFactorNumeric>1.22</ns6:ConversionFactorNumeric>
+					<ns6:ResultAAPProduct>
+						<ns6:WeightMeasure unitCode="KGM">125.7</ns6:WeightMeasure>
+					</ns6:ResultAAPProduct>
+				</ns6:AppliedAAPProcess>
+				<ns6:SpecifiedFLUXLocation>
+					<ns6:TypeCode listID="FLUX_LOCATION_TYPE">AREA</ns6:TypeCode>
+					<ns6:ID schemeID="TERRITORY">DNK</ns6:ID>
+				</ns6:SpecifiedFLUXLocation>
+				<ns6:SpecifiedFLUXLocation>
+					<ns6:TypeCode listID="FLUX_LOCATION_TYPE">AREA</ns6:TypeCode>
+					<ns6:ID schemeID="FAO_AREA">27.3.a.n</ns6:ID>
+				</ns6:SpecifiedFLUXLocation>
+			</ns6:SpecifiedFACatch>
+			<ns6:SpecifiedFACatch>
+				<ns6:SpeciesCode listID="FAO_SPECIES">HAL</ns6:SpeciesCode>
+				<ns6:WeightMeasure unitCode="KGM">14.6</ns6:WeightMeasure>
+				<ns6:WeighingMeansCode listID="WEIGHT_MEANS">ESTIMATED</ns6:WeighingMeansCode>
+				<ns6:TypeCode listID="FA_CATCH_TYPE">UNLOADED</ns6:TypeCode>
+				<ns6:SpecifiedSizeDistribution>
+					<ns6:ClassCode listID="FISH_SIZE_CLASS">LSC</ns6:ClassCode>
+				</ns6:SpecifiedSizeDistribution>
+				<ns6:AppliedAAPProcess>
+					<ns6:TypeCode listID="FISH_PRESENTATION">GUT</ns6:TypeCode>
+					<ns6:TypeCode listID="FISH_PRESERVATION">FRE</ns6:TypeCode>
+					<ns6:TypeCode listID="FISH_FRESHNESS">A</ns6:TypeCode>
+					<ns6:ConversionFactorNumeric>1.043</ns6:ConversionFactorNumeric>
+					<ns6:ResultAAPProduct>
+						<ns6:WeightMeasure unitCode="KGM">14.6</ns6:WeightMeasure>
+					</ns6:ResultAAPProduct>
+				</ns6:AppliedAAPProcess>
+				<ns6:SpecifiedFLUXLocation>
+					<ns6:TypeCode listID="FLUX_LOCATION_TYPE">AREA</ns6:TypeCode>
+					<ns6:ID schemeID="TERRITORY">DNK</ns6:ID>
+				</ns6:SpecifiedFLUXLocation>
+				<ns6:SpecifiedFLUXLocation>
+					<ns6:TypeCode listID="FLUX_LOCATION_TYPE">AREA</ns6:TypeCode>
+					<ns6:ID schemeID="FAO_AREA">27.3.a.n</ns6:ID>
+				</ns6:SpecifiedFLUXLocation>
+			</ns6:SpecifiedFACatch>
+			<ns6:SpecifiedFACatch>
+				<ns6:SpeciesCode listID="FAO_SPECIES">POK</ns6:SpeciesCode>
+				<ns6:WeightMeasure unitCode="KGM">316.5</ns6:WeightMeasure>
+				<ns6:WeighingMeansCode listID="WEIGHT_MEANS">ESTIMATED</ns6:WeighingMeansCode>
+				<ns6:TypeCode listID="FA_CATCH_TYPE">UNLOADED</ns6:TypeCode>
+				<ns6:SpecifiedSizeDistribution>
+					<ns6:ClassCode listID="FISH_SIZE_CLASS">LSC</ns6:ClassCode>
+				</ns6:SpecifiedSizeDistribution>
+				<ns6:AppliedAAPProcess>
+					<ns6:TypeCode listID="FISH_PRESENTATION">GUT</ns6:TypeCode>
+					<ns6:TypeCode listID="FISH_PRESERVATION">FRE</ns6:TypeCode>
+					<ns6:TypeCode listID="FISH_FRESHNESS">A</ns6:TypeCode>
+					<ns6:ConversionFactorNumeric>1.19</ns6:ConversionFactorNumeric>
+					<ns6:ResultAAPProduct>
+						<ns6:WeightMeasure unitCode="KGM">316.5</ns6:WeightMeasure>
+					</ns6:ResultAAPProduct>
+				</ns6:AppliedAAPProcess>
+				<ns6:SpecifiedFLUXLocation>
+					<ns6:TypeCode listID="FLUX_LOCATION_TYPE">AREA</ns6:TypeCode>
+					<ns6:ID schemeID="TERRITORY">DNK</ns6:ID>
+				</ns6:SpecifiedFLUXLocation>
+				<ns6:SpecifiedFLUXLocation>
+					<ns6:TypeCode listID="FLUX_LOCATION_TYPE">AREA</ns6:TypeCode>
+					<ns6:ID schemeID="FAO_AREA">27.3.a.n</ns6:ID>
+				</ns6:SpecifiedFLUXLocation>
+			</ns6:SpecifiedFACatch>
+			<ns6:SpecifiedFACatch>
+				<ns6:SpeciesCode listID="FAO_SPECIES">HKE</ns6:SpeciesCode>
+				<ns6:WeightMeasure unitCode="KGM">475.1</ns6:WeightMeasure>
+				<ns6:WeighingMeansCode listID="WEIGHT_MEANS">ESTIMATED</ns6:WeighingMeansCode>
+				<ns6:TypeCode listID="FA_CATCH_TYPE">UNLOADED</ns6:TypeCode>
+				<ns6:SpecifiedSizeDistribution>
+					<ns6:ClassCode listID="FISH_SIZE_CLASS">LSC</ns6:ClassCode>
+				</ns6:SpecifiedSizeDistribution>
+				<ns6:AppliedAAPProcess>
+					<ns6:TypeCode listID="FISH_PRESENTATION">GUT</ns6:TypeCode>
+					<ns6:TypeCode listID="FISH_PRESERVATION">FRE</ns6:TypeCode>
+					<ns6:TypeCode listID="FISH_FRESHNESS">A</ns6:TypeCode>
+					<ns6:ConversionFactorNumeric>1.11</ns6:ConversionFactorNumeric>
+					<ns6:ResultAAPProduct>
+						<ns6:WeightMeasure unitCode="KGM">475.1</ns6:WeightMeasure>
+					</ns6:ResultAAPProduct>
+				</ns6:AppliedAAPProcess>
+				<ns6:SpecifiedFLUXLocation>
+					<ns6:TypeCode listID="FLUX_LOCATION_TYPE">AREA</ns6:TypeCode>
+					<ns6:ID schemeID="TERRITORY">DNK</ns6:ID>
+				</ns6:SpecifiedFLUXLocation>
+				<ns6:SpecifiedFLUXLocation>
+					<ns6:TypeCode listID="FLUX_LOCATION_TYPE">AREA</ns6:TypeCode>
+					<ns6:ID schemeID="FAO_AREA">27.3.a.n</ns6:ID>
+				</ns6:SpecifiedFLUXLocation>
+			</ns6:SpecifiedFACatch>
+			<ns6:SpecifiedFACatch>
+				<ns6:SpeciesCode listID="FAO_SPECIES">HAD</ns6:SpeciesCode>
+				<ns6:WeightMeasure unitCode="KGM">71.4</ns6:WeightMeasure>
+				<ns6:WeighingMeansCode listID="WEIGHT_MEANS">ESTIMATED</ns6:WeighingMeansCode>
+				<ns6:TypeCode listID="FA_CATCH_TYPE">UNLOADED</ns6:TypeCode>
+				<ns6:SpecifiedSizeDistribution>
+					<ns6:ClassCode listID="FISH_SIZE_CLASS">LSC</ns6:ClassCode>
+				</ns6:SpecifiedSizeDistribution>
+				<ns6:AppliedAAPProcess>
+					<ns6:TypeCode listID="FISH_PRESENTATION">GUT</ns6:TypeCode>
+					<ns6:TypeCode listID="FISH_PRESERVATION">FRE</ns6:TypeCode>
+					<ns6:TypeCode listID="FISH_FRESHNESS">A</ns6:TypeCode>
+					<ns6:ConversionFactorNumeric>1.17</ns6:ConversionFactorNumeric>
+					<ns6:ResultAAPProduct>
+						<ns6:WeightMeasure unitCode="KGM">71.4</ns6:WeightMeasure>
+					</ns6:ResultAAPProduct>
+				</ns6:AppliedAAPProcess>
+				<ns6:SpecifiedFLUXLocation>
+					<ns6:TypeCode listID="FLUX_LOCATION_TYPE">AREA</ns6:TypeCode>
+					<ns6:ID schemeID="TERRITORY">DNK</ns6:ID>
+				</ns6:SpecifiedFLUXLocation>
+				<ns6:SpecifiedFLUXLocation>
+					<ns6:TypeCode listID="FLUX_LOCATION_TYPE">AREA</ns6:TypeCode>
+					<ns6:ID schemeID="FAO_AREA">27.3.a.n</ns6:ID>
+				</ns6:SpecifiedFLUXLocation>
+			</ns6:SpecifiedFACatch>
+			<ns6:SpecifiedFACatch>
+				<ns6:SpeciesCode listID="FAO_SPECIES">COD</ns6:SpeciesCode>
+				<ns6:WeightMeasure unitCode="KGM">669.2</ns6:WeightMeasure>
+				<ns6:WeighingMeansCode listID="WEIGHT_MEANS">ESTIMATED</ns6:WeighingMeansCode>
+				<ns6:TypeCode listID="FA_CATCH_TYPE">UNLOADED</ns6:TypeCode>
+				<ns6:SpecifiedSizeDistribution>
+					<ns6:ClassCode listID="FISH_SIZE_CLASS">LSC</ns6:ClassCode>
+				</ns6:SpecifiedSizeDistribution>
+				<ns6:AppliedAAPProcess>
+					<ns6:TypeCode listID="FISH_PRESENTATION">GUT</ns6:TypeCode>
+					<ns6:TypeCode listID="FISH_PRESERVATION">FRE</ns6:TypeCode>
+					<ns6:TypeCode listID="FISH_FRESHNESS">A</ns6:TypeCode>
+					<ns6:ConversionFactorNumeric>1.17</ns6:ConversionFactorNumeric>
+					<ns6:ResultAAPProduct>
+						<ns6:WeightMeasure unitCode="KGM">669.2</ns6:WeightMeasure>
+					</ns6:ResultAAPProduct>
+				</ns6:AppliedAAPProcess>
+				<ns6:SpecifiedFLUXLocation>
+					<ns6:TypeCode listID="FLUX_LOCATION_TYPE">AREA</ns6:TypeCode>
+					<ns6:ID schemeID="TERRITORY">DNK</ns6:ID>
+				</ns6:SpecifiedFLUXLocation>
+				<ns6:SpecifiedFLUXLocation>
+					<ns6:TypeCode listID="FLUX_LOCATION_TYPE">AREA</ns6:TypeCode>
+					<ns6:ID schemeID="FAO_AREA">27.3.a.n</ns6:ID>
+				</ns6:SpecifiedFLUXLocation>
+			</ns6:SpecifiedFACatch>
+			<ns6:SpecifiedFACatch>
+				<ns6:SpeciesCode listID="FAO_SPECIES">LIN</ns6:SpeciesCode>
+				<ns6:WeightMeasure unitCode="KGM">59.3</ns6:WeightMeasure>
+				<ns6:WeighingMeansCode listID="WEIGHT_MEANS">ESTIMATED</ns6:WeighingMeansCode>
+				<ns6:TypeCode listID="FA_CATCH_TYPE">UNLOADED</ns6:TypeCode>
+				<ns6:SpecifiedSizeDistribution>
+					<ns6:ClassCode listID="FISH_SIZE_CLASS">LSC</ns6:ClassCode>
+				</ns6:SpecifiedSizeDistribution>
+				<ns6:AppliedAAPProcess>
+					<ns6:TypeCode listID="FISH_PRESENTATION">GUT</ns6:TypeCode>
+					<ns6:TypeCode listID="FISH_PRESERVATION">FRE</ns6:TypeCode>
+					<ns6:TypeCode listID="FISH_FRESHNESS">A</ns6:TypeCode>
+					<ns6:ConversionFactorNumeric>1.14</ns6:ConversionFactorNumeric>
+					<ns6:ResultAAPProduct>
+						<ns6:WeightMeasure unitCode="KGM">59.3</ns6:WeightMeasure>
+					</ns6:ResultAAPProduct>
+				</ns6:AppliedAAPProcess>
+				<ns6:SpecifiedFLUXLocation>
+					<ns6:TypeCode listID="FLUX_LOCATION_TYPE">AREA</ns6:TypeCode>
+					<ns6:ID schemeID="TERRITORY">DNK</ns6:ID>
+				</ns6:SpecifiedFLUXLocation>
+				<ns6:SpecifiedFLUXLocation>
+					<ns6:TypeCode listID="FLUX_LOCATION_TYPE">AREA</ns6:TypeCode>
+					<ns6:ID schemeID="FAO_AREA">27.3.a.n</ns6:ID>
+				</ns6:SpecifiedFLUXLocation>
+			</ns6:SpecifiedFACatch>
+			<ns6:SpecifiedFACatch>
+				<ns6:SpeciesCode listID="FAO_SPECIES">WIT</ns6:SpeciesCode>
+				<ns6:WeightMeasure unitCode="KGM">126.1</ns6:WeightMeasure>
+				<ns6:WeighingMeansCode listID="WEIGHT_MEANS">ESTIMATED</ns6:WeighingMeansCode>
+				<ns6:TypeCode listID="FA_CATCH_TYPE">UNLOADED</ns6:TypeCode>
+				<ns6:SpecifiedSizeDistribution>
+					<ns6:ClassCode listID="FISH_SIZE_CLASS">LSC</ns6:ClassCode>
+				</ns6:SpecifiedSizeDistribution>
+				<ns6:AppliedAAPProcess>
+					<ns6:TypeCode listID="FISH_PRESENTATION">GUT</ns6:TypeCode>
+					<ns6:TypeCode listID="FISH_PRESERVATION">FRE</ns6:TypeCode>
+					<ns6:TypeCode listID="FISH_FRESHNESS">A</ns6:TypeCode>
+					<ns6:ConversionFactorNumeric>1.06</ns6:ConversionFactorNumeric>
+					<ns6:ResultAAPProduct>
+						<ns6:WeightMeasure unitCode="KGM">126.1</ns6:WeightMeasure>
+					</ns6:ResultAAPProduct>
+				</ns6:AppliedAAPProcess>
+				<ns6:SpecifiedFLUXLocation>
+					<ns6:TypeCode listID="FLUX_LOCATION_TYPE">AREA</ns6:TypeCode>
+					<ns6:ID schemeID="TERRITORY">DNK</ns6:ID>
+				</ns6:SpecifiedFLUXLocation>
+				<ns6:SpecifiedFLUXLocation>
+					<ns6:TypeCode listID="FLUX_LOCATION_TYPE">AREA</ns6:TypeCode>
+					<ns6:ID schemeID="FAO_AREA">27.3.a.n</ns6:ID>
+				</ns6:SpecifiedFLUXLocation>
+			</ns6:SpecifiedFACatch>
+			<ns6:SpecifiedFACatch>
+				<ns6:SpeciesCode listID="FAO_SPECIES">MAC</ns6:SpeciesCode>
+				<ns6:WeightMeasure unitCode="KGM">18.0</ns6:WeightMeasure>
+				<ns6:WeighingMeansCode listID="WEIGHT_MEANS">ESTIMATED</ns6:WeighingMeansCode>
+				<ns6:TypeCode listID="FA_CATCH_TYPE">UNLOADED</ns6:TypeCode>
+				<ns6:SpecifiedSizeDistribution>
+					<ns6:ClassCode listID="FISH_SIZE_CLASS">LSC</ns6:ClassCode>
+				</ns6:SpecifiedSizeDistribution>
+				<ns6:AppliedAAPProcess>
+					<ns6:TypeCode listID="FISH_PRESENTATION">WHL</ns6:TypeCode>
+					<ns6:TypeCode listID="FISH_PRESERVATION">FRE</ns6:TypeCode>
+					<ns6:TypeCode listID="FISH_FRESHNESS">A</ns6:TypeCode>
+					<ns6:ConversionFactorNumeric>1</ns6:ConversionFactorNumeric>
+					<ns6:ResultAAPProduct>
+						<ns6:WeightMeasure unitCode="KGM">18.0</ns6:WeightMeasure>
+					</ns6:ResultAAPProduct>
+				</ns6:AppliedAAPProcess>
+				<ns6:SpecifiedFLUXLocation>
+					<ns6:TypeCode listID="FLUX_LOCATION_TYPE">AREA</ns6:TypeCode>
+					<ns6:ID schemeID="TERRITORY">DNK</ns6:ID>
+				</ns6:SpecifiedFLUXLocation>
+				<ns6:SpecifiedFLUXLocation>
+					<ns6:TypeCode listID="FLUX_LOCATION_TYPE">AREA</ns6:TypeCode>
+					<ns6:ID schemeID="FAO_AREA">27.3.a.n</ns6:ID>
+				</ns6:SpecifiedFLUXLocation>
+			</ns6:SpecifiedFACatch>
+			<ns6:SpecifiedFACatch>
+				<ns6:SpeciesCode listID="FAO_SPECIES">NEP</ns6:SpeciesCode>
+				<ns6:WeightMeasure unitCode="KGM">252.0</ns6:WeightMeasure>
+				<ns6:WeighingMeansCode listID="WEIGHT_MEANS">ESTIMATED</ns6:WeighingMeansCode>
+				<ns6:TypeCode listID="FA_CATCH_TYPE">UNLOADED</ns6:TypeCode>
+				<ns6:SpecifiedSizeDistribution>
+					<ns6:ClassCode listID="FISH_SIZE_CLASS">LSC</ns6:ClassCode>
+				</ns6:SpecifiedSizeDistribution>
+				<ns6:AppliedAAPProcess>
+					<ns6:TypeCode listID="FISH_PRESENTATION">WHL</ns6:TypeCode>
+					<ns6:TypeCode listID="FISH_PRESERVATION">FRE</ns6:TypeCode>
+					<ns6:TypeCode listID="FISH_FRESHNESS">A</ns6:TypeCode>
+					<ns6:ConversionFactorNumeric>1</ns6:ConversionFactorNumeric>
+					<ns6:ResultAAPProduct>
+						<ns6:WeightMeasure unitCode="KGM">252.0</ns6:WeightMeasure>
+					</ns6:ResultAAPProduct>
+				</ns6:AppliedAAPProcess>
+				<ns6:SpecifiedFLUXLocation>
+					<ns6:TypeCode listID="FLUX_LOCATION_TYPE">AREA</ns6:TypeCode>
+					<ns6:ID schemeID="TERRITORY">DNK</ns6:ID>
+				</ns6:SpecifiedFLUXLocation>
+				<ns6:SpecifiedFLUXLocation>
+					<ns6:TypeCode listID="FLUX_LOCATION_TYPE">AREA</ns6:TypeCode>
+					<ns6:ID schemeID="FAO_AREA">27.3.a.n</ns6:ID>
+				</ns6:SpecifiedFLUXLocation>
+			</ns6:SpecifiedFACatch>
+			<ns6:SpecifiedFACatch>
+				<ns6:SpeciesCode listID="FAO_SPECIES">HOM</ns6:SpeciesCode>
+				<ns6:WeightMeasure unitCode="KGM">88.0</ns6:WeightMeasure>
+				<ns6:WeighingMeansCode listID="WEIGHT_MEANS">ESTIMATED</ns6:WeighingMeansCode>
+				<ns6:TypeCode listID="FA_CATCH_TYPE">UNLOADED</ns6:TypeCode>
+				<ns6:SpecifiedSizeDistribution>
+					<ns6:ClassCode listID="FISH_SIZE_CLASS">LSC</ns6:ClassCode>
+				</ns6:SpecifiedSizeDistribution>
+				<ns6:AppliedAAPProcess>
+					<ns6:TypeCode listID="FISH_PRESENTATION">WHL</ns6:TypeCode>
+					<ns6:TypeCode listID="FISH_PRESERVATION">FRE</ns6:TypeCode>
+					<ns6:TypeCode listID="FISH_FRESHNESS">A</ns6:TypeCode>
+					<ns6:ConversionFactorNumeric>1</ns6:ConversionFactorNumeric>
+					<ns6:ResultAAPProduct>
+						<ns6:WeightMeasure unitCode="KGM">88.0</ns6:WeightMeasure>
+					</ns6:ResultAAPProduct>
+				</ns6:AppliedAAPProcess>
+				<ns6:SpecifiedFLUXLocation>
+					<ns6:TypeCode listID="FLUX_LOCATION_TYPE">AREA</ns6:TypeCode>
+					<ns6:ID schemeID="TERRITORY">DNK</ns6:ID>
+				</ns6:SpecifiedFLUXLocation>
+				<ns6:SpecifiedFLUXLocation>
+					<ns6:TypeCode listID="FLUX_LOCATION_TYPE">AREA</ns6:TypeCode>
+					<ns6:ID schemeID="FAO_AREA">27.3.a.n</ns6:ID>
+				</ns6:SpecifiedFLUXLocation>
+			</ns6:SpecifiedFACatch>
+			<ns6:RelatedFLUXLocation>
+				<ns6:TypeCode listID="FLUX_LOCATION_TYPE">LOCATION</ns6:TypeCode>
+				<ns6:CountryID schemeID="TERRITORY">DNK</ns6:CountryID>
+				<ns6:ID schemeID="LOCATION">DKHIR</ns6:ID>
+			</ns6:RelatedFLUXLocation>
+			<ns6:SpecifiedDelimitedPeriod>
+				<ns6:StartDateTime>
+					<ns8:DateTime xmlns:ns8="urn:un:unece:uncefact:data:standard:UnqualifiedDataType:20">2012-05-20T15:05:51.093Z</ns8:DateTime>
+				</ns6:StartDateTime>
+				<ns6:EndDateTime>
+					<ns8:DateTime xmlns:ns8="urn:un:unece:uncefact:data:standard:UnqualifiedDataType:20">2012-05-20T15:05:51.093Z</ns8:DateTime>
+				</ns6:EndDateTime>
+			</ns6:SpecifiedDelimitedPeriod>
+			<ns6:SpecifiedFishingTrip>
+				<ns6:ID schemeID="EU_TRIP_ID">placeholder-fishing-trip-id</ns6:ID>
+			</ns6:SpecifiedFishingTrip>
+		</ns6:SpecifiedFishingActivity>
+		<ns6:SpecifiedVesselTransportMeans xmlns:ns6="urn:un:unece:uncefact:data:standard:ReusableAggregateBusinessInformationEntity:20">
+			<ns2:ID schemeID="CFR" xmlns:ns2="urn:un:unece:uncefact:data:standard:ReusableAggregateBusinessInformationEntity:20">placeholder-vessel-cfr-id</ns2:ID>
+			<ns2:RoleCode listID="FA_VESSEL_ROLE" xmlns:ns2="urn:un:unece:uncefact:data:standard:ReusableAggregateBusinessInformationEntity:20">CATCHING_VESSEL</ns2:RoleCode>
+			<ns2:RegistrationVesselCountry xmlns:ns2="urn:un:unece:uncefact:data:standard:ReusableAggregateBusinessInformationEntity:20">
+				<ns2:ID schemeID="TERRITORY">SWE</ns2:ID>
+			</ns2:RegistrationVesselCountry>
+			<ns2:SpecifiedContactParty xmlns:ns2="urn:un:unece:uncefact:data:standard:ReusableAggregateBusinessInformationEntity:20">
+				<ns3:RoleCode listID="FLUX_CONTACT_ROLE" xmlns:ns3="urn:un:unece:uncefact:data:standard:ReusableAggregateBusinessInformationEntity:20">MASTER</ns3:RoleCode>
+				<ns3:SpecifiedStructuredAddress xmlns:ns3="urn:un:unece:uncefact:data:standard:ReusableAggregateBusinessInformationEntity:20">
+					<ns3:StreetName>placeholder-street-name</ns3:StreetName>
+					<ns3:CityName>placeholder-city-name</ns3:CityName>
+					<ns3:CountryID schemeID="TERRITORY">SWE</ns3:CountryID>
+					<ns3:PlotIdentification languageID="GBR">N/A</ns3:PlotIdentification>
+					<ns3:PostalArea>placeholder-postal-area</ns3:PostalArea>
+				</ns3:SpecifiedStructuredAddress>
+				<ns3:SpecifiedContactPerson xmlns:ns3="urn:un:unece:uncefact:data:standard:ReusableAggregateBusinessInformationEntity:20">
+					<ns3:GivenName>placeholder-contact-person-given-name</ns3:GivenName>
+					<ns3:FamilyName>placeholder-contact-person-family-name</ns3:FamilyName>
+				</ns3:SpecifiedContactPerson>
+			</ns2:SpecifiedContactParty>
+		</ns6:SpecifiedVesselTransportMeans>
+	</ns0:FAReportDocument>
+</ns0:FLUXFAReportMessage>

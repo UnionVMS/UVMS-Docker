@@ -3,7 +3,9 @@ package eu.europa.ec.fisheries.uvms.docker.validation.activity;
 import com.google.common.collect.Lists;
 import eu.europa.ec.fisheries.uvms.activity.model.exception.ActivityModelMarshallException;
 import eu.europa.ec.fisheries.uvms.activity.model.mapper.JAXBMarshaller;
-import eu.europa.ec.fisheries.uvms.activity.model.schemas.*;
+import eu.europa.ec.fisheries.uvms.activity.model.schemas.ActivityModuleMethod;
+import eu.europa.ec.fisheries.uvms.activity.model.schemas.SearchFilter;
+import eu.europa.ec.fisheries.uvms.activity.model.schemas.SetFLUXFAReportOrQueryMessageRequest;
 import eu.europa.ec.fisheries.uvms.activity.service.dto.FishingActivityReportDTO;
 import eu.europa.ec.fisheries.uvms.activity.service.dto.FluxReportIdentifierDTO;
 import eu.europa.ec.fisheries.uvms.activity.service.search.FishingActivityQuery;
@@ -23,7 +25,6 @@ import eu.europa.ec.fisheries.wsdl.asset.types.Asset;
 import eu.europa.ec.fisheries.wsdl.asset.types.AssetIdType;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
-import org.junit.Ignore;
 import org.junit.Test;
 import un.unece.uncefact.data.standard.fluxfareportmessage._3.FLUXFAReportMessage;
 import un.unece.uncefact.data.standard.reusableaggregatebusinessinformationentity._20.FAReportDocument;
@@ -43,7 +44,12 @@ import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.time.Instant;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
 
 public class ActivityJmsIT extends AbstractRest {
 
@@ -70,8 +76,7 @@ public class ActivityJmsIT extends AbstractRest {
 		messageHelper.close();
 	}
 
-	@Ignore
-	@Test(timeout = 15000)
+	@Test(timeout = 30000)
 	public void createFishingReport() throws Exception {
 		Asset asset = createShipAsset();
 
@@ -81,48 +86,104 @@ public class ActivityJmsIT extends AbstractRest {
 		AssetDTO assetDTO = getAssetDto(asset);
 		createPositionForShipAsset(assetDTO);
 
-		String fluxfaReportMessageString = getFluxfaReportMessageFromFile("faReportMessage.xml");
+		// Read XML report file to String
+		String fluxfaReportMessageString = getFluxfaReportMessageFromFile("flux_fa_report_message_1_fishing_trip.xml");
 
-		String newReportId = UUID.randomUUID().toString();
+		// Generate a new trip id and replace all instances of the existing trip id
+		String newTripId = generateTripId();
+		String fluxfaReportMessageStringWithRandomTripIds = replaceTripId(fluxfaReportMessageString, "placeholder-fishing-trip-id", newTripId);
 
-		FLUXFAReportMessage fluxfaReportMessage = updateReportId(fluxfaReportMessageString, newReportId);
+		// Convert String into FLUXFAReportMessage
+		FLUXFAReportMessage fluxfaReportMessage = convertToFLUXFAReportMessage(fluxfaReportMessageStringWithRandomTripIds);
+
+		// Generate a new report ID for each FAReportDocument in the message and replace the existing ones with the new IDs
+		List<String> generateReportIdList = generateReportIdList(fluxfaReportMessage);
+		replaceFAReportDocumentIds(fluxfaReportMessage, generateReportIdList);
+
+		// Generate a new FLUXReportDocument ID and replace the existing one
+		String fluxDocumentReportId = generateReportId();
+		replaceFluxReportDocumentId(fluxfaReportMessage, fluxDocumentReportId);
 
 		String reportMessageRequest = createReportMessage(fluxfaReportMessage);
 
 		messageHelper.sendMessage("UVMSActivityEvent", reportMessageRequest);
 
-		// Wait for activity to be persisted
-		Thread.sleep(2000);
+		// Wait for reports to be persisted
+		Thread.sleep(10000);
 
-		FishingActivityReportDTO latestReport = getLatestFishingActivityReport();
+		List<FishingActivityReportDTO> fishingReportsForTripId = getFishingReportsForTripId(newTripId);
+		assertEquals(8, fishingReportsForTripId.size()); // We only expect 8 reports since 4 out of 12 are sub activities to a fishing operation
 
-		List<FluxReportIdentifierDTO> uniqueFAReportIdList = latestReport.getUniqueFAReportId();
-		FluxReportIdentifierDTO fluxReportIdentifierDTO = uniqueFAReportIdList.get(0);
-
-		assertEquals(newReportId, fluxReportIdentifierDTO.getFluxReportId());
+		for (FishingActivityReportDTO fishingActivityReportDTO : fishingReportsForTripId) {
+			List<FluxReportIdentifierDTO> uniqueIdList = fishingActivityReportDTO.getUniqueFAReportId();
+			FluxReportIdentifierDTO fluxReportIdentifierDTO = uniqueIdList.get(0);
+			String fluxReportId = fluxReportIdentifierDTO.getFluxReportId();
+			assertTrue(generateReportIdList.contains(fluxReportId));
+		}
 	}
 
-	private FishingActivityReportDTO getLatestFishingActivityReport() {
+	private String generateReportId() {
+		return UUID.randomUUID().toString();
+	}
+
+	private String generateTripId() {
+		return "SWE-TRP-" + UUID.randomUUID().toString();
+	}
+
+	private List<String> generateReportIdList(FLUXFAReportMessage fluxfaReportMessage) {
+		List<FAReportDocument> faReportDocuments = fluxfaReportMessage.getFAReportDocuments();
+		List<String> generatedReportIds = new ArrayList<>();
+		for (int i = 0; i < faReportDocuments.size(); i++) {
+			generatedReportIds.add(generateReportId());
+		}
+		return generatedReportIds;
+	}
+
+	private String replaceTripId(String report, String currentTripId, String newTripId) {
+		return report.replace(currentTripId, newTripId);
+	}
+
+	private void replaceFluxReportDocumentId(FLUXFAReportMessage fluxfaReportMessage, String fluxReportDocumentId) {
+		FLUXReportDocument fluxReportDocument = fluxfaReportMessage.getFLUXReportDocument();
+		List<IDType> ids = fluxReportDocument.getIDS();
+		IDType idType = ids.get(0);
+		idType.setValue(fluxReportDocumentId);
+	}
+
+	private void replaceFAReportDocumentIds(FLUXFAReportMessage fluxfaReportMessage, List<String> reportDocumentIds) {
+		List<FAReportDocument> faReportDocuments = fluxfaReportMessage.getFAReportDocuments();
+		for (int i = 0; i < faReportDocuments.size(); i++) {
+			FAReportDocument faReportDocument = faReportDocuments.get(i);
+			String reportDocumentId = reportDocumentIds.get(i);
+
+			FLUXReportDocument relatedFLUXReportDocument = faReportDocument.getRelatedFLUXReportDocument();
+			List<IDType> relatedIds = relatedFLUXReportDocument.getIDS();
+			IDType relatedIdType = relatedIds.get(0);
+			relatedIdType.setValue(reportDocumentId);
+		}
+	}
+
+	private List<FishingActivityReportDTO> getFishingReportsForTripId(String tripId) {
 		FishingActivityQuery listFishingTripsRequests = new FishingActivityQuery();
 
 		Map<SearchFilter,List<String>> searchCriteriaMapMultipleValue = new HashMap<>();
 		List<String> purposeCodeList = new ArrayList<>();
 		purposeCodeList.add("9");
+		purposeCodeList.add("5");
 
 		searchCriteriaMapMultipleValue.put(SearchFilter.PURPOSE, purposeCodeList);
 
-		List<String> vesselNameList = new ArrayList<>();
-		vesselNameList.add("Golf");
-		searchCriteriaMapMultipleValue.put(SearchFilter.VESSEL_NAME, vesselNameList);
-
 		listFishingTripsRequests.setSearchCriteriaMapMultipleValues(searchCriteriaMapMultipleValue);
+
+		Map<SearchFilter, String> searchCriteriaMap = new HashMap<>();
+		searchCriteriaMap.put(SearchFilter.TRIP_ID, tripId);
+		listFishingTripsRequests.setSearchCriteriaMap(searchCriteriaMap);
 
 		Response response = sendRestRequest("fa/list", listFishingTripsRequests);
 
 		PaginatedResponse<FishingActivityReportDTO> paginatedResponse = response.readEntity(new GenericType<PaginatedResponse<FishingActivityReportDTO>>() {});
 
-		List<FishingActivityReportDTO> resultList = paginatedResponse.getResultList();
-		return resultList.get(resultList.size() - 1);
+		return paginatedResponse.getResultList();
 	}
 
 	private Response sendRestRequest(String path, Object request) {
@@ -145,21 +206,8 @@ public class ActivityJmsIT extends AbstractRest {
 		return JAXBMarshaller.marshallJaxBObjectToString(request);
 	}
 
-	private FLUXFAReportMessage updateReportId(String fluxfaReportMessageString, String newReportId) throws ActivityModelMarshallException {
-		FLUXFAReportMessage fluxfaReportMessage = JAXBMarshaller.unmarshallTextMessage(fluxfaReportMessageString, FLUXFAReportMessage.class);
-		FLUXReportDocument fluxReportDocument = fluxfaReportMessage.getFLUXReportDocument();
-		List<IDType> ids = fluxReportDocument.getIDS();
-		IDType idType = ids.get(0);
-		idType.setValue(newReportId);
-
-		List<FAReportDocument> faReportDocuments = fluxfaReportMessage.getFAReportDocuments();
-		for (FAReportDocument faReportDocument : faReportDocuments) {
-			FLUXReportDocument relatedFLUXReportDocument = faReportDocument.getRelatedFLUXReportDocument();
-			List<IDType> relatedIds = relatedFLUXReportDocument.getIDS();
-			IDType relatedIdType = relatedIds.get(0);
-			relatedIdType.setValue(newReportId);
-		}
-		return fluxfaReportMessage;
+	private FLUXFAReportMessage convertToFLUXFAReportMessage(String fluxfaReportMessageString) throws ActivityModelMarshallException {
+		return JAXBMarshaller.unmarshallTextMessage(fluxfaReportMessageString, FLUXFAReportMessage.class);
 	}
 
 	private void createPositionForShipAsset(AssetDTO assetDTO) throws Exception {
@@ -186,9 +234,9 @@ public class ActivityJmsIT extends AbstractRest {
 		AssetGroup createdAssetGroup = AssetTestHelper.createAssetGroup(basicAssetGroup);
 
 		Asset asset = assetJMSHelper.createDummyAsset(AssetIdType.CFR);
-		asset.setCfr("CYP123456789");
-		asset.setExternalMarking("XR006");
-		asset.setIrcs("IRCS6");
+		asset.setCfr("fake-cfr-id");
+		asset.setExternalMarking("fake-marking");
+		asset.setIrcs("fakeircs");
 
 		assetJMSHelper.upsertAsset(asset, createdAssetGroup.getOwner());
 		return asset;
