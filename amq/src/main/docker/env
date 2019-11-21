@@ -64,7 +64,7 @@ ACTIVEMQ_SUNJMX_START="$ACTIVEMQ_SUNJMX_START -Dcom.sun.management.jmxremote.por
 ACTIVEMQ_SUNJMX_START="$ACTIVEMQ_SUNJMX_START -Dcom.sun.management.jmxremote.password.file=${ACTIVEMQ_CONF}/jmx.password"
 ACTIVEMQ_SUNJMX_START="$ACTIVEMQ_SUNJMX_START -Dcom.sun.management.jmxremote.access.file=${ACTIVEMQ_CONF}/jmx.access"
 ACTIVEMQ_SUNJMX_START="$ACTIVEMQ_SUNJMX_START -Dcom.sun.management.jmxremote.ssl=false"
-ACTIVEMQ_SUNJMX_START="$ACTIVEMQ_SUNJMX_START -Dcom.sun.management.jmxremote -Dcom.sun.management.jmxremote.rmi.port=1099 -Djava.rmi.server.hostname=$JMX_HOSTNAME"
+ACTIVEMQ_SUNJMX_START="$ACTIVEMQ_SUNJMX_START -Dcom.sun.management.jmxremote -Dcom.sun.management.jmxremote.rmi.port=$JMX_RMI_PORT -Djava.rmi.server.hostname=$JMX_HOSTNAME"
 
 # Set jvm jmx configuration for controlling the broker process
 # You only have to configure the first four settings if you run a ibm jvm, caused by the
