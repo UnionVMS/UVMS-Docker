@@ -29,4 +29,4 @@ services:
     ports: 
      - "38161:8161"
      - "31616:61616"
-     - "31099:1099"
+     - "${JMX_RMI_PORT}:${JMX_RMI_PORT}"
