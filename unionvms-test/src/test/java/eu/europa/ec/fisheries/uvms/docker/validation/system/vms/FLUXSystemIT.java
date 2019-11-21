@@ -13,14 +13,22 @@ package eu.europa.ec.fisheries.uvms.docker.validation.system.vms;
 
 import eu.europa.ec.fisheries.schema.config.types.v1.SettingType;
 import eu.europa.ec.fisheries.schema.movement.v1.MovementTypeType;
-import eu.europa.ec.fisheries.schema.movementrules.customrule.v1.*;
+import eu.europa.ec.fisheries.schema.movementrules.customrule.v1.ActionType;
+import eu.europa.ec.fisheries.schema.movementrules.customrule.v1.ConditionType;
+import eu.europa.ec.fisheries.schema.movementrules.customrule.v1.CriteriaType;
+import eu.europa.ec.fisheries.schema.movementrules.customrule.v1.CustomRuleType;
+import eu.europa.ec.fisheries.schema.movementrules.customrule.v1.SubCriteriaType;
 import eu.europa.ec.fisheries.uvms.asset.client.model.AssetDTO;
 import eu.europa.ec.fisheries.uvms.docker.validation.asset.AssetTestHelper;
 import eu.europa.ec.fisheries.uvms.docker.validation.common.AbstractRest;
 import eu.europa.ec.fisheries.uvms.docker.validation.movement.LatLong;
 import eu.europa.ec.fisheries.uvms.docker.validation.movement.MovementDto;
 import eu.europa.ec.fisheries.uvms.docker.validation.movement.MovementHelper;
-import eu.europa.ec.fisheries.uvms.docker.validation.system.helper.*;
+import eu.europa.ec.fisheries.uvms.docker.validation.system.helper.CustomRuleBuilder;
+import eu.europa.ec.fisheries.uvms.docker.validation.system.helper.CustomRuleHelper;
+import eu.europa.ec.fisheries.uvms.docker.validation.system.helper.FLUXEndpoint;
+import eu.europa.ec.fisheries.uvms.docker.validation.system.helper.FLUXHelper;
+import eu.europa.ec.fisheries.uvms.docker.validation.system.helper.VMSSystemHelper;
 import eu.europa.ec.fisheries.uvms.docker.validation.user.UserHelper;
 import eu.europa.ec.fisheries.uvms.docker.validation.user.dto.Channel;
 import eu.europa.ec.fisheries.uvms.docker.validation.user.dto.EndPoint;
@@ -48,7 +56,11 @@ import java.net.InetAddress;
 import java.net.NetworkInterface;
 import java.net.SocketException;
 import java.time.Instant;
-import java.util.*;
+import java.util.Arrays;
+import java.util.Date;
+import java.util.Enumeration;
+import java.util.List;
+import java.util.Map;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
@@ -152,7 +164,7 @@ public class FLUXSystemIT extends AbstractRest {
             fluxEndpoint.getMessage(10000);
         }
 
-        assertThat(headers.get(DEFAULT_CLIENT_HEADER), is(DEFAULT_CLIENT_HEADER_VALUE + "-" + destination));
+        assertEquals(DEFAULT_CLIENT_HEADER_VALUE + "-" + destination, headers.get(DEFAULT_CLIENT_HEADER));
     }
 
     @Test
@@ -220,7 +232,7 @@ public class FLUXSystemIT extends AbstractRest {
             message = fluxEndpoint.getMessage(10000);
         }
         
-        assertThat(message.getDF(), is(customDataflow));
+        assertEquals(customDataflow, message.getDF());
     }
     
     @Test
@@ -252,9 +264,9 @@ public class FLUXSystemIT extends AbstractRest {
         assertThat(vesselTransportMeans.getRegistrationVesselCountry().getID().getValue(), is(asset.getFlagStateCode()));
 
         Map<String, String> assetIds = vesselTransportMeans.getIDS().stream().collect(Collectors.toMap(IDType::getSchemeID, IDType::getValue));
-        assertThat(assetIds.get("CFR"), is(asset.getCfr()));
-        assertThat(assetIds.get("IRCS"), is(asset.getIrcs()));
-        assertThat(assetIds.get("EXT_MARK"), is(asset.getExternalMarking()));
+        assertEquals(asset.getCfr(), assetIds.get("CFR"));
+        assertEquals(asset.getIrcs(), assetIds.get("IRCS"));
+        assertEquals(asset.getExternalMarking(), assetIds.get("EXT_MARK"));
 
         assertThat(vesselTransportMeans.getSpecifiedVesselPositionEvents().size(), is(1));
         VesselPositionEventType positionEvent = vesselTransportMeans.getSpecifiedVesselPositionEvents().get(0);
@@ -296,9 +308,9 @@ public class FLUXSystemIT extends AbstractRest {
         assertThat(vesselTransportMeans.getRegistrationVesselCountry().getID().getValue(), is(asset.getFlagStateCode()));
         
         Map<String, String> assetIds = vesselTransportMeans.getIDS().stream().collect(Collectors.toMap(IDType::getSchemeID, IDType::getValue));
-        assertThat(assetIds.get("CFR"), is(asset.getCfr()));
-        assertThat(assetIds.get("IRCS"), is(asset.getIrcs()));
-        assertThat(assetIds.get("EXT_MARK"), is(asset.getExternalMarking()));
+        assertEquals(asset.getCfr(), assetIds.get("CFR"));
+        assertEquals(asset.getIrcs(), assetIds.get("IRCS"));
+        assertEquals(asset.getExternalMarking(), assetIds.get("EXT_MARK"));
     }
     
     @Test
