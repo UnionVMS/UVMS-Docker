@@ -23,6 +23,9 @@ services:
   activemq-release:
     image: uvms/activemq:${project.version}
     hostname: activemq
+    environment:
+     - "JMX_HOSTNAME=${JMX_HOSTNAME}"
+     - "JMX_RMI_PORT=${JMX_RMI_PORT}"
     ports: 
      - "38161:8161"
      - "31616:61616"

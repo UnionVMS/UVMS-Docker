@@ -12,6 +12,6 @@ USER activemq
 COPY activemq.xml users.properties /opt/$ACTIVEMQ/conf/
 COPY env /opt/$ACTIVEMQ/bin/
 
-ENV JMX_HOSTNAME=localhost
+ENV JMX_HOSTNAME=localhost JMX_RMI_PORT=1099
 
 CMD ["/bin/sh", "-c", "bin/activemq console xbean:/opt/$ACTIVEMQ/conf/activemq.xml"]
