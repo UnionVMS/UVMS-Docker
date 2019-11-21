@@ -108,10 +108,17 @@ public class ActivityJmsIT extends AbstractRest {
 
 		messageHelper.sendMessage("UVMSActivityEvent", reportMessageRequest);
 
-		// Wait for reports to be persisted
-		Thread.sleep(10000);
-
 		List<FishingActivityReportDTO> fishingReportsForTripId = getFishingReportsForTripId(newTripId);
+
+		int numberOfFishingActivityReports = fishingReportsForTripId.size();
+
+		// Wait for reports to be persisted
+		while (numberOfFishingActivityReports == 0) {
+			Thread.sleep(500);
+			fishingReportsForTripId = getFishingReportsForTripId(newTripId);
+			numberOfFishingActivityReports = fishingReportsForTripId.size();
+		}
+
 		assertEquals(8, fishingReportsForTripId.size()); // We only expect 8 reports since 4 out of 12 are sub activities to a fishing operation
 
 		for (FishingActivityReportDTO fishingActivityReportDTO : fishingReportsForTripId) {
