@@ -25,8 +25,8 @@ services:
     hostname: activemq
     environment:
      - "JMX_HOSTNAME=${JMX_HOSTNAME}"
-     - "JMX_RMI_PORT=${JMX_RMI_PORT}"
+     - "JMX_RMI_PORT=31099"
     ports: 
      - "38161:8161"
      - "31616:61616"
-     - "${JMX_RMI_PORT}:${JMX_RMI_PORT}"
+     - "31099:31099"
