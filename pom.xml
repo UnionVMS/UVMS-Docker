@@ -72,7 +72,6 @@
 					<version>0.27.1</version>
 					<configuration>
 						<verbose>true</verbose>
-				        <dockerHost>http://bxlv-docker.swordgroup.lan:2375</dockerHost>
 					</configuration>
 				</plugin>
 				<!--This plugin's configuration is used to store Eclipse m2e settings only. It has no influence on the Maven build itself.-->
