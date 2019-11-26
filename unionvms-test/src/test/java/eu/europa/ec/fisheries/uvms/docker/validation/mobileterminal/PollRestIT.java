@@ -15,9 +15,6 @@ package eu.europa.ec.fisheries.uvms.docker.validation.mobileterminal;
 
 import eu.europa.ec.fisheries.schema.mobileterminal.polltypes.v1.*;
 import eu.europa.ec.fisheries.schema.mobileterminal.types.v1.ListPagination;
-import eu.europa.ec.fisheries.schema.mobileterminal.types.v1.PluginCapability;
-import eu.europa.ec.fisheries.schema.mobileterminal.types.v1.PluginCapabilityType;
-import eu.europa.ec.fisheries.schema.mobileterminal.types.v1.PluginService;
 import eu.europa.ec.fisheries.uvms.asset.client.model.AssetDTO;
 import eu.europa.ec.fisheries.uvms.docker.validation.asset.AssetTestHelper;
 import eu.europa.ec.fisheries.uvms.docker.validation.common.AbstractRest;
@@ -29,8 +26,6 @@ import javax.ws.rs.core.GenericType;
 import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -67,6 +62,49 @@ public class PollRestIT extends AbstractRest {
 		CreatePollResultDto pollResultDto = MobileTerminalTestHelper.createConfigPollWithMT_Helper(asset, mt);
 		assertNotNull(pollResultDto);
 		assertEquals(1, pollResultDto.getSentPolls().size());
+	}
+
+	@Test
+	public void createAndGetConfigurationPollWithCompositeCriteriaTest() {
+		AssetDTO dto = AssetTestHelper.createBasicAsset();
+		AssetDTO asset = AssetTestHelper.createAsset(dto);
+		MobileTerminalDto mt = MobileTerminalTestHelper.createMobileTerminal();
+		CreatePollResultDto pollResultDto = MobileTerminalTestHelper.createConfigPollWithMT_Helper(asset, mt);
+		assertNotNull(pollResultDto);
+		assertEquals(1, pollResultDto.getSentPolls().size());
+
+		PollListQuery pollListQuery = new PollListQuery();
+		ListPagination pagination = new ListPagination();
+		pagination.setListSize(100);
+		pagination.setPage(1);
+		pollListQuery.setPagination(pagination);
+
+		PollSearchCriteria pollSearchCriteria = new PollSearchCriteria();
+		pollSearchCriteria.setIsDynamic(true);
+		ListCriteria listCriteria = new ListCriteria();
+		listCriteria.setKey(SearchKey.POLL_TYPE);
+		listCriteria.setValue("CONFIGURATION_POLL");
+		pollSearchCriteria.getCriterias().add(listCriteria);
+
+		listCriteria = new ListCriteria();
+		listCriteria.setKey(SearchKey.CONNECT_ID);
+		listCriteria.setValue(asset.getId().toString());
+		pollSearchCriteria.getCriterias().add(listCriteria);
+
+		listCriteria = new ListCriteria();
+		listCriteria.setKey(SearchKey.POLL_ID);
+		listCriteria.setValue(pollResultDto.getSentPolls().get(0));
+		pollSearchCriteria.getCriterias().add(listCriteria);
+
+		pollListQuery.setPollSearchCriteria(pollSearchCriteria);
+
+		PollChannelListDto response = getWebTarget()
+				.path("asset/rest/poll/list")
+				.request(MediaType.APPLICATION_JSON)
+				.header(HttpHeaders.AUTHORIZATION, getValidJwtToken())
+				.post(Entity.json(pollListQuery), PollChannelListDto.class);
+
+		assertNotNull(response.getPollableChannels());
 	}
 
 	@Test
