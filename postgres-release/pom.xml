@@ -126,7 +126,7 @@
 		<dependency>
 			<groupId>eu.europa.ec.fisheries.uvms.mdr</groupId>
 			<artifactId>mdr-liquibase</artifactId>
-			<type>sql</type>
+			<type>test-sql</type>
 			<exclusions>
 				<exclusion>
 					<groupId>com.oracle</groupId>
