@@ -90,6 +90,10 @@
 					<groupId>org.projectlombok</groupId>
 					<artifactId>lombok</artifactId>
 				</exclusion>
+				<exclusion>
+					<groupId>fish.focus.uvms.maven</groupId>
+					<artifactId>uvms-pom-test-deps</artifactId>
+				</exclusion>
 			</exclusions>
 		</dependency>
 		<dependency>
