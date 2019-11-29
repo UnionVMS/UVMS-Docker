@@ -975,6 +975,7 @@
                 <jms-topic name="ConfigStatus" entries="jms/topic/ConfigStatus java:jboss/exported/jms/topic/ConfigStatus" />
                 <jms-topic name="EventBus" entries="jms/topic/EventBus java:jboss/exported/jms/topic/EventBus" />
                 <jms-topic name="EventStream" entries="jms/topic/EventStream java:jboss/exported/jms/topic/EventStream" />
+                <jms-queue name="IncidentEvent" entries="jms/queue/IncidentEvent java:jboss/exported/jms/queue/IncidentEvent" />
 
             </server>
         </subsystem>
