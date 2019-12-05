@@ -33,7 +33,7 @@ import java.util.*;
 import static javax.ws.rs.core.Response.Status.INTERNAL_SERVER_ERROR;
 import static org.hamcrest.CoreMatchers.is;
 
-public class TempMovementRestIT extends AbstractRest {
+public class ManualMovementRestIT extends AbstractRest {
 
 
 
