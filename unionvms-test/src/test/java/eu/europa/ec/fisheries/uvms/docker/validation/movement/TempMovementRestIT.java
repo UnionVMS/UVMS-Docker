@@ -15,15 +15,19 @@ package eu.europa.ec.fisheries.uvms.docker.validation.movement;
 
 import eu.europa.ec.fisheries.schema.movement.asset.v1.VesselType;
 import eu.europa.ec.fisheries.schema.movement.v1.MovementPoint;
+import eu.europa.ec.fisheries.schema.movement.v1.MovementSourceType;
 import eu.europa.ec.fisheries.schema.movement.v1.TempMovementStateEnum;
 import eu.europa.ec.fisheries.schema.movement.v1.TempMovementType;
 import eu.europa.ec.fisheries.uvms.asset.client.model.AssetDTO;
 import eu.europa.ec.fisheries.uvms.docker.validation.asset.AssetTestHelper;
 import eu.europa.ec.fisheries.uvms.docker.validation.common.AbstractRest;
+import eu.europa.ec.fisheries.uvms.docker.validation.movement.model.ManualMovementDto;
+import eu.europa.ec.fisheries.uvms.docker.validation.movement.model.MicroMovement;
 import org.junit.Test;
 
 import javax.ws.rs.core.Response;
 import java.text.SimpleDateFormat;
+import java.time.Instant;
 import java.util.*;
 
 import static javax.ws.rs.core.Response.Status.INTERNAL_SERVER_ERROR;
@@ -31,116 +35,24 @@ import static org.hamcrest.CoreMatchers.is;
 
 public class TempMovementRestIT extends AbstractRest {
 
-    @Test
-    public void createTempMovementTest() {
-        TempMovementType tempMovement = getTempMovement();
-        TempMovementType createdTempMovement = TempMovementRestHelper.createTempMovement(tempMovement);
 
-        assertNotNull(createdTempMovement.getGuid());
-        assertEquals(tempMovement.getAsset(), createdTempMovement.getAsset());
-        assertEquals(tempMovement.getCourse(), createdTempMovement.getCourse());
-        assertEquals(tempMovement.getPosition().getLatitude(), createdTempMovement.getPosition().getLatitude());
-        assertEquals(tempMovement.getPosition().getLongitude(), createdTempMovement.getPosition().getLongitude());
-        assertEquals(tempMovement.getSpeed(), createdTempMovement.getSpeed());
-        assertEquals(tempMovement.getState(), createdTempMovement.getState());
-        assertEquals(tempMovement.getTime(), createdTempMovement.getTime());
-    }
 
     @Test
-    public void createTempMovementNullInputShouldFail() {
-        Response response = TempMovementRestHelper.createTempMovementResponse(new TempMovementType());
-        assertEquals(INTERNAL_SERVER_ERROR.getStatusCode(), response.getStatus());
-    }
-
-    @Test
-    public void createTempMovementNoPositionShouldFail() {
-        TempMovementType tempMovement = getTempMovement();
-        tempMovement.getPosition().setLatitude(null);
-        tempMovement.getPosition().setLongitude(null);
-        Response response = TempMovementRestHelper.createTempMovementResponse(tempMovement);
-        assertEquals(INTERNAL_SERVER_ERROR.getStatusCode(), response.getStatus());
-    }
-
-    @Test
-    public void createTempMovementNoValidLatitudeShouldFail() {
-        TempMovementType tempMovement = getTempMovement();
-        tempMovement.getPosition().setLatitude(100d);
-        Response response = TempMovementRestHelper.createTempMovementResponse(tempMovement);
-        assertEquals(INTERNAL_SERVER_ERROR.getStatusCode(), response.getStatus());
-    }
-
-    @Test
-    public void getTempMovementTest() {
-        TempMovementType tempMovement = getTempMovement();
-        TempMovementType createdTempMovement = TempMovementRestHelper.createTempMovement(tempMovement);
-
-        TempMovementType fetchedTempMovement = TempMovementRestHelper.getTempMovement(createdTempMovement.getGuid());
-        assertEquals(createdTempMovement, fetchedTempMovement);
-    }
-
-    @Test
-    public void getTempMovementNullGuidShouldFail() {
-        Response response = TempMovementRestHelper.getTempMovementResponse(null);
-        assertEquals(INTERNAL_SERVER_ERROR.getStatusCode(), response.getStatus());
-    }
-
-    @Test
-    public void getTempMovementNonExistingGuidShouldFail() {
-        Response response = TempMovementRestHelper.getTempMovementResponse(UUID.randomUUID().toString());
-        assertEquals(INTERNAL_SERVER_ERROR.getStatusCode(), response.getStatus());
-    }
-
-    @Test
-    public void removeTempMovementTest() {
-        TempMovementType tempMovement = getTempMovement();
-        TempMovementType createdTempMovement = TempMovementRestHelper.createTempMovement(tempMovement);
-        assertEquals(TempMovementStateEnum.SENT, createdTempMovement.getState());
-
-        TempMovementType removedTempMovement = TempMovementRestHelper.removeTempMovement(createdTempMovement.getGuid());
-        assertEquals(TempMovementStateEnum.DELETED, removedTempMovement.getState());
-    }
-
-    @Test
-    public void removeTempMovementNullGuidShouldFail() {
-        Response response = TempMovementRestHelper.removeTempMovementResponse(null);
-        assertEquals(INTERNAL_SERVER_ERROR.getStatusCode(), response.getStatus());
-    }
-
-    @Test
-    public void updateTempMovementTest() {
-        TempMovementType tempMovement = getTempMovement();
-        TempMovementType createdTempMovement = TempMovementRestHelper.createTempMovement(tempMovement);
-
-        Double newCourse = 123d;
-        createdTempMovement.setCourse(newCourse);
-
-        TempMovementType updatedTempMovement = TempMovementRestHelper.updateTempMovement(createdTempMovement);
-
-        assertEquals(createdTempMovement.getAsset(), updatedTempMovement.getAsset());
-        assertEquals(newCourse, updatedTempMovement.getCourse());
-        assertEquals(createdTempMovement.getPosition().getLatitude(), updatedTempMovement.getPosition().getLatitude());
-        assertEquals(createdTempMovement.getPosition().getLongitude(), updatedTempMovement.getPosition().getLongitude());
-        assertEquals(createdTempMovement.getSpeed(), updatedTempMovement.getSpeed());
-        assertEquals(createdTempMovement.getState(), updatedTempMovement.getState());
-        assertEquals(createdTempMovement.getTime(), updatedTempMovement.getTime());
-    }
-    
-    @Test
-    public void sendTempMovementTest() {
+    public void sendManualMovementTest() {
         Double latitude = 10d;
         Double longitude = 11d;
         AssetDTO asset = AssetTestHelper.createTestAsset();
-        TempMovementType tempMovement = getTempMovement();
-        tempMovement.getAsset().setCfr(asset.getCfr());
-        tempMovement.getAsset().setIrcs(asset.getIrcs());
-        tempMovement.getAsset().setExtMarking(asset.getExternalMarking());
-        tempMovement.getAsset().setFlagState(asset.getFlagStateCode());
-        tempMovement.getAsset().setName(asset.getName());
-        tempMovement.getPosition().setLatitude(latitude);
-        tempMovement.getPosition().setLongitude(longitude);
-        TempMovementType createdTempMovement = TempMovementRestHelper.createTempMovement(tempMovement);
-        
-        TempMovementRestHelper.sendTempMovement(createdTempMovement.getGuid());
+        ManualMovementDto manualMovement = createManualMovement();
+        manualMovement.getAsset().setCfr(asset.getCfr());
+        manualMovement.getAsset().setIrcs(asset.getIrcs());
+        manualMovement.getAsset().setExtMarking(asset.getExternalMarking());
+        manualMovement.getAsset().setFlagState(asset.getFlagStateCode());
+        manualMovement.getAsset().setName(asset.getName());
+        manualMovement.getMovement().getLocation().setLatitude(latitude);
+        manualMovement.getMovement().getLocation().setLongitude(longitude);
+
+        Response response = ManualMovementRestHelper.sendTempMovement(manualMovement);
+        assertEquals(200, response.getStatus());
         
         MovementHelper.pollMovementCreated();
         
@@ -152,30 +64,47 @@ public class TempMovementRestIT extends AbstractRest {
         assertThat(createdMovement.getLongitude(), is(longitude));
     }
 
-    private static TempMovementType getTempMovement() {
-        final VesselType vesselType = new VesselType();
-        vesselType.setCfr("T");
-        vesselType.setExtMarking("T");
-        vesselType.setFlagState("T");
-        vesselType.setIrcs("T");
-        vesselType.setName("T");
+    @Test
+    public void sendManualMovementWithLessDataTest() {
+        String input = "{\"movement\":{\"location\":{\"longitude\":0.5,\"latitude\":0.8},\"heading\":0.0,\"timestamp\":1575545948,\"speed\":0.0},\"asset\":{\"ircs\":\"OWIF\"}}";
+        String epochSecond = "" + Instant.now().getEpochSecond();
+        input = input.replace("1575545948", epochSecond);
+        Response response = ManualMovementRestHelper.sendTempMovement(input);
+        assertEquals(200, response.getStatus());
 
-        final MovementPoint movementPoint = new MovementPoint();
-        movementPoint.setAltitude(0.0);
-        movementPoint.setLatitude(0.0);
-        movementPoint.setLongitude(0.0);
+        MovementHelper.pollMovementCreated();
 
-        final Date d = Calendar.getInstance().getTime();
-        final SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss Z");
-        sdf.setTimeZone(TimeZone.getTimeZone("UTC"));
+        List<MovementDto> latestMovements = MovementHelper.getLatestMovements(1);
+        assertThat(latestMovements.size(), is(1));
 
-        final TempMovementType tempMovementType = new TempMovementType();
-        tempMovementType.setAsset(vesselType);
-        tempMovementType.setCourse(0.0);
-        tempMovementType.setPosition(movementPoint);
-        tempMovementType.setSpeed(0.0);
-        tempMovementType.setState(TempMovementStateEnum.SENT);
-        tempMovementType.setTime(sdf.format(d));
-        return tempMovementType;
+        MovementDto createdMovement = latestMovements.get(0);
+        assertEquals(Long.parseLong(epochSecond), createdMovement.getTime().toInstant().getEpochSecond());
+        assertEquals(createdMovement.getLatitude(), 0.8d, 0);
+        assertEquals(createdMovement.getLongitude(), 0.5d, 0);
+    }
+
+
+    private static ManualMovementDto createManualMovement() {
+        ManualMovementDto movement = new ManualMovementDto();
+        VesselType asset = new VesselType();
+        asset.setCfr("T");
+        asset.setExtMarking("T");
+        asset.setFlagState("T");
+        asset.setIrcs("T");
+        asset.setName("T");
+        movement.setAsset(asset);
+
+        MicroMovement micro = new MicroMovement();
+        MovementPoint location = new MovementPoint();
+        location.setLatitude(0.0);
+        location.setLongitude(0.0);
+        micro.setLocation(location);
+        micro.setTimestamp(Instant.now());
+        micro.setHeading(0.0);
+        micro.setSpeed(0.0);
+        micro.setSource(MovementSourceType.MANUAL);
+        movement.setMovement(micro);
+
+        return movement;
     }
 }
