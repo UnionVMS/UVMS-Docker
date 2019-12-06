@@ -137,10 +137,8 @@ public class AssetTestHelper extends AbstractHelper {
                 .post(Entity.json(contact), ContactInfo.class);
 	}
 	
-	public static Note createNoteForAsset(AssetDTO asset, Note note) throws JsonProcessingException {
+	public static Note createNoteForAsset(AssetDTO asset, Note note) {
 		note.setAssetId(asset.getId());
-		ObjectMapper om = new ObjectMapper();
-		String json = om.writeValueAsString(note);
 		return getWebTarget()
                 .path("asset/rest/asset/")
                 .path("notes")

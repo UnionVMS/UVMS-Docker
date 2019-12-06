@@ -298,7 +298,7 @@ public class AssetRestIT extends AbstractRest {
     }
 
     @Test
-    public void addNoteToAsset() throws JsonProcessingException {
+    public void addNoteToAsset() {
         AssetDTO asset = AssetTestHelper.createTestAsset();
 
         Note note = new Note();
@@ -311,10 +311,10 @@ public class AssetRestIT extends AbstractRest {
     }
 
     @Test
-    public void addNoteToAssetUsingTimestamp() throws JsonProcessingException {
+    public void addNoteToAssetUsingTimestamp() {
         AssetDTO asset = AssetTestHelper.createTestAsset();
 
-        String input = "{\"id\":null,\"assetId\":\"09ec5b78-a96f-47ea-8a01-6bc876a085fc\",\"createdOn\":1575545948,\"note\":\"apa\",\"createdBy\":\"Tester\"}";
+        String input = "{\"id\":null,\"assetId\":\"09ec5b78-a96f-47ea-8a01-6bc876a085fc\",\"createdOn\":1575545948,\"note\":\"apa\"}";
         input = input.replace("09ec5b78-a96f-47ea-8a01-6bc876a085fc", asset.getId().toString());
 
         Note createdNote = AssetTestHelper.createNoteForAsset(input);
