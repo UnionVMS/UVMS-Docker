@@ -48,7 +48,7 @@ public class ReportTest extends AbstractRest {
 
 
         Response response = getWebTarget()
-                .path("stream-collector/rest/reports/report1")
+                .path("stream-collector/rest/reports/tracksByAssetSearch")
                 .request(MediaType.APPLICATION_JSON)
                 .header(HttpHeaders.AUTHORIZATION, getValidJwtToken())
                 .post(Entity.json(report1), Response.class);
