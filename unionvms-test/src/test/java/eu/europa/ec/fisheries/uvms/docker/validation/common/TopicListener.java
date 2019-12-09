@@ -27,12 +27,19 @@ import java.util.Map;
 
 public class TopicListener implements Closeable {
 
+    public static final String EVENT_BUS = "jms.topic.EventBus";
+    public static final String EVENT_STREAM = "jms.topic.EventStream";
+    
     private static final Logger log = LoggerFactory.getLogger(TopicListener.class.getSimpleName());
     private Connection connection;
     private Session session;
     private MessageConsumer subscriber;
     
     public TopicListener(String selector) throws Exception {
+        this(EVENT_BUS, selector);
+    }
+
+    public TopicListener(String topic, String selector) throws Exception {
         Map<String, Object> params = new HashMap<>();
         params.put("host", "localhost");
         params.put("port", 5445);
@@ -40,12 +47,12 @@ public class TopicListener implements Closeable {
         ConnectionFactory connectionFactory = ActiveMQJMSClient.createConnectionFactoryWithoutHA(JMSFactoryType.CF, transportConfiguration);
         connection = connectionFactory.createConnection("test", "test");
         connection.start();
-        registerSubscriber(selector);
+        registerSubscriber(topic, selector);
     }
     
-    private void registerSubscriber(String selector) throws Exception {
+    private void registerSubscriber(String topic, String selector) throws Exception {
         session = connection.createSession(false, Session.AUTO_ACKNOWLEDGE);
-        Topic eventBus = session.createTopic("jms.topic.EventBus");
+        Topic eventBus = session.createTopic(topic);
         subscriber = session.createConsumer(eventBus, selector, true);
     }
     
