@@ -9,8 +9,6 @@
 			<relativePath>../pom.xml</relativePath>
         </parent>
 
-	<groupId>eu.europa.ec.fisheries.uvms.docker</groupId>
-	<version>3.40.14.w18-SNAPSHOT</version>
 	<packaging>jar</packaging>
 	<name>docker-compose</name>
 	<artifactId>docker-compose</artifactId>
@@ -28,6 +26,7 @@
 			<plugin>
 		        <groupId>org.codehaus.mojo</groupId>
 		        <artifactId>build-helper-maven-plugin</artifactId>
+                <version>3.0.0</version>
 		        <executions>
 		          <execution>
 		            <id>attach-artifacts</id>
