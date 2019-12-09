@@ -21,7 +21,7 @@ import javax.ws.rs.core.Response;
 import java.util.Collections;
 import java.util.Date;
 
-public class ReportTest extends AbstractRest {
+public class ReportIT extends AbstractRest {
 
     private static MovementHelper movementHelper;
     private static AssetJMSHelper jmsHelper;
