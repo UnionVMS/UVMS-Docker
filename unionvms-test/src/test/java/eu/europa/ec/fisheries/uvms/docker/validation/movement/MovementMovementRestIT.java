@@ -23,6 +23,7 @@ import eu.europa.ec.fisheries.uvms.asset.client.model.AssetDTO;
 import eu.europa.ec.fisheries.uvms.docker.validation.asset.AssetJMSHelper;
 import eu.europa.ec.fisheries.uvms.docker.validation.asset.AssetTestHelper;
 import eu.europa.ec.fisheries.uvms.docker.validation.common.AbstractRest;
+import eu.europa.ec.fisheries.uvms.docker.validation.common.TopicListener;
 import eu.europa.ec.fisheries.uvms.docker.validation.mobileterminal.MobileTerminalTestHelper;
 import eu.europa.ec.fisheries.uvms.docker.validation.mobileterminal.dto.MobileTerminalDto;
 import eu.europa.ec.fisheries.uvms.docker.validation.movement.model.IncomingMovement;
@@ -227,8 +228,10 @@ public class MovementMovementRestIT extends AbstractRest {
 		ObjectMapper om = new ObjectMapper();
 		String assetMessage = om.writeValueAsString(assetDTOList);
 
-		jmsHelper.sendStringToAssetWithFunction(assetMessage, "ASSET_INFORMATION");
-		Thread.sleep(5000);
+		try (TopicListener listener = new TopicListener(TopicListener.EVENT_STREAM, "")) {
+		    jmsHelper.sendStringToAssetWithFunction(assetMessage, "ASSET_INFORMATION");
+		    listener.listenOnEventBus();
+		}
 
 		Response response = getWebTarget()
 				.path("movement/rest/internal/removeMovementConnect")

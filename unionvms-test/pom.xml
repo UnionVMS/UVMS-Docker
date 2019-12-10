@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>eu.europa.ec.fisheries.uvms.docker</groupId>
 		<artifactId>uvms-docker</artifactId>
-		<version>3.40.12.w18-ERS-SNAPSHOT</version>
+		<version>3.40.14.w18-ERS-SNAPSHOT</version>
 		<relativePath>../pom.xml</relativePath>
 	</parent>
 	
@@ -358,7 +358,7 @@
 								</wait>
 								<cmd>
 									<shell>/opt/jboss/start.sh /opt/jboss/wildfly/bin/standalone.sh
-										-c standalone-uvms.xml -b 0.0.0.0 -bmanagement 0.0.0.0 --debug</shell>
+										-c standalone-uvms.xml -b 0.0.0.0 -bmanagement 0.0.0.0 --debug *:8787</shell>
 								</cmd>
 								<dependsOn>
 									<container>postgres</container>

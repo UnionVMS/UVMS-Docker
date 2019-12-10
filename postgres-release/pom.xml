@@ -4,12 +4,10 @@
 	<parent>
 		<groupId>eu.europa.ec.fisheries.uvms.docker</groupId>
 		<artifactId>uvms-docker</artifactId>
-		<version>3.40.12.w18-ERS-SNAPSHOT</version>
+		<version>3.40.14.w18-ERS-SNAPSHOT</version>
 		<relativePath>../pom.xml</relativePath>
 	</parent>
-	<groupId>eu.europa.ec.fisheries.uvms.docker</groupId>
 	<artifactId>uvms-docker-postgres-release</artifactId>
-	<version>3.40.12.w18-ERS-SNAPSHOT</version>
 	<packaging>pom</packaging>
 	<name>uvms-docker-postgres-release</name>
 	<dependencies>

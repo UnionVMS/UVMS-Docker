@@ -4,19 +4,13 @@
 	<parent>
 		<groupId>eu.europa.ec.fisheries.uvms.docker</groupId>
 		<artifactId>uvms-docker</artifactId>
-		<version>3.40.12.w18-ERS-SNAPSHOT</version>
+		<version>3.40.14.w18-ERS-SNAPSHOT</version>
 		<relativePath>../pom.xml</relativePath>
 	</parent>
 
-	<groupId>eu.europa.ec.fisheries.uvms.docker</groupId>
 	<artifactId>uvms-docker-wildfly-unionvms</artifactId>
-	<version>3.40.12.w18-ERS-SNAPSHOT</version>
 	<packaging>pom</packaging>
 	<name>uvms-docker-wildfly-unionvms</name>
-
-	<properties>
-		<docker.dependency.skip>true</docker.dependency.skip>
-	</properties>
 
 	<repositories>
 		<repository>
@@ -275,101 +269,9 @@
 						<configuration>
 							<tasks>
 								<taskdef resource="net/sf/antcontrib/antcontrib.properties" classpathref="maven.plugin.classpath" />
-								
-								<if>
-								    <not><equals arg1="${docker.dependency.skip}" arg2="true" /></not>
-								    <then>
-									<echo message="Modify ear/war:s to define startup order!" />
-
-									<jar destfile="${project.basedir}/target/dockerfile/deployments/user-module-${unionvms.project.user.module}.ear" update="true">
-										<zipfileset dir="${project.basedir}/target/dockerfile/jboss-deployment/user" includes="*.xml" prefix="META-INF" />
-									</jar>
-	
-									<jar destfile="${project.basedir}/target/dockerfile/deployments/config-module-${unionvms.project.config.module}.ear" update="true">
-										<zipfileset dir="${project.basedir}/target/dockerfile/jboss-deployment/config" includes="*.xml" prefix="META-INF" />
-									</jar>
-
-									<jar destfile="${project.basedir}/target/dockerfile/deployments/reporting-module-${unionvms.project.reporting.module}.ear" update="true">
-										<zipfileset dir="${project.basedir}/target/dockerfile/jboss-deployment/reporting" includes="*.xml" prefix="META-INF" />
-									</jar>
-
-									<jar destfile="${project.basedir}/target/dockerfile/deployments/movement-rules-module-${unionvms.project.movementrules.module}.ear" update="true">
-										<zipfileset dir="${project.basedir}/target/dockerfile/jboss-deployment/movement-rules" includes="*.xml" prefix="META-INF" />
-									</jar>
-
-									<jar destfile="${project.basedir}/target/dockerfile/deployments/spatial-module-${unionvms.project.spatial.module}.ear" update="true">
-										<zipfileset dir="${project.basedir}/target/dockerfile/jboss-deployment/spatial" includes="*.xml" prefix="META-INF" />
-									</jar>
-
-									<jar destfile="${project.basedir}/target/dockerfile/deployments/spatialSwe-module-${unionvms.project.spatialSwe.module}.ear" update="true">
-										<zipfileset dir="${project.basedir}/target/dockerfile/jboss-deployment/spatial" includes="*.xml" prefix="META-INF" />
-									</jar>
-	
-									<jar destfile="${project.basedir}/target/dockerfile/deployments/movement-module-${unionvms.project.movement.module}.ear" update="true">
-										<zipfileset dir="${project.basedir}/target/dockerfile/jboss-deployment/movement" includes="*.xml" prefix="META-INF" />
-									</jar>
-
-									<jar destfile="${project.basedir}/target/dockerfile/deployments/activity-module-${unionvms.project.activity.module}.ear" update="true">
-									 	<zipfileset dir="${project.basedir}/target/dockerfile/jboss-deployment/activity" includes="*.xml" prefix="META-INF" />
-									</jar>
-
-									<jar destfile="${project.basedir}/target/dockerfile/deployments/asset-module-${unionvms.project.asset.module}.ear" update="true">
-										<zipfileset dir="${project.basedir}/target/dockerfile/jboss-deployment/asset" includes="*.xml" prefix="META-INF" />
-									</jar>
-	
-									<jar destfile="${project.basedir}/target/dockerfile/deployments/audit-module-${unionvms.project.audit.module}.ear" update="true">
-										<zipfileset dir="${project.basedir}/target/dockerfile/jboss-deployment/audit" includes="*.xml" prefix="META-INF" />
-									</jar>
-	
-									<jar destfile="${project.basedir}/target/dockerfile/deployments/exchange-module-${unionvms.project.exchange.module}.ear" update="true">
-										<zipfileset dir="${project.basedir}/target/dockerfile/jboss-deployment/exchange" includes="*.xml" prefix="META-INF" />
-									</jar>
-
-									<jar destfile="${project.basedir}/target/dockerfile/deployments/gs-web-app-${unionvms.project.geoserver.version}.war" update="true">
-										<zipfileset dir="${project.basedir}/target/dockerfile/jboss-deployment/web-app" includes="*.xml" prefix="WEB-INF" />
-									</jar>
-		
-									<jar destfile="${project.basedir}/target/dockerfile/deployments/print-servlet-${unionvms.project.mapfishprint.version}.war" update="true">
-										<zipfileset dir="${project.basedir}/target/dockerfile/jboss-deployment/web-app" includes="*.xml" prefix="WEB-INF" />
-									</jar>
-
-									<jar destfile="${project.basedir}/target/dockerfile/deployments/ais-module-${unionvms.project.plugins.ais}.ear" update="true">
-										<zipfileset dir="${project.basedir}/target/dockerfile/jboss-deployment/plugins" includes="*.xml" prefix="META-INF" />
-									</jar>
-
-									<jar destfile="${project.basedir}/target/dockerfile/deployments/inmarsat-module-${unionvms.project.plugins.inmarsat}.ear" update="true">
-										<zipfileset dir="${project.basedir}/target/dockerfile/jboss-deployment/plugins" includes="*.xml" prefix="META-INF" />
-									</jar>
-
-									<jar destfile="${project.basedir}/target/dockerfile/deployments/naf-module-${unionvms.project.plugins.naf}.ear" update="true">
-										<zipfileset dir="${project.basedir}/target/dockerfile/jboss-deployment/plugins" includes="*.xml" prefix="META-INF" />
-									</jar>
-
-									<jar destfile="${project.basedir}/target/dockerfile/deployments/flux-movement-plugin-module-${unionvms.project.plugins.flux}.ear" update="true">
-										<zipfileset dir="${project.basedir}/target/dockerfile/jboss-deployment/plugins" includes="*.xml" prefix="META-INF" />
-									</jar>
-
-									<jar destfile="${project.basedir}/target/dockerfile/deployments/unionvms-web-${unionvms.project.unionvms.web.version}.war" update="true">
-										<zipfileset dir="${project.basedir}/target/dockerfile/jboss-deployment/web-app" includes="*.xml" prefix="WEB-INF" />
-									</jar>
-
-									<jar destfile="${project.basedir}/target/dockerfile/deployments/stream-collector-module-${unionvms.project.stream-collector}.war" update="true">
-										<zipfileset dir="${project.basedir}/target/dockerfile/jboss-deployment/stream-collector" includes="*.xml" prefix="META-INF" />
-									</jar>
-
-									<jar destfile="${project.basedir}/target/dockerfile/deployments/mdrSwe-module-${unionvms.project.mdrSwe.module}.ear" update="true">
-										<zipfileset dir="${project.basedir}/target/dockerfile/jboss-deployment/mdrSwe" includes="*.xml" prefix="META-INF" />
-									</jar>
-								</then>
-								<else>
-								        <echo message="Ignore dependency order at startup, no ear/war:s is modified " />
-								</else>
-							</if>
-								
-							<move file="${project.basedir}/target/dockerfile/deployments/print-servlet-${unionvms.project.mapfishprint.version}.war" tofile="${project.basedir}/target/dockerfile/deployments/mapfish-print.war" />
-							<move file="${project.basedir}/target/dockerfile/deployments/gs-web-app-${unionvms.project.geoserver.version}.war" tofile="${project.basedir}/target/dockerfile/deployments/geoserver.war" />
-							<move file="${project.basedir}/target/dockerfile/deployments/hawtio-wildfly-${unionvms.project.hawtio-wildfly}.war" tofile="${project.basedir}/target/dockerfile/deployments/hawtio-wildfly.war" />
-
+    							<move file="${project.basedir}/target/dockerfile/deployments/print-servlet-${unionvms.project.mapfishprint.version}.war" tofile="${project.basedir}/target/dockerfile/deployments/mapfish-print.war" />
+    							<move file="${project.basedir}/target/dockerfile/deployments/gs-web-app-${unionvms.project.geoserver.version}.war" tofile="${project.basedir}/target/dockerfile/deployments/geoserver.war" />
+    							<move file="${project.basedir}/target/dockerfile/deployments/hawtio-wildfly-${unionvms.project.hawtio-wildfly}.war" tofile="${project.basedir}/target/dockerfile/deployments/hawtio-wildfly.war" />
 							</tasks>
 						</configuration>
 						<goals>

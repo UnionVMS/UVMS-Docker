@@ -13,6 +13,7 @@ copy of the GNU General Public License along with the IFDM Suite. If not, see <h
 */
 package eu.europa.ec.fisheries.uvms.docker.validation.asset;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import eu.europa.ec.fisheries.uvms.asset.client.model.*;
 import eu.europa.ec.fisheries.uvms.asset.model.constants.AuditOperationEnum;
 import eu.europa.ec.fisheries.uvms.docker.validation.common.AbstractRest;
@@ -301,11 +302,22 @@ public class AssetRestIT extends AbstractRest {
         AssetDTO asset = AssetTestHelper.createTestAsset();
 
         Note note = new Note();
-        note.setActivityCode("1");
-        note.setDate(OffsetDateTime.now(ZoneOffset.UTC));
-        note.setNotes("apa");
+        note.setNote("apa");
+        note.setCreatedBy("Tester");
 
         Note createdNote = AssetTestHelper.createNoteForAsset(asset, note);
+
+        assertNotNull(createdNote.getId());
+    }
+
+    @Test
+    public void addNoteToAssetUsingTimestamp() {
+        AssetDTO asset = AssetTestHelper.createTestAsset();
+
+        String input = "{\"id\":null,\"assetId\":\"09ec5b78-a96f-47ea-8a01-6bc876a085fc\",\"createdOn\":1575545948,\"note\":\"apa\"}";
+        input = input.replace("09ec5b78-a96f-47ea-8a01-6bc876a085fc", asset.getId().toString());
+
+        Note createdNote = AssetTestHelper.createNoteForAsset(input);
 
         assertNotNull(createdNote.getId());
     }

@@ -1,5 +1,7 @@
 package eu.europa.ec.fisheries.uvms.docker.validation.asset;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import eu.europa.ec.fisheries.schema.audit.search.v1.AuditLogListQuery;
 import eu.europa.ec.fisheries.schema.audit.search.v1.ListCriteria;
 import eu.europa.ec.fisheries.schema.audit.search.v1.SearchKey;
@@ -145,13 +147,22 @@ public class AssetTestHelper extends AbstractHelper {
 	
 	public static Note createNoteForAsset(AssetDTO asset, Note note) {
 		note.setAssetId(asset.getId());
-        return getWebTarget()
+		return getWebTarget()
                 .path("asset/rest/asset/")
                 .path("notes")
                 .request(MediaType.APPLICATION_JSON)
                 .header(HttpHeaders.AUTHORIZATION, getValidJwtToken())
                 .post(Entity.json(note), Note.class);
     }
+
+	public static Note createNoteForAsset(String note) {
+		return getWebTarget()
+				.path("asset/rest/asset/")
+				.path("notes")
+				.request(MediaType.APPLICATION_JSON)
+				.header(HttpHeaders.AUTHORIZATION, getValidJwtToken())
+				.post(Entity.json(note), Note.class);
+	}
 
 	public static SseEventSource getSseStream() {
 		WebTarget target = getWebTarget().path("asset/rest/sse/subscribe");
