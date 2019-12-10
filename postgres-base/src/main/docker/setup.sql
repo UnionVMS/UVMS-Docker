@@ -122,3 +122,11 @@ ALTER USER salesecbproxy SET search_path = salesecbproxy, public;
 GRANT CONNECT ON DATABASE db71u TO salesecbproxy;
 GRANT SELECT, INSERT, UPDATE, DELETE ON ALL TABLES IN SCHEMA salesecbproxy TO salesecbproxy;
 ALTER SCHEMA salesecbproxy OWNER TO salesecbproxy;
+
+-- INCIDENT
+CREATE USER incident WITH PASSWORD 'incident'; 
+CREATE SCHEMA AUTHORIZATION incident;  
+ALTER USER incident SET search_path = incident, public; 
+GRANT CONNECT ON DATABASE db71u TO incident;  
+GRANT SELECT, INSERT, UPDATE, DELETE ON ALL TABLES IN SCHEMA incident TO incident; 
+ALTER SCHEMA incident OWNER TO incident;
