@@ -172,6 +172,9 @@
             <logger category="org.geoserver">
                 <level name="WARN"/>
             </logger>
+            <logger category="org.geoserver.wms">
+                <level name="WARN"/>
+            </logger>
             <logger category="org.geowebcache">
                 <level name="WARN"/>
             </logger>
