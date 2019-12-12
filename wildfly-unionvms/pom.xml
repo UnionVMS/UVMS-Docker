@@ -110,6 +110,11 @@
 			<type>ear</type>
 		</dependency>
 		<dependency>
+			<groupId>eu.europa.ec.fisheries.uvms.incident</groupId>
+			<artifactId>incident-application</artifactId>
+			<type>war</type>
+		</dependency>
+		<dependency>
 			<groupId>eu.europa.ec.fisheries.uvms.user</groupId>
 			<artifactId>user-module</artifactId>
 			<type>ear</type>
