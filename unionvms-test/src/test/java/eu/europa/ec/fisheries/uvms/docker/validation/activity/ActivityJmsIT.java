@@ -119,7 +119,7 @@ public class ActivityJmsIT extends AbstractRest {
 			numberOfFishingActivityReports = fishingReportsForTripId.size();
 		}
 
-		assertEquals(8, fishingReportsForTripId.size()); // We only expect 8 reports since 4 out of 12 are sub activities to a fishing operation
+		assertEquals(12, fishingReportsForTripId.size());
 
 		for (FishingActivityReportDTO fishingActivityReportDTO : fishingReportsForTripId) {
 			List<FluxReportIdentifierDTO> uniqueIdList = fishingActivityReportDTO.getUniqueFAReportId();
