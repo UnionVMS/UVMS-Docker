@@ -11,7 +11,7 @@
 
 	<groupId>eu.europa.ec.fisheries.uvms.docker</groupId>
 	<artifactId>uvms-docker</artifactId>
-	<version>3.40.14.w18-ERS-SNAPSHOT</version>
+	<version>3.40.16.w18-ERS-SNAPSHOT</version>
 	<packaging>pom</packaging>
 	<name>uvms-docker</name>
 
@@ -21,7 +21,7 @@
 		<scm.url>scm:git:https://github.com/UnionVMS/UVMS-Docker.git</scm.url>
 		<focus-pom.java.version>1.8</focus-pom.java.version>
 		<unionvms.project.unionvms.web.version>3.0.66-UVMS</unionvms.project.unionvms.web.version>
-		<unionvms.project.vms.web.version>0.7.2</unionvms.project.vms.web.version>
+		<unionvms.project.vms.web.version>0.8.0</unionvms.project.vms.web.version>
 		<unionvms.project.mapfishprint.version>3.20.2.0</unionvms.project.mapfishprint.version>
 		<unionvms.project.geoserver.version>2.16.0</unionvms.project.geoserver.version>
 		<unionvms.project.user.module>2.0.25</unionvms.project.user.module>
@@ -36,6 +36,7 @@
 		<unionvms.project.config.module>4.1.3</unionvms.project.config.module>
 		<unionvms.project.audit.module>4.1.4</unionvms.project.audit.module>
 		<unionvms.project.asset.module>6.4.0</unionvms.project.asset.module>
+		<unionvms.project.incident.module>0.0.2</unionvms.project.incident.module>
 		<unionvms.project.activity.module>1.1.17-SWE</unionvms.project.activity.module>
 		<unionvms.project.mdr.module>1.0.10</unionvms.project.mdr.module>
 		<unionvms.project.mdrSwe.module>1.0.18</unionvms.project.mdrSwe.module>
@@ -197,6 +198,12 @@
 				</exclusions>
 			</dependency>
 			<dependency>
+				<groupId>eu.europa.ec.fisheries.uvms.incident</groupId>
+				<artifactId>liquibase</artifactId>
+				<type>sql</type>
+				<version>${unionvms.project.incident.module}</version>
+			</dependency>
+			<dependency>
 				<groupId>eu.europa.ec.fisheries.uvms.subscription</groupId>
 				<artifactId>liquibase</artifactId>
 				<type>sql</type>
@@ -327,6 +334,12 @@
 				<artifactId>spatialSwe-module</artifactId>
 				<type>ear</type>
 				<version>${unionvms.project.spatialSwe.module}</version>
+			</dependency>
+			<dependency>
+				<groupId>eu.europa.ec.fisheries.uvms.incident</groupId>
+				<artifactId>incident-application</artifactId>
+				<type>war</type>
+				<version>${unionvms.project.incident.module}</version>
 			</dependency>
 			<dependency>
 				<groupId>eu.europa.ec.fisheries.uvms.subscription</groupId>

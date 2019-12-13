@@ -4,7 +4,7 @@
 	<parent>
 		<groupId>eu.europa.ec.fisheries.uvms.docker</groupId>
 		<artifactId>uvms-docker</artifactId>
-		<version>3.40.14.w18-ERS-SNAPSHOT</version>
+		<version>3.40.16.w18-ERS-SNAPSHOT</version>
 		<relativePath>../pom.xml</relativePath>
 	</parent>
 	<artifactId>uvms-docker-postgres-release</artifactId>
@@ -139,6 +139,17 @@
 			<groupId>eu.europa.ec.fisheries.uvms.spatialSwe</groupId>
 			<artifactId>liquibase</artifactId>
 			<version>${unionvms.project.spatialSwe.module}</version>
+			<type>zip</type>
+		</dependency>
+		<dependency>
+			<groupId>eu.europa.ec.fisheries.uvms.incident</groupId>
+			<artifactId>liquibase</artifactId>
+			<type>sql</type>
+		</dependency>
+		<dependency>
+			<groupId>eu.europa.ec.fisheries.uvms.incident</groupId>
+			<artifactId>liquibase</artifactId>
+			<version>${unionvms.project.incident.module}</version>
 			<type>zip</type>
 		</dependency>
 		<dependency>

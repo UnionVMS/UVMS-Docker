@@ -4,7 +4,7 @@
 	<parent>
 		<groupId>eu.europa.ec.fisheries.uvms.docker</groupId>
 		<artifactId>uvms-docker</artifactId>
-		<version>3.40.14.w18-ERS-SNAPSHOT</version>
+		<version>3.40.16.w18-ERS-SNAPSHOT</version>
 		<relativePath>../pom.xml</relativePath>
 	</parent>
 
@@ -119,6 +119,11 @@
 			<groupId>eu.europa.ec.fisheries.uvms.spatialSwe</groupId>
 			<artifactId>spatialSwe-module</artifactId>
 			<type>ear</type>
+		</dependency>
+		<dependency>
+			<groupId>eu.europa.ec.fisheries.uvms.incident</groupId>
+			<artifactId>incident-application</artifactId>
+			<type>war</type>
 		</dependency>
 		<dependency>
 			<groupId>eu.europa.ec.fisheries.uvms.user</groupId>
