@@ -420,12 +420,14 @@
 			</dependency>
 
 			<!-- plugin modules -->
+<!--
 			<dependency>
 				<groupId>eu.europa.ec.fisheries.uvms.plugins</groupId>
 				<artifactId>ais-module</artifactId>
 				<type>ear</type>
 				<version>${unionvms.project.plugins.ais}</version>
 			</dependency>
+-->
 			<dependency>
 				<groupId>eu.europa.ec.fisheries.uvms.plugins</groupId>
 				<artifactId>naf-module</artifactId>
