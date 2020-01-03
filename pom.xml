@@ -3,12 +3,12 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-  <parent>
-    <groupId>eu.europa.ec.fisheries.uvms</groupId>
-    <artifactId>mare-pom</artifactId>
-    <version>1.6.0-MARE-SNAPSHOT</version>
-    <relativePath />
-  </parent>
+    <parent>
+        <groupId>eu.europa.ec.fisheries.uvms</groupId>
+        <artifactId>mare-pom</artifactId>
+        <version>1.6.0-MARE-SNAPSHOT</version>
+        <relativePath />
+    </parent>
 
 	<groupId>eu.europa.ec.fisheries.uvms.docker</groupId>
 	<artifactId>uvms-docker</artifactId>
@@ -16,7 +16,7 @@
 	<packaging>pom</packaging>
 	<name>uvms-docker</name>
 
-      <properties>
+    <properties>
         <sha1></sha1>
         <focus-pom.java.version>1.8</focus-pom.java.version>
         <project.scm.id>github</project.scm.id>
@@ -27,13 +27,13 @@
         <unionvms.project.asset.client.jar>6.0.17</unionvms.project.asset.client.jar>
         <unionvms.project.movementrules.module>1.0.5-W14J8</unionvms.project.movementrules.module>
         <unionvms.project.mapfishprint.version>3.5</unionvms.project.mapfishprint.version>
-        <unionvms.project.geoserver.version>2.12.3</unionvms.project.geoserver.version>
+        <unionvms.project.geoserver.version>${uvms.geoserver-overlay.version}</unionvms.project.geoserver.version>
 
         <unionvms.project.plugins.naf>3.0.10-W14J8</unionvms.project.plugins.naf>
         <unionvms.project.plugins.inmarsat>3.0.10-W14J8</unionvms.project.plugins.inmarsat>
         <unionvms.project.plugins.siriusone>3.0.8-W14J8</unionvms.project.plugins.siriusone>
 
-        <unionvms.project.unionvms.web.version>3.0.28</unionvms.project.unionvms.web.version>
+        <unionvms.project.unionvms.web.version>3.0.30-MARE-SNAPSHOT</unionvms.project.unionvms.web.version>
 
         <unionvms.project.user.module>${uvms.user.module.version}</unionvms.project.user.module>
         <unionvms.project.config.module>${uvms.config.module.version}</unionvms.project.config.module>
@@ -54,8 +54,6 @@
         <unionvms.project.plugins.flux.movement>${uvms.plugins.flux.movement.version}</unionvms.project.plugins.flux.movement>
         <unionvms.project.plugins.flux.activity>${uvms.plugins.flux.activity.version}</unionvms.project.plugins.flux.activity>
         <unionvms.project.plugins.flux.mdr>${uvms.plugins.flux.mdr.version}</unionvms.project.plugins.flux.mdr>
-
-
     </properties>
 
     <scm>
