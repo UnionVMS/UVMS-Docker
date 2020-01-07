@@ -16,7 +16,7 @@
 	<properties>
 		<docker.skip>${skipITs}</docker.skip>
 		<docker.frontend.test.suite>UnionVMSTestCase</docker.frontend.test.suite>
-		<jackson.version>2.10.0</jackson.version>
+		<jackson.version>2.10.1</jackson.version>
 	</properties>
 
 	<dependencies>
@@ -68,6 +68,10 @@
 					<groupId>org.projectlombok</groupId>
 					<artifactId>lombok</artifactId>
 				</exclusion>
+					<exclusion>
+						<groupId>com.fasterxml.jackson.core</groupId>
+						<artifactId>jackson-core</artifactId>
+					</exclusion>
 			</exclusions>
 		</dependency>
 		<dependency>

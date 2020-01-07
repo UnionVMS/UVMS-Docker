@@ -1,0 +1,171 @@
+eu.europa.ec.fisheries.uvms.docker:uvms-unionvms-test:jar:3.40.18.w18-SNAPSHOT
++- eu.europa.ec.fisheries.uvms.movement:movement-model:jar:5.3.1-UVMS:compile
+|  +- org.apache.commons:commons-lang3:jar:3.9:compile
+|  \- fish.focus.uvms.maven:uvms-pom-logging-deps:pom:2.4:compile
+|     +- org.slf4j:jul-to-slf4j:jar:1.7.25:compile
+|     \- org.slf4j:jcl-over-slf4j:jar:1.7.25:compile
++- eu.europa.ec.fisheries.uvms.movement-rules:movement-rules-model:jar:2.1.30:compile
++- org.apache.activemq:artemis-jms-client-all:jar:2.6.3:compile
++- eu.europa.ec.fisheries.uvms.exchange:exchange-model:jar:5.0.19-UVMS:compile
+|  +- eu.europa.ec.fisheries.uvms.commons:uvms-commons-date:jar:4.0.5:compile
+|  \- org.jvnet.jaxb2_commons:jaxb2-basics:jar:1.11.1:compile
+|     +- org.jvnet.jaxb2_commons:jaxb2-basics-tools:jar:1.11.1:compile
+|     |  \- commons-beanutils:commons-beanutils:jar:1.9.2:compile
+|     \- com.google.code.javaparser:javaparser:jar:1.0.11:compile
++- eu.europa.ec.fisheries.uvms.asset:asset-model:jar:6.4.1:compile
++- eu.europa.ec.fisheries.uvms.asset:asset-client:jar:6.4.1:compile
+|  \- eu.europa.ec.fisheries.uvms:usm4uvms:jar:4.0.23:compile
+|     +- eu.europa.ec.mare.usm:jwt-handler-api:jar:2.1.10:compile
+|     \- eu.europa.ec.mare.usm:jwt-handler-impl:jar:2.1.10:compile
+|        +- io.jsonwebtoken:jjwt-api:jar:0.10.7:compile
+|        +- io.jsonwebtoken:jjwt-impl:jar:0.10.7:runtime
+|        \- io.jsonwebtoken:jjwt-jackson:jar:0.10.7:runtime
++- eu.europa.ec.fisheries.uvms.user:user-model:jar:2.0.25:compile
++- eu.europa.ec.fisheries.uvms.reporting:reporting-service:jar:1.1.23-UVMS:compile
+|  +- fish.focus.uvms.maven:uvms-pom-monitoring-deps:pom:2.4:compile
+|  |  +- net.bull.javamelody:javamelody-core:jar:1.72.0.SE:compile
+|  |  |  \- org.jrobin:jrobin:jar:1.5.9:compile
+|  |  \- com.github.librepdf:openpdf:jar:1.0.5:compile
+|  |     +- org.bouncycastle:bcprov-jdk15on:jar:1.58:compile
+|  |     \- org.bouncycastle:bcpkix-jdk15on:jar:1.58:compile
+|  +- fish.focus.uvms.maven:uvms-pom-test-deps:pom:2.4:compile
+|  |  +- org.mockito:mockito-core:jar:3.1.0:compile
+|  |  |  +- net.bytebuddy:byte-buddy-agent:jar:1.9.10:compile
+|  |  |  \- org.objenesis:objenesis:jar:2.6:compile
+|  |  +- org.powermock:powermock-module-junit4:jar:2.0.4:compile
+|  |  |  \- org.powermock:powermock-module-junit4-common:jar:2.0.4:compile
+|  |  |     +- org.powermock:powermock-reflect:jar:2.0.4:compile
+|  |  |     \- org.powermock:powermock-core:jar:2.0.4:compile
+|  |  |        \- org.javassist:javassist:jar:3.25.0-GA:compile
+|  |  +- org.powermock:powermock-api-mockito2:jar:2.0.4:compile
+|  |  |  \- org.powermock:powermock-api-support:jar:2.0.4:compile
+|  |  +- net.bytebuddy:byte-buddy:jar:1.10.2:compile
+|  |  \- com.tocea.easycoverage:easyCoverage4J-junit:jar:2.3.1:compile
+|  |     \- com.tocea.easycoverage:easyCoverage4J-framework:jar:2.3.1:compile
+|  |        \- com.tocea.easycoverage:easyCoverage4J-annotations:jar:2.3.1:compile
+|  +- eu.europa.ec.fisheries.uvms.activity:activity-model:jar:1.0.10:compile
+|  +- eu.europa.ec.fisheries.uvms.commons:uvms-commons-message:jar:4.0.6:compile
+|  |  \- commons-collections:commons-collections:jar:3.2.2:compile
+|  +- net.sf.ehcache.internal:ehcache-core:jar:2.10.6:compile
+|  |  \- org.terracotta.internal:statistics:jar:1.0.2:compile
+|  +- eu.europa.ec.fisheries.uvms.spatialSwe:spatial-model:jar:2.0.5-UVMS:compile
+|  +- org.geotools:gt-geojson:jar:22.0:compile
+|  |  +- org.geotools:gt-main:jar:22.0:compile
+|  |  |  +- org.locationtech.jts:jts-core:jar:1.16.1:compile
+|  |  |  +- org.jdom:jdom2:jar:2.0.6:compile
+|  |  |  \- org.apache.commons:commons-text:jar:1.6:compile
+|  |  +- com.googlecode.json-simple:json-simple:jar:1.1:compile
+|  |  \- javax.media:jai_core:jar:1.1.3:compile
+|  +- org.geotools:gt-epsg-wkt:jar:22.0:compile
+|  |  \- org.geotools:gt-referencing:jar:22.0:compile
+|  |     +- org.ejml:ejml-ddense:jar:0.34:compile
+|  |     |  \- org.ejml:ejml-core:jar:0.34:compile
+|  |     +- commons-pool:commons-pool:jar:1.5.4:compile
+|  |     +- org.geotools:gt-metadata:jar:22.0:compile
+|  |     |  \- org.geotools:gt-opengis:jar:22.0:compile
+|  |     |     \- systems.uom:systems-common-java8:jar:0.7.2:compile
+|  |     |        +- tec.uom:uom-se:jar:1.0.8:compile
+|  |     |        |  +- javax.measure:unit-api:jar:1.0:compile
+|  |     |        |  \- tec.uom.lib:uom-lib-common:jar:1.0.2:compile
+|  |     |        +- si.uom:si-quantity:jar:0.7.1:compile
+|  |     |        \- si.uom:si-units-java8:jar:0.7.1:compile
+|  |     +- jgridshift:jgridshift:jar:1.1:compile
+|  |     |  \- org.apache.axis:axis:jar:1.4:compile
+|  |     \- net.sf.geographiclib:GeographicLib-Java:jar:1.49:compile
+|  +- eu.europa.ec.fisheries.uvms.reporting:reporting-model:jar:1.1.23-UVMS:compile
+|  +- eu.europa.ec.fisheries.uvms.reporting:reporting-message:jar:1.1.23-UVMS:compile
+|  +- eu.europa.ec.fisheries.uvms.commons:uvms-commons-service:jar:4.0.6:compile
+|  +- eu.europa.ec.fisheries.uvms.commons:uvms-commons-domain:jar:4.0.6:compile
+|  |  \- commons-lang:commons-lang:jar:2.6:compile
+|  +- eu.europa.ec.fisheries.uvms.commons:uvms-commons-dao:jar:4.0.6:compile
+|  +- eu.europa.ec.fisheries.uvms.commons:uvms-commons-geometry:jar:4.0.6:compile
+|  +- eu.europa.ec.fisheries.uvms.commons:uvms-commons-rest:jar:4.0.6:compile
+|  |  +- org.jboss.resteasy:resteasy-multipart-provider:jar:3.8.1.Final:compile
+|  |  |  \- com.sun.mail:javax.mail:jar:1.6.2:compile
+|  |  \- commons-io:commons-io:jar:2.6:compile
+|  +- org.apache.commons:commons-collections4:jar:4.4:compile
+|  +- org.mapstruct:mapstruct:jar:1.3.0.Final:compile
+|  \- org.mapstruct:mapstruct-processor:jar:1.3.0.Final:compile
++- eu.europa.ec.fisheries.uvms.config:config-model:jar:4.1.3:compile
++- eu.europa.ec.fisheries.uvms.audit:audit-model:jar:4.1.4:compile
++- eu.europa.ec.fisheries.uvms.spatial:spatial-model:jar:1.0.12:compile
+|  +- org.jvnet.jaxb2_commons:jaxb2-basics-runtime:jar:0.9.4:compile
+|  +- org.slf4j:slf4j-api:jar:1.7.25:compile
+|  +- ch.qos.logback:logback-classic:jar:1.2.3:compile
+|  \- ch.qos.logback:logback-core:jar:1.2.3:compile
++- eu.europa.ec.fisheries.uvms.service.client.flux:flux-movement:jar:2.0.1:compile
++- eu.europa.ec.fisheries.uvms.service.client:connector-bridge-client:jar:2.0.1:compile
++- junit:junit:jar:4.12:compile
+|  \- org.hamcrest:hamcrest-core:jar:1.3:compile
++- com.fasterxml.jackson.core:jackson-databind:jar:2.10.1:compile
+|  \- com.fasterxml.jackson.core:jackson-core:jar:2.10.1:compile
++- com.fasterxml.jackson.module:jackson-module-jaxb-annotations:jar:2.10.1:compile
+|  +- jakarta.xml.bind:jakarta.xml.bind-api:jar:2.3.2:compile
+|  \- jakarta.activation:jakarta.activation-api:jar:1.2.1:compile
++- com.fasterxml.jackson.core:jackson-annotations:jar:2.10.1:compile
++- com.fasterxml.jackson.datatype:jackson-datatype-jsr310:jar:2.10.1:compile
++- org.jboss.resteasy:resteasy-client:jar:3.9.0.Final:provided
+|  +- org.jboss.spec.javax.ws.rs:jboss-jaxrs-api_2.1_spec:jar:1.0.3.Final:provided
+|  +- org.jboss.resteasy:resteasy-jaxrs:jar:3.9.0.Final:provided
+|  |  +- org.jboss.spec.javax.xml.bind:jboss-jaxb-api_2.3_spec:jar:1.0.1.Final:provided
+|  |  +- org.reactivestreams:reactive-streams:jar:1.0.2:provided
+|  |  +- javax.validation:validation-api:jar:2.0.1.Final:compile
+|  |  +- org.jboss.spec.javax.annotation:jboss-annotations-api_1.3_spec:jar:1.0.1.Final:provided
+|  |  +- javax.activation:activation:jar:1.1.1:compile
+|  |  \- com.github.stephenc.jcip:jcip-annotations:jar:1.0-1:provided
+|  +- org.jboss.logging:jboss-logging:jar:3.3.2.Final:provided
+|  \- org.apache.httpcomponents:httpclient:jar:4.5.4:provided
+|     +- org.apache.httpcomponents:httpcore:jar:4.4.7:provided
+|     +- commons-logging:commons-logging:jar:1.2:provided
+|     \- commons-codec:commons-codec:jar:1.10:provided
++- org.jboss.resteasy:resteasy-jackson2-provider:jar:3.9.0.Final:provided
+|  +- com.fasterxml.jackson.jaxrs:jackson-jaxrs-json-provider:jar:2.9.9:provided
+|  |  \- com.fasterxml.jackson.jaxrs:jackson-jaxrs-base:jar:2.9.9:provided
+|  +- com.github.fge:json-patch:jar:1.9:provided
+|  |  \- com.github.fge:jackson-coreutils:jar:1.6:provided
+|  |     \- com.github.fge:msg-simple:jar:1.1:provided
+|  |        \- com.github.fge:btf:jar:1.2:provided
+|  \- com.google.guava:guava:jar:25.0-jre:compile
++- org.databene:contiperf:jar:2.4.4:compile
++- com.peertopark.java:geocalc:jar:1.1.0:compile
++- org.eclipse.jetty:jetty-servlet:jar:9.4.19.v20190610:compile
+|  \- org.eclipse.jetty:jetty-security:jar:9.4.19.v20190610:compile
+|     \- org.eclipse.jetty:jetty-server:jar:9.4.19.v20190610:compile
+|        +- javax.servlet:javax.servlet-api:jar:3.1.0:compile
+|        +- org.eclipse.jetty:jetty-http:jar:9.4.19.v20190610:compile
+|        |  \- org.eclipse.jetty:jetty-util:jar:9.4.19.v20190610:compile
+|        \- org.eclipse.jetty:jetty-io:jar:9.4.19.v20190610:compile
+\- fish.focus.uvms.maven:uvms-pom-java11-deps:pom:2.4:compile
+   +- javax.xml.bind:jaxb-api:jar:2.3.0:compile
+   +- com.sun.xml.bind:jaxb-core:jar:2.3.0:compile
+   +- com.sun.xml.bind:jaxb-impl:jar:2.3.0:compile
+   +- com.sun.xml.ws:jaxws-ri:pom:2.3.0:compile
+   |  +- javax.annotation:javax.annotation-api:jar:1.3:compile
+   |  +- com.sun.org.apache.xml.internal:resolver:jar:20050927:compile
+   |  +- com.sun.xml.ws:jaxws-rt:jar:2.3.0:compile
+   |  |  +- com.sun.xml.ws:policy:jar:2.7.2:compile
+   |  |  +- org.glassfish.gmbal:gmbal-api-only:jar:3.1.0-b001:compile
+   |  |  |  \- org.glassfish.external:management-api:jar:3.0.0-b012:compile
+   |  |  +- org.jvnet.staxex:stax-ex:jar:1.7.8:compile
+   |  |  +- com.sun.xml.stream.buffer:streambuffer:jar:1.5.4:compile
+   |  |  +- org.jvnet.mimepull:mimepull:jar:1.9.7:compile
+   |  |  +- com.sun.xml.fastinfoset:FastInfoset:jar:1.2.13:compile
+   |  |  +- org.glassfish.ha:ha-api:jar:3.1.9:compile
+   |  |  +- com.sun.xml.messaging.saaj:saaj-impl:jar:1.4.0:compile
+   |  |  +- org.codehaus.woodstox:woodstox-core-asl:jar:4.4.1:runtime
+   |  |  \- org.codehaus.woodstox:stax2-api:jar:3.1.4:runtime
+   |  +- com.sun.xml.ws:jaxws-tools:jar:2.3.0:compile
+   |  |  +- com.sun.xml.bind:jaxb-xjc:jar:2.3.0:compile
+   |  |  \- com.sun.xml.bind:jaxb-jxc:jar:2.3.0:compile
+   |  +- com.sun.xml.ws:jaxws-eclipselink-plugin:jar:2.3.0:compile
+   |  |  +- javax.mail:mail:jar:1.4.7:compile
+   |  |  \- org.eclipse.persistence:eclipselink:jar:2.6.4:compile
+   |  |     +- org.eclipse.persistence:javax.persistence:jar:2.1.1:compile
+   |  |     +- org.eclipse.persistence:commonj.sdo:jar:2.1.1:compile
+   |  |     \- org.glassfish:javax.json:jar:1.0.4:compile
+   |  +- com.sun.xml.ws:sdo-eclipselink-plugin:jar:2.3.0:compile
+   |  |  \- commonj.sdo:commonj.sdo:jar:2.1.1.v201112051852:compile
+   |  +- javax.xml.ws:jaxws-api:jar:2.3.0:compile
+   |  +- javax.xml.soap:javax.xml.soap-api:jar:1.4.0:compile
+   |  \- javax.jws:jsr181-api:jar:1.0-MR1:compile
+   \- com.sun.activation:javax.activation:jar:1.2.0:compile
