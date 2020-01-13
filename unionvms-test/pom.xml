@@ -15,7 +15,7 @@
 
 	<properties>
 		<docker.skip>${skipITs}</docker.skip>
-		<docker.frontend.test.suite>UnionVMSTestCase</docker.frontend.test.suite>
+		<docker.frontend.test.suite>UnionVMSTestCaseG2</docker.frontend.test.suite>
 		<jackson.version>2.10.1</jackson.version>
 	</properties>
 
@@ -219,9 +219,9 @@
 							<skip>${docker.skip}</skip>
 							<tasks>
 								<!-- Get the regression-suite-selenium front-end -->
-								<get src="https://github.com/UnionVMS/UVMS-SeleniumTests/raw/swe-dev/UVMS-SeleniumRegressionTests.zip" dest="target/UVMS-SeleniumRegressionTests.zip" verbose="true" usetimestamp="true" />
-								<unzip src="target/UVMS-SeleniumRegressionTests.zip" dest="target/" />
-								<move file="target/DockerUnionVMSparameters.py" tofile="target/UnionVMSparameters.py" />
+								<get src="https://github.com/UnionVMS/UVMS-SeleniumTests/raw/swe-dev/UVMS-SeleniumRegressionTestsG2.zip" dest="target/UVMS-SeleniumRegressionTestsG2.zip" verbose="true" usetimestamp="true" />
+								<unzip src="target/UVMS-SeleniumRegressionTestsG2.zip" dest="target/" />
+								<move file="target/DockerUnionVMSparametersG2.py" tofile="target/UnionVMSparametersG2.py" />
 							</tasks>
 						</configuration>
 						<goals>
@@ -389,19 +389,19 @@
 		<profile>
 			<id>frontend-test-rules</id>
 			<properties>
-				<docker.frontend.test.suite>UnionVMSTestCaseRules</docker.frontend.test.suite>
+				<docker.frontend.test.suite>UnionVMSTestCaseRulesG2</docker.frontend.test.suite>
 			</properties>
 		</profile>
 		<profile>
-			<id>frontend-test-filtering</id>
+			<id>frontend-test-realtime-map</id>
 			<properties>
-				<docker.frontend.test.suite>UnionVMSTestCaseFiltering</docker.frontend.test.suite>
+				<docker.frontend.test.suite>UnionVMSTestCaseRealTimeMap</docker.frontend.test.suite>
 			</properties>
 		</profile>
 		<profile>
 			<id>frontend-test-mtchannels</id>
 			<properties>
-				<docker.frontend.test.suite>UnionVMSTestCaseMobileTerminalChannels</docker.frontend.test.suite>
+				<docker.frontend.test.suite>UnionVMSTestCaseMobileTerminalChannelsG2</docker.frontend.test.suite>
 			</properties>
 		</profile>
 		<profile>
@@ -422,12 +422,12 @@
 								<configuration>
 									<tasks>									
 										<exec dir="${project.basedir}/target/" executable="${python.runtime}">
-										 	<redirector output="target/Python-regression-suite-selenium.log" alwayslog="true" /> 
+										 	<redirector output="target/Python-regression-suite-seleniumG2.log" alwayslog="true" /> 
 											<arg value="-u" />
 											<arg value="-m" />
 											<arg value="unittest" />
 											<arg value="-v" />
-											<arg value="Python-regression-suite-selenium.${docker.frontend.test.suite}" />
+											<arg value="Python-regression-suite-seleniumG2.${docker.frontend.test.suite}" />
 									  </exec>
 									</tasks>
 								</configuration>
