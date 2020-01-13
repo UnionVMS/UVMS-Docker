@@ -37,7 +37,7 @@
 		<unionvms.project.audit.module>4.1.4</unionvms.project.audit.module>
 		<unionvms.project.asset.module>6.4.1</unionvms.project.asset.module>
 		<unionvms.project.incident.module>0.0.11</unionvms.project.incident.module>
-		<unionvms.project.activity.module>1.1.26-SWE</unionvms.project.activity.module>
+		<unionvms.project.activity.module>1.2.2-SWE</unionvms.project.activity.module>
 		<unionvms.project.mdr.module>1.0.10</unionvms.project.mdr.module>
 		<unionvms.project.mdrSwe.module>1.0.18</unionvms.project.mdrSwe.module>
 		<unionvms.project.plugins.ais>3.0.28</unionvms.project.plugins.ais>
@@ -389,8 +389,8 @@
 			</dependency>
 			<dependency>
 				<groupId>eu.europa.ec.fisheries.uvms.activity</groupId>
-				<artifactId>activity-module</artifactId>
-				<type>ear</type>
+				<artifactId>activity-application</artifactId>
+				<type>war</type>
 				<version>${unionvms.project.activity.module}</version>
 			</dependency>
 			<dependency>
