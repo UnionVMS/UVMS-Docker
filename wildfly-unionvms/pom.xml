@@ -102,8 +102,8 @@
 		</dependency>
 		<dependency>
 			<groupId>eu.europa.ec.fisheries.uvms.activity</groupId>
-			<artifactId>activity-module</artifactId>
-			<type>ear</type>
+			<artifactId>activity-application</artifactId>
+			<type>war</type>
 		</dependency>
 		<dependency>
 			<groupId>eu.europa.ec.fisheries.uvms.movement-rules</groupId>
