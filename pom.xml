@@ -36,7 +36,7 @@
 		<unionvms.project.config.module>4.1.3</unionvms.project.config.module>
 		<unionvms.project.audit.module>4.1.4</unionvms.project.audit.module>
 		<unionvms.project.asset.module>6.4.1</unionvms.project.asset.module>
-		<unionvms.project.incident.module>0.0.11</unionvms.project.incident.module>
+		<unionvms.project.incident.module>0.0.12</unionvms.project.incident.module>
 		<unionvms.project.activity.module>1.1.6</unionvms.project.activity.module>
 		<unionvms.project.mdr.module>1.0.10</unionvms.project.mdr.module>
 		<unionvms.project.plugins.ais>3.0.28</unionvms.project.plugins.ais>
@@ -49,6 +49,7 @@
 		<unionvms.project.plugins.flux-rest>1.1</unionvms.project.plugins.flux-rest>
 		<unionvms.project.stream-collector>0.9.12</unionvms.project.stream-collector>
 		<unionvms.project.hawtio-wildfly>2.7.1</unionvms.project.hawtio-wildfly>
+		<uvms.commons.version>4.0.13</uvms.commons.version>
 	</properties>
 
 
