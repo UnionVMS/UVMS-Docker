@@ -49,7 +49,6 @@
 		<unionvms.project.plugins.flux-rest>1.1</unionvms.project.plugins.flux-rest>
 		<unionvms.project.stream-collector>0.9.12</unionvms.project.stream-collector>
 		<unionvms.project.hawtio-wildfly>2.7.1</unionvms.project.hawtio-wildfly>
-		<uvms.commons.version>4.0.13</uvms.commons.version>
 	</properties>
 
 
