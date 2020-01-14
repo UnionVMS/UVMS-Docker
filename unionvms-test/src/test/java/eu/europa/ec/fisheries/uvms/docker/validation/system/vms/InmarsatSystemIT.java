@@ -201,7 +201,7 @@ public class InmarsatSystemIT extends AbstractRest {
             assertEquals("5625", split[8].trim());
             assertEquals("12", split[9].trim());
         } else if (type.equalsIgnoreCase("start")) {
-            assertEquals("D", split[3].trim());
+            assertEquals("N", split[3].trim());
             assertEquals("5", split[6].trim());
         }
     }
