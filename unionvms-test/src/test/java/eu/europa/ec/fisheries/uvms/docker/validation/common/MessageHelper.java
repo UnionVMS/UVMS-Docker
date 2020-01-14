@@ -24,7 +24,7 @@ public class MessageHelper implements Closeable {
         params.put("host", "localhost");
         params.put("port", 5445);
         TransportConfiguration transportConfiguration = new TransportConfiguration(NettyConnectorFactory.class.getName(), params);
-        ConnectionFactory connectionFactory = ActiveMQJMSClient.createConnectionFactoryWithoutHA(JMSFactoryType.CF,transportConfiguration);
+        ConnectionFactory connectionFactory = ActiveMQJMSClient.createConnectionFactoryWithoutHA(JMSFactoryType.CF, transportConfiguration);
         connection = connectionFactory.createConnection("test", "test");
         connection.setClientID(UUID.randomUUID().toString());
         connection.start();
@@ -37,7 +37,7 @@ public class MessageHelper implements Closeable {
 
     private Queue createQueue(String queueName) throws JMSException {
         Queue queue = queueMap.get(queueName);
-        if(queue == null) {
+        if (queue == null) {
             queue = session.createQueue(queueName);
             queueMap.put(queueName, queue);
         }
@@ -90,6 +90,16 @@ public class MessageHelper implements Closeable {
         }
     }
 
+    public void sendMessageWithProperty(String queueName, final String msg, String eventName) throws Exception {
+        final Queue queue = createQueue(queueName);
+        try (MessageProducer messageProducer = session.createProducer(queue)) {
+            messageProducer.setDeliveryMode(DeliveryMode.PERSISTENT);
+            TextMessage textMessage = session.createTextMessage(msg);
+            textMessage.setStringProperty("eventName", eventName);
+            messageProducer.send(textMessage);
+        }
+    }
+
     public boolean checkQueueHasElements(String queueName) throws Exception {
         Queue queue = createQueue(queueName);
         try (QueueBrowser browser = session.createBrowser(queue)) {
@@ -122,14 +132,14 @@ public class MessageHelper implements Closeable {
 
     @Override
     public void close() {
-        if(session != null) {
+        if (session != null) {
             try {
                 session.close();
             } catch (JMSException e) {
                 e.printStackTrace();
             }
         }
-        if(connection != null) {
+        if (connection != null) {
             try {
                 connection.close();
             } catch (JMSException e) {

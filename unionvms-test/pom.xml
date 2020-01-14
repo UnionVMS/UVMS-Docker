@@ -17,6 +17,7 @@
 		<docker.skip>${skipITs}</docker.skip>
 		<docker.frontend.test.suite>UnionVMSTestCase</docker.frontend.test.suite>
 		<jackson.version>2.10.1</jackson.version>
+		<uvms.commons.version>4.0.13</uvms.commons.version>
 	</properties>
 
 	<dependencies>
@@ -56,6 +57,11 @@
 			<version>${unionvms.project.user.module}</version>
 		</dependency>
 		<dependency>
+			<groupId>eu.europa.ec.fisheries.uvms.commons</groupId>
+			<artifactId>uvms-commons-message</artifactId>
+			<version>${uvms.commons.version}</version>
+		</dependency>
+		<dependency>
 			<groupId>eu.europa.ec.fisheries.uvms.reporting</groupId>
 			<artifactId>reporting-service</artifactId>
 			<version>${unionvms.project.reporting.module}</version>
@@ -68,10 +74,14 @@
 					<groupId>org.projectlombok</groupId>
 					<artifactId>lombok</artifactId>
 				</exclusion>
-					<exclusion>
-						<groupId>com.fasterxml.jackson.core</groupId>
-						<artifactId>jackson-core</artifactId>
-					</exclusion>
+				<exclusion>
+					<groupId>com.fasterxml.jackson.core</groupId>
+					<artifactId>jackson-core</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>eu.europa.ec.fisheries.uvms.commons</groupId>
+					<artifactId>uvms-commons-message</artifactId>
+				</exclusion>
 			</exclusions>
 		</dependency>
 		<dependency>
@@ -151,7 +161,6 @@
 		    <artifactId>jetty-servlet</artifactId>
 		    <version>9.4.19.v20190610</version>
 		</dependency>
-
 		<dependency>
 			<groupId>fish.focus.uvms.maven</groupId>
 			<artifactId>uvms-pom-java11-deps</artifactId>
