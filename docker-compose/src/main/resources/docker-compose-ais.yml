@@ -1,0 +1,29 @@
+version: '2'
+services:
+  wildfly:
+    image: uvms/wildfly-unionvms:3.40.20.w18
+    container_name: wildfly
+    ports:
+      - "29990:9990"
+      - "28787:8787"
+      - "28080:8080"
+      - "28443:8443"
+    volumes:
+      - /app/logs:/app/logs
+      - /opt/jboss/wildfly/standalone/log:/opt/jboss/wildfly/standalone/log
+    depends_on:
+      - postgres
+    links:
+      - postgres
+      - ais-simulator
+    command: ["/opt/jboss/start.sh", "/opt/jboss/wildfly/bin/standalone.sh", "-c", "standalone-uvms.xml", "-b", "0.0.0.0", "-bmanagement", "0.0.0.0", "--debug"]
+  postgres:
+    image: uvms/postgres-release:3.40.19.w18
+    container_name: postgres
+    ports:
+      - "25432:5432"
+  ais-simulator:
+    image: uvms/ais-simulator:latest
+    container_name: ais-simulator
+    ports:
+      - "28040:8040"
