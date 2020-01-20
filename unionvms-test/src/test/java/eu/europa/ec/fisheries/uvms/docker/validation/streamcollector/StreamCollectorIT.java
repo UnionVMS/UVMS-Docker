@@ -59,7 +59,6 @@ public class StreamCollectorIT extends AbstractRest {
 
             while(sseMessages.size() < 5) {         // 2 welcoming messages and then 1 for creating the asset, 1 for creating the movement and then lastly one for creating the ticket
                 Thread.sleep(100);
-                System.out.println(sseMessages.size());
             }
         }
         assertThat(sseMessages.size(), CoreMatchers.is(5));
