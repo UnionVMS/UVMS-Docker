@@ -40,6 +40,11 @@
 		                  <file>${project.build.directory}/classes/docker-compose.yml</file>
 		                  <type>yml</type>
 		                </artifact>
+		                <artifact>
+		                  <file>${project.build.directory}/classes/docker-compose-ais.yml</file>
+		                  <type>yml</type>
+		                  <classifier>ais</classifier>
+		                </artifact>
 		              </artifacts>
 		            </configuration>
 		          </execution>
