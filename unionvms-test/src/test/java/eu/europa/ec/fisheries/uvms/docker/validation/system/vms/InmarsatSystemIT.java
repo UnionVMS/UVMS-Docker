@@ -12,14 +12,17 @@ copy of the GNU General Public License along with the IFDM Suite. If not, see <h
 package eu.europa.ec.fisheries.uvms.docker.validation.system.vms;
 
 import eu.europa.ec.fisheries.schema.config.types.v1.SettingType;
+import eu.europa.ec.fisheries.schema.exchange.plugin.v1.SetConfigRequest;
 import eu.europa.ec.fisheries.schema.mobileterminal.polltypes.v1.PollType;
 import eu.europa.ec.fisheries.uvms.asset.client.model.AssetDTO;
 import eu.europa.ec.fisheries.uvms.docker.validation.asset.AssetTestHelper;
 import eu.europa.ec.fisheries.uvms.docker.validation.common.AbstractRest;
+import eu.europa.ec.fisheries.uvms.docker.validation.common.TopicListener;
 import eu.europa.ec.fisheries.uvms.docker.validation.mobileterminal.MobileTerminalTestHelper;
 import eu.europa.ec.fisheries.uvms.docker.validation.mobileterminal.dto.ChannelDto;
 import eu.europa.ec.fisheries.uvms.docker.validation.mobileterminal.dto.MobileTerminalDto;
 import eu.europa.ec.fisheries.uvms.docker.validation.system.helper.LESMock;
+import eu.europa.ec.fisheries.uvms.docker.validation.system.helper.VMSSystemHelper;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
@@ -27,6 +30,7 @@ import javax.ws.rs.client.Entity;
 import javax.ws.rs.core.GenericType;
 import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
+import java.io.IOException;
 import java.net.InetAddress;
 import java.net.NetworkInterface;
 import java.net.SocketException;
@@ -34,7 +38,6 @@ import java.util.Enumeration;
 import java.util.List;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
-
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.notNullValue;
 
@@ -43,7 +46,7 @@ public class InmarsatSystemIT extends AbstractRest {
     private static final int PORT = 29006;
 
     @BeforeClass
-    public static void initSettings() throws SocketException, InterruptedException {
+    public static void initSettings() throws IOException, Exception {
         String urlKey = "eu.europa.ec.fisheries.uvms.plugins.inmarsat.URL";
         String portKey = "eu.europa.ec.fisheries.uvms.plugins.inmarsat.PORT";
 
@@ -67,24 +70,31 @@ public class InmarsatSystemIT extends AbstractRest {
         assertThat(urlSetting, is(notNullValue()));
         assertThat(portSetting, is(notNullValue()));
 
-        urlSetting.setValue(getDockerHostIp());
+        String ip = getDockerHostIp();
+        urlSetting.setValue(ip);
         portSetting.setValue(String.valueOf(PORT));
 
-        getWebTarget()
-                .path("config/rest/settings")
-                .path(urlSetting.getId().toString())
-                .request(MediaType.APPLICATION_JSON)
-                .header(HttpHeaders.AUTHORIZATION, getValidJwtToken())
-                .put(Entity.json(urlSetting));
+        try (TopicListener listener = new TopicListener(VMSSystemHelper.INMARSAT_SELECTOR)) {
+            getWebTarget()
+                    .path("config/rest/settings")
+                    .path(urlSetting.getId().toString())
+                    .request(MediaType.APPLICATION_JSON)
+                    .header(HttpHeaders.AUTHORIZATION, getValidJwtToken())
+                    .put(Entity.json(urlSetting));
+    
+            getWebTarget()
+                    .path("config/rest/settings")
+                    .path(portSetting.getId().toString())
+                    .request(MediaType.APPLICATION_JSON)
+                    .header(HttpHeaders.AUTHORIZATION, getValidJwtToken())
+                    .put(Entity.json(portSetting));
 
-        getWebTarget()
-                .path("config/rest/settings")
-                .path(portSetting.getId().toString())
-                .request(MediaType.APPLICATION_JSON)
-                .header(HttpHeaders.AUTHORIZATION, getValidJwtToken())
-                .put(Entity.json(portSetting));
-
-        TimeUnit.SECONDS.sleep(3);
+            SetConfigRequest configMessage1 = listener.listenOnEventBusForSpecificMessage(SetConfigRequest.class);
+            assertTrue(configMessage1.getConfigurations().getSetting().stream().anyMatch(c -> c.getValue().equals(ip)));
+            SetConfigRequest configMessage2 = listener.listenOnEventBusForSpecificMessage(SetConfigRequest.class);
+            assertTrue(configMessage2.getConfigurations().getSetting().stream().anyMatch(c -> c.getValue().equals(String.valueOf(PORT))));
+        }
+        TimeUnit.SECONDS.sleep(2);
     }
 
     @Test
@@ -191,7 +201,7 @@ public class InmarsatSystemIT extends AbstractRest {
             assertEquals("5625", split[8].trim());
             assertEquals("12", split[9].trim());
         } else if (type.equalsIgnoreCase("start")) {
-            assertEquals("D", split[3].trim());
+            assertEquals("N", split[3].trim());
             assertEquals("5", split[6].trim());
         }
     }

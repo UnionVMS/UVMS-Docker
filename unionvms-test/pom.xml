@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>eu.europa.ec.fisheries.uvms.docker</groupId>
 		<artifactId>uvms-docker</artifactId>
-		<version>3.40.12.w18-SNAPSHOT</version>
+		<version>3.40.22.w18-SNAPSHOT</version>
 		<relativePath>../pom.xml</relativePath>
 	</parent>
 	
@@ -15,7 +15,9 @@
 
 	<properties>
 		<docker.skip>${skipITs}</docker.skip>
-		<docker.frontend.test.suite>UnionVMSTestCase</docker.frontend.test.suite>
+		<docker.frontend.test.suite>UnionVMSTestCaseG2</docker.frontend.test.suite>
+		<jackson.version>2.10.1</jackson.version>
+		<uvms.commons.version>4.0.13</uvms.commons.version>
 	</properties>
 
 	<dependencies>
@@ -32,7 +34,7 @@
 		<dependency>
 			<groupId>org.apache.activemq</groupId>
 			<artifactId>artemis-jms-client-all</artifactId>
-			<version>2.6.3</version>
+			<version>2.11.0</version>
 		</dependency>
 		<dependency>
 			<groupId>eu.europa.ec.fisheries.uvms.exchange</groupId>
@@ -55,6 +57,11 @@
 			<version>${unionvms.project.user.module}</version>
 		</dependency>
 		<dependency>
+			<groupId>eu.europa.ec.fisheries.uvms.commons</groupId>
+			<artifactId>uvms-commons-message</artifactId>
+			<version>${uvms.commons.version}</version>
+		</dependency>
+		<dependency>
 			<groupId>eu.europa.ec.fisheries.uvms.reporting</groupId>
 			<artifactId>reporting-service</artifactId>
 			<version>${unionvms.project.reporting.module}</version>
@@ -66,6 +73,14 @@
 				<exclusion>
 					<groupId>org.projectlombok</groupId>
 					<artifactId>lombok</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>com.fasterxml.jackson.core</groupId>
+					<artifactId>jackson-core</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>eu.europa.ec.fisheries.uvms.commons</groupId>
+					<artifactId>uvms-commons-message</artifactId>
 				</exclusion>
 			</exclusions>
 		</dependency>
@@ -102,22 +117,22 @@
 		<dependency>
 			<groupId>com.fasterxml.jackson.core</groupId>
 			<artifactId>jackson-databind</artifactId>
-			<version>2.9.10</version>
+			<version>${jackson.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>com.fasterxml.jackson.module</groupId>
 			<artifactId>jackson-module-jaxb-annotations</artifactId>
-			<version>2.9.10</version>
+			<version>${jackson.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>com.fasterxml.jackson.core</groupId>
 			<artifactId>jackson-annotations</artifactId>
-			<version>2.9.10</version>
+			<version>${jackson.version}</version>
 		</dependency>
 		<dependency>
             <groupId>com.fasterxml.jackson.datatype</groupId>
             <artifactId>jackson-datatype-jsr310</artifactId>
-            <version>2.9.10</version>
+			<version>${jackson.version}</version>
         </dependency>
 		<dependency>
 			<groupId>org.jboss.resteasy</groupId>
@@ -144,13 +159,12 @@
 		<dependency>
 		    <groupId>org.eclipse.jetty</groupId>
 		    <artifactId>jetty-servlet</artifactId>
-		    <version>9.4.19.v20190610</version>
+		    <version>9.4.26.v20200117</version>
 		</dependency>
-
 		<dependency>
 			<groupId>fish.focus.uvms.maven</groupId>
 			<artifactId>uvms-pom-java11-deps</artifactId>
-			<version>2.4</version>
+			<version>2.6</version>
 			<type>pom</type>
 		</dependency>
 	</dependencies>
@@ -160,7 +174,7 @@
 				<plugin>
 					<groupId>io.fabric8</groupId>
 					<artifactId>docker-maven-plugin</artifactId>
-					<version>0.25.0</version>
+					<version>0.33.0</version>
 				</plugin>
 			</plugins>
 		</pluginManagement>
@@ -168,7 +182,7 @@
 			<plugin>
                 <groupId>org.apache.cxf</groupId>
                 <artifactId>cxf-codegen-plugin</artifactId>
-                <version>3.3.4</version>
+                <version>3.3.5</version>
                 <executions>
                     <execution>
                         <id>wsdl-services</id>
@@ -214,9 +228,9 @@
 							<skip>${docker.skip}</skip>
 							<tasks>
 								<!-- Get the regression-suite-selenium front-end -->
-								<get src="https://github.com/UnionVMS/UVMS-SeleniumTests/raw/swe-dev/UVMS-SeleniumRegressionTests.zip" dest="target/UVMS-SeleniumRegressionTests.zip" verbose="true" usetimestamp="true" />
-								<unzip src="target/UVMS-SeleniumRegressionTests.zip" dest="target/" />
-								<move file="target/DockerUnionVMSparameters.py" tofile="target/UnionVMSparameters.py" />
+								<get src="https://github.com/UnionVMS/UVMS-SeleniumTests/raw/swe-dev/UVMS-SeleniumRegressionTestsG2.zip" dest="target/UVMS-SeleniumRegressionTestsG2.zip" verbose="true" usetimestamp="true" />
+								<unzip src="target/UVMS-SeleniumRegressionTestsG2.zip" dest="target/" />
+								<move file="target/DockerUnionVMSparametersG2.py" tofile="target/UnionVMSparametersG2.py" />
 							</tasks>
 						</configuration>
 						<goals>
@@ -331,7 +345,7 @@
 								</wait>
 								<cmd>
 									<shell>/opt/jboss/start.sh /opt/jboss/wildfly/bin/standalone.sh
-										-c standalone-uvms.xml -b 0.0.0.0 -bmanagement 0.0.0.0 --debug</shell>
+										-c standalone-uvms.xml -b 0.0.0.0 -bmanagement 0.0.0.0 --debug *:8787</shell>
 								</cmd>
 								<dependsOn>
 									<container>postgres</container>
@@ -384,19 +398,19 @@
 		<profile>
 			<id>frontend-test-rules</id>
 			<properties>
-				<docker.frontend.test.suite>UnionVMSTestCaseRules</docker.frontend.test.suite>
+				<docker.frontend.test.suite>UnionVMSTestCaseRulesG2</docker.frontend.test.suite>
 			</properties>
 		</profile>
 		<profile>
-			<id>frontend-test-filtering</id>
+			<id>frontend-test-realtime-map</id>
 			<properties>
-				<docker.frontend.test.suite>UnionVMSTestCaseFiltering</docker.frontend.test.suite>
+				<docker.frontend.test.suite>UnionVMSTestCaseRealTimeMap</docker.frontend.test.suite>
 			</properties>
 		</profile>
 		<profile>
 			<id>frontend-test-mtchannels</id>
 			<properties>
-				<docker.frontend.test.suite>UnionVMSTestCaseMobileTerminalChannels</docker.frontend.test.suite>
+				<docker.frontend.test.suite>UnionVMSTestCaseMobileTerminalChannelsG2</docker.frontend.test.suite>
 			</properties>
 		</profile>
 		<profile>
@@ -417,12 +431,12 @@
 								<configuration>
 									<tasks>									
 										<exec dir="${project.basedir}/target/" executable="${python.runtime}">
-										 	<redirector output="target/Python-regression-suite-selenium.log" alwayslog="true" /> 
+										 	<redirector output="target/Python-regression-suite-seleniumG2.log" alwayslog="true" /> 
 											<arg value="-u" />
 											<arg value="-m" />
 											<arg value="unittest" />
 											<arg value="-v" />
-											<arg value="Python-regression-suite-selenium.${docker.frontend.test.suite}" />
+											<arg value="Python-regression-suite-seleniumG2.${docker.frontend.test.suite}" />
 									  </exec>
 									</tasks>
 								</configuration>

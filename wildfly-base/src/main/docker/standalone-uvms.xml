@@ -172,6 +172,9 @@
             <logger category="org.geoserver">
                 <level name="WARN"/>
             </logger>
+            <logger category="org.geoserver.wms">
+                <level name="WARN"/>
+            </logger>
             <logger category="org.geowebcache">
                 <level name="WARN"/>
             </logger>
@@ -488,6 +491,33 @@
                     <security>
                         <user-name>movementrules</user-name>
                         <password>movementrules</password>
+                    </security>
+                </xa-datasource>
+                <xa-datasource jndi-name="java:/jdbc/uvms_incident" pool-name="jdbc/uvms_incident" enabled="true" use-ccm="true" statistics-enabled="${wildfly.datasources.statistics-enabled:${wildfly.statistics-enabled:false}}">
+                    <xa-datasource-property name="ServerName">postgres</xa-datasource-property>
+                    <xa-datasource-property name="PortNumber">5432</xa-datasource-property>
+                    <xa-datasource-property name="DatabaseName">db71u</xa-datasource-property>
+
+                    <driver>postgresql</driver>
+                    <xa-pool>
+                        <min-pool-size>2</min-pool-size>
+                        <initial-pool-size>2</initial-pool-size>
+                        <max-pool-size>20</max-pool-size>
+                        <prefill>true</prefill>
+                    </xa-pool>
+                    <statement>
+                        <prepared-statement-cache-size>32</prepared-statement-cache-size>
+                        <track-statements>nowarn</track-statements>
+                    </statement>
+                    <validation>
+                        <valid-connection-checker
+                                class-name="org.jboss.jca.adapters.jdbc.extensions.postgres.PostgreSQLValidConnectionChecker"></valid-connection-checker>
+                        <exception-sorter
+                                class-name="org.jboss.jca.adapters.jdbc.extensions.postgres.PostgreSQLExceptionSorter"></exception-sorter>
+                    </validation>
+                    <security>
+                        <user-name>incident</user-name>
+                        <password>incident</password>
                     </security>
                 </xa-datasource>
                 <xa-datasource jndi-name="java:jboss/datasources/uvms_activity" pool-name="uvms_activity" enabled="true" use-ccm="true" statistics-enabled="${wildfly.datasources.statistics-enabled:${wildfly.statistics-enabled:false}}">
@@ -975,13 +1005,14 @@
                 <jms-topic name="ConfigStatus" entries="jms/topic/ConfigStatus java:jboss/exported/jms/topic/ConfigStatus" />
                 <jms-topic name="EventBus" entries="jms/topic/EventBus java:jboss/exported/jms/topic/EventBus" />
                 <jms-topic name="EventStream" entries="jms/topic/EventStream java:jboss/exported/jms/topic/EventStream" />
+                <jms-queue name="IncidentEvent" entries="jms/queue/IncidentEvent java:jboss/exported/jms/queue/IncidentEvent" />
 
             </server>
         </subsystem>
 
         <subsystem xmlns="urn:wildfly:microprofile-config-smallrye:1.0"/>
         <subsystem xmlns="urn:wildfly:microprofile-health-smallrye:2.0" security-enabled="false" empty-liveness-checks-status="${env.MP_HEALTH_EMPTY_LIVENESS_CHECKS_STATUS:UP}" empty-readiness-checks-status="${env.MP_HEALTH_EMPTY_READINESS_CHECKS_STATUS:UP}"/>
-        <subsystem xmlns="urn:wildfly:microprofile-metrics-smallrye:2.0" security-enabled="false" exposed-subsystems="messaging-activemq" prefix="${wildfly.metrics.prefix:wildfly}"/>
+        <subsystem xmlns="urn:wildfly:microprofile-metrics-smallrye:2.0" security-enabled="false" exposed-subsystems="messaging-activemq transactions" prefix="${wildfly.metrics.prefix:wildfly}"/>
         <subsystem xmlns="urn:wildfly:microprofile-opentracing-smallrye:1.0"/>
         <subsystem xmlns="urn:jboss:domain:naming:2.0">
             <remote-naming/>

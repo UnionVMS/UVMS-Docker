@@ -73,4 +73,11 @@ public class NAFHelper extends AbstractHelper {
         matcher.find();
         return matcher.group(1);
     }
+    
+    public static Double readCodeDoubleValue(String code, String nafMessage) {
+        Pattern pattern = Pattern.compile("//" + code + "/" + "([^" + "/" + "]+)" + "//");
+        Matcher matcher = pattern.matcher(nafMessage);
+        matcher.find();
+        return Double.valueOf(matcher.group(1));
+    }
 }

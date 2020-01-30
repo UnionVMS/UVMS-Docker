@@ -66,7 +66,7 @@ public class ModuleAvailableSystemIT extends AbstractRest {
 		assertEquals(Response.Status.FORBIDDEN.getStatusCode(), getResponseCodeForEndpoint("movement/rest/alarms"));
 		assertEquals(Response.Status.FORBIDDEN.getStatusCode(), getResponseCodeForEndpoint("movement/rest/movement"));
 		assertEquals(Response.Status.FORBIDDEN.getStatusCode(), getResponseCodeForEndpoint("movement/rest/search"));
-		assertEquals(Response.Status.FORBIDDEN.getStatusCode(), getResponseCodeForEndpoint("movement/rest/tempmovement"));
+		assertEquals(Response.Status.FORBIDDEN.getStatusCode(), getResponseCodeForEndpoint("movement/rest/manualMovement"));
 		assertEquals(Response.Status.FORBIDDEN.getStatusCode(), getResponseCodeForEndpoint("movement/rest/sse"));
 		assertEquals(Response.Status.FORBIDDEN.getStatusCode(), getResponseCodeForEndpoint("movement/rest/segment"));
 		assertEquals(Response.Status.FORBIDDEN.getStatusCode(), getResponseCodeForEndpoint("movement/rest/track"));
