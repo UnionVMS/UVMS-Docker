@@ -82,6 +82,9 @@ public class InmarsatSystemIT extends AbstractRest {
                     .header(HttpHeaders.AUTHORIZATION, getValidJwtToken())
                     .put(Entity.json(urlSetting));
     
+            SetConfigRequest configMessage1 = listener.listenOnEventBusForSpecificMessage(SetConfigRequest.class);
+            assertTrue(configMessage1.getConfigurations().getSetting().stream().anyMatch(c -> c.getValue().equals(ip)));
+
             getWebTarget()
                     .path("config/rest/settings")
                     .path(portSetting.getId().toString())
@@ -89,10 +92,9 @@ public class InmarsatSystemIT extends AbstractRest {
                     .header(HttpHeaders.AUTHORIZATION, getValidJwtToken())
                     .put(Entity.json(portSetting));
 
-            SetConfigRequest configMessage1 = listener.listenOnEventBusForSpecificMessage(SetConfigRequest.class);
-            assertTrue(configMessage1.getConfigurations().getSetting().stream().anyMatch(c -> c.getValue().equals(ip)));
             SetConfigRequest configMessage2 = listener.listenOnEventBusForSpecificMessage(SetConfigRequest.class);
             assertTrue(configMessage2.getConfigurations().getSetting().stream().anyMatch(c -> c.getValue().equals(String.valueOf(PORT))));
+            assertTrue(configMessage2.getConfigurations().getSetting().stream().anyMatch(c -> c.getValue().equals(ip)));
         }
         TimeUnit.SECONDS.sleep(2);
     }
