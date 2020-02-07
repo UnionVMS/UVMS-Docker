@@ -167,6 +167,16 @@
 			<version>2.6</version>
 			<type>pom</type>
 		</dependency>
+		<dependency>
+			<groupId>javax.json.bind</groupId>
+			<artifactId>javax.json.bind-api</artifactId>
+			<version>1.0</version>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse</groupId>
+			<artifactId>yasson</artifactId>
+			<version>1.0.5</version>
+		</dependency>
 	</dependencies>
 	<build>
 		<pluginManagement>
@@ -366,7 +376,7 @@
 					</images>
 				</configuration>
 			</plugin>
-			<plugin>
+			<!--plugin>
 				<artifactId>maven-enforcer-plugin</artifactId>
 				<version>1.4.1</version>
 				<executions>
@@ -384,7 +394,7 @@
 						</configuration>
 					</execution>
 				</executions>
-			</plugin>
+			</plugin-->
 		</plugins>
 	</build>
 	<repositories>

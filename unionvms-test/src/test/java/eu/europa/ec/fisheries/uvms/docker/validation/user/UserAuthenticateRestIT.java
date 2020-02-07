@@ -35,14 +35,14 @@ public class UserAuthenticateRestIT extends AbstractRest {
 	public void authenticateGetJwtTokenSuccessTest() {
 		final AuthenticationResponse data = UserHelper.authenticate("vms_admin_com", "password");
 		assertTrue(data.isAuthenticated());
-		assertNotNull(data.getJwtoken());
+		assertNotNull(data.getJWToken());
 	}
 
 	@Test
 	public void authenticateGetJwtTokenFailureTest() {
 		final AuthenticationResponse data = UserHelper.authenticate("vms_admin_com", "invalidpassword");
 		assertFalse(data.isAuthenticated());
-		assertNull(data.getJwtoken());
+		assertNull(data.getJWToken());
 	}
 
 	@Test
@@ -50,9 +50,9 @@ public class UserAuthenticateRestIT extends AbstractRest {
 		// logon
 		final AuthenticationResponse authData = UserHelper.authenticate("vms_admin_com", "password");
 		assertTrue(authData.isAuthenticated());
-		assertNotNull(authData.getJwtoken());
+		assertNotNull(authData.getJWToken());
 
-		String jwtoken = authData.getJwtoken();
+		String jwtoken = authData.getJWToken();
 
 		// use the jwToken to get challenge
 		final ChallengeResponse data = UserHelper.getChallenge(jwtoken);
@@ -64,9 +64,9 @@ public class UserAuthenticateRestIT extends AbstractRest {
 	public void getUserChallengeTamperedJwt() {
 		final AuthenticationResponse authData = UserHelper.authenticate("vms_admin_com", "password");
 		assertTrue(authData.isAuthenticated());
-		assertNotNull(authData.getJwtoken());
+		assertNotNull(authData.getJWToken());
 
-		String jwtoken = authData.getJwtoken();
+		String jwtoken = authData.getJWToken();
 		jwtoken += "tampered";
 
 		Response challengeResponse = getWebTarget()
@@ -94,9 +94,9 @@ public class UserAuthenticateRestIT extends AbstractRest {
 
 		final AuthenticationResponse authData = UserHelper.authenticate("vms_admin_com", "password");
 		assertTrue(authData.isAuthenticated());
-		assertNotNull(authData.getJwtoken());
+		assertNotNull(authData.getJWToken());
 
-		String jwtoken = authData.getJwtoken();
+		String jwtoken = authData.getJWToken();
 
 		// use the jwToken to get challenge
 		ChallengeResponse data = UserHelper.getChallenge(jwtoken);
@@ -128,9 +128,9 @@ public class UserAuthenticateRestIT extends AbstractRest {
 
 		final AuthenticationResponse authData = UserHelper.authenticate("vms_admin_com", "password");
 		assertTrue(authData.isAuthenticated());
-		assertNotNull(authData.getJwtoken());
+		assertNotNull(authData.getJWToken());
 
-		String jwtoken = authData.getJwtoken();
+		String jwtoken = authData.getJWToken();
 
 		// use the jwToken to get challenge
 		ChallengeResponse data = UserHelper.getChallenge(jwtoken);
@@ -153,9 +153,9 @@ public class UserAuthenticateRestIT extends AbstractRest {
 	public void userContexts() {
 		final AuthenticationResponse authData = UserHelper.authenticate("vms_admin_com", "password");
 		assertTrue(authData.isAuthenticated());
-		assertNotNull(authData.getJwtoken());
+		assertNotNull(authData.getJWToken());
 
-		String jwtoken = authData.getJwtoken();
+		String jwtoken = authData.getJWToken();
 
 		UserContext response = getWebTarget()
                 .path("usm-administration/rest/userContexts")
@@ -173,9 +173,9 @@ public class UserAuthenticateRestIT extends AbstractRest {
 	public void ping() {
 		final AuthenticationResponse authData = UserHelper.authenticate("vms_admin_com", "password");
 		assertTrue(authData.isAuthenticated());
-		assertNotNull(authData.getJwtoken());
+		assertNotNull(authData.getJWToken());
 
-		String jwtoken = authData.getJwtoken();
+		String jwtoken = authData.getJWToken();
 
 		Response response = getWebTarget()
 				.path("usm-administration/rest/ping")
