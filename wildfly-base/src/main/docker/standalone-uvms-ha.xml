@@ -921,10 +921,6 @@
                 <broadcast-group name="bg-group1" jgroups-cluster="activemq-cluster" connectors="http-connector"/>
                 <discovery-group name="dg-group1" jgroups-cluster="activemq-cluster"/>
                 <cluster-connection name="my-cluster" address="jms" connector-name="http-connector" discovery-group="dg-group1"/>
-                <bindings-directory path="/opt/jboss/wildfly/standalone/data/activemq/bindings"/>
-                <journal-directory path="/opt/jboss/wildfly/standalone/data/activemq/journal"/>
-                <large-messages-directory path="/opt/jboss/wildfly/standalone/data/activemq/largemessages"/>
-                <paging-directory path="/opt/jboss/wildfly/standalone/data/activemq/paging"/>
                 <jms-queue name="ExpiryQueue" entries="java:/jms/queue/ExpiryQueue"/>
                 <jms-queue name="DLQ" entries="java:/jms/queue/DLQ"/>
                 <connection-factory name="InVmConnectionFactory" entries="java:/ConnectionFactory" connectors="in-vm"/>
@@ -989,12 +985,12 @@
         <subsystem xmlns="urn:jboss:domain:naming:2.0">
             <remote-naming/>
             <bindings>
-                <simple name="java:global/asset_endpoint" value="http://localhost:8080/unionvms/asset/rest"/>
-                <simple name="java:global/spatial_endpoint" value="http://localhost:8080/unionvms/spatialSwe"/>
-                <simple name="java:global/movement-rules_endpoint" value="http://localhost:8080/unionvms/movement-rules/rest"/>
-                <simple name="java:global/exchange_endpoint" value="http://localhost:8080/unionvms/exchange/unsecured/rest"/>
-                <simple name="java:global/movement_endpoint" value="http://localhost:8080/unionvms/movement/rest"/>
-                <simple name="java:global/user_endpoint" value="http://localhost:8080/unionvms/user/rest"/>
+                <simple name="java:global/asset_endpoint" value="http://${loadbalancer.address:localhost}:${loadbalancer.port:6666}/unionvms/asset/rest"/>
+                <simple name="java:global/spatial_endpoint" value="http://${loadbalancer.address:localhost}:${loadbalancer.port:6666}/unionvms/spatialSwe"/>
+                <simple name="java:global/movement-rules_endpoint" value="http://${loadbalancer.address:localhost}:${loadbalancer.port:6666}/unionvms/movement-rules/rest"/>
+                <simple name="java:global/exchange_endpoint" value="http://${loadbalancer.address:localhost}:${loadbalancer.port:6666}/unionvms/exchange/unsecured/rest"/>
+                <simple name="java:global/movement_endpoint" value="http://${loadbalancer.address:localhost}:${loadbalancer.port:6666}/unionvms/movement/rest"/>
+                <simple name="java:global/user_endpoint" value="http://${loadbalancer.address:localhost}:${loadbalancer.port:6666}/unionvms/user/rest"/>
                 <simple name="java:global/cors_allowed_host_regex" type="java.lang.String" value=".*" />
             </bindings>
         </subsystem>
