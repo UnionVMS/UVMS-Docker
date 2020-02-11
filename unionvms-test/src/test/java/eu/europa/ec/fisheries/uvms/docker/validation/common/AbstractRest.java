@@ -22,6 +22,7 @@ import java.time.Instant;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Random;
+import java.util.concurrent.TimeUnit;
 
 public abstract class AbstractRest extends Assert {
 
@@ -31,7 +32,6 @@ public abstract class AbstractRest extends Assert {
 
     protected static final ObjectMapper OBJECT_MAPPER = new ObjectMapper()
             .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
-            .registerModule(simpleModule)
             .registerModule(new JavaTimeModule());
 
     private static final String BASE_URL = "http://localhost:28080/unionvms/";
@@ -44,7 +44,7 @@ public abstract class AbstractRest extends Assert {
     }
 
     protected static WebTarget getWebTarget() {
-        Client client = ClientBuilder.newClient();
+        Client client = ClientBuilder.newBuilder().readTimeout(60, TimeUnit.SECONDS).newClient();
         /*JsonbConfig config = new JsonbConfig()
                 .withAdapters(new JsonBInstantAdapter())
                 .withPropertyNamingStrategy(PropertyNamingStrategy.UPPER_CAMEL_CASE)
@@ -52,7 +52,7 @@ public abstract class AbstractRest extends Assert {
         client.register(new ContextResolver<ObjectMapper>() {
             @Override
             public ObjectMapper getContext(Class<?> type) {
-                return OBJECT_MAPPER;
+                return OBJECT_MAPPER.registerModule(simpleModule);
             }
         });
         //client.register(JsonBConfigurator.class);

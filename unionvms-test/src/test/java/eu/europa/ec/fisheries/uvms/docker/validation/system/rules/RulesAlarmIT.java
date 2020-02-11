@@ -35,6 +35,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import javax.jms.TextMessage;
+import java.time.Instant;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
@@ -69,7 +70,7 @@ public class RulesAlarmIT extends AbstractRest {
     
     @Test
     public void sendEmailIfReportedSpeedIsGreaterThan10knotsTest() throws Exception {
-        OffsetDateTime timestamp = OffsetDateTime.now(ZoneOffset.UTC);
+        Instant timestamp = Instant.now();
         AssetDTO asset = AssetTestHelper.createTestAsset();
         String email = System.currentTimeMillis() + "@mail.com";
 
@@ -92,7 +93,7 @@ public class RulesAlarmIT extends AbstractRest {
 
     @Test
     public void sendEmailIfReportedSpeedIslessThan10knotsTest() throws Exception {
-        OffsetDateTime timestamp = OffsetDateTime.now(ZoneOffset.UTC);
+        Instant timestamp = Instant.now();
         AssetDTO asset = AssetTestHelper.createTestAsset();
         String email = System.currentTimeMillis() + "@mail.com";
 
@@ -114,7 +115,7 @@ public class RulesAlarmIT extends AbstractRest {
 
     @Test
     public void doNotTriggerRuleIfReportedSpeedIsLessThan10knotsTest() throws Exception {
-        OffsetDateTime timestamp = OffsetDateTime.now(ZoneOffset.UTC);
+        Instant timestamp = Instant.now();
         AssetDTO asset = AssetTestHelper.createTestAsset();
 
         CustomRuleType speedRule = CustomRuleBuilder.getBuilder()
@@ -147,7 +148,7 @@ public class RulesAlarmIT extends AbstractRest {
     
     @Test
     public void doNotTriggerRuleIfReportedSpeedIsGreaterThan10knotsTest() throws Exception {
-        OffsetDateTime timestamp = OffsetDateTime.now(ZoneOffset.UTC);
+        Instant timestamp = Instant.now();
         AssetDTO asset = AssetTestHelper.createTestAsset();
 
         CustomRuleType speedRule = CustomRuleBuilder.getBuilder()
@@ -180,7 +181,7 @@ public class RulesAlarmIT extends AbstractRest {
     
     @Test
     public void sendEmailIfReportedSpeedIsGreaterThanOrEqual10knotsTest() throws Exception {
-        OffsetDateTime timestamp = OffsetDateTime.now(ZoneOffset.UTC);
+        Instant timestamp = Instant.now();
         AssetDTO asset = AssetTestHelper.createTestAsset();
         String email = System.currentTimeMillis() + "@mail.com";
 
@@ -202,7 +203,7 @@ public class RulesAlarmIT extends AbstractRest {
     
     @Test
     public void sendEmailIfReportedSpeedIsLessThanOrEqual10knotsTest() throws Exception {
-        OffsetDateTime timestamp = OffsetDateTime.now(ZoneOffset.UTC);
+        Instant timestamp = Instant.now();
         AssetDTO asset = AssetTestHelper.createTestAsset();
         String email = System.currentTimeMillis() + "@mail.com";
 
@@ -224,7 +225,7 @@ public class RulesAlarmIT extends AbstractRest {
     
     @Test
     public void sendEmailIfReportedSpeedIsGreaterThan10knotsAndAreaIsDNKTest() throws Exception {
-        OffsetDateTime timestamp = OffsetDateTime.now(ZoneOffset.UTC);
+        Instant timestamp = Instant.now();
         AssetDTO asset = AssetTestHelper.createTestAsset();
         String email = System.currentTimeMillis() + "@mail.com";
 
@@ -248,7 +249,7 @@ public class RulesAlarmIT extends AbstractRest {
     
     @Test
     public void sendEmailIfReportedSpeedIsLessThan10knotsAndAreaIsDNKTest() throws Exception {
-        OffsetDateTime timestamp = OffsetDateTime.now(ZoneOffset.UTC);
+        Instant timestamp = Instant.now();
         AssetDTO asset = AssetTestHelper.createTestAsset();
         String email = System.currentTimeMillis() + "@mail.com";
 
@@ -272,7 +273,7 @@ public class RulesAlarmIT extends AbstractRest {
     
     @Test
     public void sendEmailIfAreaCodeIsDEUTest() throws Exception {
-        OffsetDateTime timestamp = OffsetDateTime.now(ZoneOffset.UTC);
+        Instant timestamp = Instant.now();
         AssetDTO asset = AssetTestHelper.createTestAsset();
         String email = System.currentTimeMillis() + "@mail.com";
 
@@ -293,7 +294,7 @@ public class RulesAlarmIT extends AbstractRest {
     
     @Test
     public void sendEmailIfAssetIRCSMatchesTest() throws Exception {
-        OffsetDateTime timestamp = OffsetDateTime.now(ZoneOffset.UTC);
+        Instant timestamp = Instant.now();
         AssetDTO asset = AssetTestHelper.createTestAsset();
         String email = System.currentTimeMillis() + "@mail.com";
 
@@ -314,7 +315,7 @@ public class RulesAlarmIT extends AbstractRest {
     
     @Test
     public void sendEmailIfIrcsDisjunctionMatchesTest() throws Exception {
-        OffsetDateTime timestamp = OffsetDateTime.now(ZoneOffset.UTC);
+        Instant timestamp = Instant.now();
         AssetDTO asset1 = AssetTestHelper.createTestAsset();
         AssetDTO asset2 = AssetTestHelper.createTestAsset();
         String email = System.currentTimeMillis() + "@mail.com";
@@ -335,7 +336,7 @@ public class RulesAlarmIT extends AbstractRest {
 
         CustomRuleHelper.assertRuleTriggered(createdCustomRule, timestamp);
         
-        timestamp = OffsetDateTime.now(ZoneOffset.UTC);
+        timestamp = Instant.now();
         
         LatLong position2 = new LatLong(2d, 2d, new Date());
         sendPositionToFluxAndVerifyEmailAndRuleName(asset2, email, createdCustomRule, position2);
@@ -344,7 +345,7 @@ public class RulesAlarmIT extends AbstractRest {
     
     @Test
     public void sendEmailIfIrcsCfrConjunctionMatchesTest() throws Exception {
-        OffsetDateTime timestamp = OffsetDateTime.now(ZoneOffset.UTC);
+        Instant timestamp = Instant.now();
         AssetDTO asset = AssetTestHelper.createTestAsset();
         String email = System.currentTimeMillis() + "@mail.com";
 
@@ -366,7 +367,7 @@ public class RulesAlarmIT extends AbstractRest {
     
     @Test
     public void doNotTriggerRuleIfIrcsCfrConjunctionNotMatchesTest() throws Exception {
-        OffsetDateTime timestamp = OffsetDateTime.now(ZoneOffset.UTC);
+        Instant timestamp = Instant.now();
         AssetDTO asset = AssetTestHelper.createTestAsset();
 
         CustomRuleType customRule = CustomRuleBuilder.getBuilder()
@@ -398,7 +399,7 @@ public class RulesAlarmIT extends AbstractRest {
     
     @Test
     public void sendEmailIfAssetCFRMatchesTest() throws Exception {
-        OffsetDateTime timestamp = OffsetDateTime.now(ZoneOffset.UTC);
+        Instant timestamp = Instant.now();
         AssetDTO asset = AssetTestHelper.createTestAsset();
         String email = System.currentTimeMillis() + "@mail.com";
 
@@ -419,7 +420,7 @@ public class RulesAlarmIT extends AbstractRest {
     
     @Test
     public void sendEmailIfAssetNameMatchesTest() throws Exception {
-        OffsetDateTime timestamp = OffsetDateTime.now(ZoneOffset.UTC);
+        Instant timestamp = Instant.now();
         AssetDTO asset = AssetTestHelper.createTestAsset();
         String email = System.currentTimeMillis() + "@mail.com";
 
@@ -440,7 +441,7 @@ public class RulesAlarmIT extends AbstractRest {
     
     @Test
     public void sendEmailIfLatitudeIsGreaterThan10Test() throws Exception {
-        OffsetDateTime timestamp = OffsetDateTime.now(ZoneOffset.UTC);
+        Instant timestamp = Instant.now();
         AssetDTO asset = AssetTestHelper.createTestAsset();
         String email = System.currentTimeMillis() + "@mail.com";
 
@@ -460,7 +461,7 @@ public class RulesAlarmIT extends AbstractRest {
     
     @Test
     public void sendEmailIfLongitudeIsGreaterThan10Test() throws Exception {
-        OffsetDateTime timestamp = OffsetDateTime.now(ZoneOffset.UTC);
+        Instant timestamp = Instant.now();
         AssetDTO asset = AssetTestHelper.createTestAsset();
         String email = System.currentTimeMillis() + "@mail.com";
 
@@ -480,13 +481,13 @@ public class RulesAlarmIT extends AbstractRest {
     
     @Test
     public void sendEmailIfPositionReportTimeIsGreaterOrEqualTest() throws Exception {
-        OffsetDateTime timestamp = OffsetDateTime.now(ZoneOffset.UTC);
+        Instant timestamp = Instant.now();
         AssetDTO asset = AssetTestHelper.createTestAsset();
         String email = System.currentTimeMillis() + "@mail.com";
 
         CustomRuleType customRule = CustomRuleBuilder.getBuilder()
                 .rule(CriteriaType.POSITION, SubCriteriaType.POSITION_REPORT_TIME, 
-                        ConditionType.GE, timestamp.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss Z")))
+                        ConditionType.GE, "" + timestamp.toEpochMilli())
                 .action(ActionType.EMAIL, email)
                 .build();
         
@@ -500,7 +501,7 @@ public class RulesAlarmIT extends AbstractRest {
     
     @Test
     public void triggerAreaEntryRule() throws Exception {
-        OffsetDateTime timestamp = OffsetDateTime.now(ZoneOffset.UTC);
+        Instant timestamp = Instant.now();
         AssetDTO asset = AssetTestHelper.createTestAsset();
         LatLong positionSwe = new LatLong(57.670176, 11.799626, new Date());
         FLUXHelper.sendPositionToFluxPlugin(asset, positionSwe);
@@ -524,7 +525,7 @@ public class RulesAlarmIT extends AbstractRest {
     
     @Test
     public void doNotTriggerAreaEntryRule() throws Exception {
-        OffsetDateTime timestamp = OffsetDateTime.now(ZoneOffset.UTC);
+        Instant timestamp = Instant.now();
         AssetDTO asset = AssetTestHelper.createTestAsset();
         LatLong positionSwe = new LatLong(57.670176, 11.799626, new Date());
         FLUXHelper.sendPositionToFluxPlugin(asset, positionSwe);
@@ -564,7 +565,7 @@ public class RulesAlarmIT extends AbstractRest {
     
     @Test
     public void triggerAreaExitRule() throws Exception {
-        OffsetDateTime timestamp = OffsetDateTime.now(ZoneOffset.UTC);
+        Instant timestamp = Instant.now();
         AssetDTO asset = AssetTestHelper.createTestAsset();
         LatLong positionSwe = new LatLong(57.670176, 11.799626, new Date());
         FLUXHelper.sendPositionToFluxPlugin(asset, positionSwe);
@@ -588,7 +589,7 @@ public class RulesAlarmIT extends AbstractRest {
 
     @Test
     public void createPollIfReportedSpeedIsGreaterThan10knotsTest() throws Exception {
-        OffsetDateTime timestamp = OffsetDateTime.now(ZoneOffset.UTC);
+        Instant timestamp = Instant.now();
         AssetDTO asset = AssetTestHelper.createTestAsset();
         MobileTerminalDto mobileTerminal = MobileTerminalTestHelper.createMobileTerminal();
         MobileTerminalTestHelper.assignMobileTerminal(asset, mobileTerminal);
