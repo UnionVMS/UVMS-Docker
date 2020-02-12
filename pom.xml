@@ -26,8 +26,8 @@
 		<unionvms.project.user.module>2.1.0</unionvms.project.user.module>
 		<unionvms.project.rules.module>3.0.49</unionvms.project.rules.module>
 		<unionvms.project.reporting.module>1.1.24-UVMS</unionvms.project.reporting.module>
-		<unionvms.project.movementrules.module>2.2.0</unionvms.project.movementrules.module>
-		<unionvms.project.movement.module>5.4.0-UVMS</unionvms.project.movement.module>
+		<unionvms.project.movementrules.module>2.2.1</unionvms.project.movementrules.module>
+		<unionvms.project.movement.module>5.4.1-UVMS</unionvms.project.movement.module>
 		<unionvms.project.exchange.module>5.1.0-UVMS</unionvms.project.exchange.module>
 		<unionvms.project.spatial.module>2.0.5</unionvms.project.spatial.module>
 		<unionvms.project.spatialSwe.module>2.0.19-UVMS</unionvms.project.spatialSwe.module>
