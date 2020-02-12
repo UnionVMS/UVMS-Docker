@@ -13,6 +13,7 @@ copy of the GNU General Public License along with the IFDM Suite. If not, see <h
 */
 package eu.europa.ec.fisheries.uvms.docker.validation.user;
 
+import com.fasterxml.jackson.databind.util.StdDateFormat;
 import eu.europa.ec.fisheries.uvms.docker.validation.common.AbstractRest;
 import eu.europa.ec.fisheries.uvms.docker.validation.common.AuthenticationResponse;
 import eu.europa.ec.fisheries.uvms.docker.validation.user.dto.ChallengeResponse;
@@ -27,6 +28,9 @@ import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.time.format.DateTimeFormatter;
 import java.util.UUID;
 
 public class UserAuthenticateRestIT extends AbstractRest {
@@ -156,6 +160,9 @@ public class UserAuthenticateRestIT extends AbstractRest {
 		assertNotNull(authData.getJWToken());
 
 		String jwtoken = authData.getJWToken();
+
+		//SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSx[z]");
+		//OBJECT_MAPPER//.setDateFormat(new StdDateFormat() DateTimeFormatter.ISO_ZONED_DATE_TIME.toFormat().);
 
 		UserContext response = getWebTarget()
                 .path("usm-administration/rest/userContexts")
