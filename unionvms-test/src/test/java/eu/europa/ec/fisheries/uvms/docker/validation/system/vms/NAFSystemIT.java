@@ -87,8 +87,8 @@ public class NAFSystemIT extends AbstractRest {
         assertThat(NAFHelper.readCodeValue("FR", message), is("UNK"));
         assertThat(NAFHelper.readCodeValue("TM", message), is(MovementTypeType.POS.toString()));
         assertThat(NAFHelper.readCodeValue("RC", message), is(asset.getIrcs()));
-        assertThat(NAFHelper.readCodeValue("LT", message), is(String.valueOf(position.latitude)));
-        assertThat(NAFHelper.readCodeValue("LG", message), is(String.valueOf(position.longitude)));
+        assertThat(NAFHelper.readCodeDoubleValue("LT", message), is(position.latitude));
+        assertThat(NAFHelper.readCodeDoubleValue("LG", message), is(position.longitude));
         assertThat(NAFHelper.readCodeValue("SP", message), is(String.valueOf((int)position.speed * 10)));
         assertThat(NAFHelper.readCodeValue("CO", message), is(String.valueOf((int)position.bearing)));
         ZonedDateTime positionTime = ZonedDateTime.ofInstant(position.positionTime.toInstant(), ZoneId.of("UTC"));
@@ -146,8 +146,8 @@ public class NAFSystemIT extends AbstractRest {
         assertThat(NAFHelper.readCodeValue("FR", message), is("UNK"));
         assertThat(NAFHelper.readCodeValue("TM", message), is(MovementTypeType.POS.toString()));
         assertThat(NAFHelper.readCodeValue("RC", message), is(asset.getIrcs()));
-        assertThat(NAFHelper.readCodeValue("LT", message), is(String.valueOf(position.latitude)));
-        assertThat(NAFHelper.readCodeValue("LG", message), is(String.valueOf(position.longitude)));
+        assertThat(NAFHelper.readCodeDoubleValue("LT", message), is(position.latitude));
+        assertThat(NAFHelper.readCodeDoubleValue("LG", message), is(position.longitude));
         assertThat(NAFHelper.readCodeValue("SP", message), is(String.valueOf((int)position.speed * 10)));
         assertThat(NAFHelper.readCodeValue("CO", message), is(String.valueOf((int)position.bearing)));
         ZonedDateTime positionTime = ZonedDateTime.ofInstant(position.positionTime.toInstant(), ZoneId.of("UTC"));
@@ -187,8 +187,8 @@ public class NAFSystemIT extends AbstractRest {
         assertThat(NAFHelper.readCodeValue("FR", message), is("UNK"));
         assertThat(NAFHelper.readCodeValue("TM", message), is(MovementTypeType.ENT.toString()));
         assertThat(NAFHelper.readCodeValue("RC", message), is(asset.getIrcs()));
-        assertThat(NAFHelper.readCodeValue("LT", message), is(String.valueOf(norPosition.latitude)));
-        assertThat(NAFHelper.readCodeValue("LG", message), is(String.valueOf(norPosition.longitude)));
+        assertThat(NAFHelper.readCodeDoubleValue("LT", message), is(norPosition.latitude));
+        assertThat(NAFHelper.readCodeDoubleValue("LG", message), is(norPosition.longitude));
         assertThat(NAFHelper.readCodeValue("SP", message), is(String.valueOf((int) norPosition.speed * 10)));
         assertThat(NAFHelper.readCodeValue("CO", message), is(String.valueOf((int) norPosition.bearing)));
         ZonedDateTime positionTime = ZonedDateTime.ofInstant(norPosition.positionTime.toInstant(), ZoneId.of("UTC"));

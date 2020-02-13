@@ -18,7 +18,7 @@ import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.locks.LockSupport;
 
-public class IncidentRestTest extends AbstractRest {
+public class IncidentRestIT extends AbstractRest {
 
     public final String QUEUE_NAME = "IncidentEvent";
     public final String INCIDENT_CREATE = "Incident";
