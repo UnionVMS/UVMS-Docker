@@ -5,12 +5,11 @@
 	<parent>
 		<groupId>eu.europa.ec.fisheries.uvms.docker</groupId>
 		<artifactId>uvms-docker</artifactId>
-		<version>3.28.3.w14-SNAPSHOT</version>
+		<version>3.40.23.w18-ERS-SNAPSHOT</version>
 		<relativePath>../pom.xml</relativePath>
 	</parent>
 
 	<groupId>eu.europa.ec.fisheries.uvms.docker</groupId>
-	<version>3.28.3.w14-SNAPSHOT</version>
 	<artifactId>uvms-release-test</artifactId>
 	<packaging>jar</packaging>
 	<name>uvms-release-test</name>
@@ -19,7 +18,7 @@
 			<groupId>eu.europa.ec.fisheries.uvms.docker</groupId>
 			<artifactId>uvms-unionvms-test</artifactId>
 			<type>test-jar</type>
-			<version>3.26.7.w14-SNAPSHOT</version>
+			<version>3.40.23.w18-ERS-SNAPSHOT</version>
 			<scope>test</scope>
 		</dependency>	
 		<dependency>
