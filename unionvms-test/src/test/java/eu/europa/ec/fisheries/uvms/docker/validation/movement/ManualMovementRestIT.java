@@ -66,7 +66,7 @@ public class ManualMovementRestIT extends AbstractRest {
 
     @Test
     public void sendManualMovementWithLessDataTest() {
-        String input = "{\"movement\":{\"location\":{\"longitude\":0.5,\"latitude\":0.8},\"heading\":0.0,\"timestamp\":1575545948,\"speed\":0.0},\"asset\":{\"ircs\":\"OWIF\"}}";
+        String input = "{\"movement\":{\"location\":{\"longitude\":0.5,\"latitude\":0.8},\"heading\":0.0,\"timestamp\":\"1575545948\",\"speed\":0.0},\"asset\":{\"ircs\":\"OWIF\"}}";
         String epochSecond = "" + Instant.now().getEpochSecond();
         input = input.replace("1575545948", epochSecond);
         Response response = ManualMovementRestHelper.sendTempMovement(input);

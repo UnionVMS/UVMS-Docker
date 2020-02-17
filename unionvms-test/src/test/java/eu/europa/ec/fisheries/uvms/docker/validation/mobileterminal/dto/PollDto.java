@@ -20,11 +20,11 @@ public class PollDto extends GenericDto<PollKey> {
 
     private List<PollValue> values = new ArrayList<>();
 
-    public List<PollValue> getValue() {
+    public List<PollValue> getValues() {
         return values;
     }
 
-    public void setValue(List<PollValue> value) {
+    public void setValues(List<PollValue> value) {
         this.values = value;
     }
 

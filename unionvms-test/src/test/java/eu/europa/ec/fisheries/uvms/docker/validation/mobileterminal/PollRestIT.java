@@ -13,6 +13,8 @@ copy of the GNU General Public License along with the IFDM Suite. If not, see <h
 */
 package eu.europa.ec.fisheries.uvms.docker.validation.mobileterminal;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import eu.europa.ec.fisheries.schema.mobileterminal.polltypes.v1.*;
 import eu.europa.ec.fisheries.schema.mobileterminal.types.v1.ListPagination;
 import eu.europa.ec.fisheries.uvms.asset.client.model.AssetDTO;
@@ -125,7 +127,7 @@ public class PollRestIT extends AbstractRest {
 		assertEquals(Response.Status.OK.getStatusCode(), response.getStatus());
 		PollDto pollDto = response.readEntity(PollDto.class);
 		assertNotNull(pollDto);
-		assertEquals(10, pollDto.getValue().size());
+		assertEquals(10, pollDto.getValues().size());
 	}
 
 	@Test
@@ -146,7 +148,7 @@ public class PollRestIT extends AbstractRest {
 		assertEquals(Response.Status.OK.getStatusCode(), started.getStatus());
 		PollDto startedPollDto = started.readEntity(PollDto.class);
 		assertNotNull(startedPollDto);
-		assertEquals(10, startedPollDto.getValue().size());
+		assertEquals(10, startedPollDto.getValues().size());
 
 		Response stopped = getWebTarget()
 				.path("asset/rest/poll")
@@ -159,9 +161,9 @@ public class PollRestIT extends AbstractRest {
 		assertEquals(Response.Status.OK.getStatusCode(), stopped.getStatus());
 		PollDto stoppedPollDto = stopped.readEntity(PollDto.class);
 		assertNotNull(stoppedPollDto);
-		assertEquals(10, stoppedPollDto.getValue().size());
+		assertEquals(10, stoppedPollDto.getValues().size());
 
-		List<PollValue> pollValues = stoppedPollDto.getValue();
+		List<PollValue> pollValues = stoppedPollDto.getValues();
 
 		Optional<String> pollKeyOptional = pollValues
 				.stream()
@@ -190,7 +192,7 @@ public class PollRestIT extends AbstractRest {
 		assertEquals(Response.Status.OK.getStatusCode(), started.getStatus());
 		PollDto startedPollDto = started.readEntity(PollDto.class);
 		assertNotNull(startedPollDto);
-		assertEquals(10, startedPollDto.getValue().size());
+		assertEquals(10, startedPollDto.getValues().size());
 
 		Response inactivated = getWebTarget()
 				.path("asset/rest/poll")
@@ -203,9 +205,9 @@ public class PollRestIT extends AbstractRest {
 		assertEquals(Response.Status.OK.getStatusCode(), inactivated.getStatus());
 		PollDto inactivatedPollDto = inactivated.readEntity(PollDto.class);
 		assertNotNull(inactivatedPollDto);
-		assertEquals(10, inactivatedPollDto.getValue().size());
+		assertEquals(10, inactivatedPollDto.getValues().size());
 
-		List<PollValue> pollValues = inactivatedPollDto.getValue();
+		List<PollValue> pollValues = inactivatedPollDto.getValues();
 
 		Optional<String> pollKeyOptional = pollValues
 				.stream()
