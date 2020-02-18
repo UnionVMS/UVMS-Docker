@@ -17,13 +17,13 @@ public class AuditHelper extends AbstractHelper {
 
 	public static List<AuditLogType> getAuditLogs(AuditLogListQuery auditLogListQuery)  {
 
-	    ResponseDto<GetAuditLogListByQueryResponse> response = getWebTarget()
+		GetAuditLogListByQueryResponse response = getWebTarget()
 				.path("audit/rest/audit/list")
 				.request(MediaType.APPLICATION_JSON)
 				.header(HttpHeaders.AUTHORIZATION, getValidJwtToken())
-				.post(Entity.json(auditLogListQuery), new GenericType<ResponseDto<GetAuditLogListByQueryResponse>>() {});
+				.post(Entity.json(auditLogListQuery), GetAuditLogListByQueryResponse.class);
 
-	    return response.getData().getAuditLog();
+	    return response.getAuditLog();
 	}
 	
 	public static AuditLogListQuery getBasicAuditLogListQuery() {
