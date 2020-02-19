@@ -314,7 +314,7 @@ public class AssetRestIT extends AbstractRest {
     public void addNoteToAssetUsingTimestamp() {
         AssetDTO asset = AssetTestHelper.createTestAsset();
 
-        String input = "{\"id\":null,\"assetId\":\"09ec5b78-a96f-47ea-8a01-6bc876a085fc\",\"createdOn\":1575545948,\"note\":\"apa\"}";
+        String input = "{\"id\":null,\"assetId\":\"09ec5b78-a96f-47ea-8a01-6bc876a085fc\",\"createdOn\":\"1575545948\",\"note\":\"apa\"}";
         input = input.replace("09ec5b78-a96f-47ea-8a01-6bc876a085fc", asset.getId().toString());
 
         Note createdNote = AssetTestHelper.createNoteForAsset(input);

@@ -1,6 +1,7 @@
 package eu.europa.ec.fisheries.uvms.docker.validation.user.dto;
 
 import java.io.Serializable;
+import java.time.Instant;
 import java.util.Date;
 import java.util.Set;
 
@@ -10,10 +11,10 @@ import java.util.Set;
 public class Scope implements Serializable {
     private static final long serialVersionUID = 1L;
     private String scopeName;
-    private Date activeFrom;
-    private Date activeTo;
-    private Date dataFrom;
-    private Date dataTo;
+    private Instant activeFrom;
+    private Instant activeTo;
+    private Instant dataFrom;
+    private Instant dataTo;
     private Set<DataSet> datasets;
 
     /**
@@ -44,7 +45,7 @@ public class Scope implements Serializable {
      *
      * @return the value of activeFrom
      */
-    public Date getActiveFrom() {
+    public Instant getActiveFrom() {
         return activeFrom;
     }
 
@@ -53,7 +54,7 @@ public class Scope implements Serializable {
      *
      * @param activeFrom new value of activeFrom
      */
-    public void setActiveFrom(Date activeFrom) {
+    public void setActiveFrom(Instant activeFrom) {
         this.activeFrom = activeFrom;
     }
 
@@ -62,7 +63,7 @@ public class Scope implements Serializable {
      *
      * @return the value of activeTo
      */
-    public Date getActiveTo() {
+    public Instant getActiveTo() {
         return activeTo;
     }
 
@@ -71,7 +72,7 @@ public class Scope implements Serializable {
      *
      * @param activeTo new value of activeTo
      */
-    public void setActiveTo(Date activeTo) {
+    public void setActiveTo(Instant activeTo) {
         this.activeTo = activeTo;
     }
 
@@ -80,7 +81,7 @@ public class Scope implements Serializable {
      *
      * @return the value of dataFrom
      */
-    public Date getDataFrom() {
+    public Instant getDataFrom() {
         return dataFrom;
     }
 
@@ -89,7 +90,7 @@ public class Scope implements Serializable {
      *
      * @param dataFrom new value of dataFrom
      */
-    public void setDataFrom(Date dataFrom) {
+    public void setDataFrom(Instant dataFrom) {
         this.dataFrom = dataFrom;
     }
 
@@ -98,7 +99,7 @@ public class Scope implements Serializable {
      *
      * @return the value of dataTo
      */
-    public Date getDataTo() {
+    public Instant getDataTo() {
         return dataTo;
     }
 
@@ -107,7 +108,7 @@ public class Scope implements Serializable {
      *
      * @param dataTo new value of dataTo
      */
-    public void setDataTo(Date dataTo) {
+    public void setDataTo(Instant dataTo) {
         this.dataTo = dataTo;
     }
 

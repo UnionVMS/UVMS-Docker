@@ -37,6 +37,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import javax.jms.JMSException;
+import java.time.Instant;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 import java.util.Calendar;
@@ -67,7 +68,7 @@ public class VMSSystemIT extends AbstractRest {
     
     @Test
     public void sendFlagStateToFLUXDNKTest() throws Exception {
-        OffsetDateTime timestamp = OffsetDateTime.now(ZoneOffset.UTC);
+        Instant timestamp = Instant.now();
 
         AssetDTO asset = AssetTestHelper.createTestAsset();
         MobileTerminalDto mobileTerminal = MobileTerminalTestHelper.createMobileTerminal();
@@ -92,7 +93,7 @@ public class VMSSystemIT extends AbstractRest {
     
     @Test
     public void sendFlagStateAndAreaDNKToFLUXDNKTest() throws Exception {
-        OffsetDateTime timestamp = OffsetDateTime.now(ZoneOffset.UTC);
+        Instant timestamp = Instant.now();
 
         AssetDTO asset = AssetTestHelper.createTestAsset();
         MobileTerminalDto mobileTerminal = MobileTerminalTestHelper.createMobileTerminal();
@@ -119,7 +120,7 @@ public class VMSSystemIT extends AbstractRest {
 
     @Test
     public void sendFlagStateToFLUXDNKWithRuleIntervalTest() throws Exception {
-        OffsetDateTime timestamp = OffsetDateTime.now(ZoneOffset.UTC);
+        Instant timestamp = Instant.now();
 
         AssetDTO asset = AssetTestHelper.createTestAsset();
         MobileTerminalDto mobileTerminal = MobileTerminalTestHelper.createMobileTerminal();
@@ -153,7 +154,7 @@ public class VMSSystemIT extends AbstractRest {
     
     @Test
     public void sendFlagStateToFLUXDNKWithPastValidRuleIntervalTest() throws Exception {
-        OffsetDateTime timestamp = OffsetDateTime.now(ZoneOffset.UTC);
+        Instant timestamp = Instant.now();
 
         AssetDTO asset = AssetTestHelper.createTestAsset();
         MobileTerminalDto mobileTerminal = MobileTerminalTestHelper.createMobileTerminal();
@@ -200,7 +201,7 @@ public class VMSSystemIT extends AbstractRest {
 
     @Test
     public void sendFlagStateToFLUXDNKWithFutureValidRuleIntervalTest() throws Exception {
-        OffsetDateTime timestamp = OffsetDateTime.now(ZoneOffset.UTC);
+        Instant timestamp = Instant.now();
 
         AssetDTO asset = AssetTestHelper.createTestAsset();
         MobileTerminalDto mobileTerminal = MobileTerminalTestHelper.createMobileTerminal();
@@ -362,7 +363,7 @@ public class VMSSystemIT extends AbstractRest {
         }
     }
 
-    private void senPositionToFluxAndVerifyMessageContent(OffsetDateTime timestamp, AssetDTO asset, String fluxEndpoint,
+    private void senPositionToFluxAndVerifyMessageContent(Instant timestamp, AssetDTO asset, String fluxEndpoint,
                                                           CustomRuleType createdCustomRule, LatLong position) throws Exception {
 
         try (TopicListener topicListener = new TopicListener(VMSSystemHelper.FLUX_SELECTOR)) {

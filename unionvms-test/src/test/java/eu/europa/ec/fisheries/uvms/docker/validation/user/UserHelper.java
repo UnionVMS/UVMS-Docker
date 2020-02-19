@@ -13,6 +13,7 @@ copy of the GNU General Public License along with the IFDM Suite. If not, see <h
 */
 package eu.europa.ec.fisheries.uvms.docker.validation.user;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import eu.europa.ec.fisheries.uvms.docker.validation.common.AbstractRest;
 import eu.europa.ec.fisheries.uvms.docker.validation.common.AuthenticationRequest;
 import eu.europa.ec.fisheries.uvms.docker.validation.common.AuthenticationResponse;
@@ -70,7 +71,7 @@ public class UserHelper extends AbstractRest {
     }
 
 	public static EndPoint createEndpoint(EndPoint endpoint) {
-        return getWebTarget()
+		return getWebTarget()
                 .path("usm-administration/rest/endpoint")
                 .request(MediaType.APPLICATION_JSON)
                 .header(HttpHeaders.AUTHORIZATION, getValidJwtToken())

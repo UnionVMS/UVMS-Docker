@@ -31,7 +31,7 @@ public class AreaUploadMetadata {
     @Valid
     private List<AreaUploadProperty> file = new ArrayList<>();
     //@JsonIgnore
-    @JsonAnySetter
+    //@JsonAnySetter
     private Map<String, Object> additionalProperties = new HashMap<>();
 
     /**
@@ -102,9 +102,13 @@ public class AreaUploadMetadata {
         return ToStringBuilder.reflectionToString(this);
     }
 
-    @JsonAnyGetter
+    //@JsonAnyGetter
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
+    }
+
+    public void setAdditionalProperties(Map<String, Object> additionalProperties) {
+        this.additionalProperties = additionalProperties;
     }
 
     public void setAdditionalProperty(String name, String value) {

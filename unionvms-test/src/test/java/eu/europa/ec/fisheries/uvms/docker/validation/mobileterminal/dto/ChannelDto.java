@@ -1,6 +1,7 @@
 package eu.europa.ec.fisheries.uvms.docker.validation.mobileterminal.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.io.Serializable;
 import java.time.Duration;
@@ -17,6 +18,7 @@ public class ChannelDto implements Serializable {
     private boolean defaultChannel;
     private boolean configChannel;
     private boolean pollChannel;
+    @JsonProperty("DNID")
     private String DNID;
     private String expectedFrequency;
     private String expectedFrequencyInPort;

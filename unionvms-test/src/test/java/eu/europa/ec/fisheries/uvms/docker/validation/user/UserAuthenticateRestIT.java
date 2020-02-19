@@ -13,6 +13,7 @@ copy of the GNU General Public License along with the IFDM Suite. If not, see <h
 */
 package eu.europa.ec.fisheries.uvms.docker.validation.user;
 
+import com.fasterxml.jackson.databind.util.StdDateFormat;
 import eu.europa.ec.fisheries.uvms.docker.validation.common.AbstractRest;
 import eu.europa.ec.fisheries.uvms.docker.validation.common.AuthenticationResponse;
 import eu.europa.ec.fisheries.uvms.docker.validation.user.dto.ChallengeResponse;
@@ -27,6 +28,9 @@ import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.time.format.DateTimeFormatter;
 import java.util.UUID;
 
 public class UserAuthenticateRestIT extends AbstractRest {
@@ -35,14 +39,14 @@ public class UserAuthenticateRestIT extends AbstractRest {
 	public void authenticateGetJwtTokenSuccessTest() {
 		final AuthenticationResponse data = UserHelper.authenticate("vms_admin_com", "password");
 		assertTrue(data.isAuthenticated());
-		assertNotNull(data.getJwtoken());
+		assertNotNull(data.getJWToken());
 	}
 
 	@Test
 	public void authenticateGetJwtTokenFailureTest() {
 		final AuthenticationResponse data = UserHelper.authenticate("vms_admin_com", "invalidpassword");
 		assertFalse(data.isAuthenticated());
-		assertNull(data.getJwtoken());
+		assertNull(data.getJWToken());
 	}
 
 	@Test
@@ -50,9 +54,9 @@ public class UserAuthenticateRestIT extends AbstractRest {
 		// logon
 		final AuthenticationResponse authData = UserHelper.authenticate("vms_admin_com", "password");
 		assertTrue(authData.isAuthenticated());
-		assertNotNull(authData.getJwtoken());
+		assertNotNull(authData.getJWToken());
 
-		String jwtoken = authData.getJwtoken();
+		String jwtoken = authData.getJWToken();
 
 		// use the jwToken to get challenge
 		final ChallengeResponse data = UserHelper.getChallenge(jwtoken);
@@ -64,9 +68,9 @@ public class UserAuthenticateRestIT extends AbstractRest {
 	public void getUserChallengeTamperedJwt() {
 		final AuthenticationResponse authData = UserHelper.authenticate("vms_admin_com", "password");
 		assertTrue(authData.isAuthenticated());
-		assertNotNull(authData.getJwtoken());
+		assertNotNull(authData.getJWToken());
 
-		String jwtoken = authData.getJwtoken();
+		String jwtoken = authData.getJWToken();
 		jwtoken += "tampered";
 
 		Response challengeResponse = getWebTarget()
@@ -94,9 +98,9 @@ public class UserAuthenticateRestIT extends AbstractRest {
 
 		final AuthenticationResponse authData = UserHelper.authenticate("vms_admin_com", "password");
 		assertTrue(authData.isAuthenticated());
-		assertNotNull(authData.getJwtoken());
+		assertNotNull(authData.getJWToken());
 
-		String jwtoken = authData.getJwtoken();
+		String jwtoken = authData.getJWToken();
 
 		// use the jwToken to get challenge
 		ChallengeResponse data = UserHelper.getChallenge(jwtoken);
@@ -128,9 +132,9 @@ public class UserAuthenticateRestIT extends AbstractRest {
 
 		final AuthenticationResponse authData = UserHelper.authenticate("vms_admin_com", "password");
 		assertTrue(authData.isAuthenticated());
-		assertNotNull(authData.getJwtoken());
+		assertNotNull(authData.getJWToken());
 
-		String jwtoken = authData.getJwtoken();
+		String jwtoken = authData.getJWToken();
 
 		// use the jwToken to get challenge
 		ChallengeResponse data = UserHelper.getChallenge(jwtoken);
@@ -153,9 +157,12 @@ public class UserAuthenticateRestIT extends AbstractRest {
 	public void userContexts() {
 		final AuthenticationResponse authData = UserHelper.authenticate("vms_admin_com", "password");
 		assertTrue(authData.isAuthenticated());
-		assertNotNull(authData.getJwtoken());
+		assertNotNull(authData.getJWToken());
 
-		String jwtoken = authData.getJwtoken();
+		String jwtoken = authData.getJWToken();
+
+		//SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSx[z]");
+		//OBJECT_MAPPER//.setDateFormat(new StdDateFormat() DateTimeFormatter.ISO_ZONED_DATE_TIME.toFormat().);
 
 		UserContext response = getWebTarget()
                 .path("usm-administration/rest/userContexts")
@@ -173,9 +180,9 @@ public class UserAuthenticateRestIT extends AbstractRest {
 	public void ping() {
 		final AuthenticationResponse authData = UserHelper.authenticate("vms_admin_com", "password");
 		assertTrue(authData.isAuthenticated());
-		assertNotNull(authData.getJwtoken());
+		assertNotNull(authData.getJWToken());
 
-		String jwtoken = authData.getJwtoken();
+		String jwtoken = authData.getJWToken();
 
 		Response response = getWebTarget()
 				.path("usm-administration/rest/ping")

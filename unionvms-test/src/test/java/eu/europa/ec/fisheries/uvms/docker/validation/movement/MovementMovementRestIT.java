@@ -20,6 +20,7 @@ import eu.europa.ec.fisheries.schema.movement.search.v1.MovementQuery;
 import eu.europa.ec.fisheries.schema.movement.search.v1.SearchKey;
 import eu.europa.ec.fisheries.schema.movement.v1.MovementType;
 import eu.europa.ec.fisheries.uvms.asset.client.model.AssetDTO;
+import eu.europa.ec.fisheries.uvms.commons.date.DateUtils;
 import eu.europa.ec.fisheries.uvms.docker.validation.asset.AssetJMSHelper;
 import eu.europa.ec.fisheries.uvms.docker.validation.asset.AssetTestHelper;
 import eu.europa.ec.fisheries.uvms.docker.validation.common.AbstractRest;
@@ -27,7 +28,6 @@ import eu.europa.ec.fisheries.uvms.docker.validation.common.TopicListener;
 import eu.europa.ec.fisheries.uvms.docker.validation.mobileterminal.MobileTerminalTestHelper;
 import eu.europa.ec.fisheries.uvms.docker.validation.mobileterminal.dto.MobileTerminalDto;
 import eu.europa.ec.fisheries.uvms.docker.validation.movement.model.IncomingMovement;
-import eu.europa.ec.fisheries.uvms.movement.model.util.DateUtil;
 import org.hamcrest.CoreMatchers;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
@@ -149,7 +149,7 @@ public class MovementMovementRestIT extends AbstractRest {
 
         Long response = getWebTarget()
                 .path("movement/rest/internal/countMovementsInDateAndTheDayBeforeForAsset/" + assetId)
-                .queryParam("after", DateUtil.parseUTCDateToString(Instant.now()))    //yyyy-MM-dd HH:mm:ss Z
+                .queryParam("after", DateUtils.dateToEpochMilliseconds(Instant.now()))    //yyyy-MM-dd HH:mm:ss Z
                 .request(MediaType.APPLICATION_JSON)
                 .get(Long.class);
 
