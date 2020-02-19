@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>eu.europa.ec.fisheries.uvms.docker</groupId>
 		<artifactId>uvms-docker</artifactId>
-		<version>3.41.1.w18-SNAPSHOT</version>
+		<version>3.42.2.w18-SNAPSHOT</version>
 		<relativePath>../pom.xml</relativePath>
 	</parent>
 	
@@ -17,7 +17,7 @@
 		<docker.skip>${skipITs}</docker.skip>
 		<docker.frontend.test.suite>UnionVMSTestCaseG2</docker.frontend.test.suite>
 		<jackson.version>2.10.1</jackson.version>
-		<uvms.commons.version>4.0.13</uvms.commons.version>
+		<uvms.commons.version>4.1.1</uvms.commons.version>
 	</properties>
 
 	<dependencies>
@@ -172,6 +172,26 @@
 			<artifactId>rt</artifactId>
 			<version>2.3.0</version>
 		</dependency>
+
+
+		<!--dependency>
+			<groupId>javax.json.bind</groupId>
+			<artifactId>javax.json.bind-api</artifactId>
+			<version>1.0</version>
+		</dependency-->
+		<!--dependency>
+			<groupId>org.glassfish</groupId>
+			<artifactId>javax.json</artifactId>
+			<version>1.1.2</version>
+		</dependency-->
+		<!--dependency>
+			<groupId>org.eclipse</groupId>
+			<artifactId>yasson</artifactId>
+			<version>1.0.5</version>
+		</dependency-->
+
+
+
 	</dependencies>
 	<build>
 		<pluginManagement>

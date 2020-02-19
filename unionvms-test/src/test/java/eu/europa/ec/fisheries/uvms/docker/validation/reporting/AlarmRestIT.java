@@ -31,6 +31,7 @@ import eu.europa.ec.fisheries.uvms.docker.validation.system.helper.CustomRuleHel
 import eu.europa.ec.fisheries.uvms.docker.validation.system.helper.NAFHelper;
 import eu.europa.ec.fisheries.uvms.reporting.service.dto.rules.AlarmMovement;
 import eu.europa.ec.fisheries.uvms.reporting.service.dto.rules.AlarmMovementList;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import javax.ws.rs.client.Entity;
@@ -48,6 +49,7 @@ import static org.hamcrest.CoreMatchers.is;
 public class AlarmRestIT extends AbstractRest {
 
 	@Test
+	@Ignore
 	public void getAlarmsTest() {
 		AlarmMovementList alarmMovementList = new AlarmMovementList();
 		ArrayList<AlarmMovement> alarmMovementListContent = new ArrayList<>();
@@ -69,6 +71,7 @@ public class AlarmRestIT extends AbstractRest {
 	}
 	
 	@Test
+	@Ignore
     public void getTicketForMovementTest() throws Exception {
 		try {
 			// Create ticket

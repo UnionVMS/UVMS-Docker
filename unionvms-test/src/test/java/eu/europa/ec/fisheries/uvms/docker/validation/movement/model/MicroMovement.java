@@ -1,11 +1,7 @@
 package eu.europa.ec.fisheries.uvms.docker.validation.movement.model;
 
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.fasterxml.jackson.datatype.jsr310.ser.InstantSerializer;
 import eu.europa.ec.fisheries.schema.movement.v1.MovementPoint;
 import eu.europa.ec.fisheries.schema.movement.v1.MovementSourceType;
-import eu.europa.ec.fisheries.uvms.movement.model.MovementInstantDeserializer;
 
 import java.time.Instant;
 
@@ -17,8 +13,6 @@ public class MicroMovement {
 
     private String guid;
 
-    @JsonSerialize(using = InstantSerializer.class)
-    @JsonDeserialize(using = MovementInstantDeserializer.class)
     private Instant timestamp;
 
     private Double speed;

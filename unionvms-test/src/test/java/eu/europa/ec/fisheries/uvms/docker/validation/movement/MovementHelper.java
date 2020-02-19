@@ -97,7 +97,7 @@ public class MovementHelper extends AbstractHelper {
 
 		int movementTimeDeltaInMillis = 30000;
 		List<LatLong> rutt = new ArrayList<>();
-		long ts = Instant.now().minus(1, ChronoUnit.DAYS).getEpochSecond();
+		long ts = Instant.now().minus(1, ChronoUnit.DAYS).toEpochMilli();
 
 		double divideWith = 50;
 		double randomFactorLat = rnd.nextDouble() / divideWith;
@@ -432,7 +432,7 @@ public class MovementHelper extends AbstractHelper {
 		// int numberPositions = 25;
 		int movementTimeDeltaInMillis = 30000;
 		List<LatLong> rutt = new ArrayList<>();
-		long ts = Instant.now().minus(1, ChronoUnit.DAYS).getEpochSecond();
+		long ts = Instant.now().minus(1, ChronoUnit.DAYS).toEpochMilli();
 
 		double divideWith = 50;
 		double randomFactorLat = rnd.nextDouble() / divideWith;

@@ -60,7 +60,7 @@ public class InmarsatSanityIT extends AbstractRest {
 
     @Test
     public void inmarsatPosition_MEMBER_NUMBER_and_DNID() throws Exception {
-        OffsetDateTime timestamp = OffsetDateTime.now(ZoneOffset.UTC);
+        Instant timestamp = Instant.now();
 
         // create test data
         AssetDTO asset = AssetTestHelper.createTestAsset();
@@ -156,7 +156,7 @@ public class InmarsatSanityIT extends AbstractRest {
     }
 
     private SetReportRequest sendPositionAndReturnResponse(AssetDTO asset1, MobileTerminalDto mobileTerminal1) throws Exception {
-        OffsetDateTime timestamp = OffsetDateTime.now(ZoneOffset.UTC);
+        Instant timestamp = Instant.now();
         String fluxEndpoint = "DNK";
 
         CustomRuleType flagStateRule = CustomRuleBuilder.getBuilder()

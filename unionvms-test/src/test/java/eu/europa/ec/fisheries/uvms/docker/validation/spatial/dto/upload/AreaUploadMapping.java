@@ -30,7 +30,7 @@ public class AreaUploadMapping {
     @JsonProperty("mapping")
     @Valid
     private List<AreaUploadMappingProperty> mapping = new ArrayList<AreaUploadMappingProperty>();
-    @JsonAnySetter
+    //@JsonAnySetter
     private Map<String, Object> additionalProperties = new HashMap<String, Object>();
 
     /**
@@ -78,11 +78,14 @@ public class AreaUploadMapping {
         return ToStringBuilder.reflectionToString(this);
     }
 
-    @JsonAnyGetter
+    //@JsonAnyGetter
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }
 
+    public void setAdditionalProperties(Map<String, Object> additionalProperties) {
+        this.additionalProperties = additionalProperties;
+    }
 
     public void setAdditionalProperty(String name, Object value) {
         this.additionalProperties.put(name, value);

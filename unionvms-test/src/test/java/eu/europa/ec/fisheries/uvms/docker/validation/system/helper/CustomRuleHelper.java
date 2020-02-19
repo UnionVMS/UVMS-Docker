@@ -18,8 +18,10 @@ import javax.ws.rs.client.Entity;
 import javax.ws.rs.core.GenericType;
 import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
+import java.time.Instant;
 import java.time.OffsetDateTime;
 import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 
 import static org.hamcrest.CoreMatchers.is;
@@ -57,7 +59,7 @@ public class CustomRuleHelper extends AbstractHelper {
         }
     }
     
-    public static void assertRuleTriggered(CustomRuleType rule, OffsetDateTime dateFrom) {
+    public static void assertRuleTriggered(CustomRuleType rule, Instant dateFrom) {
         CustomRuleType fetchedCustomRule = getWebTarget()
                 .path("movement-rules/rest/customrules")
                 .path(rule.getGuid())
@@ -66,15 +68,16 @@ public class CustomRuleHelper extends AbstractHelper {
                 .get(CustomRuleType.class);
         
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss Z");
-        OffsetDateTime lastTriggered = OffsetDateTime.parse(fetchedCustomRule.getLastTriggered(), formatter);
+        Instant lastTriggered = Instant.ofEpochMilli(Long.valueOf(fetchedCustomRule.getLastTriggered()));
         assertNotNull(lastTriggered);
 
         assertTrue(lastTriggered.isAfter(dateFrom) || compareWithoutMillis(lastTriggered,dateFrom));
     }
 
-    private static boolean compareWithoutMillis(OffsetDateTime a, OffsetDateTime b) {
-        return a.getYear() == b.getYear() && a.getMonth().equals(b.getMonth()) && a.getDayOfMonth() == b.getDayOfMonth() &&
-                a.getHour() == b.getHour() && a.getMinute() == b.getMinute() && a.getSecond() == b.getSecond();
+    private static boolean compareWithoutMillis(Instant a, Instant b) {
+        Instant i1 = a.truncatedTo(ChronoUnit.SECONDS);
+        Instant i2 = b.truncatedTo(ChronoUnit.SECONDS);
+        return i1.equals(i2);
     }
     
     public static void assertRuleNotTriggered(CustomRuleType rule) {

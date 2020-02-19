@@ -12,17 +12,13 @@ import javax.ws.rs.client.Entity;
 import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import java.io.File;
 import java.io.IOException;
-import java.nio.file.Files;
 
 public class AreaZipUploadIT extends AbstractRest {
 
     @Test
     public void uploadNewFaoDefinitionsTest() throws IOException {
-        File f = new File("FAO_AREAS.zip");
-        byte[] bytes = Files.readAllBytes(f.toPath());
-
+        byte[] bytes = getClass().getClassLoader().getResourceAsStream("FAO_AREAS.zip").readAllBytes();
 
         MultipartFormDataOutput mdo = new MultipartFormDataOutput();
         mdo.addFormData("areaType", "FAO", MediaType.TEXT_PLAIN_TYPE );

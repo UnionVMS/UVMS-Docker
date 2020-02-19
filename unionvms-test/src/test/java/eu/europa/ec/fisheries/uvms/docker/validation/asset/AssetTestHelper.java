@@ -1,7 +1,6 @@
 package eu.europa.ec.fisheries.uvms.docker.validation.asset;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import eu.europa.ec.fisheries.schema.audit.search.v1.AuditLogListQuery;
 import eu.europa.ec.fisheries.schema.audit.search.v1.ListCriteria;
 import eu.europa.ec.fisheries.schema.audit.search.v1.SearchKey;
@@ -44,11 +43,15 @@ public class AssetTestHelper extends AbstractHelper {
 	}
 
 	public static AssetDTO createAsset(AssetDTO asset) {
-	    return getWebTarget()
+	    AssetDTO created = getWebTarget()
                 .path("asset/rest/asset")
                 .request(MediaType.APPLICATION_JSON)
                 .header(HttpHeaders.AUTHORIZATION, getValidJwtToken())
                 .post(Entity.json(asset), AssetDTO.class);
+
+	    assertNotNull(created);
+	    assertNotNull(created.getId());
+	    return created;
 	}
 
 	public static AssetDTO createAsset(AssetDTO asset, String user, String pwd) {
@@ -115,7 +118,7 @@ public class AssetTestHelper extends AbstractHelper {
 	}
 
 	public static AssetDTO getAssetFromAssetIdAndDate(String type, String value, OffsetDateTime date) {
-		String dateStr = date.format(DateTimeFormatter.ISO_OFFSET_DATE_TIME);
+		String dateStr = DateUtils.dateToEpochMilliseconds(date.toInstant());
 		return getWebTarget()
                 .path("asset/rest/asset")
                 .path(type)
@@ -176,7 +179,7 @@ public class AssetTestHelper extends AbstractHelper {
 	}
 	
 	public static AssetGroup updateAssetGroup(AssetGroup assetGroup) {
-	    return getWebTarget()
+		return getWebTarget()
 	            .path("asset/rest/group")
 	            .request(MediaType.APPLICATION_JSON)
 	            .header(HttpHeaders.AUTHORIZATION, getValidJwtToken())

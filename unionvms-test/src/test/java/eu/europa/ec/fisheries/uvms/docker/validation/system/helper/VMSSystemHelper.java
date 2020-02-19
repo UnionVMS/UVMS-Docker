@@ -32,6 +32,7 @@ import eu.europa.ec.fisheries.uvms.exchange.model.mapper.JAXBMarshaller;
 
 import javax.jms.Message;
 import javax.jms.TextMessage;
+import java.time.Instant;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 import java.util.Collections;
@@ -72,7 +73,7 @@ public class VMSSystemHelper {
     
     private static <T> T triggerBasicRuleWithAction(ActionType actionType, String target, String actionValue, Class<T> expectedType, String selector) throws Exception {
         try {
-            OffsetDateTime timestamp = OffsetDateTime.now(ZoneOffset.UTC);
+            Instant timestamp = Instant.now();
             AssetDTO asset = AssetTestHelper.createTestAsset();
     
             CustomRuleType flagStateRule = CustomRuleBuilder.getBuilder()

@@ -1,5 +1,12 @@
 package eu.europa.ec.fisheries.uvms.docker.validation.spatial;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.module.jaxb.JaxbAnnotationModule;
+import eu.europa.ec.fisheries.uvms.docker.validation.spatial.dto.AreaExtendedIdentifierType;
+import eu.europa.ec.fisheries.uvms.docker.validation.spatial.dto.InputToSegmentCategoryType;
+import eu.europa.ec.fisheries.uvms.spatial.model.schemas.*;
+import org.junit.Before;
 import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.geom.Point;
 import org.locationtech.jts.io.ParseException;
@@ -8,7 +15,6 @@ import eu.europa.ec.fisheries.schema.movement.v1.MovementPoint;
 import eu.europa.ec.fisheries.schema.movement.v1.MovementType;
 import eu.europa.ec.fisheries.uvms.docker.validation.common.AbstractRest;
 import eu.europa.ec.fisheries.uvms.spatial.model.exception.SpatialModelMarshallException;
-import eu.europa.ec.fisheries.uvms.spatial.model.schemas.*;
 import org.junit.Ignore;
 import org.junit.Test;
 
@@ -17,6 +23,7 @@ import javax.ws.rs.core.GenericType;
 import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import java.text.SimpleDateFormat;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -28,6 +35,11 @@ public class SpatialSweRestIT extends AbstractRest {
     private Integer crs = 4326;
     private Double latitude = 57.715523;
     private Double longitude = 11.973965;
+
+    @Before
+    public void init(){
+        OBJECT_MAPPER.registerModule(new JaxbAnnotationModule());
+    }
 
     @Test
     public void getAreaByLocation() {
@@ -89,9 +101,8 @@ public class SpatialSweRestIT extends AbstractRest {
                 .post(Entity.json(request), Response.class);
 
         assertEquals(200, ret.getStatus());
-        List<Area> list = ret.readEntity(new GenericType<List<Area>>() {});
-        List<String> control = list.stream().map(Area::getName).collect(Collectors.toList());
-        assertTrue(control.contains("Swedish Exclusive Economic Zone"));
+        String json = ret.readEntity(String.class);
+        assertTrue(json.contains("Swedish Exclusive Economic Zone"));
     }
 
     @Test
@@ -146,9 +157,8 @@ public class SpatialSweRestIT extends AbstractRest {
 
         assertEquals(200, ret.getStatus());
 
-        List<Location> list = ret.readEntity(new GenericType<List<Location>>() {});
-        List<String> control = list.stream().map(Location::getName).collect(Collectors.toList());
-        assertTrue(control.contains("Göteborg-Ringökajen"));
+        String json = ret.readEntity(String.class);
+        assertTrue(json.contains("Göteborg-Ringökajen"));
     }
 
     @Test
@@ -163,6 +173,7 @@ public class SpatialSweRestIT extends AbstractRest {
         List<LocationType> locationTypes = Collections.singletonList(LocationType.PORT);
         List<AreaType> areaTypes = Collections.singletonList(AreaType.COUNTRY);
         SpatialEnrichmentRQ request = createSpatialEnrichmentRequest(point, UnitType.NAUTICAL_MILES, locationTypes, areaTypes);
+
 
         Response ret = getWebTarget() 
                 .path("spatialSwe/spatialnonsecure/json/getEnrichment")
@@ -266,15 +277,16 @@ public class SpatialSweRestIT extends AbstractRest {
     }
 
     @Test
-    public void testSegmentCategoriFromHelsingborgToLidkoping(){
-        List<MovementType> movementList = new ArrayList<>();
+    public void testSegmentCategoriFromHelsingborgToLidkoping() throws JsonProcessingException {
+        List<InputToSegmentCategoryType> movementList = new ArrayList<>();
         String[] pointArray = HelsingborgToLidkoping.helsingborgToLidköping;
         Instant start = Instant.now().minusSeconds(60 * pointArray.length);
+        OBJECT_MAPPER.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, true);
 
         for(int i = 0 ; i < pointArray.length - 1 ; i++) {
             movementList.clear();
 
-            MovementType move = new MovementType();
+            InputToSegmentCategoryType move = new InputToSegmentCategoryType();
             Point p = (Point)getGeometryFromWKTSrring(pointArray[i]);
             MovementPoint pos = new MovementPoint();
             pos.setLongitude(p.getX());
@@ -284,7 +296,7 @@ public class SpatialSweRestIT extends AbstractRest {
 
             movementList.add(move);
 
-            move = new MovementType();
+            move = new InputToSegmentCategoryType();
             p = (Point)getGeometryFromWKTSrring(pointArray[i + 1]);
             pos = new MovementPoint();
             pos.setLongitude(p.getX());

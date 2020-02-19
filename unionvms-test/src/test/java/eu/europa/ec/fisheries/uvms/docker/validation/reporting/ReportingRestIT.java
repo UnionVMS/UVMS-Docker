@@ -80,6 +80,7 @@ public class ReportingRestIT extends AbstractRest {
     }
 
     @Test
+    @Ignore
     public void listReportsTest() {
         Response response = getWebTarget()
                 .path("reporting/rest/report/list")
@@ -95,6 +96,7 @@ public class ReportingRestIT extends AbstractRest {
     }
 
     @Test
+    @Ignore
     public void listLastExecutedReportsTest() {
         Response response = getWebTarget()
                 .path("reporting/rest/report/list/lastexecuted/10")
@@ -110,6 +112,7 @@ public class ReportingRestIT extends AbstractRest {
     }
 
     @Test
+    @Ignore
     public void getReportTest() throws Exception {
         Long reportId = createTwoWeeksReport("createReportTest").getId();
 
@@ -126,11 +129,13 @@ public class ReportingRestIT extends AbstractRest {
     }
 
     @Test
+    @Ignore
     public void createReportTest() throws Exception {
         createTwoWeeksReport("createReportTest");
     }
 
     @Test
+    @Ignore
     public void deleteReportTest() throws Exception {
         Long reportId = createTwoWeeksReport("deleteReportTest").getId();
 
@@ -147,6 +152,7 @@ public class ReportingRestIT extends AbstractRest {
     }
 
     @Test
+    @Ignore
     public void updateReportTest() throws Exception {
         ReportDTO twoWeeksReport = createTwoWeeksReport("updateReportTest");
 
@@ -167,6 +173,7 @@ public class ReportingRestIT extends AbstractRest {
     }
 
     @Test
+    @Ignore
     public void shareReportTest() throws Exception {
         ReportDTO twoWeeksReport = createTwoWeeksReport("shareReportTest");
 
@@ -184,6 +191,7 @@ public class ReportingRestIT extends AbstractRest {
     }
 
     @Test
+    @Ignore
     public void executeStandardTwoWeekReportWithIdForOneAssetTest() throws Exception {
         ReportDTO twoWeeksReport = createTwoWeeksReport("executeStandardTwoWeekReportWithIdForOneAssetTest",
                 ReportTypeEnum.STANDARD, VisibilityEnum.PRIVATE, testAsset);

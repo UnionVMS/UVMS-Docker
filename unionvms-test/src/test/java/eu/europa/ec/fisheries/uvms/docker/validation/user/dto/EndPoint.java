@@ -1,5 +1,7 @@
 package eu.europa.ec.fisheries.uvms.docker.validation.user.dto;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.io.Serializable;
 import java.util.List;
 
@@ -13,6 +15,7 @@ public class EndPoint implements Serializable {
     private String name;
     private String description;
     private String status;
+    @JsonProperty("URI")
     private String URI;
     private String email;
     private Long endpointId;

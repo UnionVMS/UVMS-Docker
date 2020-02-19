@@ -955,10 +955,6 @@
                     <param name="batch-delay" value="50"/>
                     <param name="direct-deliver" value="false"/>
                 </remote-acceptor>
-                <bindings-directory path="/opt/jboss/wildfly/standalone/data/activemq/bindings"/>
-                <journal-directory path="/opt/jboss/wildfly/standalone/data/activemq/journal"/>
-                <large-messages-directory path="/opt/jboss/wildfly/standalone/data/activemq/largemessages"/>
-                <paging-directory path="/opt/jboss/wildfly/standalone/data/activemq/paging"/>
                 <jms-queue name="ExpiryQueue" entries="java:/jms/queue/ExpiryQueue"/>
                 <jms-queue name="DLQ" entries="java:/jms/queue/DLQ"/>
                 <connection-factory name="InVmConnectionFactory" entries="java:/ConnectionFactory" connectors="in-vm" compress-large-messages="true" thread-pool-max-size="60"/>
