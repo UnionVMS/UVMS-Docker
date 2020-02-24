@@ -33,7 +33,7 @@
 		<unionvms.project.spatialSwe.module>2.1.0-UVMS</unionvms.project.spatialSwe.module>
 		<unionvms.project.subscription.module>1.3</unionvms.project.subscription.module>
 		<unionvms.project.config.module>4.3.0</unionvms.project.config.module>
-		<unionvms.project.audit.module>4.3.0</unionvms.project.audit.module>
+		<unionvms.project.audit.module>4.3.1</unionvms.project.audit.module>
 		<unionvms.project.asset.module>6.6.0</unionvms.project.asset.module>
 		<unionvms.project.incident.module>0.1.1</unionvms.project.incident.module>
 		<unionvms.project.activity.module>1.1.6</unionvms.project.activity.module>
