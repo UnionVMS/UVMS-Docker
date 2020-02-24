@@ -14,6 +14,7 @@ import javax.ws.rs.core.GenericType;
 import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import java.time.Duration;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.List;
@@ -260,10 +261,10 @@ public final class MobileTerminalTestHelper extends AbstractHelper {
 
 		ChannelDto channel = new ChannelDto();
 		channel.setName("VMS");
-		channel.setFrequencyGracePeriod("54000");
+		channel.setFrequencyGracePeriod(Duration.ofSeconds(54000));
 		channel.setMemberNumber("1" + generateARandomStringWithMaxLength(2));
-		channel.setExpectedFrequency("7200");
-		channel.setExpectedFrequencyInPort("10800");
+		channel.setExpectedFrequency(Duration.ofSeconds(7200));
+		channel.setExpectedFrequencyInPort(Duration.ofSeconds(10800));
 		channel.setLesDescription("Thrane&Thrane");
 		channel.setDNID("1" + generateARandomStringWithMaxLength(3));
 		channel.setInstalledBy("Mike Great");

@@ -2,8 +2,8 @@ package eu.europa.ec.fisheries.uvms.docker.validation.user.dto;
 
 import java.io.Serializable;
 import java.time.Instant;
-import java.util.Date;
 import java.util.Set;
+import com.fasterxml.jackson.annotation.JsonFormat;
 
 /**
  * Holds a Scope based on a set of datasets from any applications. The goal is to limit the visibility on data.
@@ -11,9 +11,13 @@ import java.util.Set;
 public class Scope implements Serializable {
     private static final long serialVersionUID = 1L;
     private String scopeName;
+    @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss[.SSS]X'['VV']'")
     private Instant activeFrom;
+    @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss[.SSS]X'['VV']'")
     private Instant activeTo;
+    @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss[.SSS]X'['VV']'")
     private Instant dataFrom;
+    @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss[.SSS]X'['VV']'")
     private Instant dataTo;
     private Set<DataSet> datasets;
 
