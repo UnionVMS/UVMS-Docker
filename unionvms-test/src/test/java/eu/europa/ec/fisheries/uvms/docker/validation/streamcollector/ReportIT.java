@@ -36,7 +36,7 @@ public class ReportIT extends AbstractRest {
     public void getAssetListTest() throws Exception {
         AssetDTO testAsset = AssetTestHelper.createTestAsset();
 
-        LatLong latLong = new LatLong(16.9, 32.6333333, new Date(System.currentTimeMillis()));
+        LatLong latLong = new LatLong(16.9, 32.6333333, new Date());
         IncomingMovement createMovementRequest = movementHelper.createIncomingMovement(testAsset, latLong);
         MovementDto createMovementResponse = movementHelper.createMovement(createMovementRequest);
 
@@ -45,7 +45,6 @@ public class ReportIT extends AbstractRest {
 
         ReportOneRequestDto report1 = new ReportOneRequestDto();
         report1.setAssetQuery(assetQuery);
-
 
         Response response = getWebTarget()
                 .path("stream-collector/rest/reports/tracksByAssetSearch")
