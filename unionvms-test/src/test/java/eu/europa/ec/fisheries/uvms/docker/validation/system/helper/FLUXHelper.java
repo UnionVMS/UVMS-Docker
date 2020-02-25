@@ -101,7 +101,7 @@ public class FLUXHelper extends AbstractHelper {
         VesselPositionEventType vesselPositionEventType = new VesselPositionEventType();
         
         MeasureType measureType = new MeasureType();
-        measureType.setValue(new BigDecimal(latLong.bearing));
+        measureType.setValue(BigDecimal.valueOf(latLong.bearing));
         vesselPositionEventType.setCourseValueMeasure(measureType);
         
         GregorianCalendar calendar = new GregorianCalendar();
@@ -113,15 +113,15 @@ public class FLUXHelper extends AbstractHelper {
         
         VesselGeographicalCoordinateType cordinates = new VesselGeographicalCoordinateType();
         MeasureType longitude = new MeasureType();
-        longitude.setValue(new BigDecimal(latLong.longitude));
+        longitude.setValue(BigDecimal.valueOf(latLong.longitude));
         cordinates.setLongitudeMeasure(longitude);
         MeasureType latitude = new MeasureType();
-        latitude.setValue(new BigDecimal(latLong.latitude));
+        latitude.setValue(BigDecimal.valueOf(latLong.latitude));
         cordinates.setLatitudeMeasure(latitude);
         vesselPositionEventType.setSpecifiedVesselGeographicalCoordinate(cordinates);
         
         MeasureType speedValue = new MeasureType();
-        speedValue.setValue(new BigDecimal(latLong.speed));
+        speedValue.setValue(BigDecimal.valueOf(latLong.speed));
         vesselPositionEventType.setSpeedValueMeasure(speedValue);
         
         CodeType typeCodeValue = new CodeType();

@@ -1,7 +1,7 @@
 package eu.europa.ec.fisheries.uvms.docker.validation.streamcollector.dto;
 
 import eu.europa.ec.fisheries.uvms.asset.client.model.AssetQuery;
-import java.time.Instant;
+
 import java.util.List;
 
 public class ReportOneRequestDto {
@@ -14,8 +14,8 @@ public class ReportOneRequestDto {
     int size = 100000;
     boolean dynamic = true;
     boolean includeInactivated = false;
-    Instant startDate;
-    Instant endDate;
+    String startDate = "";
+    String endDate = "";
 
     public AssetQuery getAssetQuery() {
         return assetQuery;
@@ -65,19 +65,19 @@ public class ReportOneRequestDto {
         this.includeInactivated = includeInactivated;
     }
 
-    public Instant getStartDate() {
+    public String getStartDate() {
         return startDate;
     }
 
-    public void setStartDate(Instant startDate) {
+    public void setStartDate(String startDate) {
         this.startDate = startDate;
     }
 
-    public Instant getEndDate() {
+    public String getEndDate() {
         return endDate;
     }
 
-    public void setEndDate(Instant endDate) {
+    public void setEndDate(String endDate) {
         this.endDate = endDate;
     }
 }

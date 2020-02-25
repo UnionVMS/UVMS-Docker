@@ -27,7 +27,7 @@ public abstract class AbstractRest extends Assert {
 
     protected static final ObjectMapper OBJECT_MAPPER = new ObjectMapper()
             .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
-            .configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, true)
+            .configure(SerializationFeature.WRITE_DATE_TIMESTAMPS_AS_NANOSECONDS, false)
             .registerModule(new JavaTimeModule());
 
     private static final String BASE_URL = "http://localhost:28080/unionvms/";
