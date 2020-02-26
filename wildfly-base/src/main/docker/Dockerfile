@@ -3,7 +3,7 @@ FROM adoptopenjdk/openjdk11-openj9:jdk-11.0.4_11_openj9-0.15.1-alpine-slim
 
 MAINTAINER Nils Jørgen Mittet <njmittet@gmail.com>
 
-ENV WILDFLY_VERSION 18.0.0.Final
+ARG WILDFLY_VERSION
 ENV JBOSS_HOME /opt/jboss/wildfly
 
 USER root
@@ -48,6 +48,8 @@ COPY standalone-uvms-ha.xml $JBOSS_HOME/standalone/configuration/
 COPY start.sh /opt/jboss/
 COPY fakesmtp /opt/jboss/fakesmtp
 
+# CLI Scripts
+COPY cli-scripts $JBOSS_HOME/cli-scripts
 
 # Create log directory
 # note that we should use git update-index --chmod=+x

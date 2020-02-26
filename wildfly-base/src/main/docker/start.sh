@@ -3,6 +3,8 @@
 rm -rf /app/logs/*
 rm -rf /opt/jboss/wildfly/standalone/log/*
 
+sh $JBOSS_HOME/cli-scripts/apply_cli.sh
+
 locked="y"
 printf "Waiting for database.\n"
 while :

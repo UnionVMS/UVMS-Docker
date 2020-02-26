@@ -393,7 +393,7 @@
 										</wait>
 										<cmd>
 											<shell>/opt/jboss/start.sh /opt/jboss/wildfly/bin/standalone.sh
-												-c standalone-uvms.xml -b 0.0.0.0 -bmanagement 0.0.0.0 --debug *:8787</shell>
+												-c standalone-full.xml -b 0.0.0.0 -bmanagement 0.0.0.0 --debug *:8787</shell>
 										</cmd>
 										<dependsOn>
 											<container>postgres</container>
