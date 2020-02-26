@@ -20,9 +20,9 @@ public class ChannelDto implements Serializable {
     private boolean pollChannel;
     @JsonProperty("DNID")
     private String DNID;
-    private String expectedFrequency;
-    private String expectedFrequencyInPort;
-    private String frequencyGracePeriod;
+    private Duration expectedFrequency;
+    private Duration expectedFrequencyInPort;
+    private Duration frequencyGracePeriod;
     private String memberNumber;
     private String lesDescription;
     private String installedBy;
@@ -81,22 +81,22 @@ public class ChannelDto implements Serializable {
     public void setDNID(String DNID) {
         this.DNID = DNID;
     }
-    public String getExpectedFrequency() {
+    public Duration getExpectedFrequency() {
         return expectedFrequency;
     }
-    public void setExpectedFrequency(String expectedFrequency) {
+    public void setExpectedFrequency(Duration expectedFrequency) {
         this.expectedFrequency = expectedFrequency;
     }
-    public String getExpectedFrequencyInPort() {
+    public Duration getExpectedFrequencyInPort() {
         return expectedFrequencyInPort;
     }
-    public void setExpectedFrequencyInPort(String expectedFrequencyInPort) {
+    public void setExpectedFrequencyInPort(Duration expectedFrequencyInPort) {
         this.expectedFrequencyInPort = expectedFrequencyInPort;
     }
-    public String getFrequencyGracePeriod() {
+    public Duration getFrequencyGracePeriod() {
         return frequencyGracePeriod;
     }
-    public void setFrequencyGracePeriod(String frequencyGracePeriod) {
+    public void setFrequencyGracePeriod(Duration frequencyGracePeriod) {
         this.frequencyGracePeriod = frequencyGracePeriod;
     }
     public String getMemberNumber() {

@@ -16,8 +16,6 @@ package eu.europa.ec.fisheries.uvms.docker.validation.movement;
 import eu.europa.ec.fisheries.schema.movement.asset.v1.VesselType;
 import eu.europa.ec.fisheries.schema.movement.v1.MovementPoint;
 import eu.europa.ec.fisheries.schema.movement.v1.MovementSourceType;
-import eu.europa.ec.fisheries.schema.movement.v1.TempMovementStateEnum;
-import eu.europa.ec.fisheries.schema.movement.v1.TempMovementType;
 import eu.europa.ec.fisheries.uvms.asset.client.model.AssetDTO;
 import eu.europa.ec.fisheries.uvms.docker.validation.asset.AssetTestHelper;
 import eu.europa.ec.fisheries.uvms.docker.validation.common.AbstractRest;
@@ -26,16 +24,12 @@ import eu.europa.ec.fisheries.uvms.docker.validation.movement.model.MicroMovemen
 import org.junit.Test;
 
 import javax.ws.rs.core.Response;
-import java.text.SimpleDateFormat;
 import java.time.Instant;
 import java.util.*;
 
-import static javax.ws.rs.core.Response.Status.INTERNAL_SERVER_ERROR;
 import static org.hamcrest.CoreMatchers.is;
 
 public class ManualMovementRestIT extends AbstractRest {
-
-
 
     @Test
     public void sendManualMovementTest() {
@@ -66,9 +60,9 @@ public class ManualMovementRestIT extends AbstractRest {
 
     @Test
     public void sendManualMovementWithLessDataTest() {
-        String input = "{\"movement\":{\"location\":{\"longitude\":0.5,\"latitude\":0.8},\"heading\":0.0,\"timestamp\":\"1575545948\",\"speed\":0.0},\"asset\":{\"ircs\":\"OWIF\"}}";
-        String epochSecond = "" + Instant.now().getEpochSecond();
-        input = input.replace("1575545948", epochSecond);
+        String input = "{\"movement\":{\"location\":{\"longitude\":0.5,\"latitude\":0.8},\"heading\":0.0,\"timestamp\":1575545948,\"speed\":0.0},\"asset\":{\"ircs\":\"OWIF\"}}";
+        String epochMillis = "" + Instant.now().toEpochMilli();
+        input = input.replace("1575545948", epochMillis);
         Response response = ManualMovementRestHelper.sendTempMovement(input);
         assertEquals(200, response.getStatus());
 
@@ -78,7 +72,7 @@ public class ManualMovementRestIT extends AbstractRest {
         assertThat(latestMovements.size(), is(1));
 
         MovementDto createdMovement = latestMovements.get(0);
-        assertEquals(Long.parseLong(epochSecond), createdMovement.getTime().toInstant().getEpochSecond());
+        assertEquals(Long.parseLong(epochMillis), createdMovement.getTime().toInstant().toEpochMilli());
         assertEquals(createdMovement.getLatitude(), 0.8d, 0);
         assertEquals(createdMovement.getLongitude(), 0.5d, 0);
     }
