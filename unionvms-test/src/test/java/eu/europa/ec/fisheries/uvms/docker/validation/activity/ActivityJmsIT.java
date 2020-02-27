@@ -13,6 +13,7 @@ import eu.europa.ec.fisheries.uvms.asset.client.model.AssetDTO;
 import eu.europa.ec.fisheries.uvms.asset.client.model.AssetGroup;
 import eu.europa.ec.fisheries.uvms.asset.client.model.AssetListResponse;
 import eu.europa.ec.fisheries.uvms.asset.client.model.AssetQuery;
+import eu.europa.ec.fisheries.uvms.commons.date.JsonBConfigurator;
 import eu.europa.ec.fisheries.uvms.commons.rest.dto.PaginatedResponse;
 import eu.europa.ec.fisheries.uvms.docker.validation.asset.AssetJMSHelper;
 import eu.europa.ec.fisheries.uvms.docker.validation.asset.AssetTestHelper;
@@ -32,6 +33,7 @@ import un.unece.uncefact.data.standard.reusableaggregatebusinessinformationentit
 import un.unece.uncefact.data.standard.unqualifieddatatype._20.IDType;
 
 import javax.jms.JMSException;
+import javax.json.bind.Jsonb;
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.core.GenericType;
 import javax.ws.rs.core.HttpHeaders;
@@ -188,7 +190,9 @@ public class ActivityJmsIT extends AbstractRest {
 
 		Response response = sendRestRequest("fa/list", listFishingTripsRequests);
 
-		PaginatedResponse<FishingActivityReportDTO> paginatedResponse = response.readEntity(new GenericType<PaginatedResponse<FishingActivityReportDTO>>() {});
+		String jsonString = response.readEntity(String.class);
+		Jsonb jsonb = new JsonBConfigurator().getContext(null);
+		PaginatedResponse<FishingActivityReportDTO> paginatedResponse = jsonb.fromJson(jsonString, new GenericType<PaginatedResponse<FishingActivityReportDTO>>(){}.getType());
 
 		return paginatedResponse.getResultList();
 	}
@@ -249,7 +253,7 @@ public class ActivityJmsIT extends AbstractRest {
 		return asset;
 	}
 
-	private String getFluxfaReportMessageFromFile(String filename) throws IOException, URISyntaxException, ActivityModelMarshallException {
+	private String getFluxfaReportMessageFromFile(String filename) throws IOException, URISyntaxException {
 		ClassLoader classLoader = getClass().getClassLoader();
 		URL resource = classLoader.getResource(filename);
 		URI uri = resource.toURI();

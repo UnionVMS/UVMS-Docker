@@ -56,8 +56,19 @@
 		</dependency>
 		<dependency>
 			<groupId>org.apache.activemq</groupId>
-			<artifactId>artemis-jms-client-all</artifactId>
+			<artifactId>artemis-jms-client</artifactId>
 			<version>2.11.0</version>
+			<scope>test</scope>
+			<exclusions>
+				<exclusion>
+					<groupId>org.apache.geronimo.specs</groupId>
+					<artifactId>geronimo-json_1.0_spec</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>org.apache.johnzon</groupId>
+					<artifactId>johnzon-core</artifactId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 		<dependency>
 			<groupId>eu.europa.ec.fisheries.uvms.exchange</groupId>
@@ -200,25 +211,19 @@
 			<version>2.3.0</version>
 		</dependency>
 
-
-		<!--dependency>
+		<dependency>
 			<groupId>javax.json.bind</groupId>
 			<artifactId>javax.json.bind-api</artifactId>
 			<version>1.0</version>
-		</dependency-->
-		<!--dependency>
-			<groupId>org.glassfish</groupId>
-			<artifactId>javax.json</artifactId>
-			<version>1.1.2</version>
-		</dependency-->
-		<!--dependency>
+			<scope>test</scope>
+		</dependency>
+
+		<dependency>
 			<groupId>org.eclipse</groupId>
 			<artifactId>yasson</artifactId>
 			<version>1.0.5</version>
-		</dependency-->
-
-
-
+			<scope>test</scope>
+		</dependency>
 	</dependencies>
 	<build>
 		<pluginManagement>
