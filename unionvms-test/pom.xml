@@ -480,9 +480,6 @@
 											<alias>wildfly1</alias>
 										</network>
 										<namingStrategy>alias</namingStrategy>
-										<links>
-											<link>postgres:postgres</link>
-										</links>
 										<ports>
 											<port>29990:9990</port>
 											<port>28787:8787</port>
@@ -501,9 +498,10 @@
 										</wait>
 										<cmd>
 											<shell>/opt/jboss/start.sh /opt/jboss/wildfly/bin/standalone.sh
-												-c standalone-uvms-ha.xml -b 0.0.0.0 -bmanagement 0.0.0.0 --debug *:8787
-												-Djboss.node.name=wildfly1 -Djgroups.bind_addr=wildfly1 
-												-Djboss.messaging.cluster.password=password -Dloadbalancer.address=load-balancer</shell>
+												-c standalone-uvms-ha.xml -b wildfly1 -bmanagement wildfly1 --debug *:8787
+												-bprivate wildfly1 -bunsecure wildfly1 -Djboss.node.name=wildfly1 
+												-Djgroups.bind_addr=wildfly1 -Djboss.messaging.cluster.password=password
+												-Dloadbalancer.address=load-balancer</shell>
 										</cmd>
 										<dependsOn>
 											<container>postgres</container>
@@ -524,9 +522,6 @@
 											<alias>wildfly2</alias>
 										</network>
 										<namingStrategy>alias</namingStrategy>
-										<links>
-											<link>postgres:postgres</link>
-										</links>
 										<ports>
 											<port>39990:9990</port>
 											<port>38787:8787</port>
@@ -543,9 +538,10 @@
 										</wait>
 										<cmd>
 											<shell>/opt/jboss/start.sh /opt/jboss/wildfly/bin/standalone.sh
-												-c standalone-uvms-ha.xml -b 0.0.0.0 -bmanagement 0.0.0.0 --debug *:8787
-												-Djboss.node.name=wildfly2 -Djgroups.bind_addr=wildfly2 
-												-Djboss.messaging.cluster.password=password -Dloadbalancer.address=load-balancer</shell>
+												-c standalone-uvms-ha.xml -b wildfly2 -bmanagement wildfly2 --debug *:8787
+												-bprivate wildfly2 -bunsecure wildfly2 -Djboss.node.name=wildfly2 
+												-Djgroups.bind_addr=wildfly2 -Djboss.messaging.cluster.password=password
+												-Dloadbalancer.address=load-balancer</shell>
 										</cmd>
 										<dependsOn>
 											<container>postgres</container>
