@@ -3,10 +3,8 @@ package eu.europa.ec.fisheries.uvms.docker.validation.common;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.PropertyNamingStrategy;
-import com.fasterxml.jackson.databind.module.SimpleModule;
+import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-import eu.europa.ec.fisheries.uvms.commons.date.JsonBConfigurator;
 import org.junit.Assert;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,7 +16,6 @@ import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.ext.ContextResolver;
 import java.text.SimpleDateFormat;
-import java.time.Instant;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Random;
@@ -28,10 +25,10 @@ public abstract class AbstractRest extends Assert {
 
     private static final Logger log = LoggerFactory.getLogger(AbstractRest.class.getSimpleName());
 
-    private static SimpleModule simpleModule = new SimpleModule().addDeserializer(Instant.class,new JacksonInstantDeserializer()).addSerializer(Instant.class, new JacksonInstantSerializer());
-
     protected static final ObjectMapper OBJECT_MAPPER = new ObjectMapper()
             .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
+            .configure(DeserializationFeature.READ_DATE_TIMESTAMPS_AS_NANOSECONDS, false)
+            .configure(SerializationFeature.WRITE_DATE_TIMESTAMPS_AS_NANOSECONDS, false)
             .registerModule(new JavaTimeModule());
 
     private static final String BASE_URL = "http://localhost:28080/unionvms/";
@@ -52,7 +49,7 @@ public abstract class AbstractRest extends Assert {
         client.register(new ContextResolver<ObjectMapper>() {
             @Override
             public ObjectMapper getContext(Class<?> type) {
-                return OBJECT_MAPPER.registerModule(simpleModule);
+                return OBJECT_MAPPER;
             }
         });
         //client.register(JsonBConfigurator.class);

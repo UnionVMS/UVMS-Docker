@@ -312,7 +312,7 @@ public class FLUXSystemIT extends AbstractRest {
                 .setName("Area NOR => Send to NOR")
                 .rule(CriteriaType.AREA, SubCriteriaType.AREA_CODE, 
                         ConditionType.EQ, "NOR")
-                .action(ActionType.SEND_REPORT, VMSSystemHelper.FLUX_NAME, organisation.getName())
+                .action(ActionType.SEND_ENTRY_REPORT, VMSSystemHelper.FLUX_NAME, organisation.getName())
                 .build();
         
         CustomRuleType createdCustomRule = CustomRuleHelper.createCustomRule(flagStateRule);
@@ -348,7 +348,7 @@ public class FLUXSystemIT extends AbstractRest {
                 .setName("Area NOR => Send to NOR")
                 .rule(CriteriaType.AREA, SubCriteriaType.AREA_CODE_EXT, 
                         ConditionType.EQ, "NOR")
-                .action(ActionType.SEND_REPORT, VMSSystemHelper.FLUX_NAME, organisation.getName())
+                .action(ActionType.SEND_EXIT_REPORT, VMSSystemHelper.FLUX_NAME, organisation.getName())
                 .build();
         
         CustomRuleType createdCustomRule = CustomRuleHelper.createCustomRule(flagStateRule);
