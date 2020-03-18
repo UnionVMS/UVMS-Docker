@@ -398,12 +398,6 @@
 										<dependsOn>
 											<container>postgres</container>
 										</dependsOn>
-										<volumes>
-											<bind>
-												<volume>${docker.volume.app.logs}:/app/logs</volume>
-												<volume>${docker.volume.server.logs}:/opt/jboss/wildfly/standalone/log</volume>
-											</bind>
-										</volumes>
 										<log>
 											<enabled>true</enabled>
 											<color>blue</color>
