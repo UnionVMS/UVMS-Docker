@@ -1,6 +1,5 @@
 package eu.europa.ec.fisheries.uvms.docker.validation.asset;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import eu.europa.ec.fisheries.schema.audit.search.v1.AuditLogListQuery;
 import eu.europa.ec.fisheries.schema.audit.search.v1.ListCriteria;
 import eu.europa.ec.fisheries.schema.audit.search.v1.SearchKey;
@@ -8,6 +7,7 @@ import eu.europa.ec.fisheries.schema.audit.v1.AuditLogType;
 import eu.europa.ec.fisheries.uvms.asset.client.model.*;
 import eu.europa.ec.fisheries.uvms.asset.model.constants.AuditObjectTypeEnum;
 import eu.europa.ec.fisheries.uvms.asset.model.constants.AuditOperationEnum;
+import eu.europa.ec.fisheries.uvms.asset.remote.dto.search.SearchBranch;
 import eu.europa.ec.fisheries.uvms.commons.date.DateUtils;
 import eu.europa.ec.fisheries.uvms.docker.validation.common.AbstractHelper;
 import eu.europa.ec.fisheries.uvms.docker.validation.common.AuditHelper;
@@ -20,7 +20,6 @@ import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.sse.SseEventSource;
 import java.time.OffsetDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
 
@@ -82,7 +81,7 @@ public class AssetTestHelper extends AbstractHelper {
                 .put(Entity.json(""), AssetDTO.class);
 	}
 	
-	public static AssetListResponse assetListQuery(AssetQuery query) {
+	public static AssetListResponse assetListQuery(SearchBranch query) {
 		return getWebTarget()
                 .path("asset/rest/asset/list")
                 .request(MediaType.APPLICATION_JSON)
@@ -90,7 +89,7 @@ public class AssetTestHelper extends AbstractHelper {
                 .post(Entity.json(query), AssetListResponse.class);
 	}
 
-	public static Integer assetListQueryCount(AssetQuery query) {
+	public static Integer assetListQueryCount(SearchBranch query) {
 		return getWebTarget()
                 .path("asset/rest/asset/listcount")
                 .request(MediaType.APPLICATION_JSON)
@@ -279,12 +278,6 @@ public class AssetTestHelper extends AbstractHelper {
 
 	/*  Misc  */
 	
-	public static Integer getAssetCountSweden() {
-	    AssetQuery assetQuery = getBasicAssetQuery();
-	    assetQuery.setFlagState(Arrays.asList("SWE"));
-	    return assetListQueryCount(assetQuery);
-	}
-	
 	public static AssetDTO createBasicAsset() {
         AssetDTO asset = new AssetDTO();
 
@@ -317,9 +310,9 @@ public class AssetTestHelper extends AbstractHelper {
         return asset;
     }
 	
-	public static AssetQuery getBasicAssetQuery() {
-	    AssetQuery assetListQuery = new AssetQuery();
-		return assetListQuery;
+	public static SearchBranch getBasicAssetSearchBranch() {
+		SearchBranch trunk = new SearchBranch();
+		return trunk;
 	}
 
 	public static String generateARandomStringWithMaxLength(int len) {
