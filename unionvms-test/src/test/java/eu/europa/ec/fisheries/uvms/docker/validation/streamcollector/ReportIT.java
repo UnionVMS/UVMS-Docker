@@ -44,7 +44,7 @@ public class ReportIT extends AbstractRest {
         assetQuery.addNewSearchLeaf(SearchFields.GUID, testAsset.getId().toString());
 
         ReportOneRequestDto report1 = new ReportOneRequestDto();
-        report1.setSearchBranch(assetQuery);
+        report1.setAssetQuery(assetQuery);
 
         Response response = getWebTarget()
                 .path("stream-collector/rest/reports/tracksByAssetSearch")

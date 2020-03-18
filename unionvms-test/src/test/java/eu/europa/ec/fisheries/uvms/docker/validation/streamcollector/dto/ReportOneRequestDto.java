@@ -7,7 +7,7 @@ import java.util.List;
 public class ReportOneRequestDto {
 
 
-    SearchBranch searchBranch;
+    SearchBranch assetQuery;
     List<String> sources;
 
     int page = 1;
@@ -17,12 +17,12 @@ public class ReportOneRequestDto {
     String startDate = "";
     String endDate = "";
 
-    public SearchBranch getSearchBranch() {
-        return searchBranch;
+    public SearchBranch getAssetQuery() {
+        return assetQuery;
     }
 
-    public void setSearchBranch(SearchBranch searchBranch) {
-        this.searchBranch = searchBranch;
+    public void setAssetQuery(SearchBranch assetQuery) {
+        this.assetQuery = assetQuery;
     }
 
     public List<String> getSources() {
