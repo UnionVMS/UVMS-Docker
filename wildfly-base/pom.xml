@@ -7,13 +7,10 @@
 		<version>3.42.6.w18-SNAPSHOT</version>
 		<relativePath>../pom.xml</relativePath>
 	</parent>
-	<groupId>eu.europa.ec.fisheries.uvms.docker</groupId>
 	<artifactId>uvms-docker-wildfly-base</artifactId>
-	<version>3.42.6.w18-SNAPSHOT</version>
 	<packaging>pom</packaging>
 	<name>uvms-docker-wildfly-base</name>
 	<properties>
-		<focus-pom.java.version>1.9</focus-pom.java.version>
 		<wildfly.hibernate.module.spatial.version>5.4.1.Final</wildfly.hibernate.module.spatial.version>
 		<wildfly.hibernate.module.geolatte.version>1.4.0</wildfly.hibernate.module.geolatte.version>
 		<wildfly.hibernate.module.jts.version>1.16.1</wildfly.hibernate.module.jts.version>
@@ -248,6 +245,9 @@
 						<image>
 							<name>uvms/wildfly-base:${project.version}</name>
 							<build>
+								<args>
+									<WILDFLY_VERSION>${unionvms.wildfly.version}</WILDFLY_VERSION>
+								</args>
 								<dockerFileDir>${project.basedir}/target/dockerfile</dockerFileDir>
 							</build>
 							<run>
@@ -274,7 +274,7 @@
 								</wait>
 								<cmd>
 									<shell>/opt/jboss/start.sh /opt/jboss/wildfly/bin/standalone.sh
-										-c standalone-uvms.xml -b 0.0.0.0 -bmanagement 0.0.0.0 --debug</shell>
+										-c standalone-full.xml -b 0.0.0.0 -bmanagement 0.0.0.0 --debug</shell>
 								</cmd>
 								<dependsOn>
 									<container>postgres</container>

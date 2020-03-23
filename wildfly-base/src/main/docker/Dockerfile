@@ -3,7 +3,7 @@ FROM adoptopenjdk/openjdk11-openj9:jdk-11.0.4_11_openj9-0.15.1-alpine-slim
 
 MAINTAINER Nils Jørgen Mittet <njmittet@gmail.com>
 
-ENV WILDFLY_VERSION 18.0.0.Final
+ARG WILDFLY_VERSION
 ENV JBOSS_HOME /opt/jboss/wildfly
 
 USER root
@@ -48,6 +48,8 @@ COPY standalone-uvms-ha.xml $JBOSS_HOME/standalone/configuration/
 COPY start.sh /opt/jboss/
 COPY fakesmtp /opt/jboss/fakesmtp
 
+# CLI Scripts
+COPY cli-scripts $JBOSS_HOME/cli-scripts
 
 # Create log directory
 # note that we should use git update-index --chmod=+x
@@ -64,6 +66,7 @@ RUN mkdir -p /opt/jboss/fakesmtp/logs && \
     chown -R jboss:jboss /opt/jboss/wildfly/standalone/log && \
     chmod 777 /opt/jboss/wildfly/standalone/log/ && \
     chmod 755 /opt/jboss/start.sh && \
+    chmod 755 $JBOSS_HOME/cli-scripts/apply_cli.sh && \
     chown -R jboss:jboss /opt/jboss
 # install TZDATA, set timesone then delete TZDATA
 # alpine linux does not include curl. install it, but delete the apk cache to keep layer size small

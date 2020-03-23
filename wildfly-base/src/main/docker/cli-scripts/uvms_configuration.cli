@@ -1,0 +1,82 @@
+set secretkey=${usm_secretkey}
+set asset_endpoint=${asset_endpoint}
+set spatial_endpoint=${spatial_endpoint}
+set movementrules_endpoint=${movementrules_endpoint}
+set exchange_endpoint=${exchange_endpoint}
+set movement_endpoint=${movement_endpoint}
+set user_endpoint=${user_endpoint}
+set cors_allowed_host_regex=${cors_allowed_host_regex}
+
+embed-server --server-config=standalone-full.xml
+
+# System properties
+/system-property=jboss.as.management.blocking.timeout:add(value=1200)
+/system-property=db.dialect:add(value=postgres)
+/system-property=hibernate.dialect:add(value=org.hibernate.dialect.PostgreSQL9Dialect)
+/system-property=hibernate.spatial.dialect:add(value=org.hibernate.spatial.dialect.postgis.PostgisPG9Dialect)
+/system-property=hawtio.authenticationEnabled:add(value=false)
+/system-property=USM.secretKey:add(value=$secretkey)
+
+# Logging
+/subsystem=logging/logger=org.apache.tomcat.util.modeler:add(level=WARN)
+/subsystem=logging/logger=eu.europa.ec.mare.usm.jwt:add(level=INFO)
+/subsystem=logging/logger=org.jboss.as.jpa:add(level=WARN)
+/subsystem=logging/logger=org.jboss.as.ejb3:add(level=WARN)
+/subsystem=logging/logger=org.hibernate:add(level=WARN)
+/subsystem=logging/logger=org.jboss.modules:add(level=ERROR)
+/subsystem=logging/logger=org.jboss.weld:add(level=WARN)
+/subsystem=logging/logger=org.jboss.as.server.deployment:add(level=ERROR)
+/subsystem=logging/logger=jacorb:add(level=WARN)
+/subsystem=logging/logger=jacorb.config:add(level=WARN)
+/subsystem=logging/logger=org.geoserver:add(level=WARN)
+/subsystem=logging/logger=org.geoserver.wms:add(level=WARN)
+/subsystem=logging/logger=org.geowebcache:add(level=WARN)
+/subsystem=logging/logger=org.vfny:add(level=WARN)
+/subsystem=logging/logger=org.geotools:add(level=WARN)
+/subsystem=logging/logger=org.springframework:add(level=WARN)
+
+# batch-jberet
+/subsystem=batch-jberet/thread-pool=batch:write-attribute(name=max-threads, value=64)
+
+# EE
+/subsystem=ee/managed-executor-service=default:write-attribute(name=core-threads, value=4)
+/subsystem=ee/managed-executor-service=default:write-attribute(name=max-threads, value=64)
+/subsystem=ee/managed-scheduled-executor-service=default:write-attribute(name=core-threads, value=4)
+/subsystem=ee/managed-scheduled-executor-service=uvmsExecutorService:add(jndi-name=java:/UvmsExecutorService, hung-task-threshold=50000, core-threads=4, keepalive-time=5000, reject-policy=RETRY_ABORT)
+/subsystem=ee/managed-scheduled-executor-service=uvmsConfigPingExecutorService:add(jndi-name=java:/uvmsConfigPingExecutorService, hung-task-threshold=50000, core-threads=4, keepalive-time=5000, reject-policy=RETRY_ABORT)
+/subsystem=ee/managed-scheduled-executor-service=UvmsMobileTerminalExecutorService:add(jndi-name=java:/UvmsMobileTerminalExecutorService, hung-task-threshold=50000, core-threads=4, keepalive-time=5000, reject-policy=RETRY_ABORT)
+/subsystem=ee/managed-scheduled-executor-service=UvmsVesselCacheProxyExecutorService:add(jndi-name=java:/UvmsVesselCacheProxyExecutorService, hung-task-threshold=50000, core-threads=4, keepalive-time=5000, reject-policy=RETRY_ABORT)
+/subsystem=ee/service=default-bindings:write-attribute(name=jms-connection-factory, value=java:/ConnectionFactory)
+
+# EJB3
+/subsystem=ejb3:write-attribute(name=default-singleton-bean-access-timeout, value=15000)
+/subsystem=ejb3/thread-pool=default:write-attribute(name=max-threads, value=64)
+/subsystem=ejb3/thread-pool=default:write-attribute(name=keepalive-time.time, value=100)
+/subsystem=ejb3/thread-pool=default:write-attribute(name=keepalive-time.unit, value=MILLISECONDS)
+/subsystem=ejb3/service=remote/channel-creation-options=READ_TIMEOUT:add(value=${prop.remoting-connector.read.timeout:20}, type=xnio)
+
+# JCA
+/subsystem=jca/workmanager=default/short-running-threads=default:write-attribute(name=core-threads, value=64)
+/subsystem=jca/workmanager=default/short-running-threads=default:write-attribute(name=queue-length, value=64)
+/subsystem=jca/workmanager=default/short-running-threads=default:write-attribute(name=max-threads, value=64)
+/subsystem=jca/workmanager=default/long-running-threads=default:write-attribute(name=core-threads, value=64)
+/subsystem=jca/workmanager=default/long-running-threads=default:write-attribute(name=queue-length, value=64)
+/subsystem=jca/workmanager=default/long-running-threads=default:write-attribute(name=max-threads, value=64)
+
+# Microprofile Metrics
+/subsystem=microprofile-metrics-smallrye:write-attribute(name=exposed-subsystems, value=[messaging-activemq, transactions])
+
+# Naming
+/subsystem=naming/binding=java\:global\/asset_endpoint:add(binding-type=simple, value=$asset_endpoint)
+/subsystem=naming/binding=java\:global\/spatial_endpoint:add(binding-type=simple, value=$spatial_endpoint)
+/subsystem=naming/binding=java\:global\/movement-rules_endpoint:add(binding-type=simple, value=$movementrules_endpoint)
+/subsystem=naming/binding=java\:global\/exchange_endpoint:add(binding-type=simple, value=$exchange_endpoint)
+/subsystem=naming/binding=java\:global\/movement_endpoint:add(binding-type=simple, value=$movement_endpoint)
+/subsystem=naming/binding=java\:global\/user_endpoint:add(binding-type=simple, value=$user_endpoint)
+/subsystem=naming/binding=java\:global\/cors_allowed_host_regex:add(binding-type=simple, value=$cors_allowed_host_regex, type=java.lang.String)
+
+# Undertow
+/subsystem=undertow/configuration=filter/gzip=gzipFilter:add()
+/subsystem=undertow/server=default-server/host=default-host/filter-ref=gzipFilter:add(predicate="regex[pattern='(?:application/javascript|application/json|text/css|text/html)(;.*)?', value=%{o,Content-Type}, full-match=true]")
+
+stop-embedded-server
