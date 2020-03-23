@@ -66,6 +66,7 @@ RUN mkdir -p /opt/jboss/fakesmtp/logs && \
     chown -R jboss:jboss /opt/jboss/wildfly/standalone/log && \
     chmod 777 /opt/jboss/wildfly/standalone/log/ && \
     chmod 755 /opt/jboss/start.sh && \
+    chmod 755 $JBOSS_HOME/cli-scripts/apply_cli.sh && \
     chown -R jboss:jboss /opt/jboss
 # install TZDATA, set timesone then delete TZDATA
 # alpine linux does not include curl. install it, but delete the apk cache to keep layer size small
