@@ -75,9 +75,12 @@ public class NAFHelper extends AbstractHelper {
     }
     
     public static Double readCodeDoubleValue(String code, String nafMessage) {
+        return Double.valueOf(readCodeValue(code, nafMessage));
+    }
+
+    public static boolean isCodePresent(String code, String nafMessage) {
         Pattern pattern = Pattern.compile("//" + code + "/" + "([^" + "/" + "]+)" + "//");
         Matcher matcher = pattern.matcher(nafMessage);
-        matcher.find();
-        return Double.valueOf(matcher.group(1));
+        return matcher.find();
     }
 }
