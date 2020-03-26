@@ -14,6 +14,7 @@ package eu.europa.ec.fisheries.uvms.docker.validation.system.rules;
 import eu.europa.ec.fisheries.schema.exchange.common.v1.CommandTypeType;
 import eu.europa.ec.fisheries.schema.exchange.common.v1.KeyValueType;
 import eu.europa.ec.fisheries.schema.exchange.movement.v1.MovementType;
+import eu.europa.ec.fisheries.schema.exchange.movement.v1.MovementTypeType;
 import eu.europa.ec.fisheries.schema.exchange.plugin.v1.SetCommandRequest;
 import eu.europa.ec.fisheries.schema.exchange.plugin.v1.SetReportRequest;
 import eu.europa.ec.fisheries.schema.movementrules.customrule.v1.*;
@@ -26,7 +27,9 @@ import eu.europa.ec.fisheries.uvms.docker.validation.mobileterminal.MobileTermin
 import eu.europa.ec.fisheries.uvms.docker.validation.mobileterminal.dto.ChannelDto;
 import eu.europa.ec.fisheries.uvms.docker.validation.mobileterminal.dto.MobileTerminalDto;
 import eu.europa.ec.fisheries.uvms.docker.validation.movement.LatLong;
+import eu.europa.ec.fisheries.uvms.docker.validation.movement.ManualMovementRestHelper;
 import eu.europa.ec.fisheries.uvms.docker.validation.movement.MovementHelper;
+import eu.europa.ec.fisheries.uvms.docker.validation.movement.model.ManualMovementDto;
 import eu.europa.ec.fisheries.uvms.docker.validation.system.helper.*;
 import eu.europa.ec.fisheries.uvms.exchange.model.mapper.JAXBMarshaller;
 import org.junit.After;
@@ -588,6 +591,327 @@ public class RulesAlarmIT extends AbstractRest {
     }
 
     @Test
+    public void triggerAreaVMSEntryRuleFirstPosition() throws Exception {
+        Instant timestamp = Instant.now();
+        AssetDTO asset = AssetTestHelper.createTestAsset();
+        String fluxEndpoint = "DNK";
+
+        CustomRuleType areaEntryRule = CustomRuleBuilder.getBuilder()
+                .setName("Area entry DNK")
+                .rule(CriteriaType.AREA, SubCriteriaType.AREA_CODE_VMS_ENT, 
+                        ConditionType.EQ, "DNK")
+                .action(ActionType.SEND_REPORT, VMSSystemHelper.FLUX_NAME, fluxEndpoint)
+                .build();
+
+        CustomRuleType createdAreaRule = CustomRuleHelper.createCustomRule(areaEntryRule);
+        assertNotNull(createdAreaRule);
+
+        LatLong positionDnk = new LatLong(56d, 10.5, new Date());
+        sendPositionToFluxAndVerifyAssetInfo(asset, fluxEndpoint, positionDnk);
+        CustomRuleHelper.assertRuleTriggered(createdAreaRule, timestamp);
+    }
+
+    @Test
+    public void triggerAreaVMSEntryRule() throws Exception {
+        Instant timestamp = Instant.now();
+        AssetDTO asset = AssetTestHelper.createTestAsset();
+        LatLong positionSwe = new LatLong(57.670176, 11.799626, new Date());
+        FLUXHelper.sendPositionToFluxPlugin(asset, positionSwe);
+        MovementHelper.pollMovementCreated();
+        String fluxEndpoint = "DNK";
+
+        CustomRuleType areaEntryRule = CustomRuleBuilder.getBuilder()
+                .setName("Area entry DNK")
+                .rule(CriteriaType.AREA, SubCriteriaType.AREA_CODE_VMS_ENT, 
+                        ConditionType.EQ, "DNK")
+                .action(ActionType.SEND_REPORT, VMSSystemHelper.FLUX_NAME, fluxEndpoint)
+                .build();
+
+        CustomRuleType createdAreaRule = CustomRuleHelper.createCustomRule(areaEntryRule);
+        assertNotNull(createdAreaRule);
+
+        LatLong positionDnk = new LatLong(56d, 10.5, new Date());
+        sendPositionToFluxAndVerifyAssetInfo(asset, fluxEndpoint, positionDnk);
+        CustomRuleHelper.assertRuleTriggered(createdAreaRule, timestamp);
+    }
+
+
+    @Test
+    public void triggerAreaEntryRuleAndAreaVMSEntryRule() throws Exception {
+        Instant timestamp = Instant.now();
+        AssetDTO asset = AssetTestHelper.createTestAsset();
+        LatLong positionSwe = new LatLong(57.670176, 11.799626, new Date());
+        FLUXHelper.sendPositionToFluxPlugin(asset, positionSwe);
+        MovementHelper.pollMovementCreated();
+        String fluxEndpoint = "DNK";
+
+        CustomRuleType areaEntryRule = CustomRuleBuilder.getBuilder()
+                .setName("Area entry DNK")
+                .rule(CriteriaType.AREA, SubCriteriaType.AREA_CODE_ENT, 
+                        ConditionType.EQ, "DNK")
+                .action(ActionType.SEND_REPORT, VMSSystemHelper.FLUX_NAME, fluxEndpoint)
+                .build();
+
+        CustomRuleType createdAreaRule = CustomRuleHelper.createCustomRule(areaEntryRule);
+        assertNotNull(createdAreaRule);
+
+        LatLong positionDnk = new LatLong(56d, 10.5, new Date());
+        SetReportRequest fluxReport = sendAisPositionAndGetFluxReport(asset, fluxEndpoint, positionDnk);
+        MovementType position = fluxReport.getReport().getMovement();
+        assertThat(position.getAssetName(), is(asset.getName()));
+        assertThat(position.getPosition().getLatitude(), is(positionDnk.latitude));
+        assertThat(position.getPosition().getLongitude(), is(positionDnk.longitude));
+
+        CustomRuleHelper.assertRuleTriggered(createdAreaRule, timestamp);
+
+        CustomRuleType areaVMSEntryRule = CustomRuleBuilder.getBuilder()
+                .setName("Area VMS entry DNK")
+                .rule(CriteriaType.AREA, SubCriteriaType.AREA_CODE_VMS_ENT, 
+                        ConditionType.EQ, "DNK")
+                .action(ActionType.SEND_REPORT, VMSSystemHelper.FLUX_NAME, fluxEndpoint)
+                .build();
+
+        CustomRuleType createdVMSAreaRule = CustomRuleHelper.createCustomRule(areaVMSEntryRule);
+        assertNotNull(createdVMSAreaRule);
+
+        LatLong vmsPositionDnk = new LatLong(56d, 10.5, new Date());
+        sendPositionToFluxAndVerifyAssetInfo(asset, fluxEndpoint, vmsPositionDnk);
+        CustomRuleHelper.assertRuleTriggered(createdVMSAreaRule, timestamp);
+    }
+
+    @Test
+    public void triggerAreaEntryRuleWithAisPosition() throws Exception {
+        Instant timestamp = Instant.now();
+        AssetDTO asset = AssetTestHelper.createTestAsset();
+        LatLong positionSwe = new LatLong(57.670176, 11.799626, new Date());
+        FLUXHelper.sendPositionToFluxPlugin(asset, positionSwe);
+        MovementHelper.pollMovementCreated();
+        String fluxEndpoint = "DNK";
+
+        CustomRuleType areaEntryRule = CustomRuleBuilder.getBuilder()
+                .setName("Area entry DNK")
+                .rule(CriteriaType.AREA, SubCriteriaType.AREA_CODE_ENT, 
+                        ConditionType.EQ, "DNK")
+                .action(ActionType.SEND_REPORT, VMSSystemHelper.FLUX_NAME, fluxEndpoint)
+                .build();
+
+        CustomRuleType createdAreaRule = CustomRuleHelper.createCustomRule(areaEntryRule);
+        assertNotNull(createdAreaRule);
+
+        LatLong positionDnk = new LatLong(56d, 10.5, new Date());
+        SetReportRequest fluxReport = sendAisPositionAndGetFluxReport(asset, fluxEndpoint, positionDnk);
+        MovementType position = fluxReport.getReport().getMovement();
+        assertThat(position.getAssetName(), is(asset.getName()));
+        assertThat(position.getPosition().getLatitude(), is(positionDnk.latitude));
+        assertThat(position.getPosition().getLongitude(), is(positionDnk.longitude));
+
+        CustomRuleHelper.assertRuleTriggered(createdAreaRule, timestamp);
+    }
+
+    @Test
+    public void triggerAreaVMSEntryRuleWithInmarsatPositions() throws Exception {
+        Instant timestamp = Instant.now();
+        AssetDTO asset = AssetTestHelper.createTestAsset();
+        MobileTerminalDto mobileTerminal = MobileTerminalTestHelper.createMobileTerminal();
+        MobileTerminalTestHelper.assignMobileTerminal(asset, mobileTerminal);
+        LatLong positionSwe = new LatLong(57.670176, 11.799626, new Date());
+        InmarsatPluginMock.sendInmarsatPosition(mobileTerminal, positionSwe);
+        MovementHelper.pollMovementCreated();
+        String fluxEndpoint = "DNK";
+
+        CustomRuleType areaEntryRule = CustomRuleBuilder.getBuilder()
+                .setName("Area entry DNK")
+                .rule(CriteriaType.AREA, SubCriteriaType.AREA_CODE_VMS_ENT, 
+                        ConditionType.EQ, "DNK")
+                .action(ActionType.SEND_REPORT, VMSSystemHelper.FLUX_NAME, fluxEndpoint)
+                .build();
+
+        CustomRuleType createdAreaRule = CustomRuleHelper.createCustomRule(areaEntryRule);
+        assertNotNull(createdAreaRule);
+
+        LatLong positionDnk = new LatLong(56d, 10.5, new Date());
+        try (TopicListener topicListener = new TopicListener(VMSSystemHelper.FLUX_SELECTOR)) {
+            InmarsatPluginMock.sendInmarsatPosition(mobileTerminal, positionDnk);
+            CustomRuleHelper.pollTicketCreated();
+
+            SetReportRequest setReportRequest = topicListener.listenOnEventBusForSpecificMessage(SetReportRequest.class);
+            assertThat(setReportRequest.getReport().getRecipient(), is(fluxEndpoint));
+            MovementType position = setReportRequest.getReport().getMovement();
+            assertThat(position.getAssetName(), is(asset.getName()));
+            assertThat(position.getPosition().getLatitude(), is(positionDnk.latitude));
+            assertThat(position.getPosition().getLongitude(), is(positionDnk.longitude));
+        }
+        CustomRuleHelper.assertRuleTriggered(createdAreaRule, timestamp);
+    }
+
+    @Test
+    public void triggerAreaVMSEntryRuleWithManualPosition() throws Exception {
+        Instant timestamp = Instant.now();
+        AssetDTO asset = AssetTestHelper.createTestAsset();
+        MobileTerminalDto mobileTerminal = MobileTerminalTestHelper.createMobileTerminal();
+        MobileTerminalTestHelper.assignMobileTerminal(asset, mobileTerminal);
+        LatLong positionSwe = new LatLong(57.670176, 11.799626, new Date());
+        InmarsatPluginMock.sendInmarsatPosition(mobileTerminal, positionSwe);
+        MovementHelper.pollMovementCreated();
+        String fluxEndpoint = "DNK";
+
+        CustomRuleType areaEntryRule = CustomRuleBuilder.getBuilder()
+                .setName("Area entry DNK")
+                .rule(CriteriaType.AREA, SubCriteriaType.AREA_CODE_VMS_ENT, 
+                        ConditionType.EQ, "DNK")
+                .action(ActionType.SEND_REPORT, VMSSystemHelper.FLUX_NAME, fluxEndpoint)
+                .build();
+
+        CustomRuleType createdAreaRule = CustomRuleHelper.createCustomRule(areaEntryRule);
+        assertNotNull(createdAreaRule);
+
+        LatLong positionDnk = new LatLong(56d, 10.5, new Date());
+        try (TopicListener topicListener = new TopicListener(VMSSystemHelper.FLUX_SELECTOR)) {
+            ManualMovementDto manualMovement = ManualMovementRestHelper.mapToManualMovement(positionDnk, asset);
+            ManualMovementRestHelper.sendTempMovement(manualMovement);
+            CustomRuleHelper.pollTicketCreated();
+
+            SetReportRequest setReportRequest = topicListener.listenOnEventBusForSpecificMessage(SetReportRequest.class);
+            assertThat(setReportRequest.getReport().getRecipient(), is(fluxEndpoint));
+            MovementType position = setReportRequest.getReport().getMovement();
+            assertThat(position.getAssetName(), is(asset.getName()));
+            assertThat(position.getPosition().getLatitude(), is(positionDnk.latitude));
+            assertThat(position.getPosition().getLongitude(), is(positionDnk.longitude));
+            assertThat(position.getMovementType(), is(MovementTypeType.MAN));
+        }
+        CustomRuleHelper.assertRuleTriggered(createdAreaRule, timestamp);
+    }
+
+    @Test
+    public void doNotTriggerAreaVMSEntryRuleWithExtraManualPosition() throws Exception {
+        Instant timestamp = Instant.now();
+        AssetDTO asset = AssetTestHelper.createTestAsset();
+        MobileTerminalDto mobileTerminal = MobileTerminalTestHelper.createMobileTerminal();
+        MobileTerminalTestHelper.assignMobileTerminal(asset, mobileTerminal);
+        LatLong positionSwe = new LatLong(57.670176, 11.799626, new Date());
+        InmarsatPluginMock.sendInmarsatPosition(mobileTerminal, positionSwe);
+        MovementHelper.pollMovementCreated();
+        String fluxEndpoint = "DNK";
+
+        CustomRuleType areaEntryRule = CustomRuleBuilder.getBuilder()
+                .setName("Area entry DNK")
+                .rule(CriteriaType.AREA, SubCriteriaType.AREA_CODE_VMS_ENT, ConditionType.EQ, "DNK")
+                .and(CriteriaType.POSITION, SubCriteriaType.SOURCE, ConditionType.EQ, "FLUX")
+                .action(ActionType.SEND_REPORT, VMSSystemHelper.FLUX_NAME, fluxEndpoint)
+                .build();
+
+        CustomRuleType createdAreaRule = CustomRuleHelper.createCustomRule(areaEntryRule);
+        assertNotNull(createdAreaRule);
+
+        LatLong positionDnk = new LatLong(56d, 10.5, new Date());
+        sendPositionToFluxAndVerifyAssetInfo(asset, fluxEndpoint, positionDnk);
+        CustomRuleHelper.assertRuleTriggered(createdAreaRule, timestamp);
+
+        CustomRuleType areaEntryManualRule = CustomRuleBuilder.getBuilder()
+                .setName("Area entry DNK")
+                .rule(CriteriaType.AREA, SubCriteriaType.AREA_CODE_VMS_ENT, ConditionType.EQ, "DNK")
+                .and(CriteriaType.POSITION, SubCriteriaType.SOURCE, ConditionType.EQ, "MANUAL")
+                .action(ActionType.SEND_REPORT, VMSSystemHelper.FLUX_NAME, fluxEndpoint)
+                .build();
+
+        CustomRuleType createdAreaManualRule = CustomRuleHelper.createCustomRule(areaEntryManualRule);
+        assertNotNull(createdAreaManualRule);
+
+        CustomRuleType extraRule = CustomRuleBuilder.getBuilder()
+                .rule(CriteriaType.ASSET, SubCriteriaType.FLAG_STATE, ConditionType.EQ, "SWE")
+                .action(ActionType.SEND_REPORT, VMSSystemHelper.FLUX_NAME, fluxEndpoint)
+                .build();
+
+        CustomRuleType createdExtraRule = CustomRuleHelper.createCustomRule(extraRule);
+        assertNotNull(createdExtraRule);
+
+        LatLong manualPositionDnk = new LatLong(56d, 10.5, new Date());
+        try (TopicListener topicListener = new TopicListener(VMSSystemHelper.FLUX_SELECTOR)) {
+            ManualMovementDto manualMovement = ManualMovementRestHelper.mapToManualMovement(manualPositionDnk, asset);
+            ManualMovementRestHelper.sendTempMovement(manualMovement);
+            CustomRuleHelper.pollTicketCreated();
+
+            SetReportRequest setReportRequest = topicListener.listenOnEventBusForSpecificMessage(SetReportRequest.class);
+            assertThat(setReportRequest.getReport().getRecipient(), is(fluxEndpoint));
+            MovementType position = setReportRequest.getReport().getMovement();
+            assertThat(position.getAssetName(), is(asset.getName()));
+            assertThat(position.getPosition().getLatitude(), is(manualPositionDnk.latitude));
+            assertThat(position.getPosition().getLongitude(), is(manualPositionDnk.longitude));
+            assertThat(position.getMovementType(), is(MovementTypeType.MAN));
+        }
+
+        CustomRuleHelper.assertRuleNotTriggered(createdAreaManualRule);
+        CustomRuleHelper.assertRuleTriggered(createdExtraRule, timestamp);
+    }
+
+    @Test
+    public void triggerAreaVMSExitRule() throws Exception {
+        Instant timestamp = Instant.now();
+        AssetDTO asset = AssetTestHelper.createTestAsset();
+        LatLong positionSwe = new LatLong(57.670176, 11.799626, new Date());
+        FLUXHelper.sendPositionToFluxPlugin(asset, positionSwe);
+        MovementHelper.pollMovementCreated();
+        String fluxEndpoint = "DNK";
+
+        CustomRuleType areaEntryRule = CustomRuleBuilder.getBuilder()
+                .setName("Area exit SWE")
+                .rule(CriteriaType.AREA, SubCriteriaType.AREA_CODE_VMS_EXT, 
+                        ConditionType.EQ, "SWE")
+                .action(ActionType.SEND_REPORT, VMSSystemHelper.FLUX_NAME, fluxEndpoint)
+                .build();
+
+        CustomRuleType createdAreaRule = CustomRuleHelper.createCustomRule(areaEntryRule);
+        assertNotNull(createdAreaRule);
+
+        LatLong positionDnk = new LatLong(56d, 10.5, new Date());
+        sendPositionToFluxAndVerifyAssetInfo(asset, fluxEndpoint, positionDnk);
+        CustomRuleHelper.assertRuleTriggered(createdAreaRule, timestamp);
+    }
+
+    @Test
+    public void triggerAreaExitRuleAndAreaVMSExitRule() throws Exception {
+        Instant timestamp = Instant.now();
+        AssetDTO asset = AssetTestHelper.createTestAsset();
+        LatLong positionSwe = new LatLong(57.670176, 11.799626, new Date());
+        FLUXHelper.sendPositionToFluxPlugin(asset, positionSwe);
+        MovementHelper.pollMovementCreated();
+        String fluxEndpoint = "DNK";
+
+        CustomRuleType areaExitRule = CustomRuleBuilder.getBuilder()
+                .setName("Area Exit")
+                .rule(CriteriaType.AREA, SubCriteriaType.AREA_CODE_EXT, 
+                        ConditionType.EQ, "SWE")
+                .action(ActionType.SEND_REPORT, VMSSystemHelper.FLUX_NAME, fluxEndpoint)
+                .build();
+
+        CustomRuleType createdAreaExitRule = CustomRuleHelper.createCustomRule(areaExitRule);
+        assertNotNull(createdAreaExitRule);
+
+        LatLong aisPositionDnk = new LatLong(56d, 10.5, new Date());
+        SetReportRequest fluxReport = sendAisPositionAndGetFluxReport(asset, fluxEndpoint, aisPositionDnk);
+        MovementType position = fluxReport.getReport().getMovement();
+        assertThat(position.getAssetName(), is(asset.getName()));
+        assertThat(position.getPosition().getLatitude(), is(aisPositionDnk.latitude));
+        assertThat(position.getPosition().getLongitude(), is(aisPositionDnk.longitude));
+
+        CustomRuleHelper.assertRuleTriggered(createdAreaExitRule, timestamp);
+
+        CustomRuleType areaVMSExitRule = CustomRuleBuilder.getBuilder()
+                .setName("Area exit SWE")
+                .rule(CriteriaType.AREA, SubCriteriaType.AREA_CODE_VMS_EXT, 
+                        ConditionType.EQ, "SWE")
+                .action(ActionType.SEND_REPORT, VMSSystemHelper.FLUX_NAME, fluxEndpoint)
+                .build();
+
+        CustomRuleType createdAreaVMSExitRule = CustomRuleHelper.createCustomRule(areaVMSExitRule);
+        assertNotNull(createdAreaVMSExitRule);
+
+        LatLong vmsPositionDnk = new LatLong(56d, 10.5, new Date());
+        sendPositionToFluxAndVerifyAssetInfo(asset, fluxEndpoint, vmsPositionDnk);
+        CustomRuleHelper.assertRuleTriggered(createdAreaVMSExitRule, timestamp);
+    }
+
+    @Test
     public void createPollIfReportedSpeedIsGreaterThan10knotsTest() throws Exception {
         Instant timestamp = Instant.now();
         AssetDTO asset = AssetTestHelper.createTestAsset();
@@ -658,6 +982,17 @@ public class RulesAlarmIT extends AbstractRest {
             MovementType movement = setReportRequest.getReport().getMovement();
             assertThat(movement.getAssetName(), is(asset.getName()));
             assertThat(movement.getIrcs(), is(asset.getIrcs()));
+        }
+    }
+
+    private SetReportRequest sendAisPositionAndGetFluxReport(AssetDTO asset, String fluxEndpoint, LatLong position) throws Exception {
+        try (TopicListener topicListener = new TopicListener(VMSSystemHelper.FLUX_SELECTOR)) {
+            AisPluginMock.sendAisPosition(asset, position);
+            CustomRuleHelper.pollTicketCreated();
+
+            SetReportRequest setReportRequest = topicListener.listenOnEventBusForSpecificMessage(SetReportRequest.class);
+            assertThat(setReportRequest.getReport().getRecipient(), is(fluxEndpoint));
+            return setReportRequest;
         }
     }
 }
