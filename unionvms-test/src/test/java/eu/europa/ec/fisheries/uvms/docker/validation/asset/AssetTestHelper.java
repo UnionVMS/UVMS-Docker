@@ -4,13 +4,10 @@ import eu.europa.ec.fisheries.schema.audit.search.v1.AuditLogListQuery;
 import eu.europa.ec.fisheries.schema.audit.search.v1.ListCriteria;
 import eu.europa.ec.fisheries.schema.audit.search.v1.SearchKey;
 import eu.europa.ec.fisheries.schema.audit.v1.AuditLogType;
-import eu.europa.ec.fisheries.uvms.asset.client.model.*;
-import eu.europa.ec.fisheries.uvms.asset.client.AssetClient;
 import eu.europa.ec.fisheries.uvms.asset.client.model.AssetDTO;
 import eu.europa.ec.fisheries.uvms.asset.client.model.AssetGroup;
 import eu.europa.ec.fisheries.uvms.asset.client.model.AssetGroupField;
 import eu.europa.ec.fisheries.uvms.asset.client.model.AssetListResponse;
-import eu.europa.ec.fisheries.uvms.asset.client.model.AssetQuery;
 import eu.europa.ec.fisheries.uvms.asset.client.model.ContactInfo;
 import eu.europa.ec.fisheries.uvms.asset.client.model.Note;
 import eu.europa.ec.fisheries.uvms.asset.model.constants.AuditObjectTypeEnum;
@@ -28,7 +25,10 @@ import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.sse.SseEventSource;
 import java.time.OffsetDateTime;
-import java.util.*;
+import java.util.Date;
+import java.util.List;
+import java.util.Random;
+import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
 public class AssetTestHelper extends AbstractHelper {
@@ -239,18 +239,6 @@ public class AssetTestHelper extends AbstractHelper {
                 .header(HttpHeaders.AUTHORIZATION, getValidJwtToken())
                 .get(new GenericType<List<AssetGroupField>>() {});
     }
-
-	// ************************************************
-	//  InternalResource
-	// ************************************************
-
-	public static AssetListResponse getAssetList(AssetQuery query) {
-		return getWebTarget()
-				.path("asset/rest/internal/query")
-				.request(MediaType.APPLICATION_JSON)
-				.header(HttpHeaders.AUTHORIZATION, getValidJwtToken())
-				.post(Entity.json(query), AssetListResponse.class);
-	}
 
 	/*  Audit logs */
 	

@@ -1,6 +1,5 @@
 package eu.europa.ec.fisheries.uvms.docker.validation.activity;
 
-import com.google.common.collect.Lists;
 import eu.europa.ec.fisheries.uvms.activity.model.exception.ActivityModelMarshallException;
 import eu.europa.ec.fisheries.uvms.activity.model.mapper.JAXBMarshaller;
 import eu.europa.ec.fisheries.uvms.activity.model.schemas.ActivityModuleMethod;
@@ -12,7 +11,8 @@ import eu.europa.ec.fisheries.uvms.activity.service.search.FishingActivityQuery;
 import eu.europa.ec.fisheries.uvms.asset.client.model.AssetDTO;
 import eu.europa.ec.fisheries.uvms.asset.client.model.AssetGroup;
 import eu.europa.ec.fisheries.uvms.asset.client.model.AssetListResponse;
-import eu.europa.ec.fisheries.uvms.asset.client.model.AssetQuery;
+import eu.europa.ec.fisheries.uvms.asset.remote.dto.search.SearchBranch;
+import eu.europa.ec.fisheries.uvms.asset.remote.dto.search.SearchFields;
 import eu.europa.ec.fisheries.uvms.commons.date.JsonBConfigurator;
 import eu.europa.ec.fisheries.uvms.commons.rest.dto.PaginatedResponse;
 import eu.europa.ec.fisheries.uvms.docker.validation.asset.AssetJMSHelper;
@@ -230,10 +230,10 @@ public class ActivityJmsIT extends AbstractRest {
 	}
 
 	private AssetDTO getAssetDto(Asset asset) {
-		AssetQuery assetQuery = new AssetQuery();
-		assetQuery.setCfr(Lists.newArrayList(asset.getCfr()));
-		assetQuery.setExternalMarking(Lists.newArrayList(asset.getExternalMarking()));
-		assetQuery.setIrcs(Lists.newArrayList(asset.getIrcs()));
+		SearchBranch assetQuery = new SearchBranch();
+		assetQuery.addNewSearchLeaf(SearchFields.CFR, asset.getCfr());
+		assetQuery.addNewSearchLeaf(SearchFields.EXTERNAL_MARKING, asset.getExternalMarking());
+		assetQuery.addNewSearchLeaf(SearchFields.IRCS, asset.getIrcs());
 
 		AssetListResponse assetListResponse = AssetTestHelper.assetListQuery(assetQuery);
 		List<AssetDTO> assetList = assetListResponse.getAssetList();
