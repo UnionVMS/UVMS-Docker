@@ -71,20 +71,6 @@ public class AssetJMSIT {
 		assertEquals(asset.getMmsi(), assetById.getMmsiNo());
 	}
 
-	@Test
-	public void testGetAssetListByQuery() throws Exception {
-		AssetDTO asset = AssetTestHelper.createTestAsset();
-
-		AssetListQuery assetListQuery = assetJMSHelper.getBasicAssetQuery();
-		AssetListCriteriaPair assetListCriteriaPair = new AssetListCriteriaPair();
-		assetListCriteriaPair.setKey(ConfigSearchField.FLAG_STATE);
-		assetListCriteriaPair.setValue(asset.getFlagStateCode());
-		assetListQuery.getAssetSearchCriteria().getCriterias().add(assetListCriteriaPair);
-
-		List<eu.europa.ec.fisheries.wsdl.asset.types.Asset> assets = assetJMSHelper.getAssetByAssetListQuery(assetListQuery);
-
-		assertTrue(assets.stream().anyMatch(a -> a.getAssetId().getGuid().equals(asset.getId().toString())));
-	}
 
 	@Test
 	public void getAssetGroupListByUserTest() throws Exception {

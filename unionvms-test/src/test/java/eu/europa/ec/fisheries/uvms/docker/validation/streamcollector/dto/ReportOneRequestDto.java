@@ -1,13 +1,13 @@
 package eu.europa.ec.fisheries.uvms.docker.validation.streamcollector.dto;
 
-import eu.europa.ec.fisheries.uvms.asset.client.model.AssetQuery;
+import eu.europa.ec.fisheries.uvms.asset.remote.dto.search.SearchBranch;
 
 import java.util.List;
 
 public class ReportOneRequestDto {
 
 
-    AssetQuery assetQuery;
+    SearchBranch assetQuery;
     List<String> sources;
 
     int page = 1;
@@ -17,11 +17,11 @@ public class ReportOneRequestDto {
     String startDate = "";
     String endDate = "";
 
-    public AssetQuery getAssetQuery() {
+    public SearchBranch getAssetQuery() {
         return assetQuery;
     }
 
-    public void setAssetQuery(AssetQuery assetQuery) {
+    public void setAssetQuery(SearchBranch assetQuery) {
         this.assetQuery = assetQuery;
     }
 

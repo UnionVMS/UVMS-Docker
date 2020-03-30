@@ -1,7 +1,8 @@
 package eu.europa.ec.fisheries.uvms.docker.validation.streamcollector;
 
 import eu.europa.ec.fisheries.uvms.asset.client.model.AssetDTO;
-import eu.europa.ec.fisheries.uvms.asset.client.model.AssetQuery;
+import eu.europa.ec.fisheries.uvms.asset.remote.dto.search.SearchBranch;
+import eu.europa.ec.fisheries.uvms.asset.remote.dto.search.SearchFields;
 import eu.europa.ec.fisheries.uvms.docker.validation.asset.AssetJMSHelper;
 import eu.europa.ec.fisheries.uvms.docker.validation.asset.AssetTestHelper;
 import eu.europa.ec.fisheries.uvms.docker.validation.common.AbstractRest;
@@ -18,7 +19,6 @@ import javax.ws.rs.client.Entity;
 import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import java.util.Collections;
 import java.util.Date;
 
 public class ReportIT extends AbstractRest {
@@ -40,8 +40,8 @@ public class ReportIT extends AbstractRest {
         IncomingMovement createMovementRequest = movementHelper.createIncomingMovement(testAsset, latLong);
         MovementDto createMovementResponse = movementHelper.createMovement(createMovementRequest);
 
-        AssetQuery assetQuery = AssetTestHelper.getBasicAssetQuery();
-        assetQuery.setId(Collections.singletonList(testAsset.getId()));
+        SearchBranch assetQuery = AssetTestHelper.getBasicAssetSearchBranch();
+        assetQuery.addNewSearchLeaf(SearchFields.GUID, testAsset.getId().toString());
 
         ReportOneRequestDto report1 = new ReportOneRequestDto();
         report1.setAssetQuery(assetQuery);

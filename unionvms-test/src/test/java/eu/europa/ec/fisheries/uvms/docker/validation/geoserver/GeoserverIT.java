@@ -77,15 +77,14 @@ public class GeoserverIT extends AbstractRest {
 				.header(HttpHeaders.AUTHORIZATION, getValidJwtToken())
 				.header("Origin", "http://www.example.com")
 				.header("Access-Control-Request-Method", "POST")
-				.header("Access-Control-Request-Headers", "content-type,accept")
+				.header("Access-Control-Request-Headers", "X-Requested-With,Content-Type,Accept,Authorization")
 				.options();
 
 		assertEquals(Response.Status.OK.getStatusCode(), response.getStatus());
-		assertEquals("GET, HEAD, POST, PUT, DELETE, TRACE, OPTIONS, PATCH", response.getHeaderString("Allow"));
 		assertEquals("http://www.example.com", response.getHeaderString("Access-Control-Allow-Origin"));
 		assertEquals("true", response.getHeaderString("Access-Control-Allow-Credentials"));
-		assertEquals("GET,POST,HEAD", response.getHeaderString("Access-Control-Allow-Methods"));
-		assertEquals("X-Requested-With,Content-Type,Accept,Origin", response.getHeaderString("Access-Control-Allow-Headers"));
+		assertEquals("GET,POST,PUT,DELETE,HEAD,OPTIONS", response.getHeaderString("Access-Control-Allow-Methods"));
+		assertEquals("X-Requested-With,Content-Type,Accept,Authorization", response.getHeaderString("Access-Control-Allow-Headers"));
 	}
 
 	private WebTarget geoServerWebTarget() {
