@@ -207,7 +207,7 @@
 			<plugin>
                 <groupId>org.apache.cxf</groupId>
                 <artifactId>cxf-codegen-plugin</artifactId>
-                <version>3.3.5</version>
+                <version>3.3.6</version>
                 <executions>
                     <execution>
                         <id>wsdl-services</id>
