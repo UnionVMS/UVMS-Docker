@@ -351,12 +351,6 @@
 									<ports>
 										<port>25432:5432</port>
 									</ports>
-									<wait>
-										<log>All uvms databases created</log>
-										<time>480000</time>
-										<kill>15000</kill>
-										<shutdown>15000</shutdown>
-									</wait>
 									<log>
 										<enabled>true</enabled>
 										<color>green</color>
