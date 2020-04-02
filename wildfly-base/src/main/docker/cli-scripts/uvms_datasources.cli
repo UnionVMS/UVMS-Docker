@@ -10,6 +10,7 @@ set incident_pw=${db_password_incident}
 set activity_pw=${db_password_activity}
 set mdr_pw=${db_password_mdr}
 set config_pw=${db_password_config}
+set ers_pw=${db_password_ers}
 
 embed-server --server-config=standalone-full.xml
 
@@ -271,5 +272,26 @@ xa-data-source add \
 /subsystem=datasources/xa-data-source=jdbc\/uvms_config/xa-datasource-properties=ServerName:add(value=postgres)
 /subsystem=datasources/xa-data-source=jdbc\/uvms_config/xa-datasource-properties=PortNumber:add(value=5432)
 /subsystem=datasources/xa-data-source=jdbc\/uvms_config/xa-datasource-properties=DatabaseName:add(value=db71u)
+
+# ERS
+xa-data-source add \
+    --name=ers \
+    --jndi-name=java:jboss/datasources/ers \
+    --driver-name=postgresql \
+	--min-pool-size=2 \
+	--initial-pool-size=2 \
+	--max-pool-size=20 \
+	--pool-prefill=true \
+	--prepared-statements-cache-size=32 \
+	--track-statements=nowarn \
+	--valid-connection-checker-class-name=org.jboss.jca.adapters.jdbc.extensions.postgres.PostgreSQLValidConnectionChecker \
+	--exception-sorter-class-name=org.jboss.jca.adapters.jdbc.extensions.postgres.PostgreSQLExceptionSorter \
+	--user-name=ers \
+	--password=$ers_pw \
+	--enabled=true \
+	--use-ccm=true
+/subsystem=datasources/xa-data-source=ers/xa-datasource-properties=ServerName:add(value=postgres)
+/subsystem=datasources/xa-data-source=ers/xa-datasource-properties=PortNumber:add(value=5432)
+/subsystem=datasources/xa-data-source=ers/xa-datasource-properties=DatabaseName:add(value=db71u)
 
 stop-embedded-server
