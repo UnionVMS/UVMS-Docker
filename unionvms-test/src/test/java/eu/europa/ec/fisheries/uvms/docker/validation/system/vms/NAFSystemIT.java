@@ -163,7 +163,7 @@ public class NAFSystemIT extends AbstractRest {
                 .setName("Enter NOR => Send to NOR")
                 .rule(CriteriaType.AREA, SubCriteriaType.AREA_CODE_ENT, 
                         ConditionType.EQ, "NOR")
-                .action(ActionType.SEND_REPORT, VMSSystemHelper.NAF_NAME, organisation.getName())
+                .action(ActionType.SEND_ENTRY_REPORT, VMSSystemHelper.NAF_NAME, organisation.getName())
                 .build();
 
         CustomRuleType createdCustomRule = CustomRuleHelper.createCustomRule(flagStateRule);

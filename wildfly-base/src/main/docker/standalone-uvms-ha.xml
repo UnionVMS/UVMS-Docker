@@ -839,7 +839,7 @@
         <subsystem xmlns="urn:jboss:domain:jdr:1.0"/>
         <subsystem xmlns="urn:jboss:domain:jgroups:7.0">
             <channels default="ee">
-                <channel name="ee" stack="udp" cluster="ejb"/>
+                <channel name="ee" stack="tcp" cluster="ejb"/>
             </channels>
             <stacks>
                 <stack name="udp">
@@ -925,7 +925,7 @@
                 <jms-queue name="DLQ" entries="java:/jms/queue/DLQ"/>
                 <connection-factory name="InVmConnectionFactory" entries="java:/ConnectionFactory" connectors="in-vm"/>
                 <connection-factory name="RemoteConnectionFactory" entries="java:jboss/exported/jms/RemoteConnectionFactory" connectors="http-connector" ha="true" block-on-acknowledge="true" reconnect-attempts="-1"/>
-                <pooled-connection-factory name="activemq-ra" entries="java:/JmsXA java:jboss/DefaultJMSConnectionFactory" connectors="in-vm" transaction="xa" compress-large-messages="true" thread-pool-max-size="100" max-pool-size="100"/>
+                <pooled-connection-factory name="activemq-ra" entries="java:/JmsXA java:jboss/DefaultJMSConnectionFactory" connectors="in-vm" transaction="xa" compress-large-messages="true" thread-pool-max-size="100" max-pool-size="100" ha="true"/>
                 
                 <jms-queue name="UVMSReporting" entries="jms/queue/UVMSReporting java:jboss/exported/jms/queue/UVMSReporting" />
                 <jms-queue name="UVMSReportingEvent" entries="jms/queue/UVMSReportingEvent java:jboss/exported/jms/queue/UVMSReportingEvent" />
@@ -985,12 +985,12 @@
         <subsystem xmlns="urn:jboss:domain:naming:2.0">
             <remote-naming/>
             <bindings>
-                <simple name="java:global/asset_endpoint" value="http://${loadbalancer.address:localhost}:${loadbalancer.port:6666}/unionvms/asset/rest"/>
-                <simple name="java:global/spatial_endpoint" value="http://${loadbalancer.address:localhost}:${loadbalancer.port:6666}/unionvms/spatialSwe"/>
-                <simple name="java:global/movement-rules_endpoint" value="http://${loadbalancer.address:localhost}:${loadbalancer.port:6666}/unionvms/movement-rules/rest"/>
-                <simple name="java:global/exchange_endpoint" value="http://${loadbalancer.address:localhost}:${loadbalancer.port:6666}/unionvms/exchange/unsecured/rest"/>
-                <simple name="java:global/movement_endpoint" value="http://${loadbalancer.address:localhost}:${loadbalancer.port:6666}/unionvms/movement/rest"/>
-                <simple name="java:global/user_endpoint" value="http://${loadbalancer.address:localhost}:${loadbalancer.port:6666}/unionvms/user/rest"/>
+                <simple name="java:global/asset_endpoint" value="http://${loadbalancer.address:load-balancer}:${loadbalancer.port:8080}/unionvms/asset/rest"/>
+                <simple name="java:global/spatial_endpoint" value="http://${loadbalancer.address:load-balancer}:${loadbalancer.port:8080}/unionvms/spatialSwe"/>
+                <simple name="java:global/movement-rules_endpoint" value="http://${loadbalancer.address:load-balancer}:${loadbalancer.port:8080}/unionvms/movement-rules/rest"/>
+                <simple name="java:global/exchange_endpoint" value="http://${loadbalancer.address:load-balancer}:${loadbalancer.port:8080}/unionvms/exchange/unsecured/rest"/>
+                <simple name="java:global/movement_endpoint" value="http://${loadbalancer.address:load-balancer}:${loadbalancer.port:8080}/unionvms/movement/rest"/>
+                <simple name="java:global/user_endpoint" value="http://${loadbalancer.address:load-balancer}:${loadbalancer.port:8080}/unionvms/user/rest"/>
                 <simple name="java:global/cors_allowed_host_regex" type="java.lang.String" value=".*" />
             </bindings>
         </subsystem>
@@ -1043,7 +1043,7 @@
         <subsystem xmlns="urn:jboss:domain:singleton:1.0">
             <singleton-policies default="default">
                 <singleton-policy name="default" cache-container="server">
-                    <simple-election-policy/>
+                    <random-election-policy/>
                 </singleton-policy>
             </singleton-policies>
         </subsystem>
@@ -1128,7 +1128,7 @@
             <remote-destination host="localhost" port="25"/>
         </outbound-socket-binding>
 		<outbound-socket-binding name="loadbalancer">
-			<remote-destination host="${loadbalancer.address}" port="${loadbalancer.port:6666}"/>
+			<remote-destination host="${loadbalancer.address:load-balancer}" port="${loadbalancer.port:8090}"/>
 		</outbound-socket-binding>
     </socket-binding-group>
 </server>

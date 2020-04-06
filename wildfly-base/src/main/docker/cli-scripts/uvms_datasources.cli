@@ -1,0 +1,297 @@
+set audit_pw=${db_password_audit}
+set movement_pw=${db_password_movement}
+set asset_pw=${db_password_asset}
+set exchange_pw=${db_password_exchange}
+set usm_pw=${db_password_usm}
+set spatial_pw=${db_password_spatial}
+set reporting_pw=${db_password_reporting}
+set movementrules_pw=${db_password_movementrules}
+set incident_pw=${db_password_incident}
+set activity_pw=${db_password_activity}
+set mdr_pw=${db_password_mdr}
+set config_pw=${db_password_config}
+set ers_pw=${db_password_ers}
+
+embed-server --server-config=standalone-full.xml
+
+# Create driver
+/subsystem=datasources/jdbc-driver=postgresql:add( \
+	driver-name=postgresql, \
+	driver-module-name=org.postgresql, \
+	driver-xa-datasource-class-name=org.postgresql.xa.PGXADataSource \
+	)
+
+# Audit
+xa-data-source add \
+	--name=jdbc/uvms_audit \
+	--jndi-name=java:/jdbc/uvms_audit \
+	--driver-name=postgresql \
+	--min-pool-size=2 \
+	--initial-pool-size=2 \
+	--max-pool-size=20 \
+	--pool-prefill=true \
+	--prepared-statements-cache-size=32 \
+	--track-statements=nowarn \
+	--valid-connection-checker-class-name=org.jboss.jca.adapters.jdbc.extensions.postgres.PostgreSQLValidConnectionChecker \
+	--exception-sorter-class-name=org.jboss.jca.adapters.jdbc.extensions.postgres.PostgreSQLExceptionSorter \
+	--user-name=audit \
+	--password=$audit_pw \
+	--enabled=true \
+	--use-ccm=true
+/subsystem=datasources/xa-data-source=jdbc\/uvms_audit/xa-datasource-properties=ServerName:add(value=postgres)
+/subsystem=datasources/xa-data-source=jdbc\/uvms_audit/xa-datasource-properties=PortNumber:add(value=5432)
+/subsystem=datasources/xa-data-source=jdbc\/uvms_audit/xa-datasource-properties=DatabaseName:add(value=db71u)
+
+# Movement
+xa-data-source add \
+	--name=jdbc/uvms_movement \
+	--jndi-name=java:/jdbc/uvms_movement \
+	--driver-name=postgresql \
+	--min-pool-size=10 \
+	--initial-pool-size=10 \
+	--max-pool-size=100 \
+	--pool-prefill=true \
+	--prepared-statements-cache-size=32 \
+	--track-statements=nowarn \
+	--valid-connection-checker-class-name=org.jboss.jca.adapters.jdbc.extensions.postgres.PostgreSQLValidConnectionChecker \
+	--exception-sorter-class-name=org.jboss.jca.adapters.jdbc.extensions.postgres.PostgreSQLExceptionSorter \
+	--user-name=movement \
+	--password=$movement_pw \
+	--enabled=true \
+	--use-ccm=true
+/subsystem=datasources/xa-data-source=jdbc\/uvms_movement/xa-datasource-properties=ServerName:add(value=postgres)
+/subsystem=datasources/xa-data-source=jdbc\/uvms_movement/xa-datasource-properties=PortNumber:add(value=5432)
+/subsystem=datasources/xa-data-source=jdbc\/uvms_movement/xa-datasource-properties=DatabaseName:add(value=db71u)
+
+# Asset
+xa-data-source add \
+	--name=jdbc/uvms_asset \
+	--jndi-name=java:/jdbc/uvms_asset \
+	--driver-name=postgresql \
+	--min-pool-size=10 \
+	--initial-pool-size=10 \
+	--max-pool-size=100 \
+	--pool-prefill=true \
+	--prepared-statements-cache-size=32 \
+	--track-statements=nowarn \
+	--valid-connection-checker-class-name=org.jboss.jca.adapters.jdbc.extensions.postgres.PostgreSQLValidConnectionChecker \
+	--exception-sorter-class-name=org.jboss.jca.adapters.jdbc.extensions.postgres.PostgreSQLExceptionSorter \
+	--user-name=asset \
+	--password=$asset_pw \
+	--enabled=true \
+	--use-ccm=true
+/subsystem=datasources/xa-data-source=jdbc\/uvms_asset/xa-datasource-properties=ServerName:add(value=postgres)
+/subsystem=datasources/xa-data-source=jdbc\/uvms_asset/xa-datasource-properties=PortNumber:add(value=5432)
+/subsystem=datasources/xa-data-source=jdbc\/uvms_asset/xa-datasource-properties=DatabaseName:add(value=db71u)
+
+# Exchange
+xa-data-source add \
+	--name=jdbc/uvms_exchange \
+	--jndi-name=java:/jdbc/uvms_exchange \
+	--driver-name=postgresql \
+	--min-pool-size=10 \
+	--initial-pool-size=10 \
+	--max-pool-size=100 \
+	--pool-prefill=true \
+	--prepared-statements-cache-size=32 \
+	--track-statements=nowarn \
+	--valid-connection-checker-class-name=org.jboss.jca.adapters.jdbc.extensions.postgres.PostgreSQLValidConnectionChecker \
+	--exception-sorter-class-name=org.jboss.jca.adapters.jdbc.extensions.postgres.PostgreSQLExceptionSorter \
+	--user-name=exchange \
+	--password=$exchange_pw \
+	--enabled=true \
+	--use-ccm=true
+/subsystem=datasources/xa-data-source=jdbc\/uvms_exchange/xa-datasource-properties=ServerName:add(value=postgres)
+/subsystem=datasources/xa-data-source=jdbc\/uvms_exchange/xa-datasource-properties=PortNumber:add(value=5432)
+/subsystem=datasources/xa-data-source=jdbc\/uvms_exchange/xa-datasource-properties=DatabaseName:add(value=db71u)
+
+# USM2
+xa-data-source add \
+	--name=jdbc/USM2 \
+	--jndi-name=java:/jdbc/USM2 \
+	--driver-name=postgresql \
+	--min-pool-size=2 \
+	--initial-pool-size=2 \
+	--max-pool-size=20 \
+	--pool-prefill=true \
+	--prepared-statements-cache-size=32 \
+	--track-statements=nowarn \
+	--valid-connection-checker-class-name=org.jboss.jca.adapters.jdbc.extensions.postgres.PostgreSQLValidConnectionChecker \
+	--exception-sorter-class-name=org.jboss.jca.adapters.jdbc.extensions.postgres.PostgreSQLExceptionSorter \
+	--user-name=usm \
+	--password=$usm_pw \
+	--enabled=true \
+	--use-ccm=true
+/subsystem=datasources/xa-data-source=jdbc\/USM2/xa-datasource-properties=ServerName:add(value=postgres)
+/subsystem=datasources/xa-data-source=jdbc\/USM2/xa-datasource-properties=PortNumber:add(value=5432)
+/subsystem=datasources/xa-data-source=jdbc\/USM2/xa-datasource-properties=DatabaseName:add(value=db71u)
+
+# Spatial
+xa-data-source add \
+	--name=uvms_spatial \
+	--jndi-name=java:jboss/datasources/uvms_spatial \
+	--driver-name=postgresql \
+	--min-pool-size=10 \
+	--initial-pool-size=10 \
+	--max-pool-size=100 \
+	--pool-prefill=true \
+	--prepared-statements-cache-size=32 \
+	--track-statements=nowarn \
+	--valid-connection-checker-class-name=org.jboss.jca.adapters.jdbc.extensions.postgres.PostgreSQLValidConnectionChecker \
+	--exception-sorter-class-name=org.jboss.jca.adapters.jdbc.extensions.postgres.PostgreSQLExceptionSorter \
+	--user-name=spatial \
+	--password=$spatial_pw \
+	--enabled=true \
+	--use-ccm=true
+/subsystem=datasources/xa-data-source=uvms_spatial/xa-datasource-properties=ServerName:add(value=postgres)
+/subsystem=datasources/xa-data-source=uvms_spatial/xa-datasource-properties=PortNumber:add(value=5432)
+/subsystem=datasources/xa-data-source=uvms_spatial/xa-datasource-properties=DatabaseName:add(value=db71u)
+
+# Reporting
+xa-data-source add \
+	--name=uvms_reporting \
+	--jndi-name=java:jboss/datasources/uvms_reporting \
+	--driver-name=postgresql \
+	--min-pool-size=2 \
+	--initial-pool-size=2 \
+	--max-pool-size=20 \
+	--pool-prefill=true \
+	--prepared-statements-cache-size=32 \
+	--track-statements=nowarn \
+	--valid-connection-checker-class-name=org.jboss.jca.adapters.jdbc.extensions.postgres.PostgreSQLValidConnectionChecker \
+	--exception-sorter-class-name=org.jboss.jca.adapters.jdbc.extensions.postgres.PostgreSQLExceptionSorter \
+	--user-name=reporting \
+	--password=$reporting_pw \
+	--enabled=true \
+	--use-ccm=true
+/subsystem=datasources/xa-data-source=uvms_reporting/xa-datasource-properties=ServerName:add(value=postgres)
+/subsystem=datasources/xa-data-source=uvms_reporting/xa-datasource-properties=PortNumber:add(value=5432)
+/subsystem=datasources/xa-data-source=uvms_reporting/xa-datasource-properties=DatabaseName:add(value=db71u)
+
+# MovementRules
+xa-data-source add \
+	--name=jdbc/uvms_movementrules \
+	--jndi-name=java:/jdbc/uvms_movementrules \
+	--driver-name=postgresql \
+	--min-pool-size=2 \
+	--initial-pool-size=2 \
+	--max-pool-size=20 \
+	--pool-prefill=true \
+	--prepared-statements-cache-size=32 \
+	--track-statements=nowarn \
+	--valid-connection-checker-class-name=org.jboss.jca.adapters.jdbc.extensions.postgres.PostgreSQLValidConnectionChecker \
+	--exception-sorter-class-name=org.jboss.jca.adapters.jdbc.extensions.postgres.PostgreSQLExceptionSorter \
+	--user-name=movementrules \
+	--password=$movementrules_pw \
+	--enabled=true \
+	--use-ccm=true
+/subsystem=datasources/xa-data-source=jdbc\/uvms_movementrules/xa-datasource-properties=ServerName:add(value=postgres)
+/subsystem=datasources/xa-data-source=jdbc\/uvms_movementrules/xa-datasource-properties=PortNumber:add(value=5432)
+/subsystem=datasources/xa-data-source=jdbc\/uvms_movementrules/xa-datasource-properties=DatabaseName:add(value=db71u)
+
+# Incident
+xa-data-source add \
+	--name=jdbc/uvms_incident \ 
+	--jndi-name=java:/jdbc/uvms_incident \
+	--driver-name=postgresql \
+	--min-pool-size=2 \
+	--initial-pool-size=2 \
+	--max-pool-size=20 \
+	--pool-prefill=true \
+	--prepared-statements-cache-size=32 \
+	--track-statements=nowarn \
+	--valid-connection-checker-class-name=org.jboss.jca.adapters.jdbc.extensions.postgres.PostgreSQLValidConnectionChecker \
+	--exception-sorter-class-name=org.jboss.jca.adapters.jdbc.extensions.postgres.PostgreSQLExceptionSorter \
+	--user-name=incident \
+	--password=$incident_pw \
+	--enabled=true \
+	--use-ccm=true
+/subsystem=datasources/xa-data-source=jdbc\/uvms_incident/xa-datasource-properties=ServerName:add(value=postgres)
+/subsystem=datasources/xa-data-source=jdbc\/uvms_incident/xa-datasource-properties=PortNumber:add(value=5432)
+/subsystem=datasources/xa-data-source=jdbc\/uvms_incident/xa-datasource-properties=DatabaseName:add(value=db71u)
+
+# Activity
+xa-data-source add \
+	--name=uvms_activity \ 
+	--jndi-name=java:jboss/datasources/uvms_activity \
+	--driver-name=postgresql \
+	--min-pool-size=2 \
+	--initial-pool-size=2 \
+	--max-pool-size=20 \
+	--pool-prefill=true \
+	--prepared-statements-cache-size=32 \
+	--track-statements=nowarn \
+	--valid-connection-checker-class-name=org.jboss.jca.adapters.jdbc.extensions.postgres.PostgreSQLValidConnectionChecker \
+	--exception-sorter-class-name=org.jboss.jca.adapters.jdbc.extensions.postgres.PostgreSQLExceptionSorter \
+	--user-name=activity \
+	--password=$activity_pw \
+	--enabled=true \
+	--use-ccm=true
+/subsystem=datasources/xa-data-source=uvms_activity/xa-datasource-properties=ServerName:add(value=postgres)
+/subsystem=datasources/xa-data-source=uvms_activity/xa-datasource-properties=PortNumber:add(value=5432)
+/subsystem=datasources/xa-data-source=uvms_activity/xa-datasource-properties=DatabaseName:add(value=db71u)
+
+# MDR
+xa-data-source add \
+	--name=uvms_mdr \
+	--jndi-name=java:jboss/datasources/uvms_mdr \
+	--driver-name=postgresql \
+	--min-pool-size=2 \
+	--initial-pool-size=2 \
+	--max-pool-size=20 \
+	--pool-prefill=true \
+	--prepared-statements-cache-size=32 \
+	--track-statements=nowarn \
+	--valid-connection-checker-class-name=org.jboss.jca.adapters.jdbc.extensions.postgres.PostgreSQLValidConnectionChecker \
+	--exception-sorter-class-name=org.jboss.jca.adapters.jdbc.extensions.postgres.PostgreSQLExceptionSorter \
+	--user-name=mdr \
+	--password=$mdr_pw \
+	--enabled=true \
+	--use-ccm=true
+/subsystem=datasources/xa-data-source=uvms_mdr/xa-datasource-properties=ServerName:add(value=postgres)
+/subsystem=datasources/xa-data-source=uvms_mdr/xa-datasource-properties=PortNumber:add(value=5432)
+/subsystem=datasources/xa-data-source=uvms_mdr/xa-datasource-properties=DatabaseName:add(value=db71u)
+
+# Config
+xa-data-source add \
+	--name=jdbc/uvms_config \
+	--jndi-name=java:/jdbc/uvms_config \
+	--driver-name=postgresql \
+	--min-pool-size=2 \
+	--initial-pool-size=2 \
+	--max-pool-size=20 \
+	--pool-prefill=true \
+	--prepared-statements-cache-size=32 \
+	--track-statements=nowarn \
+	--valid-connection-checker-class-name=org.jboss.jca.adapters.jdbc.extensions.postgres.PostgreSQLValidConnectionChecker \
+	--exception-sorter-class-name=org.jboss.jca.adapters.jdbc.extensions.postgres.PostgreSQLExceptionSorter \
+	--user-name=config \
+	--password=$config_pw \
+	--enabled=true \
+	--use-ccm=true
+/subsystem=datasources/xa-data-source=jdbc\/uvms_config/xa-datasource-properties=ServerName:add(value=postgres)
+/subsystem=datasources/xa-data-source=jdbc\/uvms_config/xa-datasource-properties=PortNumber:add(value=5432)
+/subsystem=datasources/xa-data-source=jdbc\/uvms_config/xa-datasource-properties=DatabaseName:add(value=db71u)
+
+# ERS
+xa-data-source add \
+    --name=ers \
+    --jndi-name=java:jboss/datasources/ers \
+    --driver-name=postgresql \
+	--min-pool-size=2 \
+	--initial-pool-size=2 \
+	--max-pool-size=20 \
+	--pool-prefill=true \
+	--prepared-statements-cache-size=32 \
+	--track-statements=nowarn \
+	--valid-connection-checker-class-name=org.jboss.jca.adapters.jdbc.extensions.postgres.PostgreSQLValidConnectionChecker \
+	--exception-sorter-class-name=org.jboss.jca.adapters.jdbc.extensions.postgres.PostgreSQLExceptionSorter \
+	--user-name=ers \
+	--password=$ers_pw \
+	--enabled=true \
+	--use-ccm=true
+/subsystem=datasources/xa-data-source=ers/xa-datasource-properties=ServerName:add(value=postgres)
+/subsystem=datasources/xa-data-source=ers/xa-datasource-properties=PortNumber:add(value=5432)
+/subsystem=datasources/xa-data-source=ers/xa-datasource-properties=DatabaseName:add(value=db71u)
+
+stop-embedded-server

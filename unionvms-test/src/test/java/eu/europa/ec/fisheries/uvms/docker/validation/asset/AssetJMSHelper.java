@@ -55,13 +55,6 @@ public class AssetJMSHelper {
         return assetModuleResponse.getAsset();
     }
 
-    public List<Asset> getAssetByAssetListQuery(AssetListQuery assetListQuery) throws Exception {
-        String msg = AssetModuleRequestMapper.createAssetListModuleRequest(assetListQuery);
-        TextMessage response = (TextMessage) messageHelper.getMessageResponse(ASSET_QUEUE, msg);
-        ListAssetResponse assetModuleResponse = JAXBMarshaller.unmarshallTextMessage(response, ListAssetResponse.class);
-        return assetModuleResponse.getAsset();
-    }
-
     public List<AssetGroup> getAssetGroupByUser(String username) throws Exception {
         String msg = AssetModuleRequestMapper.createAssetGroupListByUserModuleRequest(username);
         TextMessage response = (TextMessage) messageHelper.getMessageResponse(ASSET_QUEUE, msg);

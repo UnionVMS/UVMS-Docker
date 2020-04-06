@@ -1,0 +1,64 @@
+embed-server --server-config=standalone-full.xml
+
+# Messaging configuration
+
+/socket-binding-group=standard-sockets/socket-binding=messaging:add(port=5445)
+/socket-binding-group=standard-sockets/socket-binding=messaging-throughput:add(port=5455)
+
+/subsystem=messaging-activemq/server=default/security-setting=#/role=guest:write-attribute(name=create-durable-queue, value=true)
+/subsystem=messaging-activemq/server=default/security-setting=#/role=guest:write-attribute(name=delete-durable-queue, value=true)
+
+/subsystem=messaging-activemq/server=default/remote-connector=remote-connector:add(socket-binding=messaging)
+/subsystem=messaging-activemq/server=default/remote-acceptor=remote-acceptor:add(socket-binding=messaging)
+/subsystem=messaging-activemq/server=default/remote-acceptor=remote-acceptor-throughput:add(socket-binding=messaging-throughput, params={batch-delay=50,direct-deliver=false})
+
+/subsystem=messaging-activemq/server=default/connection-factory=InVmConnectionFactory:write-attribute(name=compress-large-messages, value=true)
+/subsystem=messaging-activemq/server=default/connection-factory=InVmConnectionFactory:write-attribute(name=thread-pool-max-size, value=60)
+
+/subsystem=messaging-activemq/server=default/pooled-connection-factory=activemq-ra:write-attribute(name=compress-large-messages, value=true)
+/subsystem=messaging-activemq/server=default/pooled-connection-factory=activemq-ra:write-attribute(name=thread-pool-max-size, value=100)
+/subsystem=messaging-activemq/server=default/pooled-connection-factory=activemq-ra:write-attribute(name=max-pool-size, value=100)
+
+# Queues / Topics
+
+jms-queue add --queue-address=UVMSReporting --entries=[jms/queue/UVMSReporting java:jboss/exported/jms/queue/UVMSReporting]
+jms-queue add --queue-address=UVMSReportingEvent --entries=[jms/queue/UVMSReportingEvent java:jboss/exported/jms/queue/UVMSReportingEvent]
+jms-queue add --queue-address=UVMSConfig --entries=[jms/queue/UVMSConfig java:jboss/exported/jms/queue/UVMSConfig]
+jms-queue add --queue-address=UVMSConfigEvent --entries=[jms/queue/UVMSConfigEvent java:jboss/exported/jms/queue/UVMSConfigEvent]
+jms-queue add --queue-address=UVMSSpatial --entries=[jms/queue/UVMSSpatial java:jboss/exported/jms/queue/UVMSSpatial]
+jms-queue add --queue-address=UVMSSpatialEvent --entries=[jms/queue/UVMSSpatialEvent java:jboss/exported/jms/queue/UVMSSpatialEvent]
+jms-queue add --queue-address=UVMSExchange --entries=[jms/queue/UVMSExchange java:jboss/exported/jms/queue/UVMSExchange]
+jms-queue add --queue-address=UVMSExchangeEvent --entries=[jms/queue/UVMSExchangeEvent java:jboss/exported/jms/queue/UVMSExchangeEvent]
+jms-queue add --queue-address=UVMSMovement --entries=[jms/queue/UVMSMovement java:jboss/exported/jms/queue/UVMSMovement]
+jms-queue add --queue-address=UVMSMovementEvent --entries=[jms/queue/UVMSMovementEvent java:jboss/exported/jms/queue/UVMSMovementEvent]
+jms-queue add --queue-address=UVMSMovementRules --entries=[jms/queue/UVMSMovementRules java:jboss/exported/jms/queue/UVMSMovementRules]
+jms-queue add --queue-address=UVMSMovementRulesEvent --entries=[jms/queue/UVMSMovementRulesEvent java:jboss/exported/jms/queue/UVMSMovementRulesEvent]
+jms-queue add --queue-address=UVMSUser --entries=[jms/queue/UVMSUser java:jboss/exported/jms/queue/UVMSUser]
+jms-queue add --queue-address=UVMSUserEvent --entries=[jms/queue/UVMSUserEvent java:jboss/exported/jms/queue/UVMSUserEvent]
+jms-queue add --queue-address=UVMSRules --entries=[jms/queue/UVMSRules java:jboss/exported/jms/queue/UVMSRules]
+jms-queue add --queue-address=UVMSRulesEvent --entries=[jms/queue/UVMSRulesEvent java:jboss/exported/jms/queue/UVMSRulesEvent]
+jms-queue add --queue-address=UVMSSales --entries=[jms/queue/UVMSSales java:jboss/exported/jms/queue/UVMSSales]
+jms-queue add --queue-address=UVMSSalesEvent --entries=[jms/queue/UVMSSalesEvent java:jboss/exported/jms/queue/UVMSSalesEvent]
+jms-queue add --queue-address=UVMSActivity --entries=[jms/queue/UVMSActivity java:jboss/exported/jms/queue/UVMSActivity]
+jms-queue add --queue-address=UVMSActivityEvent --entries=[jms/queue/UVMSActivityEvent java:jboss/exported/jms/queue/UVMSActivityEvent]
+jms-queue add --queue-address=UVMSAsset --entries=[jms/queue/UVMSAsset java:jboss/exported/jms/queue/UVMSAsset]
+jms-queue add --queue-address=UVMSAssetEvent --entries=[jms/queue/UVMSAssetEvent java:jboss/exported/jms/queue/UVMSAssetEvent]
+jms-queue add --queue-address=UVMSAudit --entries=[jms/queue/UVMSAudit java:jboss/exported/jms/queue/UVMSAudit]
+jms-queue add --queue-address=UVMSAuditEvent --entries=[jms/queue/UVMSAuditEvent java:jboss/exported/jms/queue/UVMSAuditEvent]
+jms-queue add --queue-address=UVMSMdr --entries=[jms/queue/UVMSMdr java:jboss/exported/jms/queue/UVMSMdr]
+jms-queue add --queue-address=UVMSMdrEvent --entries=[jms/queue/UVMSMdrEvent java:jboss/exported/jms/queue/UVMSMdrEvent]
+jms-queue add --queue-address=USM4UVMS --entries=[jms/queue/USM4UVMS java:jboss/exported/jms/queue/USM4UVMS]
+jms-queue add --queue-address=UVMSPluginBridge --entries=[jms/queue/UVMSPluginBridge java:jboss/exported/jms/queue/UVMSPluginBridge]
+jms-queue add --queue-address=UVMSMdrPluginEvent --entries=[jms/queue/UVMSMdrPluginEvent java:jboss/exported/jms/queue/UVMSMdrPluginEvent]
+jms-queue add --queue-address=UVMSActivityPluginEvent --entries=[jms/queue/UVMSActivityPluginEvent java:jboss/exported/jms/queue/UVMSActivityPluginEvent]
+jms-queue add --queue-address=UVMSPluginFailedReport --entries=[jms/queue/UVMSPluginFailedReport java:jboss/exported/jms/queue/UVMSPluginFailedReport]
+jms-queue add --queue-address=UVMSInmarsatMessages --entries=[jms/queue/UVMSInmarsatMessages java:jboss/exported/jms/queue/UVMSInmarsatMessages]
+jms-queue add --queue-address=IncidentEvent --entries=[jms/queue/IncidentEvent java:jboss/exported/jms/queue/IncidentEvent]
+
+jms-queue add --queue-address=IntegrationTestsResponseQueue --entries=[jms/queue/IntegrationTestsResponseQueue java:jboss/exported/jms/queue/IntegrationTestsResponseQueue]
+
+jms-topic add --topic-address=ConfigStatus --entries=[jms/topic/ConfigStatus java:jboss/exported/jms/topic/ConfigStatus]
+jms-topic add --topic-address=EventBus --entries=[jms/topic/EventBus java:jboss/exported/jms/topic/EventBus]
+jms-topic add --topic-address=EventStream --entries=[jms/topic/EventStream java:jboss/exported/jms/topic/EventStream]
+
+stop-embedded-server

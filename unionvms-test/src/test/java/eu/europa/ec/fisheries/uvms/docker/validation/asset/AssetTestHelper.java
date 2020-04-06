@@ -1,21 +1,18 @@
 package eu.europa.ec.fisheries.uvms.docker.validation.asset;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import eu.europa.ec.fisheries.schema.audit.search.v1.AuditLogListQuery;
 import eu.europa.ec.fisheries.schema.audit.search.v1.ListCriteria;
 import eu.europa.ec.fisheries.schema.audit.search.v1.SearchKey;
 import eu.europa.ec.fisheries.schema.audit.v1.AuditLogType;
-import eu.europa.ec.fisheries.uvms.asset.client.model.*;
-import eu.europa.ec.fisheries.uvms.asset.client.AssetClient;
 import eu.europa.ec.fisheries.uvms.asset.client.model.AssetDTO;
 import eu.europa.ec.fisheries.uvms.asset.client.model.AssetGroup;
 import eu.europa.ec.fisheries.uvms.asset.client.model.AssetGroupField;
 import eu.europa.ec.fisheries.uvms.asset.client.model.AssetListResponse;
-import eu.europa.ec.fisheries.uvms.asset.client.model.AssetQuery;
 import eu.europa.ec.fisheries.uvms.asset.client.model.ContactInfo;
 import eu.europa.ec.fisheries.uvms.asset.client.model.Note;
 import eu.europa.ec.fisheries.uvms.asset.model.constants.AuditObjectTypeEnum;
 import eu.europa.ec.fisheries.uvms.asset.model.constants.AuditOperationEnum;
+import eu.europa.ec.fisheries.uvms.asset.remote.dto.search.SearchBranch;
 import eu.europa.ec.fisheries.uvms.commons.date.DateUtils;
 import eu.europa.ec.fisheries.uvms.docker.validation.common.AbstractHelper;
 import eu.europa.ec.fisheries.uvms.docker.validation.common.AuditHelper;
@@ -28,8 +25,10 @@ import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.sse.SseEventSource;
 import java.time.OffsetDateTime;
-import java.time.format.DateTimeFormatter;
-import java.util.*;
+import java.util.Date;
+import java.util.List;
+import java.util.Random;
+import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
 public class AssetTestHelper extends AbstractHelper {
@@ -90,7 +89,7 @@ public class AssetTestHelper extends AbstractHelper {
                 .put(Entity.json(""), AssetDTO.class);
 	}
 	
-	public static AssetListResponse assetListQuery(AssetQuery query) {
+	public static AssetListResponse assetListQuery(SearchBranch query) {
 		return getWebTarget()
                 .path("asset/rest/asset/list")
                 .request(MediaType.APPLICATION_JSON)
@@ -98,7 +97,7 @@ public class AssetTestHelper extends AbstractHelper {
                 .post(Entity.json(query), AssetListResponse.class);
 	}
 
-	public static Integer assetListQueryCount(AssetQuery query) {
+	public static Integer assetListQueryCount(SearchBranch query) {
 		return getWebTarget()
                 .path("asset/rest/asset/listcount")
                 .request(MediaType.APPLICATION_JSON)
@@ -241,18 +240,6 @@ public class AssetTestHelper extends AbstractHelper {
                 .get(new GenericType<List<AssetGroupField>>() {});
     }
 
-	// ************************************************
-	//  InternalResource
-	// ************************************************
-
-	public static AssetListResponse getAssetList(AssetQuery query) {
-		return getWebTarget()
-				.path("asset/rest/internal/query")
-				.request(MediaType.APPLICATION_JSON)
-				.header(HttpHeaders.AUTHORIZATION, getValidJwtToken())
-				.post(Entity.json(query), AssetListResponse.class);
-	}
-
 	/*  Audit logs */
 	
 	public static void assertAssetAuditLogCreated(UUID guid, AuditOperationEnum auditOperation, Date fromDate) throws Exception {
@@ -299,12 +286,6 @@ public class AssetTestHelper extends AbstractHelper {
 
 	/*  Misc  */
 	
-	public static Integer getAssetCountSweden() {
-	    AssetQuery assetQuery = getBasicAssetQuery();
-	    assetQuery.setFlagState(Arrays.asList("SWE"));
-	    return assetListQueryCount(assetQuery);
-	}
-	
 	public static AssetDTO createBasicAsset() {
         AssetDTO asset = new AssetDTO();
 
@@ -337,9 +318,9 @@ public class AssetTestHelper extends AbstractHelper {
         return asset;
     }
 	
-	public static AssetQuery getBasicAssetQuery() {
-	    AssetQuery assetListQuery = new AssetQuery();
-		return assetListQuery;
+	public static SearchBranch getBasicAssetSearchBranch() {
+		SearchBranch trunk = new SearchBranch();
+		return trunk;
 	}
 
 	public static String generateARandomStringWithMaxLength(int len) {

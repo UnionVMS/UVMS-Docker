@@ -13,9 +13,13 @@ copy of the GNU General Public License along with the IFDM Suite. If not, see <h
 */
 package eu.europa.ec.fisheries.uvms.docker.validation.asset;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import eu.europa.ec.fisheries.uvms.asset.client.model.*;
+import eu.europa.ec.fisheries.uvms.asset.client.model.AssetDTO;
+import eu.europa.ec.fisheries.uvms.asset.client.model.AssetListResponse;
+import eu.europa.ec.fisheries.uvms.asset.client.model.ContactInfo;
+import eu.europa.ec.fisheries.uvms.asset.client.model.Note;
 import eu.europa.ec.fisheries.uvms.asset.model.constants.AuditOperationEnum;
+import eu.europa.ec.fisheries.uvms.asset.remote.dto.search.SearchBranch;
+import eu.europa.ec.fisheries.uvms.asset.remote.dto.search.SearchFields;
 import eu.europa.ec.fisheries.uvms.docker.validation.common.AbstractRest;
 import org.hamcrest.CoreMatchers;
 import org.junit.Ignore;
@@ -27,9 +31,10 @@ import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.sse.SseEventSource;
-import java.time.OffsetDateTime;
-import java.time.ZoneOffset;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.UUID;
 
 public class AssetRestIT extends AbstractRest {
 
@@ -37,8 +42,8 @@ public class AssetRestIT extends AbstractRest {
     public void getAssetListTest() {
         AssetDTO asset = AssetTestHelper.createTestAsset();
 
-        AssetQuery assetQuery = AssetTestHelper.getBasicAssetQuery();
-        assetQuery.setFlagState(Collections.singletonList(asset.getFlagStateCode()));
+        SearchBranch assetQuery = AssetTestHelper.getBasicAssetSearchBranch();
+        assetQuery.addNewSearchLeaf(SearchFields.FLAG_STATE, asset.getFlagStateCode());
 
         AssetListResponse assetListResponse = AssetTestHelper.assetListQuery(assetQuery);
         List<AssetDTO> assets = assetListResponse.getAssetList();
@@ -50,8 +55,10 @@ public class AssetRestIT extends AbstractRest {
         AssetDTO asset1 = AssetTestHelper.createTestAsset();
         AssetDTO asset2 = AssetTestHelper.createTestAsset();
 
-        AssetQuery assetQuery = AssetTestHelper.getBasicAssetQuery();
-        assetQuery.setId(Arrays.asList(asset1.getId(), asset2.getId()));
+        SearchBranch assetQuery = AssetTestHelper.getBasicAssetSearchBranch();
+        assetQuery.setLogicalAnd(false);
+        assetQuery.addNewSearchLeaf(SearchFields.GUID, asset1.getId().toString());
+        assetQuery.addNewSearchLeaf(SearchFields.GUID, asset2.getId().toString());
 
         AssetListResponse assetListResponse = AssetTestHelper.assetListQuery(assetQuery);
         List<AssetDTO> assets = assetListResponse.getAssetList();
@@ -62,8 +69,8 @@ public class AssetRestIT extends AbstractRest {
 
     @Test
     public void getAssetListItemCountTest() {
-        AssetQuery assetQuery = AssetTestHelper.getBasicAssetQuery();
-        assetQuery.setFlagState(Collections.singletonList("SWE"));
+        SearchBranch assetQuery = AssetTestHelper.getBasicAssetSearchBranch();
+        assetQuery.addNewSearchLeaf(SearchFields.FLAG_STATE, "SWE");
 
         Integer countBefore = AssetTestHelper.assetListQueryCount(assetQuery);
 
@@ -79,8 +86,8 @@ public class AssetRestIT extends AbstractRest {
     public void getAssetListUpdatedIRCSNotFoundTest() {
         AssetDTO testAsset = AssetTestHelper.createTestAsset();
 
-        AssetQuery assetQuery = AssetTestHelper.getBasicAssetQuery();
-        assetQuery.setIrcs(Collections.singletonList(testAsset.getIrcs()));
+        SearchBranch assetQuery = AssetTestHelper.getBasicAssetSearchBranch();
+        assetQuery.addNewSearchLeaf(SearchFields.IRCS, testAsset.getIrcs());
 
         AssetListResponse assetList = AssetTestHelper.assetListQuery(assetQuery);
         List<AssetDTO> assets = assetList.getAssetList();
@@ -101,8 +108,8 @@ public class AssetRestIT extends AbstractRest {
         asset.setPortOfRegistration("MyHomePort");
         AssetDTO createdAsset = AssetTestHelper.createAsset(asset);
 
-        AssetQuery assetQuery = AssetTestHelper.getBasicAssetQuery();
-        assetQuery.setPortOfRegistration(Collections.singletonList("My*"));
+        SearchBranch assetQuery = AssetTestHelper.getBasicAssetSearchBranch();
+        assetQuery.addNewSearchLeaf(SearchFields.HOMEPORT, "My*");
 
         AssetListResponse assetList = AssetTestHelper.assetListQuery(assetQuery);
         List<AssetDTO> assets = assetList.getAssetList();
@@ -182,11 +189,10 @@ public class AssetRestIT extends AbstractRest {
 
         AssetDTO createdAsset = AssetTestHelper.createAsset(asset);
 
-        AssetQuery assetQuery = AssetTestHelper.getBasicAssetQuery();
-
-        assetQuery.setIccat(Collections.singletonList(theValue));
-        assetQuery.setUvi(Collections.singletonList(theValue));
-        assetQuery.setGfcm(Collections.singletonList(theValue));
+        SearchBranch assetQuery = AssetTestHelper.getBasicAssetSearchBranch();
+        assetQuery.addNewSearchLeaf(SearchFields.ICCAT, theValue);
+        assetQuery.addNewSearchLeaf(SearchFields.UVI, theValue);
+        assetQuery.addNewSearchLeaf(SearchFields.GFCM, theValue);
 
         AssetListResponse assetList = AssetTestHelper.assetListQuery(assetQuery);
         List<AssetDTO> assets = assetList.getAssetList();
@@ -206,9 +212,9 @@ public class AssetRestIT extends AbstractRest {
         asset.setIccat(theValue);
         AssetTestHelper.updateAsset(asset);
 
-        AssetQuery assetQuery = AssetTestHelper.getBasicAssetQuery();
-        assetQuery.setIccat(Collections.singletonList(theValue));
-        assetQuery.setId(Collections.singletonList(guid));
+        SearchBranch assetQuery = AssetTestHelper.getBasicAssetSearchBranch();
+        assetQuery.addNewSearchLeaf(SearchFields.ICCAT, theValue);
+        assetQuery.addNewSearchLeaf(SearchFields.GUID, guid.toString());
 
         AssetListResponse listAssetResponse = AssetTestHelper.assetListQuery(assetQuery);
         List<AssetDTO> fetchedAsssets = listAssetResponse.getAssetList();
@@ -239,16 +245,16 @@ public class AssetRestIT extends AbstractRest {
         asset3.setName(asset3.getName() + "2");
         asset3 = AssetTestHelper.updateAsset(asset3);
 
-        AssetQuery assetQuery1 = AssetTestHelper.getBasicAssetQuery();
-        assetQuery1.setHistoryId(Collections.singletonList(asset1.getHistoryId()));
+        SearchBranch assetQuery1 = AssetTestHelper.getBasicAssetSearchBranch();
+        assetQuery1.addNewSearchLeaf(SearchFields.HIST_GUID, asset1.getHistoryId().toString());
 
         AssetListResponse assetHistory1 = AssetTestHelper.assetListQuery(assetQuery1);
         List<AssetDTO> assets = assetHistory1.getAssetList();
         assertEquals(1, assets.size());
         assertEquals(asset1.getId(), assets.get(0).getId());
 
-        AssetQuery assetQuery2 = AssetTestHelper.getBasicAssetQuery();
-        assetQuery2.setHistoryId(Collections.singletonList(asset2.getHistoryId()));
+        SearchBranch assetQuery2 = AssetTestHelper.getBasicAssetSearchBranch();
+        assetQuery2.addNewSearchLeaf(SearchFields.HIST_GUID, asset2.getHistoryId().toString());
 
         AssetListResponse assetHistory2 = AssetTestHelper.assetListQuery(assetQuery2);
         List<AssetDTO> assets2 = assetHistory2.getAssetList();
@@ -256,8 +262,8 @@ public class AssetRestIT extends AbstractRest {
         assertEquals(asset2.getId(), assets2.get(0).getId());
         assertEquals(asset2.getName(), assets2.get(0).getName());
 
-        AssetQuery assetQuery3 = AssetTestHelper.getBasicAssetQuery();
-        assetQuery3.setHistoryId(Collections.singletonList(asset3.getHistoryId()));
+        SearchBranch assetQuery3 = AssetTestHelper.getBasicAssetSearchBranch();
+        assetQuery3.addNewSearchLeaf(SearchFields.HIST_GUID, asset3.getHistoryId().toString());
 
         AssetListResponse assetHistory3 = AssetTestHelper.assetListQuery(assetQuery3);
         List<AssetDTO> assets3 = assetHistory3.getAssetList();
@@ -274,8 +280,10 @@ public class AssetRestIT extends AbstractRest {
         asset2.setName(asset2.getName() + "1");
         AssetDTO createdAsset2 = AssetTestHelper.updateAsset(asset2);
 
-        AssetQuery assetQuery = AssetTestHelper.getBasicAssetQuery();
-        assetQuery.setHistoryId(Arrays.asList(asset1.getHistoryId(), createdAsset2.getHistoryId()));
+        SearchBranch assetQuery = AssetTestHelper.getBasicAssetSearchBranch();
+        assetQuery.setLogicalAnd(false);
+        assetQuery.addNewSearchLeaf(SearchFields.HIST_GUID, asset1.getHistoryId().toString());
+        assetQuery.addNewSearchLeaf(SearchFields.HIST_GUID, createdAsset2.getHistoryId().toString());
 
         AssetListResponse assetHistory = AssetTestHelper.assetListQuery(assetQuery);
         List<AssetDTO> assets = assetHistory.getAssetList();
