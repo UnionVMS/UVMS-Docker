@@ -31,7 +31,7 @@
 		<unionvms.project.movement.module>5.5.3-UVMS</unionvms.project.movement.module>
 		<unionvms.project.exchange.module>5.2.5-UVMS</unionvms.project.exchange.module>
 		<unionvms.project.spatial.module>2.0.6</unionvms.project.spatial.module>
-		<unionvms.project.spatialSwe.module>2.1.3-UVMS</unionvms.project.spatialSwe.module>
+		<unionvms.project.spatialSwe.module>2.1.4-UVMS</unionvms.project.spatialSwe.module>
 		<unionvms.project.subscription.module>1.3</unionvms.project.subscription.module>
 		<unionvms.project.config.module>4.3.3</unionvms.project.config.module>
 		<unionvms.project.audit.module>4.3.3</unionvms.project.audit.module>
