@@ -6,7 +6,7 @@
     <parent>
         <groupId>eu.europa.ec.fisheries.uvms</groupId>
         <artifactId>mare-pom</artifactId>
-        <version>1.6.0-MARE-SNAPSHOT</version>
+        <version>1.7.0-MARE-SNAPSHOT</version>
         <relativePath />
     </parent>
 
@@ -395,8 +395,8 @@
             </dependency>
             <dependency>
                 <groupId>eu.europa.ec.fisheries.uvms.subscription</groupId>
-                <artifactId>subscription-module</artifactId>
-                <type>ear</type>
+                <artifactId>subscription-rest</artifactId>
+                <type>war</type>
                 <version>${unionvms.project.subscription.module}</version>
             </dependency>
             <dependency>

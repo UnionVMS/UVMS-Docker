@@ -43,9 +43,8 @@
         </dependency>
         <dependency>
             <groupId>eu.europa.ec.fisheries.uvms.subscription</groupId>
-            <artifactId>subscription-module</artifactId>
-            <type>ear</type>
-            <version>${unionvms.project.subscription.module}</version>
+            <artifactId>subscription-rest</artifactId>
+            <type>war</type>
         </dependency>
         <dependency>
             <groupId>eu.europa.ec.fisheries.uvms.exchange</groupId>
