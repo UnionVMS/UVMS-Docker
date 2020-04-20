@@ -276,7 +276,7 @@ xa-data-source add \
 # ERS
 xa-data-source add \
     --name=ers \
-    --jndi-name=java:jboss/datasources/ers \
+    --jndi-name=java:/jdbc/ers \
     --driver-name=postgresql \
 	--min-pool-size=2 \
 	--initial-pool-size=2 \
