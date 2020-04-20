@@ -182,7 +182,48 @@ public class FLUXSystemIT extends AbstractRest {
         
         assertThat(message.getDF(), is(customDataflow));
     }
-    
+
+    @Test
+    public void sendPositionToOrganisationWithNAFEndpointOnly() throws Exception {
+        Organisation organisation = UserHelper.getBasicOrganisation();
+        organisation.setNation("NOR");
+        UserHelper.createOrganisation(organisation);
+        EndPoint endpoint = new EndPoint();
+        endpoint.setName("NAF");
+        endpoint.setURI("nafEndpoint");
+        endpoint.setStatus("E");
+        endpoint.setOrganisationName(organisation.getName());
+        EndPoint createdEndpoint = UserHelper.createEndpoint(endpoint);
+        Channel channel = new Channel();
+        channel.setDataflow("NAF");
+        channel.setService("NAF");
+        channel.setPriority(1);
+        channel.setEndpointId(createdEndpoint.getEndpointId());
+        UserHelper.createChannel(channel);
+        AssetDTO asset = AssetTestHelper.createTestAsset();
+
+        CustomRuleType flagStateRule = CustomRuleBuilder.getBuilder()
+                .setName("Area NOR => Send to NOR")
+                .rule(CriteriaType.AREA, SubCriteriaType.AREA_CODE, 
+                        ConditionType.EQ, "NOR")
+                .action(ActionType.SEND_REPORT, VMSSystemHelper.FLUX_NAME, organisation.getName())
+                .build();
+
+        CustomRuleType createdCustomRule = CustomRuleHelper.createCustomRule(flagStateRule);
+        assertNotNull(createdCustomRule);
+
+        LatLong position = new LatLong(58.973, 5.781, Date.from(Instant.now()));
+        position.speed = 5;
+
+        PostMsgType message;
+        try (FLUXEndpoint fluxEndpoint = new FLUXEndpoint()) {
+            FLUXHelper.sendPositionToFluxPlugin(asset, position);
+            message = fluxEndpoint.getMessage(10000);
+        }
+
+        assertThat(message.getDF(), is(DEFAULT_DATAFLOW));
+    }
+
     @Test
     public void sendPositionToOrganisationWithTwoEndpoints() throws Exception {
         String customDataflow = "urn:un:unece:uncefact:data:standard:FLUXVesselPositionMessage:4";
