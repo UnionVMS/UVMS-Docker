@@ -251,12 +251,12 @@
 						<phase>test</phase>
 						<configuration>
 							<skip>${docker.skip}</skip>
-							<tasks>
+							<target>
 								<!-- Get the regression-suite-selenium front-end -->
 								<get src="https://github.com/UnionVMS/UVMS-SeleniumTests/raw/swe-dev/UVMS-SeleniumRegressionTestsG2.zip" dest="target/UVMS-SeleniumRegressionTestsG2.zip" verbose="true" usetimestamp="true" />
 								<unzip src="target/UVMS-SeleniumRegressionTestsG2.zip" dest="target/" />
 								<move file="target/DockerUnionVMSparametersG2.py" tofile="target/UnionVMSparametersG2.py" />
-							</tasks>
+							</target>
 						</configuration>
 						<goals>
 							<goal>run</goal>
@@ -595,7 +595,7 @@
 									<goal>run</goal>
 								</goals>
 								<configuration>
-									<tasks>									
+									<target>
 										<exec dir="${project.basedir}/target/" executable="${python.runtime}">
 										 	<redirector output="target/Python-regression-suite-seleniumG2.log" alwayslog="true" /> 
 											<arg value="-u" />
@@ -604,7 +604,7 @@
 											<arg value="-v" />
 											<arg value="Python-regression-suite-seleniumG2.${docker.frontend.test.suite}" />
 									  </exec>
-									</tasks>
+									</target>
 								</configuration>
 							</execution>
 						</executions>
