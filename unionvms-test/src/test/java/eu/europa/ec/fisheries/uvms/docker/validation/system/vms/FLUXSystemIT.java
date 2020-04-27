@@ -309,6 +309,38 @@ public class FLUXSystemIT extends AbstractRest {
     }
     
     @Test
+    public void sendPositionToFLUXAndVerifyUVI() throws Exception {
+        AssetDTO asset = AssetTestHelper.createTestAsset();
+
+        String destination = "NOR";
+        CustomRuleType flagStateRule = CustomRuleBuilder.getBuilder()
+                .setName("Area NOR => Send to NOR")
+                .rule(CriteriaType.AREA, SubCriteriaType.AREA_CODE,
+                        ConditionType.EQ, destination)
+                .action(ActionType.SEND_REPORT, VMSSystemHelper.FLUX_NAME, destination)
+                .build();
+
+        CustomRuleType createdCustomRule = CustomRuleHelper.createCustomRule(flagStateRule);
+        assertNotNull(createdCustomRule);
+
+        LatLong position = new LatLong(58.973, 5.781, Date.from(Instant.now()));
+        position.speed = 5;
+
+        PostMsgType message;
+        try (FLUXEndpoint fluxEndpoint = new FLUXEndpoint()) {
+            FLUXHelper.sendPositionToFluxPlugin(asset, position);
+            message = fluxEndpoint.getMessage(10000);
+        }
+        FLUXVesselPositionMessage positionMessage = extractVesselPositionMessage(message.getAny());
+
+        VesselTransportMeansType vesselTransportMeans = positionMessage.getVesselTransportMeans();
+        assertThat(vesselTransportMeans.getRegistrationVesselCountry().getID().getValue(), is(asset.getFlagStateCode()));
+
+        Map<String, String> assetIds = vesselTransportMeans.getIDS().stream().collect(Collectors.toMap(IDType::getSchemeID, IDType::getValue));
+        assertThat(assetIds.get("UVI"), is(asset.getImo()));
+    }
+
+    @Test
     public void verifyAssetIdentifiersWithUnknownAsset() throws Exception {
         // Don't save to database
         AssetDTO asset = AssetTestHelper.createBasicAsset();
