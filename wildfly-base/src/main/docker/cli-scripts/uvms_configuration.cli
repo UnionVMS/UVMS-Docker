@@ -35,6 +35,14 @@ embed-server --server-config=standalone-full.xml
 /subsystem=logging/logger=org.geotools:add(level=WARN)
 /subsystem=logging/logger=org.springframework:add(level=WARN)
 
+# Movement logging
+/subsystem=logging/logging-profile=movement:add
+/subsystem=logging/logging-profile=movement/pattern-formatter=APP-PATTERN:add(pattern="%d{yyyy-MM-dd HH:mm:ss} [%t] %X{requestId} %-5p %c{40} %X{userId}- %m%n")
+/subsystem=logging/logging-profile=movement/periodic-size-rotating-file-handler=movement-file:add(level=INFO,file={path=>"/app/logs/movement/movement.log"},named-formatter=APP-PATTERN,suffix=".yyyy-MM-dd",rotate-size=50M)
+/subsystem=logging/logging-profile=movement/periodic-size-rotating-file-handler=movement-error-file:add(level=ERROR,file={path=>"/app/logs/movement/movement-error.log"},named-formatter=APP-PATTERN,suffix=".yyyy-MM-dd",rotate-size=50M)
+/subsystem=logging/logging-profile=movement/root-logger=ROOT:add(handlers=[movement-file,movement-error-file])
+
+
 # batch-jberet
 /subsystem=batch-jberet/thread-pool=batch:write-attribute(name=max-threads, value=64)
 
