@@ -28,14 +28,14 @@
 		<unionvms.project.rules.module>3.0.49</unionvms.project.rules.module>
 		<unionvms.project.reporting.module>1.1.25-UVMS</unionvms.project.reporting.module>
 		<unionvms.project.movementrules.module>2.3.6</unionvms.project.movementrules.module>
-		<unionvms.project.movement.module>5.5.5-UVMS</unionvms.project.movement.module>
+		<unionvms.project.movement.module>5.5.6-UVMS</unionvms.project.movement.module>
 		<unionvms.project.exchange.module>5.2.7-UVMS</unionvms.project.exchange.module>
 		<unionvms.project.spatial.module>2.0.6</unionvms.project.spatial.module>
 		<unionvms.project.spatialSwe.module>2.2.0-UVMS</unionvms.project.spatialSwe.module>
 		<unionvms.project.subscription.module>1.3</unionvms.project.subscription.module>
 		<unionvms.project.config.module>4.3.3</unionvms.project.config.module>
 		<unionvms.project.audit.module>4.3.3</unionvms.project.audit.module>
-		<unionvms.project.asset.module>6.7.6</unionvms.project.asset.module>
+		<unionvms.project.asset.module>6.7.7</unionvms.project.asset.module>
 		<unionvms.project.incident.module>0.1.2</unionvms.project.incident.module>
 		<unionvms.project.activity.module>1.1.6</unionvms.project.activity.module>
 		<unionvms.project.mdr.module>1.0.10</unionvms.project.mdr.module>
