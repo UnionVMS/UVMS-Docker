@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>eu.europa.ec.fisheries.uvms.docker</groupId>
 		<artifactId>uvms-docker</artifactId>
-		<version>3.42.4.w18-ERS-SNAPSHOT</version>
+		<version>3.43.4-ERS-SNAPSHOT</version>
 		<relativePath>../pom.xml</relativePath>
 	</parent>
 	
@@ -17,7 +17,7 @@
 		<docker.skip>${skipITs}</docker.skip>
 		<docker.frontend.test.suite>UnionVMSTestCaseG2</docker.frontend.test.suite>
 		<jackson.version>2.10.3</jackson.version>
-		<uvms.commons.version>4.1.6</uvms.commons.version>
+		<uvms.commons.version>4.1.7</uvms.commons.version>
 	</properties>
 
 	<dependencies>
@@ -197,12 +197,12 @@
 		<dependency>
 		    <groupId>org.eclipse.jetty</groupId>
 		    <artifactId>jetty-servlet</artifactId>
-		    <version>9.4.27.v20200227</version>
+		    <version>9.4.28.v20200408</version>
 		</dependency>
 		<dependency>
 			<groupId>fish.focus.uvms.maven</groupId>
 			<artifactId>uvms-pom-java11-deps</artifactId>
-			<version>3.0</version>
+			<version>3.2</version>
 			<type>pom</type>
 		</dependency>
 		<dependency>
@@ -239,7 +239,7 @@
 			<plugin>
                 <groupId>org.apache.cxf</groupId>
                 <artifactId>cxf-codegen-plugin</artifactId>
-                <version>3.3.5</version>
+                <version>3.3.6</version>
                 <executions>
                     <execution>
                         <id>wsdl-services</id>
@@ -383,12 +383,6 @@
 									<ports>
 										<port>25432:5432</port>
 									</ports>
-									<wait>
-										<log>All uvms databases created</log>
-										<time>480000</time>
-										<kill>15000</kill>
-										<shutdown>15000</shutdown>
-									</wait>
 									<log>
 										<enabled>true</enabled>
 										<color>green</color>

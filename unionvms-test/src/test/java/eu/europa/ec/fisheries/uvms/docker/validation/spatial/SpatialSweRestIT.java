@@ -86,26 +86,6 @@ public class SpatialSweRestIT extends AbstractRest {
     }
 
     @Test
-    public void getClosestArea() throws Exception {
-        PointType point = new PointType();
-        point.setLatitude(latitude);
-        point.setLongitude(longitude);
-        point.setCrs(crs);
-        ClosestAreaSpatialRQ request = createClosestAreaRequest(point,
-                UnitType.METERS, Collections.singletonList(AreaType.EEZ));
-
-        Response ret =  getWebTarget() 
-                .path("spatialSwe/spatialnonsecure/json/getClosestArea")
-                .request(MediaType.APPLICATION_JSON)
-                .accept(MediaType.APPLICATION_JSON)
-                .post(Entity.json(request), Response.class);
-
-        assertEquals(200, ret.getStatus());
-        String json = ret.readEntity(String.class);
-        assertTrue(json.contains("Swedish Exclusive Economic Zone"));
-    }
-
-    @Test
     @Ignore
     public void getClosestAreaWith4kPoints() throws Exception {
         double[] points = TestPoints.testpoints;
