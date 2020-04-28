@@ -38,6 +38,7 @@ import java.util.Date;
 import java.util.Enumeration;
 
 import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.nullValue;
 
 public class NAFSystemIT extends AbstractRest {
 
@@ -70,9 +71,6 @@ public class NAFSystemIT extends AbstractRest {
             NAFHelper.sendPositionToNAFPlugin(position, asset);
             nafEndpoint.getMessage(10000);
         }
-
-
-
         
         position = new LatLong(58.973, 5.781, Date.from(Instant.now()));
         position.speed = 5;
@@ -161,7 +159,7 @@ public class NAFSystemIT extends AbstractRest {
 
         CustomRuleType flagStateRule = CustomRuleBuilder.getBuilder()
                 .setName("Enter NOR => Send to NOR")
-                .rule(CriteriaType.AREA, SubCriteriaType.AREA_CODE_ENT, 
+                .rule(CriteriaType.AREA, SubCriteriaType.AREA_CODE_VMS_ENT, 
                         ConditionType.EQ, "NOR")
                 .action(ActionType.SEND_ENTRY_REPORT, VMSSystemHelper.NAF_NAME, organisation.getName())
                 .build();
@@ -192,6 +190,47 @@ public class NAFSystemIT extends AbstractRest {
         assertThat(NAFHelper.readCodeValue("SP", message), is(String.valueOf((int) norPosition.speed * 10)));
         assertThat(NAFHelper.readCodeValue("CO", message), is(String.valueOf((int) norPosition.bearing)));
         ZonedDateTime positionTime = ZonedDateTime.ofInstant(norPosition.positionTime.toInstant(), ZoneId.of("UTC"));
+        assertThat(NAFHelper.readCodeValue("DA", message), is(positionTime.format(DateTimeFormatter.ofPattern("yyyyMMdd"))));
+        assertThat(NAFHelper.readCodeValue("TI", message), is(positionTime.format(DateTimeFormatter.ofPattern("HHmm"))));
+    }
+
+    @Test
+    public void sendExitReportToNorwayAndVerifyMandatoryFields() throws IOException, Exception {
+        Organisation organisation = createOrganisationNorway();
+
+        CustomRuleType flagStateRule = CustomRuleBuilder.getBuilder()
+                .setName("Exit NOR => Send to NOR")
+                .rule(CriteriaType.AREA, SubCriteriaType.AREA_CODE_VMS_EXT, 
+                        ConditionType.EQ, "NOR")
+                .action(ActionType.SEND_EXIT_REPORT, VMSSystemHelper.NAF_NAME, organisation.getName())
+                .build();
+
+        CustomRuleType createdCustomRule = CustomRuleHelper.createCustomRule(flagStateRule);
+        assertNotNull(createdCustomRule);
+
+        AssetDTO asset = AssetTestHelper.createTestAsset();
+        LatLong norPosition = new LatLong(58.973, 5.781, Date.from(Instant.now().minusMillis(10 * 60 * 1000)));
+        norPosition.speed = 5;
+        LatLong swePosition = new LatLong(57.716673, 11.973996, Date.from(Instant.now()));
+        swePosition.speed = 5;
+
+        String message;
+        try (NafEndpoint nafEndpoint = new NafEndpoint(ENDPOINT_PORT)) {
+            NAFHelper.sendPositionToNAFPlugin(norPosition, asset);
+            MovementHelper.pollMovementCreated();
+            NAFHelper.sendPositionToNAFPlugin(swePosition, asset);
+            message = nafEndpoint.getMessage(10000);
+        }
+
+        assertThat(NAFHelper.readCodeValue("AD", message), is(organisation.getNation()));
+        assertThat(NAFHelper.readCodeValue("FR", message), is("UNK"));
+        assertThat(NAFHelper.readCodeValue("TM", message), is(MovementTypeType.EXI.toString()));
+        assertThat(NAFHelper.readCodeValue("RC", message), is(asset.getIrcs()));
+        assertThat(NAFHelper.isCodePresent("LT", message), is(false));
+        assertThat(NAFHelper.isCodePresent("LG", message), is(false));
+        assertThat(NAFHelper.isCodePresent("SP", message), is(false));
+        assertThat(NAFHelper.isCodePresent("CO", message), is(false));
+        ZonedDateTime positionTime = ZonedDateTime.ofInstant(swePosition.positionTime.toInstant(), ZoneId.of("UTC"));
         assertThat(NAFHelper.readCodeValue("DA", message), is(positionTime.format(DateTimeFormatter.ofPattern("yyyyMMdd"))));
         assertThat(NAFHelper.readCodeValue("TI", message), is(positionTime.format(DateTimeFormatter.ofPattern("HHmm"))));
     }

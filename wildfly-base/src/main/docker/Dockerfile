@@ -15,7 +15,7 @@ RUN curl -LO http://download.jboss.org/wildfly/$WILDFLY_VERSION/wildfly-$WILDFLY
 
 EXPOSE 8080 9990 5445 5455
 
-CMD ["/opt/jboss/start.sh", "/opt/jboss/wildfly/bin/standalone.sh", "-c", "standalone-uvms.xml", "-b", "0.0.0.0", "-bmanagement", "0.0.0.0", "--debug", "*:8787"]
+CMD ["/opt/jboss/start.sh", "/opt/jboss/wildfly/bin/standalone.sh", "-c", "standalone-full.xml", "-b", "0.0.0.0", "-bmanagement", "0.0.0.0", "--debug", "*:8787"]
 
 ENV TZ=CET
 

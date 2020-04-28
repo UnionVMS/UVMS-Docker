@@ -10,9 +10,13 @@ copy of the GNU General Public License along with the IFDM Suite. If not, see <h
  */
 package eu.europa.ec.fisheries.uvms.docker.validation.movement;
 
+import eu.europa.ec.fisheries.schema.movement.asset.v1.VesselType;
+import eu.europa.ec.fisheries.schema.movement.v1.MovementPoint;
+import eu.europa.ec.fisheries.schema.movement.v1.MovementSourceType;
+import eu.europa.ec.fisheries.uvms.asset.client.model.AssetDTO;
 import eu.europa.ec.fisheries.uvms.docker.validation.common.AbstractHelper;
 import eu.europa.ec.fisheries.uvms.docker.validation.movement.model.ManualMovementDto;
-
+import eu.europa.ec.fisheries.uvms.docker.validation.movement.model.MicroMovement;
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
@@ -20,7 +24,7 @@ import javax.ws.rs.core.Response;
 
 public class ManualMovementRestHelper extends AbstractHelper {
 
-    static Response sendTempMovement(ManualMovementDto movementDto) {
+    public static Response sendTempMovement(ManualMovementDto movementDto) {
         return getWebTarget()
                 .path("movement/rest/manualMovement")
                 .request(MediaType.APPLICATION_JSON)
@@ -28,11 +32,35 @@ public class ManualMovementRestHelper extends AbstractHelper {
                 .post(Entity.json(movementDto), Response.class);
     }
 
-    static Response sendTempMovement(String movementDto) {
+    public static Response sendTempMovement(String movementDto) {
         return getWebTarget()
                 .path("movement/rest/manualMovement")
                 .request(MediaType.APPLICATION_JSON)
                 .header(HttpHeaders.AUTHORIZATION, getValidJwtToken())
                 .post(Entity.json(movementDto), Response.class);
+    }
+
+    public static ManualMovementDto mapToManualMovement(LatLong position, AssetDTO asset) {
+        ManualMovementDto movement = new ManualMovementDto();
+        VesselType vessel = new VesselType();
+        vessel.setCfr(asset.getCfr());
+        vessel.setExtMarking(asset.getExternalMarking());
+        vessel.setFlagState(asset.getFlagStateCode());
+        vessel.setIrcs(asset.getIrcs());
+        vessel.setName(asset.getName());
+        movement.setAsset(vessel);
+
+        MicroMovement micro = new MicroMovement();
+        MovementPoint location = new MovementPoint();
+        location.setLatitude(position.latitude);
+        location.setLongitude(position.longitude);
+        micro.setLocation(location);
+        micro.setTimestamp(position.positionTime.toInstant());
+        micro.setHeading(position.bearing);
+        micro.setSpeed(position.speed);
+        micro.setSource(MovementSourceType.MANUAL);
+        movement.setMovement(micro);
+
+        return movement;
     }
 }
