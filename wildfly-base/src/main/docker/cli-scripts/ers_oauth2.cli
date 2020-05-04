@@ -1,0 +1,18 @@
+embed-server --server-config=standalone-full.xml
+
+# trust store contains certificate for demo id server https://demo.identityserver.io/
+/subsystem=elytron/key-store=oauth-truststore:add(path=demo-id-server.truststore,relative-to=jboss.server.config.dir, credential-reference={clear-text=password},type=JKS)
+
+/subsystem=elytron/trust-manager=oauth-trust-manager:add(key-store=oauth-truststore)
+
+/subsystem=elytron/client-ssl-context=oauthClientSslContext:add(trust-manager=oauth-trust-manager,protocols=["TLSv1.2"])
+
+/subsystem=elytron/token-realm=oauth2-realm:add(principal-claim=preferred_username, oauth2-introspection={client-id=m2m, client-secret=password, client-ssl-context=oauthClientSslContext, introspection-url=https://demo.identityserver.io/connect/introspect})
+
+/subsystem=elytron/security-domain=oauth2-domain:add(realms=[{realm=oauth2-realm}], permission-mapper=default-permission-mapper, default-realm=oauth2-realm)
+
+/subsystem=elytron/http-authentication-factory=oauth2-http-authentication:add(security-domain=oauth2-domain, http-server-mechanism-factory=global, mechanism-configurations=[{mechanism-name="BEARER_TOKEN", mechanism-realm-configurations=[{realm-name="oauth2-realm"}]}])
+
+/subsystem=undertow/application-security-domain=oauth2-app-domain:add(http-authentication-factory=oauth2-http-authentication)
+
+stop-embedded-server

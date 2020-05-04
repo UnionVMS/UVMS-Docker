@@ -19,3 +19,9 @@ $JBOSS_HOME/bin/jboss-cli.sh \
 	--file=$JBOSS_HOME/cli-scripts/uvms_messaging.cli \
 	-Djboss.server.log.dir=$JBOSS_HOME/standalone/tmp \
 	| grep -v '{"outcome" => "success"}'
+
+echo "Configuring ERS OAuth2"
+$JBOSS_HOME/bin/jboss-cli.sh \
+	--file=$JBOSS_HOME/cli-scripts/ers_oauth2.cli \
+	-Djboss.server.log.dir=$JBOSS_HOME/standalone/tmp \
+	| grep -v '{"outcome" => "success"}'

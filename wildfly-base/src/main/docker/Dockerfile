@@ -48,6 +48,8 @@ COPY standalone-uvms-ha.xml $JBOSS_HOME/standalone/configuration/
 COPY start.sh /opt/jboss/
 COPY fakesmtp /opt/jboss/fakesmtp
 
+COPY demo-id-server.truststore $JBOSS_HOME/standalone/configuration/
+
 # CLI Scripts
 COPY cli-scripts $JBOSS_HOME/cli-scripts
 
