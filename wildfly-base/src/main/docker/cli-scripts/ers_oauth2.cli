@@ -7,12 +7,18 @@ embed-server --server-config=standalone-full.xml
 
 /subsystem=elytron/client-ssl-context=oauthClientSslContext:add(trust-manager=oauth-trust-manager,protocols=["TLSv1.2"])
 
-/subsystem=elytron/token-realm=oauth2-realm:add(principal-claim=preferred_username, oauth2-introspection={client-id=m2m, client-secret=password, client-ssl-context=oauthClientSslContext, introspection-url=https://demo.identityserver.io/connect/introspect})
+/subsystem=elytron/token-realm=oauth2-realm:add(principal-claim=preferred_username, oauth2-introspection={client-id=interactive.confidential, client-secret=secret, client-ssl-context=oauthClientSslContext, introspection-url=https://demo.identityserver.io/connect/introspect})
+#/subsystem=elytron/token-realm=oauth2-realm:add(principal-claim=preferred_username, oauth2-introspection={client-id=spa, client-ssl-context=oauthClientSslContext, introspection-url=https://demo.identityserver.io/connect/introspect})
 
 /subsystem=elytron/security-domain=oauth2-domain:add(realms=[{realm=oauth2-realm}], permission-mapper=default-permission-mapper, default-realm=oauth2-realm)
 
 /subsystem=elytron/http-authentication-factory=oauth2-http-authentication:add(security-domain=oauth2-domain, http-server-mechanism-factory=global, mechanism-configurations=[{mechanism-name="BEARER_TOKEN", mechanism-realm-configurations=[{realm-name="oauth2-realm"}]}])
 
 /subsystem=undertow/application-security-domain=oauth2-app-domain:add(http-authentication-factory=oauth2-http-authentication)
+
+#/subsystem=undertow:write-attribute(name=default-security-domain, value="oauth2-app-domain")
+
+#/subsystem=logging/logger=org.wildfly.security:add(level=ALL)
+#/subsystem=logging/logger=org.wildfly.elytron:add(level=ALL)
 
 stop-embedded-server
