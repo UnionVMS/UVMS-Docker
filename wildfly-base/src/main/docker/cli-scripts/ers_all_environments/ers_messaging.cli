@@ -1,0 +1,26 @@
+
+embed-server --server-config=standalone-full.xml
+
+
+if (outcome != success) of /subsystem=messaging-activemq/server=default/jms-queue=UVMSUser:read-resource
+  echo No JMS Queue UVMSUser, creating...
+  jms-queue add --queue-address=UVMSUser --entries=[jms/queue/UVMSUser java:jboss/exported/jms/queue/UVMSUser]
+end-if
+
+if (outcome != success) of /subsystem=messaging-activemq/server=default/jms-queue=UVMSUserEvent:read-resource
+  echo No JMS Queue UVMSUserEvent, creating...
+  jms-queue add --queue-address=UVMSUserEvent --entries=[jms/queue/UVMSUserEvent java:jboss/exported/jms/queue/UVMSUserEvent]
+end-if
+
+if (outcome != success) of /subsystem=messaging-activemq/server=default/jms-queue=UVMSAuditEvent:read-resource
+  echo No JMS Queue UVMSAuditEvent, creating...
+  jms-queue add --queue-address=UVMSAuditEvent --entries=[jms/queue/UVMSAuditEvent java:jboss/exported/jms/queue/UVMSAuditEvent]
+end-if
+
+if (outcome != success) of /subsystem=messaging-activemq/server=default/jms-queue=USM4UVMS:read-resource
+  echo No JMS Queue USM4UVMS, creating...
+  jms-queue add --queue-address=USM4UVMS --entries=[jms/queue/USM4UVMS java:jboss/exported/jms/queue/USM4UVMS]
+end-if
+
+
+stop-embedded-server

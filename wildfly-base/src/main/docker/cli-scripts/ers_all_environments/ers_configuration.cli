@@ -1,0 +1,82 @@
+set usm_secretkey=${usm_secretkey}
+set cors_allowed_host_regex=${cors_allowed_host_regex}
+set uvmsBaseUrl=${uvmsBaseUrl}
+set ersUvmsBaseUrl=${ersUvmsBaseUrl}
+set uvmsUsername=${uvmsUsername}
+set uvmsPassword=${uvmsPassword}
+set ersBackendRole=${ersBackendRole}
+set notificationServiceEndpoint=${notificationServiceEndpoint}
+set priorNotificationMaxAgeInDays=${priorNotificationMaxAgeInDays}
+
+
+embed-server --server-config=standalone-full.xml
+
+
+#### System properties
+
+if (outcome != success) of /system-property=jboss.as.management.blocking.timeout:remove
+  echo System Property jboss.as.management.blocking.timeout did not exist, creating...
+end-if
+/system-property=jboss.as.management.blocking.timeout:add(value=1200)
+
+if (outcome != success) of /system-property=db.dialect:remove
+  echo System Property db.dialect did not exist, creating...
+end-if
+/system-property=db.dialect:add(value=postgres)
+
+if (outcome != success) of /system-property=hibernate.dialect:remove
+  echo System Property hibernate.dialect did not exist, creating...
+end-if
+/system-property=hibernate.dialect:add(value=org.hibernate.dialect.PostgreSQL9Dialect)
+
+if (outcome != success) of /system-property=USM.secretKey:remove
+  echo System Property USM.secretKey did not exist, creating...
+end-if
+/system-property=USM.secretKey:add(value=$usm_secretkey)
+
+#### Naming
+
+if (outcome != success) of /subsystem=naming/binding=java\:global\/cors_allowed_host_regex:remove
+  echo Binding for cors_allowed_host_regex did not exist, creating...
+end-if
+/subsystem=naming/binding=java\:global\/cors_allowed_host_regex:add(binding-type=simple, value=$cors_allowed_host_regex, type=java.lang.String)
+
+#### Microprofile config
+
+if (outcome != success) of /subsystem=microprofile-config-smallrye/config-source=props:remove
+  echo No MicroProfile Config props existed, creating...
+end-if
+/subsystem=microprofile-config-smallrye/config-source=props:add(properties={ \
+  "uvmsBaseUrl" = "$uvmsBaseUrl", \
+  "ersUvmsBaseUrl" = "$ersUvmsBaseUrl" \
+  "uvmsUsername" = $uvmsUsername \
+  "uvmsPassword" = $uvmsPassword \
+  "ersBackendRole" = $ersBackendRole \
+  "notificationServiceEndpoint" = $notificationServiceEndpoint \
+  "priorNotificationMaxAgeInDays" = $priorNotificationMaxAgeInDays \
+})
+
+#### Logging
+
+if (outcome != success) of /subsystem=logging/logger=org:remove
+  echo No existing logger org, creating...
+end-if
+/subsystem=logging/logger=org:add(level=WARN)
+
+if (outcome != success) of /subsystem=logging/logger=eu:remove
+  echo No existing logger eu, creating...
+end-if
+/subsystem=logging/logger=eu:add(level=DEBUG)
+
+if (outcome != success) of /subsystem=logging/logger=se:remove
+  echo No existing logger se, creating...
+end-if
+/subsystem=logging/logger=se:add(level=INFO)
+
+if (outcome != success) of /subsystem=logging/logger=se.havochvatten.ers:remove
+  echo No existing logger se.havochvatten.ers, creating...
+end-if
+/subsystem=logging/logger=se.havochvatten.ers:add(level=DEBUG)
+
+
+stop-embedded-server
