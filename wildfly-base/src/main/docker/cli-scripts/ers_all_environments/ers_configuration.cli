@@ -47,12 +47,12 @@ if (outcome != success) of /subsystem=microprofile-config-smallrye/config-source
   echo No MicroProfile Config props existed, creating...
 end-if
 /subsystem=microprofile-config-smallrye/config-source=props:add(properties={ \
-  "uvmsBaseUrl" = "$uvmsBaseUrl", \
-  "ersUvmsBaseUrl" = "$ersUvmsBaseUrl" \
-  "uvmsUsername" = $uvmsUsername \
-  "uvmsPassword" = $uvmsPassword \
-  "ersBackendRole" = $ersBackendRole \
-  "notificationServiceEndpoint" = $notificationServiceEndpoint \
+  "uvmsBaseUrl" = $uvmsBaseUrl, \
+  "ersUvmsBaseUrl" = $ersUvmsBaseUrl, \
+  "uvmsUsername" = $uvmsUsername, \
+  "uvmsPassword" = $uvmsPassword, \
+  "ersBackendRole" = $ersBackendRole, \
+  "notificationServiceEndpoint" = $notificationServiceEndpoint, \
   "priorNotificationMaxAgeInDays" = $priorNotificationMaxAgeInDays \
 })
 
