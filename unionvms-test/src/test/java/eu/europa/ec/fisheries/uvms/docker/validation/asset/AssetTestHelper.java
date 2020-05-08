@@ -12,6 +12,7 @@ import eu.europa.ec.fisheries.uvms.commons.date.DateUtils;
 import eu.europa.ec.fisheries.uvms.docker.validation.common.AbstractHelper;
 import eu.europa.ec.fisheries.uvms.docker.validation.common.AuditHelper;
 import eu.europa.ec.fisheries.uvms.docker.validation.movement.AuthorizationHeaderWebTarget;
+import eu.europa.ec.fisheries.uvms.reporting.service.entities.AssetFilter;
 
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.client.WebTarget;
@@ -169,7 +170,7 @@ public class AssetTestHelper extends AbstractHelper {
 	//  AssetGroupResource
 	// ************************************************
 		
-	public static AssetGroup createAssetGroup(AssetGroup assetGroup) {
+	/*public static AssetGroup createAssetGroup(AssetGroup assetGroup) {
 		return getWebTarget()
                 .path("asset/rest/group")
                 .request(MediaType.APPLICATION_JSON)
@@ -230,7 +231,7 @@ public class AssetTestHelper extends AbstractHelper {
                 .request(MediaType.APPLICATION_JSON)
                 .header(HttpHeaders.AUTHORIZATION, getValidJwtToken())
                 .get(new GenericType<List<AssetGroupField>>() {});
-    }
+    }*/
 
 	/*  Audit logs */
 	
@@ -324,12 +325,12 @@ public class AssetTestHelper extends AbstractHelper {
 		return ret;
 	}
 	
-	public static AssetGroup createBasicAssetGroup() {
-		AssetGroup assetGroup = new AssetGroup();
+	/*public static AssetGroup createBasicAssetGroup() {
+		AssetFilter assetGroup = new AssetGroup();
 		assetGroup.setDynamic(false);
 		assetGroup.setGlobal(false);
 		assetGroup.setOwner("vms_admin_se");
 		assetGroup.setName("Name" + UUID.randomUUID().toString());
 		return assetGroup;
-	}
+	}*/
 }

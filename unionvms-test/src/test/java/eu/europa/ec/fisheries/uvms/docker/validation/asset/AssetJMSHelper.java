@@ -3,8 +3,6 @@ package eu.europa.ec.fisheries.uvms.docker.validation.asset;
 import eu.europa.ec.fisheries.uvms.asset.model.mapper.AssetModuleRequestMapper;
 import eu.europa.ec.fisheries.uvms.asset.model.mapper.JAXBMarshaller;
 import eu.europa.ec.fisheries.uvms.docker.validation.common.MessageHelper;
-import eu.europa.ec.fisheries.wsdl.asset.group.AssetGroup;
-import eu.europa.ec.fisheries.wsdl.asset.group.ListAssetGroupResponse;
 import eu.europa.ec.fisheries.wsdl.asset.module.*;
 import eu.europa.ec.fisheries.wsdl.asset.types.*;
 
@@ -12,7 +10,6 @@ import javax.jms.JMSException;
 import javax.jms.TextMessage;
 import java.math.BigDecimal;
 import java.util.Date;
-import java.util.List;
 import java.util.Random;
 import java.util.UUID;
 
@@ -38,26 +35,6 @@ public class AssetJMSHelper {
         return assetModuleResponse.getAsset();
     }
 
-    public List<AssetGroup> getAssetGroupByUser(String username) throws Exception {
-        String msg = AssetModuleRequestMapper.createAssetGroupListByUserModuleRequest(username);
-        TextMessage response = (TextMessage) messageHelper.getMessageResponse(ASSET_QUEUE, msg);
-        ListAssetGroupResponse assetModuleResponse = JAXBMarshaller.unmarshallTextMessage(response, ListAssetGroupResponse.class);
-        return assetModuleResponse.getAssetGroup();
-    }
-
-    public List<AssetGroup> getAssetGroupListByAssetGuid(String assetGuid) throws Exception {
-        String msg = AssetModuleRequestMapper.createAssetGroupListByAssetGuidRequest(assetGuid);
-        TextMessage response = (TextMessage) messageHelper.getMessageResponse(ASSET_QUEUE, msg);
-        ListAssetGroupResponse assetModuleResponse = JAXBMarshaller.unmarshallTextMessage(response, ListAssetGroupResponse.class);
-        return assetModuleResponse.getAssetGroup();
-    }
-
-    public List<Asset> getAssetListByAssetGroups(List<AssetGroup> assetGroups) throws Exception {
-        String msg = AssetModuleRequestMapper.createAssetListModuleRequest(assetGroups);
-        TextMessage response = (TextMessage) messageHelper.getMessageResponse(ASSET_QUEUE, msg);
-        ListAssetResponse assetModuleResponse = JAXBMarshaller.unmarshallTextMessage(response, ListAssetResponse.class);
-        return assetModuleResponse.getAsset();
-    }
 
     public String pingModule() throws Exception {
         GetAssetModuleRequest request = new GetAssetModuleRequest();
@@ -202,12 +179,12 @@ public class AssetJMSHelper {
         return ret;
     }
 
-    public AssetGroup createBasicAssetGroup() {
+   /* public AssetGroup createBasicAssetGroup() {
         AssetGroup assetGroup = new AssetGroup();
         assetGroup.setDynamic(false);
         assetGroup.setGlobal(false);
         assetGroup.setUser("vms_admin_com");
         assetGroup.setName("Name" + UUID.randomUUID().toString());
         return assetGroup;
-    }
+    }*/
 }
