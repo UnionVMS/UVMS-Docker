@@ -958,6 +958,32 @@ public class RulesAlarmIT extends AbstractRest {
         CustomRuleHelper.assertRuleTriggered(createdSpeedRule, timestamp);
     }
 
+    @Test
+    public void sendEmailIfVesselTypeIsTestTypeTest() throws Exception {
+        Instant timestamp = Instant.now();
+        String type = "test type";
+        AssetDTO asset = AssetTestHelper.createBasicAsset();
+        asset.setVesselType(type);
+        asset = AssetTestHelper.createAsset(asset);
+        String email = System.currentTimeMillis() + "@mail.com";
+
+        CustomRuleType speedRule = CustomRuleBuilder.getBuilder()
+                .setName("Vessel type == 'test type' => email")
+                .rule(CriteriaType.ASSET, SubCriteriaType.ASSET_TYPE,
+                        ConditionType.EQ, type)
+                .action(ActionType.EMAIL, email)
+                .build();
+
+        CustomRuleType createdSpeedRule = CustomRuleHelper.createCustomRule(speedRule);
+        assertNotNull(createdSpeedRule);
+
+        LatLong position = new LatLong(11d, 56d, new Date());
+        position.speed = 10.5;
+        sendPositionToFluxAndVerifyEmailAndRuleName(asset, email, createdSpeedRule, position);
+
+        CustomRuleHelper.assertRuleTriggered(createdSpeedRule, timestamp);
+    }
+
     private void sendPositionToFluxAndVerifyEmailAndRuleName(AssetDTO asset, String email,
                                                              CustomRuleType createdSpeedRule, LatLong position) throws Exception {
 
