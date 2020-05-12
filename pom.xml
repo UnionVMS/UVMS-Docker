@@ -5,8 +5,8 @@
 
     <parent>
         <groupId>eu.europa.ec.fisheries.uvms</groupId>
-        <artifactId>mare-pom</artifactId>
-        <version>1.7.0-MARE-SNAPSHOT</version>
+        <artifactId>mare-pom-2</artifactId>
+        <version>2.0.0-MARE-SNAPSHOT</version>
         <relativePath />
     </parent>
 

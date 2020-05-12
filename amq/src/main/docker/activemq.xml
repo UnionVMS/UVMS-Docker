@@ -120,6 +120,21 @@
                             <sharedDeadLetterStrategy processExpired="false" />
                         </deadLetterStrategy>
                     </policyEntry>
+                    <policyEntry queue="UVMSSubscriptionEvent" producerFlowControl="false" optimizedDispatch="true">
+                        <deadLetterStrategy>
+                            <sharedDeadLetterStrategy processExpired="false" />
+                        </deadLetterStrategy>
+                    </policyEntry>
+                    <policyEntry queue="UVMSSubscriptionData" producerFlowControl="false" optimizedDispatch="true">
+                        <deadLetterStrategy>
+                            <sharedDeadLetterStrategy processExpired="false" />
+                        </deadLetterStrategy>
+                    </policyEntry>
+                    <policyEntry queue="UVMSSubscriptionExecution" producerFlowControl="false" optimizedDispatch="true">
+                        <deadLetterStrategy>
+                            <sharedDeadLetterStrategy processExpired="false" />
+                        </deadLetterStrategy>
+                    </policyEntry>
                     <policyEntry queue="UVMSMdr" producerFlowControl="false" optimizedDispatch="true">
                         <deadLetterStrategy>
                             <sharedDeadLetterStrategy processExpired="false" />
