@@ -1294,6 +1294,16 @@
 								UVMSFAPluginEvent
 							</config-property>
 						</admin-object>
+						<admin-object class-name="org.apache.activemq.command.ActiveMQQueue" jndi-name="java:/jms/queue/UVMSSubscriptionData" use-java-context="true" pool-name="UVMSSubscriptionData">
+							<config-property name="PhysicalName">
+								UVMSSubscriptionData
+							</config-property>
+						</admin-object>
+						<admin-object class-name="org.apache.activemq.command.ActiveMQQueue" jndi-name="java:/jms/queue/UVMSSubscriptionExecution" use-java-context="true" pool-name="UVMSSubscriptionExecution">
+							<config-property name="PhysicalName">
+								UVMSSubscriptionExecution
+							</config-property>
+						</admin-object>
                     </admin-objects>
                 </resource-adapter>
             </resource-adapters>
