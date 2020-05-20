@@ -57,6 +57,11 @@
 			<version>${unionvms.project.user.module}</version>
 		</dependency>
 		<dependency>
+			<groupId>eu.europa.ec.fisheries.uvms.incident</groupId>
+			<artifactId>incident-model</artifactId>
+			<version>${unionvms.project.incident.module}</version>
+		</dependency>
+		<dependency>
 			<groupId>eu.europa.ec.fisheries.uvms.commons</groupId>
 			<artifactId>uvms-commons-message</artifactId>
 			<version>${uvms.commons.version}</version>
