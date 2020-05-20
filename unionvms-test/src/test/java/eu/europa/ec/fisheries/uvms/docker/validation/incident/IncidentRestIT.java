@@ -66,7 +66,7 @@ public class IncidentRestIT extends AbstractRest {
         createAssetNotSendingIncident(ticket, INCIDENT_UPDATE);
 
         List<IncidentLogDto> dtoList = getWebTarget()
-                .path("incident/rest/incident/assetNotSendingChanges")
+                .path("incident/rest/incident/incidentLogForIncident")
                 .path(String.valueOf(incident.getId()))
                 .request(MediaType.APPLICATION_JSON)
                 .header(HttpHeaders.AUTHORIZATION, getValidJwtToken())
