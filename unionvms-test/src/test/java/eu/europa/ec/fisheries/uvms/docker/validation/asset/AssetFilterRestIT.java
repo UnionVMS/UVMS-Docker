@@ -12,45 +12,6 @@ import eu.europa.ec.fisheries.uvms.docker.validation.common.AbstractRest;
 
 public class AssetFilterRestIT extends AbstractRest{
 	
-//	@Test
-//	public void getAssetFilterListByUserTest() {
-//	    AssetFilterDto createdAssetFilter = createAssetFilterWithQueryAndValuesDefault();
-//	    AssetFilterQueryDto createdAssetFilterQuery = AssetFilterTestHelper.createBasicAssetFilterQuery(createdAssetFilter);
-//	    AssetFilterValueDto createdAssetFilterValue = AssetFilterTestHelper.createBasicAssetFilterValue(createdAssetFilterQuery);
-//
-//		createdAssetFilter = AssetFilterTestHelper.createAssetFilter(createdAssetFilter);
-//		
-//		createdAssetFilterQuery.setType("GUID");
-//		createdAssetFilterQuery.setIsNumber(false);
-//		createdAssetFilterValue.setValueString(createdAssetFilter.getId().toString());
-//	    
-//	    Set<AssetFilterValueDto> setOfAssetFilteVAlues = new HashSet<AssetFilterValueDto>();
-//	    setOfAssetFilteVAlues.add(createdAssetFilterValue);
-//	    createdAssetFilterQuery.setValues(setOfAssetFilteVAlues);
-//	    Set<AssetFilterQueryDto> setOfAssetFilteQueries = new HashSet<AssetFilterQueryDto>();
-//	    setOfAssetFilteQueries.add(createdAssetFilterQuery);
-//	    createdAssetFilter.setQueries(setOfAssetFilteQueries);
-//
-//
-//		createdAssetFilterQuery.setType("GUID");
-//		createdAssetFilterQuery.setIsNumber(false);
-//		createdAssetFilterValue.setValueString(createdAssetFilter.getId().toString());
-//	
-////		AssetGroupField assetGroupField2 = new AssetGroupField();
-////		assetGroupField2.setField("GUID");
-////		assetGroupField2.setValue(asset2.getId().toString());
-////		assetGroupField2.setAssetGroup(createdAssetGroup);
-////		AssetGroupField createdAssetGroupField2 = AssetTestHelper.createAssetGroupField(createdAssetGroup.getId(), assetGroupField2);
-////	
-////		List<AssetGroupField> fetchedAssetGroups = AssetTestHelper.getAssetGroupFieldByAssetGroup(createdAssetGroup.getId());
-////		assertTrue(fetchedAssetGroups.stream().anyMatch(field -> field.getId().equals(createdAssetGroupField1.getId())));
-////		assertTrue(fetchedAssetGroups.stream().anyMatch(field -> field.getId().equals(createdAssetGroupField2.getId())));
-////		
-////		List<AssetGroup> assetGroups = AssetTestHelper.getAssetGroupListByUser(createdAssetGroup.getOwner());
-////
-////		assertTrue(assetGroups.stream().anyMatch(group -> group.getId().equals(createdAssetGroup.getId())));
-//	}
-	
 	@Test
 	public void getAssetFilterListByUserTest() {
 	    AssetFilterDto createdAssetFilter1 = AssetFilterTestHelper.createAssetFilterWithQueryAndValuesDefault();
@@ -63,10 +24,14 @@ public class AssetFilterRestIT extends AbstractRest{
 	    assertTrue(assetFilters.contains(createdAssetFilter1.getId().toString()));
 	    assertTrue(assetFilters.contains(createdAssetFilter2.getId().toString()));
 	    assertTrue(assetFilters.contains(createdAssetFilter3.getId().toString()));
+	    
+	    AssetFilterTestHelper.deleteAssetFilter(createdAssetFilter1);
+	    AssetFilterTestHelper.deleteAssetFilter(createdAssetFilter2);
+	    AssetFilterTestHelper.deleteAssetFilter(createdAssetFilter3);
 	}
 	
 	@Test
-	public void createAssetGroupTest() {
+	public void createAssetFilterTest() {
 		String name = "created Name";
 		String owner = "Test owner";
 		AssetFilterDto createdAssetFilter = AssetFilterTestHelper.createBasicAssetFilter();
@@ -86,6 +51,8 @@ public class AssetFilterRestIT extends AbstractRest{
 		
 		assertTrue(createdAssetFilterResponse.getName().equals(name));
 		assertTrue(createdAssetFilterResponse.getOwner().equals(owner));
+		
+		AssetFilterTestHelper.deleteAssetFilter(createdAssetFilter);
 	}
 	
 	@Test
@@ -98,15 +65,17 @@ public class AssetFilterRestIT extends AbstractRest{
 		assertTrue(createdAssetFilter.getId().equals(updatedAssetFilterDto.getId()));
 		assertTrue(createdAssetFilter.getOwner().equals(updatedAssetFilterDto.getOwner()));
 		assertFalse(createdAssetFilter.getUpdateTime().equals(updatedAssetFilterDto.getUpdateTime()));
+		
+		AssetFilterTestHelper.deleteAssetFilter(createdAssetFilter);
 	}
 	
 	@Test
 	public void deleteAssetFilterTest() {
 		AssetFilterDto createdAssetFilter = AssetFilterTestHelper.createAssetFilterWithQueryAndValuesDefault();
+		assertTrue(createdAssetFilter.getId() != null);
+		
 		AssetFilterTestHelper.deleteAssetFilter(createdAssetFilter);
 		
 		assertFalse(AssetFilterTestHelper.getAssetFilterByGuid(createdAssetFilter.getId()).getId().equals(createdAssetFilter.getId()));
 	}
-	
-
 }
