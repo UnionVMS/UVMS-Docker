@@ -178,13 +178,4 @@ public class AssetJMSHelper {
         }
         return ret;
     }
-
-   /* public AssetGroup createBasicAssetGroup() {
-        AssetGroup assetGroup = new AssetGroup();
-        assetGroup.setDynamic(false);
-        assetGroup.setGlobal(false);
-        assetGroup.setUser("vms_admin_com");
-        assetGroup.setName("Name" + UUID.randomUUID().toString());
-        return assetGroup;
-    }*/
 }

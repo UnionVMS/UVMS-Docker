@@ -8,11 +8,11 @@ import javax.json.bind.Jsonb;
 import org.junit.Before;
 import org.junit.Test;
 
-import eu.europa.ec.fisheries.uvms.docker.validation.assetfilter.test.dto.AssetFilterDto;
-import eu.europa.ec.fisheries.uvms.docker.validation.assetfilter.test.dto.AssetFilterQueryDto;
-import eu.europa.ec.fisheries.uvms.docker.validation.assetfilter.test.dto.AssetFilterResponseDto;
-import eu.europa.ec.fisheries.uvms.docker.validation.assetfilter.test.dto.AssetFilterValueDto;
-import eu.europa.ec.fisheries.uvms.docker.validation.assetfilter.test.dto.JsonBConf;
+import eu.europa.ec.fisheries.uvms.docker.validation.asset.assetfilter.test.dto.AssetFilterDto;
+import eu.europa.ec.fisheries.uvms.docker.validation.asset.assetfilter.test.dto.AssetFilterQueryDto;
+import eu.europa.ec.fisheries.uvms.docker.validation.asset.assetfilter.test.dto.AssetFilterResponseDto;
+import eu.europa.ec.fisheries.uvms.docker.validation.asset.assetfilter.test.dto.AssetFilterValueDto;
+import eu.europa.ec.fisheries.uvms.docker.validation.asset.assetfilter.test.dto.JsonBConf;
 import eu.europa.ec.fisheries.uvms.docker.validation.common.AbstractRest;
 
 public class AssetFilterRestIT extends AbstractRest{

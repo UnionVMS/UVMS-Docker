@@ -324,13 +324,4 @@ public class AssetTestHelper extends AbstractHelper {
 		}
 		return ret;
 	}
-	
-	/*public static AssetGroup createBasicAssetGroup() {
-		AssetFilter assetGroup = new AssetGroup();
-		assetGroup.setDynamic(false);
-		assetGroup.setGlobal(false);
-		assetGroup.setOwner("vms_admin_se");
-		assetGroup.setName("Name" + UUID.randomUUID().toString());
-		return assetGroup;
-	}*/
 }

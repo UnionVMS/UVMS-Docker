@@ -9,9 +9,9 @@ import javax.ws.rs.client.Entity;
 import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
 
-import eu.europa.ec.fisheries.uvms.docker.validation.assetfilter.test.dto.AssetFilterDto;
-import eu.europa.ec.fisheries.uvms.docker.validation.assetfilter.test.dto.AssetFilterQueryDto;
-import eu.europa.ec.fisheries.uvms.docker.validation.assetfilter.test.dto.AssetFilterValueDto;
+import eu.europa.ec.fisheries.uvms.docker.validation.asset.assetfilter.test.dto.AssetFilterDto;
+import eu.europa.ec.fisheries.uvms.docker.validation.asset.assetfilter.test.dto.AssetFilterQueryDto;
+import eu.europa.ec.fisheries.uvms.docker.validation.asset.assetfilter.test.dto.AssetFilterValueDto;
 import eu.europa.ec.fisheries.uvms.docker.validation.common.AbstractRest;
 
 public class AssetFilterTestHelper extends AbstractRest {
@@ -87,7 +87,6 @@ public class AssetFilterTestHelper extends AbstractRest {
                 .post(Entity.json(assetFilter), AssetFilterDto.class);
 	}
 	
-	
 	public static AssetFilterQueryDto createAssetFilterQuery(AssetFilterDto assetFilterforQuery, AssetFilterQueryDto assetFilterQuery) {
 		return getWebTarget()
                 .path(ASSET_FILTER_BASE_URL)
@@ -107,15 +106,6 @@ public class AssetFilterTestHelper extends AbstractRest {
                 .header(HttpHeaders.AUTHORIZATION, getValidJwtToken())
                 .post(Entity.json(assetFilterValue), AssetFilterValueDto.class);
 	}
-	
-//	public static AssetFilterDto updateAssetFilterValue(AssetFilterDto assetFilterDto) {
-//		return getWebTarget()
-//				.path(ASSET_FILTER_BASE_URL)
-//                .path(assetFilterDto.getId().toString())
-//                .request(MediaType.APPLICATION_JSON)
-//                .header(HttpHeaders.AUTHORIZATION, getValidJwtToken())
-//                .put(Entity.json(assetFilterDto), AssetFilterDto.class);
-//	}
 	
 	public static String updateAssetFilter(String assetFilterDto) {
 		return getWebTarget()

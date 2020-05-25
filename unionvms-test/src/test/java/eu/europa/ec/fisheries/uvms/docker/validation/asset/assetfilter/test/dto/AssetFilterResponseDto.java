@@ -1,4 +1,4 @@
-package eu.europa.ec.fisheries.uvms.docker.validation.assetfilter.test.dto;
+package eu.europa.ec.fisheries.uvms.docker.validation.asset.assetfilter.test.dto;
 
 import java.util.List;
 
