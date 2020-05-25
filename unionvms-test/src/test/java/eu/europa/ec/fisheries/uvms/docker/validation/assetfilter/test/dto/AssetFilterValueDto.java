@@ -1,4 +1,4 @@
-package eu.europa.ec.fisheries.uvms.docker.validation.assetfilter.dto;
+package eu.europa.ec.fisheries.uvms.docker.validation.assetfilter.test.dto;
 
 import java.io.Serializable;
 import java.util.UUID;

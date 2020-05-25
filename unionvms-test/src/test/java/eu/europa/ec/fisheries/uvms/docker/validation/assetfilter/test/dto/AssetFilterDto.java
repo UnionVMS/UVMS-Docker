@@ -1,4 +1,4 @@
-package eu.europa.ec.fisheries.uvms.docker.validation.assetfilter.dto;
+package eu.europa.ec.fisheries.uvms.docker.validation.assetfilter.test.dto;
 
 import java.io.Serializable;
 import java.time.Instant;
@@ -6,10 +6,6 @@ import java.util.Set;
 import java.util.UUID;
 
 public class AssetFilterDto implements Serializable{
-
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 4679552553188147724L;
 	 
     private UUID id;
@@ -60,10 +56,10 @@ public class AssetFilterDto implements Serializable{
 	}
 
 	public Set<AssetFilterQueryDto> getQueries() {
-        return queries;
-    }
+		return queries;
+	}
 
-    public void setQueries(Set<AssetFilterQueryDto> queries) {
-        this.queries = queries;
-    }
+	public void setQueries(Set<AssetFilterQueryDto> queries) {
+		this.queries = queries;
+	}
 }

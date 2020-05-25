@@ -9,15 +9,15 @@ import javax.ws.rs.client.Entity;
 import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
 
-import eu.europa.ec.fisheries.uvms.docker.validation.assetfilter.dto.AssetFilterDto;
-import eu.europa.ec.fisheries.uvms.docker.validation.assetfilter.dto.AssetFilterQueryDto;
-import eu.europa.ec.fisheries.uvms.docker.validation.assetfilter.dto.AssetFilterValueDto;
+import eu.europa.ec.fisheries.uvms.docker.validation.assetfilter.test.dto.AssetFilterDto;
+import eu.europa.ec.fisheries.uvms.docker.validation.assetfilter.test.dto.AssetFilterQueryDto;
+import eu.europa.ec.fisheries.uvms.docker.validation.assetfilter.test.dto.AssetFilterValueDto;
 import eu.europa.ec.fisheries.uvms.docker.validation.common.AbstractRest;
 
 public class AssetFilterTestHelper extends AbstractRest {
 	
 	/*  AssetFilterDto  */
-	public static final String  assetFilterBaseUrl = "asset/rest/filter";
+	public static final String  ASSET_FILTER_BASE_URL = "asset/rest/filter";
 	
 	public static AssetFilterDto createBasicAssetFilter() {
 		String user = "test User";
@@ -55,35 +55,42 @@ public class AssetFilterTestHelper extends AbstractRest {
 	    createdAssetFilterQuery.setValues(setOfAssetFilteVAlues);
 	    Set<AssetFilterQueryDto> setOfAssetFilteQueries = new HashSet<AssetFilterQueryDto>();
 	    setOfAssetFilteQueries.add(createdAssetFilterQuery);
-	    createdAssetFilter.setQueries(setOfAssetFilteQueries);
 	    
-	    createdAssetFilter.setQueries(setOfAssetFilteQueries);
+	    createdAssetFilter = createAssetFilter(createdAssetFilter);
+	    return createdAssetFilter;
+	}
+	
+	public static AssetFilterDto createAssetFilterDefault() {
+		AssetFilterDto createdAssetFilter = createBasicAssetFilter();
+	    
 	    createdAssetFilter = createAssetFilter(createdAssetFilter);
 	    return createdAssetFilter;
 	}
 	
 	/* AssetFilter Integration */
 	
-	public static AssetFilterDto getAssetFilterByGuid(UUID assetGuid) {
+	public static String getAssetFilterByGuid(String filterId) {
 		return getWebTarget()
-		        .path(assetFilterBaseUrl)
-                .path(assetGuid.toString())
+		        .path(ASSET_FILTER_BASE_URL)
+                .path(filterId)
                 .request(MediaType.APPLICATION_JSON)
                 .header(HttpHeaders.AUTHORIZATION, getValidJwtToken())
-                .get(AssetFilterDto.class);
+                .get(String.class);
 	}
 	
 	public static AssetFilterDto createAssetFilter(AssetFilterDto assetFilter) {
 		return getWebTarget()
-                .path(assetFilterBaseUrl)
+                .path(ASSET_FILTER_BASE_URL)
+                .path("createFilter")
                 .request(MediaType.APPLICATION_JSON)
                 .header(HttpHeaders.AUTHORIZATION, getValidJwtToken())
                 .post(Entity.json(assetFilter), AssetFilterDto.class);
 	}
-	 
+	
+	
 	public static AssetFilterQueryDto createAssetFilterQuery(AssetFilterDto assetFilterforQuery, AssetFilterQueryDto assetFilterQuery) {
 		return getWebTarget()
-                .path(assetFilterBaseUrl)
+                .path(ASSET_FILTER_BASE_URL)
                 .path(assetFilterforQuery.getId().toString())
                 .path("query")
                 .request(MediaType.APPLICATION_JSON)
@@ -93,7 +100,7 @@ public class AssetFilterTestHelper extends AbstractRest {
 	 
 	public static AssetFilterValueDto createAssetFilterValue(AssetFilterQueryDto assetFilterQueryForValue, AssetFilterValueDto assetFilterValue) {
 		return getWebTarget()
-				.path(assetFilterBaseUrl)
+				.path(ASSET_FILTER_BASE_URL)
                 .path(assetFilterQueryForValue.getId().toString())
                 .path("value")
                 .request(MediaType.APPLICATION_JSON)
@@ -101,19 +108,28 @@ public class AssetFilterTestHelper extends AbstractRest {
                 .post(Entity.json(assetFilterValue), AssetFilterValueDto.class);
 	}
 	
-	public static AssetFilterDto updateAssetFilterValue(AssetFilterDto assetFilterDto) {
+//	public static AssetFilterDto updateAssetFilterValue(AssetFilterDto assetFilterDto) {
+//		return getWebTarget()
+//				.path(ASSET_FILTER_BASE_URL)
+//                .path(assetFilterDto.getId().toString())
+//                .request(MediaType.APPLICATION_JSON)
+//                .header(HttpHeaders.AUTHORIZATION, getValidJwtToken())
+//                .put(Entity.json(assetFilterDto), AssetFilterDto.class);
+//	}
+	
+	public static String updateAssetFilter(String assetFilterDto) {
 		return getWebTarget()
-				.path(assetFilterBaseUrl)
-                .path(assetFilterDto.getId().toString())
+				.path(ASSET_FILTER_BASE_URL)
                 .request(MediaType.APPLICATION_JSON)
                 .header(HttpHeaders.AUTHORIZATION, getValidJwtToken())
-                .put(Entity.json(assetFilterDto), AssetFilterDto.class);
+                .put(Entity.json(assetFilterDto), String.class);
 	}
+
 	
-	public static AssetFilterDto deleteAssetFilter(AssetFilterDto assetFilterDto) {
+	public static AssetFilterDto deleteAssetFilter(String filterId) {
 		return getWebTarget()
-				.path(assetFilterBaseUrl)
-                .path(assetFilterDto.getId().toString())
+				.path(ASSET_FILTER_BASE_URL)
+                .path(filterId)
                 .request(MediaType.APPLICATION_JSON)
                 .header(HttpHeaders.AUTHORIZATION, getValidJwtToken())
                 .delete(AssetFilterDto.class);
@@ -121,11 +137,17 @@ public class AssetFilterTestHelper extends AbstractRest {
 	
 	public static String getAssetFilterList() {
 		return getWebTarget()
-				.path(assetFilterBaseUrl)
+				.path(ASSET_FILTER_BASE_URL)
 				.path("list")
                 .request(MediaType.APPLICATION_JSON)
                 .header(HttpHeaders.AUTHORIZATION, getValidJwtToken())
                 .get(String.class);
 	 }
-	
+	public static String createAssetFilterFromJson(String json) {
+		return getWebTarget()
+	            .path(ASSET_FILTER_BASE_URL)
+	            .request(MediaType.APPLICATION_JSON)
+	            .header(HttpHeaders.AUTHORIZATION, getValidJwtToken())
+	            .post(Entity.json(json), String.class);
+	 }
 }
