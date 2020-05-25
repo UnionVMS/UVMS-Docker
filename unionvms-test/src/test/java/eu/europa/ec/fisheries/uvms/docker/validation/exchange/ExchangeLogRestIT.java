@@ -77,7 +77,7 @@ public class ExchangeLogRestIT extends AbstractRest {
 		pollQuery.setStatusFromDate(formatDateAsUTC(oldDate));
 		pollQuery.setStatusToDate(formatDateAsUTC(new Date()));
 
-		Thread.sleep(500);	 // Needed to let the system work and catch up
+		Thread.sleep(1000);	 // Needed to let the system work and catch up
 
 		ResponseDto<List<ExchangeLogStatusType>> exchangeLogStatusTypeList = getWebTarget()
 				.path("exchange/rest/exchange/poll/")
