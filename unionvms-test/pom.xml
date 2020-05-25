@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>eu.europa.ec.fisheries.uvms.docker</groupId>
 		<artifactId>uvms-docker</artifactId>
-		<version>3.43.6-SNAPSHOT</version>
+		<version>3.43.7-SNAPSHOT</version>
 		<relativePath>../pom.xml</relativePath>
 	</parent>
 	
@@ -55,6 +55,11 @@
 			<groupId>eu.europa.ec.fisheries.uvms.user</groupId>
 			<artifactId>user-model</artifactId>
 			<version>${unionvms.project.user.module}</version>
+		</dependency>
+		<dependency>
+			<groupId>eu.europa.ec.fisheries.uvms.incident</groupId>
+			<artifactId>incident-model</artifactId>
+			<version>${unionvms.project.incident.module}</version>
 		</dependency>
 		<dependency>
 			<groupId>eu.europa.ec.fisheries.uvms.commons</groupId>
@@ -159,7 +164,7 @@
 		<dependency>
 		    <groupId>org.eclipse.jetty</groupId>
 		    <artifactId>jetty-servlet</artifactId>
-		    <version>9.4.28.v20200408</version>
+		    <version>9.4.29.v20200521</version>
 		</dependency>
 		<dependency>
 			<groupId>fish.focus.uvms.maven</groupId>
