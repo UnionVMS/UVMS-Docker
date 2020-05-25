@@ -6,21 +6,17 @@ import javax.json.bind.JsonbConfig;
 import javax.ws.rs.ext.ContextResolver;
 import javax.ws.rs.ext.Provider;
 
-
 @Provider
-public class JsonBConf implements ContextResolver<Jsonb>{
+public class JsonBConf implements ContextResolver<Jsonb> {
 
-	    protected JsonbConfig config;
+    protected JsonbConfig config;
 
-	    public JsonBConf() {
-	        config = new JsonbConfig()
-	        		.withNullValues(true);
-	    }
+    public JsonBConf() {
+        config = new JsonbConfig().withNullValues(true);
+    }
 
-	    @Override
-	    public Jsonb getContext(Class<?> type) {
-	        return JsonbBuilder.newBuilder()
-	                .withConfig(config)
-	                .build();
-	    }
+    @Override
+    public Jsonb getContext(Class<?> type) {
+        return JsonbBuilder.newBuilder().withConfig(config).build();
+    }
 }
