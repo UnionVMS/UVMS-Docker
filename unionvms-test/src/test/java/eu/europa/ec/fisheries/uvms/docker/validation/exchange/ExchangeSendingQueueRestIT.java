@@ -80,7 +80,7 @@ public class ExchangeSendingQueueRestIT extends AbstractRest {
         String email = UUID.randomUUID() + "@mail.com";
         SetCommandRequest commandRequest = VMSSystemHelper.triggerBasicRuleAndSendEmail(email);
         String unsentMessageGuid = commandRequest.getCommand().getUnsentMessageGuid();
-        assertSendingLogContainsUnsentMessageGuid(VMSSystemHelper.emailPluginName, unsentMessageGuid);
+        assertSendingLogContainsUnsentMessageGuid(email, unsentMessageGuid);
 
         SetCommandRequest commandRequest2;
         try (TopicListener topicListener = new TopicListener(VMSSystemHelper.emailSelector)) {
