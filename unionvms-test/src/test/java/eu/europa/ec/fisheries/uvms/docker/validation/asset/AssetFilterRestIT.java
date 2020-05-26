@@ -145,7 +145,7 @@ public class AssetFilterRestIT extends AbstractRest {
         AssetFilterValueRestTestDto assetFilterValueRestTestDtoUpdatedFirst = updatedAssetFilter.getFilter().get(0).getValues().get(0);
         
         assertTrue(updatedAssetFilter.getId().equals(filterId));
-        assertTrue(updatedAssetFilter.getName().equals("båtar2"));
+        assertTrue(updatedAssetFilter.getName().equals("testValue"));
         
         String assetFilterToUpdate2 = "{\"name\":\"testValue2\",\"id\":\"" + filterId
                 + "\",\"filter\": [{\"values\":[{\"value\":42, \"operator\":\"operator update test\"},"
@@ -167,10 +167,10 @@ public class AssetFilterRestIT extends AbstractRest {
         AssetFilterValueRestTestDto assetFilterValueRestTestDto1 = assetFilterValueList.get(1);
         
         assertFalse( assetFilterValueRestTestDto0.getValue()== assetFilterValueRestTestDto1.getValue() );
-        assertTrue( assetFilterValueRestTestDto0.getOperator() == assetFilterValueRestTestDto1.getOperator());
+        assertTrue( assetFilterValueRestTestDto0.getOperator().equals(assetFilterValueRestTestDto1.getOperator()) );
         
-        assertTrue( assetFilterValueRestTestDtoUpdatedFirst.getOperator() == assetFilterValueRestTestDto0.getOperator());
-        assertFalse( assetFilterValueRestTestDtoUpdatedFirst.getOperator() == assetFilterValueRestTestDto1.getOperator());
+        assertTrue( assetFilterValueRestTestDtoUpdatedFirst.getOperator().equals(assetFilterValueRestTestDto0.getOperator()) );
+        assertTrue( assetFilterValueRestTestDtoUpdatedFirst.getOperator().equals(assetFilterValueRestTestDto1.getOperator()) );
     }
 
     @Test
