@@ -24,7 +24,7 @@ public class AssetFilterQueryRestDto {
         this.type = type;
     }
 
-    public boolean isInverse() {
+    public boolean getInverse() {
         return inverse;
     }
 
@@ -32,11 +32,11 @@ public class AssetFilterQueryRestDto {
         this.inverse = inverse;
     }
 
-    public boolean isNumber() {
+    public boolean getIsNumber() {
         return isNumber;
     }
 
-    public void setNumber(boolean isNumber) {
+    public void setIsNumber(boolean isNumber) {
         this.isNumber = isNumber;
     }
 
