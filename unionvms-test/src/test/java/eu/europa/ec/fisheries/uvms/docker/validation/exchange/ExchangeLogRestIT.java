@@ -30,6 +30,10 @@ import javax.ws.rs.core.GenericType;
 import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
 import java.text.SimpleDateFormat;
+import java.time.Instant;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
 import java.util.*;
 
 public class ExchangeLogRestIT extends AbstractRest {
@@ -70,14 +74,12 @@ public class ExchangeLogRestIT extends AbstractRest {
         PollHelper.ackPoll(command.getPoll().getMessage(), command.getPoll().getPollId(),
 				ExchangeLogStatusTypeType.SUCCESSFUL, command.getUnsentMessageGuid());
 
-		PollQuery pollQuery = new PollQuery();
-		pollQuery.setStatus(ExchangeLogStatusTypeType.SUCCESSFUL);
-		Date oldDate = new Date();
-		oldDate.setTime( oldDate.getTime() - (long)10*1000*60*60*24 );
-		pollQuery.setStatusFromDate(formatDateAsUTC(oldDate));
-		pollQuery.setStatusToDate(formatDateAsUTC(new Date()));
+        Thread.sleep(1000);	 // Needed to let the system work and catch up
 
-		Thread.sleep(1000);	 // Needed to let the system work and catch up
+        PollQuery pollQuery = new PollQuery();
+		pollQuery.setStatus(ExchangeLogStatusTypeType.SUCCESSFUL);
+		pollQuery.setStatusFromDate(formatDateAsUTC(Instant.now().minus(1, ChronoUnit.HOURS)));
+		pollQuery.setStatusToDate(formatDateAsUTC(Instant.now().plus(1, ChronoUnit.HOURS)));
 
 		ResponseDto<List<ExchangeLogStatusType>> exchangeLogStatusTypeList = getWebTarget()
 				.path("exchange/rest/exchange/poll/")
@@ -138,11 +140,7 @@ public class ExchangeLogRestIT extends AbstractRest {
         assertEquals(LogType.SEND_POLL.value(), typeMap.get("type"));
 	}
 
-	private String formatDateAsUTC(Date date) {
-		Calendar calendar = Calendar.getInstance();
-		calendar.setTime(date);
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss Z");
-		sdf.setTimeZone(TimeZone.getTimeZone("UTC"));
-		return sdf.format(date);
+	private String formatDateAsUTC(Instant date) {
+	    return DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss Z").withZone(ZoneId.of("UTC")).format(date);
 	}
 }

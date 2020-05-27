@@ -23,6 +23,7 @@ import eu.europa.ec.fisheries.uvms.docker.validation.exchange.dto.PluginType;
 import eu.europa.ec.fisheries.uvms.docker.validation.exchange.dto.SendingGroupLog;
 import eu.europa.ec.fisheries.uvms.docker.validation.exchange.dto.SendingLog;
 import eu.europa.ec.fisheries.uvms.docker.validation.system.helper.VMSSystemHelper;
+import org.bouncycastle.cms.Recipient;
 import org.junit.Ignore;
 import org.junit.Test;
 
@@ -34,7 +35,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
-
+import java.util.stream.Collectors;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.notNullValue;
 
@@ -79,7 +80,7 @@ public class ExchangeSendingQueueRestIT extends AbstractRest {
         String email = UUID.randomUUID() + "@mail.com";
         SetCommandRequest commandRequest = VMSSystemHelper.triggerBasicRuleAndSendEmail(email);
         String unsentMessageGuid = commandRequest.getCommand().getUnsentMessageGuid();
-        assertSendingLogContainsUnsentMessageGuid(VMSSystemHelper.emailPluginName, unsentMessageGuid);
+        assertSendingLogContainsUnsentMessageGuid(eu.europa.ec.fisheries.schema.exchange.plugin.types.v1.PluginType.EMAIL.name(), unsentMessageGuid);
 
         SetCommandRequest commandRequest2;
         try (TopicListener topicListener = new TopicListener(VMSSystemHelper.emailSelector)) {
@@ -98,15 +99,15 @@ public class ExchangeSendingQueueRestIT extends AbstractRest {
         assertTrue(list.stream().anyMatch(log -> log.getMessageId().equals(unsentMessageGuid)));
 	}
 	
-	private List<SendingLog> getSendingLogListForMsgType(String pluginName) {
+	private List<SendingLog> getSendingLogListForMsgType(String recipient) {
     	List<SendingLog> sendingLogs = new ArrayList<>();
 	    List<SendingGroupLog> sendGroupList = getSendGroupList();
 	    for (SendingGroupLog sendingGroupLog : sendGroupList) {
-            for (PluginType plugin : sendingGroupLog.getPluginList()) {
-                if (plugin.getName().equals(pluginName)) {
-                    sendingLogs.addAll(plugin.getSendingLogList());
-                }
-            }
+	        if (sendingGroupLog.getRecipient().equals(recipient)) {
+	            for (PluginType plugin : sendingGroupLog.getPluginList()) {
+	                sendingLogs.addAll(plugin.getSendingLogList());
+	            }
+	        }
         }
 	    return sendingLogs;
 	}
