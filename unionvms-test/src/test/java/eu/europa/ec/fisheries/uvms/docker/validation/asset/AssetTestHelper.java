@@ -20,7 +20,9 @@ import javax.ws.rs.core.GenericType;
 import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.sse.SseEventSource;
+import java.time.Instant;
 import java.time.OffsetDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
 
@@ -113,6 +115,16 @@ public class AssetTestHelper extends AbstractHelper {
                 .header(HttpHeaders.AUTHORIZATION, getValidJwtToken()).post(Entity.json(note), Note.class);
     }
 
+    public static FishingLicence getFishingLicenceForAsset(String assetId) {
+        return getWebTarget()
+                .path("asset/rest/asset/")
+                .path(assetId)
+                .path("licence")
+                .request(MediaType.APPLICATION_JSON)
+                .header(HttpHeaders.AUTHORIZATION, getValidJwtToken())
+                .get(FishingLicence.class);
+    }
+
     public static SseEventSource getSseStream() {
         WebTarget target = getWebTarget().path("asset/rest/sse/subscribe");
         AuthorizationHeaderWebTarget jwtTarget = new AuthorizationHeaderWebTarget(target, getValidJwtToken());
@@ -198,6 +210,17 @@ public class AssetTestHelper extends AbstractHelper {
         asset.setPowerOfAuxEngine(10.0);
 
         return asset;
+    }
+
+    public static FishingLicence createFishingLicence() {
+        FishingLicence fishingLicence = new FishingLicence();
+        fishingLicence.setCivicNumber(generateARandomStringWithMaxLength(10));
+        fishingLicence.setLicenceNumber(Long.valueOf(generateARandomStringWithMaxLength(10)));
+        fishingLicence.setFromDate(Instant.now().truncatedTo(ChronoUnit.MILLIS));
+        fishingLicence.setToDate(Instant.now().truncatedTo(ChronoUnit.MILLIS));
+        fishingLicence.setDecisionDate(Instant.now().truncatedTo(ChronoUnit.MILLIS));
+        fishingLicence.setConstraints("Test constraint");
+        return fishingLicence;
     }
 
     public static SearchBranch getBasicAssetSearchBranch() {

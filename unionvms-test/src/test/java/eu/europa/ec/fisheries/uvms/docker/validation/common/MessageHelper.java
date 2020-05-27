@@ -152,7 +152,15 @@ public class MessageHelper implements Closeable {
         sendMessageWithFunctionAndGroup(queueName, msg, function, null);
     }
 
+    public void sendMessageWithMethod(String queueName, final String msg, String function) throws Exception {
+        sendMessageWithFunctionAndGroup(queueName, msg, "METHOD", function, null);
+    }
+
     public void sendMessageWithFunctionAndGroup(String queueName, final String msg, String function, String group) throws Exception {
+        sendMessageWithFunctionAndGroup(queueName, msg, "FUNCTION", function, group);
+    }
+
+    public void sendMessageWithFunctionAndGroup(String queueName, final String msg, String functionProperty, String function, String group) throws Exception {
         try (Session session = connection.createSession(false, Session.AUTO_ACKNOWLEDGE)) {
             final Queue queue = session.createQueue(queueName);
             try (MessageProducer messageProducer = session.createProducer(queue)) {
@@ -161,7 +169,7 @@ public class MessageHelper implements Closeable {
                 final Queue responseQueue = session.createQueue(RESPONSE_QUEUE_NAME);
                 TextMessage createTextMessage = session.createTextMessage(msg);
                 createTextMessage.setJMSReplyTo(responseQueue);
-                createTextMessage.setStringProperty("FUNCTION", function);
+                createTextMessage.setStringProperty(functionProperty, function);
                 createTextMessage.setStringProperty("JMSXGroupID", group);
                 messageProducer.send(createTextMessage);
             }

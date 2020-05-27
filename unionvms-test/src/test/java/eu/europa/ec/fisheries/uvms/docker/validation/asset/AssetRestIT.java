@@ -13,9 +13,11 @@ copy of the GNU General Public License along with the IFDM Suite. If not, see <h
 */
 package eu.europa.ec.fisheries.uvms.docker.validation.asset;
 
+import eu.europa.ec.fisheries.uvms.asset.client.model.AssetBO;
 import eu.europa.ec.fisheries.uvms.asset.client.model.AssetDTO;
 import eu.europa.ec.fisheries.uvms.asset.client.model.AssetListResponse;
 import eu.europa.ec.fisheries.uvms.asset.client.model.ContactInfo;
+import eu.europa.ec.fisheries.uvms.asset.client.model.FishingLicence;
 import eu.europa.ec.fisheries.uvms.asset.client.model.Note;
 import eu.europa.ec.fisheries.uvms.asset.model.constants.AuditOperationEnum;
 import eu.europa.ec.fisheries.uvms.asset.remote.dto.search.SearchBranch;
@@ -382,4 +384,28 @@ public class AssetRestIT extends AbstractRest {
 		}
 		assertThat(assets.size(), CoreMatchers.is(3));
 	}
+
+    @Test
+    public void getFishingLicenceTest() throws Exception {
+        AssetDTO asset = AssetTestHelper.createTestAsset();
+        FishingLicence licence = AssetTestHelper.createFishingLicence();
+
+        AssetBO assetBo = new AssetBO();
+        assetBo.setAsset(asset);
+        assetBo.setFishingLicence(licence);
+
+        try (AssetJMSHelper jmsHelper = new AssetJMSHelper()) {
+            jmsHelper.upsertAssetBO(assetBo);
+            Thread.sleep(1000);
+        }
+
+        FishingLicence fishingLicence = AssetTestHelper.getFishingLicenceForAsset(asset.getId().toString());
+        assertThat(fishingLicence.getAssetId(), CoreMatchers.is(asset.getId()));
+        assertThat(fishingLicence.getLicenceNumber(), CoreMatchers.is(licence.getLicenceNumber()));
+        assertThat(fishingLicence.getCivicNumber(), CoreMatchers.is(licence.getCivicNumber()));
+        assertThat(fishingLicence.getFromDate(), CoreMatchers.is(licence.getFromDate()));
+        assertThat(fishingLicence.getToDate(), CoreMatchers.is(licence.getToDate()));
+        assertThat(fishingLicence.getDecisionDate(), CoreMatchers.is(licence.getDecisionDate()));
+        assertThat(fishingLicence.getConstraints(), CoreMatchers.is(licence.getConstraints()));
+    }
 }
