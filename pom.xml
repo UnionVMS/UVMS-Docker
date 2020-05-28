@@ -47,7 +47,7 @@
 		<unionvms.project.plugins.fluxActivity>1.0.6</unionvms.project.plugins.fluxActivity>
 		<unionvms.project.plugins.mdr>1.0.2</unionvms.project.plugins.mdr>
 		<unionvms.project.plugins.flux-rest>1.4</unionvms.project.plugins.flux-rest>
-		<unionvms.project.stream-collector>0.11.4</unionvms.project.stream-collector>
+		<unionvms.project.web-gateway>0.12.0</unionvms.project.web-gateway>
 		<unionvms.project.hawtio-wildfly>2.10.0</unionvms.project.hawtio-wildfly>
 	</properties>
 
@@ -394,10 +394,10 @@
 			</dependency>
 
 			<dependency>
-				<groupId>eu.europa.ec.fisheries.uvms.stream-collector</groupId>
-				<artifactId>stream-collector</artifactId>
+				<groupId>eu.europa.ec.fisheries.uvms.web-gateway</groupId>
+				<artifactId>web-gateway</artifactId>
 				<type>war</type>
-				<version>${unionvms.project.stream-collector}</version>
+				<version>${unionvms.project.web-gateway}</version>
 			</dependency>
 
 			<!-- plugin modules -->

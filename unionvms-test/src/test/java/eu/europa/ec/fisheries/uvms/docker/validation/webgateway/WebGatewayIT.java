@@ -1,4 +1,4 @@
-package eu.europa.ec.fisheries.uvms.docker.validation.streamcollector;
+package eu.europa.ec.fisheries.uvms.docker.validation.webgateway;
 
 import eu.europa.ec.fisheries.uvms.docker.validation.common.AbstractRest;
 import eu.europa.ec.fisheries.uvms.docker.validation.common.MessageHelper;
@@ -17,7 +17,7 @@ import javax.ws.rs.sse.SseEventSource;
 import java.util.ArrayList;
 import java.util.List;
 
-public class StreamCollectorIT extends AbstractRest {
+public class WebGatewayIT extends AbstractRest {
 
     private static MovementHelper movementHelper;
     private static MessageHelper messageHelper;
@@ -68,7 +68,7 @@ public class StreamCollectorIT extends AbstractRest {
     }
 
     public static SseEventSource getSseStream() {
-        WebTarget target = getWebTarget().path("stream-collector/rest/sse/subscribe");
+        WebTarget target = getWebTarget().path("web-gateway/rest/sse/subscribe");
         AuthorizationHeaderWebTarget jwtTarget = new AuthorizationHeaderWebTarget(target, getValidJwtToken());
         return SseEventSource.
                 target(jwtTarget).build();

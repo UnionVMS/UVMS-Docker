@@ -1,4 +1,4 @@
-package eu.europa.ec.fisheries.uvms.docker.validation.streamcollector;
+package eu.europa.ec.fisheries.uvms.docker.validation.webgateway;
 
 import eu.europa.ec.fisheries.uvms.asset.client.model.AssetDTO;
 import eu.europa.ec.fisheries.uvms.asset.remote.dto.search.SearchBranch;
@@ -10,7 +10,7 @@ import eu.europa.ec.fisheries.uvms.docker.validation.movement.LatLong;
 import eu.europa.ec.fisheries.uvms.docker.validation.movement.MovementDto;
 import eu.europa.ec.fisheries.uvms.docker.validation.movement.MovementHelper;
 import eu.europa.ec.fisheries.uvms.docker.validation.movement.model.IncomingMovement;
-import eu.europa.ec.fisheries.uvms.docker.validation.streamcollector.dto.ReportOneRequestDto;
+import eu.europa.ec.fisheries.uvms.docker.validation.webgateway.dto.TracksByAssetSearchRequestDto;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
@@ -43,11 +43,11 @@ public class ReportIT extends AbstractRest {
         SearchBranch assetQuery = AssetTestHelper.getBasicAssetSearchBranch();
         assetQuery.addNewSearchLeaf(SearchFields.GUID, testAsset.getId().toString());
 
-        ReportOneRequestDto report1 = new ReportOneRequestDto();
+        TracksByAssetSearchRequestDto report1 = new TracksByAssetSearchRequestDto();
         report1.setAssetQuery(assetQuery);
 
         Response response = getWebTarget()
-                .path("stream-collector/rest/reports/tracksByAssetSearch")
+                .path("web-gateway/rest/reports/tracksByAssetSearch")
                 .request(MediaType.APPLICATION_JSON)
                 .header(HttpHeaders.AUTHORIZATION, getValidJwtToken())
                 .post(Entity.json(report1), Response.class);
