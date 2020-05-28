@@ -1,10 +1,10 @@
-package eu.europa.ec.fisheries.uvms.docker.validation.streamcollector.dto;
+package eu.europa.ec.fisheries.uvms.docker.validation.webgateway.dto;
 
 import eu.europa.ec.fisheries.uvms.asset.remote.dto.search.SearchBranch;
 
 import java.util.List;
 
-public class ReportOneRequestDto {
+public class TracksByAssetSearchRequestDto {
 
 
     SearchBranch assetQuery;

@@ -126,8 +126,8 @@
 		</dependency>
 
 		<dependency>
-			<groupId>eu.europa.ec.fisheries.uvms.stream-collector</groupId>
-			<artifactId>stream-collector</artifactId>
+			<groupId>eu.europa.ec.fisheries.uvms.web-gateway</groupId>
+			<artifactId>web-gateway</artifactId>
 			<type>war</type>
 		</dependency>
 
