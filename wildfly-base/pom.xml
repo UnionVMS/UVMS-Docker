@@ -192,7 +192,26 @@
 					<version>${project.version}</version>
 					<file>target/${project.artifactId}.zip</file>
 				</configuration>
-			</plugin>									
+			</plugin>
+			<plugin>
+				<groupId>com.googlecode.maven-download-plugin</groupId>
+				<artifactId>download-maven-plugin</artifactId>
+				<version>1.6.0</version>
+				<executions>
+					<execution>
+						<id>download-wildfly</id>
+						<phase>prepare-package</phase>
+						<goals>
+							<goal>wget</goal>
+						</goals>
+						<configuration>
+							<url>https://download.jboss.org/wildfly/15.0.1.Final/wildfly-15.0.1.Final.tar.gz</url>
+							<sha1>23d6a5889b76702fc518600fc5b2d80d6b3b7bb1</sha1>
+							<outputDirectory>${project.build.directory}/dockerfile</outputDirectory>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
 			<plugin>
 				<groupId>io.fabric8</groupId>
 				<artifactId>docker-maven-plugin</artifactId>
@@ -222,7 +241,7 @@
 				<configuration>
 					<images>
 						<image>
-						<alias>activemq</alias>
+							<alias>activemq</alias>
 							<name>uvms/activemq:${project.version}</name>
 							<run>
 								<net>bridge</net>
@@ -325,7 +344,6 @@
 								</log>
 								<hostname>wildfly</hostname>
 							</run>
-
 						</image>
 					</images>
 				</configuration>
