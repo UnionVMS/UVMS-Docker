@@ -69,7 +69,9 @@ public class IncidentCollectionIT extends AbstractRest {
         assertTrue(incidentLogList.stream().allMatch(dto -> dto.getIncidentLog().getIncidentId() == incidentDto.getId().longValue()));
         Optional<ExtendedIncidentLogDto> noteIncidentLog = incidentLogList.stream().filter(dto -> dto.getIncidentLog().getEventType().equals(EventTypeEnum.NOTE_CREATED)).findAny();
         assertTrue(noteIncidentLog.isPresent());
-        assertTrue(noteIncidentLog.get().getRelatedObject() != null);
+        assertEquals(5, noteIncidentLog.get().getRelatedObject().size());
+        assertTrue(noteIncidentLog.get().getRelatedObject().get("assetId").equals(note.getAssetId().toString()));
+        assertTrue(noteIncidentLog.get().getRelatedObject().get("note").equals(note.getNote()));
 
 
     }

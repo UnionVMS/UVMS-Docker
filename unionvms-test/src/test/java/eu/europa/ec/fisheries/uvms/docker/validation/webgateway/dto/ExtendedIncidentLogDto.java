@@ -2,16 +2,18 @@ package eu.europa.ec.fisheries.uvms.docker.validation.webgateway.dto;
 
 import eu.europa.ec.fisheries.uvms.incident.model.dto.IncidentLogDto;
 
+import java.util.Map;
+
 public class ExtendedIncidentLogDto {
 
     private IncidentLogDto incidentLog;
 
-    private Object relatedObject;
+    private Map<String, String> relatedObject;
 
     public ExtendedIncidentLogDto() {
     }
 
-    public ExtendedIncidentLogDto(IncidentLogDto incidentLog, Object relatedObject) {
+    public ExtendedIncidentLogDto(IncidentLogDto incidentLog, Map<String, String> relatedObject) {
         this.incidentLog = incidentLog;
         this.relatedObject = relatedObject;
     }
@@ -24,11 +26,11 @@ public class ExtendedIncidentLogDto {
         this.incidentLog = incidentLog;
     }
 
-    public Object getRelatedObject() {
+    public Map<String, String> getRelatedObject() {
         return relatedObject;
     }
 
-    public void setRelatedObject(Object relatedObject) {
+    public void setRelatedObject(Map<String, String> relatedObject) {
         this.relatedObject = relatedObject;
     }
 }
