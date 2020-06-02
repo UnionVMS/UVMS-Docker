@@ -35,15 +35,9 @@ public class ManualMovementRestIT extends AbstractRest {
     public void sendManualMovementTest() {
         Double latitude = 10d;
         Double longitude = 11d;
+        LatLong position = new LatLong(latitude, longitude, new Date());
         AssetDTO asset = AssetTestHelper.createTestAsset();
-        ManualMovementDto manualMovement = createManualMovement();
-        manualMovement.getAsset().setCfr(asset.getCfr());
-        manualMovement.getAsset().setIrcs(asset.getIrcs());
-        manualMovement.getAsset().setExtMarking(asset.getExternalMarking());
-        manualMovement.getAsset().setFlagState(asset.getFlagStateCode());
-        manualMovement.getAsset().setName(asset.getName());
-        manualMovement.getMovement().getLocation().setLatitude(latitude);
-        manualMovement.getMovement().getLocation().setLongitude(longitude);
+        ManualMovementDto manualMovement = ManualMovementRestHelper.mapToManualMovement(position, asset);
 
         Response response = ManualMovementRestHelper.sendTempMovement(manualMovement);
         assertEquals(200, response.getStatus());
@@ -78,27 +72,5 @@ public class ManualMovementRestIT extends AbstractRest {
     }
 
 
-    private static ManualMovementDto createManualMovement() {
-        ManualMovementDto movement = new ManualMovementDto();
-        VesselType asset = new VesselType();
-        asset.setCfr("T");
-        asset.setExtMarking("T");
-        asset.setFlagState("T");
-        asset.setIrcs("T");
-        asset.setName("T");
-        movement.setAsset(asset);
 
-        MicroMovement micro = new MicroMovement();
-        MovementPoint location = new MovementPoint();
-        location.setLatitude(0.0);
-        location.setLongitude(0.0);
-        micro.setLocation(location);
-        micro.setTimestamp(Instant.now());
-        micro.setHeading(0.0);
-        micro.setSpeed(0.0);
-        micro.setSource(MovementSourceType.MANUAL);
-        movement.setMovement(micro);
-
-        return movement;
-    }
 }
