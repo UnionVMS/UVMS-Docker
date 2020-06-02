@@ -48,7 +48,7 @@ public class ModuleAvailableSystemIT extends AbstractRest {
 	public void checkExchangeAccessTest() {
 		assertEquals(Response.Status.FORBIDDEN.getStatusCode(), getResponseCodeForEndpoint("exchange/"));
 		assertEquals(Response.Status.OK.getStatusCode(), getResponseCodeForEndpoint("exchange/monitoring"));
-		assertEquals(Response.Status.FORBIDDEN.getStatusCode(), getResponseCodeForEndpoint("exchange/rest"));
+		assertEquals(Response.Status.FORBIDDEN.getStatusCode(), getResponseCodeForEndpoint("exchange/rest/config"));
 	}
 
 	@Test
