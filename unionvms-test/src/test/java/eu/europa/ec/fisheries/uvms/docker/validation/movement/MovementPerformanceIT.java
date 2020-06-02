@@ -449,7 +449,7 @@ public class MovementPerformanceIT extends AbstractRest {
                 .unmarshal(new StringReader(textMessage.getText()));
     }
     public static SseEventSource getSseStream() {
-        WebTarget target = getWebTarget().path("exchange/unsecured/rest/sse/subscribe");
+        WebTarget target = getWebTarget().path("exchange/rest/unsecured/sse/subscribe");
         AuthorizationHeaderWebTarget jwtTarget = new AuthorizationHeaderWebTarget(target, getValidJwtToken());
         return SseEventSource.
                 target(jwtTarget).build();

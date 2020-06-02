@@ -30,7 +30,7 @@ public class ExchangeAPIRestIT extends AbstractRest {
 		getServiceListRequest.getType().add(PluginType.SATELLITE_RECEIVER);
 
 		GetServiceListResponse response = getWebTarget()
-				.path("exchange/unsecured/rest/api/serviceList")
+				.path("exchange/rest/unsecured/api/serviceList")
 				.request(MediaType.APPLICATION_JSON)
 				.header(HttpHeaders.AUTHORIZATION, getValidJwtToken())
 				.post(Entity.json(getServiceListRequest), GetServiceListResponse.class);
