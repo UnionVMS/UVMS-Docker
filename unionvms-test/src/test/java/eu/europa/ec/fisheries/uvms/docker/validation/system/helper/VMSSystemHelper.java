@@ -54,11 +54,15 @@ public class VMSSystemHelper {
     public static String REST_NAME = "eu.europa.ec.fisheries.uvms.plugins.rest.movement";
     
     public static SetReportRequest triggerBasicRuleAndSendToFlux(String fluxEndpoint) throws Exception {
-        return triggerBasicRuleWithAction(ActionType.SEND_REPORT, FLUX_NAME, fluxEndpoint, SetReportRequest.class, FLUX_SELECTOR);
+        return triggerBasicRuleWithAction(ActionType.SEND_REPORT, FLUX_NAME, fluxEndpoint, SetReportRequest.class, FLUX_SELECTOR, false);
+    }
+
+    public static SetReportRequest triggerBasicRuleAndCreateTicket(String fluxEndpoint) throws Exception {
+        return triggerBasicRuleWithAction(ActionType.SEND_REPORT, FLUX_NAME, fluxEndpoint, SetReportRequest.class, FLUX_SELECTOR, true);
     }
 
     public static SetReportRequest triggerBasicRuleAndSendToNAF(String nation) throws Exception {
-        return triggerBasicRuleWithAction(ActionType.SEND_REPORT, NAF_NAME, nation, SetReportRequest.class, NAF_SELECTOR);
+        return triggerBasicRuleWithAction(ActionType.SEND_REPORT, NAF_NAME, nation, SetReportRequest.class, NAF_SELECTOR, false);
     }
 
     public static SetCommandRequest triggerBasicRuleAndSendEmail(String email) throws Exception {
@@ -66,10 +70,10 @@ public class VMSSystemHelper {
     }
     
     private static <T> T triggerBasicRuleWithAction(ActionType actionType, String actionValue, Class<T> expectedType, String selector) throws Exception {
-        return triggerBasicRuleWithAction(actionType, null, actionValue, expectedType, selector);
+        return triggerBasicRuleWithAction(actionType, null, actionValue, expectedType, selector, false);
     }
     
-    private static <T> T triggerBasicRuleWithAction(ActionType actionType, String target, String actionValue, Class<T> expectedType, String selector) throws Exception {
+    private static <T> T triggerBasicRuleWithAction(ActionType actionType, String target, String actionValue, Class<T> expectedType, String selector, boolean createTicket) throws Exception {
         try {
             Instant timestamp = Instant.now();
             AssetDTO asset = AssetTestHelper.createTestAsset();
@@ -80,7 +84,14 @@ public class VMSSystemHelper {
                             ConditionType.EQ, asset.getFlagStateCode())
                     .action(actionType, target, actionValue)
                     .build();
-            
+
+            if(createTicket){
+                CustomRuleActionType ticketAction = new CustomRuleActionType();
+                ticketAction.setAction(ActionType.CREATE_TICKET);
+                ticketAction.setOrder("99");
+                flagStateRule.getActions().add(ticketAction);
+            }
+
             CustomRuleType createdCustomRule = CustomRuleHelper.createCustomRule(flagStateRule);
             assertNotNull(createdCustomRule);
     

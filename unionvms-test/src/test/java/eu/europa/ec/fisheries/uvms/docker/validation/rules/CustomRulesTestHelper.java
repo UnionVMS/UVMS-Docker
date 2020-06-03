@@ -83,7 +83,7 @@ public class CustomRulesTestHelper {
 
     public static String createRuleAndGetMovementGuid() throws Exception {
         String fluxEndpoint = "DNK";
-        SetReportRequest reportRequest = VMSSystemHelper.triggerBasicRuleAndSendToFlux(fluxEndpoint);
+        SetReportRequest reportRequest = VMSSystemHelper.triggerBasicRuleAndCreateTicket(fluxEndpoint);
         return reportRequest.getReport().getMovement().getGuid();
     }
 }
