@@ -73,6 +73,7 @@ public class InmarsatSanityIT extends AbstractRest {
                 .rule(CriteriaType.ASSET, SubCriteriaType.FLAG_STATE,
                         ConditionType.EQ, asset.getFlagStateCode())
                 .action(ActionType.SEND_REPORT, VMSSystemHelper.FLUX_NAME, fluxEndpoint)
+                .action(ActionType.CREATE_TICKET, "Dummy ticket")
                 .build();
 
         CustomRuleType createdCustomRule = CustomRuleHelper.createCustomRule(flagStateRule);
@@ -162,6 +163,7 @@ public class InmarsatSanityIT extends AbstractRest {
                 .rule(CriteriaType.ASSET, SubCriteriaType.ASSET_IRCS,
                         ConditionType.EQ, asset1.getIrcs())
                 .action(ActionType.SEND_REPORT, VMSSystemHelper.FLUX_NAME, fluxEndpoint)
+                .action(ActionType.CREATE_TICKET, "Dummy ticket")
                 .build();
 
         CustomRuleType createdCustomRule = CustomRuleHelper.createCustomRule(flagStateRule);

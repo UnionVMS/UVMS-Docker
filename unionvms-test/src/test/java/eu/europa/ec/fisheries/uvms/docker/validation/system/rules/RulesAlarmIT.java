@@ -79,6 +79,7 @@ public class RulesAlarmIT extends AbstractRest {
                 .rule(CriteriaType.POSITION, SubCriteriaType.REPORTED_SPEED, 
                         ConditionType.GT, "10")
                 .action(ActionType.EMAIL, email)
+                .action(ActionType.CREATE_TICKET, "Dummy ticket")
                 .build();
         
         CustomRuleType createdSpeedRule = CustomRuleHelper.createCustomRule(speedRule);
@@ -102,6 +103,7 @@ public class RulesAlarmIT extends AbstractRest {
                 .rule(CriteriaType.POSITION, SubCriteriaType.REPORTED_SPEED, 
                         ConditionType.LT, "10")
                 .action(ActionType.EMAIL, email)
+                .action(ActionType.CREATE_TICKET, "Dummy ticket")
                 .build();
         
         CustomRuleType createdSpeedRule = CustomRuleHelper.createCustomRule(speedRule);
@@ -123,6 +125,7 @@ public class RulesAlarmIT extends AbstractRest {
                 .rule(CriteriaType.POSITION, SubCriteriaType.REPORTED_SPEED, 
                         ConditionType.GT, "10")
                 .action(ActionType.EMAIL, "test@mail.com")
+                .action(ActionType.CREATE_TICKET, "Dummy ticket")
                 .build();
         
         CustomRuleType createdSpeedRule = CustomRuleHelper.createCustomRule(speedRule);
@@ -134,6 +137,7 @@ public class RulesAlarmIT extends AbstractRest {
                 .rule(CriteriaType.ASSET, SubCriteriaType.FLAG_STATE, 
                         ConditionType.EQ, asset.getFlagStateCode())
                 .action(ActionType.EMAIL, email)
+                .action(ActionType.CREATE_TICKET, "Dummy ticket")
                 .build();
         
         CustomRuleType createdFsRule = CustomRuleHelper.createCustomRule(fsRule);
@@ -156,6 +160,7 @@ public class RulesAlarmIT extends AbstractRest {
                 .rule(CriteriaType.POSITION, SubCriteriaType.REPORTED_SPEED, 
                         ConditionType.LT, "10")
                 .action(ActionType.EMAIL, "test@mail.com")
+                .action(ActionType.CREATE_TICKET, "Dummy ticket")
                 .build();
         
         CustomRuleType createdSpeedRule = CustomRuleHelper.createCustomRule(speedRule);
@@ -167,6 +172,7 @@ public class RulesAlarmIT extends AbstractRest {
                 .rule(CriteriaType.ASSET, SubCriteriaType.FLAG_STATE, 
                         ConditionType.EQ, asset.getFlagStateCode())
                 .action(ActionType.EMAIL, email)
+                .action(ActionType.CREATE_TICKET, "Dummy ticket")
                 .build();
         
         CustomRuleType createdFsRule = CustomRuleHelper.createCustomRule(fsRule);
@@ -190,6 +196,7 @@ public class RulesAlarmIT extends AbstractRest {
                 .rule(CriteriaType.POSITION, SubCriteriaType.REPORTED_SPEED, 
                         ConditionType.GE, "10")
                 .action(ActionType.EMAIL, email)
+                .action(ActionType.CREATE_TICKET, "Dummy ticket")
                 .build();
         
         CustomRuleType createdSpeedRule = CustomRuleHelper.createCustomRule(speedRule);
@@ -212,6 +219,7 @@ public class RulesAlarmIT extends AbstractRest {
                 .rule(CriteriaType.POSITION, SubCriteriaType.REPORTED_SPEED, 
                         ConditionType.LE, "10")
                 .action(ActionType.EMAIL, email)
+                .action(ActionType.CREATE_TICKET, "Dummy ticket")
                 .build();
         
         CustomRuleType createdSpeedRule = CustomRuleHelper.createCustomRule(speedRule);
@@ -236,6 +244,7 @@ public class RulesAlarmIT extends AbstractRest {
                 .and(CriteriaType.AREA, SubCriteriaType.AREA_CODE, 
                         ConditionType.EQ, "DNK")
                 .action(ActionType.EMAIL, email)
+                .action(ActionType.CREATE_TICKET, "Dummy ticket")
                 .build();
         
         CustomRuleType createdSpeedAndAreaRule = CustomRuleHelper.createCustomRule(speedAndAreaRule);
@@ -260,6 +269,7 @@ public class RulesAlarmIT extends AbstractRest {
                 .and(CriteriaType.AREA, SubCriteriaType.AREA_CODE, 
                         ConditionType.EQ, "DNK")
                 .action(ActionType.EMAIL, email)
+                .action(ActionType.CREATE_TICKET, "Dummy ticket")
                 .build();
         
         CustomRuleType createdSpeedAndAreaRule = CustomRuleHelper.createCustomRule(speedAndAreaRule);
@@ -282,6 +292,7 @@ public class RulesAlarmIT extends AbstractRest {
                 .rule(CriteriaType.AREA, SubCriteriaType.AREA_CODE, 
                         ConditionType.EQ, "DEU")
                 .action(ActionType.EMAIL, email)
+                .action(ActionType.CREATE_TICKET, "Dummy ticket")
                 .build();
         
         CustomRuleType createdAreaRule = CustomRuleHelper.createCustomRule(areaRule);
@@ -303,6 +314,7 @@ public class RulesAlarmIT extends AbstractRest {
                 .rule(CriteriaType.ASSET, SubCriteriaType.ASSET_IRCS, 
                         ConditionType.EQ, asset.getIrcs())
                 .action(ActionType.EMAIL, email)
+                .action(ActionType.CREATE_TICKET, "Dummy ticket")
                 .build();
         
         CustomRuleType createdIrcsRule = CustomRuleHelper.createCustomRule(ircsRule);
@@ -326,6 +338,7 @@ public class RulesAlarmIT extends AbstractRest {
                 .or(CriteriaType.ASSET, SubCriteriaType.ASSET_IRCS, 
                         ConditionType.EQ, asset2.getIrcs())
                 .action(ActionType.EMAIL, email)
+                .action(ActionType.CREATE_TICKET, "Dummy ticket")
                 .build();
         
         CustomRuleType createdCustomRule = CustomRuleHelper.createCustomRule(customRule);
@@ -355,6 +368,7 @@ public class RulesAlarmIT extends AbstractRest {
                 .and(CriteriaType.ASSET, SubCriteriaType.ASSET_CFR, 
                         ConditionType.EQ, asset.getCfr())
                 .action(ActionType.EMAIL, email)
+                .action(ActionType.CREATE_TICKET, "Dummy ticket")
                 .build();
         
         CustomRuleType createdCustomRule = CustomRuleHelper.createCustomRule(customRule);
@@ -376,6 +390,7 @@ public class RulesAlarmIT extends AbstractRest {
                 .and(CriteriaType.ASSET, SubCriteriaType.ASSET_CFR, 
                         ConditionType.EQ, "MOCKCFR")
                 .action(ActionType.EMAIL, "test@mail.com")
+                .action(ActionType.CREATE_TICKET, "Dummy ticket")
                 .build();
         
         CustomRuleType createdCustomRule = CustomRuleHelper.createCustomRule(customRule);
@@ -386,6 +401,7 @@ public class RulesAlarmIT extends AbstractRest {
                 .rule(CriteriaType.ASSET, SubCriteriaType.FLAG_STATE, 
                         ConditionType.EQ, asset.getFlagStateCode())
                 .action(ActionType.EMAIL, email)
+                .action(ActionType.CREATE_TICKET, "Dummy ticket")
                 .build();
         
         CustomRuleType createdFsRule = CustomRuleHelper.createCustomRule(fsRule);
@@ -408,6 +424,7 @@ public class RulesAlarmIT extends AbstractRest {
                 .rule(CriteriaType.ASSET, SubCriteriaType.ASSET_CFR, 
                         ConditionType.EQ, asset.getCfr())
                 .action(ActionType.EMAIL, email)
+                .action(ActionType.CREATE_TICKET, "Dummy ticket")
                 .build();
         
         CustomRuleType createdCfrRule = CustomRuleHelper.createCustomRule(cfrRule);
@@ -429,6 +446,7 @@ public class RulesAlarmIT extends AbstractRest {
                 .rule(CriteriaType.ASSET, SubCriteriaType.ASSET_NAME, 
                         ConditionType.EQ, asset.getName())
                 .action(ActionType.EMAIL, email)
+                .action(ActionType.CREATE_TICKET, "Dummy ticket")
                 .build();
         
         CustomRuleType createdAssetNameRule = CustomRuleHelper.createCustomRule(assetNameRule);
@@ -449,6 +467,7 @@ public class RulesAlarmIT extends AbstractRest {
                 .rule(CriteriaType.POSITION, SubCriteriaType.LATITUDE, 
                         ConditionType.GT, "10")
                 .action(ActionType.EMAIL, email)
+                .action(ActionType.CREATE_TICKET, "Dummy ticket")
                 .build();
         
         CustomRuleType createdCustomRule = CustomRuleHelper.createCustomRule(customRule);
@@ -469,6 +488,7 @@ public class RulesAlarmIT extends AbstractRest {
                 .rule(CriteriaType.POSITION, SubCriteriaType.LONGITUDE, 
                         ConditionType.GT, "10")
                 .action(ActionType.EMAIL, email)
+                .action(ActionType.CREATE_TICKET, "Dummy ticket")
                 .build();
         
         CustomRuleType createdCustomRule = CustomRuleHelper.createCustomRule(customRule);
@@ -489,6 +509,7 @@ public class RulesAlarmIT extends AbstractRest {
                 .rule(CriteriaType.POSITION, SubCriteriaType.POSITION_REPORT_TIME, 
                         ConditionType.GE, "" + timestamp.toEpochMilli())
                 .action(ActionType.EMAIL, email)
+                .action(ActionType.CREATE_TICKET, "Dummy ticket")
                 .build();
         
         CustomRuleType createdCustomRule = CustomRuleHelper.createCustomRule(customRule);
@@ -513,6 +534,7 @@ public class RulesAlarmIT extends AbstractRest {
                 .rule(CriteriaType.AREA, SubCriteriaType.AREA_CODE_ENT, 
                         ConditionType.EQ, "DNK")
                 .action(ActionType.SEND_REPORT, VMSSystemHelper.FLUX_NAME, fluxEndpoint)
+                .action(ActionType.CREATE_TICKET, "Dummy ticket")
                 .build();
         
         CustomRuleType createdAreaRule = CustomRuleHelper.createCustomRule(areaEntryRule);
@@ -539,6 +561,7 @@ public class RulesAlarmIT extends AbstractRest {
                 .rule(CriteriaType.AREA, SubCriteriaType.AREA_CODE_ENT, 
                         ConditionType.EQ, "SWE")
                 .action(ActionType.SEND_REPORT, VMSSystemHelper.FLUX_NAME, fluxEndpoint)
+                .action(ActionType.CREATE_TICKET, "Dummy ticket")
                 .build();
         
         CustomRuleType createdAreaRule = CustomRuleHelper.createCustomRule(areaEntryRule);
@@ -550,6 +573,7 @@ public class RulesAlarmIT extends AbstractRest {
                 .rule(CriteriaType.ASSET, SubCriteriaType.FLAG_STATE, 
                         ConditionType.EQ, asset.getFlagStateCode())
                 .action(ActionType.EMAIL, email)
+                .action(ActionType.CREATE_TICKET, "Dummy ticket")
                 .build();
         
         CustomRuleType createdFsRule = CustomRuleHelper.createCustomRule(fsRule);
@@ -577,6 +601,7 @@ public class RulesAlarmIT extends AbstractRest {
                 .rule(CriteriaType.AREA, SubCriteriaType.AREA_CODE_EXT, 
                         ConditionType.EQ, "SWE")
                 .action(ActionType.SEND_REPORT, VMSSystemHelper.FLUX_NAME, fluxEndpoint)
+                .action(ActionType.CREATE_TICKET, "Dummy ticket")
                 .build();
         
         CustomRuleType createdAreaRule = CustomRuleHelper.createCustomRule(areaEntryRule);
@@ -598,6 +623,7 @@ public class RulesAlarmIT extends AbstractRest {
                 .rule(CriteriaType.AREA, SubCriteriaType.AREA_CODE_VMS_ENT, 
                         ConditionType.EQ, "DNK")
                 .action(ActionType.SEND_REPORT, VMSSystemHelper.FLUX_NAME, fluxEndpoint)
+                .action(ActionType.CREATE_TICKET, "Dummy ticket")
                 .build();
 
         CustomRuleType createdAreaRule = CustomRuleHelper.createCustomRule(areaEntryRule);
@@ -622,6 +648,7 @@ public class RulesAlarmIT extends AbstractRest {
                 .rule(CriteriaType.AREA, SubCriteriaType.AREA_CODE_VMS_ENT, 
                         ConditionType.EQ, "DNK")
                 .action(ActionType.SEND_REPORT, VMSSystemHelper.FLUX_NAME, fluxEndpoint)
+                .action(ActionType.CREATE_TICKET, "Dummy ticket")
                 .build();
 
         CustomRuleType createdAreaRule = CustomRuleHelper.createCustomRule(areaEntryRule);
@@ -647,6 +674,7 @@ public class RulesAlarmIT extends AbstractRest {
                 .rule(CriteriaType.AREA, SubCriteriaType.AREA_CODE_ENT, 
                         ConditionType.EQ, "DNK")
                 .action(ActionType.SEND_REPORT, VMSSystemHelper.FLUX_NAME, fluxEndpoint)
+                .action(ActionType.CREATE_TICKET, "Dummy ticket")
                 .build();
 
         CustomRuleType createdAreaRule = CustomRuleHelper.createCustomRule(areaEntryRule);
@@ -666,6 +694,7 @@ public class RulesAlarmIT extends AbstractRest {
                 .rule(CriteriaType.AREA, SubCriteriaType.AREA_CODE_VMS_ENT, 
                         ConditionType.EQ, "DNK")
                 .action(ActionType.SEND_REPORT, VMSSystemHelper.FLUX_NAME, fluxEndpoint)
+                .action(ActionType.CREATE_TICKET, "Dummy ticket")
                 .build();
 
         CustomRuleType createdVMSAreaRule = CustomRuleHelper.createCustomRule(areaVMSEntryRule);
@@ -690,6 +719,7 @@ public class RulesAlarmIT extends AbstractRest {
                 .rule(CriteriaType.AREA, SubCriteriaType.AREA_CODE_ENT, 
                         ConditionType.EQ, "DNK")
                 .action(ActionType.SEND_REPORT, VMSSystemHelper.FLUX_NAME, fluxEndpoint)
+                .action(ActionType.CREATE_TICKET, "Dummy ticket")
                 .build();
 
         CustomRuleType createdAreaRule = CustomRuleHelper.createCustomRule(areaEntryRule);
@@ -721,6 +751,7 @@ public class RulesAlarmIT extends AbstractRest {
                 .rule(CriteriaType.AREA, SubCriteriaType.AREA_CODE_VMS_ENT, 
                         ConditionType.EQ, "DNK")
                 .action(ActionType.SEND_REPORT, VMSSystemHelper.FLUX_NAME, fluxEndpoint)
+                .action(ActionType.CREATE_TICKET, "Dummy ticket")
                 .build();
 
         CustomRuleType createdAreaRule = CustomRuleHelper.createCustomRule(areaEntryRule);
@@ -757,6 +788,7 @@ public class RulesAlarmIT extends AbstractRest {
                 .rule(CriteriaType.AREA, SubCriteriaType.AREA_CODE_VMS_ENT, 
                         ConditionType.EQ, "DNK")
                 .action(ActionType.SEND_REPORT, VMSSystemHelper.FLUX_NAME, fluxEndpoint)
+                .action(ActionType.CREATE_TICKET, "Dummy ticket")
                 .build();
 
         CustomRuleType createdAreaRule = CustomRuleHelper.createCustomRule(areaEntryRule);
@@ -795,6 +827,7 @@ public class RulesAlarmIT extends AbstractRest {
                 .rule(CriteriaType.AREA, SubCriteriaType.AREA_CODE_VMS_ENT, ConditionType.EQ, "DNK")
                 .and(CriteriaType.POSITION, SubCriteriaType.SOURCE, ConditionType.EQ, "FLUX")
                 .action(ActionType.SEND_REPORT, VMSSystemHelper.FLUX_NAME, fluxEndpoint)
+                .action(ActionType.CREATE_TICKET, "Dummy ticket")
                 .build();
 
         CustomRuleType createdAreaRule = CustomRuleHelper.createCustomRule(areaEntryRule);
@@ -809,6 +842,7 @@ public class RulesAlarmIT extends AbstractRest {
                 .rule(CriteriaType.AREA, SubCriteriaType.AREA_CODE_VMS_ENT, ConditionType.EQ, "DNK")
                 .and(CriteriaType.POSITION, SubCriteriaType.SOURCE, ConditionType.EQ, "MANUAL")
                 .action(ActionType.SEND_REPORT, VMSSystemHelper.FLUX_NAME, fluxEndpoint)
+                .action(ActionType.CREATE_TICKET, "Dummy ticket")
                 .build();
 
         CustomRuleType createdAreaManualRule = CustomRuleHelper.createCustomRule(areaEntryManualRule);
@@ -817,6 +851,7 @@ public class RulesAlarmIT extends AbstractRest {
         CustomRuleType extraRule = CustomRuleBuilder.getBuilder()
                 .rule(CriteriaType.ASSET, SubCriteriaType.FLAG_STATE, ConditionType.EQ, "SWE")
                 .action(ActionType.SEND_REPORT, VMSSystemHelper.FLUX_NAME, fluxEndpoint)
+                .action(ActionType.CREATE_TICKET, "Dummy ticket")
                 .build();
 
         CustomRuleType createdExtraRule = CustomRuleHelper.createCustomRule(extraRule);
@@ -855,6 +890,7 @@ public class RulesAlarmIT extends AbstractRest {
                 .rule(CriteriaType.AREA, SubCriteriaType.AREA_CODE_VMS_EXT, 
                         ConditionType.EQ, "SWE")
                 .action(ActionType.SEND_REPORT, VMSSystemHelper.FLUX_NAME, fluxEndpoint)
+                .action(ActionType.CREATE_TICKET, "Dummy ticket")
                 .build();
 
         CustomRuleType createdAreaRule = CustomRuleHelper.createCustomRule(areaEntryRule);
@@ -879,6 +915,7 @@ public class RulesAlarmIT extends AbstractRest {
                 .rule(CriteriaType.AREA, SubCriteriaType.AREA_CODE_EXT, 
                         ConditionType.EQ, "SWE")
                 .action(ActionType.SEND_REPORT, VMSSystemHelper.FLUX_NAME, fluxEndpoint)
+                .action(ActionType.CREATE_TICKET, "Dummy ticket")
                 .build();
 
         CustomRuleType createdAreaExitRule = CustomRuleHelper.createCustomRule(areaExitRule);
@@ -898,6 +935,7 @@ public class RulesAlarmIT extends AbstractRest {
                 .rule(CriteriaType.AREA, SubCriteriaType.AREA_CODE_VMS_EXT, 
                         ConditionType.EQ, "SWE")
                 .action(ActionType.SEND_REPORT, VMSSystemHelper.FLUX_NAME, fluxEndpoint)
+                .action(ActionType.CREATE_TICKET, "Dummy ticket")
                 .build();
 
         CustomRuleType createdAreaVMSExitRule = CustomRuleHelper.createCustomRule(areaVMSExitRule);
@@ -920,6 +958,7 @@ public class RulesAlarmIT extends AbstractRest {
                 .rule(CriteriaType.POSITION, SubCriteriaType.REPORTED_SPEED,
                         ConditionType.GT, "10")
                 .action(ActionType.MANUAL_POLL, "Not needed")
+                .action(ActionType.CREATE_TICKET, "Dummy ticket")
                 .build();
 
         CustomRuleType createdSpeedRule = CustomRuleHelper.createCustomRule(speedRule);
@@ -969,6 +1008,7 @@ public class RulesAlarmIT extends AbstractRest {
                 .rule(CriteriaType.ASSET, SubCriteriaType.ASSET_TYPE,
                         ConditionType.EQ, type)
                 .action(ActionType.EMAIL, email)
+                .action(ActionType.CREATE_TICKET, "Dummy ticket")
                 .build();
 
         CustomRuleType createdSpeedRule = CustomRuleHelper.createCustomRule(speedRule);

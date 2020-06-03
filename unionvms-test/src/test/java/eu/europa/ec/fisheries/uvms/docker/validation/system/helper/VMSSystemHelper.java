@@ -54,7 +54,7 @@ public class VMSSystemHelper {
     public static String REST_NAME = "eu.europa.ec.fisheries.uvms.plugins.rest.movement";
     
     public static SetReportRequest triggerBasicRuleAndSendToFlux(String fluxEndpoint) throws Exception {
-        return triggerBasicRuleWithAction(ActionType.SEND_REPORT, FLUX_NAME, fluxEndpoint, SetReportRequest.class, FLUX_SELECTOR, false);
+        return triggerBasicRuleWithAction(ActionType.SEND_REPORT, FLUX_NAME, fluxEndpoint, SetReportRequest.class, FLUX_SELECTOR, true);
     }
 
     public static SetReportRequest triggerBasicRuleAndCreateTicket(String fluxEndpoint) throws Exception {
@@ -62,7 +62,7 @@ public class VMSSystemHelper {
     }
 
     public static SetReportRequest triggerBasicRuleAndSendToNAF(String nation) throws Exception {
-        return triggerBasicRuleWithAction(ActionType.SEND_REPORT, NAF_NAME, nation, SetReportRequest.class, NAF_SELECTOR, false);
+        return triggerBasicRuleWithAction(ActionType.SEND_REPORT, NAF_NAME, nation, SetReportRequest.class, NAF_SELECTOR, true);
     }
 
     public static SetCommandRequest triggerBasicRuleAndSendEmail(String email) throws Exception {
