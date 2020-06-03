@@ -38,7 +38,6 @@ import java.util.Date;
 import java.util.Enumeration;
 
 import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.CoreMatchers.nullValue;
 
 public class NAFSystemIT extends AbstractRest {
 

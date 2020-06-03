@@ -4,10 +4,8 @@ import eu.europa.ec.fisheries.schema.audit.search.v1.AuditLogListQuery;
 import eu.europa.ec.fisheries.schema.audit.search.v1.ListPagination;
 import eu.europa.ec.fisheries.schema.audit.source.v1.GetAuditLogListByQueryResponse;
 import eu.europa.ec.fisheries.schema.audit.v1.AuditLogType;
-import eu.europa.ec.fisheries.uvms.commons.rest.dto.ResponseDto;
 
 import javax.ws.rs.client.Entity;
-import javax.ws.rs.core.GenericType;
 import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
 import java.math.BigInteger;

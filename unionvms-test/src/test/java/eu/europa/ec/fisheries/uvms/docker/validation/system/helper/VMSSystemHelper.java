@@ -33,8 +33,6 @@ import eu.europa.ec.fisheries.uvms.exchange.model.mapper.JAXBMarshaller;
 import javax.jms.Message;
 import javax.jms.TextMessage;
 import java.time.Instant;
-import java.time.OffsetDateTime;
-import java.time.ZoneOffset;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;

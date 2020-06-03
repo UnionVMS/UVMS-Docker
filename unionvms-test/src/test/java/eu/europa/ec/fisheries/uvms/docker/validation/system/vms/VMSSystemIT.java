@@ -38,8 +38,6 @@ import org.junit.Test;
 
 import javax.jms.JMSException;
 import java.time.Instant;
-import java.time.OffsetDateTime;
-import java.time.ZoneOffset;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
