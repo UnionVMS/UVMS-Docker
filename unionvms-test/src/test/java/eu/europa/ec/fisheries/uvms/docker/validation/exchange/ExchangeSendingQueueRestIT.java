@@ -16,26 +16,24 @@ package eu.europa.ec.fisheries.uvms.docker.validation.exchange;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import eu.europa.ec.fisheries.schema.exchange.plugin.v1.SetCommandRequest;
 import eu.europa.ec.fisheries.schema.exchange.plugin.v1.SetReportRequest;
-import eu.europa.ec.fisheries.uvms.commons.rest.dto.ResponseDto;
 import eu.europa.ec.fisheries.uvms.docker.validation.common.AbstractRest;
 import eu.europa.ec.fisheries.uvms.docker.validation.common.TopicListener;
 import eu.europa.ec.fisheries.uvms.docker.validation.exchange.dto.PluginType;
 import eu.europa.ec.fisheries.uvms.docker.validation.exchange.dto.SendingGroupLog;
 import eu.europa.ec.fisheries.uvms.docker.validation.exchange.dto.SendingLog;
 import eu.europa.ec.fisheries.uvms.docker.validation.system.helper.VMSSystemHelper;
-import org.bouncycastle.cms.Recipient;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.core.GenericType;
 import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
-import java.util.stream.Collectors;
+
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.notNullValue;
 
@@ -113,24 +111,24 @@ public class ExchangeSendingQueueRestIT extends AbstractRest {
 	}
 	
 	private List<SendingGroupLog> getSendGroupList() {
-	    ResponseDto<List<SendingGroupLog>> response = getWebTarget()
+	    Response response = getWebTarget()
                 .path("exchange/rest/sendingqueue/list")
                 .request(MediaType.APPLICATION_JSON)
                 .header(HttpHeaders.AUTHORIZATION, getValidJwtToken())
-                .get(new GenericType<ResponseDto<List<SendingGroupLog>>>() {});
+                .get(Response.class);
 
-        assertEquals(200, response.getCode());
-        return response.getData();
+        assertEquals(200, response.getStatus());
+        return response.readEntity(new GenericType<List<SendingGroupLog>>() {});
 	}
 	
 	private Boolean sendSendingGroupIds(List<String> ids) throws JsonProcessingException {
-	    ResponseDto<Boolean> response = getWebTarget()
+	    Response response = getWebTarget()
                 .path("exchange/rest/sendingqueue/send")
                 .request(MediaType.APPLICATION_JSON)
                 .header(HttpHeaders.AUTHORIZATION, getValidJwtToken())
-                .put(Entity.json(writeValueAsString(ids).getBytes()), new GenericType<ResponseDto<Boolean>>() {});
+                .put(Entity.json(writeValueAsString(ids).getBytes()), Response.class);
 	    
-	    assertEquals(200, response.getCode());
-	    return response.getData();
+	    assertEquals(200, response.getStatus());
+	    return response.readEntity(Boolean.class);
 	}
 }

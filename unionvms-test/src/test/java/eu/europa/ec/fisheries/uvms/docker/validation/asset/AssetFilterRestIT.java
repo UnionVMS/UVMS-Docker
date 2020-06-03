@@ -1,22 +1,14 @@
 package eu.europa.ec.fisheries.uvms.docker.validation.asset;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-
-import javax.json.bind.Jsonb;
-
+import eu.europa.ec.fisheries.uvms.docker.validation.asset.assetfilter.test.dto.*;
+import eu.europa.ec.fisheries.uvms.docker.validation.common.AbstractRest;
 import org.junit.Before;
 import org.junit.Test;
 
-import eu.europa.ec.fisheries.uvms.docker.validation.asset.assetfilter.test.dto.AssetFilterDto;
-import eu.europa.ec.fisheries.uvms.docker.validation.asset.assetfilter.test.dto.AssetFilterQueryDto;
-import eu.europa.ec.fisheries.uvms.docker.validation.asset.assetfilter.test.dto.AssetFilterQueryRestDto;
-import eu.europa.ec.fisheries.uvms.docker.validation.asset.assetfilter.test.dto.AssetFilterResponseDto;
-import eu.europa.ec.fisheries.uvms.docker.validation.asset.assetfilter.test.dto.AssetFilterValueDto;
-import eu.europa.ec.fisheries.uvms.docker.validation.asset.assetfilter.test.dto.AssetFilterValueRestTestDto;
-import eu.europa.ec.fisheries.uvms.docker.validation.asset.assetfilter.test.dto.JsonBConf;
-import eu.europa.ec.fisheries.uvms.docker.validation.common.AbstractRest;
+import javax.json.bind.Jsonb;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 public class AssetFilterRestIT extends AbstractRest {
 

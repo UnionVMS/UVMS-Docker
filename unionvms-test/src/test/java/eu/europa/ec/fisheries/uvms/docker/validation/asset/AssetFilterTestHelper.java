@@ -1,18 +1,16 @@
 package eu.europa.ec.fisheries.uvms.docker.validation.asset;
 
-import java.time.Instant;
-import java.util.HashSet;
-import java.util.Set;
-import java.util.UUID;
-
-import javax.ws.rs.client.Entity;
-import javax.ws.rs.core.HttpHeaders;
-import javax.ws.rs.core.MediaType;
-
 import eu.europa.ec.fisheries.uvms.docker.validation.asset.assetfilter.test.dto.AssetFilterDto;
 import eu.europa.ec.fisheries.uvms.docker.validation.asset.assetfilter.test.dto.AssetFilterQueryDto;
 import eu.europa.ec.fisheries.uvms.docker.validation.asset.assetfilter.test.dto.AssetFilterValueDto;
 import eu.europa.ec.fisheries.uvms.docker.validation.common.AbstractRest;
+
+import javax.ws.rs.client.Entity;
+import javax.ws.rs.core.HttpHeaders;
+import javax.ws.rs.core.MediaType;
+import java.time.Instant;
+import java.util.HashSet;
+import java.util.Set;
 
 public class AssetFilterTestHelper extends AbstractRest {
 

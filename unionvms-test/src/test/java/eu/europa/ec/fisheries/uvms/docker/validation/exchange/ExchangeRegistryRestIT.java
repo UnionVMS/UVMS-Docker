@@ -13,30 +13,32 @@ copy of the GNU General Public License along with the IFDM Suite. If not, see <h
 */
 package eu.europa.ec.fisheries.uvms.docker.validation.exchange;
 
-import eu.europa.ec.fisheries.uvms.commons.rest.dto.ResponseDto;
+import eu.europa.ec.fisheries.schema.mobileterminal.types.v1.Plugin;
 import eu.europa.ec.fisheries.uvms.docker.validation.common.AbstractRest;
 import org.junit.Test;
 
+import javax.ws.rs.core.GenericType;
 import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
-import java.util.ArrayList;
+import javax.ws.rs.core.Response;
+import java.util.List;
 
 public class ExchangeRegistryRestIT extends AbstractRest {
 
 	@Test
 	public void getListTest() {
 
-		ResponseDto response = getWebTarget()
+		Response response = getWebTarget()
 				.path("exchange/rest/plugin/list")
 				.request(MediaType.APPLICATION_JSON)
 				.header(HttpHeaders.AUTHORIZATION, getValidJwtToken())
-				.get(ResponseDto.class);
+				.get(Response.class);
 
-		assertEquals(200, response.getCode());
+		assertEquals(200, response.getStatus());
 
-		ArrayList list = (ArrayList) response.getData();
-		assertNotNull(list);
-		assertFalse(list.isEmpty());
+		List<Plugin> plugins = response.readEntity(new GenericType<List<Plugin>>() {});
+		assertNotNull(plugins);
+		assertFalse(plugins.isEmpty());
 	}
 
 

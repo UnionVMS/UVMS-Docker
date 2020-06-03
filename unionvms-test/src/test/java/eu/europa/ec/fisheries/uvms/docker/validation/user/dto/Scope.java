@@ -1,9 +1,10 @@
 package eu.europa.ec.fisheries.uvms.docker.validation.user.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import java.io.Serializable;
 import java.time.Instant;
 import java.util.Set;
-import com.fasterxml.jackson.annotation.JsonFormat;
 
 /**
  * Holds a Scope based on a set of datasets from any applications. The goal is to limit the visibility on data.

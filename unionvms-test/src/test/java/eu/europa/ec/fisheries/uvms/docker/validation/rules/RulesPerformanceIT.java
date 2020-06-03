@@ -27,8 +27,8 @@ import org.junit.BeforeClass;
 import org.junit.Ignore;
 import org.junit.Test;
 
-import javax.jms.*;
 import javax.jms.Queue;
+import javax.jms.*;
 import javax.xml.bind.JAXBException;
 import java.time.Duration;
 import java.time.Instant;
