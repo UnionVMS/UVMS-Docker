@@ -21,6 +21,7 @@ import eu.europa.ec.fisheries.schema.movement.search.v1.SearchKey;
 import eu.europa.ec.fisheries.schema.movement.v1.MovementType;
 import eu.europa.ec.fisheries.uvms.asset.client.model.AssetDTO;
 import eu.europa.ec.fisheries.uvms.commons.date.DateUtils;
+import eu.europa.ec.fisheries.uvms.docker.validation.AppError;
 import eu.europa.ec.fisheries.uvms.docker.validation.asset.AssetJMSHelper;
 import eu.europa.ec.fisheries.uvms.docker.validation.asset.AssetTestHelper;
 import eu.europa.ec.fisheries.uvms.docker.validation.common.AbstractRest;
@@ -265,7 +266,9 @@ public class MovementMovementRestIT extends AbstractRest {
 				.request(MediaType.APPLICATION_JSON)
 				.header(HttpHeaders.AUTHORIZATION, getValidJwtToken())
 				.delete(Response.class);
-		assertEquals(500, response.getStatus());
+		assertEquals(200, response.getStatus());
+		AppError appError = response.readEntity(AppError.class);
+		assertEquals(500, appError.code.intValue());
 	}
 
 	@Test

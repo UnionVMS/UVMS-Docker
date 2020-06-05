@@ -66,11 +66,11 @@ public class VMSSystemHelper {
     }
 
     public static SetCommandRequest triggerBasicRuleAndSendEmail(String email) throws Exception {
-        return triggerBasicRuleWithAction(ActionType.EMAIL, email, SetCommandRequest.class, emailSelector);
+        return triggerBasicRuleWithAction(ActionType.EMAIL, email, SetCommandRequest.class, emailSelector, true);
     }
     
-    private static <T> T triggerBasicRuleWithAction(ActionType actionType, String actionValue, Class<T> expectedType, String selector) throws Exception {
-        return triggerBasicRuleWithAction(actionType, null, actionValue, expectedType, selector, false);
+    private static <T> T triggerBasicRuleWithAction(ActionType actionType, String actionValue, Class<T> expectedType, String selector, boolean createTicket) throws Exception {
+        return triggerBasicRuleWithAction(actionType, null, actionValue, expectedType, selector, createTicket);
     }
     
     private static <T> T triggerBasicRuleWithAction(ActionType actionType, String target, String actionValue, Class<T> expectedType, String selector, boolean createTicket) throws Exception {
