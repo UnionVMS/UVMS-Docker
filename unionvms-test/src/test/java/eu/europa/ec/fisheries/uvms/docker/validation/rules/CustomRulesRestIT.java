@@ -20,6 +20,7 @@ import eu.europa.ec.fisheries.schema.movementrules.search.v1.CustomRuleListCrite
 import eu.europa.ec.fisheries.schema.movementrules.search.v1.CustomRuleQuery;
 import eu.europa.ec.fisheries.schema.movementrules.search.v1.CustomRuleSearchKey;
 import eu.europa.ec.fisheries.schema.movementrules.search.v1.ListPagination;
+import eu.europa.ec.fisheries.uvms.docker.validation.AppError;
 import eu.europa.ec.fisheries.uvms.docker.validation.common.AbstractRest;
 import org.junit.Test;
 
@@ -110,10 +111,10 @@ public class CustomRulesRestIT extends AbstractRest {
 				.request(MediaType.APPLICATION_JSON)
 				.header(HttpHeaders.AUTHORIZATION, getValidJwtToken())
 				.get();
-		assertEquals(Status.INTERNAL_SERVER_ERROR.getStatusCode(), response.getStatus());
+		assertEquals(Status.OK.getStatusCode(), response.getStatus());
+		AppError appError = response.readEntity(AppError.class);
+		assertEquals(Status.INTERNAL_SERVER_ERROR.getStatusCode(), appError.code.intValue());
 
-		CustomRuleType customRuleType = response.readEntity(CustomRuleType.class);
-		assertNull(customRuleType.getGuid());
 	}
 
 	@Test
@@ -139,7 +140,9 @@ public class CustomRulesRestIT extends AbstractRest {
 				.request(MediaType.APPLICATION_JSON)
 				.header(HttpHeaders.AUTHORIZATION, getValidJwtToken())
 				.delete();
-		assertEquals(Status.INTERNAL_SERVER_ERROR.getStatusCode(), response.getStatus());
+		assertEquals(Status.OK.getStatusCode(), response.getStatus());
+		AppError appError = response.readEntity(AppError.class);
+		assertEquals(Status.INTERNAL_SERVER_ERROR.getStatusCode(), appError.code.intValue());
 	}
 
 	@Test
@@ -174,7 +177,9 @@ public class CustomRulesRestIT extends AbstractRest {
 				.request(MediaType.APPLICATION_JSON)
 				.header(HttpHeaders.AUTHORIZATION, getValidJwtToken())
 				.post(Entity.json(updateSubscriptionType));
-		assertEquals(Status.INTERNAL_SERVER_ERROR.getStatusCode(), response.getStatus());
+		assertEquals(Status.OK.getStatusCode(), response.getStatus());
+		AppError appError = response.readEntity(AppError.class);
+		assertEquals(Status.INTERNAL_SERVER_ERROR.getStatusCode(), appError.code.intValue());
 	}
 
 	private CustomRuleType createAndPersistCustomRule() {

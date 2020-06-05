@@ -24,19 +24,19 @@
 		<unionvms.project.vms.web.version>0.15.4</unionvms.project.vms.web.version>
 		<unionvms.project.mapfishprint.version>3.20.2.1</unionvms.project.mapfishprint.version>
 		<unionvms.project.geoserver.version>2.16.2.1</unionvms.project.geoserver.version>
-		<unionvms.project.user.module>2.1.4</unionvms.project.user.module>
+		<unionvms.project.user.module>2.1.5</unionvms.project.user.module>
 		<unionvms.project.rules.module>3.0.49</unionvms.project.rules.module>
 		<unionvms.project.reporting.module>1.1.25-UVMS</unionvms.project.reporting.module>
-		<unionvms.project.movementrules.module>2.3.9</unionvms.project.movementrules.module>
-		<unionvms.project.movement.module>5.5.9-UVMS</unionvms.project.movement.module>
-		<unionvms.project.exchange.module>5.2.10-UVMS</unionvms.project.exchange.module>
+		<unionvms.project.movementrules.module>2.3.10</unionvms.project.movementrules.module>
+		<unionvms.project.movement.module>5.5.10-UVMS</unionvms.project.movement.module>
+		<unionvms.project.exchange.module>5.2.11-UVMS</unionvms.project.exchange.module>
 		<unionvms.project.spatial.module>2.0.6</unionvms.project.spatial.module>
-		<unionvms.project.spatialSwe.module>2.2.1-UVMS</unionvms.project.spatialSwe.module>
+		<unionvms.project.spatialSwe.module>2.2.2-UVMS</unionvms.project.spatialSwe.module>
 		<unionvms.project.subscription.module>1.3</unionvms.project.subscription.module>
-		<unionvms.project.config.module>4.3.4</unionvms.project.config.module>
-		<unionvms.project.audit.module>4.3.4</unionvms.project.audit.module>
+		<unionvms.project.config.module>4.3.5</unionvms.project.config.module>
+		<unionvms.project.audit.module>4.3.5</unionvms.project.audit.module>
 		<unionvms.project.asset.module>6.7.12</unionvms.project.asset.module>
-		<unionvms.project.incident.module>0.2.3</unionvms.project.incident.module>
+		<unionvms.project.incident.module>0.2.4</unionvms.project.incident.module>
 		<unionvms.project.activity.module>1.1.6</unionvms.project.activity.module>
 		<unionvms.project.mdr.module>1.0.10</unionvms.project.mdr.module>
 		<unionvms.project.plugins.ais>3.1.1</unionvms.project.plugins.ais>
@@ -47,7 +47,7 @@
 		<unionvms.project.plugins.fluxActivity>1.0.6</unionvms.project.plugins.fluxActivity>
 		<unionvms.project.plugins.mdr>1.0.2</unionvms.project.plugins.mdr>
 		<unionvms.project.plugins.flux-rest>1.4</unionvms.project.plugins.flux-rest>
-		<unionvms.project.web-gateway>0.12.3</unionvms.project.web-gateway>
+		<unionvms.project.web-gateway>0.12.4</unionvms.project.web-gateway>
 		<unionvms.project.hawtio-wildfly>2.10.0</unionvms.project.hawtio-wildfly>
 	</properties>
 

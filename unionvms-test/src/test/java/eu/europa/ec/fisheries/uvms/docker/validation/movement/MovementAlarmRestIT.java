@@ -18,6 +18,7 @@ import eu.europa.ec.fisheries.schema.movementrules.search.v1.AlarmQuery;
 import eu.europa.ec.fisheries.schema.movementrules.search.v1.AlarmSearchKey;
 import eu.europa.ec.fisheries.schema.movementrules.search.v1.ListPagination;
 import eu.europa.ec.fisheries.uvms.asset.client.model.AssetDTO;
+import eu.europa.ec.fisheries.uvms.docker.validation.AppError;
 import eu.europa.ec.fisheries.uvms.docker.validation.asset.AssetTestHelper;
 import eu.europa.ec.fisheries.uvms.docker.validation.common.AbstractRest;
 import eu.europa.ec.fisheries.uvms.docker.validation.movement.model.AlarmReport;
@@ -89,7 +90,9 @@ public class MovementAlarmRestIT extends AbstractRest {
                 .header(HttpHeaders.AUTHORIZATION, getValidJwtToken())
                 .put(Entity.json(alarmReportType));
 		
-		assertThat(response.getStatus(), CoreMatchers.is(Status.INTERNAL_SERVER_ERROR.getStatusCode()));
+		assertThat(response.getStatus(), CoreMatchers.is(Status.OK.getStatusCode()));
+		AppError appError = response.readEntity(AppError.class);
+		assertThat(appError.code, CoreMatchers.is(Status.INTERNAL_SERVER_ERROR.getStatusCode()));
 	}
 
 	@Test
@@ -100,8 +103,10 @@ public class MovementAlarmRestIT extends AbstractRest {
                 .request(MediaType.APPLICATION_JSON)
                 .header(HttpHeaders.AUTHORIZATION, getValidJwtToken())
                 .get();
-	    
-	    assertThat(response.getStatus(), CoreMatchers.is(Status.INTERNAL_SERVER_ERROR.getStatusCode()));
+
+		assertThat(response.getStatus(), CoreMatchers.is(Status.OK.getStatusCode()));
+		AppError appError = response.readEntity(AppError.class);
+		assertThat(appError.code, CoreMatchers.is(Status.INTERNAL_SERVER_ERROR.getStatusCode()));
 	}
 
 	@Test
