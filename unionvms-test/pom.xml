@@ -620,6 +620,52 @@
 			</build>
 		</profile>
 		<profile>
+			<id>selenium-test</id>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-scm-plugin</artifactId>
+						<version>1.11.2</version>
+						<configuration>
+							<connectionType>git</connectionType>
+							<developerConnectionUrl>scm:git:https://github.com/UnionVMS/VMS-Test.git</developerConnectionUrl>
+							<scmVersion>mavenify</scmVersion>
+							<scmVersionType>branch</scmVersionType>
+						</configuration>
+						<executions>
+							<execution>
+							<phase>generate-sources</phase>
+							<goals>
+								<goal>checkout</goal>
+							</goals>
+							</execution>
+						</executions>
+					</plugin>
+					<plugin>
+						<groupId>org.codehaus.mojo</groupId>
+						<artifactId>exec-maven-plugin</artifactId>
+						<version>3.0.0</version>
+						<executions>
+							<execution>
+								<phase>generate-sources</phase>
+									<goals>
+										<goal>exec</goal>
+									</goals>
+								<configuration>
+									<executable>mvn</executable>
+									<workingDirectory>${project.basedir}/target/checkout</workingDirectory>
+									<arguments>
+										<argument>test</argument>
+									</arguments>
+								</configuration>
+							</execution>
+						</executions>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+		<profile>
 			<id>postman-test</id>
 			<build>
 				<plugins>
