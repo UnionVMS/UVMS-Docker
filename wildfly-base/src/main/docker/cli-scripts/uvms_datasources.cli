@@ -11,7 +11,7 @@ set activity_pw=${db_password_activity}
 set mdr_pw=${db_password_mdr}
 set config_pw=${db_password_config}
 
-embed-server --server-config=standalone-full.xml
+embed-server --server-config=${SERVER_CONFIG}
 
 # Create driver
 /subsystem=datasources/jdbc-driver=postgresql:add( \

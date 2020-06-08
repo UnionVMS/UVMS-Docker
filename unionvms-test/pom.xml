@@ -428,7 +428,7 @@
 							<images>
 								<image>
 									<alias>load-balancer</alias>
-									<name>jboss/wildfly:18.0.0.Final</name>
+									<name>jboss/wildfly:${unionvms.wildfly.version}</name>
 									<run>
 										<network>
 											<name>network</name>
@@ -505,9 +505,10 @@
 										</wait>
 										<cmd>
 											<shell>/opt/jboss/start.sh /opt/jboss/wildfly/bin/standalone.sh
-												-c standalone-uvms-ha.xml -b wildfly1 -bmanagement wildfly1 --debug *:8787
+												-c standalone-full-ha.xml -b wildfly1 -bmanagement wildfly1 --debug *:8787
 												-bprivate wildfly1 -bunsecure wildfly1 -Djboss.node.name=wildfly1 
 												-Djgroups.bind_addr=wildfly1 -Djboss.messaging.cluster.password=password
+												-Dloadbalancer.address=load-balancer
 												-Djboss.tx.node.id=1</shell>
 										</cmd>
 										<dependsOn>
@@ -545,9 +546,10 @@
 										</wait>
 										<cmd>
 											<shell>/opt/jboss/start.sh /opt/jboss/wildfly/bin/standalone.sh
-												-c standalone-uvms-ha.xml -b wildfly2 -bmanagement wildfly2 --debug *:8787
+												-c standalone-full-ha.xml -b wildfly2 -bmanagement wildfly2 --debug *:8787
 												-bprivate wildfly2 -bunsecure wildfly2 -Djboss.node.name=wildfly2 
 												-Djgroups.bind_addr=wildfly2 -Djboss.messaging.cluster.password=password
+												-Dloadbalancer.address=load-balancer
 												-Djboss.tx.node.id=2</shell>
 										</cmd>
 										<dependsOn>

@@ -8,7 +8,7 @@ set user_endpoint=${user_endpoint}
 set incident_endpoint=${incident_endpoint}
 set cors_allowed_host_regex=${cors_allowed_host_regex}
 
-embed-server --server-config=standalone-full.xml
+embed-server --server-config=${SERVER_CONFIG}
 
 # System properties
 /system-property=jboss.as.management.blocking.timeout:add(value=1200)
