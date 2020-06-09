@@ -247,48 +247,6 @@
 				</executions>
 			</plugin>
 			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-antrun-plugin</artifactId>
-				<version>1.8</version>
-				<executions>
-					<execution>
-						<id>downloadRegressionSuite</id>
-						<phase>test</phase>
-						<configuration>
-							<skip>${docker.skip}</skip>
-							<tasks>
-								<!-- Get the regression-suite-selenium front-end -->
-								<get src="https://github.com/UnionVMS/UVMS-SeleniumTests/raw/swe-dev/UVMS-SeleniumRegressionTestsG2.zip" dest="target/UVMS-SeleniumRegressionTestsG2.zip" verbose="true" usetimestamp="true" />
-								<unzip src="target/UVMS-SeleniumRegressionTestsG2.zip" dest="target/" />
-								<move file="target/DockerUnionVMSparametersG2.py" tofile="target/UnionVMSparametersG2.py" />
-							</tasks>
-						</configuration>
-						<goals>
-							<goal>run</goal>
-						</goals>
-					</execution>
-					<execution>
-						<id>downloadMonitoringMetrics</id>
-						<phase>post-integration-test</phase>
-						<configuration>
-							<skip>${docker.skip}</skip>
-							<tasks>
-								<get src="http://localhost:28080/unionvms/audit/monitoring?format=pdf" dest="target/audit_monitoring.pdf" verbose="true" usetimestamp="true" />
-								<get src="http://localhost:28080/unionvms/config/monitoring?format=pdf" dest="target/config_monitoring.pdf" verbose="true" usetimestamp="true" />
-								<get src="http://localhost:28080/unionvms/exchange/monitoring?format=pdf" dest="target/exchange_monitoring.pdf" verbose="true" usetimestamp="true" />
-								<get src="http://localhost:28080/unionvms/spatial/monitoring?format=pdf" dest="target/spatial_monitoring.pdf" verbose="true" usetimestamp="true" />
-								<get src="http://localhost:28080/unionvms/asset/monitoring?format=pdf" dest="target/asset_monitoring.pdf" verbose="true" usetimestamp="true" />
-								<get src="http://localhost:28080/unionvms/movement/monitoring?format=pdf" dest="target/movement_monitoring.pdf" verbose="true" usetimestamp="true" />
-								<get src="http://localhost:28080/unionvms/user/monitoring?format=pdf" dest="target/user_monitoring.pdf" verbose="true" usetimestamp="true" />
-							</tasks>
-						</configuration>
-						<goals>
-							<goal>run</goal>
-						</goals>
-					</execution>
-				</executions>
-			</plugin>
-			<plugin>
 				<groupId>io.fabric8</groupId>
 				<artifactId>docker-maven-plugin</artifactId>
 				<extensions>true</extensions>
@@ -596,6 +554,21 @@
 						<version>1.8</version>
 						<executions>
 							<execution>
+								<id>downloadRegressionSuite</id>
+								<phase>test</phase>
+								<configuration>
+									<tasks>
+										<!-- Get the regression-suite-selenium front-end -->
+										<get src="https://github.com/UnionVMS/UVMS-SeleniumTests/raw/swe-dev/UVMS-SeleniumRegressionTestsG2.zip" dest="target/UVMS-SeleniumRegressionTestsG2.zip" verbose="true" usetimestamp="true" />
+										<unzip src="target/UVMS-SeleniumRegressionTestsG2.zip" dest="target/" />
+										<move file="target/DockerUnionVMSparametersG2.py" tofile="target/UnionVMSparametersG2.py" />
+									</tasks>
+								</configuration>
+								<goals>
+									<goal>run</goal>
+								</goals>
+							</execution>
+							<execution>
 								<id>python-build</id>
 								<phase>pre-integration-test</phase>
 								<goals>
@@ -635,10 +608,10 @@
 						</configuration>
 						<executions>
 							<execution>
-							<phase>generate-sources</phase>
-							<goals>
-								<goal>checkout</goal>
-							</goals>
+								<phase>generate-sources</phase>
+								<goals>
+									<goal>checkout</goal>
+								</goals>
 							</execution>
 						</executions>
 					</plugin>
