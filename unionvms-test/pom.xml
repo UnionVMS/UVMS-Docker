@@ -657,6 +657,7 @@
 									<workingDirectory>${project.basedir}/target/checkout</workingDirectory>
 									<arguments>
 										<argument>test</argument>
+										<argument>-Dci=true</argument>
 									</arguments>
 								</configuration>
 							</execution>
