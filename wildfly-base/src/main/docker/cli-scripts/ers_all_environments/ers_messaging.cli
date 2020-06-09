@@ -22,5 +22,4 @@ if (outcome != success) of /subsystem=messaging-activemq/server=default/jms-queu
   jms-queue add --queue-address=USM4UVMS --entries=[jms/queue/USM4UVMS java:jboss/exported/jms/queue/USM4UVMS]
 end-if
 
-
 stop-embedded-server
