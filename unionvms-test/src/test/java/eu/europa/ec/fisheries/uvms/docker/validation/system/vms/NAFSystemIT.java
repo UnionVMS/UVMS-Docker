@@ -22,6 +22,7 @@ import eu.europa.ec.fisheries.uvms.docker.validation.asset.AssetTestHelper;
 import eu.europa.ec.fisheries.uvms.docker.validation.common.AbstractRest;
 import eu.europa.ec.fisheries.uvms.docker.validation.movement.LatLong;
 import eu.europa.ec.fisheries.uvms.docker.validation.movement.MovementHelper;
+import eu.europa.ec.fisheries.uvms.docker.validation.movement.model.AlarmItem;
 import eu.europa.ec.fisheries.uvms.docker.validation.movement.model.AlarmReport;
 import eu.europa.ec.fisheries.uvms.docker.validation.system.helper.*;
 import eu.europa.ec.fisheries.uvms.docker.validation.user.UserHelper;
@@ -44,6 +45,7 @@ import java.util.Comparator;
 import java.util.Date;
 import java.util.Enumeration;
 import java.util.List;
+import java.util.Optional;
 import static org.hamcrest.CoreMatchers.is;
 
 public class NAFSystemIT extends AbstractRest {
@@ -303,7 +305,7 @@ public class NAFSystemIT extends AbstractRest {
         SanityRuleHelper.pollAlarmReportCreated();
         AlarmReport alarm = SanityRuleHelper.getLatestOpenAlarmReportSince(now.atZone(ZoneId.of("UTC")));
         assertThat(alarm.getAssetGuid(), is(asset.getId().toString()));
-        assertThat(alarm.getAlarmItemList().get(0).getRuleName(), is("VMS Exit report without previous VMS movement"));
+        assertTrue(alarm.getAlarmItemList().stream().filter(a -> a.getRuleName().equals("VMS Exit report without previous VMS movement")).findAny().isPresent());
     }
 
     private Organisation createOrganisationNorway() throws SocketException {
