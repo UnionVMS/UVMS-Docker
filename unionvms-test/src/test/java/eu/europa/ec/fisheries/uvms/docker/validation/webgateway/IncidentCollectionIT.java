@@ -259,7 +259,7 @@ public class IncidentCollectionIT extends AbstractRest {
 
         Optional<IncidentLogDto> MovementIncidentLog = incidentLogDto.getIncidentLogs().values().stream().filter(dto -> dto.getEventType().equals(EventTypeEnum.MANUAL_POSITION)).findAny();
         assertTrue(MovementIncidentLog.isPresent());
-        MicroMovement microMovement = incidentLogDto.getManualPositions().get(MovementIncidentLog.get().getRelatedObjectId().toString());
+        MicroMovement microMovement = incidentLogDto.getPositions().get(MovementIncidentLog.get().getRelatedObjectId().toString());
         assertTrue(microMovement != null);
 
     }
