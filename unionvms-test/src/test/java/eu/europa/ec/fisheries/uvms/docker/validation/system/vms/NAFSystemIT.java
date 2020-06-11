@@ -12,12 +12,18 @@ copy of the GNU General Public License along with the IFDM Suite. If not, see <h
 package eu.europa.ec.fisheries.uvms.docker.validation.system.vms;
 
 import eu.europa.ec.fisheries.schema.exchange.movement.v1.MovementTypeType;
+import eu.europa.ec.fisheries.schema.movement.search.v1.ListCriteria;
+import eu.europa.ec.fisheries.schema.movement.search.v1.MovementQuery;
+import eu.europa.ec.fisheries.schema.movement.search.v1.SearchKey;
+import eu.europa.ec.fisheries.schema.movement.v1.MovementType;
 import eu.europa.ec.fisheries.schema.movementrules.customrule.v1.*;
 import eu.europa.ec.fisheries.uvms.asset.client.model.AssetDTO;
 import eu.europa.ec.fisheries.uvms.docker.validation.asset.AssetTestHelper;
 import eu.europa.ec.fisheries.uvms.docker.validation.common.AbstractRest;
 import eu.europa.ec.fisheries.uvms.docker.validation.movement.LatLong;
 import eu.europa.ec.fisheries.uvms.docker.validation.movement.MovementHelper;
+import eu.europa.ec.fisheries.uvms.docker.validation.movement.model.AlarmItem;
+import eu.europa.ec.fisheries.uvms.docker.validation.movement.model.AlarmReport;
 import eu.europa.ec.fisheries.uvms.docker.validation.system.helper.*;
 import eu.europa.ec.fisheries.uvms.docker.validation.user.UserHelper;
 import eu.europa.ec.fisheries.uvms.docker.validation.user.dto.Channel;
@@ -34,9 +40,12 @@ import java.time.Instant;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.Enumeration;
-
+import java.util.List;
+import java.util.Optional;
 import static org.hamcrest.CoreMatchers.is;
 
 public class NAFSystemIT extends AbstractRest {
@@ -232,6 +241,71 @@ public class NAFSystemIT extends AbstractRest {
         ZonedDateTime positionTime = ZonedDateTime.ofInstant(swePosition.positionTime.toInstant(), ZoneId.of("UTC"));
         assertThat(NAFHelper.readCodeValue("DA", message), is(positionTime.format(DateTimeFormatter.ofPattern("yyyyMMdd"))));
         assertThat(NAFHelper.readCodeValue("TI", message), is(positionTime.format(DateTimeFormatter.ofPattern("HHmm"))));
+    }
+
+    @Test
+    public void exitReportTest() throws IOException {
+        AssetDTO asset = AssetTestHelper.createBasicAsset();
+        asset.setFlagStateCode("NOR");
+        asset = AssetTestHelper.createAsset(asset);
+
+        LatLong entryPosition = new LatLong(58.509, 10.212, Date.from(Instant.now().minus(4, ChronoUnit.HOURS).truncatedTo(ChronoUnit.MINUTES)));
+        NAFHelper.sendEntryReportToNAFPlugin(entryPosition, asset);
+        MovementHelper.pollMovementCreated();
+        LatLong normalPosition1 = new LatLong(58.474, 10.455, Date.from(Instant.now().minus(3, ChronoUnit.HOURS).truncatedTo(ChronoUnit.MINUTES)));
+        NAFHelper.sendPositionToNAFPlugin(normalPosition1, asset);
+        MovementHelper.pollMovementCreated();
+        LatLong normalPosition2 = new LatLong(58.594, 10.400, Date.from(Instant.now().minus(2, ChronoUnit.HOURS).truncatedTo(ChronoUnit.MINUTES)));
+        NAFHelper.sendPositionToNAFPlugin(normalPosition2, asset);
+        MovementHelper.pollMovementCreated();
+        LatLong exitPosition = new LatLong(58.655, 10.344, Date.from(Instant.now().minus(1, ChronoUnit.HOURS).truncatedTo(ChronoUnit.MINUTES)));
+        NAFHelper.sendExitReportToNAFPlugin(exitPosition, asset);
+        MovementHelper.pollMovementCreated();
+
+        MovementQuery query = MovementHelper.getBasicMovementQuery();
+        ListCriteria criteria = new ListCriteria();
+        criteria.setKey(SearchKey.CONNECT_ID);
+        criteria.setValue(asset.getId().toString());
+        query.getMovementSearchCriteria().add(criteria);
+
+        List<MovementType> movements = MovementHelper.getListByQuery(query);
+
+        assertThat(movements.size(), is(4));
+        movements.sort(Comparator.comparing(MovementType::getPositionTime));
+        assertThat(movements.get(0).getConnectId(), is(asset.getId().toString()));
+        assertThat(movements.get(0).getPosition().getLongitude(), is(entryPosition.longitude));
+        assertThat(movements.get(0).getPosition().getLatitude(), is(entryPosition.latitude));
+        assertThat(movements.get(0).getPositionTime(), is(entryPosition.positionTime));
+
+        assertThat(movements.get(1).getConnectId(), is(asset.getId().toString()));
+        assertThat(movements.get(1).getPosition().getLongitude(), is(normalPosition1.longitude));
+        assertThat(movements.get(1).getPosition().getLatitude(), is(normalPosition1.latitude));
+        assertThat(movements.get(1).getPositionTime(), is(normalPosition1.positionTime));
+
+        assertThat(movements.get(2).getConnectId(), is(asset.getId().toString()));
+        assertThat(movements.get(2).getPosition().getLongitude(), is(normalPosition2.longitude));
+        assertThat(movements.get(2).getPosition().getLatitude(), is(normalPosition2.latitude));
+        assertThat(movements.get(2).getPositionTime(), is(normalPosition2.positionTime));
+
+        assertThat(movements.get(3).getConnectId(), is(asset.getId().toString()));
+        assertThat(movements.get(3).getPosition().getLongitude(), is(normalPosition2.longitude));
+        assertThat(movements.get(3).getPosition().getLatitude(), is(normalPosition2.latitude));
+        assertThat(movements.get(3).getPositionTime(), is(exitPosition.positionTime));
+    }
+
+    @Test
+    public void singleExitReportTest() throws Exception {
+        Instant now = Instant.now();
+        AssetDTO asset = AssetTestHelper.createBasicAsset();
+        asset.setFlagStateCode("NOR");
+        asset = AssetTestHelper.createAsset(asset);
+
+        LatLong exitPosition = new LatLong(58.655, 10.344, Date.from(now.minus(1, ChronoUnit.HOURS).truncatedTo(ChronoUnit.MINUTES)));
+        NAFHelper.sendExitReportToNAFPlugin(exitPosition, asset);
+        SanityRuleHelper.pollAlarmReportCreated();
+        AlarmReport alarm = SanityRuleHelper.getLatestOpenAlarmReportSince(now.atZone(ZoneId.of("UTC")));
+        assertThat(alarm.getAssetGuid(), is(asset.getId().toString()));
+        assertTrue(alarm.getAlarmItemList().stream().filter(a -> a.getRuleName().equals("VMS Exit report without previous VMS movement")).findAny().isPresent());
     }
 
     private Organisation createOrganisationNorway() throws SocketException {
