@@ -88,7 +88,7 @@ public class IncidentCollectionIT extends AbstractRest {
 
         Optional<IncidentLogDto> noteIncidentLog = incidentLogDto.getIncidentLogs().values().stream().filter(dto -> dto.getEventType().equals(EventTypeEnum.NOTE_CREATED)).findAny();
         assertTrue(noteIncidentLog.isPresent());
-        Note incidentNote = incidentLogDto.getNotes().get(noteIncidentLog.get().getRelatedObjectId().toString());
+        Note incidentNote = incidentLogDto.getRelatedObjects().getNotes().get(noteIncidentLog.get().getRelatedObjectId().toString());
         assertTrue(incidentNote != null);
 
         assertTrue(incidentNote.getAssetId().equals(note.getAssetId()));
@@ -136,7 +136,7 @@ public class IncidentCollectionIT extends AbstractRest {
 
         Optional<IncidentLogDto> pollIncidentLog = incidentLogDto.getIncidentLogs().values().stream().filter(dto -> dto.getEventType().equals(EventTypeEnum.POLL_CREATED)).findAny();
         assertTrue(pollIncidentLog.isPresent());
-        ExchangeLogStatusType logStatusType = incidentLogDto.getPolls().get(pollIncidentLog.get().getRelatedObjectId().toString());
+        ExchangeLogStatusType logStatusType = incidentLogDto.getRelatedObjects().getPolls().get(pollIncidentLog.get().getRelatedObjectId().toString());
         assertTrue(logStatusType != null);
 
         assertEquals(TypeRefType.POLL, logStatusType.getTypeRef().getType());
@@ -196,7 +196,7 @@ public class IncidentCollectionIT extends AbstractRest {
 
         Optional<IncidentLogDto> pollIncidentLog = incidentLogDto.getIncidentLogs().values().stream().filter(dto -> dto.getEventType().equals(EventTypeEnum.POLL_CREATED)).findAny();
         assertTrue(pollIncidentLog.isPresent());
-        ExchangeLogStatusType logStatusType = incidentLogDto.getPolls().get(pollIncidentLog.get().getRelatedObjectId().toString());
+        ExchangeLogStatusType logStatusType = incidentLogDto.getRelatedObjects().getPolls().get(pollIncidentLog.get().getRelatedObjectId().toString());
         assertTrue(logStatusType != null);
 
         assertEquals(TypeRefType.POLL, logStatusType.getTypeRef().getType());
@@ -259,7 +259,7 @@ public class IncidentCollectionIT extends AbstractRest {
 
         Optional<IncidentLogDto> MovementIncidentLog = incidentLogDto.getIncidentLogs().values().stream().filter(dto -> dto.getEventType().equals(EventTypeEnum.MANUAL_POSITION)).findAny();
         assertTrue(MovementIncidentLog.isPresent());
-        MicroMovement microMovement = incidentLogDto.getPositions().get(MovementIncidentLog.get().getRelatedObjectId().toString());
+        MicroMovement microMovement = incidentLogDto.getRelatedObjects().getPositions().get(MovementIncidentLog.get().getRelatedObjectId().toString());
         assertTrue(microMovement != null);
 
     }
