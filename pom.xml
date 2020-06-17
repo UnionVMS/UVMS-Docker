@@ -36,7 +36,7 @@
 		<unionvms.project.config.module>4.3.5</unionvms.project.config.module>
 		<unionvms.project.audit.module>4.3.5</unionvms.project.audit.module>
 		<unionvms.project.asset.module>6.7.12</unionvms.project.asset.module>
-		<unionvms.project.incident.module>0.2.6</unionvms.project.incident.module>
+		<unionvms.project.incident.module>0.2.7</unionvms.project.incident.module>
 		<unionvms.project.activity.module>1.1.6</unionvms.project.activity.module>
 		<unionvms.project.mdr.module>1.0.10</unionvms.project.mdr.module>
 		<unionvms.project.plugins.ais>3.1.1</unionvms.project.plugins.ais>
