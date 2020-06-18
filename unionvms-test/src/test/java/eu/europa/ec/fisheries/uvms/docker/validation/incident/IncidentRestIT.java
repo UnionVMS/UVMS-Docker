@@ -4,6 +4,7 @@ import eu.europa.ec.fisheries.schema.movementrules.ticket.v1.TicketStatusType;
 import eu.europa.ec.fisheries.uvms.asset.client.model.AssetDTO;
 import eu.europa.ec.fisheries.uvms.docker.validation.asset.AssetTestHelper;
 import eu.europa.ec.fisheries.uvms.docker.validation.common.AbstractRest;
+import eu.europa.ec.fisheries.uvms.incident.model.dto.AssetNotSendingDto;
 import eu.europa.ec.fisheries.uvms.incident.model.dto.IncidentDto;
 import eu.europa.ec.fisheries.uvms.incident.model.dto.IncidentLogDto;
 import eu.europa.ec.fisheries.uvms.incident.model.dto.IncidentTicketDto;
@@ -29,12 +30,12 @@ public class IncidentRestIT extends AbstractRest {
 
     @Test
     public void getAssetNotSendingListTest() throws Exception {
-        List<IncidentDto> before = IncidentTestHelper.getAssetNotSendingIncidentList();
+        AssetNotSendingDto before = IncidentTestHelper.getAssetNotSendingIncidentList();
         AssetDTO asset = AssetTestHelper.createAsset(AssetTestHelper.createBasicAsset());
         IncidentTicketDto ticket = IncidentTestHelper.createTicket(asset.getId());
         IncidentTestHelper.createAssetNotSendingIncident(ticket, INCIDENT_CREATE);
-        List<IncidentDto> after = IncidentTestHelper.getAssetNotSendingIncidentList();
-        assertEquals(before.size() + 1, after.size());
+        AssetNotSendingDto after = IncidentTestHelper.getAssetNotSendingIncidentList();
+        assertEquals(before.getUnresolved().size() + 1, after.getUnresolved().size());
     }
 
     @Test
