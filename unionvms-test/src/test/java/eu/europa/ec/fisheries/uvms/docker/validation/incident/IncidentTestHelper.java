@@ -3,6 +3,7 @@ package eu.europa.ec.fisheries.uvms.docker.validation.incident;
 import eu.europa.ec.fisheries.schema.movementrules.ticket.v1.TicketStatusType;
 import eu.europa.ec.fisheries.uvms.docker.validation.common.AbstractHelper;
 import eu.europa.ec.fisheries.uvms.docker.validation.common.MessageHelper;
+import eu.europa.ec.fisheries.uvms.incident.model.dto.AssetNotSendingDto;
 import eu.europa.ec.fisheries.uvms.incident.model.dto.IncidentDto;
 import eu.europa.ec.fisheries.uvms.incident.model.dto.IncidentTicketDto;
 
@@ -30,12 +31,12 @@ public class IncidentTestHelper extends AbstractHelper {
                 .get(IncidentDto.class);
     }
 
-    public static List<IncidentDto> getAssetNotSendingIncidentList() {
+    public static AssetNotSendingDto getAssetNotSendingIncidentList() {
         return getWebTarget()
                 .path("incident/rest/incident/assetNotSending")
                 .request(MediaType.APPLICATION_JSON)
                 .header(HttpHeaders.AUTHORIZATION, getValidJwtToken())
-                .get(new GenericType<List<IncidentDto>>() {});
+                .get(AssetNotSendingDto.class);
     }
 
     public static void sendMessage(IncidentTicketDto ticket, String eventName) throws Exception {
