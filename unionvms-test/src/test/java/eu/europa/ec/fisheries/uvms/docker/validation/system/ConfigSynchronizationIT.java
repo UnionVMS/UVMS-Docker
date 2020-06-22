@@ -24,7 +24,6 @@ import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
 import java.util.List;
 import java.util.Map;
-
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.notNullValue;
 
@@ -76,6 +75,7 @@ public class ConfigSynchronizationIT extends AbstractRest {
             SetConfigRequest configRequest = listener.listenOnEventBusForSpecificMessage(SetConfigRequest.class);
             assertThat(configRequest, is(notNullValue()));
             assertThat(configRequest.getConfigurations().getSetting().size(), is(6));
+            configRequest.getConfigurations().getSetting().removeIf(v -> !v.getKey().equals(expectedKey));
             assertThat(configRequest.getConfigurations().getSetting().get(0).getKey(), is(expectedKey));
             assertThat(configRequest.getConfigurations().getSetting().get(0).getValue(), is(newValue));
         }
