@@ -6,7 +6,7 @@ import eu.europa.ec.fisheries.uvms.docker.validation.common.MessageHelper;
 import eu.europa.ec.fisheries.uvms.incident.model.dto.AssetNotSendingDto;
 import eu.europa.ec.fisheries.uvms.incident.model.dto.IncidentDto;
 import eu.europa.ec.fisheries.uvms.incident.model.dto.IncidentTicketDto;
-
+import eu.europa.ec.fisheries.uvms.incident.model.dto.enums.TicketType;
 import javax.ws.rs.core.GenericType;
 import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
@@ -49,6 +49,7 @@ public class IncidentTestHelper extends AbstractHelper {
     public static IncidentTicketDto createTicket(UUID assetId) {
         IncidentTicketDto ticket = new IncidentTicketDto();
         ticket.setId(UUID.randomUUID());
+        ticket.setType(TicketType.ASSET_NOT_SENDING);
         ticket.setAssetId(assetId.toString());
         ticket.setMovementId(UUID.randomUUID().toString());
         ticket.setMobTermId(UUID.randomUUID().toString());
