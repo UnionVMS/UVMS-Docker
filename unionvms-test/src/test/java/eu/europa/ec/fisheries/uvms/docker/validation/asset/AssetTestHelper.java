@@ -217,6 +217,7 @@ public class AssetTestHelper extends AbstractHelper {
     public static FishingLicence createFishingLicence() {
         FishingLicence fishingLicence = new FishingLicence();
         fishingLicence.setCivicNumber(generateARandomStringWithMaxLength(10));
+        fishingLicence.setName(generateARandomStringWithMaxLength(20));
         fishingLicence.setLicenceNumber(Long.valueOf(generateARandomStringWithMaxLength(10)));
         fishingLicence.setFromDate(Instant.now().truncatedTo(ChronoUnit.MILLIS));
         fishingLicence.setToDate(Instant.now().truncatedTo(ChronoUnit.MILLIS));

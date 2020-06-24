@@ -398,6 +398,7 @@ public class AssetRestIT extends AbstractRest {
         assertThat(fishingLicence.getAssetId(), CoreMatchers.is(asset.getId()));
         assertThat(fishingLicence.getLicenceNumber(), CoreMatchers.is(licence.getLicenceNumber()));
         assertThat(fishingLicence.getCivicNumber(), CoreMatchers.is(licence.getCivicNumber()));
+        assertThat(fishingLicence.getName(), CoreMatchers.is(licence.getName()));
         assertThat(fishingLicence.getFromDate(), CoreMatchers.is(licence.getFromDate()));
         assertThat(fishingLicence.getToDate(), CoreMatchers.is(licence.getToDate()));
         assertThat(fishingLicence.getDecisionDate(), CoreMatchers.is(licence.getDecisionDate()));
