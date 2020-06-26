@@ -9,6 +9,7 @@ import eu.europa.ec.fisheries.uvms.asset.client.model.AssetDTO;
 import eu.europa.ec.fisheries.uvms.asset.client.model.Note;
 import eu.europa.ec.fisheries.uvms.docker.validation.asset.AssetTestHelper;
 import eu.europa.ec.fisheries.uvms.docker.validation.common.AbstractRest;
+import eu.europa.ec.fisheries.uvms.docker.validation.config.ConfigRestHelper;
 import eu.europa.ec.fisheries.uvms.docker.validation.incident.IncidentTestHelper;
 import eu.europa.ec.fisheries.uvms.docker.validation.mobileterminal.MobileTerminalTestHelper;
 import eu.europa.ec.fisheries.uvms.docker.validation.mobileterminal.dto.MobileTerminalDto;
@@ -18,14 +19,18 @@ import eu.europa.ec.fisheries.uvms.docker.validation.movement.MovementDto;
 import eu.europa.ec.fisheries.uvms.docker.validation.movement.MovementHelper;
 import eu.europa.ec.fisheries.uvms.docker.validation.movement.model.ManualMovementDto;
 import eu.europa.ec.fisheries.uvms.docker.validation.movement.model.MicroMovement;
+import eu.europa.ec.fisheries.uvms.docker.validation.system.helper.FLUXHelper;
 import eu.europa.ec.fisheries.uvms.docker.validation.webgateway.dto.ExtendedIncidentLogDto;
 import eu.europa.ec.fisheries.uvms.docker.validation.webgateway.dto.NoteAndIncidentDto;
 import eu.europa.ec.fisheries.uvms.docker.validation.webgateway.dto.PollAndIncidentDto;
 import eu.europa.ec.fisheries.uvms.incident.model.dto.IncidentDto;
 import eu.europa.ec.fisheries.uvms.incident.model.dto.IncidentLogDto;
 import eu.europa.ec.fisheries.uvms.incident.model.dto.IncidentTicketDto;
+import eu.europa.ec.fisheries.uvms.incident.model.dto.StatusDto;
 import eu.europa.ec.fisheries.uvms.incident.model.dto.enums.EventTypeEnum;
+import eu.europa.ec.fisheries.uvms.incident.model.dto.enums.StatusEnum;
 import eu.europa.ec.fisheries.uvms.mobileterminal.model.dto.CommentDto;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import javax.ws.rs.client.Entity;
@@ -263,5 +268,59 @@ public class IncidentCollectionIT extends AbstractRest {
         assertTrue(microMovement != null);
 
     }
+
+    @Test
+    public void updateStatusToLongTermParkedAndCheckAssetAsLongTermParked() throws Exception {
+
+        ConfigRestHelper.setLocalFlagStateToSwe();
+
+        AssetDTO asset = AssetTestHelper.createAsset(AssetTestHelper.createBasicAsset());
+        MobileTerminalDto mt = MobileTerminalTestHelper.createMobileTerminal();
+        MobileTerminalTestHelper.assignMobileTerminal(asset, mt);
+
+        FLUXHelper.sendPositionToFluxPlugin(asset,
+                new LatLong(56d, 11d, new Date(System.currentTimeMillis() - 10000)));
+
+        MovementHelper.pollMovementCreated();
+        Thread.sleep(1000);
+        Response response = getWebTarget()
+                .path("movement-rules/rest/previousReports/list")
+                .request(MediaType.APPLICATION_JSON)
+                .header(HttpHeaders.AUTHORIZATION, getValidJwtToken())
+                .get(Response.class);
+        assertEquals(200, response.getStatus());
+        String previousReport = response.readEntity(String.class);
+        assertTrue(previousReport.contains(asset.getId().toString()));
+
+        IncidentTicketDto ticket = IncidentTestHelper.createTicket(asset.getId());
+        IncidentDto incidentDto = IncidentTestHelper.createAssetNotSendingIncident(ticket, INCIDENT_CREATE);
+
+        StatusDto statusDto = new StatusDto();
+        statusDto.setEventType(EventTypeEnum.INCIDENT_STATUS);
+        statusDto.setStatus(StatusEnum.LONG_TERM_PARKED);
+
+        response = getWebTarget()
+                .path("web-gateway/rest/incidents/updateStatusForIncident")
+                .path(incidentDto.getId().toString())
+                .request(MediaType.APPLICATION_JSON)
+                .header(HttpHeaders.AUTHORIZATION, getValidJwtToken())
+                .post(Entity.json(statusDto), Response.class);
+        assertEquals(200, response.getStatus());
+
+        AssetDTO updatedAsset = AssetTestHelper.getAssetByGuid(asset.getId());
+        assertTrue(updatedAsset.getId().toString(), updatedAsset.isLongTermParked());
+
+        MovementHelper.pollMovementCreated();
+        Thread.sleep(1000);
+        response = getWebTarget()
+                .path("movement-rules/rest/previousReports/list")
+                .request(MediaType.APPLICATION_JSON)
+                .header(HttpHeaders.AUTHORIZATION, getValidJwtToken())
+                .get(Response.class);
+        assertEquals(200, response.getStatus());
+        previousReport = response.readEntity(String.class);
+        assertFalse(previousReport.contains(asset.getId().toString()));
+    }
+
 
 }
