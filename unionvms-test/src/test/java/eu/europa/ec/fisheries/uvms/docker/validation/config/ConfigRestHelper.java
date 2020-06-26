@@ -30,10 +30,5 @@ public class ConfigRestHelper extends AbstractHelper {
                 .put(Entity.json(flux_local_nation_code), Response.class);
         assertEquals(200, response.getStatus());
 
-        /*try {
-            Thread.sleep(5000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }*/
     }
 }
