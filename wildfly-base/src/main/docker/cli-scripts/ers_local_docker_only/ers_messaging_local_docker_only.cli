@@ -1,10 +1,6 @@
 embed-server --server-config=standalone-full.xml
 
 jms-queue add --queue-address=EfrBackendToPlugin    --entries=[jms/queue/EfrBackendToPlugin    java:jboss/exported/jms/queue/EfrBackendToPlugin]
-jms-queue add --queue-address=EfrPluginToExchange   --entries=[jms/queue/EfrPluginToExchange   java:jboss/exported/jms/queue/EfrPluginToExchange]
-jms-queue add --queue-address=EfrExchangeToActivity --entries=[jms/queue/EfrExchangeToActivity java:jboss/exported/jms/queue/EfrExchangeToActivity]
-jms-queue add --queue-address=EfrActivityToExchange --entries=[jms/queue/EfrActivityToExchange java:jboss/exported/jms/queue/EfrActivityToExchange]
-jms-queue add --queue-address=EfrExchangeToPlugin   --entries=[jms/queue/EfrExchangeToPlugin   java:jboss/exported/jms/queue/EfrExchangeToPlugin]
 jms-queue add --queue-address=EfrPluginToBackend    --entries=[jms/queue/EfrPluginToBackend    java:jboss/exported/jms/queue/EfrPluginToBackend]
 
 stop-embedded-server
