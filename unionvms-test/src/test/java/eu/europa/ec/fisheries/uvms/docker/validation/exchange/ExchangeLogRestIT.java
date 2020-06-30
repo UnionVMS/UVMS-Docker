@@ -15,7 +15,14 @@ package eu.europa.ec.fisheries.uvms.docker.validation.exchange;
 
 import eu.europa.ec.fisheries.schema.exchange.common.v1.CommandType;
 import eu.europa.ec.fisheries.schema.exchange.plugin.v1.SetCommandRequest;
-import eu.europa.ec.fisheries.schema.exchange.v1.*;
+import eu.europa.ec.fisheries.schema.exchange.v1.ExchangeListCriteria;
+import eu.europa.ec.fisheries.schema.exchange.v1.ExchangeListCriteriaPair;
+import eu.europa.ec.fisheries.schema.exchange.v1.ExchangeListPagination;
+import eu.europa.ec.fisheries.schema.exchange.v1.ExchangeListQuery;
+import eu.europa.ec.fisheries.schema.exchange.v1.ExchangeLogStatusType;
+import eu.europa.ec.fisheries.schema.exchange.v1.ExchangeLogStatusTypeType;
+import eu.europa.ec.fisheries.schema.exchange.v1.LogType;
+import eu.europa.ec.fisheries.schema.exchange.v1.SearchField;
 import eu.europa.ec.fisheries.schema.mobileterminal.polltypes.v1.PollType;
 import eu.europa.ec.fisheries.uvms.asset.client.model.AssetDTO;
 import eu.europa.ec.fisheries.uvms.commons.rest.dto.ResponseDto;
@@ -25,12 +32,18 @@ import eu.europa.ec.fisheries.uvms.docker.validation.mobileterminal.MobileTermin
 import eu.europa.ec.fisheries.uvms.docker.validation.mobileterminal.dto.CreatePollResultDto;
 import eu.europa.ec.fisheries.uvms.docker.validation.system.helper.PollHelper;
 import org.junit.Test;
+
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.core.GenericType;
 import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
-import java.text.SimpleDateFormat;
-import java.util.*;
+import java.time.Instant;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
 public class ExchangeLogRestIT extends AbstractRest {
 
@@ -43,7 +56,7 @@ public class ExchangeLogRestIT extends AbstractRest {
 		exchangeListCriteriaPair.setKey(SearchField.STATUS);
 		exchangeListCriteriaPair.setValue("SUCCESSFUL");
 		exchangeListCriteria.getCriterias().add(exchangeListCriteriaPair);
-		
+
 		exchangeListQuery.setExchangeSearchCriteria(exchangeListCriteria);
 		ExchangeListPagination exchangeListPagination = new ExchangeListPagination();
 		exchangeListPagination.setPage(1);
@@ -70,21 +83,19 @@ public class ExchangeLogRestIT extends AbstractRest {
         PollHelper.ackPoll(command.getPoll().getMessage(), command.getPoll().getPollId(),
 				ExchangeLogStatusTypeType.SUCCESSFUL, command.getUnsentMessageGuid());
 
-		PollQuery pollQuery = new PollQuery();
-		pollQuery.setStatus(ExchangeLogStatusTypeType.SUCCESSFUL);
-		Date oldDate = new Date();
-		oldDate.setTime( oldDate.getTime() - (long)10*1000*60*60*24 );
-		pollQuery.setStatusFromDate(formatDateAsUTC(oldDate));
-		pollQuery.setStatusToDate(formatDateAsUTC(new Date()));
+        Thread.sleep(1000);	 // Needed to let the system work and catch up
 
-		Thread.sleep(500);	 // Needed to let the system work and catch up
+        PollQuery pollQuery = new PollQuery();
+		pollQuery.setStatus(ExchangeLogStatusTypeType.SUCCESSFUL);
+		pollQuery.setStatusFromDate(formatDateAsUTC(Instant.now().minus(1, ChronoUnit.HOURS)));
+		pollQuery.setStatusToDate(formatDateAsUTC(Instant.now().plus(1, ChronoUnit.HOURS)));
 
 		ResponseDto<List<ExchangeLogStatusType>> exchangeLogStatusTypeList = getWebTarget()
 				.path("exchange/rest/exchange/poll/")
 				.request(MediaType.APPLICATION_JSON)
 				.header(HttpHeaders.AUTHORIZATION, getValidJwtToken())
 				.post(Entity.json(pollQuery), new GenericType<ResponseDto<List<ExchangeLogStatusType>>>() {});
-		
+
 		assertNotNull(exchangeLogStatusTypeList);
 		List<ExchangeLogStatusType> logListMap = exchangeLogStatusTypeList.getData();
 		assertNotNull(logListMap);
@@ -138,11 +149,7 @@ public class ExchangeLogRestIT extends AbstractRest {
         assertEquals(LogType.SEND_POLL.value(), typeMap.get("type"));
 	}
 
-	private String formatDateAsUTC(Date date) {
-		Calendar calendar = Calendar.getInstance();
-		calendar.setTime(date);
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss Z");
-		sdf.setTimeZone(TimeZone.getTimeZone("UTC"));
-		return sdf.format(date);
+	private String formatDateAsUTC(Instant date) {
+	    return DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss Z").withZone(ZoneId.of("UTC")).format(date);
 	}
 }
