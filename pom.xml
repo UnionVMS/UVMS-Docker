@@ -401,14 +401,12 @@
 			</dependency>
 
 			<!-- plugin modules -->
-<!-- FIXME - needs local conf? ... -->
 			<dependency>
 				<groupId>eu.europa.ec.fisheries.uvms.plugins</groupId>
 				<artifactId>ais-module</artifactId>
 				<type>ear</type>
 				<version>${unionvms.project.plugins.ais}</version>
 			</dependency>
-<!-- ...FIXME -->
 
 			<dependency>
 				<groupId>eu.europa.ec.fisheries.uvms.plugins</groupId>
