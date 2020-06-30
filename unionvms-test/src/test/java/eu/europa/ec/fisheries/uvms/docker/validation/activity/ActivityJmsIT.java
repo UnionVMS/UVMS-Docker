@@ -9,7 +9,6 @@ import eu.europa.ec.fisheries.uvms.activity.service.dto.FishingActivityReportDTO
 import eu.europa.ec.fisheries.uvms.activity.service.dto.FluxReportIdentifierDTO;
 import eu.europa.ec.fisheries.uvms.activity.service.search.FishingActivityQuery;
 import eu.europa.ec.fisheries.uvms.asset.client.model.AssetDTO;
-import eu.europa.ec.fisheries.uvms.asset.client.model.AssetGroup;
 import eu.europa.ec.fisheries.uvms.asset.client.model.AssetListResponse;
 import eu.europa.ec.fisheries.uvms.asset.remote.dto.search.SearchBranch;
 import eu.europa.ec.fisheries.uvms.asset.remote.dto.search.SearchFields;
@@ -241,15 +240,13 @@ public class ActivityJmsIT extends AbstractRest {
 	}
 
 	private Asset createShipAsset() throws Exception {
-		AssetGroup basicAssetGroup = AssetTestHelper.createBasicAssetGroup();
-		AssetGroup createdAssetGroup = AssetTestHelper.createAssetGroup(basicAssetGroup);
-
 		Asset asset = assetJMSHelper.createDummyAsset(AssetIdType.CFR);
 		asset.setCfr("fake-cfr-id");
 		asset.setExternalMarking("fake-marking");
 		asset.setIrcs("fakeircs");
 
-		assetJMSHelper.upsertAsset(asset, createdAssetGroup.getOwner());
+		final String owner_username = "vms_admin_se";
+		assetJMSHelper.upsertAsset(asset, owner_username);
 		return asset;
 	}
 
