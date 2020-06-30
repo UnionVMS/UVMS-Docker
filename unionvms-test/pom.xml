@@ -432,8 +432,8 @@
 										</ports>
 										<cmd>
 											<shell>/opt/jboss/wildfly/bin/standalone.sh
-												-c standalone-load-balancer.xml 
-												-b load-balancer 
+												-c standalone-load-balancer.xml
+												-b load-balancer
 												-bmanagement load-balancer
 												-bprivate load-balancer</shell>
 										</cmd>
@@ -497,7 +497,7 @@
 										<cmd>
 											<shell>/opt/jboss/start.sh /opt/jboss/wildfly/bin/standalone.sh
 												-c standalone-full-ha.xml -b wildfly1 -bmanagement wildfly1 --debug *:8787
-												-bprivate wildfly1 -bunsecure wildfly1 -Djboss.node.name=wildfly1 
+												-bprivate wildfly1 -bunsecure wildfly1 -Djboss.node.name=wildfly1
 												-Djgroups.bind_addr=wildfly1 -Djboss.messaging.cluster.password=password
 												-Dloadbalancer.address=load-balancer
 												-Djboss.tx.node.id=1</shell>
@@ -538,7 +538,7 @@
 										<cmd>
 											<shell>/opt/jboss/start.sh /opt/jboss/wildfly/bin/standalone.sh
 												-c standalone-full-ha.xml -b wildfly2 -bmanagement wildfly2 --debug *:8787
-												-bprivate wildfly2 -bunsecure wildfly2 -Djboss.node.name=wildfly2 
+												-bprivate wildfly2 -bunsecure wildfly2 -Djboss.node.name=wildfly2
 												-Djgroups.bind_addr=wildfly2 -Djboss.messaging.cluster.password=password
 												-Dloadbalancer.address=load-balancer
 												-Djboss.tx.node.id=2</shell>
@@ -610,7 +610,7 @@
 								<configuration>
 									<tasks>									
 										<exec dir="${project.basedir}/target/" executable="${python.runtime}">
-										 	<redirector output="target/Python-regression-suite-seleniumG2.log" alwayslog="true" /> 
+										 	<redirector output="target/Python-regression-suite-seleniumG2.log" alwayslog="true" />
 											<arg value="-u" />
 											<arg value="-m" />
 											<arg value="unittest" />

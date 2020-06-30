@@ -261,7 +261,7 @@
 					<version>${project.version}</version>
 					<file>target/${project.artifactId}.zip</file>
 				</configuration>
-			</plugin>												
+			</plugin>
 			<plugin>
 				<groupId>io.fabric8</groupId>
 				<artifactId>docker-maven-plugin</artifactId>
