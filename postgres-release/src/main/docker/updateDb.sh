@@ -1,4 +1,4 @@
-#!bin/sh
+#!/bin/sh
 
 # Prepared transactions
 sed -i -e"s/^#max_prepared_transactions = 0.*$/max_prepared_transactions = 200/" /var/lib/postgresql/data/postgresql.conf
