@@ -12,6 +12,7 @@ DIR_WHERE_THIS_SCRIPT_IS="$(cd "$(dirname "$0")" && pwd)"
   echo "Creating EFR JMS queues"
   $SERVER_CLI \
     --file=ers_messaging_local_docker_only.cli \
-    -Djboss.server.log.dir=$JBOSS_HOME/standalone/tmp
+    -Djboss.server.log.dir=$JBOSS_HOME/standalone/tmp \
+	    | grep -v '{"outcome" => "success"}'
 
 )

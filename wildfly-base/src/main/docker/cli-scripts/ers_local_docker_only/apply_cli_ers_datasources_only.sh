@@ -15,7 +15,8 @@ DIR_WHERE_THIS_SCRIPT_IS="$(cd "$(dirname "$0")" && pwd)"
     $SERVER_CLI \
       --file=ers_datasources.cli \
       --properties=$1 \
-      -Djboss.server.log.dir=$JBOSS_HOME/standalone/tmp
+      -Djboss.server.log.dir=$JBOSS_HOME/standalone/tmp \
+	    | grep -v '{"outcome" => "success"}'
 
   else
     echo
