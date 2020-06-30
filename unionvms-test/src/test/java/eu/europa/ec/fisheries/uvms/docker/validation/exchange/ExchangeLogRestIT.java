@@ -21,15 +21,16 @@ import eu.europa.ec.fisheries.schema.exchange.v1.ExchangeListPagination;
 import eu.europa.ec.fisheries.schema.exchange.v1.ExchangeListQuery;
 import eu.europa.ec.fisheries.schema.exchange.v1.ExchangeLogStatusType;
 import eu.europa.ec.fisheries.schema.exchange.v1.ExchangeLogStatusTypeType;
+import eu.europa.ec.fisheries.schema.exchange.v1.ExchangeLogType;
 import eu.europa.ec.fisheries.schema.exchange.v1.LogType;
 import eu.europa.ec.fisheries.schema.exchange.v1.SearchField;
 import eu.europa.ec.fisheries.schema.mobileterminal.polltypes.v1.PollType;
 import eu.europa.ec.fisheries.uvms.asset.client.model.AssetDTO;
-import eu.europa.ec.fisheries.uvms.commons.rest.dto.ResponseDto;
 import eu.europa.ec.fisheries.uvms.docker.validation.asset.AssetTestHelper;
 import eu.europa.ec.fisheries.uvms.docker.validation.common.AbstractRest;
 import eu.europa.ec.fisheries.uvms.docker.validation.mobileterminal.MobileTerminalTestHelper;
 import eu.europa.ec.fisheries.uvms.docker.validation.mobileterminal.dto.CreatePollResultDto;
+import eu.europa.ec.fisheries.uvms.docker.validation.mobileterminal.dto.ListQueryResponse;
 import eu.europa.ec.fisheries.uvms.docker.validation.system.helper.PollHelper;
 import org.junit.Test;
 
@@ -37,12 +38,7 @@ import javax.ws.rs.client.Entity;
 import javax.ws.rs.core.GenericType;
 import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
-import java.time.Instant;
-import java.time.ZoneId;
-import java.time.format.DateTimeFormatter;
-import java.time.temporal.ChronoUnit;
-import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.Date;
 import java.util.List;
 
 public class ExchangeLogRestIT extends AbstractRest {
@@ -56,24 +52,21 @@ public class ExchangeLogRestIT extends AbstractRest {
 		exchangeListCriteriaPair.setKey(SearchField.STATUS);
 		exchangeListCriteriaPair.setValue("SUCCESSFUL");
 		exchangeListCriteria.getCriterias().add(exchangeListCriteriaPair);
-
+		
 		exchangeListQuery.setExchangeSearchCriteria(exchangeListCriteria);
 		ExchangeListPagination exchangeListPagination = new ExchangeListPagination();
 		exchangeListPagination.setPage(1);
 		exchangeListPagination.setListSize(100);
 		exchangeListQuery.setPagination(exchangeListPagination);
 
-		ResponseDto listQueryResponse = getWebTarget()
+		ListQueryResponse listQueryResponse = getWebTarget()
 				.path("exchange/rest/exchange/list")
 				.request(MediaType.APPLICATION_JSON)
 				.header(HttpHeaders.AUTHORIZATION, getValidJwtToken())
-				.post(Entity.json(exchangeListQuery), ResponseDto.class);
+				.post(Entity.json(exchangeListQuery), ListQueryResponse.class);
 
 		assertNotNull(listQueryResponse);
-		HashMap logListMap = (HashMap) listQueryResponse.getData();
-		Object obj = logListMap.get("logList");
-		ArrayList logList = (ArrayList) obj;
-		assertFalse(logList.isEmpty());
+		assertFalse(listQueryResponse.getLogs().isEmpty());
 	}
 
 	@Test
@@ -90,16 +83,14 @@ public class ExchangeLogRestIT extends AbstractRest {
 		pollQuery.setStatusFromDate(formatDateAsUTC(Instant.now().minus(1, ChronoUnit.HOURS)));
 		pollQuery.setStatusToDate(formatDateAsUTC(Instant.now().plus(1, ChronoUnit.HOURS)));
 
-		ResponseDto<List<ExchangeLogStatusType>> exchangeLogStatusTypeList = getWebTarget()
+		List<ExchangeLogStatusType> exchangeLogStatusTypeList = getWebTarget()
 				.path("exchange/rest/exchange/poll/")
 				.request(MediaType.APPLICATION_JSON)
 				.header(HttpHeaders.AUTHORIZATION, getValidJwtToken())
-				.post(Entity.json(pollQuery), new GenericType<ResponseDto<List<ExchangeLogStatusType>>>() {});
-
+				.post(Entity.json(pollQuery), new GenericType<List<ExchangeLogStatusType>>() {});
+		
 		assertNotNull(exchangeLogStatusTypeList);
-		List<ExchangeLogStatusType> logListMap = exchangeLogStatusTypeList.getData();
-		assertNotNull(logListMap);
-		assertFalse(logListMap.isEmpty());
+		assertFalse(exchangeLogStatusTypeList.isEmpty());
 	}
 
 	@Test
@@ -109,16 +100,14 @@ public class ExchangeLogRestIT extends AbstractRest {
         List<String> sentPolls = createPollResultDto.getSentPolls();
         String uid = sentPolls.get(0);
 
-		ResponseDto exchangeLogStatusType = getWebTarget()
+		ExchangeLogStatusType exchangeLogStatusType = getWebTarget()
                 .path("exchange/rest/exchange/poll/" + uid)
                 .request(MediaType.APPLICATION_JSON)
                 .header(HttpHeaders.AUTHORIZATION, getValidJwtToken())
-                .get(ResponseDto.class);
+                .get(ExchangeLogStatusType.class);
 
 		assertNotNull(exchangeLogStatusType);
-		HashMap guidMap = (HashMap) exchangeLogStatusType.getData();
-		String guid = (String) guidMap.get("guid");
-		assertNotNull(guid);
+		assertNotNull(exchangeLogStatusType.getGuid());
 	}
 
 	@Test
@@ -128,25 +117,23 @@ public class ExchangeLogRestIT extends AbstractRest {
         List<String> sentPolls = createPollResultDto.getSentPolls();
         String uid = sentPolls.get(0);
 
-		ResponseDto exchangeLogStatusType = getWebTarget()
+		ExchangeLogStatusType exchangeLogStatusType = getWebTarget()
                 .path("exchange/rest/exchange/poll/" + uid)
                 .request(MediaType.APPLICATION_JSON)
                 .header(HttpHeaders.AUTHORIZATION, getValidJwtToken())
-                .get(ResponseDto.class);
+                .get(ExchangeLogStatusType.class);
 
 		assertNotNull(exchangeLogStatusType);
-		HashMap guidMap = (HashMap) exchangeLogStatusType.getData();
-        String guid = (String) guidMap.get("guid");
+        String guid = (String) exchangeLogStatusType.getGuid();
 
-		ResponseDto exchangeLogType = getWebTarget()
+		ExchangeLogType exchangeLogType = getWebTarget()
                 .path("exchange/rest/exchange/" + guid)
                 .request(MediaType.APPLICATION_JSON)
                 .header(HttpHeaders.AUTHORIZATION, getValidJwtToken())
-                .get(ResponseDto.class);
+                .get(ExchangeLogType.class);
 
 		assertNotNull(exchangeLogType);
-		HashMap typeMap = (HashMap) exchangeLogType.getData();
-        assertEquals(LogType.SEND_POLL.value(), typeMap.get("type"));
+        assertEquals(LogType.SEND_POLL, exchangeLogType.getType());
 	}
 
 	private String formatDateAsUTC(Instant date) {

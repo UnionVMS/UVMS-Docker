@@ -11,17 +11,18 @@ copy of the GNU General Public License along with the IFDM Suite. If not, see <h
  */
 package eu.europa.ec.fisheries.uvms.docker.validation.user;
 
-import javax.ws.rs.client.Entity;
-import javax.ws.rs.core.HttpHeaders;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
-import org.hamcrest.CoreMatchers;
-import org.junit.Test;
 import eu.europa.ec.fisheries.uvms.docker.validation.common.AbstractRest;
 import eu.europa.ec.fisheries.uvms.docker.validation.user.dto.Context;
 import eu.europa.ec.fisheries.uvms.docker.validation.user.dto.Preferences;
 import eu.europa.ec.fisheries.uvms.docker.validation.user.dto.UserContext;
 import eu.europa.ec.fisheries.wsdl.user.types.UserPreference;
+import org.hamcrest.CoreMatchers;
+import org.junit.Test;
+
+import javax.ws.rs.client.Entity;
+import javax.ws.rs.core.HttpHeaders;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 
 public class UserContextIT extends AbstractRest {
 

@@ -38,8 +38,6 @@ import org.junit.Test;
 
 import javax.jms.JMSException;
 import java.time.Instant;
-import java.time.OffsetDateTime;
-import java.time.ZoneOffset;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -81,6 +79,7 @@ public class VMSSystemIT extends AbstractRest {
                 .rule(CriteriaType.ASSET, SubCriteriaType.FLAG_STATE, 
                         ConditionType.EQ, asset.getFlagStateCode())
                 .action(ActionType.SEND_REPORT, VMSSystemHelper.FLUX_NAME, fluxEndpoint)
+                .action(ActionType.CREATE_TICKET, "Dummy ticket")
                 .build();
         
         CustomRuleType createdCustomRule = CustomRuleHelper.createCustomRule(flagStateRule);
@@ -109,7 +108,9 @@ public class VMSSystemIT extends AbstractRest {
                 .and(CriteriaType.AREA, SubCriteriaType.AREA_CODE, 
                         ConditionType.EQ, areaCode)
                 .action(ActionType.SEND_REPORT, VMSSystemHelper.FLUX_NAME, fluxEndpoint)
+                .action(ActionType.CREATE_TICKET, "Dummy ticket")
                 .build();
+
         CustomRuleType createdCustomRule = CustomRuleHelper.createCustomRule(flagStateAndAreaRule);
         assertNotNull(createdCustomRule);
         
@@ -142,6 +143,7 @@ public class VMSSystemIT extends AbstractRest {
                         ConditionType.EQ, asset.getFlagStateCode())
                 .interval(ruleIntervalStart, ruleIntervalEnd)
                 .action(ActionType.SEND_REPORT, VMSSystemHelper.FLUX_NAME, fluxEndpoint)
+                .action(ActionType.CREATE_TICKET, "Dummy ticket")
                 .build();
         
         CustomRuleType createdCustomRule = CustomRuleHelper.createCustomRule(flagStateRuleWithInterval);
@@ -176,6 +178,7 @@ public class VMSSystemIT extends AbstractRest {
                         ConditionType.EQ, asset.getFlagStateCode())
                 .interval(ruleIntervalStart, ruleIntervalEnd)
                 .action(ActionType.SEND_REPORT, VMSSystemHelper.FLUX_NAME, fluxEndpoint)
+                .action(ActionType.CREATE_TICKET, "Dummy ticket")
                 .build();
         
         CustomRuleType createdCustomRuleWithInterval = CustomRuleHelper.createCustomRule(flagStateRuleWithInterval);
@@ -186,6 +189,7 @@ public class VMSSystemIT extends AbstractRest {
                 .rule(CriteriaType.ASSET, SubCriteriaType.FLAG_STATE, 
                         ConditionType.EQ, asset.getFlagStateCode())
                 .action(ActionType.SEND_REPORT, VMSSystemHelper.FLUX_NAME, fluxEndpoint)
+                .action(ActionType.CREATE_TICKET, "Dummy ticket")
                 .build();
         
         CustomRuleType createdCustomRuleWithoutInterval = CustomRuleHelper.createCustomRule(flagStateRuleWithoutInterval);
@@ -223,6 +227,7 @@ public class VMSSystemIT extends AbstractRest {
                         ConditionType.EQ, asset.getFlagStateCode())
                 .interval(ruleIntervalStart, ruleIntervalEnd)
                 .action(ActionType.SEND_REPORT, VMSSystemHelper.FLUX_NAME, fluxEndpoint)
+                .action(ActionType.CREATE_TICKET, "Dummy ticket")
                 .build();
         
         CustomRuleType createdCustomRuleWithInterval = CustomRuleHelper.createCustomRule(flagStateRuleWithInterval);
@@ -233,6 +238,7 @@ public class VMSSystemIT extends AbstractRest {
                 .rule(CriteriaType.ASSET, SubCriteriaType.FLAG_STATE, 
                         ConditionType.EQ, asset.getFlagStateCode())
                 .action(ActionType.SEND_REPORT, VMSSystemHelper.FLUX_NAME, fluxEndpoint)
+                .action(ActionType.CREATE_TICKET, "Dummy ticket")
                 .build();
         
         CustomRuleType createdCustomRuleWithoutInterval = CustomRuleHelper.createCustomRule(flagStateRuleWithoutInterval);

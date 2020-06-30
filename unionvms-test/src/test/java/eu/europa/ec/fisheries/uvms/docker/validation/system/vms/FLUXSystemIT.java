@@ -55,6 +55,7 @@ import javax.xml.bind.Unmarshaller;
 import java.net.InetAddress;
 import java.net.NetworkInterface;
 import java.net.SocketException;
+import java.time.Duration;
 import java.time.Instant;
 import java.util.Arrays;
 import java.util.Date;
@@ -66,6 +67,7 @@ import java.util.stream.Collectors;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.notNullValue;
+import static org.hamcrest.CoreMatchers.nullValue;
 
 public class FLUXSystemIT extends AbstractRest {
 
@@ -137,6 +139,7 @@ public class FLUXSystemIT extends AbstractRest {
         assertThat(message.getAD(), is(destination));
         assertThat(message.getDF(), is(DEFAULT_DATAFLOW));
         assertThat(message.getID(), is(notNullValue()));
+        assertThat(message.getTODT(), is(nullValue()));
     }
 
     @Test
@@ -164,7 +167,7 @@ public class FLUXSystemIT extends AbstractRest {
             fluxEndpoint.getMessage(10000);
         }
 
-        assertEquals(DEFAULT_CLIENT_HEADER_VALUE + "-" + destination, headers.get(DEFAULT_CLIENT_HEADER));
+        assertThat(headers.get(DEFAULT_CLIENT_HEADER), is(DEFAULT_CLIENT_HEADER_VALUE + "-" + destination));
     }
 
     @Test
@@ -193,6 +196,39 @@ public class FLUXSystemIT extends AbstractRest {
         }
         
         assertThat(message.getDF(), is(customDataflow));
+    }
+
+    @Test
+    public void sendPositionToFLUXWithCustomTODT() throws Exception {
+        String customTODTinMinutes = "4320";
+        String destination = "XNE";
+        setCustomTODT(destination, customTODTinMinutes);
+
+        AssetDTO asset = AssetTestHelper.createTestAsset();
+
+        CustomRuleType flagStateRule = CustomRuleBuilder.getBuilder()
+                .rule(CriteriaType.ASSET, SubCriteriaType.ASSET_CFR,
+                        ConditionType.EQ, asset.getCfr())
+                .action(ActionType.SEND_REPORT, VMSSystemHelper.FLUX_NAME, destination)
+                .build();
+
+        CustomRuleType createdCustomRule = CustomRuleHelper.createCustomRule(flagStateRule);
+        assertNotNull(createdCustomRule);
+
+        LatLong position = new LatLong(58.973, 5.781, Date.from(Instant.now()));
+        position.speed = 5;
+
+        PostMsgType message;
+        try (FLUXEndpoint fluxEndpoint = new FLUXEndpoint()) {
+            FLUXHelper.sendPositionToFluxPlugin(asset, position);
+            message = fluxEndpoint.getMessage(10000);
+        }
+
+        assertThat(message.getTODT(), is(notNullValue()));
+        Instant todt = message.getTODT().toGregorianCalendar().toInstant();
+        Instant expectedTODT = Instant.now().plus(Long.parseLong(customTODTinMinutes), ChronoUnit.MINUTES);
+        Duration duration = Duration.between(todt, expectedTODT);
+        assertTrue(duration.getSeconds() < 2);
     }
 
     @Test
@@ -273,7 +309,7 @@ public class FLUXSystemIT extends AbstractRest {
             message = fluxEndpoint.getMessage(10000);
         }
         
-        assertEquals(customDataflow, message.getDF());
+        assertThat(message.getDF(), is(customDataflow));
     }
     
     @Test
@@ -305,9 +341,9 @@ public class FLUXSystemIT extends AbstractRest {
         assertThat(vesselTransportMeans.getRegistrationVesselCountry().getID().getValue(), is(asset.getFlagStateCode()));
 
         Map<String, String> assetIds = vesselTransportMeans.getIDS().stream().collect(Collectors.toMap(IDType::getSchemeID, IDType::getValue));
-        assertEquals(asset.getCfr(), assetIds.get("CFR"));
-        assertEquals(asset.getIrcs(), assetIds.get("IRCS"));
-        assertEquals(asset.getExternalMarking(), assetIds.get("EXT_MARK"));
+        assertThat(assetIds.get("CFR"), is(asset.getCfr()));
+        assertThat(assetIds.get("IRCS"), is(asset.getIrcs()));
+        assertThat(assetIds.get("EXT_MARK"), is(asset.getExternalMarking()));
 
         assertThat(vesselTransportMeans.getSpecifiedVesselPositionEvents().size(), is(1));
         VesselPositionEventType positionEvent = vesselTransportMeans.getSpecifiedVesselPositionEvents().get(0);
@@ -381,9 +417,9 @@ public class FLUXSystemIT extends AbstractRest {
         assertThat(vesselTransportMeans.getRegistrationVesselCountry().getID().getValue(), is(asset.getFlagStateCode()));
         
         Map<String, String> assetIds = vesselTransportMeans.getIDS().stream().collect(Collectors.toMap(IDType::getSchemeID, IDType::getValue));
-        assertEquals(asset.getCfr(), assetIds.get("CFR"));
-        assertEquals(asset.getIrcs(), assetIds.get("IRCS"));
-        assertEquals(asset.getExternalMarking(), assetIds.get("EXT_MARK"));
+        assertThat(assetIds.get("CFR"), is(asset.getCfr()));
+        assertThat(assetIds.get("IRCS"), is(asset.getIrcs()));
+        assertThat(assetIds.get("EXT_MARK"), is(asset.getExternalMarking()));
     }
     
     @Test
@@ -529,5 +565,35 @@ public class FLUXSystemIT extends AbstractRest {
             }
         }
         return "host.docker.internal";
+    }
+
+    private void setCustomTODT(String destination, String todtMinutes) throws InterruptedException {
+        String expectedKey = "eu.europa.ec.fisheries.uvms.plugins.flux.movement.TODT_MAP";
+
+        List<SettingType> response = getWebTarget()
+                .path("config/rest/settings")
+                .queryParam("moduleName", "exchange")
+                .request(MediaType.APPLICATION_JSON)
+                .header(HttpHeaders.AUTHORIZATION, getValidJwtToken())
+                .get(new GenericType<List<SettingType>>() {});
+
+        SettingType expectedSetting = null;
+        for (SettingType settingType : response) {
+            if (settingType.getKey().equals(expectedKey)) {
+                expectedSetting = settingType;
+            }
+        }
+        assertThat(expectedSetting, is(notNullValue()));
+
+        expectedSetting.setValue(destination + ":" + todtMinutes);
+
+        getWebTarget()
+            .path("config/rest/settings")
+            .path(expectedSetting.getId().toString())
+            .request(MediaType.APPLICATION_JSON)
+            .header(HttpHeaders.AUTHORIZATION, getValidJwtToken())
+            .put(Entity.json(expectedSetting));
+
+        TimeUnit.SECONDS.sleep(1);
     }
 }

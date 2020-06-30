@@ -5,9 +5,10 @@ set movementrules_endpoint=${movementrules_endpoint}
 set exchange_endpoint=${exchange_endpoint}
 set movement_endpoint=${movement_endpoint}
 set user_endpoint=${user_endpoint}
+set incident_endpoint=${incident_endpoint}
 set cors_allowed_host_regex=${cors_allowed_host_regex}
 
-embed-server --server-config=standalone-full.xml
+embed-server --server-config=${SERVER_CONFIG}
 
 # System properties
 /system-property=jboss.as.management.blocking.timeout:add(value=1200)
@@ -73,6 +74,7 @@ embed-server --server-config=standalone-full.xml
 /subsystem=naming/binding=java\:global\/exchange_endpoint:add(binding-type=simple, value=$exchange_endpoint)
 /subsystem=naming/binding=java\:global\/movement_endpoint:add(binding-type=simple, value=$movement_endpoint)
 /subsystem=naming/binding=java\:global\/user_endpoint:add(binding-type=simple, value=$user_endpoint)
+/subsystem=naming/binding=java\:global\/incident_endpoint:add(binding-type=simple, value=$incident_endpoint)
 /subsystem=naming/binding=java\:global\/cors_allowed_host_regex:add(binding-type=simple, value=$cors_allowed_host_regex, type=java.lang.String)
 
 # Undertow

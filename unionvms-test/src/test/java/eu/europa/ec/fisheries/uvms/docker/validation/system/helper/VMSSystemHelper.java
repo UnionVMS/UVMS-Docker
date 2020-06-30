@@ -33,8 +33,6 @@ import eu.europa.ec.fisheries.uvms.exchange.model.mapper.JAXBMarshaller;
 import javax.jms.Message;
 import javax.jms.TextMessage;
 import java.time.Instant;
-import java.time.OffsetDateTime;
-import java.time.ZoneOffset;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
@@ -56,22 +54,26 @@ public class VMSSystemHelper {
     public static String REST_NAME = "eu.europa.ec.fisheries.uvms.plugins.rest.movement";
     
     public static SetReportRequest triggerBasicRuleAndSendToFlux(String fluxEndpoint) throws Exception {
-        return triggerBasicRuleWithAction(ActionType.SEND_REPORT, FLUX_NAME, fluxEndpoint, SetReportRequest.class, FLUX_SELECTOR);
+        return triggerBasicRuleWithAction(ActionType.SEND_REPORT, FLUX_NAME, fluxEndpoint, SetReportRequest.class, FLUX_SELECTOR, true);
+    }
+
+    public static SetReportRequest triggerBasicRuleAndCreateTicket(String fluxEndpoint) throws Exception {
+        return triggerBasicRuleWithAction(ActionType.SEND_REPORT, FLUX_NAME, fluxEndpoint, SetReportRequest.class, FLUX_SELECTOR, true);
     }
 
     public static SetReportRequest triggerBasicRuleAndSendToNAF(String nation) throws Exception {
-        return triggerBasicRuleWithAction(ActionType.SEND_REPORT, NAF_NAME, nation, SetReportRequest.class, NAF_SELECTOR);
+        return triggerBasicRuleWithAction(ActionType.SEND_REPORT, NAF_NAME, nation, SetReportRequest.class, NAF_SELECTOR, true);
     }
 
     public static SetCommandRequest triggerBasicRuleAndSendEmail(String email) throws Exception {
-        return triggerBasicRuleWithAction(ActionType.EMAIL, email, SetCommandRequest.class, emailSelector);
+        return triggerBasicRuleWithAction(ActionType.EMAIL, email, SetCommandRequest.class, emailSelector, true);
     }
     
-    private static <T> T triggerBasicRuleWithAction(ActionType actionType, String actionValue, Class<T> expectedType, String selector) throws Exception {
-        return triggerBasicRuleWithAction(actionType, null, actionValue, expectedType, selector);
+    private static <T> T triggerBasicRuleWithAction(ActionType actionType, String actionValue, Class<T> expectedType, String selector, boolean createTicket) throws Exception {
+        return triggerBasicRuleWithAction(actionType, null, actionValue, expectedType, selector, createTicket);
     }
     
-    private static <T> T triggerBasicRuleWithAction(ActionType actionType, String target, String actionValue, Class<T> expectedType, String selector) throws Exception {
+    private static <T> T triggerBasicRuleWithAction(ActionType actionType, String target, String actionValue, Class<T> expectedType, String selector, boolean createTicket) throws Exception {
         try {
             Instant timestamp = Instant.now();
             AssetDTO asset = AssetTestHelper.createTestAsset();
@@ -82,7 +84,14 @@ public class VMSSystemHelper {
                             ConditionType.EQ, asset.getFlagStateCode())
                     .action(actionType, target, actionValue)
                     .build();
-            
+
+            if(createTicket){
+                CustomRuleActionType ticketAction = new CustomRuleActionType();
+                ticketAction.setAction(ActionType.CREATE_TICKET);
+                ticketAction.setOrder("99");
+                flagStateRule.getActions().add(ticketAction);
+            }
+
             CustomRuleType createdCustomRule = CustomRuleHelper.createCustomRule(flagStateRule);
             assertNotNull(createdCustomRule);
     

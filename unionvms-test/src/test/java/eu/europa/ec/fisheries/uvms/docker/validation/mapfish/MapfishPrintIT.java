@@ -11,14 +11,15 @@ copy of the GNU General Public License along with the IFDM Suite. If not, see <h
  */
 package eu.europa.ec.fisheries.uvms.docker.validation.mapfish;
 
+import eu.europa.ec.fisheries.uvms.docker.validation.common.AbstractRest;
+import org.hamcrest.CoreMatchers;
+import org.junit.Test;
+
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
-import org.hamcrest.CoreMatchers;
-import org.junit.Test;
-import eu.europa.ec.fisheries.uvms.docker.validation.common.AbstractRest;
 
 public class MapfishPrintIT extends AbstractRest {
 

@@ -13,10 +13,10 @@ copy of the GNU General Public License along with the IFDM Suite. If not, see <h
 */
 package eu.europa.ec.fisheries.uvms.docker.validation.exchange;
 
-import eu.europa.ec.fisheries.uvms.commons.rest.dto.ResponseDto;
 import eu.europa.ec.fisheries.uvms.docker.validation.common.AbstractRest;
 import org.junit.Test;
 
+import javax.ws.rs.core.GenericType;
 import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
 import java.util.List;
@@ -26,13 +26,11 @@ public class ExchangeConfigRestIT extends AbstractRest {
 
 	@Test
 	public void getConfigSearchFieldsTest() {
-		ResponseDto dto = getWebTarget()
+		List<String> fields = getWebTarget()
 				.path("exchange/rest/config/searchfields")
 				.request(MediaType.APPLICATION_JSON)
 				.header(HttpHeaders.AUTHORIZATION, getValidJwtToken())
-				.get(ResponseDto.class);
-
-		List fields = (List) dto.getData();
+				.get(new GenericType<List<String>>() {});
 
 		assertNotNull(fields);
 		assertEquals(9, fields.size());
@@ -40,13 +38,11 @@ public class ExchangeConfigRestIT extends AbstractRest {
 
 	@Test
 	public void getConfigurationTest() {
-		ResponseDto dto = getWebTarget()
+		Map<String, List> configurationMap = getWebTarget()
 				.path("exchange/rest/config")
 				.request(MediaType.APPLICATION_JSON)
 				.header(HttpHeaders.AUTHORIZATION, getValidJwtToken())
-				.get(ResponseDto.class);
-
-		Map configurationMap = (Map) dto.getData();
+				.get(new GenericType<Map<String,List>>() {});
 
 		assertNotNull(configurationMap);
 	}

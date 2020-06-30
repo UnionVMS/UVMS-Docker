@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>eu.europa.ec.fisheries.uvms.docker</groupId>
 		<artifactId>uvms-docker</artifactId>
-		<version>3.43.5-ERS-SNAPSHOT</version>
+		<version>3.44.4-ERS-SNAPSHOT</version>
 		<relativePath>../pom.xml</relativePath>
 	</parent>
 	
@@ -16,7 +16,7 @@
 	<properties>
 		<docker.skip>${skipITs}</docker.skip>
 		<docker.frontend.test.suite>UnionVMSTestCaseG2</docker.frontend.test.suite>
-		<jackson.version>2.11.0</jackson.version>
+		<jackson.version>2.11.1</jackson.version>
 		<uvms.commons.version>4.1.7</uvms.commons.version>
 	</properties>
 
@@ -56,19 +56,8 @@
 		</dependency>
 		<dependency>
 			<groupId>org.apache.activemq</groupId>
-			<artifactId>artemis-jms-client</artifactId>
-			<version>2.12.0</version>
-			<scope>test</scope>
-			<exclusions>
-				<exclusion>
-					<groupId>org.apache.geronimo.specs</groupId>
-					<artifactId>geronimo-json_1.0_spec</artifactId>
-				</exclusion>
-				<exclusion>
-					<groupId>org.apache.johnzon</groupId>
-					<artifactId>johnzon-core</artifactId>
-				</exclusion>
-			</exclusions>
+			<artifactId>artemis-jms-client-all</artifactId>
+			<version>2.13.0</version>
 		</dependency>
 		<dependency>
 			<groupId>eu.europa.ec.fisheries.uvms.exchange</groupId>
@@ -91,6 +80,11 @@
 			<version>${unionvms.project.user.module}</version>
 		</dependency>
 		<dependency>
+			<groupId>eu.europa.ec.fisheries.uvms.incident</groupId>
+			<artifactId>incident-model</artifactId>
+			<version>${unionvms.project.incident.module}</version>
+		</dependency>
+		<dependency>
 			<groupId>eu.europa.ec.fisheries.uvms.commons</groupId>
 			<artifactId>uvms-commons-message</artifactId>
 			<version>${uvms.commons.version}</version>
@@ -107,10 +101,6 @@
 				<exclusion>
 					<groupId>org.projectlombok</groupId>
 					<artifactId>lombok</artifactId>
-				</exclusion>
-				<exclusion>
-					<groupId>fish.focus.uvms.maven</groupId>
-					<artifactId>uvms-pom-test-deps</artifactId>
 				</exclusion>
 				<exclusion>
 					<groupId>com.fasterxml.jackson.core</groupId>
@@ -176,13 +166,11 @@
 			<groupId>org.jboss.resteasy</groupId>
 			<artifactId>resteasy-client</artifactId>
 			<version>3.9.0.Final</version>
-			<scope>provided</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.jboss.resteasy</groupId>
 			<artifactId>resteasy-jackson2-provider</artifactId>
 			<version>3.9.0.Final</version>
-			<scope>provided</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.databene</groupId>
@@ -197,7 +185,7 @@
 		<dependency>
 		    <groupId>org.eclipse.jetty</groupId>
 		    <artifactId>jetty-servlet</artifactId>
-		    <version>9.4.28.v20200408</version>
+		    <version>9.4.30.v20200611</version>
 		</dependency>
 		<dependency>
 			<groupId>fish.focus.uvms.maven</groupId>
@@ -211,19 +199,25 @@
 			<version>2.3.3</version>
 		</dependency>
 
+
 		<dependency>
 			<groupId>javax.json.bind</groupId>
 			<artifactId>javax.json.bind-api</artifactId>
 			<version>1.0</version>
-			<scope>test</scope>
 		</dependency>
-
+		<dependency>
+			<groupId>org.glassfish</groupId>
+			<artifactId>javax.json</artifactId>
+			<version>1.1.4</version>
+		</dependency>
 		<dependency>
 			<groupId>org.eclipse</groupId>
 			<artifactId>yasson</artifactId>
-			<version>1.0.5</version>
-			<scope>test</scope>
+			<version>1.0.7</version>
 		</dependency>
+
+
+
 	</dependencies>
 	<build>
 		<pluginManagement>
@@ -239,7 +233,7 @@
 			<plugin>
                 <groupId>org.apache.cxf</groupId>
                 <artifactId>cxf-codegen-plugin</artifactId>
-                <version>3.3.6</version>
+                <version>3.3.7</version>
                 <executions>
                     <execution>
                         <id>wsdl-services</id>
@@ -269,48 +263,6 @@
 						<goals>
 							<goal>integration-test</goal>
 							<goal>verify</goal>
-						</goals>
-					</execution>
-				</executions>
-			</plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-antrun-plugin</artifactId>
-				<version>1.8</version>
-				<executions>
-					<execution>
-						<id>downloadRegressionSuite</id>
-						<phase>test</phase>
-						<configuration>
-							<skip>${docker.skip}</skip>
-							<tasks>
-								<!-- Get the regression-suite-selenium front-end -->
-								<get src="https://github.com/UnionVMS/UVMS-SeleniumTests/raw/swe-dev/UVMS-SeleniumRegressionTestsG2.zip" dest="target/UVMS-SeleniumRegressionTestsG2.zip" verbose="true" usetimestamp="true" />
-								<unzip src="target/UVMS-SeleniumRegressionTestsG2.zip" dest="target/" />
-								<move file="target/DockerUnionVMSparametersG2.py" tofile="target/UnionVMSparametersG2.py" />
-							</tasks>
-						</configuration>
-						<goals>
-							<goal>run</goal>
-						</goals>
-					</execution>
-					<execution>
-						<id>downloadMonitoringMetrics</id>
-						<phase>post-integration-test</phase>
-						<configuration>
-							<skip>${docker.skip}</skip>
-							<tasks>
-								<get src="http://localhost:28080/unionvms/audit/monitoring?format=pdf" dest="target/audit_monitoring.pdf" verbose="true" usetimestamp="true" />
-								<get src="http://localhost:28080/unionvms/config/monitoring?format=pdf" dest="target/config_monitoring.pdf" verbose="true" usetimestamp="true" />
-								<get src="http://localhost:28080/unionvms/exchange/monitoring?format=pdf" dest="target/exchange_monitoring.pdf" verbose="true" usetimestamp="true" />
-								<get src="http://localhost:28080/unionvms/spatial/monitoring?format=pdf" dest="target/spatial_monitoring.pdf" verbose="true" usetimestamp="true" />
-								<get src="http://localhost:28080/unionvms/asset/monitoring?format=pdf" dest="target/asset_monitoring.pdf" verbose="true" usetimestamp="true" />
-								<get src="http://localhost:28080/unionvms/movement/monitoring?format=pdf" dest="target/movement_monitoring.pdf" verbose="true" usetimestamp="true" />
-								<get src="http://localhost:28080/unionvms/user/monitoring?format=pdf" dest="target/user_monitoring.pdf" verbose="true" usetimestamp="true" />
-							</tasks>
-						</configuration>
-						<goals>
-							<goal>run</goal>
 						</goals>
 					</execution>
 				</executions>
@@ -351,6 +303,18 @@
 				<configuration>
 					<skip>${docker.skip}</skip>
 				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-jar-plugin</artifactId>
+				<version>3.2.0</version>
+				<executions>
+					<execution>
+					<goals>
+						<goal>test-jar</goal>
+					</goals>
+					</execution>
+				</executions>
 			</plugin>
 		</plugins>
 	</build>
@@ -455,7 +419,7 @@
 							<images>
 								<image>
 									<alias>load-balancer</alias>
-									<name>jboss/wildfly:18.0.0.Final</name>
+									<name>jboss/wildfly:${unionvms.wildfly.version}</name>
 									<run>
 										<network>
 											<name>network</name>
@@ -468,8 +432,8 @@
 										</ports>
 										<cmd>
 											<shell>/opt/jboss/wildfly/bin/standalone.sh
-												-c standalone-load-balancer.xml
-												-b load-balancer
+												-c standalone-load-balancer.xml 
+												-b load-balancer 
 												-bmanagement load-balancer
 												-bprivate load-balancer</shell>
 										</cmd>
@@ -532,9 +496,10 @@
 										</wait>
 										<cmd>
 											<shell>/opt/jboss/start.sh /opt/jboss/wildfly/bin/standalone.sh
-												-c standalone-uvms-ha.xml -b wildfly1 -bmanagement wildfly1 --debug *:8787
-												-bprivate wildfly1 -bunsecure wildfly1 -Djboss.node.name=wildfly1
+												-c standalone-full-ha.xml -b wildfly1 -bmanagement wildfly1 --debug *:8787
+												-bprivate wildfly1 -bunsecure wildfly1 -Djboss.node.name=wildfly1 
 												-Djgroups.bind_addr=wildfly1 -Djboss.messaging.cluster.password=password
+												-Dloadbalancer.address=load-balancer
 												-Djboss.tx.node.id=1</shell>
 										</cmd>
 										<dependsOn>
@@ -572,9 +537,10 @@
 										</wait>
 										<cmd>
 											<shell>/opt/jboss/start.sh /opt/jboss/wildfly/bin/standalone.sh
-												-c standalone-uvms-ha.xml -b wildfly2 -bmanagement wildfly2 --debug *:8787
-												-bprivate wildfly2 -bunsecure wildfly2 -Djboss.node.name=wildfly2
+												-c standalone-full-ha.xml -b wildfly2 -bmanagement wildfly2 --debug *:8787
+												-bprivate wildfly2 -bunsecure wildfly2 -Djboss.node.name=wildfly2 
 												-Djgroups.bind_addr=wildfly2 -Djboss.messaging.cluster.password=password
+												-Dloadbalancer.address=load-balancer
 												-Djboss.tx.node.id=2</shell>
 										</cmd>
 										<dependsOn>
@@ -621,6 +587,21 @@
 						<version>1.8</version>
 						<executions>
 							<execution>
+								<id>downloadRegressionSuite</id>
+								<phase>test</phase>
+								<configuration>
+									<tasks>
+										<!-- Get the regression-suite-selenium front-end -->
+										<get src="https://github.com/UnionVMS/UVMS-SeleniumTests/raw/swe-dev/UVMS-SeleniumRegressionTestsG2.zip" dest="target/UVMS-SeleniumRegressionTestsG2.zip" verbose="true" usetimestamp="true" />
+										<unzip src="target/UVMS-SeleniumRegressionTestsG2.zip" dest="target/" />
+										<move file="target/DockerUnionVMSparametersG2.py" tofile="target/UnionVMSparametersG2.py" />
+									</tasks>
+								</configuration>
+								<goals>
+									<goal>run</goal>
+								</goals>
+							</execution>
+							<execution>
 								<id>python-build</id>
 								<phase>pre-integration-test</phase>
 								<goals>
@@ -629,7 +610,7 @@
 								<configuration>
 									<tasks>									
 										<exec dir="${project.basedir}/target/" executable="${python.runtime}">
-										 	<redirector output="target/Python-regression-suite-seleniumG2.log" alwayslog="true" />
+										 	<redirector output="target/Python-regression-suite-seleniumG2.log" alwayslog="true" /> 
 											<arg value="-u" />
 											<arg value="-m" />
 											<arg value="unittest" />
@@ -645,13 +626,61 @@
 			</build>
 		</profile>
 		<profile>
+			<id>selenium-test</id>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-scm-plugin</artifactId>
+						<version>1.11.2</version>
+						<configuration>
+							<connectionType>git</connectionType>
+							<developerConnectionUrl>scm:git:https://github.com/UnionVMS/VMS-Test.git</developerConnectionUrl>
+							<scmVersion>mavenify</scmVersion>
+							<scmVersionType>branch</scmVersionType>
+						</configuration>
+						<executions>
+							<execution>
+								<phase>generate-sources</phase>
+								<goals>
+									<goal>checkout</goal>
+								</goals>
+							</execution>
+						</executions>
+					</plugin>
+					<plugin>
+						<groupId>org.codehaus.mojo</groupId>
+						<artifactId>exec-maven-plugin</artifactId>
+						<version>3.0.0</version>
+						<executions>
+							<execution>
+								<phase>generate-sources</phase>
+									<goals>
+										<goal>exec</goal>
+									</goals>
+								<configuration>
+									<executable>mvn</executable>
+									<workingDirectory>${project.basedir}/target/checkout</workingDirectory>
+									<arguments>
+										<argument>test</argument>
+										<argument>-Dci=true</argument>
+										<argument>-Pbase-suite</argument>
+									</arguments>
+								</configuration>
+							</execution>
+						</executions>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+		<profile>
 			<id>postman-test</id>
 			<build>
 				<plugins>
 					<plugin>
 						<groupId>org.codehaus.mojo</groupId>
 						<artifactId>exec-maven-plugin</artifactId>
-						<version>1.6.0</version>
+						<version>3.0.0</version>
 						<executions>
 							<execution>
 								<id>postman-test2</id>

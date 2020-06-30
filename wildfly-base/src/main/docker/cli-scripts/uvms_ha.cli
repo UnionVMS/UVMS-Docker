@@ -1,0 +1,24 @@
+embed-server --server-config=${SERVER_CONFIG}
+
+# JGroups
+/subsystem=jgroups/channel=ee:write-attribute(name=stack,value=tcp)
+
+# Socket
+/socket-binding-group=standard-sockets/remote-destination-outbound-socket-binding=loadbalancer:add(host="${loadbalancer.address:load-balancer}",port="${loadbalancer.mcmp.port:8090}")
+
+# Modcluster
+/subsystem=modcluster/proxy=default:list-add(name=proxies,value=loadbalancer)
+
+# Singleton
+/subsystem=singleton/singleton-policy=default/election-policy=random:add()
+
+# Naming
+/subsystem=naming/binding=java\:global\/asset_endpoint:write-attribute(name=value,value="http://${loadbalancer.address:load-balancer}:${loadbalancer.port:8080}/unionvms/asset/rest")
+/subsystem=naming/binding=java\:global\/spatial_endpoint:write-attribute(name=value,value="http://${loadbalancer.address:load-balancer}:${loadbalancer.port:8080}/unionvms/spatialSwe")
+/subsystem=naming/binding=java\:global\/movement-rules_endpoint:write-attribute(name=value,value="http://${loadbalancer.address:load-balancer}:${loadbalancer.port:8080}/unionvms/movement-rules/rest")
+/subsystem=naming/binding=java\:global\/exchange_endpoint:write-attribute(name=value,value="http://${loadbalancer.address:load-balancer}:${loadbalancer.port:8080}/unionvms/exchange/rest")
+/subsystem=naming/binding=java\:global\/movement_endpoint:write-attribute(name=value,value="http://${loadbalancer.address:load-balancer}:${loadbalancer.port:8080}/unionvms/movement/rest")
+/subsystem=naming/binding=java\:global\/user_endpoint:write-attribute(name=value,value="http://${loadbalancer.address:load-balancer}:${loadbalancer.port:8080}/unionvms/user/rest")
+/subsystem=naming/binding=java\:global\/incident_endpoint:write-attribute(name=value,value="http://${loadbalancer.address:load-balancer}:${loadbalancer.port:8080}/unionvms/incident/rest")
+
+stop-embedded-server

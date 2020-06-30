@@ -22,8 +22,8 @@ import org.junit.BeforeClass;
 import org.junit.Ignore;
 import org.junit.Test;
 
-import javax.jms.*;
 import javax.jms.Queue;
+import javax.jms.*;
 import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.sse.SseEventSource;
 import javax.xml.bind.JAXBContext;

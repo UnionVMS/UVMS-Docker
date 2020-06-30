@@ -36,7 +36,6 @@ import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Consumer;
 
 public class MovementPerformanceIT extends AbstractRest {
@@ -449,7 +448,7 @@ public class MovementPerformanceIT extends AbstractRest {
                 .unmarshal(new StringReader(textMessage.getText()));
     }
     public static SseEventSource getSseStream() {
-        WebTarget target = getWebTarget().path("exchange/unsecured/rest/sse/subscribe");
+        WebTarget target = getWebTarget().path("exchange/rest/unsecured/sse/subscribe");
         AuthorizationHeaderWebTarget jwtTarget = new AuthorizationHeaderWebTarget(target, getValidJwtToken());
         return SseEventSource.
                 target(jwtTarget).build();

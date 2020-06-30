@@ -4,7 +4,7 @@
 	<parent>
 		<groupId>eu.europa.ec.fisheries.uvms.docker</groupId>
 		<artifactId>uvms-docker</artifactId>
-		<version>3.43.5-ERS-SNAPSHOT</version>
+		<version>3.44.4-ERS-SNAPSHOT</version>
 		<relativePath>../pom.xml</relativePath>
 	</parent>
 
@@ -70,12 +70,6 @@
 
 		<!-- app modules -->
 		<dependency>
-			<groupId>eu.europa.ec.fisheries.uvms.mdrSwe</groupId>
-			<artifactId>mdrSwe-module</artifactId>
-			<type>ear</type>
-		</dependency>
-
-		<dependency>
 			<groupId>eu.europa.ec.fisheries.uvms.asset</groupId>
 			<artifactId>asset-module</artifactId>
 			<type>ear</type>
@@ -137,19 +131,20 @@
 		</dependency>
 
 		<dependency>
-			<groupId>eu.europa.ec.fisheries.uvms.stream-collector</groupId>
-			<artifactId>stream-collector</artifactId>
+			<groupId>eu.europa.ec.fisheries.uvms.web-gateway</groupId>
+			<artifactId>web-gateway</artifactId>
 			<type>war</type>
 		</dependency>
 
 		<!-- plugin modules -->
-<!--
+<!-- FIXME: Need local conf? ... -->
 		<dependency>
 			<groupId>eu.europa.ec.fisheries.uvms.plugins</groupId>
 			<artifactId>ais-module</artifactId>
 			<type>ear</type>
 		</dependency>
--->
+<!--...FIXME-->
+
 		<dependency>
 			<groupId>eu.europa.ec.fisheries.uvms.plugins</groupId>
 			<artifactId>inmarsat-module</artifactId>
@@ -266,7 +261,7 @@
 					<version>${project.version}</version>
 					<file>target/${project.artifactId}.zip</file>
 				</configuration>
-			</plugin>
+			</plugin>												
 			<plugin>
 				<groupId>io.fabric8</groupId>
 				<artifactId>docker-maven-plugin</artifactId>
