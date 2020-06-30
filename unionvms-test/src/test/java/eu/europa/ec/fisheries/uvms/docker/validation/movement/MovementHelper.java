@@ -24,12 +24,13 @@ import javax.ws.rs.core.GenericType;
 import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.sse.SseEventSource;
+import java.io.Closeable;
 import java.math.BigInteger;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.*;
 
-public class MovementHelper extends AbstractHelper {
+public class MovementHelper extends AbstractHelper implements Closeable {
 
 	private static final String UVMS_MOVEMENT_REQUEST_QUEUE = "UVMSMovementEvent";
 
@@ -41,6 +42,7 @@ public class MovementHelper extends AbstractHelper {
 		messageHelper = new MessageHelper();
 	}
 
+	@Override
 	public void close() {
 		messageHelper.close();
 	}
