@@ -137,14 +137,11 @@
 		</dependency>
 
 		<!-- plugin modules -->
-<!-- FIXME: Need local conf? ... -->
 		<dependency>
 			<groupId>eu.europa.ec.fisheries.uvms.plugins</groupId>
 			<artifactId>ais-module</artifactId>
 			<type>ear</type>
 		</dependency>
-<!--...FIXME-->
-
 		<dependency>
 			<groupId>eu.europa.ec.fisheries.uvms.plugins</groupId>
 			<artifactId>inmarsat-module</artifactId>
