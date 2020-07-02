@@ -4,11 +4,12 @@
 	<parent>
 		<groupId>eu.europa.ec.fisheries.uvms.docker</groupId>
 		<artifactId>uvms-docker</artifactId>
-		<version>3.43.5-ERS-SNAPSHOT</version>
+		<version>3.38.1.w17-SNAPSHOT</version>
 		<relativePath>../pom.xml</relativePath>
 	</parent>
 	<groupId>eu.europa.ec.fisheries.uvms.docker</groupId>
 	<artifactId>uvms-docker-wildfly-fluxfmc</artifactId>
+	<version>3.38.1.w17-SNAPSHOT</version>
 	<packaging>pom</packaging>
 	<name>uvms-docker-wildfly-fluxfmc</name>
 	<repositories>
@@ -43,8 +44,9 @@
         </dependency>
         <dependency>
             <groupId>eu.europa.ec.fisheries.uvms.activity</groupId>
-            <artifactId>activity-application</artifactId>
-            <type>war</type>
+            <artifactId>activity-module-postgres</artifactId>
+            <type>ear</type>
+            <version>${unionvms.project.activity.module}</version>
         </dependency>
         <dependency>
             <groupId>eu.europa.ec.fisheries.uvms.mdr</groupId>
