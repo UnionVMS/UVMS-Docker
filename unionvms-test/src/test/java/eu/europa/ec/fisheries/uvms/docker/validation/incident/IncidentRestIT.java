@@ -15,6 +15,7 @@ import eu.europa.ec.fisheries.uvms.incident.model.dto.IncidentDto;
 import eu.europa.ec.fisheries.uvms.incident.model.dto.IncidentLogDto;
 import eu.europa.ec.fisheries.uvms.incident.model.dto.IncidentTicketDto;
 import eu.europa.ec.fisheries.uvms.incident.model.dto.enums.IncidentType;
+import eu.europa.ec.fisheries.uvms.incident.model.dto.enums.StatusEnum;
 import org.junit.Test;
 
 import javax.ws.rs.core.GenericType;
@@ -59,7 +60,7 @@ public class IncidentRestIT extends AbstractRest {
         ticket.setStatus(TicketStatusType.CLOSED.toString());
         IncidentDto updated = IncidentTestHelper.createAssetNotSendingIncident(ticket, INCIDENT_UPDATE);
 
-        assertEquals("RESOLVED", updated.getStatus());
+        assertEquals(StatusEnum.SYSTEM_AUTO_RESOLVED.name(), updated.getStatus());
     }
 
     @Test
