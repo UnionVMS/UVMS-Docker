@@ -4,7 +4,7 @@
 	<parent>
 		<groupId>eu.europa.ec.fisheries.uvms.docker</groupId>
 		<artifactId>uvms-docker</artifactId>
-		<version>3.44.5</version>
+		<version>3.44.6-SNAPSHOT</version>
 		<relativePath>../pom.xml</relativePath>
 	</parent>
 	<artifactId>uvms-docker-wildfly-base</artifactId>
@@ -327,6 +327,6 @@
 		</profile>
 	</profiles>
 	<scm>
-		<tag>uvms-docker-3.44.5</tag>
+		<tag>HEAD</tag>
 	</scm>
 </project>
