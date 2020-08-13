@@ -235,7 +235,7 @@ xa-data-source add \
 	--password=$activity_pw \
 	--enabled=true \
 	--use-ccm=true \
-    --no-recovery
+	--no-recovery
 /subsystem=datasources/xa-data-source=uvms_activity/xa-datasource-properties=ServerName:add(value=postgres)
 /subsystem=datasources/xa-data-source=uvms_activity/xa-datasource-properties=PortNumber:add(value=5432)
 /subsystem=datasources/xa-data-source=uvms_activity/xa-datasource-properties=DatabaseName:add(value=db71u)
