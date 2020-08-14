@@ -38,6 +38,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import org.w3c.dom.Element;
 import un.unece.uncefact.data.standard.fluxvesselpositionmessage._4.FLUXVesselPositionMessage;
+import un.unece.uncefact.data.standard.reusableaggregatebusinessinformationentity._18.FLUXReportDocumentType;
 import un.unece.uncefact.data.standard.reusableaggregatebusinessinformationentity._18.VesselGeographicalCoordinateType;
 import un.unece.uncefact.data.standard.reusableaggregatebusinessinformationentity._18.VesselPositionEventType;
 import un.unece.uncefact.data.standard.reusableaggregatebusinessinformationentity._18.VesselTransportMeansType;
@@ -387,6 +388,49 @@ public class FLUXSystemIT extends AbstractRest {
 
         Map<String, String> assetIds = vesselTransportMeans.getIDS().stream().collect(Collectors.toMap(IDType::getSchemeID, IDType::getValue));
         assertThat(assetIds.get("UVI"), is(asset.getImo()));
+    }
+
+    @Test
+    public void sendPositionToFLUXAndVerifyFLUXVesselReportDocumentAttributes() throws Exception {
+        String expectedDocumentIdSchemeId= "UUID";
+        String expectedPurposeCodeListId = "FLUX_GP_PURPOSE";
+        String expectedFluxPartySchemeId = "FLUX_GP_PARTY";
+        String expectedVesselCountrySchemeId = "TERRITORY";
+        String expectedPositionTypeCodeListId = "FLUX_VESSEL_POSITION_TYPE";
+
+        AssetDTO asset = AssetTestHelper.createTestAsset();
+
+        CustomRuleType flagStateRule = CustomRuleBuilder.getBuilder()
+                .setName("Area NOR => Send to NOR")
+                .rule(CriteriaType.AREA, SubCriteriaType.AREA_CODE,
+                        ConditionType.EQ, "NOR")
+                .action(ActionType.SEND_REPORT, VMSSystemHelper.FLUX_NAME, "SWE")
+                .build();
+
+        CustomRuleType createdCustomRule = CustomRuleHelper.createCustomRule(flagStateRule);
+        assertNotNull(createdCustomRule);
+
+        LatLong position = new LatLong(58.973, 5.781, Date.from(Instant.now()));
+        position.speed = 5;
+        position.bearing = 123;
+
+        PostMsgType message;
+        try (FLUXEndpoint fluxEndpoint = new FLUXEndpoint()) {
+            FLUXHelper.sendPositionToFluxPlugin(asset, position);
+            message = fluxEndpoint.getMessage(10000);
+        }
+        FLUXVesselPositionMessage positionMessage = extractVesselPositionMessage(message.getAny());
+
+        FLUXReportDocumentType fluxReportDocument = positionMessage.getFLUXReportDocument();
+        assertThat(fluxReportDocument.getIDS().get(0).getSchemeID(), is(expectedDocumentIdSchemeId));
+        assertThat(fluxReportDocument.getPurposeCode().getListID(), is(expectedPurposeCodeListId));
+        assertThat(fluxReportDocument.getOwnerFLUXParty().getIDS().get(0).getSchemeID(), is(expectedFluxPartySchemeId));
+
+        VesselTransportMeansType vesselTransportMeans = positionMessage.getVesselTransportMeans();
+        assertThat(vesselTransportMeans.getRegistrationVesselCountry().getID().getSchemeID(), is(expectedVesselCountrySchemeId));
+
+        VesselPositionEventType vesselPositionEventType = vesselTransportMeans.getSpecifiedVesselPositionEvents().get(0);
+        assertThat(vesselPositionEventType.getTypeCode().getListID(), is(expectedPositionTypeCodeListId));
     }
 
     @Test
