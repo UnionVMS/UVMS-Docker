@@ -3,6 +3,7 @@
     <resources>
         <resource-root path="postgresql-${wildfly.postgres.module.postgres.version}.jar"/>
         <resource-root path="postgis-jdbc-${wildfly.postgres.module.postgis.version}.jar"/>
+        <resource-root path="postgis-geometry-${wildfly.postgres.module.postgis.version}.jar"/>
     </resources>
     <dependencies>
         <module name="javax.api"/>
