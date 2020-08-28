@@ -11,11 +11,11 @@ DIR_WHERE_THIS_SCRIPT_IS="$(cd "$(dirname "$0")" && pwd)"
 
   if [ "$1" != "" ]; then
 
-    echo "Configuring Wildfly for ERS"
+    echo "Configuring Wildfly for EFR"
     echo
     echo "System properties, logs, and other..."
     $SERVER_CLI \
-      --file=ers_configuration.cli \
+      --file=efr_configuration.cli \
       --properties=$1 \
       -Djboss.server.log.dir=$JBOSS_HOME/standalone/tmp \
 	    | grep -v '{"outcome" => "success"}'
@@ -23,18 +23,18 @@ DIR_WHERE_THIS_SCRIPT_IS="$(cd "$(dirname "$0")" && pwd)"
 
     echo "Messaging..."
     $SERVER_CLI \
-      --file=ers_messaging.cli \
+      --file=efr_messaging.cli \
       --properties=$1 \
       -Djboss.server.log.dir=$JBOSS_HOME/standalone/tmp \
 	    | grep -v '{"outcome" => "success"}'
     echo
 
-    echo "** Note: ERS datasources were not created by this script. On standard Hav Wildfly machines scripts for that are in /opt/wildfly/hav_git/wildfly"
+    echo "** Note: EFR datasources were not created by this script. On standard Hav Wildfly machines scripts for that are in /opt/wildfly/hav_git/wildfly"
     echo
 
   else
     echo
     echo "Usage: $0 <properties file>  (will look for properties file in same dir as the script is located)"
-    echo "Example: $0 ers_env-test.properties"
+    echo "Example: $0 efr_env-test.properties"
   fi
 )

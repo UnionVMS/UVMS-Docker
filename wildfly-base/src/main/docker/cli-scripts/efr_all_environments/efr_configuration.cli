@@ -73,10 +73,10 @@ if (outcome != success) of /subsystem=logging/logger=se:remove
 end-if
 /subsystem=logging/logger=se:add(level=INFO)
 
-if (outcome != success) of /subsystem=logging/logger=se.havochvatten.ers:remove
-  echo No existing logger se.havochvatten.ers, creating...
+if (outcome != success) of /subsystem=logging/logger=se.havochvatten.efr:remove
+  echo No existing logger se.havochvatten.efr, creating...
 end-if
-/subsystem=logging/logger=se.havochvatten.ers:add(level=DEBUG)
+/subsystem=logging/logger=se.havochvatten.efr:add(level=DEBUG)
 
 
 stop-embedded-server
