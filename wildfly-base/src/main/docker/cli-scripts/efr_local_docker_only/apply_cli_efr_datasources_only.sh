@@ -11,9 +11,9 @@ DIR_WHERE_THIS_SCRIPT_IS="$(cd "$(dirname "$0")" && pwd)"
 
   if [ "$1" != "" ]; then
 
-    echo "Creating ERS datasources"
+    echo "Creating EFR datasources"
     $SERVER_CLI \
-      --file=ers_datasources.cli \
+      --file=efr_datasources.cli \
       --properties=$1 \
       -Djboss.server.log.dir=$JBOSS_HOME/standalone/tmp \
 	    | grep -v '{"outcome" => "success"}'
@@ -21,6 +21,6 @@ DIR_WHERE_THIS_SCRIPT_IS="$(cd "$(dirname "$0")" && pwd)"
   else
     echo
     echo "Usage: $0 <properties file>  (will look for properties file in same dir as the script is located)"
-    echo "Example: $0 ers.properties"
+    echo "Example: $0 efr.properties"
   fi
 )

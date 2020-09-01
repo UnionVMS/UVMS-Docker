@@ -1,10 +1,10 @@
 set usm_secretkey=${usm_secretkey}
 set cors_allowed_host_regex=${cors_allowed_host_regex}
 set uvmsBaseUrl=${uvmsBaseUrl}
-set ersUvmsBaseUrl=${ersUvmsBaseUrl}
+set efrUvmsBaseUrl=${efrUvmsBaseUrl}
 set uvmsUsername=${uvmsUsername}
 set uvmsPassword=${uvmsPassword}
-set ersBackendRole=${ersBackendRole}
+set efrBackendRole=${efrBackendRole}
 set notificationServiceEndpoint=${notificationServiceEndpoint}
 set priorNotificationMaxAgeInDays=${priorNotificationMaxAgeInDays}
 
@@ -48,10 +48,10 @@ if (outcome != success) of /subsystem=microprofile-config-smallrye/config-source
 end-if
 /subsystem=microprofile-config-smallrye/config-source=props:add(properties={ \
   "uvmsBaseUrl" = $uvmsBaseUrl, \
-  "ersUvmsBaseUrl" = $ersUvmsBaseUrl, \
+  "efrUvmsBaseUrl" = $efrUvmsBaseUrl, \
   "uvmsUsername" = $uvmsUsername, \
   "uvmsPassword" = $uvmsPassword, \
-  "ersBackendRole" = $ersBackendRole, \
+  "efrBackendRole" = $efrBackendRole, \
   "notificationServiceEndpoint" = $notificationServiceEndpoint, \
   "priorNotificationMaxAgeInDays" = $priorNotificationMaxAgeInDays \
 })
@@ -73,10 +73,10 @@ if (outcome != success) of /subsystem=logging/logger=se:remove
 end-if
 /subsystem=logging/logger=se:add(level=INFO)
 
-if (outcome != success) of /subsystem=logging/logger=se.havochvatten.ers:remove
-  echo No existing logger se.havochvatten.ers, creating...
+if (outcome != success) of /subsystem=logging/logger=se.havochvatten.efr:remove
+  echo No existing logger se.havochvatten.efr, creating...
 end-if
-/subsystem=logging/logger=se.havochvatten.ers:add(level=DEBUG)
+/subsystem=logging/logger=se.havochvatten.efr:add(level=DEBUG)
 
 
 stop-embedded-server

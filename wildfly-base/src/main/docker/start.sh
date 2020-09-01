@@ -4,9 +4,9 @@ rm -rf /app/logs/*
 rm -rf /opt/jboss/wildfly/standalone/log/*
 
 $JBOSS_HOME/cli-scripts/apply_cli.sh "$@"
-$JBOSS_HOME/cli-scripts/ers_all_environments/apply_cli_ers_except_datasources.sh ers_env-local-docker.properties
-$JBOSS_HOME/cli-scripts/ers_local_docker_only/apply_cli_ers_datasources_only.sh ers.properties
-$JBOSS_HOME/cli-scripts/ers_local_docker_only/apply_cli_ers_messaging_only.sh
+$JBOSS_HOME/cli-scripts/efr_all_environments/apply_cli_efr_except_datasources.sh efr_env-local-docker.properties
+$JBOSS_HOME/cli-scripts/efr_local_docker_only/apply_cli_efr_datasources_only.sh efr.properties
+$JBOSS_HOME/cli-scripts/efr_local_docker_only/apply_cli_efr_messaging_only.sh
 
 empty="y"
 printf "Waiting for database.\n"
