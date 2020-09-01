@@ -27,7 +27,7 @@ public class ExchangeJmsIT extends AbstractRest {
         String assets = OBJECT_MAPPER.writeValueAsString(Collections.singletonList(createdAsset));
 
         try (MessageHelper messageHelper = new MessageHelper()) {
-            String msg = ExchangeModuleRequestMapper.createReceiveAssetInformation(assets, "Test", PluginType.OTHER);
+            String msg = ExchangeModuleRequestMapper.createReceiveAssetInformation(assets, "Test", PluginType.OTHER, "MySource");
             messageHelper.sendMessage("UVMSExchangeEvent", msg);
         }
 
@@ -54,7 +54,7 @@ public class ExchangeJmsIT extends AbstractRest {
         String assets = OBJECT_MAPPER.writeValueAsString(Collections.singletonList(createdAsset));
 
         try (MessageHelper messageHelper = new MessageHelper()) {
-            String msg = ExchangeModuleRequestMapper.createReceiveAssetInformation(assets, "Test", PluginType.OTHER);
+            String msg = ExchangeModuleRequestMapper.createReceiveAssetInformation(assets, "Test", PluginType.OTHER, "MySource");
             messageHelper.sendMessage("UVMSExchangeEvent", msg);
         }
 
