@@ -11,6 +11,7 @@ import eu.europa.ec.fisheries.uvms.docker.validation.common.MessageHelper;
 import eu.europa.ec.fisheries.uvms.docker.validation.mobileterminal.MobileTerminalTestHelper;
 import eu.europa.ec.fisheries.uvms.docker.validation.mobileterminal.dto.MobileTerminalDto;
 import eu.europa.ec.fisheries.uvms.docker.validation.movement.model.IncomingMovement;
+import eu.europa.ec.fisheries.uvms.movement.model.dto.MovementDto;
 import org.hamcrest.CoreMatchers;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
@@ -86,10 +87,9 @@ public class MovementJmsIT extends AbstractRest {
 		MovementDto createMovementResponse = movementHelper.createMovement(incomingMovement);
 
 		assertNotNull(createMovementResponse);
-		assertNull(createMovementResponse.getCalculatedSpeed());
-		assertEquals(createMovementResponse.getLongitude(),
+		assertEquals(createMovementResponse.getLocation().getLongitude(),
 		        incomingMovement.getLongitude());
-		assertEquals(createMovementResponse.getLatitude(),
+		assertEquals(createMovementResponse.getLocation().getLatitude(),
 		        incomingMovement.getLatitude());
 
 	}
@@ -173,8 +173,8 @@ public class MovementJmsIT extends AbstractRest {
 		    IncomingMovement incomingMovement = movementHelper.createIncomingMovement(testAsset, position);
 			MovementDto createMovementResponse = movementHelper.createMovement(incomingMovement);
 			assertNotNull(createMovementResponse);
-			assertNotNull(createMovementResponse.getLatitude());
-            assertNotNull(createMovementResponse.getLongitude());
+			assertNotNull(createMovementResponse.getLocation().getLatitude());
+            assertNotNull(createMovementResponse.getLocation().getLongitude());
 		}
 	}
 

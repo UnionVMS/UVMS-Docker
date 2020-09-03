@@ -17,6 +17,7 @@ import eu.europa.ec.fisheries.uvms.asset.client.model.AssetDTO;
 import eu.europa.ec.fisheries.uvms.docker.validation.asset.AssetTestHelper;
 import eu.europa.ec.fisheries.uvms.docker.validation.common.AbstractRest;
 import eu.europa.ec.fisheries.uvms.docker.validation.movement.model.ManualMovementDto;
+import eu.europa.ec.fisheries.uvms.movement.model.dto.MovementDto;
 import org.junit.Test;
 
 import javax.ws.rs.core.Response;
@@ -46,8 +47,8 @@ public class ManualMovementRestIT extends AbstractRest {
         assertThat(latestMovements.size(), is(1));
         
         MovementDto createdMovement = latestMovements.get(0);
-        assertThat(createdMovement.getLatitude(), is(latitude));
-        assertThat(createdMovement.getLongitude(), is(longitude));
+        assertThat(createdMovement.getLocation().getLatitude(), is(latitude));
+        assertThat(createdMovement.getLocation().getLongitude(), is(longitude));
     }
 
     @Test
@@ -64,9 +65,9 @@ public class ManualMovementRestIT extends AbstractRest {
         assertThat(latestMovements.size(), is(1));
 
         MovementDto createdMovement = latestMovements.get(0);
-        assertEquals(Long.parseLong(epochMillis), createdMovement.getTime().toInstant().toEpochMilli());
-        assertEquals(createdMovement.getLatitude(), 0.8d, 0);
-        assertEquals(createdMovement.getLongitude(), 0.5d, 0);
+        assertEquals(Long.parseLong(epochMillis), createdMovement.getTimestamp().toEpochMilli());
+        assertEquals(createdMovement.getLocation().getLatitude(), 0.8d, 0);
+        assertEquals(createdMovement.getLocation().getLongitude(), 0.5d, 0);
     }
 
 

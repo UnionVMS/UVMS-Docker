@@ -29,6 +29,7 @@ import eu.europa.ec.fisheries.uvms.docker.validation.common.TopicListener;
 import eu.europa.ec.fisheries.uvms.docker.validation.mobileterminal.MobileTerminalTestHelper;
 import eu.europa.ec.fisheries.uvms.docker.validation.mobileterminal.dto.MobileTerminalDto;
 import eu.europa.ec.fisheries.uvms.docker.validation.movement.model.IncomingMovement;
+import eu.europa.ec.fisheries.uvms.movement.model.dto.MovementDto;
 import org.hamcrest.CoreMatchers;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
@@ -100,10 +101,10 @@ public class MovementMovementRestIT extends AbstractRest {
 		MovementDto createMovementResponse = movementHelper.createMovement(createMovementRequest);
 
 		assertNotNull(createMovementResponse);
-		assertNotNull(createMovementResponse.getConnectId());
+		assertNotNull(createMovementResponse.getAsset());
 
 		List<String> connectIds = new ArrayList<>();
-		String connectId = createMovementResponse.getConnectId();
+		String connectId = createMovementResponse.getAsset();
 		connectIds.add(connectId);
 
 		List<MovementDto> latestMovements = MovementHelper.getLatestMovements(connectIds);
@@ -136,9 +137,9 @@ public class MovementMovementRestIT extends AbstractRest {
 		MovementDto createMovementResponse = movementHelper.createMovement(incomingMovement);
 
 		assertNotNull(createMovementResponse);
-		assertNotNull(createMovementResponse.getMovementGUID());
+		assertNotNull(createMovementResponse.getId());
 
-		String id = createMovementResponse.getMovementGUID();
+		String id = createMovementResponse.getId().toString();
 		MovementType movementById = MovementHelper.getMovementById(id);
 		assertNotNull(movementById);
 	}
@@ -197,7 +198,7 @@ public class MovementMovementRestIT extends AbstractRest {
 
 		assertEquals(assetWithIRCS.getId().toString(), input.size(), output.size());
 		for (MovementDto move :input) {
-			output.stream().anyMatch(o -> o.getGuid().equals(move.getMovementGUID()));
+			output.stream().anyMatch(o -> o.getGuid().equals(move.getId().toString()));
 		}
 	}
 
