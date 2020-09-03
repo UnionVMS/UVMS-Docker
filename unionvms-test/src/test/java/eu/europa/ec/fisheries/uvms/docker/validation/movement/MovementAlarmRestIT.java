@@ -24,6 +24,7 @@ import eu.europa.ec.fisheries.uvms.docker.validation.common.AbstractRest;
 import eu.europa.ec.fisheries.uvms.docker.validation.movement.model.AlarmReport;
 import eu.europa.ec.fisheries.uvms.docker.validation.system.helper.FLUXHelper;
 import eu.europa.ec.fisheries.uvms.docker.validation.system.helper.SanityRuleHelper;
+import eu.europa.ec.fisheries.uvms.movement.model.dto.MovementDto;
 import org.hamcrest.CoreMatchers;
 import org.junit.Test;
 
@@ -162,8 +163,8 @@ public class MovementAlarmRestIT extends AbstractRest {
         List<MovementDto> latestMovements = MovementHelper.getLatestMovements(
         		Collections.singletonList(alarmReport.getIncomingMovement().getAssetGuid()));
         assertThat(latestMovements.size(), CoreMatchers.is(1));
-        assertThat(latestMovements.get(0).getLatitude(), CoreMatchers.is(position.latitude));
-        assertThat(latestMovements.get(0).getLongitude(), CoreMatchers.is(position.longitude));
+        assertThat(latestMovements.get(0).getLocation().getLatitude(), CoreMatchers.is(position.latitude));
+        assertThat(latestMovements.get(0).getLocation().getLongitude(), CoreMatchers.is(position.longitude));
     }
 	
 	@Test
