@@ -1,10 +1,6 @@
 package eu.europa.ec.fisheries.uvms.docker.validation.system.vms;
 
-import eu.europa.ec.fisheries.schema.exchange.movement.mobileterminal.v1.IdList;
-import eu.europa.ec.fisheries.schema.exchange.movement.mobileterminal.v1.IdType;
-import eu.europa.ec.fisheries.schema.exchange.movement.mobileterminal.v1.MobileTerminalId;
 import eu.europa.ec.fisheries.schema.exchange.movement.v1.*;
-import eu.europa.ec.fisheries.schema.exchange.plugin.types.v1.PluginType;
 import eu.europa.ec.fisheries.schema.exchange.plugin.v1.SetReportRequest;
 import eu.europa.ec.fisheries.schema.movementrules.customrule.v1.*;
 import eu.europa.ec.fisheries.uvms.asset.client.model.AssetDTO;
@@ -15,12 +11,13 @@ import eu.europa.ec.fisheries.uvms.docker.validation.common.TopicListener;
 import eu.europa.ec.fisheries.uvms.docker.validation.mobileterminal.MobileTerminalTestHelper;
 import eu.europa.ec.fisheries.uvms.docker.validation.mobileterminal.dto.ChannelDto;
 import eu.europa.ec.fisheries.uvms.docker.validation.mobileterminal.dto.MobileTerminalDto;
+import eu.europa.ec.fisheries.uvms.docker.validation.movement.LatLong;
 import eu.europa.ec.fisheries.uvms.docker.validation.movement.model.AlarmReport;
 import eu.europa.ec.fisheries.uvms.docker.validation.system.helper.CustomRuleBuilder;
 import eu.europa.ec.fisheries.uvms.docker.validation.system.helper.CustomRuleHelper;
+import eu.europa.ec.fisheries.uvms.docker.validation.system.helper.InmarsatPluginMock;
 import eu.europa.ec.fisheries.uvms.docker.validation.system.helper.SanityRuleHelper;
 import eu.europa.ec.fisheries.uvms.docker.validation.system.helper.VMSSystemHelper;
-import eu.europa.ec.fisheries.uvms.exchange.model.mapper.ExchangeModuleRequestMapper;
 import org.hamcrest.CoreMatchers;
 import org.junit.*;
 
@@ -29,9 +26,6 @@ import java.time.Instant;
 import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
 import java.util.Date;
-import java.util.GregorianCalendar;
-import java.util.Set;
-import java.util.TimeZone;
 
 import static org.hamcrest.CoreMatchers.is;
 
@@ -80,9 +74,9 @@ public class InmarsatSanityIT extends AbstractRest {
         assertNotNull(createdCustomRule);
 
         // create the position report only containing DNID and MEMBER_NUMBER  OBS NO ASSET REFERENCES AT ALL
-        String request = createReportRequest(mobileTerminal);
+        LatLong position = new LatLong(11d, 56d, new Date());
         try (TopicListener topicListener = new TopicListener(SELECTOR)) {
-            messageHelper.sendMessage("UVMSExchangeEvent", request);
+            InmarsatPluginMock.sendInmarsatPosition(mobileTerminal, position);
 
             CustomRuleHelper.pollTicketCreated();
             CustomRuleHelper.assertRuleTriggered(createdCustomRule, timestamp);
@@ -143,8 +137,8 @@ public class InmarsatSanityIT extends AbstractRest {
         
         MobileTerminalDto mobileTerminal = MobileTerminalTestHelper.createBasicMobileTerminal();
         
-        String request = createReportRequest(mobileTerminal);
-        messageHelper.sendMessage("UVMSExchangeEvent", request);
+        LatLong position = new LatLong(11d, 56d, new Date());
+        InmarsatPluginMock.sendInmarsatPosition(mobileTerminal, position);
         
         SanityRuleHelper.pollAlarmReportCreated();
         
@@ -170,9 +164,9 @@ public class InmarsatSanityIT extends AbstractRest {
         assertNotNull(createdCustomRule);
 
         // create the positionreport only containing DNID and MEMBER_NUMBER  OBS NO ASSET REFERENCES AT ALL
-        String request = createReportRequest(mobileTerminal1);
+        LatLong position = new LatLong(11d, 56d, new Date());
         try (TopicListener topicListener = new TopicListener(SELECTOR)) {
-            messageHelper.sendMessage("UVMSExchangeEvent", request);
+            InmarsatPluginMock.sendInmarsatPosition(mobileTerminal1, position);
 
             CustomRuleHelper.pollTicketCreated();
             CustomRuleHelper.assertRuleTriggered(createdCustomRule, timestamp);
@@ -182,67 +176,5 @@ public class InmarsatSanityIT extends AbstractRest {
             assertThat(setReportRequest.getReport().getRecipient(), is(fluxEndpoint));
             return setReportRequest;
         }
-    }
-
-    private String createReportRequest(MobileTerminalDto mobileTerminal) throws IllegalArgumentException {
-        Set<ChannelDto> channels = mobileTerminal.getChannels();
-        Assert.assertEquals(1, channels.size());
-        ChannelDto channel = channels.iterator().next();
-
-        String theDnid = channel.getDNID();
-        String theMemberNumber = channel.getMemberNumber();
-        
-        SetReportMovementType reportType = new SetReportMovementType();
-        MobileTerminalId mobileTerminalId = new MobileTerminalId();
-
-        if(theDnid != null) {
-            IdList dnid = new IdList();
-            dnid.setType(IdType.DNID);
-            dnid.setValue(theDnid);
-            mobileTerminalId.getMobileTerminalIdList().add(dnid);
-        }
-
-        if(theMemberNumber != null) {
-            IdList memberNumber = new IdList();
-            memberNumber.setType(IdType.MEMBER_NUMBER);
-            memberNumber.setValue(theMemberNumber);
-            mobileTerminalId.getMobileTerminalIdList().add(memberNumber);
-        }
-
-        MovementBaseType movement = new MovementBaseType();
-        movement.setMobileTerminalId(mobileTerminalId);
-        movement.setComChannelType(MovementComChannelType.MOBILE_TERMINAL);
-        movement.setMobileTerminalId(mobileTerminalId);
-        movement.setMovementType(MovementTypeType.POS);
-
-        MovementPoint mp = new MovementPoint();
-        mp.setAltitude(0.0);
-        mp.setLatitude(1d);
-        mp.setLongitude(1d);
-        movement.setPosition(mp);
-
-        movement.setPositionTime(new Date());
-        movement.setReportedCourse(42d);
-        movement.setReportedSpeed(43d);
-        movement.setSource(MovementSourceType.INMARSAT_C);
-        movement.setStatus("11");
-
-        reportType.setMovement(movement);
-        GregorianCalendar gcal =
-                (GregorianCalendar) GregorianCalendar.getInstance(TimeZone.getTimeZone("UTC"));
-        reportType.setTimestamp(gcal.getTime());
-        reportType.setPluginName("eu.europa.ec.fisheries.uvms.plugins.inmarsat");
-        reportType.setPluginType(PluginType.SATELLITE_RECEIVER);
-
-        reportType.setMovement(movement);
-        
-        return ExchangeModuleRequestMapper.createSetMovementReportRequest(
-                reportType,
-                "TWOSTAGE",
-                null,
-                Instant.now(),
-                PluginType.SATELLITE_RECEIVER,
-                "TWOSTAGE",
-                null);
     }
 }

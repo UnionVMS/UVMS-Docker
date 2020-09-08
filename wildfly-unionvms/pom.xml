@@ -143,6 +143,11 @@
   			<type>ear</type>
 		</dependency>
 		<dependency>
+			<groupId>eu.europa.ec.fisheries.uvms.plugins.iridium</groupId>
+			<artifactId>siriusone</artifactId>
+			<type>war</type>
+		</dependency>
+		<dependency>
 			<groupId>eu.europa.ec.fisheries.uvms.plugins</groupId>
 			<artifactId>naf-module</artifactId>
 			<type>ear</type>
