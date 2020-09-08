@@ -22,11 +22,12 @@ import eu.europa.ec.fisheries.uvms.docker.validation.system.helper.FLUXHelper;
 import eu.europa.ec.fisheries.uvms.docker.validation.webgateway.dto.ExtendedIncidentLogDto;
 import eu.europa.ec.fisheries.uvms.docker.validation.webgateway.dto.NoteAndIncidentDto;
 import eu.europa.ec.fisheries.uvms.docker.validation.webgateway.dto.PollAndIncidentDto;
+import eu.europa.ec.fisheries.uvms.incident.model.dto.EventCreationDto;
 import eu.europa.ec.fisheries.uvms.incident.model.dto.IncidentDto;
 import eu.europa.ec.fisheries.uvms.incident.model.dto.IncidentLogDto;
 import eu.europa.ec.fisheries.uvms.incident.model.dto.IncidentTicketDto;
-import eu.europa.ec.fisheries.uvms.incident.model.dto.StatusDto;
 import eu.europa.ec.fisheries.uvms.incident.model.dto.enums.EventTypeEnum;
+import eu.europa.ec.fisheries.uvms.incident.model.dto.enums.IncidentType;
 import eu.europa.ec.fisheries.uvms.incident.model.dto.enums.StatusEnum;
 import eu.europa.ec.fisheries.uvms.mobileterminal.model.dto.CommentDto;
 import eu.europa.ec.fisheries.uvms.movement.model.dto.MovementDto;
@@ -36,10 +37,8 @@ import javax.ws.rs.client.Entity;
 import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import java.util.Collections;
-import java.util.Date;
-import java.util.List;
-import java.util.Optional;
+import java.time.Instant;
+import java.util.*;
 
 import static org.hamcrest.CoreMatchers.is;
 
@@ -66,10 +65,9 @@ public class IncidentCollectionIT extends AbstractRest {
                 .post(Entity.json(note), Response.class);
         assertEquals(200, response.getStatus());
 
-        NoteAndIncidentDto noteAdded = response.readEntity(NoteAndIncidentDto.class);
-        assertNotNull(noteAdded.getIncident());
-        assertNotNull(noteAdded.getNote());
-        assertNotNull(noteAdded.getNote().getId());
+        Note noteAdded = response.readEntity(Note.class);
+        assertNotNull(noteAdded);
+        assertNotNull(noteAdded.getId());
 
         response = getWebTarget()
                 .path("web-gateway/rest/incidents/incidentLogForIncident")
@@ -80,9 +78,9 @@ public class IncidentCollectionIT extends AbstractRest {
         assertEquals(200, response.getStatus());
 
         String json = response.readEntity(String.class);
-        assertTrue(json.contains(noteAdded.getNote().getId().toString()));
-        assertTrue(json.contains(noteAdded.getNote().getNote()));
-        assertTrue(json.contains(noteAdded.getNote().getAssetId().toString()));
+        assertTrue(json.contains(noteAdded.getId().toString()));
+        assertTrue(json.contains(noteAdded.getNote()));
+        assertTrue(json.contains(noteAdded.getAssetId().toString()));
 
         ExtendedIncidentLogDto incidentLogDto = OBJECT_MAPPER.readValue(json, ExtendedIncidentLogDto.class);
 
@@ -118,9 +116,8 @@ public class IncidentCollectionIT extends AbstractRest {
                 .post(Entity.json(comment), Response.class);
         assertEquals(200, response.getStatus());
 
-        PollAndIncidentDto pollAdded = response.readEntity(PollAndIncidentDto.class);
-        assertNotNull(pollAdded.getIncident());
-        assertNotNull(pollAdded.getPollId());
+        String pollId = response.readEntity(String.class);
+        assertNotNull(pollId);
 
         response = getWebTarget()
                 .path("web-gateway/rest/incidents/incidentLogForIncident")
@@ -144,7 +141,7 @@ public class IncidentCollectionIT extends AbstractRest {
         assertTrue(logStatusType != null);
 
         assertEquals(TypeRefType.POLL, logStatusType.getTypeRef().getType());
-        assertEquals(pollAdded.getPollId(), logStatusType.getTypeRef().getRefGuid());
+        assertEquals(pollId, logStatusType.getTypeRef().getRefGuid());
         assertFalse(logStatusType.getHistory().isEmpty());
 
     }
@@ -178,9 +175,8 @@ public class IncidentCollectionIT extends AbstractRest {
                 .post(Entity.json(pollRequestType), Response.class);
         assertEquals(200, response.getStatus());
 
-        PollAndIncidentDto pollAdded = response.readEntity(PollAndIncidentDto.class);
-        assertNotNull(pollAdded.getIncident());
-        assertNotNull(pollAdded.getPollId());
+        UUID pollId = UUID.fromString(response.readEntity(String.class));
+        assertNotNull(pollId);
 
         response = getWebTarget()
                 .path("web-gateway/rest/incidents/incidentLogForIncident")
@@ -204,7 +200,7 @@ public class IncidentCollectionIT extends AbstractRest {
         assertTrue(logStatusType != null);
 
         assertEquals(TypeRefType.POLL, logStatusType.getTypeRef().getType());
-        assertEquals(pollAdded.getPollId(), logStatusType.getTypeRef().getRefGuid());
+        assertEquals(pollId.toString(), logStatusType.getTypeRef().getRefGuid());
         assertFalse(logStatusType.getHistory().isEmpty());
 
     }
@@ -269,7 +265,7 @@ public class IncidentCollectionIT extends AbstractRest {
     }
 
     @Test
-    public void updateStatusToLongTermParkedAndCheckAssetAsLongTermParked() throws Exception {
+    public void updateTypeToParkedAndCheckAssetAsParked() throws Exception {
 
         ConfigRestHelper.setLocalFlagStateToSwe();
 
@@ -294,16 +290,14 @@ public class IncidentCollectionIT extends AbstractRest {
         IncidentTicketDto ticket = IncidentTestHelper.createTicket(asset.getId());
         IncidentDto incidentDto = IncidentTestHelper.createAssetNotSendingIncident(ticket, INCIDENT_CREATE);
 
-        StatusDto statusDto = new StatusDto();
-        statusDto.setEventType(EventTypeEnum.INCIDENT_STATUS);
-        statusDto.setStatus(StatusEnum.PARKED);
+        incidentDto.setType(IncidentType.PARKED);
+        incidentDto.setExpiryDate(Instant.now());
 
         response = getWebTarget()
-                .path("web-gateway/rest/incidents/updateStatusForIncident")
-                .path(incidentDto.getId().toString())
+                .path("web-gateway/rest/incidents/updateIncident")
                 .request(MediaType.APPLICATION_JSON)
                 .header(HttpHeaders.AUTHORIZATION, getValidJwtToken())
-                .post(Entity.json(statusDto), Response.class);
+                .put(Entity.json(incidentDto), Response.class);
         assertEquals(200, response.getStatus());
 
         AssetDTO updatedAsset = AssetTestHelper.getAssetByGuid(asset.getId());
@@ -321,5 +315,54 @@ public class IncidentCollectionIT extends AbstractRest {
         assertFalse(previousReport.contains(asset.getId().toString()));
     }
 
+    @Test
+    public void updateTypeToManualAndCheckAssetAsNotParked() throws Exception {
+
+        ConfigRestHelper.setLocalFlagStateToSwe();
+
+        AssetDTO asset = AssetTestHelper.createAsset(AssetTestHelper.createBasicAsset());
+        MobileTerminalDto mt = MobileTerminalTestHelper.createMobileTerminal();
+        MobileTerminalTestHelper.assignMobileTerminal(asset, mt);
+
+        FLUXHelper.sendPositionToFluxPlugin(asset,
+                new LatLong(56d, 11d, new Date(System.currentTimeMillis() - 10000)));
+
+        MovementHelper.pollMovementCreated();
+        Thread.sleep(1500);
+        Response response = getWebTarget()
+                .path("movement-rules/rest/previousReports/list")
+                .request(MediaType.APPLICATION_JSON)
+                .header(HttpHeaders.AUTHORIZATION, getValidJwtToken())
+                .get(Response.class);
+        assertEquals(200, response.getStatus());
+        String previousReport = response.readEntity(String.class);
+        assertTrue(previousReport.contains(asset.getId().toString()));
+
+        IncidentTicketDto ticket = IncidentTestHelper.createTicket(asset.getId());
+        IncidentDto incidentDto = IncidentTestHelper.createAssetNotSendingIncident(ticket, INCIDENT_CREATE);
+
+        incidentDto.setType(IncidentType.MANUAL_MODE);
+
+        response = getWebTarget()
+                .path("web-gateway/rest/incidents/updateIncident")
+                .request(MediaType.APPLICATION_JSON)
+                .header(HttpHeaders.AUTHORIZATION, getValidJwtToken())
+                .put(Entity.json(incidentDto), Response.class);
+        assertEquals(200, response.getStatus());
+
+        AssetDTO updatedAsset = AssetTestHelper.getAssetByGuid(asset.getId());
+        assertFalse(updatedAsset.getId().toString(), updatedAsset.isParked());
+
+        MovementHelper.pollMovementCreated();
+        Thread.sleep(1000);
+        response = getWebTarget()
+                .path("movement-rules/rest/previousReports/list")
+                .request(MediaType.APPLICATION_JSON)
+                .header(HttpHeaders.AUTHORIZATION, getValidJwtToken())
+                .get(Response.class);
+        assertEquals(200, response.getStatus());
+        previousReport = response.readEntity(String.class);
+        assertTrue(previousReport.contains(asset.getId().toString()));
+    }
 
 }

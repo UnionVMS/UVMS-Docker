@@ -9,10 +9,10 @@ import eu.europa.ec.fisheries.uvms.docker.validation.movement.LatLong;
 import eu.europa.ec.fisheries.uvms.docker.validation.movement.MovementHelper;
 import eu.europa.ec.fisheries.uvms.docker.validation.movement.model.IncomingMovement;
 import eu.europa.ec.fisheries.uvms.docker.validation.system.helper.FLUXHelper;
-import eu.europa.ec.fisheries.uvms.incident.model.dto.AssetNotSendingDto;
 import eu.europa.ec.fisheries.uvms.incident.model.dto.IncidentDto;
 import eu.europa.ec.fisheries.uvms.incident.model.dto.IncidentLogDto;
 import eu.europa.ec.fisheries.uvms.incident.model.dto.IncidentTicketDto;
+import eu.europa.ec.fisheries.uvms.incident.model.dto.OpenAndRecentlyResolvedIncidentsDto;
 import eu.europa.ec.fisheries.uvms.incident.model.dto.enums.MovementSourceType;
 import eu.europa.ec.fisheries.uvms.incident.model.dto.enums.StatusEnum;
 import eu.europa.ec.fisheries.uvms.movement.model.dto.MovementDto;
@@ -42,11 +42,11 @@ public class IncidentRestIT extends AbstractRest {
 
     @Test
     public void getAssetNotSendingListTest() throws Exception {
-        AssetNotSendingDto before = IncidentTestHelper.getAssetNotSendingIncidentList();
+        OpenAndRecentlyResolvedIncidentsDto before = IncidentTestHelper.getAllOpenAndRecentlyResolvedIncidents();
         AssetDTO asset = AssetTestHelper.createAsset(AssetTestHelper.createBasicAsset());
         IncidentTicketDto ticket = IncidentTestHelper.createTicket(asset.getId());
         IncidentTestHelper.createAssetNotSendingIncident(ticket, INCIDENT_CREATE);
-        AssetNotSendingDto after = IncidentTestHelper.getAssetNotSendingIncidentList();
+        OpenAndRecentlyResolvedIncidentsDto after = IncidentTestHelper.getAllOpenAndRecentlyResolvedIncidents();
         assertEquals(before.getUnresolved().size() + 1, after.getUnresolved().size());
     }
 
@@ -56,14 +56,14 @@ public class IncidentRestIT extends AbstractRest {
         IncidentTicketDto ticket = IncidentTestHelper.createTicket(asset.getId());
         IncidentDto created = IncidentTestHelper.createAssetNotSendingIncident(ticket, INCIDENT_CREATE);
 
-        assertNotEquals("RESOLVED", created.getStatus());
+        assertNotEquals(StatusEnum.RESOLVED, created.getStatus());
 
         ticket.setType(null);
         ticket.setMovementId(UUID.randomUUID().toString());
         ticket.setMovementSource(MovementSourceType.FLUX);
         IncidentDto updated = IncidentTestHelper.createAssetNotSendingIncident(ticket, INCIDENT_UPDATE);
 
-        assertEquals(StatusEnum.RESOLVED.name(), updated.getStatus());
+        assertEquals(StatusEnum.RESOLVED, updated.getStatus());
     }
 
     @Test
@@ -124,6 +124,6 @@ public class IncidentRestIT extends AbstractRest {
 
         assertTrue(incidentMap.size() > 0);
         assertEquals(asset.getId(), incidentMap.get(incident.getId()).getAssetId());
-        assertEquals(movement.getId().toString(), incidentMap.get(incident.getId()).getLastKnownLocation().getId());
+        assertEquals(movement.getId(), incidentMap.get(incident.getId()).getLastKnownLocation().getId());
     }
 }

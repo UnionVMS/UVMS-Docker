@@ -186,6 +186,7 @@ public class AssetTestHelper extends AbstractHelper {
         AssetDTO asset = new AssetDTO();
 
         asset.setActive(true);
+        asset.setParked(false);
 
         asset.setName("Ship" + generateARandomStringWithMaxLength(10));
         asset.setCfr("CFR" + generateARandomStringWithMaxLength(9));
