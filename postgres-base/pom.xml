@@ -4,11 +4,11 @@
 	<parent>
 		<groupId>eu.europa.ec.fisheries.uvms.docker</groupId>
 		<artifactId>uvms-docker</artifactId>
-		<version>3.45.1-EFR-SNAPSHOT</version>
+		<version>3.45.1-EFR</version>
 		<relativePath>../pom.xml</relativePath>
 	</parent>
 	<artifactId>uvms-docker-postgres-base</artifactId>
-	<version>3.45.1-EFR-SNAPSHOT</version>
+	<version>3.45.1-EFR</version>
 	<packaging>pom</packaging>
 	<name>uvms-docker-postgres-base</name>
 	<build>
@@ -90,6 +90,6 @@
 		</profile>
 	</profiles>
 	<scm>
-		<tag>HEAD</tag>
+		<tag>uvms-docker-3.45.1-EFR</tag>
 	</scm>
 </project>

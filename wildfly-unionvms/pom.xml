@@ -4,7 +4,7 @@
 	<parent>
 		<groupId>eu.europa.ec.fisheries.uvms.docker</groupId>
 		<artifactId>uvms-docker</artifactId>
-		<version>3.45.1-EFR-SNAPSHOT</version>
+		<version>3.45.1-EFR</version>
 		<relativePath>../pom.xml</relativePath>
 	</parent>
 
@@ -327,6 +327,6 @@
 		</profile>
 	</profiles>
 	<scm>
-		<tag>HEAD</tag>
+		<tag>uvms-docker-3.45.1-EFR</tag>
 	</scm>
 </project>
