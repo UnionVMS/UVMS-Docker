@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>eu.europa.ec.fisheries.uvms.docker</groupId>
 		<artifactId>uvms-docker</artifactId>
-		<version>3.44.6-EFR-SNAPSHOT</version>
+		<version>3.45.1-EFR-SNAPSHOT</version>
 		<relativePath>../pom.xml</relativePath>
 	</parent>
 	
@@ -57,7 +57,7 @@
 		<dependency>
 			<groupId>org.apache.activemq</groupId>
 			<artifactId>artemis-jms-client</artifactId>
-			<version>2.14.0</version>
+			<version>2.15.0</version>
 			<scope>test</scope>
 			<exclusions>
 				<exclusion>
@@ -201,7 +201,7 @@
 		<dependency>
 			<groupId>fish.focus.uvms.maven</groupId>
 			<artifactId>uvms-pom-java11-deps</artifactId>
-			<version>3.2</version>
+			<version>3.3</version>
 			<type>pom</type>
 		</dependency>
 		<dependency>
@@ -225,6 +225,9 @@
 			<artifactId>yasson</artifactId>
 			<version>1.0.8</version>
 		</dependency>
+
+
+
 	</dependencies>
 	<build>
 		<pluginManagement>
@@ -240,7 +243,7 @@
 			<plugin>
                 <groupId>org.apache.cxf</groupId>
                 <artifactId>cxf-codegen-plugin</artifactId>
-                <version>3.3.7</version>
+                <version>3.4.0</version>
                 <executions>
                     <execution>
                         <id>wsdl-services</id>
@@ -439,8 +442,8 @@
 										</ports>
 										<cmd>
 											<shell>/opt/jboss/wildfly/bin/standalone.sh
-												-c standalone-load-balancer.xml
-												-b load-balancer
+												-c standalone-load-balancer.xml 
+												-b load-balancer 
 												-bmanagement load-balancer
 												-bprivate load-balancer</shell>
 										</cmd>
@@ -504,7 +507,7 @@
 										<cmd>
 											<shell>/opt/jboss/start.sh /opt/jboss/wildfly/bin/standalone.sh
 												-c standalone-full-ha.xml -b wildfly1 -bmanagement wildfly1 --debug *:8787
-												-bprivate wildfly1 -bunsecure wildfly1 -Djboss.node.name=wildfly1
+												-bprivate wildfly1 -bunsecure wildfly1 -Djboss.node.name=wildfly1 
 												-Djgroups.bind_addr=wildfly1 -Djboss.messaging.cluster.password=password
 												-Dloadbalancer.address=load-balancer
 												-Djboss.tx.node.id=1</shell>
@@ -545,7 +548,7 @@
 										<cmd>
 											<shell>/opt/jboss/start.sh /opt/jboss/wildfly/bin/standalone.sh
 												-c standalone-full-ha.xml -b wildfly2 -bmanagement wildfly2 --debug *:8787
-												-bprivate wildfly2 -bunsecure wildfly2 -Djboss.node.name=wildfly2
+												-bprivate wildfly2 -bunsecure wildfly2 -Djboss.node.name=wildfly2 
 												-Djgroups.bind_addr=wildfly2 -Djboss.messaging.cluster.password=password
 												-Dloadbalancer.address=load-balancer
 												-Djboss.tx.node.id=2</shell>

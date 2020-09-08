@@ -7,10 +7,10 @@ import eu.europa.ec.fisheries.uvms.docker.validation.asset.AssetJMSHelper;
 import eu.europa.ec.fisheries.uvms.docker.validation.asset.AssetTestHelper;
 import eu.europa.ec.fisheries.uvms.docker.validation.common.AbstractRest;
 import eu.europa.ec.fisheries.uvms.docker.validation.movement.LatLong;
-import eu.europa.ec.fisheries.uvms.docker.validation.movement.MovementDto;
 import eu.europa.ec.fisheries.uvms.docker.validation.movement.MovementHelper;
 import eu.europa.ec.fisheries.uvms.docker.validation.movement.model.IncomingMovement;
 import eu.europa.ec.fisheries.uvms.docker.validation.webgateway.dto.TracksByAssetSearchRequestDto;
+import eu.europa.ec.fisheries.uvms.movement.model.dto.MovementDto;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
@@ -55,7 +55,7 @@ public class ReportIT extends AbstractRest {
 
         String returnString = response.readEntity(String.class);
         assertTrue(returnString.contains(testAsset.getId().toString()));
-        assertTrue(returnString.contains(createMovementResponse.getMovementGUID()));
+        assertTrue(returnString.contains(createMovementResponse.getId().toString()));
     }
 
 

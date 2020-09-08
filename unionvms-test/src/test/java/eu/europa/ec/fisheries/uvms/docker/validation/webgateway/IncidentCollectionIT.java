@@ -15,7 +15,6 @@ import eu.europa.ec.fisheries.uvms.docker.validation.mobileterminal.MobileTermin
 import eu.europa.ec.fisheries.uvms.docker.validation.mobileterminal.dto.MobileTerminalDto;
 import eu.europa.ec.fisheries.uvms.docker.validation.movement.LatLong;
 import eu.europa.ec.fisheries.uvms.docker.validation.movement.ManualMovementRestHelper;
-import eu.europa.ec.fisheries.uvms.docker.validation.movement.MovementDto;
 import eu.europa.ec.fisheries.uvms.docker.validation.movement.MovementHelper;
 import eu.europa.ec.fisheries.uvms.docker.validation.movement.model.ManualMovementDto;
 import eu.europa.ec.fisheries.uvms.docker.validation.movement.model.MicroMovement;
@@ -30,7 +29,7 @@ import eu.europa.ec.fisheries.uvms.incident.model.dto.StatusDto;
 import eu.europa.ec.fisheries.uvms.incident.model.dto.enums.EventTypeEnum;
 import eu.europa.ec.fisheries.uvms.incident.model.dto.enums.StatusEnum;
 import eu.europa.ec.fisheries.uvms.mobileterminal.model.dto.CommentDto;
-import org.junit.Ignore;
+import eu.europa.ec.fisheries.uvms.movement.model.dto.MovementDto;
 import org.junit.Test;
 
 import javax.ws.rs.client.Entity;
@@ -227,7 +226,7 @@ public class IncidentCollectionIT extends AbstractRest {
         MovementHelper.pollMovementCreated();
         List<MovementDto> latestMovements = MovementHelper.getLatestMovements(Collections.singletonList(asset.getId().toString()));
         assertThat(latestMovements.size(), is(1));
-        String movementId = latestMovements.get(0).getMovementGUID();
+        String movementId = latestMovements.get(0).getId().toString();
 
         IncidentTicketDto ticket = IncidentTestHelper.createTicket(asset.getId());
         ticket.setMovementId(movementId);
@@ -241,7 +240,7 @@ public class IncidentCollectionIT extends AbstractRest {
         MovementHelper.pollMovementCreated();
         latestMovements = MovementHelper.getLatestMovements(Collections.singletonList(asset.getId().toString()));
         assertThat(latestMovements.size(), is(1));
-        String secondMovementId = latestMovements.get(0).getMovementGUID();
+        String secondMovementId = latestMovements.get(0).getId().toString();
 
         ticket.setMovementId(secondMovementId);
         IncidentDto updated = IncidentTestHelper.createAssetNotSendingIncident(ticket, INCIDENT_UPDATE);
@@ -258,7 +257,7 @@ public class IncidentCollectionIT extends AbstractRest {
 
         ExtendedIncidentLogDto incidentLogDto = OBJECT_MAPPER.readValue(json, ExtendedIncidentLogDto.class);
 
-        assertEquals(2, incidentLogDto.getIncidentLogs().size());
+        assertEquals(3, incidentLogDto.getIncidentLogs().size());
         assertTrue(incidentLogDto.getIncidentLogs().values().stream().allMatch(dto -> dto != null));
         assertTrue(incidentLogDto.getIncidentLogs().values().stream().allMatch(dto -> dto.getIncidentId() == incidentDto.getId().longValue()));
 
@@ -282,7 +281,7 @@ public class IncidentCollectionIT extends AbstractRest {
                 new LatLong(56d, 11d, new Date(System.currentTimeMillis() - 10000)));
 
         MovementHelper.pollMovementCreated();
-        Thread.sleep(1000);
+        Thread.sleep(1500);
         Response response = getWebTarget()
                 .path("movement-rules/rest/previousReports/list")
                 .request(MediaType.APPLICATION_JSON)
@@ -297,7 +296,7 @@ public class IncidentCollectionIT extends AbstractRest {
 
         StatusDto statusDto = new StatusDto();
         statusDto.setEventType(EventTypeEnum.INCIDENT_STATUS);
-        statusDto.setStatus(StatusEnum.LONG_TERM_PARKED);
+        statusDto.setStatus(StatusEnum.PARKED);
 
         response = getWebTarget()
                 .path("web-gateway/rest/incidents/updateStatusForIncident")
@@ -308,7 +307,7 @@ public class IncidentCollectionIT extends AbstractRest {
         assertEquals(200, response.getStatus());
 
         AssetDTO updatedAsset = AssetTestHelper.getAssetByGuid(asset.getId());
-        assertTrue(updatedAsset.getId().toString(), updatedAsset.isLongTermParked());
+        assertTrue(updatedAsset.getId().toString(), updatedAsset.isParked());
 
         MovementHelper.pollMovementCreated();
         Thread.sleep(1000);

@@ -33,6 +33,7 @@ RUN mkdir -p $JBOSS_HOME/modules/org/postgresql/main && \
 COPY postgres/module.xml $POSTGRES_MODULE
 COPY dependencies/postgresql-${wildfly.postgres.module.postgres.version}.jar $POSTGRES_MODULE
 COPY dependencies/postgis-jdbc-${wildfly.postgres.module.postgis.version}.jar $POSTGRES_MODULE
+COPY dependencies/postgis-geometry-${wildfly.postgres.module.postgis.version}.jar $POSTGRES_MODULE
 
 COPY hibernate/module.xml $HIBERNATE_MODULE
 COPY dependencies/hibernate-core-${wildfly.hibernate.module.spatial.version}.jar $HIBERNATE_MODULE

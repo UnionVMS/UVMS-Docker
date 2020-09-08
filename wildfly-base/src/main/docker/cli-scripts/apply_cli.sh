@@ -38,4 +38,5 @@ if [ $SERVER_CONFIG = "standalone-full-ha.xml" ]; then
 		--properties=$JBOSS_HOME/cli-scripts/uvms.properties \
 		-Djboss.server.log.dir=$JBOSS_HOME/standalone/tmp \
 		| grep -v '{"outcome" => "success"}'
+	sed -i -r s/-Xmx[0-9]\{4\}m/-Xmx3g/g $JBOSS_HOME/bin/standalone.conf
 fi
