@@ -11,7 +11,7 @@
 
 	<groupId>eu.europa.ec.fisheries.uvms.docker</groupId>
 	<artifactId>uvms-docker</artifactId>
-	<version>3.45.1-SNAPSHOT</version>
+	<version>3.45.2-SNAPSHOT</version>
 	<packaging>pom</packaging>
 	<name>uvms-docker</name>
 
@@ -21,7 +21,7 @@
 		<scm.url>scm:git:https://github.com/UnionVMS/UVMS-Docker.git</scm.url>
 		<unionvms.wildfly.version>20.0.0.Final</unionvms.wildfly.version>
 		<unionvms.project.unionvms.web.version>3.0.75-UVMS</unionvms.project.unionvms.web.version>
-		<unionvms.project.vms.web.version>0.17.1</unionvms.project.vms.web.version>
+		<unionvms.project.vms.web.version>0.17.3</unionvms.project.vms.web.version>
 		<unionvms.project.mapfishprint.version>3.20.2.1</unionvms.project.mapfishprint.version>
 		<unionvms.project.geoserver.version>2.16.2.1</unionvms.project.geoserver.version>
 		<unionvms.project.user.module>2.1.5</unionvms.project.user.module>
@@ -36,7 +36,7 @@
 		<unionvms.project.config.module>4.3.5</unionvms.project.config.module>
 		<unionvms.project.audit.module>4.3.5</unionvms.project.audit.module>
 		<unionvms.project.asset.module>6.7.21</unionvms.project.asset.module>
-		<unionvms.project.incident.module>0.4.0</unionvms.project.incident.module>
+		<unionvms.project.incident.module>0.4.1</unionvms.project.incident.module>
 		<unionvms.project.activity.module>1.1.6</unionvms.project.activity.module>
 		<unionvms.project.mdr.module>1.0.10</unionvms.project.mdr.module>
 		<unionvms.project.plugins.ais>3.1.5</unionvms.project.plugins.ais>
@@ -47,7 +47,7 @@
 		<unionvms.project.plugins.fluxActivity>1.0.6</unionvms.project.plugins.fluxActivity>
 		<unionvms.project.plugins.mdr>1.0.2</unionvms.project.plugins.mdr>
 		<unionvms.project.plugins.flux-rest>1.4</unionvms.project.plugins.flux-rest>
-		<unionvms.project.web-gateway>0.13.0</unionvms.project.web-gateway>
+		<unionvms.project.web-gateway>0.13.1</unionvms.project.web-gateway>
 		<unionvms.project.hawtio-wildfly>2.10.1</unionvms.project.hawtio-wildfly>
 	</properties>
 
