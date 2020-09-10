@@ -291,6 +291,7 @@ public class IncidentCollectionIT extends AbstractRest {
         IncidentDto incidentDto = IncidentTestHelper.createAssetNotSendingIncident(ticket, INCIDENT_CREATE);
 
         incidentDto.setType(IncidentType.PARKED);
+        incidentDto.setStatus(StatusEnum.PARKED);
         incidentDto.setExpiryDate(Instant.now());
 
         response = getWebTarget()
