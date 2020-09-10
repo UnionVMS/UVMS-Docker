@@ -127,19 +127,19 @@ embed-server --server-config=${SERVER_CONFIG}
 /subsystem=logging/logging-profile=spatialSwe/periodic-size-rotating-file-handler=spatialSwe-error-file:add(level=ERROR,file={path=>"/app/logs/spatialSwe/spatialSwe-error.log"},named-formatter=APP-PATTERN,suffix=".yyyy-ww",rotate-size=50M)
 /subsystem=logging/logging-profile=spatialSwe/root-logger=ROOT:add(handlers=[spatialSwe-file,spatialSwe-error-file])
 
-# StreamCollector
-/subsystem=logging/logging-profile=stream-collector:add
-/subsystem=logging/logging-profile=stream-collector/pattern-formatter=APP-PATTERN:add(pattern="%d{yyyy-MM-dd HH:mm:ss} [%t] %X{requestId} %-5p %c{40} %X{userId}- %m%n")
-/subsystem=logging/logging-profile=stream-collector/periodic-size-rotating-file-handler=stream-collector-file:add(level=INFO,file={path=>"/app/logs/stream-collector/stream-collector.log"},named-formatter=APP-PATTERN,suffix=".yyyy-ww",rotate-size=50M)
-/subsystem=logging/logging-profile=stream-collector/periodic-size-rotating-file-handler=stream-collector-error-file:add(level=ERROR,file={path=>"/app/logs/stream-collector/stream-collector-error.log"},named-formatter=APP-PATTERN,suffix=".yyyy-ww",rotate-size=50M)
-/subsystem=logging/logging-profile=stream-collector/root-logger=ROOT:add(handlers=[stream-collector-file,stream-collector-error-file])
-
 # User
 /subsystem=logging/logging-profile=user:add
 /subsystem=logging/logging-profile=user/pattern-formatter=APP-PATTERN:add(pattern="%d{yyyy-MM-dd HH:mm:ss} [%t] %X{requestId} %-5p %c{40} %X{userId}- %m%n")
 /subsystem=logging/logging-profile=user/periodic-size-rotating-file-handler=user-file:add(level=INFO,file={path=>"/app/logs/user/user.log"},named-formatter=APP-PATTERN,suffix=".yyyy-ww",rotate-size=50M)
 /subsystem=logging/logging-profile=user/periodic-size-rotating-file-handler=user-error-file:add(level=ERROR,file={path=>"/app/logs/user/user-error.log"},named-formatter=APP-PATTERN,suffix=".yyyy-ww",rotate-size=50M)
 /subsystem=logging/logging-profile=user/root-logger=ROOT:add(handlers=[user-file,user-error-file])
+
+# WebGateway
+/subsystem=logging/logging-profile=web-gateway:add
+/subsystem=logging/logging-profile=web-gateway/pattern-formatter=APP-PATTERN:add(pattern="%d{yyyy-MM-dd HH:mm:ss} [%t] %X{requestId} %-5p %c{40} %X{userId}- %m%n")
+/subsystem=logging/logging-profile=web-gateway/periodic-size-rotating-file-handler=web-gateway-file:add(level=INFO,file={path=>"/app/logs/web-gateway/web-gateway.log"},named-formatter=APP-PATTERN,suffix=".yyyy-ww",rotate-size=50M)
+/subsystem=logging/logging-profile=web-gateway/periodic-size-rotating-file-handler=web-gateway-error-file:add(level=ERROR,file={path=>"/app/logs/web-gateway/web-gateway-error.log"},named-formatter=APP-PATTERN,suffix=".yyyy-ww",rotate-size=50M)
+/subsystem=logging/logging-profile=web-gateway/root-logger=ROOT:add(handlers=[web-gateway-file,web-gateway-error-file])
 
 # batch-jberet
 /subsystem=batch-jberet/thread-pool=batch:write-attribute(name=max-threads, value=64)
