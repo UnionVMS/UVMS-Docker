@@ -113,6 +113,13 @@ embed-server --server-config=${SERVER_CONFIG}
 /subsystem=logging/logging-profile=naf/periodic-size-rotating-file-handler=naf-error-file:add(level=ERROR,file={path=>"/app/logs/naf/naf-error.log"},named-formatter=APP-PATTERN,suffix=".yyyy-ww",rotate-size=50M)
 /subsystem=logging/logging-profile=naf/root-logger=ROOT:add(handlers=[naf-file,naf-error-file])
 
+# SiriusOne
+/subsystem=logging/logging-profile=siriusone:add
+/subsystem=logging/logging-profile=siriusone/pattern-formatter=APP-PATTERN:add(pattern="%d{yyyy-MM-dd HH:mm:ss} [%t] %X{requestId} %-5p %c{40} %X{userId}- %m%n")
+/subsystem=logging/logging-profile=siriusone/periodic-size-rotating-file-handler=siriusone-file:add(level=INFO,file={path=>"/app/logs/siriusone/siriusone.log"},named-formatter=APP-PATTERN,suffix=".yyyy-ww",rotate-size=50M)
+/subsystem=logging/logging-profile=siriusone/periodic-size-rotating-file-handler=siriusone-error-file:add(level=ERROR,file={path=>"/app/logs/siriusone/siriusone-error.log"},named-formatter=APP-PATTERN,suffix=".yyyy-ww",rotate-size=50M)
+/subsystem=logging/logging-profile=siriusone/root-logger=ROOT:add(handlers=[siriusone-file,siriusone-error-file])
+
 # Spatial
 /subsystem=logging/logging-profile=spatialSwe:add
 /subsystem=logging/logging-profile=spatialSwe/pattern-formatter=APP-PATTERN:add(pattern="%d{yyyy-MM-dd HH:mm:ss} [%t] %X{requestId} %-5p %c{40} %X{userId}- %m%n")
