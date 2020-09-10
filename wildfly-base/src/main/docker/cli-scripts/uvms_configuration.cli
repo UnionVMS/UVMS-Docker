@@ -92,6 +92,13 @@ embed-server --server-config=${SERVER_CONFIG}
 /subsystem=logging/logging-profile=incident/periodic-size-rotating-file-handler=incident-error-file:add(level=ERROR,file={path=>"/app/logs/incident/incident-error.log"},named-formatter=APP-PATTERN,suffix=".yyyy-ww",rotate-size=50M)
 /subsystem=logging/logging-profile=incident/root-logger=ROOT:add(handlers=[incident-file,incident-error-file])
 
+# Inmarsat
+/subsystem=logging/logging-profile=inmarsat:add
+/subsystem=logging/logging-profile=inmarsat/pattern-formatter=APP-PATTERN:add(pattern="%d{yyyy-MM-dd HH:mm:ss} [%t] %X{requestId} %-5p %c{40} %X{userId}- %m%n")
+/subsystem=logging/logging-profile=inmarsat/periodic-size-rotating-file-handler=inmarsat-file:add(level=INFO,file={path=>"/app/logs/inmarsat/inmarsat.log"},named-formatter=APP-PATTERN,suffix=".yyyy-ww",rotate-size=50M)
+/subsystem=logging/logging-profile=inmarsat/periodic-size-rotating-file-handler=inmarsat-error-file:add(level=ERROR,file={path=>"/app/logs/inmarsat/inmarsat-error.log"},named-formatter=APP-PATTERN,suffix=".yyyy-ww",rotate-size=50M)
+/subsystem=logging/logging-profile=inmarsat/root-logger=ROOT:add(handlers=[inmarsat-file,inmarsat-error-file])
+
 # Movement
 /subsystem=logging/logging-profile=movement:add
 /subsystem=logging/logging-profile=movement/pattern-formatter=APP-PATTERN:add(pattern="%d{yyyy-MM-dd HH:mm:ss} [%t] %X{requestId} %-5p %c{40} %X{userId}- %m%n")
