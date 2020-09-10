@@ -13,19 +13,18 @@ copy of the GNU General Public License along with the IFDM Suite. If not, see <h
 */
 package eu.europa.ec.fisheries.uvms.docker.validation.movement;
 
-import eu.europa.ec.fisheries.schema.movement.asset.v1.VesselType;
-import eu.europa.ec.fisheries.schema.movement.v1.MovementPoint;
-import eu.europa.ec.fisheries.schema.movement.v1.MovementSourceType;
 import eu.europa.ec.fisheries.uvms.asset.client.model.AssetDTO;
 import eu.europa.ec.fisheries.uvms.docker.validation.asset.AssetTestHelper;
 import eu.europa.ec.fisheries.uvms.docker.validation.common.AbstractRest;
 import eu.europa.ec.fisheries.uvms.docker.validation.movement.model.ManualMovementDto;
-import eu.europa.ec.fisheries.uvms.docker.validation.movement.model.MicroMovement;
+import eu.europa.ec.fisheries.uvms.movement.model.dto.MovementDto;
 import org.junit.Test;
 
 import javax.ws.rs.core.Response;
 import java.time.Instant;
-import java.util.*;
+import java.util.Collections;
+import java.util.Date;
+import java.util.List;
 
 import static org.hamcrest.CoreMatchers.is;
 
@@ -35,15 +34,9 @@ public class ManualMovementRestIT extends AbstractRest {
     public void sendManualMovementTest() {
         Double latitude = 10d;
         Double longitude = 11d;
+        LatLong position = new LatLong(latitude, longitude, new Date());
         AssetDTO asset = AssetTestHelper.createTestAsset();
-        ManualMovementDto manualMovement = createManualMovement();
-        manualMovement.getAsset().setCfr(asset.getCfr());
-        manualMovement.getAsset().setIrcs(asset.getIrcs());
-        manualMovement.getAsset().setExtMarking(asset.getExternalMarking());
-        manualMovement.getAsset().setFlagState(asset.getFlagStateCode());
-        manualMovement.getAsset().setName(asset.getName());
-        manualMovement.getMovement().getLocation().setLatitude(latitude);
-        manualMovement.getMovement().getLocation().setLongitude(longitude);
+        ManualMovementDto manualMovement = ManualMovementRestHelper.mapToManualMovement(position, asset);
 
         Response response = ManualMovementRestHelper.sendTempMovement(manualMovement);
         assertEquals(200, response.getStatus());
@@ -54,8 +47,8 @@ public class ManualMovementRestIT extends AbstractRest {
         assertThat(latestMovements.size(), is(1));
         
         MovementDto createdMovement = latestMovements.get(0);
-        assertThat(createdMovement.getLatitude(), is(latitude));
-        assertThat(createdMovement.getLongitude(), is(longitude));
+        assertThat(createdMovement.getLocation().getLatitude(), is(latitude));
+        assertThat(createdMovement.getLocation().getLongitude(), is(longitude));
     }
 
     @Test
@@ -72,33 +65,11 @@ public class ManualMovementRestIT extends AbstractRest {
         assertThat(latestMovements.size(), is(1));
 
         MovementDto createdMovement = latestMovements.get(0);
-        assertEquals(Long.parseLong(epochMillis), createdMovement.getTime().toInstant().toEpochMilli());
-        assertEquals(createdMovement.getLatitude(), 0.8d, 0);
-        assertEquals(createdMovement.getLongitude(), 0.5d, 0);
+        assertEquals(Long.parseLong(epochMillis), createdMovement.getTimestamp().toEpochMilli());
+        assertEquals(createdMovement.getLocation().getLatitude(), 0.8d, 0);
+        assertEquals(createdMovement.getLocation().getLongitude(), 0.5d, 0);
     }
 
 
-    private static ManualMovementDto createManualMovement() {
-        ManualMovementDto movement = new ManualMovementDto();
-        VesselType asset = new VesselType();
-        asset.setCfr("T");
-        asset.setExtMarking("T");
-        asset.setFlagState("T");
-        asset.setIrcs("T");
-        asset.setName("T");
-        movement.setAsset(asset);
 
-        MicroMovement micro = new MicroMovement();
-        MovementPoint location = new MovementPoint();
-        location.setLatitude(0.0);
-        location.setLongitude(0.0);
-        micro.setLocation(location);
-        micro.setTimestamp(Instant.now());
-        micro.setHeading(0.0);
-        micro.setSpeed(0.0);
-        micro.setSource(MovementSourceType.MANUAL);
-        movement.setMovement(micro);
-
-        return movement;
-    }
 }

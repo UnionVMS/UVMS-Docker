@@ -11,7 +11,7 @@ set activity_pw=${db_password_activity}
 set mdr_pw=${db_password_mdr}
 set config_pw=${db_password_config}
 
-embed-server --server-config=standalone-full.xml
+embed-server --server-config=${SERVER_CONFIG}
 
 # Create driver
 /subsystem=datasources/jdbc-driver=postgresql:add( \
@@ -36,7 +36,8 @@ xa-data-source add \
 	--user-name=audit \
 	--password=$audit_pw \
 	--enabled=true \
-	--use-ccm=true
+	--use-ccm=true \
+	--no-recovery
 /subsystem=datasources/xa-data-source=jdbc\/uvms_audit/xa-datasource-properties=ServerName:add(value=postgres)
 /subsystem=datasources/xa-data-source=jdbc\/uvms_audit/xa-datasource-properties=PortNumber:add(value=5432)
 /subsystem=datasources/xa-data-source=jdbc\/uvms_audit/xa-datasource-properties=DatabaseName:add(value=db71u)
@@ -57,7 +58,8 @@ xa-data-source add \
 	--user-name=movement \
 	--password=$movement_pw \
 	--enabled=true \
-	--use-ccm=true
+	--use-ccm=true \
+	--no-recovery
 /subsystem=datasources/xa-data-source=jdbc\/uvms_movement/xa-datasource-properties=ServerName:add(value=postgres)
 /subsystem=datasources/xa-data-source=jdbc\/uvms_movement/xa-datasource-properties=PortNumber:add(value=5432)
 /subsystem=datasources/xa-data-source=jdbc\/uvms_movement/xa-datasource-properties=DatabaseName:add(value=db71u)
@@ -78,7 +80,8 @@ xa-data-source add \
 	--user-name=asset \
 	--password=$asset_pw \
 	--enabled=true \
-	--use-ccm=true
+	--use-ccm=true \
+	--no-recovery
 /subsystem=datasources/xa-data-source=jdbc\/uvms_asset/xa-datasource-properties=ServerName:add(value=postgres)
 /subsystem=datasources/xa-data-source=jdbc\/uvms_asset/xa-datasource-properties=PortNumber:add(value=5432)
 /subsystem=datasources/xa-data-source=jdbc\/uvms_asset/xa-datasource-properties=DatabaseName:add(value=db71u)
@@ -99,7 +102,8 @@ xa-data-source add \
 	--user-name=exchange \
 	--password=$exchange_pw \
 	--enabled=true \
-	--use-ccm=true
+	--use-ccm=true \
+	--no-recovery
 /subsystem=datasources/xa-data-source=jdbc\/uvms_exchange/xa-datasource-properties=ServerName:add(value=postgres)
 /subsystem=datasources/xa-data-source=jdbc\/uvms_exchange/xa-datasource-properties=PortNumber:add(value=5432)
 /subsystem=datasources/xa-data-source=jdbc\/uvms_exchange/xa-datasource-properties=DatabaseName:add(value=db71u)
@@ -120,7 +124,8 @@ xa-data-source add \
 	--user-name=usm \
 	--password=$usm_pw \
 	--enabled=true \
-	--use-ccm=true
+	--use-ccm=true \
+	--no-recovery
 /subsystem=datasources/xa-data-source=jdbc\/USM2/xa-datasource-properties=ServerName:add(value=postgres)
 /subsystem=datasources/xa-data-source=jdbc\/USM2/xa-datasource-properties=PortNumber:add(value=5432)
 /subsystem=datasources/xa-data-source=jdbc\/USM2/xa-datasource-properties=DatabaseName:add(value=db71u)
@@ -141,7 +146,8 @@ xa-data-source add \
 	--user-name=spatial \
 	--password=$spatial_pw \
 	--enabled=true \
-	--use-ccm=true
+	--use-ccm=true \
+	--no-recovery
 /subsystem=datasources/xa-data-source=uvms_spatial/xa-datasource-properties=ServerName:add(value=postgres)
 /subsystem=datasources/xa-data-source=uvms_spatial/xa-datasource-properties=PortNumber:add(value=5432)
 /subsystem=datasources/xa-data-source=uvms_spatial/xa-datasource-properties=DatabaseName:add(value=db71u)
@@ -162,7 +168,8 @@ xa-data-source add \
 	--user-name=reporting \
 	--password=$reporting_pw \
 	--enabled=true \
-	--use-ccm=true
+	--use-ccm=true \
+	--no-recovery
 /subsystem=datasources/xa-data-source=uvms_reporting/xa-datasource-properties=ServerName:add(value=postgres)
 /subsystem=datasources/xa-data-source=uvms_reporting/xa-datasource-properties=PortNumber:add(value=5432)
 /subsystem=datasources/xa-data-source=uvms_reporting/xa-datasource-properties=DatabaseName:add(value=db71u)
@@ -183,7 +190,8 @@ xa-data-source add \
 	--user-name=movementrules \
 	--password=$movementrules_pw \
 	--enabled=true \
-	--use-ccm=true
+	--use-ccm=true \
+	--no-recovery
 /subsystem=datasources/xa-data-source=jdbc\/uvms_movementrules/xa-datasource-properties=ServerName:add(value=postgres)
 /subsystem=datasources/xa-data-source=jdbc\/uvms_movementrules/xa-datasource-properties=PortNumber:add(value=5432)
 /subsystem=datasources/xa-data-source=jdbc\/uvms_movementrules/xa-datasource-properties=DatabaseName:add(value=db71u)
@@ -204,7 +212,8 @@ xa-data-source add \
 	--user-name=incident \
 	--password=$incident_pw \
 	--enabled=true \
-	--use-ccm=true
+	--use-ccm=true \
+	--no-recovery
 /subsystem=datasources/xa-data-source=jdbc\/uvms_incident/xa-datasource-properties=ServerName:add(value=postgres)
 /subsystem=datasources/xa-data-source=jdbc\/uvms_incident/xa-datasource-properties=PortNumber:add(value=5432)
 /subsystem=datasources/xa-data-source=jdbc\/uvms_incident/xa-datasource-properties=DatabaseName:add(value=db71u)
@@ -225,7 +234,8 @@ xa-data-source add \
 	--user-name=activity \
 	--password=$activity_pw \
 	--enabled=true \
-	--use-ccm=true
+	--use-ccm=true \
+	--no-recovery
 /subsystem=datasources/xa-data-source=uvms_activity/xa-datasource-properties=ServerName:add(value=postgres)
 /subsystem=datasources/xa-data-source=uvms_activity/xa-datasource-properties=PortNumber:add(value=5432)
 /subsystem=datasources/xa-data-source=uvms_activity/xa-datasource-properties=DatabaseName:add(value=db71u)
@@ -246,7 +256,8 @@ xa-data-source add \
 	--user-name=mdr \
 	--password=$mdr_pw \
 	--enabled=true \
-	--use-ccm=true
+	--use-ccm=true \
+	--no-recovery
 /subsystem=datasources/xa-data-source=uvms_mdr/xa-datasource-properties=ServerName:add(value=postgres)
 /subsystem=datasources/xa-data-source=uvms_mdr/xa-datasource-properties=PortNumber:add(value=5432)
 /subsystem=datasources/xa-data-source=uvms_mdr/xa-datasource-properties=DatabaseName:add(value=db71u)
@@ -267,9 +278,31 @@ xa-data-source add \
 	--user-name=config \
 	--password=$config_pw \
 	--enabled=true \
-	--use-ccm=true
+	--use-ccm=true \
+	--no-recovery
 /subsystem=datasources/xa-data-source=jdbc\/uvms_config/xa-datasource-properties=ServerName:add(value=postgres)
 /subsystem=datasources/xa-data-source=jdbc\/uvms_config/xa-datasource-properties=PortNumber:add(value=5432)
 /subsystem=datasources/xa-data-source=jdbc\/uvms_config/xa-datasource-properties=DatabaseName:add(value=db71u)
+
+# XA recovery
+xa-data-source add \
+	--name=recoveryDS \
+	--jndi-name=java:/jboss/datasources/recoveryDS \
+	--driver-name=postgresql \
+	--min-pool-size=0 \
+	--initial-pool-size=0 \
+	--max-pool-size=4 \
+	--pool-prefill=true \
+	--prepared-statements-cache-size=32 \
+	--track-statements=nowarn \
+	--valid-connection-checker-class-name=org.jboss.jca.adapters.jdbc.extensions.postgres.PostgreSQLValidConnectionChecker \
+	--exception-sorter-class-name=org.jboss.jca.adapters.jdbc.extensions.postgres.PostgreSQLExceptionSorter \
+	--user-name=postgres \
+	--password=postgres \
+	--enabled=true \
+	--use-ccm=true
+/subsystem=datasources/xa-data-source=recoveryDS/xa-datasource-properties=ServerName:add(value=postgres)
+/subsystem=datasources/xa-data-source=recoveryDS/xa-datasource-properties=PortNumber:add(value=5432)
+/subsystem=datasources/xa-data-source=recoveryDS/xa-datasource-properties=DatabaseName:add(value=db71u)
 
 stop-embedded-server

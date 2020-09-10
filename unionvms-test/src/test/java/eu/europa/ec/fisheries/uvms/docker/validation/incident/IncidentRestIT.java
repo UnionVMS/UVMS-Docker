@@ -1,121 +1,129 @@
 package eu.europa.ec.fisheries.uvms.docker.validation.incident;
 
 import eu.europa.ec.fisheries.schema.movementrules.ticket.v1.TicketStatusType;
-import eu.europa.ec.fisheries.schema.movementrules.ticket.v1.TicketType;
 import eu.europa.ec.fisheries.uvms.asset.client.model.AssetDTO;
 import eu.europa.ec.fisheries.uvms.docker.validation.asset.AssetTestHelper;
 import eu.europa.ec.fisheries.uvms.docker.validation.common.AbstractRest;
-import eu.europa.ec.fisheries.uvms.docker.validation.common.MessageHelper;
-import eu.europa.ec.fisheries.uvms.docker.validation.incident.dto.IncidentDto;
-import eu.europa.ec.fisheries.uvms.docker.validation.incident.dto.IncidentLogDto;
+import eu.europa.ec.fisheries.uvms.docker.validation.config.ConfigRestHelper;
+import eu.europa.ec.fisheries.uvms.docker.validation.movement.LatLong;
+import eu.europa.ec.fisheries.uvms.docker.validation.movement.MovementHelper;
+import eu.europa.ec.fisheries.uvms.docker.validation.movement.model.IncomingMovement;
+import eu.europa.ec.fisheries.uvms.docker.validation.system.helper.FLUXHelper;
+import eu.europa.ec.fisheries.uvms.incident.model.dto.IncidentDto;
+import eu.europa.ec.fisheries.uvms.incident.model.dto.IncidentLogDto;
+import eu.europa.ec.fisheries.uvms.incident.model.dto.IncidentTicketDto;
+import eu.europa.ec.fisheries.uvms.incident.model.dto.OpenAndRecentlyResolvedIncidentsDto;
+import eu.europa.ec.fisheries.uvms.incident.model.dto.enums.MovementSourceType;
+import eu.europa.ec.fisheries.uvms.incident.model.dto.enums.StatusEnum;
+import eu.europa.ec.fisheries.uvms.movement.model.dto.MovementDto;
 import org.junit.Test;
 
 import javax.ws.rs.core.GenericType;
 import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
 import java.time.Instant;
-import java.util.List;
+import java.time.temporal.ChronoUnit;
+import java.util.Date;
+import java.util.Map;
 import java.util.UUID;
-import java.util.concurrent.locks.LockSupport;
 
 public class IncidentRestIT extends AbstractRest {
 
-    public final String QUEUE_NAME = "IncidentEvent";
     public final String INCIDENT_CREATE = "Incident";
     public final String INCIDENT_UPDATE = "IncidentUpdate";
 
     @Test
     public void createAssetNotSendingIncidentTest() throws Exception {
         AssetDTO asset = AssetTestHelper.createAsset(AssetTestHelper.createBasicAsset());
-        TicketType ticket = createTicket(asset.getId());
-        IncidentDto dto = createAssetNotSendingIncident(ticket, INCIDENT_CREATE);
+        IncidentTicketDto ticket = IncidentTestHelper.createTicket(asset.getId());
+        IncidentDto dto = IncidentTestHelper.createAssetNotSendingIncident(ticket, INCIDENT_CREATE);
         assertNotNull(dto);
     }
 
     @Test
     public void getAssetNotSendingListTest() throws Exception {
-        List<IncidentDto> before = getAssetNotSendingIncidentList();
+        OpenAndRecentlyResolvedIncidentsDto before = IncidentTestHelper.getAllOpenAndRecentlyResolvedIncidents();
         AssetDTO asset = AssetTestHelper.createAsset(AssetTestHelper.createBasicAsset());
-        TicketType ticket = createTicket(asset.getId());
-        createAssetNotSendingIncident(ticket, INCIDENT_CREATE);
-        List<IncidentDto> after = getAssetNotSendingIncidentList();
-        assertEquals(before.size() + 1, after.size());
+        IncidentTicketDto ticket = IncidentTestHelper.createTicket(asset.getId());
+        IncidentTestHelper.createAssetNotSendingIncident(ticket, INCIDENT_CREATE);
+        OpenAndRecentlyResolvedIncidentsDto after = IncidentTestHelper.getAllOpenAndRecentlyResolvedIncidents();
+        assertEquals(before.getUnresolved().size() + 1, after.getUnresolved().size());
     }
 
     @Test
     public void updateAssetNotSendingStatusTest() throws Exception {
         AssetDTO asset = AssetTestHelper.createAsset(AssetTestHelper.createBasicAsset());
-        TicketType ticket = createTicket(asset.getId());
-        IncidentDto created = createAssetNotSendingIncident(ticket, INCIDENT_CREATE);
+        IncidentTicketDto ticket = IncidentTestHelper.createTicket(asset.getId());
+        IncidentDto created = IncidentTestHelper.createAssetNotSendingIncident(ticket, INCIDENT_CREATE);
 
-        assertNotEquals("RESOLVED", created.getStatus());
+        assertNotEquals(StatusEnum.RESOLVED, created.getStatus());
 
-        ticket.setStatus(TicketStatusType.CLOSED);
-        IncidentDto updated = createAssetNotSendingIncident(ticket, INCIDENT_UPDATE);
+        ticket.setType(null);
+        ticket.setMovementId(UUID.randomUUID().toString());
+        ticket.setMovementSource(MovementSourceType.FLUX);
+        IncidentDto updated = IncidentTestHelper.createAssetNotSendingIncident(ticket, INCIDENT_UPDATE);
 
-        assertEquals("RESOLVED", updated.getStatus());
+        assertEquals(StatusEnum.RESOLVED, updated.getStatus());
     }
 
     @Test
     public void getAssetNotSendingEventChangesTest() throws Exception {
         AssetDTO asset = AssetTestHelper.createAsset(AssetTestHelper.createBasicAsset());
-        TicketType ticket = createTicket(asset.getId());
-        IncidentDto incident = createAssetNotSendingIncident(ticket, INCIDENT_CREATE);
+        IncidentTicketDto ticket = IncidentTestHelper.createTicket(asset.getId());
+        IncidentDto incident = IncidentTestHelper.createAssetNotSendingIncident(ticket, INCIDENT_CREATE);
 
-        ticket.setStatus(TicketStatusType.CLOSED);
-        createAssetNotSendingIncident(ticket, INCIDENT_UPDATE);
+        ticket.setStatus(TicketStatusType.CLOSED.toString());
+        IncidentTestHelper.createAssetNotSendingIncident(ticket, INCIDENT_UPDATE);
 
-        List<IncidentLogDto> dtoList = getWebTarget()
-                .path("incident/rest/incident/assetNotSendingChanges")
+        Map<Long, IncidentLogDto> dtoList = getWebTarget()
+                .path("incident/rest/incident/incidentLogForIncident")
                 .path(String.valueOf(incident.getId()))
                 .request(MediaType.APPLICATION_JSON)
                 .header(HttpHeaders.AUTHORIZATION, getValidJwtToken())
-                .get(new GenericType<List<IncidentLogDto>>() {});
+                .get(new GenericType<Map<Long, IncidentLogDto>>() {});
 
         assertTrue(dtoList.size() > 0);
     }
 
-    private IncidentDto createAssetNotSendingIncident(TicketType ticket, String eventName) throws Exception {
-        sendMessage(ticket, eventName);
-        LockSupport.parkNanos(5000000000L);
 
-        return getWebTarget()
-                .path("incident/rest/incident/byTicketId")
-                .path(ticket.getGuid())
-                .request(MediaType.APPLICATION_JSON)
-                .header(HttpHeaders.AUTHORIZATION, getValidJwtToken())
-                .get(IncidentDto.class);
+    @Test
+    public void movementReceivedWithAssetInParkedStatusButNoIncident() throws Exception {
+
+        //Fix FlagState
+        ConfigRestHelper.setLocalFlagStateToSwe();
+
+        //Actual test
+        AssetDTO basicAsset = AssetTestHelper.createBasicAsset();
+        basicAsset.setParked(true);
+        AssetDTO asset = AssetTestHelper.createAsset(basicAsset);
+
+        FLUXHelper.sendPositionToFluxPlugin(asset,
+                new LatLong(56d, 11d, new Date(System.currentTimeMillis() - 10000)));
+
+        MovementHelper.pollMovementCreated();
+        Thread.sleep(1000);
+
+        Map<Long, IncidentDto> openTicketsForAsset = IncidentTestHelper.getOpenTicketsForAsset(asset.getId().toString());
+
+        assertEquals(0, openTicketsForAsset.size());
     }
 
-    private List<IncidentDto> getAssetNotSendingIncidentList() {
-        return getWebTarget()
-                .path("incident/rest/incident/assetNotSending")
-                .request(MediaType.APPLICATION_JSON)
-                .header(HttpHeaders.AUTHORIZATION, getValidJwtToken())
-                .get(new GenericType<List<IncidentDto>>() {});
-    }
-
-    private void sendMessage(TicketType ticket, String eventName) throws Exception {
-        try (MessageHelper messageHelper = new MessageHelper()) {
-            String asString = OBJECT_MAPPER.writeValueAsString(ticket);
-            messageHelper.sendMessageWithProperty(QUEUE_NAME, asString, eventName);
+    @Test
+    public void getIncidentsForAssetIdTest() throws Exception {
+        AssetDTO asset = AssetTestHelper.createAsset(AssetTestHelper.createBasicAsset());
+        MovementDto movement = null;
+        try (MovementHelper movementHelper = new MovementHelper()) {
+            IncomingMovement incomingMovement = movementHelper.createIncomingMovement(asset, new LatLong(56d, 11d, Date.from(Instant.now().minus(1, ChronoUnit.HOURS))));
+            movement = movementHelper.createMovement(incomingMovement);
         }
-    }
+        IncidentTicketDto ticket = IncidentTestHelper.createTicket(asset.getId());
+        ticket.setMovementId(movement.getId().toString());
+        IncidentDto incident = IncidentTestHelper.createAssetNotSendingIncident(ticket, INCIDENT_CREATE);
 
-    private TicketType createTicket(UUID assetId) {
-        TicketType ticket = new TicketType();
-        ticket.setGuid(UUID.randomUUID().toString());
-        ticket.setAssetGuid(assetId.toString());
-        ticket.setMovementGuid(UUID.randomUUID().toString());
-        ticket.setMobileTerminalGuid(UUID.randomUUID().toString());
-        ticket.setRuleName("Asset not sending");
-        ticket.setRuleGuid("Asset not sending");
-        ticket.setUpdatedBy("UVMS");
-        ticket.setStatus(TicketStatusType.POLL_PENDING);
-        ticket.setTicketCount(1L);
-        String date = String.valueOf(Instant.now().getEpochSecond());
-        ticket.setOpenDate(date);
-        ticket.setUpdated(date);
-        return ticket;
+        Map<Long, IncidentDto> incidentMap = IncidentTestHelper.getOpenTicketsForAsset(asset.getId().toString());
+
+        assertTrue(incidentMap.size() > 0);
+        assertEquals(asset.getId(), incidentMap.get(incident.getId()).getAssetId());
+        assertEquals(movement.getId(), incidentMap.get(incident.getId()).getLastKnownLocation().getId());
     }
 }

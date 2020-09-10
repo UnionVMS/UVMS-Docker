@@ -1,4 +1,4 @@
-embed-server --server-config=standalone-full.xml
+embed-server --server-config=${SERVER_CONFIG}
 
 # Messaging configuration
 

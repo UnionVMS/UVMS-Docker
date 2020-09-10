@@ -11,12 +11,13 @@ copy of the GNU General Public License along with the IFDM Suite. If not, see <h
  */
 package eu.europa.ec.fisheries.uvms.docker.validation.asset;
 
-import java.util.List;
+import eu.europa.ec.fisheries.uvms.docker.validation.common.AbstractRest;
+import org.junit.Test;
+
 import javax.ws.rs.core.GenericType;
 import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
-import org.junit.Test;
-import eu.europa.ec.fisheries.uvms.docker.validation.common.AbstractRest;
+import java.util.List;
 
 public class AssetCustomCodesRestIT extends AbstractRest {
     

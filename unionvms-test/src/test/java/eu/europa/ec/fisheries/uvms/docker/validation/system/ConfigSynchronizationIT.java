@@ -11,21 +11,21 @@ copy of the GNU General Public License along with the IFDM Suite. If not, see <h
  */
 package eu.europa.ec.fisheries.uvms.docker.validation.system;
 
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.CoreMatchers.notNullValue;
-import java.util.List;
-import java.util.Map;
+import eu.europa.ec.fisheries.schema.config.types.v1.SettingType;
+import eu.europa.ec.fisheries.schema.exchange.plugin.v1.SetConfigRequest;
+import eu.europa.ec.fisheries.uvms.docker.validation.common.AbstractRest;
+import eu.europa.ec.fisheries.uvms.docker.validation.common.TopicListener;
+import eu.europa.ec.fisheries.uvms.docker.validation.system.helper.VMSSystemHelper;
+import org.junit.Test;
+
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.core.GenericType;
 import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
-import org.junit.Test;
-import eu.europa.ec.fisheries.schema.config.types.v1.SettingType;
-import eu.europa.ec.fisheries.schema.exchange.plugin.v1.SetConfigRequest;
-import eu.europa.ec.fisheries.uvms.commons.rest.dto.ResponseDto;
-import eu.europa.ec.fisheries.uvms.docker.validation.common.AbstractRest;
-import eu.europa.ec.fisheries.uvms.docker.validation.common.TopicListener;
-import eu.europa.ec.fisheries.uvms.docker.validation.system.helper.VMSSystemHelper;
+import java.util.List;
+import java.util.Map;
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.notNullValue;
 
 public class ConfigSynchronizationIT extends AbstractRest {
 
@@ -75,6 +75,7 @@ public class ConfigSynchronizationIT extends AbstractRest {
             SetConfigRequest configRequest = listener.listenOnEventBusForSpecificMessage(SetConfigRequest.class);
             assertThat(configRequest, is(notNullValue()));
             assertThat(configRequest.getConfigurations().getSetting().size(), is(6));
+            configRequest.getConfigurations().getSetting().removeIf(v -> !v.getKey().equals(expectedKey));
             assertThat(configRequest.getConfigurations().getSetting().get(0).getKey(), is(expectedKey));
             assertThat(configRequest.getConfigurations().getSetting().get(0).getValue(), is(newValue));
         }

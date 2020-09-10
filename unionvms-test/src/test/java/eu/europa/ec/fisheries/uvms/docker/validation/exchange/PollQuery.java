@@ -11,11 +11,11 @@ copy of the GNU General Public License along with the IFDM Suite. If not, see <h
  */
 package eu.europa.ec.fisheries.uvms.docker.validation.exchange;
 
+import eu.europa.ec.fisheries.schema.exchange.v1.ExchangeLogStatusTypeType;
+
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
-
-import eu.europa.ec.fisheries.schema.exchange.v1.ExchangeLogStatusTypeType;
 
 @XmlAccessorType(XmlAccessType.FIELD)
 public class PollQuery {

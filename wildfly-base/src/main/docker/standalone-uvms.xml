@@ -1016,9 +1016,10 @@
                 <simple name="java:global/asset_endpoint" value="http://localhost:8080/unionvms/asset/rest"/>
                 <simple name="java:global/spatial_endpoint" value="http://localhost:8080/unionvms/spatialSwe"/>
                 <simple name="java:global/movement-rules_endpoint" value="http://localhost:8080/unionvms/movement-rules/rest"/>
-                <simple name="java:global/exchange_endpoint" value="http://localhost:8080/unionvms/exchange/unsecured/rest"/>
+                <simple name="java:global/exchange_endpoint" value="http://localhost:8080/unionvms/exchange/rest"/>
                 <simple name="java:global/movement_endpoint" value="http://localhost:8080/unionvms/movement/rest"/>
                 <simple name="java:global/user_endpoint" value="http://localhost:8080/unionvms/user/rest"/>
+                <simple name="java:global/incident_endpoint" value="http://localhost:8080/unionvms/incident/rest"/>
                 <simple name="java:global/cors_allowed_host_regex" type="java.lang.String" value=".*" />
             </bindings>
         </subsystem>

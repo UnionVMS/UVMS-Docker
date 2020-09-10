@@ -4,7 +4,7 @@
 	<parent>
 		<groupId>eu.europa.ec.fisheries.uvms.docker</groupId>
 		<artifactId>uvms-docker</artifactId>
-		<version>3.43.4-SNAPSHOT</version>
+		<version>3.45.2-SNAPSHOT</version>
 		<relativePath>../pom.xml</relativePath>
 	</parent>
 
@@ -126,8 +126,8 @@
 		</dependency>
 
 		<dependency>
-			<groupId>eu.europa.ec.fisheries.uvms.stream-collector</groupId>
-			<artifactId>stream-collector</artifactId>
+			<groupId>eu.europa.ec.fisheries.uvms.web-gateway</groupId>
+			<artifactId>web-gateway</artifactId>
 			<type>war</type>
 		</dependency>
 
@@ -141,6 +141,11 @@
 			<groupId>eu.europa.ec.fisheries.uvms.plugins</groupId>
 			<artifactId>inmarsat-module</artifactId>
   			<type>ear</type>
+		</dependency>
+		<dependency>
+			<groupId>eu.europa.ec.fisheries.uvms.plugins.iridium</groupId>
+			<artifactId>siriusone</artifactId>
+			<type>war</type>
 		</dependency>
 		<dependency>
 			<groupId>eu.europa.ec.fisheries.uvms.plugins</groupId>
@@ -222,7 +227,7 @@
 			</plugin>
 			<plugin>
 				<artifactId>maven-assembly-plugin</artifactId>
-				<version>3.2.0</version>
+				<version>3.3.0</version>
 				<configuration>
 					<descriptors>
 						<descriptor>src/main/assembly/assembly.xml</descriptor>

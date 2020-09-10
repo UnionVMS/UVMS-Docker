@@ -15,6 +15,7 @@ import eu.europa.ec.fisheries.uvms.docker.validation.common.MessageHelper;
 import eu.europa.ec.fisheries.uvms.docker.validation.mobileterminal.MobileTerminalTestHelper;
 import eu.europa.ec.fisheries.uvms.docker.validation.mobileterminal.dto.MobileTerminalDto;
 import eu.europa.ec.fisheries.uvms.docker.validation.movement.model.IncomingMovement;
+import eu.europa.ec.fisheries.uvms.movement.model.dto.MovementDto;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Ignore;
@@ -36,7 +37,6 @@ import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Consumer;
 
 public class MovementPerformanceIT extends AbstractRest {
@@ -449,7 +449,7 @@ public class MovementPerformanceIT extends AbstractRest {
                 .unmarshal(new StringReader(textMessage.getText()));
     }
     public static SseEventSource getSseStream() {
-        WebTarget target = getWebTarget().path("exchange/unsecured/rest/sse/subscribe");
+        WebTarget target = getWebTarget().path("exchange/rest/unsecured/sse/subscribe");
         AuthorizationHeaderWebTarget jwtTarget = new AuthorizationHeaderWebTarget(target, getValidJwtToken());
         return SseEventSource.
                 target(jwtTarget).build();

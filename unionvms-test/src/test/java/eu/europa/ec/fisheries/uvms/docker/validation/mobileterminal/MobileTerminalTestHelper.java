@@ -1,11 +1,9 @@
 package eu.europa.ec.fisheries.uvms.docker.validation.mobileterminal;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import eu.europa.ec.fisheries.schema.mobileterminal.polltypes.v1.*;
 import eu.europa.ec.fisheries.schema.mobileterminal.types.v1.PluginCapability;
 import eu.europa.ec.fisheries.schema.mobileterminal.types.v1.PluginCapabilityType;
 import eu.europa.ec.fisheries.uvms.asset.client.model.AssetDTO;
-import eu.europa.ec.fisheries.uvms.commons.date.JsonBConfigurator;
 import eu.europa.ec.fisheries.uvms.docker.validation.common.AbstractHelper;
 import eu.europa.ec.fisheries.uvms.docker.validation.mobileterminal.dto.*;
 

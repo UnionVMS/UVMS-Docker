@@ -18,18 +18,19 @@ import eu.europa.ec.fisheries.uvms.asset.client.model.AssetDTO;
 import eu.europa.ec.fisheries.uvms.docker.validation.asset.AssetTestHelper;
 import eu.europa.ec.fisheries.uvms.docker.validation.common.AbstractRest;
 import eu.europa.ec.fisheries.uvms.docker.validation.movement.LatLong;
-import eu.europa.ec.fisheries.uvms.docker.validation.movement.MovementDto;
 import eu.europa.ec.fisheries.uvms.docker.validation.movement.MovementHelper;
 import eu.europa.ec.fisheries.uvms.docker.validation.system.helper.*;
 import eu.europa.ec.fisheries.uvms.docker.validation.user.UserHelper;
 import eu.europa.ec.fisheries.uvms.docker.validation.user.dto.Channel;
 import eu.europa.ec.fisheries.uvms.docker.validation.user.dto.EndPoint;
 import eu.europa.ec.fisheries.uvms.docker.validation.user.dto.Organisation;
+import eu.europa.ec.fisheries.uvms.movement.model.dto.MovementDto;
 import org.junit.After;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.w3c.dom.Element;
 import un.unece.uncefact.data.standard.fluxvesselpositionmessage._4.FLUXVesselPositionMessage;
+import un.unece.uncefact.data.standard.reusableaggregatebusinessinformationentity._18.FLUXReportDocumentType;
 import un.unece.uncefact.data.standard.reusableaggregatebusinessinformationentity._18.VesselGeographicalCoordinateType;
 import un.unece.uncefact.data.standard.reusableaggregatebusinessinformationentity._18.VesselPositionEventType;
 import un.unece.uncefact.data.standard.reusableaggregatebusinessinformationentity._18.VesselTransportMeansType;
@@ -47,13 +48,16 @@ import javax.xml.bind.Unmarshaller;
 import java.net.InetAddress;
 import java.net.NetworkInterface;
 import java.net.SocketException;
+import java.time.Duration;
 import java.time.Instant;
+import java.time.temporal.ChronoUnit;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.notNullValue;
+import static org.hamcrest.CoreMatchers.nullValue;
 
 public class FLUXSystemIT extends AbstractRest {
 
@@ -125,6 +129,7 @@ public class FLUXSystemIT extends AbstractRest {
         assertThat(message.getAD(), is(destination));
         assertThat(message.getDF(), is(DEFAULT_DATAFLOW));
         assertThat(message.getID(), is(notNullValue()));
+        assertThat(message.getTODT(), is(nullValue()));
     }
 
     @Test
@@ -181,6 +186,39 @@ public class FLUXSystemIT extends AbstractRest {
         }
         
         assertThat(message.getDF(), is(customDataflow));
+    }
+
+    @Test
+    public void sendPositionToFLUXWithCustomTODT() throws Exception {
+        String customTODTinMinutes = "4320";
+        String destination = "XNE";
+        setCustomTODT(destination, customTODTinMinutes);
+
+        AssetDTO asset = AssetTestHelper.createTestAsset();
+
+        CustomRuleType flagStateRule = CustomRuleBuilder.getBuilder()
+                .rule(CriteriaType.ASSET, SubCriteriaType.ASSET_CFR,
+                        ConditionType.EQ, asset.getCfr())
+                .action(ActionType.SEND_REPORT, VMSSystemHelper.FLUX_NAME, destination)
+                .build();
+
+        CustomRuleType createdCustomRule = CustomRuleHelper.createCustomRule(flagStateRule);
+        assertNotNull(createdCustomRule);
+
+        LatLong position = new LatLong(58.973, 5.781, Date.from(Instant.now()));
+        position.speed = 5;
+
+        PostMsgType message;
+        try (FLUXEndpoint fluxEndpoint = new FLUXEndpoint()) {
+            FLUXHelper.sendPositionToFluxPlugin(asset, position);
+            message = fluxEndpoint.getMessage(10000);
+        }
+
+        assertThat(message.getTODT(), is(notNullValue()));
+        Instant todt = message.getTODT().toGregorianCalendar().toInstant();
+        Instant expectedTODT = Instant.now().plus(Long.parseLong(customTODTinMinutes), ChronoUnit.MINUTES);
+        Duration duration = Duration.between(todt, expectedTODT);
+        assertTrue(duration.getSeconds() < 2);
     }
 
     @Test
@@ -338,6 +376,49 @@ public class FLUXSystemIT extends AbstractRest {
 
         Map<String, String> assetIds = vesselTransportMeans.getIDS().stream().collect(Collectors.toMap(IDType::getSchemeID, IDType::getValue));
         assertThat(assetIds.get("UVI"), is(asset.getImo()));
+    }
+
+    @Test
+    public void sendPositionToFLUXAndVerifyFLUXVesselReportDocumentAttributes() throws Exception {
+        String expectedDocumentIdSchemeId= "UUID";
+        String expectedPurposeCodeListId = "FLUX_GP_PURPOSE";
+        String expectedFluxPartySchemeId = "FLUX_GP_PARTY";
+        String expectedVesselCountrySchemeId = "TERRITORY";
+        String expectedPositionTypeCodeListId = "FLUX_VESSEL_POSITION_TYPE";
+
+        AssetDTO asset = AssetTestHelper.createTestAsset();
+
+        CustomRuleType flagStateRule = CustomRuleBuilder.getBuilder()
+                .setName("Area NOR => Send to NOR")
+                .rule(CriteriaType.AREA, SubCriteriaType.AREA_CODE,
+                        ConditionType.EQ, "NOR")
+                .action(ActionType.SEND_REPORT, VMSSystemHelper.FLUX_NAME, "SWE")
+                .build();
+
+        CustomRuleType createdCustomRule = CustomRuleHelper.createCustomRule(flagStateRule);
+        assertNotNull(createdCustomRule);
+
+        LatLong position = new LatLong(58.973, 5.781, Date.from(Instant.now()));
+        position.speed = 5;
+        position.bearing = 123;
+
+        PostMsgType message;
+        try (FLUXEndpoint fluxEndpoint = new FLUXEndpoint()) {
+            FLUXHelper.sendPositionToFluxPlugin(asset, position);
+            message = fluxEndpoint.getMessage(10000);
+        }
+        FLUXVesselPositionMessage positionMessage = extractVesselPositionMessage(message.getAny());
+
+        FLUXReportDocumentType fluxReportDocument = positionMessage.getFLUXReportDocument();
+        assertThat(fluxReportDocument.getIDS().get(0).getSchemeID(), is(expectedDocumentIdSchemeId));
+        assertThat(fluxReportDocument.getPurposeCode().getListID(), is(expectedPurposeCodeListId));
+        assertThat(fluxReportDocument.getOwnerFLUXParty().getIDS().get(0).getSchemeID(), is(expectedFluxPartySchemeId));
+
+        VesselTransportMeansType vesselTransportMeans = positionMessage.getVesselTransportMeans();
+        assertThat(vesselTransportMeans.getRegistrationVesselCountry().getID().getSchemeID(), is(expectedVesselCountrySchemeId));
+
+        VesselPositionEventType vesselPositionEventType = vesselTransportMeans.getSpecifiedVesselPositionEvents().get(0);
+        assertThat(vesselPositionEventType.getTypeCode().getListID(), is(expectedPositionTypeCodeListId));
     }
 
     @Test
@@ -517,5 +598,35 @@ public class FLUXSystemIT extends AbstractRest {
             }
         }
         return "host.docker.internal";
+    }
+
+    private void setCustomTODT(String destination, String todtMinutes) throws InterruptedException {
+        String expectedKey = "eu.europa.ec.fisheries.uvms.plugins.flux.movement.TODT_MAP";
+
+        List<SettingType> response = getWebTarget()
+                .path("config/rest/settings")
+                .queryParam("moduleName", "exchange")
+                .request(MediaType.APPLICATION_JSON)
+                .header(HttpHeaders.AUTHORIZATION, getValidJwtToken())
+                .get(new GenericType<List<SettingType>>() {});
+
+        SettingType expectedSetting = null;
+        for (SettingType settingType : response) {
+            if (settingType.getKey().equals(expectedKey)) {
+                expectedSetting = settingType;
+            }
+        }
+        assertThat(expectedSetting, is(notNullValue()));
+
+        expectedSetting.setValue(destination + ":" + todtMinutes);
+
+        getWebTarget()
+            .path("config/rest/settings")
+            .path(expectedSetting.getId().toString())
+            .request(MediaType.APPLICATION_JSON)
+            .header(HttpHeaders.AUTHORIZATION, getValidJwtToken())
+            .put(Entity.json(expectedSetting));
+
+        TimeUnit.SECONDS.sleep(1);
     }
 }
