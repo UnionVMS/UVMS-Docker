@@ -18,7 +18,6 @@ import eu.europa.ec.fisheries.uvms.docker.validation.movement.ManualMovementRest
 import eu.europa.ec.fisheries.uvms.docker.validation.movement.MovementHelper;
 import eu.europa.ec.fisheries.uvms.docker.validation.movement.model.ManualMovementDto;
 import eu.europa.ec.fisheries.uvms.docker.validation.movement.model.MicroMovement;
-import eu.europa.ec.fisheries.uvms.docker.validation.system.helper.FLUXHelper;
 import eu.europa.ec.fisheries.uvms.docker.validation.system.helper.VMSSystemHelper;
 import eu.europa.ec.fisheries.uvms.docker.validation.webgateway.dto.ExtendedIncidentLogDto;
 import eu.europa.ec.fisheries.uvms.incident.model.dto.IncidentDto;
@@ -47,7 +46,7 @@ public class IncidentCollectionIT extends AbstractRest {
     public final String INCIDENT_UPDATE = "IncidentUpdate";
 
     @BeforeClass
-    public static void beforeClass() throws InterruptedException {
+    public static void beforeClass() throws Exception {
         ConfigRestHelper.setLocalFlagStateToSwe();
         Thread.sleep(5000);
     }
