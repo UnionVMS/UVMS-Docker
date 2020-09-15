@@ -304,8 +304,6 @@ public class IncidentCollectionIT extends AbstractRest {
         AssetDTO updatedAsset = AssetTestHelper.getAssetByGuid(asset.getId());
         assertTrue(updatedAsset.getId().toString(), updatedAsset.isParked());
 
-        MovementHelper.pollMovementCreated();
-        Thread.sleep(1000);
         response = getWebTarget()
                 .path("movement-rules/rest/previousReports/list")
                 .request(MediaType.APPLICATION_JSON)
@@ -354,8 +352,6 @@ public class IncidentCollectionIT extends AbstractRest {
         AssetDTO updatedAsset = AssetTestHelper.getAssetByGuid(asset.getId());
         assertFalse(updatedAsset.getId().toString(), updatedAsset.isParked());
 
-        MovementHelper.pollMovementCreated();
-        Thread.sleep(1000);
         response = getWebTarget()
                 .path("movement-rules/rest/previousReports/list")
                 .request(MediaType.APPLICATION_JSON)
