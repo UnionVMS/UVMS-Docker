@@ -29,6 +29,7 @@ public class TopicListener implements Closeable {
 
     public static final String EVENT_BUS = "jms.topic.EventBus";
     public static final String EVENT_STREAM = "jms.topic.EventStream";
+    public static final String CONFIG_STATUS = "jms.topic.ConfigStatus";
     
     private static final Logger log = LoggerFactory.getLogger(TopicListener.class.getSimpleName());
     private Connection connection;
