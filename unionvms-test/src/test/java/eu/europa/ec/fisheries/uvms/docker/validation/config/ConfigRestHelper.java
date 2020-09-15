@@ -25,9 +25,7 @@ public class ConfigRestHelper extends AbstractHelper {
                 .header(HttpHeaders.AUTHORIZATION, getValidJwtToken())
                 .get(new GenericType<List<SettingType>>() {});
 
-        SettingType flux_local_nation_code = dtoList.stream().filter(setting -> {
-            return setting.getKey().equals(settingKey);
-        }).findAny().get();
+        SettingType flux_local_nation_code = dtoList.stream().filter(setting -> setting.getKey().equals(settingKey)).findAny().get();
         flux_local_nation_code.setValue(settingValue);
 
         try (TopicListener topicListener = new TopicListener(TopicListener.CONFIG_STATUS, null)) {
