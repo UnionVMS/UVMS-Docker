@@ -65,6 +65,10 @@ public class VMSSystemHelper {
         return triggerBasicRuleWithAction(ActionType.SEND_REPORT, NAF_NAME, nation, SetReportRequest.class, NAF_SELECTOR, true);
     }
 
+    public static SetReportRequest triggerBasicRuleAndSendToNAF(AssetDTO asset, String nation) throws Exception {
+        return triggerBasicRuleWithAction(asset, ActionType.SEND_REPORT, NAF_NAME, nation, SetReportRequest.class, NAF_SELECTOR, true);
+    }
+
     public static SetCommandRequest triggerBasicRuleAndSendEmail(String email) throws Exception {
         return triggerBasicRuleWithAction(ActionType.EMAIL, email, SetCommandRequest.class, emailSelector, true);
     }
@@ -72,12 +76,16 @@ public class VMSSystemHelper {
     private static <T> T triggerBasicRuleWithAction(ActionType actionType, String actionValue, Class<T> expectedType, String selector, boolean createTicket) throws Exception {
         return triggerBasicRuleWithAction(actionType, null, actionValue, expectedType, selector, createTicket);
     }
-    
+
     private static <T> T triggerBasicRuleWithAction(ActionType actionType, String target, String actionValue, Class<T> expectedType, String selector, boolean createTicket) throws Exception {
+        AssetDTO asset = AssetTestHelper.createTestAsset();
+        return triggerBasicRuleWithAction(asset, actionType, target, actionValue, expectedType, selector, createTicket);
+    }
+    
+    private static <T> T triggerBasicRuleWithAction(AssetDTO asset, ActionType actionType, String target, String actionValue, Class<T> expectedType, String selector, boolean createTicket) throws Exception {
         try {
             Instant timestamp = Instant.now();
-            AssetDTO asset = AssetTestHelper.createTestAsset();
-    
+
             CustomRuleType flagStateRule = CustomRuleBuilder.getBuilder()
                     .setName("Flag state => FLUX DNK")
                     .rule(CriteriaType.ASSET, SubCriteriaType.FLAG_STATE, 

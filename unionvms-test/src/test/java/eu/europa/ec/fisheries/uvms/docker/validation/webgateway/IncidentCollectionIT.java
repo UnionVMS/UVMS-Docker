@@ -19,10 +19,8 @@ import eu.europa.ec.fisheries.uvms.docker.validation.movement.MovementHelper;
 import eu.europa.ec.fisheries.uvms.docker.validation.movement.model.ManualMovementDto;
 import eu.europa.ec.fisheries.uvms.docker.validation.movement.model.MicroMovement;
 import eu.europa.ec.fisheries.uvms.docker.validation.system.helper.FLUXHelper;
+import eu.europa.ec.fisheries.uvms.docker.validation.system.helper.VMSSystemHelper;
 import eu.europa.ec.fisheries.uvms.docker.validation.webgateway.dto.ExtendedIncidentLogDto;
-import eu.europa.ec.fisheries.uvms.docker.validation.webgateway.dto.NoteAndIncidentDto;
-import eu.europa.ec.fisheries.uvms.docker.validation.webgateway.dto.PollAndIncidentDto;
-import eu.europa.ec.fisheries.uvms.incident.model.dto.EventCreationDto;
 import eu.europa.ec.fisheries.uvms.incident.model.dto.IncidentDto;
 import eu.europa.ec.fisheries.uvms.incident.model.dto.IncidentLogDto;
 import eu.europa.ec.fisheries.uvms.incident.model.dto.IncidentTicketDto;
@@ -31,6 +29,7 @@ import eu.europa.ec.fisheries.uvms.incident.model.dto.enums.IncidentType;
 import eu.europa.ec.fisheries.uvms.incident.model.dto.enums.StatusEnum;
 import eu.europa.ec.fisheries.uvms.mobileterminal.model.dto.CommentDto;
 import eu.europa.ec.fisheries.uvms.movement.model.dto.MovementDto;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 import javax.ws.rs.client.Entity;
@@ -46,6 +45,12 @@ public class IncidentCollectionIT extends AbstractRest {
 
     public final String INCIDENT_CREATE = "Incident";
     public final String INCIDENT_UPDATE = "IncidentUpdate";
+
+    @BeforeClass
+    public static void beforeClass() throws InterruptedException {
+        ConfigRestHelper.setLocalFlagStateToSwe();
+        Thread.sleep(5000);
+    }
 
     @Test
     public void linkIncidentLogToNoteTest() throws Exception {
@@ -267,17 +272,12 @@ public class IncidentCollectionIT extends AbstractRest {
     @Test
     public void updateTypeToParkedAndCheckAssetAsParked() throws Exception {
 
-        ConfigRestHelper.setLocalFlagStateToSwe();
-
         AssetDTO asset = AssetTestHelper.createAsset(AssetTestHelper.createBasicAsset());
         MobileTerminalDto mt = MobileTerminalTestHelper.createMobileTerminal();
         MobileTerminalTestHelper.assignMobileTerminal(asset, mt);
 
-        FLUXHelper.sendPositionToFluxPlugin(asset,
-                new LatLong(56d, 11d, new Date(System.currentTimeMillis() - 10000)));
+        VMSSystemHelper.triggerBasicRuleAndSendToNAF(asset, "Name " + generateARandomStringWithMaxLength(10));
 
-        MovementHelper.pollMovementCreated();
-        Thread.sleep(1500);
         Response response = getWebTarget()
                 .path("movement-rules/rest/previousReports/list")
                 .request(MediaType.APPLICATION_JSON)
@@ -285,6 +285,7 @@ public class IncidentCollectionIT extends AbstractRest {
                 .get(Response.class);
         assertEquals(200, response.getStatus());
         String previousReport = response.readEntity(String.class);
+        checkForAppErrorMessage(previousReport);
         assertTrue(previousReport.contains(asset.getId().toString()));
 
         IncidentTicketDto ticket = IncidentTestHelper.createTicket(asset.getId());
@@ -300,12 +301,11 @@ public class IncidentCollectionIT extends AbstractRest {
                 .header(HttpHeaders.AUTHORIZATION, getValidJwtToken())
                 .put(Entity.json(incidentDto), Response.class);
         assertEquals(200, response.getStatus());
+        checkForAppErrorMessage(response.readEntity(String.class));
 
         AssetDTO updatedAsset = AssetTestHelper.getAssetByGuid(asset.getId());
         assertTrue(updatedAsset.getId().toString(), updatedAsset.isParked());
 
-        MovementHelper.pollMovementCreated();
-        Thread.sleep(1000);
         response = getWebTarget()
                 .path("movement-rules/rest/previousReports/list")
                 .request(MediaType.APPLICATION_JSON)
@@ -313,23 +313,19 @@ public class IncidentCollectionIT extends AbstractRest {
                 .get(Response.class);
         assertEquals(200, response.getStatus());
         previousReport = response.readEntity(String.class);
+        checkForAppErrorMessage(previousReport);
         assertFalse(previousReport.contains(asset.getId().toString()));
     }
 
     @Test
     public void updateTypeToManualAndCheckAssetAsNotParked() throws Exception {
 
-        ConfigRestHelper.setLocalFlagStateToSwe();
-
         AssetDTO asset = AssetTestHelper.createAsset(AssetTestHelper.createBasicAsset());
         MobileTerminalDto mt = MobileTerminalTestHelper.createMobileTerminal();
         MobileTerminalTestHelper.assignMobileTerminal(asset, mt);
 
-        FLUXHelper.sendPositionToFluxPlugin(asset,
-                new LatLong(56d, 11d, new Date(System.currentTimeMillis() - 10000)));
+        VMSSystemHelper.triggerBasicRuleAndSendToNAF(asset, "Name " + generateARandomStringWithMaxLength(10));
 
-        MovementHelper.pollMovementCreated();
-        Thread.sleep(1500);
         Response response = getWebTarget()
                 .path("movement-rules/rest/previousReports/list")
                 .request(MediaType.APPLICATION_JSON)
@@ -337,6 +333,7 @@ public class IncidentCollectionIT extends AbstractRest {
                 .get(Response.class);
         assertEquals(200, response.getStatus());
         String previousReport = response.readEntity(String.class);
+        checkForAppErrorMessage(previousReport);
         assertTrue(previousReport.contains(asset.getId().toString()));
 
         IncidentTicketDto ticket = IncidentTestHelper.createTicket(asset.getId());
@@ -350,12 +347,11 @@ public class IncidentCollectionIT extends AbstractRest {
                 .header(HttpHeaders.AUTHORIZATION, getValidJwtToken())
                 .put(Entity.json(incidentDto), Response.class);
         assertEquals(200, response.getStatus());
+        checkForAppErrorMessage(response.readEntity(String.class));
 
         AssetDTO updatedAsset = AssetTestHelper.getAssetByGuid(asset.getId());
         assertFalse(updatedAsset.getId().toString(), updatedAsset.isParked());
 
-        MovementHelper.pollMovementCreated();
-        Thread.sleep(1000);
         response = getWebTarget()
                 .path("movement-rules/rest/previousReports/list")
                 .request(MediaType.APPLICATION_JSON)
@@ -363,6 +359,7 @@ public class IncidentCollectionIT extends AbstractRest {
                 .get(Response.class);
         assertEquals(200, response.getStatus());
         previousReport = response.readEntity(String.class);
+        checkForAppErrorMessage(previousReport);
         assertTrue(previousReport.contains(asset.getId().toString()));
     }
 

@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import eu.europa.ec.fisheries.uvms.docker.validation.AppError;
 import org.junit.Assert;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -114,6 +115,16 @@ public abstract class AbstractRest extends Assert {
         myCalendar.set(Calendar.SECOND, sec);
         myCalendar.set(Calendar.MILLISECOND, millis);
         return myCalendar.getTime();
+    }
+
+    public static void checkForAppErrorMessage(String json){
+        if(json.contains("code:")){
+            try {
+                throw new RuntimeException(OBJECT_MAPPER.readValue(json, AppError.class).description);
+            } catch (JsonProcessingException e) {
+                throw new RuntimeException(e);
+            }
+        }
     }
 
     protected static String generateARandomStringWithMaxLength(int len) {
