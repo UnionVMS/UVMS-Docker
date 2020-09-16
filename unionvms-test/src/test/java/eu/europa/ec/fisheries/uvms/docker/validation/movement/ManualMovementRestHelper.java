@@ -25,7 +25,7 @@ import javax.ws.rs.core.Response;
 
 public class ManualMovementRestHelper extends AbstractHelper {
 
-    public static Response sendTempMovement(ManualMovementDto movementDto) {
+    public static Response sendManualMovement(ManualMovementDto movementDto) {
         return getWebTarget()
                 .path("movement/rest/manualMovement")
                 .request(MediaType.APPLICATION_JSON)
@@ -33,7 +33,7 @@ public class ManualMovementRestHelper extends AbstractHelper {
                 .post(Entity.json(movementDto), Response.class);
     }
 
-    public static Response sendTempMovement(String movementDto) {
+    public static Response sendManualMovement(String movementDto) {
         return getWebTarget()
                 .path("movement/rest/manualMovement")
                 .request(MediaType.APPLICATION_JSON)

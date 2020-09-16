@@ -221,7 +221,7 @@ public class IncidentCollectionIT extends AbstractRest {
         LatLong position = new LatLong(latitude, longitude, new Date(System.currentTimeMillis() - 60000));
         ManualMovementDto manualMovement = ManualMovementRestHelper.mapToManualMovement(position, asset);
 
-        Response response = ManualMovementRestHelper.sendTempMovement(manualMovement);
+        Response response = ManualMovementRestHelper.sendManualMovement(manualMovement);
         assertEquals(200, response.getStatus());
         MovementHelper.pollMovementCreated();
         List<MovementDto> latestMovements = MovementHelper.getLatestMovements(Collections.singletonList(asset.getId().toString()));
@@ -234,7 +234,7 @@ public class IncidentCollectionIT extends AbstractRest {
 
         position = new LatLong(latitude, longitude, new Date());
         manualMovement = ManualMovementRestHelper.mapToManualMovement(position, asset);
-        response = ManualMovementRestHelper.sendTempMovement(manualMovement);
+        response = ManualMovementRestHelper.sendManualMovement(manualMovement);
         assertEquals(200, response.getStatus());
 
         MovementHelper.pollMovementCreated();

@@ -797,7 +797,7 @@ public class RulesAlarmIT extends AbstractRest {
         LatLong positionDnk = new LatLong(56d, 10.5, new Date());
         try (TopicListener topicListener = new TopicListener(VMSSystemHelper.FLUX_SELECTOR)) {
             ManualMovementDto manualMovement = ManualMovementRestHelper.mapToManualMovement(positionDnk, asset);
-            ManualMovementRestHelper.sendTempMovement(manualMovement);
+            ManualMovementRestHelper.sendManualMovement(manualMovement);
             CustomRuleHelper.pollTicketCreated();
 
             SetReportRequest setReportRequest = topicListener.listenOnEventBusForSpecificMessage(SetReportRequest.class);
@@ -860,7 +860,7 @@ public class RulesAlarmIT extends AbstractRest {
         LatLong manualPositionDnk = new LatLong(56d, 10.5, new Date());
         try (TopicListener topicListener = new TopicListener(VMSSystemHelper.FLUX_SELECTOR)) {
             ManualMovementDto manualMovement = ManualMovementRestHelper.mapToManualMovement(manualPositionDnk, asset);
-            ManualMovementRestHelper.sendTempMovement(manualMovement);
+            ManualMovementRestHelper.sendManualMovement(manualMovement);
             CustomRuleHelper.pollTicketCreated();
 
             SetReportRequest setReportRequest = topicListener.listenOnEventBusForSpecificMessage(SetReportRequest.class);
