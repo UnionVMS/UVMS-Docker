@@ -38,7 +38,7 @@ public class ManualMovementRestIT extends AbstractRest {
         AssetDTO asset = AssetTestHelper.createTestAsset();
         ManualMovementDto manualMovement = ManualMovementRestHelper.mapToManualMovement(position, asset);
 
-        Response response = ManualMovementRestHelper.sendTempMovement(manualMovement);
+        Response response = ManualMovementRestHelper.sendManualMovement(manualMovement);
         assertEquals(200, response.getStatus());
         
         MovementHelper.pollMovementCreated();
@@ -56,7 +56,7 @@ public class ManualMovementRestIT extends AbstractRest {
         String input = "{\"movement\":{\"location\":{\"longitude\":0.5,\"latitude\":0.8},\"heading\":0.0,\"timestamp\":1575545948,\"speed\":0.0},\"asset\":{\"ircs\":\"OWIF\"}}";
         String epochMillis = "" + Instant.now().toEpochMilli();
         input = input.replace("1575545948", epochMillis);
-        Response response = ManualMovementRestHelper.sendTempMovement(input);
+        Response response = ManualMovementRestHelper.sendManualMovement(input);
         assertEquals(200, response.getStatus());
 
         MovementHelper.pollMovementCreated();

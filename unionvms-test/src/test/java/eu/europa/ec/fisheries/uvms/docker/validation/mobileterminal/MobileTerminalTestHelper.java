@@ -130,14 +130,6 @@ public final class MobileTerminalTestHelper extends AbstractHelper {
 	}
 
 	public static MobileTerminalDto persistMobileTerminal(MobileTerminalDto terminal) {
-
-		/*try {
-			new JsonBConfigurator().getContext(null).toJson(terminal);
-			OBJECT_MAPPER.writeValueAsString(terminal);
-		} catch (JsonProcessingException e) {
-			e.printStackTrace();
-		}*/
-
 		MobileTerminalDto createdTerminal = getWebTarget()
                 .path("asset/rest/mobileterminal")
                 .request(MediaType.APPLICATION_JSON)
