@@ -338,7 +338,7 @@ public class IncidentCollectionIT extends AbstractRest {
         IncidentTicketDto ticket = IncidentTestHelper.createTicket(asset.getId());
         IncidentDto incidentDto = IncidentTestHelper.createAssetNotSendingIncident(ticket, INCIDENT_CREATE);
 
-        incidentDto.setType(IncidentType.MANUAL_MODE);
+        incidentDto.setType(IncidentType.MANUAL_POSITION_MODE);
 
         response = getWebTarget()
                 .path("web-gateway/rest/incidents/updateIncident")
