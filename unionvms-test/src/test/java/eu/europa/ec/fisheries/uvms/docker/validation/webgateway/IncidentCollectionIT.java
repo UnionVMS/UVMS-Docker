@@ -145,7 +145,7 @@ public class IncidentCollectionIT extends AbstractRest {
         assertTrue(logStatusType != null);
 
         assertEquals(TypeRefType.POLL, logStatusType.getTypeRef().getType());
-        assertEquals(pollId, logStatusType.getTypeRef().getRefGuid());
+        assertTrue(pollId.contains(logStatusType.getTypeRef().getRefGuid()));
         assertFalse(logStatusType.getHistory().isEmpty());
 
     }
@@ -179,7 +179,7 @@ public class IncidentCollectionIT extends AbstractRest {
                 .post(Entity.json(pollRequestType), Response.class);
         assertEquals(200, response.getStatus());
 
-        UUID pollId = UUID.fromString(response.readEntity(String.class));
+        String pollId = response.readEntity(String.class);
         assertNotNull(pollId);
 
         response = getWebTarget()
@@ -204,7 +204,7 @@ public class IncidentCollectionIT extends AbstractRest {
         assertTrue(logStatusType != null);
 
         assertEquals(TypeRefType.POLL, logStatusType.getTypeRef().getType());
-        assertEquals(pollId.toString(), logStatusType.getTypeRef().getRefGuid());
+        assertTrue(pollId.contains(logStatusType.getTypeRef().getRefGuid()));
         assertFalse(logStatusType.getHistory().isEmpty());
 
     }
