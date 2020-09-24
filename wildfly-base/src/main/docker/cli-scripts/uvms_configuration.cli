@@ -41,112 +41,112 @@ embed-server --server-config=${SERVER_CONFIG}
 /subsystem=logging/logging-profile=ais/pattern-formatter=APP-PATTERN:add(pattern="%d{yyyy-MM-dd HH:mm:ss} [%t] %X{requestId} %-5p %c{40} %X{userId}- %m%n")
 /subsystem=logging/logging-profile=ais/periodic-size-rotating-file-handler=ais-file:add(level=INFO,file={path=>"/app/logs/ais/ais.log"},named-formatter=APP-PATTERN,suffix=".yyyy-ww",rotate-size=50M)
 /subsystem=logging/logging-profile=ais/periodic-size-rotating-file-handler=ais-error-file:add(level=ERROR,file={path=>"/app/logs/ais/ais-error.log"},named-formatter=APP-PATTERN,suffix=".yyyy-ww",rotate-size=50M)
-/subsystem=logging/logging-profile=ais/root-logger=ROOT:add(handlers=[ais-file,ais-error-file])
+/subsystem=logging/logging-profile=ais/logger=eu.europa:add(handlers=[ais-file,ais-error-file])
 
 # Asset
 /subsystem=logging/logging-profile=asset:add
 /subsystem=logging/logging-profile=asset/pattern-formatter=APP-PATTERN:add(pattern="%d{yyyy-MM-dd HH:mm:ss} [%t] %X{requestId} %-5p %c{40} %X{userId}- %m%n")
 /subsystem=logging/logging-profile=asset/periodic-size-rotating-file-handler=asset-file:add(level=INFO,file={path=>"/app/logs/asset/asset.log"},named-formatter=APP-PATTERN,suffix=".yyyy-ww",rotate-size=50M)
 /subsystem=logging/logging-profile=asset/periodic-size-rotating-file-handler=asset-error-file:add(level=ERROR,file={path=>"/app/logs/asset/asset-error.log"},named-formatter=APP-PATTERN,suffix=".yyyy-ww",rotate-size=50M)
-/subsystem=logging/logging-profile=asset/root-logger=ROOT:add(handlers=[asset-file,asset-error-file])
+/subsystem=logging/logging-profile=asset/logger=eu.europa:add(handlers=[asset-file,asset-error-file])
 
 # Audit
 /subsystem=logging/logging-profile=audit:add
 /subsystem=logging/logging-profile=audit/pattern-formatter=APP-PATTERN:add(pattern="%d{yyyy-MM-dd HH:mm:ss} [%t] %X{requestId} %-5p %c{40} %X{userId}- %m%n")
 /subsystem=logging/logging-profile=audit/periodic-size-rotating-file-handler=audit-file:add(level=INFO,file={path=>"/app/logs/audit/audit.log"},named-formatter=APP-PATTERN,suffix=".yyyy-ww",rotate-size=50M)
 /subsystem=logging/logging-profile=audit/periodic-size-rotating-file-handler=audit-error-file:add(level=ERROR,file={path=>"/app/logs/audit/audit-error.log"},named-formatter=APP-PATTERN,suffix=".yyyy-ww",rotate-size=50M)
-/subsystem=logging/logging-profile=audit/root-logger=ROOT:add(handlers=[audit-file,audit-error-file])
+/subsystem=logging/logging-profile=audit/logger=eu.europa:add(handlers=[audit-file,audit-error-file])
 
 # Config
 /subsystem=logging/logging-profile=config:add
 /subsystem=logging/logging-profile=config/pattern-formatter=APP-PATTERN:add(pattern="%d{yyyy-MM-dd HH:mm:ss} [%t] %X{requestId} %-5p %c{40} %X{userId}- %m%n")
 /subsystem=logging/logging-profile=config/periodic-size-rotating-file-handler=config-file:add(level=INFO,file={path=>"/app/logs/config/config.log"},named-formatter=APP-PATTERN,suffix=".yyyy-ww",rotate-size=50M)
 /subsystem=logging/logging-profile=config/periodic-size-rotating-file-handler=config-error-file:add(level=ERROR,file={path=>"/app/logs/config/config-error.log"},named-formatter=APP-PATTERN,suffix=".yyyy-ww",rotate-size=50M)
-/subsystem=logging/logging-profile=config/root-logger=ROOT:add(handlers=[config-file,config-error-file])
+/subsystem=logging/logging-profile=config/logger=eu.europa:add(handlers=[config-file,config-error-file])
 
 # Exchange
 /subsystem=logging/logging-profile=exchange:add
 /subsystem=logging/logging-profile=exchange/pattern-formatter=APP-PATTERN:add(pattern="%d{yyyy-MM-dd HH:mm:ss} [%t] %X{requestId} %-5p %c{40} %X{userId}- %m%n")
 /subsystem=logging/logging-profile=exchange/periodic-size-rotating-file-handler=exchange-file:add(level=INFO,file={path=>"/app/logs/exchange/exchange.log"},named-formatter=APP-PATTERN,suffix=".yyyy-ww",rotate-size=50M)
 /subsystem=logging/logging-profile=exchange/periodic-size-rotating-file-handler=exchange-error-file:add(level=ERROR,file={path=>"/app/logs/exchange/exchange-error.log"},named-formatter=APP-PATTERN,suffix=".yyyy-ww",rotate-size=50M)
-/subsystem=logging/logging-profile=exchange/root-logger=ROOT:add(handlers=[exchange-file,exchange-error-file])
+/subsystem=logging/logging-profile=exchange/logger=eu.europa:add(handlers=[exchange-file,exchange-error-file])
 
 # FLUX Plugin
 /subsystem=logging/logging-profile=flux-movement-plugin:add
 /subsystem=logging/logging-profile=flux-movement-plugin/pattern-formatter=APP-PATTERN:add(pattern="%d{yyyy-MM-dd HH:mm:ss} [%t] %X{requestId} %-5p %c{40} %X{userId}- %m%n")
 /subsystem=logging/logging-profile=flux-movement-plugin/periodic-size-rotating-file-handler=flux-movement-plugin-file:add(level=INFO,file={path=>"/app/logs/flux-movement-plugin/flux-movement-plugin.log"},named-formatter=APP-PATTERN,suffix=".yyyy-ww",rotate-size=50M)
 /subsystem=logging/logging-profile=flux-movement-plugin/periodic-size-rotating-file-handler=flux-movement-plugin-error-file:add(level=ERROR,file={path=>"/app/logs/flux-movement-plugin/flux-movement-plugin-error.log"},named-formatter=APP-PATTERN,suffix=".yyyy-ww",rotate-size=50M)
-/subsystem=logging/logging-profile=flux-movement-plugin/root-logger=ROOT:add(handlers=[flux-movement-plugin-file,flux-movement-plugin-error-file])
+/subsystem=logging/logging-profile=flux-movement-plugin/logger=eu.europa:add(handlers=[flux-movement-plugin-file,flux-movement-plugin-error-file])
 
 # FLUX Rest Plugin
 /subsystem=logging/logging-profile=flux-vesselposition-rest:add
 /subsystem=logging/logging-profile=flux-vesselposition-rest/pattern-formatter=APP-PATTERN:add(pattern="%d{yyyy-MM-dd HH:mm:ss} [%t] %X{requestId} %-5p %c{40} %X{userId}- %m%n")
 /subsystem=logging/logging-profile=flux-vesselposition-rest/periodic-size-rotating-file-handler=flux-vesselposition-rest-file:add(level=INFO,file={path=>"/app/logs/flux-vesselposition-rest/flux-vesselposition-rest.log"},named-formatter=APP-PATTERN,suffix=".yyyy-ww",rotate-size=50M)
 /subsystem=logging/logging-profile=flux-vesselposition-rest/periodic-size-rotating-file-handler=flux-vesselposition-rest-error-file:add(level=ERROR,file={path=>"/app/logs/flux-vesselposition-rest/flux-vesselposition-rest-error.log"},named-formatter=APP-PATTERN,suffix=".yyyy-ww",rotate-size=50M)
-/subsystem=logging/logging-profile=flux-vesselposition-rest/root-logger=ROOT:add(handlers=[flux-vesselposition-rest-file,flux-vesselposition-rest-error-file])
+/subsystem=logging/logging-profile=flux-vesselposition-rest/logger=eu.europa:add(handlers=[flux-vesselposition-rest-file,flux-vesselposition-rest-error-file])
 
 # Incident
 /subsystem=logging/logging-profile=incident:add
 /subsystem=logging/logging-profile=incident/pattern-formatter=APP-PATTERN:add(pattern="%d{yyyy-MM-dd HH:mm:ss} [%t] %X{requestId} %-5p %c{40} %X{userId}- %m%n")
 /subsystem=logging/logging-profile=incident/periodic-size-rotating-file-handler=incident-file:add(level=INFO,file={path=>"/app/logs/incident/incident.log"},named-formatter=APP-PATTERN,suffix=".yyyy-ww",rotate-size=50M)
 /subsystem=logging/logging-profile=incident/periodic-size-rotating-file-handler=incident-error-file:add(level=ERROR,file={path=>"/app/logs/incident/incident-error.log"},named-formatter=APP-PATTERN,suffix=".yyyy-ww",rotate-size=50M)
-/subsystem=logging/logging-profile=incident/root-logger=ROOT:add(handlers=[incident-file,incident-error-file])
+/subsystem=logging/logging-profile=incident/logger=eu.europa:add(handlers=[incident-file,incident-error-file])
 
 # Inmarsat
 /subsystem=logging/logging-profile=inmarsat:add
 /subsystem=logging/logging-profile=inmarsat/pattern-formatter=APP-PATTERN:add(pattern="%d{yyyy-MM-dd HH:mm:ss} [%t] %X{requestId} %-5p %c{40} %X{userId}- %m%n")
 /subsystem=logging/logging-profile=inmarsat/periodic-size-rotating-file-handler=inmarsat-file:add(level=INFO,file={path=>"/app/logs/inmarsat/inmarsat.log"},named-formatter=APP-PATTERN,suffix=".yyyy-ww",rotate-size=50M)
 /subsystem=logging/logging-profile=inmarsat/periodic-size-rotating-file-handler=inmarsat-error-file:add(level=ERROR,file={path=>"/app/logs/inmarsat/inmarsat-error.log"},named-formatter=APP-PATTERN,suffix=".yyyy-ww",rotate-size=50M)
-/subsystem=logging/logging-profile=inmarsat/root-logger=ROOT:add(handlers=[inmarsat-file,inmarsat-error-file])
+/subsystem=logging/logging-profile=inmarsat/logger=eu.europa:add(handlers=[inmarsat-file,inmarsat-error-file])
 
 # Movement
 /subsystem=logging/logging-profile=movement:add
 /subsystem=logging/logging-profile=movement/pattern-formatter=APP-PATTERN:add(pattern="%d{yyyy-MM-dd HH:mm:ss} [%t] %X{requestId} %-5p %c{40} %X{userId}- %m%n")
 /subsystem=logging/logging-profile=movement/periodic-size-rotating-file-handler=movement-file:add(level=INFO,file={path=>"/app/logs/movement/movement.log"},named-formatter=APP-PATTERN,suffix=".yyyy-ww",rotate-size=50M)
 /subsystem=logging/logging-profile=movement/periodic-size-rotating-file-handler=movement-error-file:add(level=ERROR,file={path=>"/app/logs/movement/movement-error.log"},named-formatter=APP-PATTERN,suffix=".yyyy-ww",rotate-size=50M)
-/subsystem=logging/logging-profile=movement/root-logger=ROOT:add(handlers=[movement-file,movement-error-file])
+/subsystem=logging/logging-profile=movement/logger=eu.europa:add(handlers=[movement-file,movement-error-file])
 
 # MovementRules
 /subsystem=logging/logging-profile=movement-rules:add
 /subsystem=logging/logging-profile=movement-rules/pattern-formatter=APP-PATTERN:add(pattern="%d{yyyy-MM-dd HH:mm:ss} [%t] %X{requestId} %-5p %c{40} %X{userId}- %m%n")
 /subsystem=logging/logging-profile=movement-rules/periodic-size-rotating-file-handler=movement-rules-file:add(level=INFO,file={path=>"/app/logs/movement-rules/movement-rules.log"},named-formatter=APP-PATTERN,suffix=".yyyy-ww",rotate-size=50M)
 /subsystem=logging/logging-profile=movement-rules/periodic-size-rotating-file-handler=movement-rules-error-file:add(level=ERROR,file={path=>"/app/logs/movement-rules/movement-rules-error.log"},named-formatter=APP-PATTERN,suffix=".yyyy-ww",rotate-size=50M)
-/subsystem=logging/logging-profile=movement-rules/root-logger=ROOT:add(handlers=[movement-rules-file,movement-rules-error-file])
+/subsystem=logging/logging-profile=movement-rules/logger=eu.europa:add(handlers=[movement-rules-file,movement-rules-error-file])
 
 # NAF
 /subsystem=logging/logging-profile=naf:add
 /subsystem=logging/logging-profile=naf/pattern-formatter=APP-PATTERN:add(pattern="%d{yyyy-MM-dd HH:mm:ss} [%t] %X{requestId} %-5p %c{40} %X{userId}- %m%n")
 /subsystem=logging/logging-profile=naf/periodic-size-rotating-file-handler=naf-file:add(level=INFO,file={path=>"/app/logs/naf/naf.log"},named-formatter=APP-PATTERN,suffix=".yyyy-ww",rotate-size=50M)
 /subsystem=logging/logging-profile=naf/periodic-size-rotating-file-handler=naf-error-file:add(level=ERROR,file={path=>"/app/logs/naf/naf-error.log"},named-formatter=APP-PATTERN,suffix=".yyyy-ww",rotate-size=50M)
-/subsystem=logging/logging-profile=naf/root-logger=ROOT:add(handlers=[naf-file,naf-error-file])
+/subsystem=logging/logging-profile=naf/logger=eu.europa:add(handlers=[naf-file,naf-error-file])
 
 # SiriusOne
 /subsystem=logging/logging-profile=siriusone:add
 /subsystem=logging/logging-profile=siriusone/pattern-formatter=APP-PATTERN:add(pattern="%d{yyyy-MM-dd HH:mm:ss} [%t] %X{requestId} %-5p %c{40} %X{userId}- %m%n")
 /subsystem=logging/logging-profile=siriusone/periodic-size-rotating-file-handler=siriusone-file:add(level=INFO,file={path=>"/app/logs/siriusone/siriusone.log"},named-formatter=APP-PATTERN,suffix=".yyyy-ww",rotate-size=50M)
 /subsystem=logging/logging-profile=siriusone/periodic-size-rotating-file-handler=siriusone-error-file:add(level=ERROR,file={path=>"/app/logs/siriusone/siriusone-error.log"},named-formatter=APP-PATTERN,suffix=".yyyy-ww",rotate-size=50M)
-/subsystem=logging/logging-profile=siriusone/root-logger=ROOT:add(handlers=[siriusone-file,siriusone-error-file])
+/subsystem=logging/logging-profile=siriusone/logger=eu.europa:add(handlers=[siriusone-file,siriusone-error-file])
 
 # Spatial
 /subsystem=logging/logging-profile=spatialSwe:add
 /subsystem=logging/logging-profile=spatialSwe/pattern-formatter=APP-PATTERN:add(pattern="%d{yyyy-MM-dd HH:mm:ss} [%t] %X{requestId} %-5p %c{40} %X{userId}- %m%n")
 /subsystem=logging/logging-profile=spatialSwe/periodic-size-rotating-file-handler=spatialSwe-file:add(level=INFO,file={path=>"/app/logs/spatialSwe/spatialSwe.log"},named-formatter=APP-PATTERN,suffix=".yyyy-ww",rotate-size=50M)
 /subsystem=logging/logging-profile=spatialSwe/periodic-size-rotating-file-handler=spatialSwe-error-file:add(level=ERROR,file={path=>"/app/logs/spatialSwe/spatialSwe-error.log"},named-formatter=APP-PATTERN,suffix=".yyyy-ww",rotate-size=50M)
-/subsystem=logging/logging-profile=spatialSwe/root-logger=ROOT:add(handlers=[spatialSwe-file,spatialSwe-error-file])
+/subsystem=logging/logging-profile=spatialSwe/logger=eu.europa:add(handlers=[spatialSwe-file,spatialSwe-error-file])
 
 # User
 /subsystem=logging/logging-profile=user:add
 /subsystem=logging/logging-profile=user/pattern-formatter=APP-PATTERN:add(pattern="%d{yyyy-MM-dd HH:mm:ss} [%t] %X{requestId} %-5p %c{40} %X{userId}- %m%n")
 /subsystem=logging/logging-profile=user/periodic-size-rotating-file-handler=user-file:add(level=INFO,file={path=>"/app/logs/user/user.log"},named-formatter=APP-PATTERN,suffix=".yyyy-ww",rotate-size=50M)
 /subsystem=logging/logging-profile=user/periodic-size-rotating-file-handler=user-error-file:add(level=ERROR,file={path=>"/app/logs/user/user-error.log"},named-formatter=APP-PATTERN,suffix=".yyyy-ww",rotate-size=50M)
-/subsystem=logging/logging-profile=user/root-logger=ROOT:add(handlers=[user-file,user-error-file])
+/subsystem=logging/logging-profile=user/logger=eu.europa:add(handlers=[user-file,user-error-file])
 
 # WebGateway
 /subsystem=logging/logging-profile=web-gateway:add
 /subsystem=logging/logging-profile=web-gateway/pattern-formatter=APP-PATTERN:add(pattern="%d{yyyy-MM-dd HH:mm:ss} [%t] %X{requestId} %-5p %c{40} %X{userId}- %m%n")
 /subsystem=logging/logging-profile=web-gateway/periodic-size-rotating-file-handler=web-gateway-file:add(level=INFO,file={path=>"/app/logs/web-gateway/web-gateway.log"},named-formatter=APP-PATTERN,suffix=".yyyy-ww",rotate-size=50M)
 /subsystem=logging/logging-profile=web-gateway/periodic-size-rotating-file-handler=web-gateway-error-file:add(level=ERROR,file={path=>"/app/logs/web-gateway/web-gateway-error.log"},named-formatter=APP-PATTERN,suffix=".yyyy-ww",rotate-size=50M)
-/subsystem=logging/logging-profile=web-gateway/root-logger=ROOT:add(handlers=[web-gateway-file,web-gateway-error-file])
+/subsystem=logging/logging-profile=web-gateway/logger=eu.europa:add(handlers=[web-gateway-file,web-gateway-error-file])
 
 # batch-jberet
 /subsystem=batch-jberet/thread-pool=batch:write-attribute(name=max-threads, value=64)
