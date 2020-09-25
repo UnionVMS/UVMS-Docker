@@ -213,7 +213,7 @@ public final class MobileTerminalTestHelper extends AbstractHelper {
 				.put(Entity.json(""), MobileTerminalDto.class);
 	}
 
-	static MobileTerminalDto unAssignMobileTerminal(AssetDTO asset, MobileTerminalDto mobileTerminal) {
+	public static MobileTerminalDto unAssignMobileTerminal(AssetDTO asset, MobileTerminalDto mobileTerminal) {
 
 		return getWebTarget()
 				.path("asset/rest/mobileterminal")
