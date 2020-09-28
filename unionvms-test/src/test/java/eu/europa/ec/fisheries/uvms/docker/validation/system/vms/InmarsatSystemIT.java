@@ -177,7 +177,7 @@ public class InmarsatSystemIT extends AbstractRest {
 
     // Find docker host machine ip. Replace this with 'host.docker.internal' when supported on Linux.
     private static String getDockerHostIp() throws SocketException {
-        /*Enumeration<NetworkInterface> interfaces = NetworkInterface.getNetworkInterfaces();
+        Enumeration<NetworkInterface> interfaces = NetworkInterface.getNetworkInterfaces();
         while (interfaces.hasMoreElements()) {
             NetworkInterface e = interfaces.nextElement();
             Enumeration<InetAddress> inetAddresses = e.getInetAddresses();
@@ -187,7 +187,7 @@ public class InmarsatSystemIT extends AbstractRest {
                     return inetAddress.getHostAddress();
                 }
             }
-        }*/
+        }
         return "host.docker.internal";
     }
 
