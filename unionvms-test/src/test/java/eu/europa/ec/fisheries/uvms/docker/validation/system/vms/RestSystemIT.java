@@ -116,7 +116,7 @@ public class RestSystemIT extends AbstractRest {
 
     // Find docker host machine ip. Replace this with 'host.docker.internal' when supported on Linux.
     private String getDockerHostIp() throws SocketException {
-        Enumeration<NetworkInterface> interfaces = NetworkInterface.getNetworkInterfaces();
+        /*Enumeration<NetworkInterface> interfaces = NetworkInterface.getNetworkInterfaces();
         while (interfaces.hasMoreElements()) {
             NetworkInterface e = interfaces.nextElement();
             Enumeration<InetAddress> inetAddresses = e.getInetAddresses();
@@ -126,7 +126,7 @@ public class RestSystemIT extends AbstractRest {
                     return inetAddress.getHostAddress();
                 }
             }
-        }
+        }*/
         return "host.docker.internal";
     }
 }

@@ -7,6 +7,7 @@ import eu.europa.ec.fisheries.schema.mobileterminal.polltypes.v1.PollRequestType
 import eu.europa.ec.fisheries.schema.mobileterminal.polltypes.v1.PollType;
 import eu.europa.ec.fisheries.uvms.asset.client.model.AssetDTO;
 import eu.europa.ec.fisheries.uvms.asset.client.model.Note;
+import eu.europa.ec.fisheries.uvms.asset.client.model.SimpleCreatePoll;
 import eu.europa.ec.fisheries.uvms.docker.validation.asset.AssetTestHelper;
 import eu.europa.ec.fisheries.uvms.docker.validation.common.AbstractRest;
 import eu.europa.ec.fisheries.uvms.docker.validation.config.ConfigRestHelper;
@@ -26,7 +27,6 @@ import eu.europa.ec.fisheries.uvms.incident.model.dto.IncidentTicketDto;
 import eu.europa.ec.fisheries.uvms.incident.model.dto.enums.EventTypeEnum;
 import eu.europa.ec.fisheries.uvms.incident.model.dto.enums.IncidentType;
 import eu.europa.ec.fisheries.uvms.incident.model.dto.enums.StatusEnum;
-import eu.europa.ec.fisheries.uvms.mobileterminal.model.dto.CommentDto;
 import eu.europa.ec.fisheries.uvms.movement.model.dto.MovementDto;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -109,7 +109,7 @@ public class IncidentCollectionIT extends AbstractRest {
         MobileTerminalTestHelper.assignMobileTerminal(asset, mt);
         IncidentTicketDto ticket = IncidentTestHelper.createTicket(asset.getId());
         IncidentDto incidentDto = IncidentTestHelper.createAssetNotSendingIncident(ticket, INCIDENT_CREATE);
-        CommentDto comment = new CommentDto();
+        SimpleCreatePoll comment = new SimpleCreatePoll();
         comment.setComment("link poll to incident test");
 
         Response response = getWebTarget()
@@ -167,7 +167,6 @@ public class IncidentCollectionIT extends AbstractRest {
 
         PollMobileTerminal pollMobileTerminal = new PollMobileTerminal();
         pollMobileTerminal.setComChannelId(comChannelId);
-        pollMobileTerminal.setConnectId(asset.getId().toString());
         pollMobileTerminal.setMobileTerminalId(mt.getId().toString());
         pollRequestType.getMobileTerminals().add(pollMobileTerminal);
 

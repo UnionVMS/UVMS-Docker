@@ -27,7 +27,7 @@
 		<unionvms.project.user.module>2.1.6</unionvms.project.user.module>
 		<unionvms.project.rules.module>3.0.49</unionvms.project.rules.module>
 		<unionvms.project.reporting.module>1.1.25-UVMS</unionvms.project.reporting.module>
-		<unionvms.project.movementrules.module>2.4.3</unionvms.project.movementrules.module>
+		<unionvms.project.movementrules.module>2.4.4-SNAPSHOT</unionvms.project.movementrules.module>
 		<unionvms.project.movement.module>5.5.20-UVMS</unionvms.project.movement.module>
 		<unionvms.project.exchange.module>5.3.6-UVMS</unionvms.project.exchange.module>
 		<unionvms.project.spatial.module>2.0.6</unionvms.project.spatial.module>
@@ -35,8 +35,8 @@
 		<unionvms.project.subscription.module>1.3</unionvms.project.subscription.module>
 		<unionvms.project.config.module>4.3.7</unionvms.project.config.module>
 		<unionvms.project.audit.module>4.3.6</unionvms.project.audit.module>
-		<unionvms.project.asset.module>6.7.26</unionvms.project.asset.module>
-		<unionvms.project.incident.module>0.4.6</unionvms.project.incident.module>
+		<unionvms.project.asset.module>6.7.27</unionvms.project.asset.module>
+		<unionvms.project.incident.module>0.4.7</unionvms.project.incident.module>
 		<unionvms.project.activity.module>1.1.6</unionvms.project.activity.module>
 		<unionvms.project.mdr.module>1.0.10</unionvms.project.mdr.module>
 		<unionvms.project.plugins.ais>3.1.5</unionvms.project.plugins.ais>
@@ -47,7 +47,7 @@
 		<unionvms.project.plugins.fluxActivity>1.0.6</unionvms.project.plugins.fluxActivity>
 		<unionvms.project.plugins.mdr>1.0.2</unionvms.project.plugins.mdr>
 		<unionvms.project.plugins.flux-rest>1.4</unionvms.project.plugins.flux-rest>
-		<unionvms.project.web-gateway>0.13.6</unionvms.project.web-gateway>
+		<unionvms.project.web-gateway>0.13.7</unionvms.project.web-gateway>
 		<unionvms.project.hawtio-wildfly>2.10.2</unionvms.project.hawtio-wildfly>
 	</properties>
 

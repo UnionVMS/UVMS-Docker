@@ -33,7 +33,6 @@ public final class MobileTerminalTestHelper extends AbstractHelper {
 
         PollMobileTerminal pollMobileTerminal = new PollMobileTerminal();
         pollMobileTerminal.setComChannelId(comChannelId);
-        pollMobileTerminal.setConnectId(testAsset.getId().toString());
         pollMobileTerminal.setMobileTerminalId(terminal.getId().toString());
 
 		List<PollAttribute> pollAttributes = pollRequestType.getAttributes();
@@ -83,7 +82,6 @@ public final class MobileTerminalTestHelper extends AbstractHelper {
 
 		PollMobileTerminal pmt = new PollMobileTerminal();
 		pmt.setComChannelId(terminal.getChannels().iterator().next().getId().toString());
-		pmt.setConnectId(terminal.getAssetId());
 		pmt.setMobileTerminalId(terminal.getId().toString());
 		pollRequest.getMobileTerminals().add(pmt);
 
