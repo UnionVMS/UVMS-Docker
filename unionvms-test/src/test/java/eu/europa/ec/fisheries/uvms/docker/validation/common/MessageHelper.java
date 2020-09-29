@@ -33,7 +33,7 @@ public class MessageHelper implements Closeable {
 
     private static final String TEST_RESPONSE_QUEUE = "IntegrationTestsResponseQueue";
     private static final String SERVICE_NAME = "ServiceName";
-    private static final long TIMEOUT = 30000;
+    private static final long TIMEOUT = 15 * 1000;
 
     private Queue createQueue(String queueName) throws JMSException {
         Queue queue = queueMap.get(queueName);
