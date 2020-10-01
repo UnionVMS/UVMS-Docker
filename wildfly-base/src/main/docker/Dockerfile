@@ -8,11 +8,10 @@ ENV JBOSS_HOME /opt/jboss/wildfly
 USER root
 RUN mkdir -p /opt/jboss && adduser -D -h /opt/jboss jboss && apk update && apk add curl && rm -rf /var/cache/apk/*
 
-ADD wildfly-15.0.1.Final.tar.gz /opt/jboss
+ADD wildfly-$WILDFLY_VERSION.tar.gz /opt/jboss
 RUN mv /opt/jboss/wildfly-$WILDFLY_VERSION /opt/jboss/wildfly && chown -R jboss /opt/jboss/wildfly
 USER jboss
 WORKDIR /opt/jboss
-#RUN curl -O https://download.jboss.org/wildfly/$WILDFLY_VERSION/wildfly-$WILDFLY_VERSION.zip && unzip wildfly-$WILDFLY_VERSION.zip && mv $HOME/wildfly-$WILDFLY_VERSION $HOME/wildfly && rm wildfly-$WILDFLY_VERSION.zip
 
 EXPOSE 8080 9990
 

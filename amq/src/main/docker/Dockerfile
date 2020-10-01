@@ -11,6 +11,7 @@ USER activemq
 
 COPY activemq.xml users.properties /opt/$ACTIVEMQ/conf/
 COPY env /opt/$ACTIVEMQ/bin/
+RUN sed -i -e 's/\r//' /opt/$ACTIVEMQ/bin/env
 
 ENV JMX_HOSTNAME=localhost JMX_RMI_PORT=1099
 
