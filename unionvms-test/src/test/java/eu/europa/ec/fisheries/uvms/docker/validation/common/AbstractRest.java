@@ -118,7 +118,7 @@ public abstract class AbstractRest extends Assert {
     }
 
     public static void checkForAppErrorMessage(String json){
-        if(json.contains("code:")){
+        if(json.contains("\"code\":")){
             try {
                 throw new RuntimeException(OBJECT_MAPPER.readValue(json, AppError.class).description);
             } catch (JsonProcessingException e) {
