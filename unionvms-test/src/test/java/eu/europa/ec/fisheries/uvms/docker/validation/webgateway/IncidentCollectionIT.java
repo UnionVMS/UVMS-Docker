@@ -8,6 +8,7 @@ import eu.europa.ec.fisheries.schema.mobileterminal.polltypes.v1.PollType;
 import eu.europa.ec.fisheries.uvms.asset.client.model.AssetDTO;
 import eu.europa.ec.fisheries.uvms.asset.client.model.Note;
 import eu.europa.ec.fisheries.uvms.asset.client.model.SimpleCreatePoll;
+import eu.europa.ec.fisheries.uvms.docker.validation.AppError;
 import eu.europa.ec.fisheries.uvms.docker.validation.asset.AssetTestHelper;
 import eu.europa.ec.fisheries.uvms.docker.validation.common.AbstractRest;
 import eu.europa.ec.fisheries.uvms.docker.validation.config.ConfigRestHelper;
@@ -17,6 +18,7 @@ import eu.europa.ec.fisheries.uvms.docker.validation.mobileterminal.dto.MobileTe
 import eu.europa.ec.fisheries.uvms.docker.validation.movement.LatLong;
 import eu.europa.ec.fisheries.uvms.docker.validation.movement.ManualMovementRestHelper;
 import eu.europa.ec.fisheries.uvms.docker.validation.movement.MovementHelper;
+import eu.europa.ec.fisheries.uvms.docker.validation.movement.model.IncomingMovement;
 import eu.europa.ec.fisheries.uvms.docker.validation.movement.model.ManualMovementDto;
 import eu.europa.ec.fisheries.uvms.docker.validation.movement.model.MicroMovement;
 import eu.europa.ec.fisheries.uvms.docker.validation.system.helper.VMSSystemHelper;
@@ -24,6 +26,7 @@ import eu.europa.ec.fisheries.uvms.docker.validation.webgateway.dto.ExtendedInci
 import eu.europa.ec.fisheries.uvms.incident.model.dto.IncidentDto;
 import eu.europa.ec.fisheries.uvms.incident.model.dto.IncidentLogDto;
 import eu.europa.ec.fisheries.uvms.incident.model.dto.IncidentTicketDto;
+import eu.europa.ec.fisheries.uvms.incident.model.dto.UpdateIncidentDto;
 import eu.europa.ec.fisheries.uvms.incident.model.dto.enums.EventTypeEnum;
 import eu.europa.ec.fisheries.uvms.incident.model.dto.enums.IncidentType;
 import eu.europa.ec.fisheries.uvms.incident.model.dto.enums.StatusEnum;
@@ -36,6 +39,7 @@ import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.time.Instant;
+import java.time.temporal.ChronoUnit;
 import java.util.*;
 
 import static org.hamcrest.CoreMatchers.is;
@@ -289,17 +293,24 @@ public class IncidentCollectionIT extends AbstractRest {
         IncidentTicketDto ticket = IncidentTestHelper.createTicket(asset.getId());
         IncidentDto incidentDto = IncidentTestHelper.createAssetNotSendingIncident(ticket, INCIDENT_CREATE);
 
-        incidentDto.setType(IncidentType.PARKED);
-        incidentDto.setStatus(StatusEnum.PARKED);
-        incidentDto.setExpiryDate(Instant.now());
+        UpdateIncidentDto updateDto = new UpdateIncidentDto();
+        updateDto.setIncidentId(incidentDto.getId());
+        updateDto.setType(IncidentType.PARKED);
+        updateDto.setExpiryDate(Instant.now());
 
         response = getWebTarget()
-                .path("web-gateway/rest/incidents/updateIncident")
+                .path("web-gateway/rest/incidents/updateIncidentType")
                 .request(MediaType.APPLICATION_JSON)
                 .header(HttpHeaders.AUTHORIZATION, getValidJwtToken())
-                .put(Entity.json(incidentDto), Response.class);
+                .put(Entity.json(updateDto), Response.class);
         assertEquals(200, response.getStatus());
-        checkForAppErrorMessage(response.readEntity(String.class));
+        String responseJson = response.readEntity(String.class);
+        checkForAppErrorMessage(responseJson);
+
+        IncidentDto updatedIncident = OBJECT_MAPPER.readValue(responseJson, IncidentDto.class);
+        assertEquals(incidentDto.getId(), updatedIncident.getId());
+        assertEquals(IncidentType.PARKED, updatedIncident.getType());
+        assertEquals(StatusEnum.PARKED, updatedIncident.getStatus());
 
         AssetDTO updatedAsset = AssetTestHelper.getAssetByGuid(asset.getId());
         assertTrue(updatedAsset.getId().toString(), updatedAsset.isParked());
@@ -339,13 +350,21 @@ public class IncidentCollectionIT extends AbstractRest {
 
         incidentDto.setType(IncidentType.MANUAL_POSITION_MODE);
 
+        UpdateIncidentDto updateDto = new UpdateIncidentDto();
+        updateDto.setIncidentId(incidentDto.getId());
+        updateDto.setType(IncidentType.MANUAL_POSITION_MODE);
+
         response = getWebTarget()
-                .path("web-gateway/rest/incidents/updateIncident")
+                .path("web-gateway/rest/incidents/updateIncidentType")
                 .request(MediaType.APPLICATION_JSON)
                 .header(HttpHeaders.AUTHORIZATION, getValidJwtToken())
-                .put(Entity.json(incidentDto), Response.class);
+                .put(Entity.json(updateDto), Response.class);
         assertEquals(200, response.getStatus());
-        checkForAppErrorMessage(response.readEntity(String.class));
+        String responseJson = response.readEntity(String.class);
+        checkForAppErrorMessage(responseJson);
+
+        IncidentDto updatedIncident = OBJECT_MAPPER.readValue(responseJson, IncidentDto.class);
+        assertTrue(updatedIncident.getExpiryDate().isAfter(Instant.now()));
 
         AssetDTO updatedAsset = AssetTestHelper.getAssetByGuid(asset.getId());
         assertFalse(updatedAsset.getId().toString(), updatedAsset.isParked());
@@ -359,6 +378,151 @@ public class IncidentCollectionIT extends AbstractRest {
         previousReport = response.readEntity(String.class);
         checkForAppErrorMessage(previousReport);
         assertTrue(previousReport.contains(asset.getId().toString()));
+    }
+
+
+    @Test
+    public void createParkedIncident() {
+        AssetDTO asset = AssetTestHelper.createAsset(AssetTestHelper.createBasicAsset());
+        IncidentDto incident = createBasicIncident(asset);
+        incident.setType(IncidentType.PARKED);
+        incident = restCreateIncident(incident);
+        assertNotNull(incident.getId());
+        assertEquals(StatusEnum.PARKED, incident.getStatus());
+
+        Map<Long, IncidentDto> incidentMap = IncidentTestHelper.getOpenTicketsForAsset(asset.getId().toString());
+
+        assertTrue(incidentMap.size() > 0);
+        assertEquals(asset.getId(), incidentMap.get(incident.getId()).getAssetId());
+
+        AssetDTO updatedAsset = AssetTestHelper.getAssetByGuid(asset.getId());
+        assertTrue(updatedAsset.isParked());
+    }
+
+    @Test
+    public void updateParkedIncidentStatus() {
+        AssetDTO asset = AssetTestHelper.createAsset(AssetTestHelper.createBasicAsset());
+        IncidentDto incident = createBasicIncident(asset);
+        incident.setType(IncidentType.PARKED);
+        incident = restCreateIncident(incident);
+        assertNotNull(incident.getId());
+
+        UpdateIncidentDto updateDto = new UpdateIncidentDto();
+        updateDto.setIncidentId(incident.getId());
+        updateDto.setStatus(StatusEnum.OVERDUE);
+        Instant expiry = Instant.now().minus(1, ChronoUnit.MINUTES).truncatedTo(ChronoUnit.MILLIS);
+        updateDto.setExpiryDate(expiry);
+
+        IncidentDto updatedIncident = getWebTarget()
+                .path("web-gateway/rest/incidents/updateIncidentStatus")
+                .request(MediaType.APPLICATION_JSON)
+                .header(HttpHeaders.AUTHORIZATION, getValidJwtToken())
+                .put(Entity.json(updateDto), IncidentDto.class);
+
+        assertEquals(incident.getId(), updatedIncident.getId());
+        assertEquals(StatusEnum.OVERDUE, updatedIncident.getStatus());
+        assertEquals(expiry, updatedIncident.getExpiryDate());
+    }
+
+    @Test
+    public void resolveSeasonalFishingIncident() {
+        AssetDTO asset = AssetTestHelper.createAsset(AssetTestHelper.createBasicAsset());
+        IncidentDto incident = createBasicIncident(asset);
+        incident.setType(IncidentType.SEASONAL_FISHING);
+        incident = restCreateIncident(incident);
+        assertNotNull(incident.getId());
+
+        AssetDTO parkedAsset = AssetTestHelper.getAssetByGuid(asset.getId());
+        assertTrue(parkedAsset.isParked());
+
+        UpdateIncidentDto updateDto = new UpdateIncidentDto();
+        updateDto.setIncidentId(incident.getId());
+        updateDto.setStatus(StatusEnum.RESOLVED);
+
+        IncidentDto updatedIncident = getWebTarget()
+                .path("web-gateway/rest/incidents/updateIncidentStatus")
+                .request(MediaType.APPLICATION_JSON)
+                .header(HttpHeaders.AUTHORIZATION, getValidJwtToken())
+                .put(Entity.json(updateDto), IncidentDto.class);
+
+        assertEquals(incident.getId(), updatedIncident.getId());
+        assertEquals(StatusEnum.RESOLVED, updatedIncident.getStatus());
+
+        AssetDTO noLongerParkedAsset = AssetTestHelper.getAssetByGuid(asset.getId());
+        assertFalse(noLongerParkedAsset.isParked());
+    }
+
+    @Test
+    public void updateParkedIncidentToInvalidStatus() {
+        AssetDTO asset = AssetTestHelper.createAsset(AssetTestHelper.createBasicAsset());
+        IncidentDto incident = createBasicIncident(asset);
+        incident.setType(IncidentType.PARKED);
+        incident = restCreateIncident(incident);
+        assertNotNull(incident.getId());
+
+        UpdateIncidentDto updateDto = new UpdateIncidentDto();
+        updateDto.setIncidentId(incident.getId());
+        updateDto.setStatus(StatusEnum.ATTEMPTED_CONTACT);
+
+        AppError error = getWebTarget()
+                .path("web-gateway/rest/incidents/updateIncidentStatus")
+                .request(MediaType.APPLICATION_JSON)
+                .header(HttpHeaders.AUTHORIZATION, getValidJwtToken())
+                .put(Entity.json(updateDto), AppError.class);
+
+        assertEquals(new Integer(500), error.code);
+        assertTrue(error.description.contains("IllegalArgumentException: Incident type PARKED does not support being placed in status ATTEMPTED_CONTACT"));
+    }
+
+    @Test
+    public void updateParkedIncidentExpiry() {
+        AssetDTO asset = AssetTestHelper.createAsset(AssetTestHelper.createBasicAsset());
+        IncidentDto incident = createBasicIncident(asset);
+        incident.setType(IncidentType.PARKED);
+        incident = restCreateIncident(incident);
+        assertNotNull(incident.getId());
+
+        UpdateIncidentDto updateDto = new UpdateIncidentDto();
+        updateDto.setIncidentId(incident.getId());
+        Instant expiry = Instant.now().plus(1, ChronoUnit.MINUTES).truncatedTo(ChronoUnit.MILLIS);
+        updateDto.setExpiryDate(expiry);
+
+        IncidentDto updatedIncident = getWebTarget()
+                .path("web-gateway/rest/incidents/updateIncidentExpiry")
+                .request(MediaType.APPLICATION_JSON)
+                .header(HttpHeaders.AUTHORIZATION, getValidJwtToken())
+                .put(Entity.json(updateDto), IncidentDto.class);
+
+        assertEquals(incident.getId(), updatedIncident.getId());
+        assertEquals(StatusEnum.PARKED, updatedIncident.getStatus());
+        assertEquals(expiry, updatedIncident.getExpiryDate());
+
+    }
+
+    private IncidentDto restCreateIncident(IncidentDto incidentDto) {
+        return getWebTarget()
+                .path("web-gateway/rest/incidents/createIncident")
+                .request(MediaType.APPLICATION_JSON)
+                .header(HttpHeaders.AUTHORIZATION, getValidJwtToken())
+                .post(Entity.json(incidentDto), IncidentDto.class);
+    }
+
+    private IncidentDto getIncident(long id) {
+        return getWebTarget()
+                .path("incident/rest/incident/")
+                .path("" + id)
+                .request(MediaType.APPLICATION_JSON)
+                .header(HttpHeaders.AUTHORIZATION, getValidJwtToken())
+                .get(IncidentDto.class);
+    }
+
+    private IncidentDto createBasicIncident(AssetDTO asset){
+        IncidentDto incidentDto = new IncidentDto();
+        incidentDto.setAssetId(asset.getId());
+        incidentDto.setAssetName(asset.getName());
+        incidentDto.setStatus(StatusEnum.PARKED);
+        incidentDto.setType(IncidentType.PARKED);
+        return incidentDto;
     }
 
 }
