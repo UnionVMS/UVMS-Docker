@@ -33,7 +33,7 @@ public class ExchangeConfigRestIT extends AbstractRest {
 				.get(new GenericType<List<String>>() {});
 
 		assertNotNull(fields);
-		assertEquals(9, fields.size());
+		assertEquals(10, fields.size());
 	}
 
 	@Test
