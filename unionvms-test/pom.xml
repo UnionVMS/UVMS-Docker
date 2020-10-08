@@ -17,7 +17,7 @@
 		<docker.skip>${skipITs}</docker.skip>
 		<docker.frontend.test.suite>UnionVMSTestCaseG2</docker.frontend.test.suite>
 		<jackson.version>2.11.3</jackson.version>
-		<uvms.commons.version>4.1.7</uvms.commons.version>
+		<uvms.commons.version>4.1.8</uvms.commons.version>
 	</properties>
 
 	<dependencies>
