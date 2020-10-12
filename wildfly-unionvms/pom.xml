@@ -97,7 +97,7 @@
 		<dependency>
 			<groupId>eu.europa.ec.fisheries.uvms.movement-rules</groupId>
 			<artifactId>movement-rules-module</artifactId>
-			<type>ear</type>
+			<type>war</type>
 		</dependency>
 		<dependency>
 			<groupId>eu.europa.ec.fisheries.uvms.spatial</groupId>
