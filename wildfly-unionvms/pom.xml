@@ -77,7 +77,7 @@
 		<dependency>
 			<groupId>eu.europa.ec.fisheries.uvms.audit</groupId>
 			<artifactId>audit-module</artifactId>
-			<type>ear</type>
+			<type>war</type>
 		</dependency>
 		<dependency>
 			<groupId>eu.europa.ec.fisheries.uvms.config</groupId>
