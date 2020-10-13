@@ -82,7 +82,7 @@
 		<dependency>
 			<groupId>eu.europa.ec.fisheries.uvms.config</groupId>
 			<artifactId>config-module</artifactId>
-			<type>ear</type>
+			<type>war</type>
 		</dependency>
 		<dependency>
 			<groupId>eu.europa.ec.fisheries.uvms.exchange</groupId>
