@@ -2,7 +2,7 @@ package eu.europa.ec.fisheries.uvms.docker.validation.geoserver;
 
 import eu.europa.ec.fisheries.uvms.docker.validation.common.AbstractRest;
 import org.junit.Test;
-
+import static org.junit.Assert.assertEquals;
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.WebTarget;

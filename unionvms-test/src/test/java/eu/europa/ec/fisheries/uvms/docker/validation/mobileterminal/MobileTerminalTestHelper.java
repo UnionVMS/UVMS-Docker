@@ -12,6 +12,8 @@ import javax.ws.rs.core.GenericType;
 import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 import java.time.Duration;
 import java.util.Arrays;
 import java.util.Calendar;

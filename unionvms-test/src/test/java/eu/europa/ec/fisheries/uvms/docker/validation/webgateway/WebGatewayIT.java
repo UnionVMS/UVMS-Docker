@@ -1,5 +1,7 @@
 package eu.europa.ec.fisheries.uvms.docker.validation.webgateway;
 
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.junit.Assert.assertTrue;
 import eu.europa.ec.fisheries.uvms.docker.validation.common.AbstractRest;
 import eu.europa.ec.fisheries.uvms.docker.validation.common.MessageHelper;
 import eu.europa.ec.fisheries.uvms.docker.validation.movement.AuthorizationHeaderWebTarget;

@@ -25,6 +25,7 @@ import org.junit.Test;
 import javax.jms.JMSException;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
+import static org.junit.Assert.assertNotNull;
 import java.io.StringWriter;
 import java.util.Date;
 import java.util.List;
