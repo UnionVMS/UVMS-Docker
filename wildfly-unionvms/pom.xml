@@ -107,7 +107,7 @@
 		<dependency>
 			<groupId>eu.europa.ec.fisheries.uvms.spatialSwe</groupId>
 			<artifactId>spatialSwe-module</artifactId>
-			<type>ear</type>
+			<type>war</type>
 		</dependency>
 		<dependency>
 			<groupId>eu.europa.ec.fisheries.uvms.incident</groupId>
