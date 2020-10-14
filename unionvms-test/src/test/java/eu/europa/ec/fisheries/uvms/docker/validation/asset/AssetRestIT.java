@@ -13,25 +13,36 @@ copy of the GNU General Public License along with the IFDM Suite. If not, see <h
 */
 package eu.europa.ec.fisheries.uvms.docker.validation.asset;
 
-import eu.europa.ec.fisheries.uvms.asset.client.model.*;
-import eu.europa.ec.fisheries.uvms.asset.model.constants.AuditOperationEnum;
-import eu.europa.ec.fisheries.uvms.asset.remote.dto.search.SearchBranch;
-import eu.europa.ec.fisheries.uvms.asset.remote.dto.search.SearchFields;
-import eu.europa.ec.fisheries.uvms.docker.validation.common.AbstractRest;
-import org.hamcrest.CoreMatchers;
-import org.junit.Ignore;
-import org.junit.Test;
-
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.UUID;
 import javax.ws.rs.ForbiddenException;
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.sse.SseEventSource;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.UUID;
+import org.hamcrest.CoreMatchers;
+import org.junit.Ignore;
+import org.junit.Test;
+import eu.europa.ec.fisheries.uvms.asset.client.model.AssetBO;
+import eu.europa.ec.fisheries.uvms.asset.client.model.AssetDTO;
+import eu.europa.ec.fisheries.uvms.asset.client.model.AssetListResponse;
+import eu.europa.ec.fisheries.uvms.asset.client.model.ContactInfo;
+import eu.europa.ec.fisheries.uvms.asset.client.model.FishingLicence;
+import eu.europa.ec.fisheries.uvms.asset.client.model.Note;
+import eu.europa.ec.fisheries.uvms.asset.model.constants.AuditOperationEnum;
+import eu.europa.ec.fisheries.uvms.asset.remote.dto.search.SearchBranch;
+import eu.europa.ec.fisheries.uvms.asset.remote.dto.search.SearchFields;
+import eu.europa.ec.fisheries.uvms.docker.validation.common.AbstractRest;
 
 public class AssetRestIT extends AbstractRest {
 

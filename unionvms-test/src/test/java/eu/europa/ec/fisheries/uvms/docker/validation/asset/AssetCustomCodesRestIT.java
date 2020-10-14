@@ -17,6 +17,7 @@ import org.junit.Test;
 import javax.ws.rs.core.GenericType;
 import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
+import static org.junit.Assert.assertFalse;
 import java.util.List;
 
 public class AssetCustomCodesRestIT extends AbstractRest {

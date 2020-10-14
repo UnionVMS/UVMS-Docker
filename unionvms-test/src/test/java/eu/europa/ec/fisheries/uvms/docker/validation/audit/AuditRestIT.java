@@ -25,6 +25,7 @@ import javax.ws.rs.core.Response;
 import java.math.BigInteger;
 
 import static javax.ws.rs.core.Response.Status.OK;
+import static org.junit.Assert.assertEquals;
 
 public class AuditRestIT extends AbstractRest {
 

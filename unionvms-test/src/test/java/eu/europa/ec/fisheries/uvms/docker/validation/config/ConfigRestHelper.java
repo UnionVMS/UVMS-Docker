@@ -1,5 +1,7 @@
 package eu.europa.ec.fisheries.uvms.docker.validation.config;
 
+import static org.hamcrest.MatcherAssert.assertThat;
+
 import eu.europa.ec.fisheries.schema.config.module.v1.PushModuleSettingMessage;
 import eu.europa.ec.fisheries.schema.config.types.v1.SettingType;
 import eu.europa.ec.fisheries.uvms.docker.validation.common.AbstractHelper;
@@ -10,6 +12,7 @@ import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import org.hamcrest.CoreMatchers;
+import static org.junit.Assert.assertEquals;
 import java.io.IOException;
 import java.util.List;
 

@@ -29,6 +29,8 @@ import javax.ws.rs.sse.InboundSseEvent;
 import javax.ws.rs.sse.SseEventSource;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 import java.io.StringReader;
 import java.io.StringWriter;
 import java.math.BigInteger;
