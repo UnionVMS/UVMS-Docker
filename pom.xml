@@ -26,7 +26,7 @@
 
         <unionvms.project.asset.client.jar>6.0.17</unionvms.project.asset.client.jar>
         <unionvms.project.movementrules.module>1.0.5-W14J8</unionvms.project.movementrules.module>
-        <unionvms.project.mapfishprint.version>3.5</unionvms.project.mapfishprint.version>
+        <unionvms.project.mapfishprint.version>3.6-SNAPSHOT</unionvms.project.mapfishprint.version>
         <unionvms.project.geoserver.version>${uvms.geoserver-overlay.version}</unionvms.project.geoserver.version>
 
         <unionvms.project.plugins.naf>3.0.10-W14J8</unionvms.project.plugins.naf>
