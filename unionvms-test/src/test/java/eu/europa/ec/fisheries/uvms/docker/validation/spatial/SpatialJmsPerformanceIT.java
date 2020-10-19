@@ -15,6 +15,7 @@ import org.junit.Rule;
 import org.junit.Test;
 
 import javax.jms.JMSException;
+import static org.junit.Assert.assertNotNull;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 

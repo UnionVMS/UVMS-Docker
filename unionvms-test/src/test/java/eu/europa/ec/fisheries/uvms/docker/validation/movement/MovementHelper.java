@@ -1,5 +1,7 @@
 package eu.europa.ec.fisheries.uvms.docker.validation.movement;
 
+import static org.hamcrest.MatcherAssert.assertThat;
+
 import com.peertopark.java.geocalc.Coordinate;
 import com.peertopark.java.geocalc.DegreeCoordinate;
 import com.peertopark.java.geocalc.EarthCalc;

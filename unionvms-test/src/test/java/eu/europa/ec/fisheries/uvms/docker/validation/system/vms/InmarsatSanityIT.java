@@ -28,6 +28,8 @@ import java.time.ZonedDateTime;
 import java.util.Date;
 
 import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.junit.Assert.assertNotNull;
 
 public class InmarsatSanityIT extends AbstractRest {
 

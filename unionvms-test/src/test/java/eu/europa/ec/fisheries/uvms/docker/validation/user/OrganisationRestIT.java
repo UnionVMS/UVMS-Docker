@@ -17,6 +17,7 @@ import eu.europa.ec.fisheries.uvms.docker.validation.user.dto.Organisation;
 import org.junit.Test;
 
 import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.MatcherAssert.assertThat;
 
 public class OrganisationRestIT extends AbstractRest {
 

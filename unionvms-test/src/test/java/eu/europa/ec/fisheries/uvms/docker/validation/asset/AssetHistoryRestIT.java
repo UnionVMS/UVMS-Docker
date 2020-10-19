@@ -16,7 +16,8 @@ package eu.europa.ec.fisheries.uvms.docker.validation.asset;
 import eu.europa.ec.fisheries.uvms.asset.client.model.AssetDTO;
 import eu.europa.ec.fisheries.uvms.docker.validation.common.AbstractRest;
 import org.junit.Test;
-
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 import java.time.OffsetDateTime;
 import java.time.ZoneId;
 import java.util.List;

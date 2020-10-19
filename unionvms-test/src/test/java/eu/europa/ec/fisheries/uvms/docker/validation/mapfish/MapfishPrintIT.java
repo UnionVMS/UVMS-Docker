@@ -11,6 +11,7 @@ copy of the GNU General Public License along with the IFDM Suite. If not, see <h
  */
 package eu.europa.ec.fisheries.uvms.docker.validation.mapfish;
 
+import static org.hamcrest.MatcherAssert.assertThat;
 import eu.europa.ec.fisheries.uvms.docker.validation.common.AbstractRest;
 import org.hamcrest.CoreMatchers;
 import org.junit.Test;
