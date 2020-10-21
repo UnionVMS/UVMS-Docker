@@ -7,7 +7,7 @@ set uvmsPassword=${uvmsPassword}
 set efrBackendRole=${efrBackendRole}
 set notificationServiceEndpoint=${notificationServiceEndpoint}
 set priorNotificationMaxAgeInDays=${priorNotificationMaxAgeInDays}
-
+set authLicServiceEndpoint=${authLicServiceEndpoint}
 
 embed-server --server-config=standalone-full.xml
 
@@ -54,6 +54,7 @@ end-if
   "efrBackendRole" = $efrBackendRole, \
   "notificationServiceEndpoint" = $notificationServiceEndpoint, \
   "priorNotificationMaxAgeInDays" = $priorNotificationMaxAgeInDays \
+  "authLicServiceEndpoint" = $authLicServiceEndpoint \
 })
 
 #### Logging
