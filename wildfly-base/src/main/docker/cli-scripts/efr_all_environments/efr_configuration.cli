@@ -53,7 +53,7 @@ end-if
   "uvmsPassword" = $uvmsPassword, \
   "efrBackendRole" = $efrBackendRole, \
   "notificationServiceEndpoint" = $notificationServiceEndpoint, \
-  "priorNotificationMaxAgeInDays" = $priorNotificationMaxAgeInDays \
+  "priorNotificationMaxAgeInDays" = $priorNotificationMaxAgeInDays, \
   "authLicServiceEndpoint" = $authLicServiceEndpoint \
 })
 
