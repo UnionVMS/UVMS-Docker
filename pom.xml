@@ -47,7 +47,7 @@
 		<unionvms.project.plugins.fluxActivity>1.0.6</unionvms.project.plugins.fluxActivity>
 		<unionvms.project.plugins.mdr>1.0.2</unionvms.project.plugins.mdr>
 		<unionvms.project.plugins.flux-rest>1.5</unionvms.project.plugins.flux-rest>
-		<unionvms.project.web-gateway>1.0.1</unionvms.project.web-gateway>
+		<unionvms.project.web-gateway>1.0.2</unionvms.project.web-gateway>
 		<unionvms.project.hawtio-wildfly>2.11.1</unionvms.project.hawtio-wildfly>
 	</properties>
 
