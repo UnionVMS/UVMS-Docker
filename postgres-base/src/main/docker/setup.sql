@@ -59,14 +59,6 @@ GRANT CONNECT ON DATABASE db71u TO reporting;
 GRANT SELECT, INSERT, UPDATE, DELETE ON ALL TABLES IN SCHEMA reporting TO reporting; 
 ALTER SCHEMA reporting OWNER TO reporting; 
 
--- Rules
-CREATE USER rules WITH PASSWORD 'rules'; 
-CREATE SCHEMA AUTHORIZATION rules; 
-ALTER USER rules SET search_path = rules, public; 
-GRANT CONNECT ON DATABASE db71u TO rules; 
-GRANT SELECT, INSERT, UPDATE, DELETE ON ALL TABLES IN SCHEMA rules TO rules; 
-ALTER SCHEMA rules OWNER TO rules; 
-
 -- MovementRules
 CREATE USER movementrules WITH PASSWORD 'movementrules'; 
 CREATE SCHEMA AUTHORIZATION movementrules; 

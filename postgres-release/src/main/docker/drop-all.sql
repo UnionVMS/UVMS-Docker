@@ -18,9 +18,6 @@ DROP USER IF EXISTS movement;
 -- Reporting 
 DROP USER IF EXISTS reporting; 
 
--- Rules
-DROP USER IF EXISTS rules; 
-
 -- MovementRules
 DROP USER IF EXISTS movementrules; 
 
