@@ -147,8 +147,8 @@
 			<type>sql</type>
 			<exclusions>
 				<exclusion>
-					<groupId>com.oracle</groupId>
-					<artifactId>ojdbc6</artifactId>
+					<groupId>*</groupId>
+					<artifactId>*</artifactId>
 				</exclusion>
 			</exclusions>			
 		</dependency>
