@@ -34,8 +34,6 @@ echo "Running spatial.sql to create tables and init data"
 psql -U spatial -d db71u --single-transaction -q -f /var/lib/postgresql/eu.europa.ec.fisheries.uvms.spatialSwe.liquibase-${unionvms.project.spatialSwe.module}.sql >/dev/null
 echo "Running reporting.sql to create tables and init data"
 psql -U reporting -d db71u --single-transaction -q -f /var/lib/postgresql/eu.europa.ec.fisheries.uvms.reporting.reporting-liquibase-${unionvms.project.reporting.module}.sql >/dev/null
-echo "Running subscription.sql to create tables and init data"
-psql -U subscription -d db71u --single-transaction -q -f /var/lib/postgresql/eu.europa.ec.fisheries.uvms.subscription.liquibase-${unionvms.project.subscription.module}.sql >/dev/null
 echo "Completed module.sql"
 
 echo "Docker specific update"

@@ -175,17 +175,6 @@
 			<version>${unionvms.project.user.module}</version>
 			<type>zip</type>
 		</dependency>
-		<dependency>
-			<groupId>eu.europa.ec.fisheries.uvms.subscription</groupId>
-			<artifactId>liquibase</artifactId>
-			<type>sql</type>
-			<exclusions>
-				<exclusion>
-					<groupId>com.oracle</groupId>
-					<artifactId>ojdbc6</artifactId>
-				</exclusion>
-			</exclusions>
-		</dependency>
 	</dependencies>
 	<build>
 		<pluginManagement>

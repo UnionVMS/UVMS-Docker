@@ -547,29 +547,6 @@
                         <password>config</password>
                     </security>
                 </xa-datasource>
-                <xa-datasource jndi-name="java:jboss/datasources/uvms_subscription" pool-name="uvms_subscription" enabled="true" use-ccm="true" statistics-enabled="${wildfly.datasources.statistics-enabled:${wildfly.statistics-enabled:false}}">
-                    <xa-datasource-property name="ServerName">postgres</xa-datasource-property>
-                    <xa-datasource-property name="PortNumber">5432</xa-datasource-property>
-                    <xa-datasource-property name="DatabaseName">db71u</xa-datasource-property>
-
-                    <driver>postgresql</driver>
-                    <xa-pool>
-                        <min-pool-size>2</min-pool-size>
-                        <initial-pool-size>2</initial-pool-size>
-                        <max-pool-size>20</max-pool-size>
-                        <prefill>true</prefill>
-                    </xa-pool>
-                    <validation>
-                        <valid-connection-checker
-                                class-name="org.jboss.jca.adapters.jdbc.extensions.postgres.PostgreSQLValidConnectionChecker"></valid-connection-checker>
-                        <exception-sorter
-                                class-name="org.jboss.jca.adapters.jdbc.extensions.postgres.PostgreSQLExceptionSorter"></exception-sorter>
-                    </validation>
-                    <security>
-                        <user-name>subscription</user-name>
-                        <password>subscription</password>
-                    </security>
-                </xa-datasource>
                 <drivers>
                     <driver name="h2" module="com.h2database.h2">
                         <xa-datasource-class>org.h2.jdbcx.JdbcDataSource</xa-datasource-class>
@@ -896,8 +873,6 @@
                 <jms-queue name="UVMSMovementRulesEvent" entries="jms/queue/UVMSMovementRulesEvent java:jboss/exported/jms/queue/UVMSMovementRulesEvent" />
                 <jms-queue name="UVMSUser" entries="jms/queue/UVMSUser java:jboss/exported/jms/queue/UVMSUser" />
                 <jms-queue name="UVMSUserEvent" entries="jms/queue/UVMSUserEvent java:jboss/exported/jms/queue/UVMSUserEvent" />
-                <jms-queue name="UVMSSubscription" entries="jms/queue/UVMSSubscription java:jboss/exported/jms/queue/UVMSSubscription" />
-                <jms-queue name="UVMSSubscriptionEvent" entries="jms/queue/UVMSSubscriptionEvent java:jboss/exported/jms/queue/UVMSSubscriptionEvent" />
                 <jms-queue name="UVMSAsset" entries="jms/queue/UVMSAsset java:jboss/exported/jms/queue/UVMSAsset" />
                 <jms-queue name="UVMSAssetEvent" entries="jms/queue/UVMSAssetEvent java:jboss/exported/jms/queue/UVMSAssetEvent" />
                 <jms-queue name="UVMSAssetNational" entries="jms/queue/UVMSAssetNational java:jboss/exported/jms/queue/UVMSAssetNational" />
