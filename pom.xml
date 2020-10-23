@@ -37,14 +37,12 @@
 		<unionvms.project.asset.module>6.7.31</unionvms.project.asset.module>
 		<unionvms.project.incident.module>1.0.3</unionvms.project.incident.module>
 		<unionvms.project.activity.module>1.1.6</unionvms.project.activity.module>
-		<unionvms.project.mdr.module>1.0.10</unionvms.project.mdr.module>
 		<unionvms.project.plugins.ais>3.1.6</unionvms.project.plugins.ais>
 		<unionvms.project.plugins.naf>3.1.7</unionvms.project.plugins.naf>
 		<unionvms.project.plugins.flux>3.1.6</unionvms.project.plugins.flux>
 		<unionvms.project.plugins.inmarsat>3.1.5</unionvms.project.plugins.inmarsat>
 		<unionvms.project.plugins.siriusone>3.0.11</unionvms.project.plugins.siriusone>
 		<unionvms.project.plugins.fluxActivity>1.0.6</unionvms.project.plugins.fluxActivity>
-		<unionvms.project.plugins.mdr>1.0.2</unionvms.project.plugins.mdr>
 		<unionvms.project.plugins.flux-rest>1.5</unionvms.project.plugins.flux-rest>
 		<unionvms.project.web-gateway>1.0.2</unionvms.project.web-gateway>
 		<unionvms.project.hawtio-wildfly>2.11.1</unionvms.project.hawtio-wildfly>
@@ -214,18 +212,6 @@
 				</exclusions>
 			</dependency>
 			<dependency>
-				<groupId>eu.europa.ec.fisheries.uvms.mdr</groupId>
-				<artifactId>liquibase</artifactId>
-				<type>sql</type>
-				<version>${unionvms.project.mdr.module}</version>
-				<exclusions>
-					<exclusion>
-						<groupId>com.oracle</groupId>
-						<artifactId>ojdbc6</artifactId>
-					</exclusion>
-				</exclusions>
-			</dependency>
-			<dependency>
 				<groupId>eu.europa.ec.fisheries.uvms.reporting</groupId>
 				<artifactId>reporting-liquibase</artifactId>
 				<type>sql</type>
@@ -362,12 +348,6 @@
 				<version>${unionvms.project.activity.module}</version>
 			</dependency>
 			<dependency>
-				<groupId>eu.europa.ec.fisheries.uvms.mdr</groupId>
-				<artifactId>mdr-module</artifactId>
-				<type>ear</type>
-				<version>${unionvms.project.mdr.module}</version>
-			</dependency>
-			<dependency>
 				<groupId>eu.europa.ec.fisheries.uvms.reporting</groupId>
 				<artifactId>reporting-module</artifactId>
 				<type>ear</type>
@@ -430,12 +410,6 @@
 				<type>ear</type>
 				<version>${unionvms.project.plugins.fluxActivity}</version>
 			</dependency>
-			<dependency>
-				<groupId>eu.europa.ec.fisheries.uvms.plugins</groupId>
-				<artifactId>mdr-plugin</artifactId>
-				<type>ear</type>
-				<version>${unionvms.project.plugins.mdr}</version>
-			</dependency>
 		</dependencies>
 
 	</dependencyManagement>
@@ -470,7 +444,7 @@
 						<configuration>
 							<excludeProperties>wildfly.hibernate.module.hibernate.version,wildfly.hibernate.module.spatial.version,wildfly.hibernate.module.jts.version,wildfly.postgres.module.postgis.version,wildfly.postgres.module.postgres.version,wildfly.activemq.rar.version</excludeProperties>
 							<includeProperties>
-								unionvms.project.unionvms.web.version,unionvms.project.mapfishprint.version,unionvms.project.geoserver.version,unionvms.project.user.module,unionvms.project.rules.module,unionvms.project.movement.module,unionvms.project.exchange.module,unionvms.project.reporting.module,unionvms.project.subscription.module,unionvms.project.spatial.module,unionvms.project.config.module,unionvms.project.audit.module,unionvms.project.asset.module,unionvms.project.activity.module,unionvms.project.mdr.module,unionvms.project.plugins.naf,unionvms.project.plugins.flux,unionvms.project.plugins.inmarsat,unionvms.project.plugins.siriusone</includeProperties>
+								unionvms.project.unionvms.web.version,unionvms.project.mapfishprint.version,unionvms.project.geoserver.version,unionvms.project.user.module,unionvms.project.rules.module,unionvms.project.movement.module,unionvms.project.exchange.module,unionvms.project.reporting.module,unionvms.project.subscription.module,unionvms.project.spatial.module,unionvms.project.config.module,unionvms.project.audit.module,unionvms.project.asset.module,unionvms.project.activity.module,unionvms.project.plugins.naf,unionvms.project.plugins.flux,unionvms.project.plugins.inmarsat,unionvms.project.plugins.siriusone</includeProperties>
 							<allowSnapshots>true</allowSnapshots>
 						</configuration>
 					</plugin>

@@ -30,9 +30,6 @@ DROP USER IF EXISTS usm;
 -- Activity
 DROP USER IF EXISTS activity;
 
--- MDR
-DROP USER IF EXISTS mdr;
-
 -- SALES
 DROP USER IF EXISTS sales;
 

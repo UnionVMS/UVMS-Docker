@@ -8,7 +8,6 @@ set reporting_pw=${db_password_reporting}
 set movementrules_pw=${db_password_movementrules}
 set incident_pw=${db_password_incident}
 set activity_pw=${db_password_activity}
-set mdr_pw=${db_password_mdr}
 set config_pw=${db_password_config}
 
 embed-server --server-config=${SERVER_CONFIG}
@@ -239,28 +238,6 @@ xa-data-source add \
 /subsystem=datasources/xa-data-source=uvms_activity/xa-datasource-properties=ServerName:add(value=postgres)
 /subsystem=datasources/xa-data-source=uvms_activity/xa-datasource-properties=PortNumber:add(value=5432)
 /subsystem=datasources/xa-data-source=uvms_activity/xa-datasource-properties=DatabaseName:add(value=db71u)
-
-# MDR
-xa-data-source add \
-	--name=uvms_mdr \
-	--jndi-name=java:jboss/datasources/uvms_mdr \
-	--driver-name=postgresql \
-	--min-pool-size=2 \
-	--initial-pool-size=2 \
-	--max-pool-size=20 \
-	--pool-prefill=true \
-	--prepared-statements-cache-size=32 \
-	--track-statements=nowarn \
-	--valid-connection-checker-class-name=org.jboss.jca.adapters.jdbc.extensions.postgres.PostgreSQLValidConnectionChecker \
-	--exception-sorter-class-name=org.jboss.jca.adapters.jdbc.extensions.postgres.PostgreSQLExceptionSorter \
-	--user-name=mdr \
-	--password=$mdr_pw \
-	--enabled=true \
-	--use-ccm=true \
-	--no-recovery
-/subsystem=datasources/xa-data-source=uvms_mdr/xa-datasource-properties=ServerName:add(value=postgres)
-/subsystem=datasources/xa-data-source=uvms_mdr/xa-datasource-properties=PortNumber:add(value=5432)
-/subsystem=datasources/xa-data-source=uvms_mdr/xa-datasource-properties=DatabaseName:add(value=db71u)
 
 # Config
 xa-data-source add \
