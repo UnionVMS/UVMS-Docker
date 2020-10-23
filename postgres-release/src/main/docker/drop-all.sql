@@ -27,9 +27,6 @@ DROP USER IF EXISTS spatial;
 -- User
 DROP USER IF EXISTS usm; 
 
--- Activity
-DROP USER IF EXISTS activity;
-
 -- SALES
 DROP USER IF EXISTS sales;
 

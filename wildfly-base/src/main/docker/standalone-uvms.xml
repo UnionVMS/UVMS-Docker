@@ -493,33 +493,6 @@
                         <password>incident</password>
                     </security>
                 </xa-datasource>
-                <xa-datasource jndi-name="java:jboss/datasources/uvms_activity" pool-name="uvms_activity" enabled="true" use-ccm="true" statistics-enabled="${wildfly.datasources.statistics-enabled:${wildfly.statistics-enabled:false}}">
-                    <xa-datasource-property name="ServerName">postgres</xa-datasource-property>
-                    <xa-datasource-property name="PortNumber">5432</xa-datasource-property>
-                    <xa-datasource-property name="DatabaseName">db71u</xa-datasource-property>
-
-                    <driver>postgresql</driver>
-                    <xa-pool>
-                        <min-pool-size>2</min-pool-size>
-                        <initial-pool-size>2</initial-pool-size>
-                        <max-pool-size>20</max-pool-size>
-                        <prefill>true</prefill>
-                    </xa-pool>
-                    <statement>
-                        <prepared-statement-cache-size>32</prepared-statement-cache-size>
-                        <track-statements>nowarn</track-statements>
-                    </statement>
-                    <validation>
-                        <valid-connection-checker
-                                class-name="org.jboss.jca.adapters.jdbc.extensions.postgres.PostgreSQLValidConnectionChecker"></valid-connection-checker>
-                        <exception-sorter
-                                class-name="org.jboss.jca.adapters.jdbc.extensions.postgres.PostgreSQLExceptionSorter"></exception-sorter>
-                    </validation>
-                    <security>
-                        <user-name>activity</user-name>
-                        <password>activity</password>
-                    </security>
-                </xa-datasource>
                 <xa-datasource jndi-name="java:jboss/datasources/uvms_sales" pool-name="uvms_sales" enabled="true" use-ccm="true" statistics-enabled="${wildfly.datasources.statistics-enabled:${wildfly.statistics-enabled:false}}">
                     <xa-datasource-property name="ServerName">postgres</xa-datasource-property>
                     <xa-datasource-property name="PortNumber">5432</xa-datasource-property>
@@ -923,8 +896,6 @@
                 <jms-queue name="UVMSMovementRulesEvent" entries="jms/queue/UVMSMovementRulesEvent java:jboss/exported/jms/queue/UVMSMovementRulesEvent" />
                 <jms-queue name="UVMSUser" entries="jms/queue/UVMSUser java:jboss/exported/jms/queue/UVMSUser" />
                 <jms-queue name="UVMSUserEvent" entries="jms/queue/UVMSUserEvent java:jboss/exported/jms/queue/UVMSUserEvent" />
-                <jms-queue name="UVMSActivity" entries="jms/queue/UVMSActivity java:jboss/exported/jms/queue/UVMSActivity" />
-                <jms-queue name="UVMSActivityEvent" entries="jms/queue/UVMSActivityEvent java:jboss/exported/jms/queue/UVMSActivityEvent" />
                 <jms-queue name="UVMSSubscription" entries="jms/queue/UVMSSubscription java:jboss/exported/jms/queue/UVMSSubscription" />
                 <jms-queue name="UVMSSubscriptionEvent" entries="jms/queue/UVMSSubscriptionEvent java:jboss/exported/jms/queue/UVMSSubscriptionEvent" />
                 <jms-queue name="UVMSAsset" entries="jms/queue/UVMSAsset java:jboss/exported/jms/queue/UVMSAsset" />
@@ -937,7 +908,6 @@
                 <jms-queue name="UVMSSalesEvent" entries="jms/queue/UVMSSalesEvent java:jboss/exported/jms/queue/UVMSSalesEvent" />
                 <jms-queue name="USM4UVMS" entries="jms/queue/USM4UVMS java:jboss/exported/jms/queue/USM4UVMS" />
                 <jms-queue name="UVMSPluginBridge" entries="jms/queue/UVMSPluginBridge java:jboss/exported/jms/queue/UVMSPluginBridge" />
-                <jms-queue name="UVMSActivityPluginEvent" entries="jms/queue/UVMSActivityPluginEvent java:jboss/exported/jms/queue/UVMSActivityPluginEvent" />
                 <jms-queue name="IntegrationTestsResponseQueue" entries="jms/queue/IntegrationTestsResponseQueue java:jboss/exported/jms/queue/IntegrationTestsResponseQueue" />
                 <jms-queue name="UVMSPluginFailedReport" entries="jms/queue/UVMSPluginFailedReport java:jboss/exported/jms/queue/UVMSPluginFailedReport" />
                 <jms-queue name="UVMSInmarsatMessages" entries="jms/queue/UVMSInmarsatMessages java:jboss/exported/jms/queue/UVMSInmarsatMessages" />

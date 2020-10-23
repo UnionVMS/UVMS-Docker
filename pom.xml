@@ -36,7 +36,6 @@
 		<unionvms.project.audit.module>4.3.8</unionvms.project.audit.module>
 		<unionvms.project.asset.module>6.7.31</unionvms.project.asset.module>
 		<unionvms.project.incident.module>1.0.3</unionvms.project.incident.module>
-		<unionvms.project.activity.module>1.1.6</unionvms.project.activity.module>
 		<unionvms.project.plugins.ais>3.1.6</unionvms.project.plugins.ais>
 		<unionvms.project.plugins.naf>3.1.7</unionvms.project.plugins.naf>
 		<unionvms.project.plugins.flux>3.1.6</unionvms.project.plugins.flux>
@@ -200,18 +199,6 @@
 				</exclusions>
 			</dependency>
 			<dependency>
-				<groupId>eu.europa.ec.fisheries.uvms.activity</groupId>
-				<artifactId>liquibase</artifactId>
-				<type>sql</type>
-				<version>${unionvms.project.activity.module}</version>
-				<exclusions>
-					<exclusion>
-						<groupId>com.oracle</groupId>
-						<artifactId>ojdbc6</artifactId>
-					</exclusion>
-				</exclusions>
-			</dependency>
-			<dependency>
 				<groupId>eu.europa.ec.fisheries.uvms.reporting</groupId>
 				<artifactId>reporting-liquibase</artifactId>
 				<type>sql</type>
@@ -340,12 +327,6 @@
 				<artifactId>movement-rules-module</artifactId>
 				<type>war</type>
 				<version>${unionvms.project.movementrules.module}</version>
-			</dependency>
-			<dependency>
-				<groupId>eu.europa.ec.fisheries.uvms.activity</groupId>
-				<artifactId>activity-module-postgres</artifactId>
-				<type>ear</type>
-				<version>${unionvms.project.activity.module}</version>
 			</dependency>
 			<dependency>
 				<groupId>eu.europa.ec.fisheries.uvms.reporting</groupId>
