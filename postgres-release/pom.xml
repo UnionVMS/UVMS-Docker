@@ -97,17 +97,6 @@
 			<type>zip</type>
 		</dependency>
 		<dependency>
-			<groupId>eu.europa.ec.fisheries.uvms.rules</groupId>
-			<artifactId>liquibase</artifactId>
-			<type>sql</type>
-			<exclusions>
-				<exclusion>
-					<groupId>com.oracle</groupId>
-					<artifactId>ojdbc6</artifactId>
-				</exclusion>
-			</exclusions>
-		</dependency>
-		<dependency>
 			<groupId>eu.europa.ec.fisheries.uvms.movement-rules</groupId>
 			<artifactId>liquibase</artifactId>
 			<type>sql</type>

@@ -25,7 +25,6 @@
 		<unionvms.project.mapfishprint.version>3.20.2.1</unionvms.project.mapfishprint.version>
 		<unionvms.project.geoserver.version>2.16.2.1</unionvms.project.geoserver.version>
 		<unionvms.project.user.module>2.1.9</unionvms.project.user.module>
-		<unionvms.project.rules.module>3.0.49</unionvms.project.rules.module>
 		<unionvms.project.reporting.module>1.1.25-UVMS</unionvms.project.reporting.module>
 		<unionvms.project.movementrules.module>2.4.8</unionvms.project.movementrules.module>
 		<unionvms.project.movement.module>5.5.27-UVMS</unionvms.project.movement.module>
@@ -141,18 +140,6 @@
 				<artifactId>liquibase</artifactId>
 				<type>sql</type>
 				<version>${unionvms.project.movementrules.module}</version>
-				<exclusions>
-					<exclusion>
-						<groupId>com.oracle</groupId>
-						<artifactId>ojdbc6</artifactId>
-					</exclusion>
-				</exclusions>
-			</dependency>
-			<dependency>
-				<groupId>eu.europa.ec.fisheries.uvms.rules</groupId>
-				<artifactId>liquibase</artifactId>
-				<type>sql</type>
-				<version>${unionvms.project.rules.module}</version>
 				<exclusions>
 					<exclusion>
 						<groupId>com.oracle</groupId>
@@ -362,12 +349,6 @@
 			</dependency>
 
 			<!-- app modules -->
-			<dependency>
-				<groupId>eu.europa.ec.fisheries.uvms.rules</groupId>
-				<artifactId>rules-module</artifactId>
-				<type>ear</type>
-				<version>${unionvms.project.rules.module}</version>
-			</dependency>
 			<dependency>
 				<groupId>eu.europa.ec.fisheries.uvms.movement-rules</groupId>
 				<artifactId>movement-rules-module</artifactId>

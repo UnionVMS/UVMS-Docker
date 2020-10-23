@@ -16,8 +16,6 @@ echo "Running exchange.sql to create tables and init data"
 psql -U exchange -d $1 --host=$2 --single-transaction -q -f  eu.europa.ec.fisheries.uvms.exchange.liquibase-${unionvms.project.exchange.module}.sql >/dev/null
 echo "Running movement.sql to create tables and init data"
 psql -U movement -d $1 --host=$2 --single-transaction -q -f  eu.europa.ec.fisheries.uvms.movement.liquibase-${unionvms.project.movement.module}.sql >/dev/null
-echo "Running rules.sql to create tables and init data"
-psql -U rules -d $1 --host=$2 -a --single-transaction -q -f  eu.europa.ec.fisheries.uvms.rules.liquibase-${unionvms.project.rules.module}.sql >/dev/null
 echo "Running movementrules.sql to create tables and init data"
 psql -U movementrules -d $1 --host=$2 -a --single-transaction -q -f  eu.europa.ec.fisheries.uvms.movement-rules.liquibase-${unionvms.project.movementrules.module}.sql >/dev/null
 echo "Running incident.sql to create tables and init data"
