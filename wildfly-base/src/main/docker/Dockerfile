@@ -44,7 +44,6 @@ COPY dependencies/geolatte-geom-${wildfly.hibernate.module.geolatte.version}.jar
 
 # Standalone config
 COPY standalone.conf $JBOSS_HOME/bin/
-COPY standalone-uvms.xml $JBOSS_HOME/standalone/configuration/
 COPY start.sh /opt/jboss/
 COPY fakesmtp /opt/jboss/fakesmtp
 
