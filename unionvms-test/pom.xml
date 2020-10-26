@@ -67,25 +67,18 @@
 			<version>${uvms.commons.version}</version>
 		</dependency>
 		<dependency>
+			<groupId>eu.europa.ec.fisheries.uvms.commons</groupId>
+			<artifactId>uvms-commons-rest</artifactId>
+			<version>${uvms.commons.version}</version>
+		</dependency>
+		<dependency>
 			<groupId>eu.europa.ec.fisheries.uvms.reporting</groupId>
 			<artifactId>reporting-service</artifactId>
 			<version>${unionvms.project.reporting.module}</version>
 			<exclusions>
 				<exclusion>
-					<groupId>javax</groupId>
-					<artifactId>javaee-api</artifactId>
-				</exclusion>
-				<exclusion>
-					<groupId>org.projectlombok</groupId>
-					<artifactId>lombok</artifactId>
-				</exclusion>
-				<exclusion>
-					<groupId>com.fasterxml.jackson.core</groupId>
-					<artifactId>jackson-core</artifactId>
-				</exclusion>
-				<exclusion>
-					<groupId>eu.europa.ec.fisheries.uvms.commons</groupId>
-					<artifactId>uvms-commons-message</artifactId>
+					<groupId>*</groupId>
+					<artifactId>*</artifactId>
 				</exclusion>
 			</exclusions>
 		</dependency>
@@ -100,9 +93,9 @@
 			<version>${unionvms.project.audit.module}</version>
 		</dependency>
 		<dependency>
-			<groupId>eu.europa.ec.fisheries.uvms.spatial</groupId>
+			<groupId>eu.europa.ec.fisheries.uvms.spatialSwe</groupId>
 			<artifactId>spatial-model</artifactId>
-			<version>1.0.12</version>
+			<version>${unionvms.project.spatialSwe.module}</version>
 		</dependency>
 		<dependency>
             <groupId>eu.europa.ec.fisheries.uvms.service.client.flux</groupId>
@@ -192,9 +185,11 @@
 			<artifactId>yasson</artifactId>
 			<version>1.0.8</version>
 		</dependency>
-
-
-
+		<dependency>
+			<groupId>org.locationtech.jts</groupId>
+			<artifactId>jts-core</artifactId>
+			<version>1.16.1</version>
+		</dependency>
 	</dependencies>
 	<build>
 		<pluginManagement>

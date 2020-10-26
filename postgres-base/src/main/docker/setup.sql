@@ -11,14 +11,6 @@ GRANT CONNECT ON DATABASE db71u TO asset;
 GRANT SELECT, INSERT, UPDATE, DELETE ON ALL TABLES IN SCHEMA asset TO asset; 
 ALTER SCHEMA asset OWNER TO asset;
 
--- SUBSCRIPTION
-CREATE USER subscription WITH PASSWORD 'subscription';
-CREATE SCHEMA AUTHORIZATION subscription;
-ALTER USER subscription SET search_path = subscription, public;
-GRANT CONNECT ON DATABASE db71u TO subscription;
-GRANT SELECT, INSERT, UPDATE, DELETE ON ALL TABLES IN SCHEMA subscription TO subscription;
-ALTER SCHEMA subscription OWNER TO subscription;
-
 -- AUDIT
 CREATE USER audit WITH PASSWORD 'audit';  
 CREATE SCHEMA AUTHORIZATION audit;  
@@ -59,14 +51,6 @@ GRANT CONNECT ON DATABASE db71u TO reporting;
 GRANT SELECT, INSERT, UPDATE, DELETE ON ALL TABLES IN SCHEMA reporting TO reporting; 
 ALTER SCHEMA reporting OWNER TO reporting; 
 
--- Rules
-CREATE USER rules WITH PASSWORD 'rules'; 
-CREATE SCHEMA AUTHORIZATION rules; 
-ALTER USER rules SET search_path = rules, public; 
-GRANT CONNECT ON DATABASE db71u TO rules; 
-GRANT SELECT, INSERT, UPDATE, DELETE ON ALL TABLES IN SCHEMA rules TO rules; 
-ALTER SCHEMA rules OWNER TO rules; 
-
 -- MovementRules
 CREATE USER movementrules WITH PASSWORD 'movementrules'; 
 CREATE SCHEMA AUTHORIZATION movementrules; 
@@ -90,22 +74,6 @@ ALTER USER usm SET search_path = usm, public;
 GRANT CONNECT ON DATABASE db71u TO usm; 
 GRANT SELECT, INSERT, UPDATE, DELETE ON ALL TABLES IN SCHEMA usm TO usm; 
 ALTER SCHEMA usm OWNER TO usm; 
-
--- Activity
-CREATE USER activity WITH PASSWORD 'activity';
-CREATE SCHEMA AUTHORIZATION activity;
-ALTER USER activity SET search_path = activity, public;
-GRANT CONNECT ON DATABASE db71u TO activity;
-GRANT SELECT, INSERT, UPDATE, DELETE ON ALL TABLES IN SCHEMA activity TO activity;
-ALTER SCHEMA activity OWNER TO activity;
-
--- MDR
-CREATE USER mdr WITH PASSWORD 'mdr';
-CREATE SCHEMA AUTHORIZATION mdr;
-ALTER USER mdr SET search_path = mdr, public;
-GRANT CONNECT ON DATABASE db71u TO mdr;
-GRANT SELECT, INSERT, UPDATE, DELETE ON ALL TABLES IN SCHEMA mdr TO mdr;
-ALTER SCHEMA mdr OWNER TO mdr;
 
 -- SALES
 CREATE USER sales WITH PASSWORD 'sales';
