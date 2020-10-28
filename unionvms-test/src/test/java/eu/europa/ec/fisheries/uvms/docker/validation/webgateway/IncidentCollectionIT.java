@@ -352,6 +352,7 @@ public class IncidentCollectionIT extends AbstractRest {
 
         IncidentTicketDto ticket = IncidentTestHelper.createTicket(asset.getId());
         IncidentDto incidentDto = IncidentTestHelper.createAssetNotSendingIncident(ticket, INCIDENT_CREATE);
+        assertNotNull(incidentDto.getId());
 
         incidentDto.setType(IncidentType.MANUAL_POSITION_MODE);
 
