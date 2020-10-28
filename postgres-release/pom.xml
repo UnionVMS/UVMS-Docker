@@ -4,7 +4,7 @@
 	<parent>
 		<groupId>eu.europa.ec.fisheries.uvms.docker</groupId>
 		<artifactId>uvms-docker</artifactId>
-		<version>3.45.20-SNAPSHOT</version>
+		<version>3.45.25-SNAPSHOT</version>
 		<relativePath>../pom.xml</relativePath>
 	</parent>
 	<artifactId>uvms-docker-postgres-release</artifactId>
@@ -97,17 +97,6 @@
 			<type>zip</type>
 		</dependency>
 		<dependency>
-			<groupId>eu.europa.ec.fisheries.uvms.rules</groupId>
-			<artifactId>liquibase</artifactId>
-			<type>sql</type>
-			<exclusions>
-				<exclusion>
-					<groupId>com.oracle</groupId>
-					<artifactId>ojdbc6</artifactId>
-				</exclusion>
-			</exclusions>
-		</dependency>
-		<dependency>
 			<groupId>eu.europa.ec.fisheries.uvms.movement-rules</groupId>
 			<artifactId>liquibase</artifactId>
 			<type>sql</type>
@@ -153,35 +142,13 @@
 			<type>zip</type>
 		</dependency>
 		<dependency>
-			<groupId>eu.europa.ec.fisheries.uvms.activity</groupId>
-			<artifactId>liquibase</artifactId>
-			<type>sql</type>
-			<exclusions>
-				<exclusion>
-					<groupId>com.oracle</groupId>
-					<artifactId>ojdbc6</artifactId>
-				</exclusion>
-			</exclusions>			
-		</dependency>
-		<dependency>
-			<groupId>eu.europa.ec.fisheries.uvms.mdr</groupId>
-			<artifactId>liquibase</artifactId>
-			<type>sql</type>
-			<exclusions>
-				<exclusion>
-					<groupId>com.oracle</groupId>
-					<artifactId>ojdbc6</artifactId>
-				</exclusion>
-			</exclusions>			
-		</dependency>
-		<dependency>
 			<groupId>eu.europa.ec.fisheries.uvms.reporting</groupId>
 			<artifactId>reporting-liquibase</artifactId>
 			<type>sql</type>
 			<exclusions>
 				<exclusion>
-					<groupId>com.oracle</groupId>
-					<artifactId>ojdbc6</artifactId>
+					<groupId>*</groupId>
+					<artifactId>*</artifactId>
 				</exclusion>
 			</exclusions>			
 		</dependency>
@@ -190,6 +157,12 @@
 			<artifactId>reporting-liquibase</artifactId>
 			<version>${unionvms.project.reporting.module}</version>
 			<type>zip</type>
+			<exclusions>
+				<exclusion>
+					<groupId>*</groupId>
+					<artifactId>*</artifactId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 		<dependency>
 			<groupId>eu.europa.ec.fisheries.uvms.user</groupId>
@@ -207,17 +180,6 @@
 			<artifactId>liquibase</artifactId>
 			<version>${unionvms.project.user.module}</version>
 			<type>zip</type>
-		</dependency>
-		<dependency>
-			<groupId>eu.europa.ec.fisheries.uvms.subscription</groupId>
-			<artifactId>liquibase</artifactId>
-			<type>sql</type>
-			<exclusions>
-				<exclusion>
-					<groupId>com.oracle</groupId>
-					<artifactId>ojdbc6</artifactId>
-				</exclusion>
-			</exclusions>
 		</dependency>
 	</dependencies>
 	<build>
