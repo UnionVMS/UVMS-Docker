@@ -91,13 +91,6 @@
 			<type>ear</type>
 			<version>${unionvms.project.movement.module}</version>
 		</dependency>
-
-		<dependency>
-			<groupId>eu.europa.ec.fisheries.uvms.movement-rules</groupId>
-			<artifactId>movement-rules-module</artifactId>
-			<type>ear</type>
-			<version>${unionvms.project.movementrules.module}</version>
-		</dependency>
 		<dependency>
 			<groupId>eu.europa.ec.fisheries.uvms.spatial</groupId>
 			<artifactId>spatial-module</artifactId>

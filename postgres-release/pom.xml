@@ -91,17 +91,6 @@
 			</exclusions>
 		</dependency>
 		<dependency>
-			<groupId>eu.europa.ec.fisheries.uvms.movement-rules</groupId>
-			<artifactId>liquibase</artifactId>
-			<type>sql</type>
-			<exclusions>
-				<exclusion>
-					<groupId>com.oracle</groupId>
-					<artifactId>ojdbc6</artifactId>
-				</exclusion>
-			</exclusions>			
-		</dependency>
-		<dependency>
 			<groupId>eu.europa.ec.fisheries.uvms.spatial</groupId>
 			<artifactId>spatial-liquibase</artifactId>
 			<type>sql</type>

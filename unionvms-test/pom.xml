@@ -29,11 +29,6 @@
 			<version>${unionvms.project.movement.module}</version>
 		</dependency>
 		<dependency>
-			<groupId>eu.europa.ec.fisheries.uvms.movement-rules</groupId>
-			<artifactId>movement-rules-model</artifactId>
-			<version>${unionvms.project.movementrules.module}</version>
-		</dependency>
-		<dependency>
 			<groupId>org.apache.activemq</groupId>
 			<artifactId>activemq-client</artifactId>
 			<version>5.15.9</version>

@@ -25,7 +25,6 @@
         <focus-pom.java.version>1.8</focus-pom.java.version>
 
         <unionvms.project.asset.client.jar>6.0.17</unionvms.project.asset.client.jar>
-        <unionvms.project.movementrules.module>1.0.5-W14J8</unionvms.project.movementrules.module>
         <unionvms.project.mapfishprint.version>3.6-SNAPSHOT</unionvms.project.mapfishprint.version>
         <unionvms.project.geoserver.version>${uvms.geoserver-overlay.version}</unionvms.project.geoserver.version>
 
@@ -201,18 +200,6 @@
                 </exclusions>
             </dependency>
             <dependency>
-                <groupId>eu.europa.ec.fisheries.uvms.movement-rules</groupId>
-                <artifactId>liquibase</artifactId>
-                <type>sql</type>
-                <version>${unionvms.project.movementrules.module}</version>
-                <exclusions>
-                    <exclusion>
-                        <groupId>com.oracle</groupId>
-                        <artifactId>ojdbc6</artifactId>
-                    </exclusion>
-                </exclusions>
-            </dependency>
-            <dependency>
                 <groupId>eu.europa.ec.fisheries.uvms.rules</groupId>
                 <artifactId>rules-liquibase</artifactId>
                 <type>sql</type>
@@ -370,12 +357,6 @@
                 <artifactId>rules-module</artifactId>
                 <type>ear</type>
                 <version>${unionvms.project.rules.module}</version>
-            </dependency>
-            <dependency>
-                <groupId>eu.europa.ec.fisheries.uvms.movement-rules</groupId>
-                <artifactId>movement-rules-module</artifactId>
-                <type>ear</type>
-                <version>${unionvms.project.movementrules.module}</version>
             </dependency>
 
             <!-- Respect the order of deployment of the above modules -->
