@@ -301,7 +301,7 @@ public class IncidentCollectionIT extends AbstractRest {
         UpdateIncidentDto updateDto = new UpdateIncidentDto();
         updateDto.setIncidentId(incidentDto.getId());
         updateDto.setType(IncidentType.PARKED);
-        updateDto.setExpiryDate(Instant.now());
+        updateDto.setExpiryDate(Instant.now().plus(1, ChronoUnit.MINUTES));
 
         response = getWebTarget()
                 .path("web-gateway/rest/incidents/updateIncidentType")
