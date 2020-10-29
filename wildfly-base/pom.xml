@@ -204,8 +204,8 @@
 							<goal>wget</goal>
 						</goals>
 						<configuration>
-							<url>https://download.jboss.org/wildfly/15.0.1.Final/wildfly-15.0.1.Final.tar.gz</url>
-							<sha1>23d6a5889b76702fc518600fc5b2d80d6b3b7bb1</sha1>
+							<url>https://download.jboss.org/wildfly/20.0.1.Final/wildfly-20.0.1.Final.tar.gz</url>
+							<sha1>95366b4a0c8f2e6e74e3e4000a98371046c83eeb</sha1>
 							<outputDirectory>${project.build.directory}/dockerfile</outputDirectory>
 						</configuration>
 					</execution>
