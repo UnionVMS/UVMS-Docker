@@ -720,6 +720,10 @@
             <infinispan-routing cache-container="web" cache="routing"/>
         </subsystem>
         <subsystem xmlns="urn:jboss:domain:ee:5.0">
+            <global-modules>
+                <module name="javax.jms.api" slot="main"/>
+                <module name="org.jboss.jts" slot="main"/>
+            </global-modules>
             <spec-descriptor-property-replacement>false</spec-descriptor-property-replacement>
             <concurrent>
                 <context-services>
