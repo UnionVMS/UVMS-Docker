@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module xmlns="urn:jboss:module:1.7" name="eu.europa.ec.ecas">
+	<resources>
+		<resource-root path="ecas-jsr196-4.61.0.jar" />
+		<resource-root path="." />
+	</resources>
+	<dependencies>
+		<system export="true">
+			<paths>
+				<path name="com/sun/org/apache/xml/internal/security" />
+				<path name="com/sun/org/apache/xml/internal/security/c14n" />
+				<path name="sun/net/www/protocol/http" />
+				<path name="sun/net/www/protocol/https" />
+				<path name="sun/misc" />
+			</paths>
+			<exports>
+				<include-set>
+					<path name="com/sun/org/apache/xml/internal/security" />
+					<path name="com/sun/org/apache/xml/internal/security/c14n" />
+					<path name="sun/net/www/protocol/http" />
+					<path name="sun/net/www/protocol/https" />
+					<path name="sun/misc" />
+				</include-set>
+			</exports>
+		</system>
+		<!-- Needed for javax.security.auth -->
+		<module name="sun.jdk" export="false" />
+		<module name="javax.api" export="false" />
+		<module name="javax.servlet.api" export="false" />
+		<module name="javax.security.auth.message.api" export="false" />
+		<module name="javax.security.jacc.api" export="false" />
+		<module name="org.jboss.as.web-common" export="false" />
+		<module name="org.jboss.as.server" export="false" />
+		<module name="org.picketbox" export="false" />
+		<module name="org.apache.log4j" export="false" />
+	</dependencies>
+</module>

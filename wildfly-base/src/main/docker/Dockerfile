@@ -25,6 +25,7 @@ ENV PGPASSWORD=postgres
 ENV YASSON_MODULE $JBOSS_HOME/modules/system/layers/base/org/eclipse/yasson/main
 
 RUN mkdir -p $JBOSS_HOME/modules/org/postgresql/main && \
+    mkdir -p $JBOSS_HOME/modules/eu/europa/ec/ecas/main && \
     mkdir -p /opt/jboss/wildfly/standalone/deployments/hibernatesearch/eu.europa.ec.fisheries.uvms.entity.model.AssetHistory
 COPY dependencies/activemq-rar-${wildfly.activemq.rar.version}.rar $DEPLOYMENTS/activemq-rar.rar
 COPY postgres/module.xml $POSTGRES_MODULE
@@ -37,6 +38,8 @@ COPY dependencies/geolatte-geom-${wildfly.hibernate.module.geolatte.version}.jar
 COPY dependencies/hibernate-spatial-4x-to-5x-wrapper-${wildfly.hibernate.spatial.wrapper.version}.jar $HIBERNATE_MODULE
 COPY yasson/module.xml $YASSON_MODULE
 COPY dependencies/yasson-1.0.2.jar $YASSON_MODULE
+COPY dependencies/ecas-jsr196-4.61.0.jar $JBOSS_HOME/modules/eu/europa/ec/ecas/main
+COPY ecas/* $JBOSS_HOME/modules/eu/europa/ec/ecas/main/
 
 # Standalone config
 COPY standalone.conf $JBOSS_HOME/bin/

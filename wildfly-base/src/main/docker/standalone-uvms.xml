@@ -721,6 +721,7 @@
         </subsystem>
         <subsystem xmlns="urn:jboss:domain:ee:5.0">
             <global-modules>
+                <module name="eu.europa.ec.ecas" slot="main"/>
                 <module name="javax.jms.api" slot="main"/>
                 <module name="org.jboss.jts" slot="main"/>
             </global-modules>
@@ -1340,6 +1341,11 @@
         </subsystem>
         <subsystem xmlns="urn:jboss:domain:security:2.0">
             <security-domains>
+                <security-domain name="ecas" cache-type="default">
+                    <authentication-jaspi>
+                        <auth-module code="eu.cec.digit.ecas.client.jaspi.EcasServerAuthModule"/>
+                    </authentication-jaspi>
+                </security-domain>
                 <security-domain name="other" cache-type="default">
                     <authentication>
                         <login-module code="Remoting" flag="optional">
@@ -1354,19 +1360,6 @@
                     <authorization>
                         <policy-module code="Delegating" flag="required"/>
                     </authorization>
-                </security-domain>
-                <security-domain name="jboss-ejb-policy" cache-type="default">
-                    <authorization>
-                        <policy-module code="Delegating" flag="required"/>
-                    </authorization>
-                </security-domain>
-                <security-domain name="jaspitest" cache-type="default">
-                    <authentication-jaspi>
-                        <login-module-stack name="dummy">
-                            <login-module code="Dummy" flag="optional"/>
-                        </login-module-stack>
-                        <auth-module code="Dummy"/>
-                    </authentication-jaspi>
                 </security-domain>
                 <security-domain name="jboss-ejb-policy" cache-type="default">
                     <authorization>

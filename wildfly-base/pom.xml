@@ -21,6 +21,15 @@
 		<wildfly.activemq.rar.version>5.15.9</wildfly.activemq.rar.version>
 		<wildfly.hibernate.spatial.wrapper.version>${project.version}</wildfly.hibernate.spatial.wrapper.version>
 	</properties>
+
+	<repositories>
+		<repository>
+			<id>digit</id>
+			<name>digit</name>
+			<url>https://citnet.tech.ec.europa.eu/CITnet/nexus/repository/digit</url>
+		</repository>
+	</repositories>
+
 	<dependencies>
 		<dependency>
 			<groupId>org.hibernate</groupId>
@@ -62,6 +71,11 @@
 			<groupId>org.eclipse</groupId>
 			<artifactId>yasson</artifactId>
 			<version>1.0.2</version>
+		</dependency>
+		<dependency>
+			<groupId>eu.europa.ec.digit.iam.ecas.client</groupId>
+			<artifactId>ecas-jsr196</artifactId>
+			<version>4.61.0</version>
 		</dependency>
 	</dependencies>
 	<build>
