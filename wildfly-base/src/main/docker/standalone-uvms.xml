@@ -1314,6 +1314,11 @@
 								UVMSRulesPermissionEvent
 							</config-property>
 						</admin-object>
+                        <admin-object class-name="org.apache.activemq.command.ActiveMQQueue" jndi-name="java:/jms/queue/UVMSAssetSyncData" use-java-context="true" pool-name="UVMSAssetSyncData">
+                            <config-property name="PhysicalName">
+                                UVMSAssetSyncData
+                            </config-property>
+                        </admin-object>
                     </admin-objects>
                 </resource-adapter>
             </resource-adapters>

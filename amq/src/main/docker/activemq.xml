@@ -150,6 +150,11 @@
                             <sharedDeadLetterStrategy processExpired="false" />
                         </deadLetterStrategy>
                     </policyEntry>
+                    <policyEntry queue="UVMSAssetSyncData" producerFlowControl="false" optimizedDispatch="true">
+                        <deadLetterStrategy>
+                            <sharedDeadLetterStrategy processExpired="false" />
+                        </deadLetterStrategy>
+                    </policyEntry>
                 </policyEntries>
             </policyMap>
         </destinationPolicy>
