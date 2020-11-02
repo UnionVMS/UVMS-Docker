@@ -771,7 +771,6 @@
                 </bean-instance-pools>
             </pools>
             <caches>
-                <cache name="simple"/>
                 <cache name="distributable" passivation-store-ref="infinispan" aliases="passivating clustered"/>
                 <cache name="simple" aliases="NoPassivationCache"/>
             </caches>
@@ -1007,7 +1006,7 @@
         <subsystem xmlns="urn:jboss:domain:remoting:4.0">
             <http-connector name="http-remoting-connector" connector-ref="default" security-realm="ApplicationRealm"/>
         </subsystem>
-        <subsystem xmlns="urn:jboss:domain:resource-adapters:5.0">
+        <subsystem xmlns="urn:jboss:domain:resource-adapters:6.0">
            <resource-adapters>
                 <resource-adapter id="activemq-rar.rar" statistics-enabled="true">
                     <archive>
@@ -1330,7 +1329,6 @@
         </subsystem>
 
         <subsystem xmlns="urn:jboss:domain:request-controller:1.0"/>
-        <subsystem xmlns="urn:jboss:domain:resource-adapters:6.0"/>
         <subsystem xmlns="urn:jboss:domain:sar:1.0"/>
         <subsystem xmlns="urn:jboss:domain:security-manager:1.0">
             <deployment-permissions>
@@ -1367,13 +1365,6 @@
                     </authorization>
                 </security-domain>
             </security-domains>
-        </subsystem>
-        <subsystem xmlns="urn:jboss:domain:security-manager:1.0">
-            <deployment-permissions>
-                <maximum-set>
-                    <permission class="java.security.AllPermission"/>
-                </maximum-set>
-            </deployment-permissions>
         </subsystem>
         <subsystem xmlns="urn:jboss:domain:transactions:5.0">
             <core-environment node-identifier="${jboss.tx.node.id:1}">
