@@ -20,5 +20,9 @@ do
    sleep 5
 done
 
+if [ -n "`grep %ECAS_ $JBOSS_HOME/modules/eu/europa/ec/ecas/main/ecas-config.properties`" ]; then
+   sed -i -e "s#%ECAS_SERVICE_URL%#$ECAS_SERVICE_URL#" -e "s#%ECAS_CERTIFICATE_ESCAPED%#$ECAS_CERTIFICATE_ESCAPED#" -e "s#%ECAS_BASE_URL%#$ECAS_BASE_URL#" $JBOSS_HOME/modules/eu/europa/ec/ecas/main/ecas-config.properties
+fi
+
 cmd="$@"
 exec $cmd
