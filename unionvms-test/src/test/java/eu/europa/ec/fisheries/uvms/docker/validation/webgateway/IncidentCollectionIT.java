@@ -10,6 +10,7 @@ import eu.europa.ec.fisheries.uvms.asset.client.model.Note;
 import eu.europa.ec.fisheries.uvms.asset.client.model.SimpleCreatePoll;
 import eu.europa.ec.fisheries.uvms.docker.validation.AppError;
 import eu.europa.ec.fisheries.uvms.docker.validation.asset.AssetTestHelper;
+import eu.europa.ec.fisheries.uvms.docker.validation.asset.assetfilter.test.dto.SanePollDto;
 import eu.europa.ec.fisheries.uvms.docker.validation.common.AbstractRest;
 import eu.europa.ec.fisheries.uvms.docker.validation.config.ConfigRestHelper;
 import eu.europa.ec.fisheries.uvms.docker.validation.incident.IncidentTestHelper;
@@ -23,6 +24,8 @@ import eu.europa.ec.fisheries.uvms.docker.validation.movement.model.ManualMoveme
 import eu.europa.ec.fisheries.uvms.docker.validation.movement.model.MicroMovement;
 import eu.europa.ec.fisheries.uvms.docker.validation.system.helper.VMSSystemHelper;
 import eu.europa.ec.fisheries.uvms.docker.validation.webgateway.dto.ExtendedIncidentLogDto;
+import eu.europa.ec.fisheries.uvms.docker.validation.webgateway.dto.PollIdDto;
+import eu.europa.ec.fisheries.uvms.docker.validation.webgateway.dto.PollInfoDto;
 import eu.europa.ec.fisheries.uvms.incident.model.dto.IncidentDto;
 import eu.europa.ec.fisheries.uvms.incident.model.dto.IncidentLogDto;
 import eu.europa.ec.fisheries.uvms.incident.model.dto.IncidentTicketDto;
@@ -129,7 +132,7 @@ public class IncidentCollectionIT extends AbstractRest {
                 .post(Entity.json(comment), Response.class);
         assertEquals(200, response.getStatus());
 
-        String pollId = response.readEntity(String.class);
+        PollIdDto pollId = response.readEntity(PollIdDto.class);
         assertNotNull(pollId);
 
         response = getWebTarget()
@@ -150,11 +153,21 @@ public class IncidentCollectionIT extends AbstractRest {
 
         Optional<IncidentLogDto> pollIncidentLog = incidentLogDto.getIncidentLogs().values().stream().filter(dto -> dto.getEventType().equals(EventTypeEnum.POLL_CREATED)).findAny();
         assertTrue(pollIncidentLog.isPresent());
-        ExchangeLogStatusType logStatusType = incidentLogDto.getRelatedObjects().getPolls().get(pollIncidentLog.get().getRelatedObjectId().toString());
-        assertTrue(logStatusType != null);
+        PollInfoDto pollInfoDto = incidentLogDto.getRelatedObjects().getPolls().get(pollIncidentLog.get().getRelatedObjectId().toString());
+        assertTrue(pollInfoDto != null);
+
+        assertNotNull(pollInfoDto.getPollInfo());
+        SanePollDto pollInfo = pollInfoDto.getPollInfo();
+        assertEquals(pollId.getPollId(), pollInfo.getId().toString());
+        assertEquals(asset.getId(), pollInfo.getAssetId());
+        assertEquals(comment.getComment(), pollInfo.getComment());
+
+
+        assertNotNull(pollInfoDto.getPollStatus());
+        ExchangeLogStatusType logStatusType = pollInfoDto.getPollStatus();
 
         assertEquals(TypeRefType.POLL, logStatusType.getTypeRef().getType());
-        assertTrue(pollId.contains(logStatusType.getTypeRef().getRefGuid()));
+        assertTrue(pollId.getPollId().contains(logStatusType.getTypeRef().getRefGuid()));
         assertFalse(logStatusType.getHistory().isEmpty());
 
     }
@@ -187,7 +200,7 @@ public class IncidentCollectionIT extends AbstractRest {
                 .post(Entity.json(pollRequestType), Response.class);
         assertEquals(200, response.getStatus());
 
-        String pollId = response.readEntity(String.class);
+        PollIdDto pollId = response.readEntity(PollIdDto.class);
         assertNotNull(pollId);
 
         response = getWebTarget()
@@ -208,11 +221,21 @@ public class IncidentCollectionIT extends AbstractRest {
 
         Optional<IncidentLogDto> pollIncidentLog = incidentLogDto.getIncidentLogs().values().stream().filter(dto -> dto.getEventType().equals(EventTypeEnum.POLL_CREATED)).findAny();
         assertTrue(pollIncidentLog.isPresent());
-        ExchangeLogStatusType logStatusType = incidentLogDto.getRelatedObjects().getPolls().get(pollIncidentLog.get().getRelatedObjectId().toString());
-        assertTrue(logStatusType != null);
+        PollInfoDto pollInfoDto = incidentLogDto.getRelatedObjects().getPolls().get(pollIncidentLog.get().getRelatedObjectId().toString());
+        assertTrue(pollInfoDto != null);
+
+        assertNotNull(pollInfoDto.getPollInfo());
+        SanePollDto pollInfo = pollInfoDto.getPollInfo();
+        assertEquals(pollId.getPollId(), pollInfo.getId().toString());
+        assertEquals(asset.getId(), pollInfo.getAssetId());
+        assertEquals(pollRequestType.getComment(), pollInfo.getComment());
+
+
+        assertNotNull(pollInfoDto.getPollStatus());
+        ExchangeLogStatusType logStatusType = pollInfoDto.getPollStatus();
 
         assertEquals(TypeRefType.POLL, logStatusType.getTypeRef().getType());
-        assertTrue(pollId.contains(logStatusType.getTypeRef().getRefGuid()));
+        assertTrue(pollId.getPollId().contains(logStatusType.getTypeRef().getRefGuid()));
         assertFalse(logStatusType.getHistory().isEmpty());
 
     }
@@ -231,7 +254,7 @@ public class IncidentCollectionIT extends AbstractRest {
 
         Response response = ManualMovementRestHelper.sendManualMovement(manualMovement);
         assertEquals(200, response.getStatus());
-        MovementHelper.pollMovementCreated();
+
         List<MovementDto> latestMovements = MovementHelper.getLatestMovements(Collections.singletonList(asset.getId().toString()));
         assertThat(latestMovements.size(), is(1));
         String movementId = latestMovements.get(0).getId().toString();
@@ -245,7 +268,6 @@ public class IncidentCollectionIT extends AbstractRest {
         response = ManualMovementRestHelper.sendManualMovement(manualMovement);
         assertEquals(200, response.getStatus());
 
-        MovementHelper.pollMovementCreated();
         latestMovements = MovementHelper.getLatestMovements(Collections.singletonList(asset.getId().toString()));
         assertThat(latestMovements.size(), is(1));
         String secondMovementId = latestMovements.get(0).getId().toString();

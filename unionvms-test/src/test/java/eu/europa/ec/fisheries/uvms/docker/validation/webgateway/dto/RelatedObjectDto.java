@@ -1,6 +1,5 @@
 package eu.europa.ec.fisheries.uvms.docker.validation.webgateway.dto;
 
-import eu.europa.ec.fisheries.schema.exchange.v1.ExchangeLogStatusType;
 import eu.europa.ec.fisheries.uvms.asset.client.model.Note;
 import eu.europa.ec.fisheries.uvms.docker.validation.movement.model.MicroMovement;
 
@@ -10,7 +9,7 @@ import java.util.Map;
 public class RelatedObjectDto {
     private Map<String, Note> notes = new HashMap<>();
 
-    private Map<String, ExchangeLogStatusType> polls = new HashMap<>();
+    private Map<String, PollInfoDto> polls = new HashMap<>();
 
     private Map<String, MicroMovement> positions = new HashMap<>();
 
@@ -22,11 +21,11 @@ public class RelatedObjectDto {
         this.notes = notes;
     }
 
-    public Map<String, ExchangeLogStatusType> getPolls() {
+    public Map<String, PollInfoDto> getPolls() {
         return polls;
     }
 
-    public void setPolls(Map<String, ExchangeLogStatusType> polls) {
+    public void setPolls(Map<String, PollInfoDto> polls) {
         this.polls = polls;
     }
 
