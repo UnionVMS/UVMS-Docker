@@ -301,7 +301,7 @@ public class IncidentCollectionIT extends AbstractRest {
         UpdateIncidentDto updateDto = new UpdateIncidentDto();
         updateDto.setIncidentId(incidentDto.getId());
         updateDto.setType(IncidentType.PARKED);
-        updateDto.setExpiryDate(Instant.now());
+        updateDto.setExpiryDate(Instant.now().plusSeconds(90L));
 
         response = getWebTarget()
                 .path("web-gateway/rest/incidents/updateIncidentType")
@@ -352,6 +352,7 @@ public class IncidentCollectionIT extends AbstractRest {
 
         IncidentTicketDto ticket = IncidentTestHelper.createTicket(asset.getId());
         IncidentDto incidentDto = IncidentTestHelper.createAssetNotSendingIncident(ticket, INCIDENT_CREATE);
+        assertNotNull(incidentDto.getId());
 
         incidentDto.setType(IncidentType.MANUAL_POSITION_MODE);
 
