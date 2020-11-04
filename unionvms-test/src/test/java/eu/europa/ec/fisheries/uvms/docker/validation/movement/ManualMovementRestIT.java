@@ -43,8 +43,6 @@ public class ManualMovementRestIT extends AbstractRest {
         Response response = ManualMovementRestHelper.sendManualMovement(manualMovement);
         assertEquals(200, response.getStatus());
         
-        MovementHelper.pollMovementCreated();
-        
         List<MovementDto> latestMovements = MovementHelper.getLatestMovements(Collections.singletonList(asset.getId().toString()));
         assertThat(latestMovements.size(), is(1));
         
@@ -60,8 +58,6 @@ public class ManualMovementRestIT extends AbstractRest {
         input = input.replace("1575545948", epochMillis);
         Response response = ManualMovementRestHelper.sendManualMovement(input);
         assertEquals(200, response.getStatus());
-
-        MovementHelper.pollMovementCreated();
 
         List<MovementDto> latestMovements = MovementHelper.getLatestMovements(1);
         assertThat(latestMovements.size(), is(1));
