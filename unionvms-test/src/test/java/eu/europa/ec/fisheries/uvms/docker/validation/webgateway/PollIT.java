@@ -47,9 +47,16 @@ public class PollIT extends AbstractRest {
         PollInfoDto pollInfo = pollInfoMap.get(resultDto.getSentPolls().get(0));
         assertNotNull(pollInfo.getPollInfo());
         assertNotNull(pollInfo.getPollStatus());
+        assertNotNull(pollInfo.getMobileTerminalSnapshot());
+
+        assertEquals(pollInfo.getPollInfo().getMobileterminalId() , pollInfo.getMobileTerminalSnapshot().getId());
+        assertEquals(pollInfo.getMobileTerminalSnapshot().getAssetId(), testAsset.getId().toString());
+        assertFalse(pollInfo.getMobileTerminalSnapshot().getChannels().isEmpty());
+
 
         assertEquals(testAsset.getId(), pollInfo.getPollInfo().getAssetId());
         assertEquals(pollInfoMap.get(pollInfo.getPollInfo().getId().toString()), pollInfo);
+
     }
 
     @Test

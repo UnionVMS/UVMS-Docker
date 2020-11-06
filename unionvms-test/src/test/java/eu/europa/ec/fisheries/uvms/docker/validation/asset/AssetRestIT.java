@@ -171,21 +171,6 @@ public class AssetRestIT extends AbstractRest {
         AssetTestHelper.assertAssetAuditLogCreated(testAsset.getId(), AuditOperationEnum.ARCHIVE, fromDate);
     }
 
-    @Ignore("Removed resource?")
-    @Test
-    public void assetListGroupByFlagStateTest() {
-        AssetDTO asset = AssetTestHelper.createTestAsset();
-        ArrayList<String> assetIdList = new ArrayList<>();
-        assetIdList.add(asset.getId().toString());
-
-        Response response = getWebTarget()
-                .path("asset/rest/asset/listGroupByFlagState")
-                .request(MediaType.APPLICATION_JSON)
-                .header(HttpHeaders.AUTHORIZATION, getValidJwtToken())
-                .post(Entity.json(assetIdList));
-        assertEquals(Response.Status.OK.getStatusCode(), response.getStatus());
-    }
-
     @Test
     public void getAssetListWithLikeSearchValue_ICCAT_AND_UVI_GFCM() {
         AssetDTO asset = AssetTestHelper.createBasicAsset();

@@ -47,10 +47,7 @@ import java.util.*;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 public class IncidentCollectionIT extends AbstractRest {
 
@@ -115,6 +112,60 @@ public class IncidentCollectionIT extends AbstractRest {
     }
 
     @Test
+    public void linkIncidentLogToNoteAndThenRemoveTheNoteTest() throws Exception {
+        AssetDTO asset = AssetTestHelper.createAsset(AssetTestHelper.createBasicAsset());
+        IncidentTicketDto ticket = IncidentTestHelper.createTicket(asset.getId());
+        IncidentDto incidentDto = IncidentTestHelper.createAssetNotSendingIncident(ticket, INCIDENT_CREATE);
+
+        Note note = new Note();
+        note.setAssetId(asset.getId());
+        note.setNote("link incident log to note test");
+
+        Response response = getWebTarget()
+                .path("web-gateway/rest/incidents/addNoteToIncident")
+                .path(incidentDto.getId().toString())
+                .request(MediaType.APPLICATION_JSON)
+                .header(HttpHeaders.AUTHORIZATION, getValidJwtToken())
+                .post(Entity.json(note), Response.class);
+        assertEquals(200, response.getStatus());
+
+        Note noteAdded = response.readEntity(Note.class);
+        assertNotNull(noteAdded);
+        assertNotNull(noteAdded.getId());
+
+        String delete = getWebTarget().path("asset/rest/asset/")
+                .path("notes")
+                .path(noteAdded.getId().toString())
+                .request(MediaType.APPLICATION_JSON)
+                .header(HttpHeaders.AUTHORIZATION, getValidJwtToken())
+                .delete(String.class);
+        assertNull(delete);
+
+        response = getWebTarget()
+                .path("web-gateway/rest/incidents/incidentLogForIncident")
+                .path(incidentDto.getId().toString())
+                .request(MediaType.APPLICATION_JSON)
+                .header(HttpHeaders.AUTHORIZATION, getValidJwtToken())
+                .get(Response.class);
+        assertEquals(200, response.getStatus());
+
+        String json = response.readEntity(String.class);
+
+        ExtendedIncidentLogDto incidentLogDto = OBJECT_MAPPER.readValue(json, ExtendedIncidentLogDto.class);
+
+        assertEquals(2, incidentLogDto.getIncidentLogs().size());
+        assertTrue(incidentLogDto.getIncidentLogs().values().stream().allMatch(dto -> dto != null));
+        assertTrue(incidentLogDto.getIncidentLogs().values().stream().allMatch(dto -> dto.getIncidentId() == incidentDto.getId().longValue()));
+
+        Optional<IncidentLogDto> noteIncidentLog = incidentLogDto.getIncidentLogs().values().stream().filter(dto -> dto.getEventType().equals(EventTypeEnum.NOTE_CREATED)).findAny();
+        assertTrue(noteIncidentLog.isPresent());
+
+        assertTrue(incidentLogDto.getRelatedObjects().getNotes().isEmpty());
+
+
+    }
+
+    @Test
     public void linkIncidentToSimplePollTest() throws Exception {
         AssetDTO asset = AssetTestHelper.createAsset(AssetTestHelper.createBasicAsset());
         MobileTerminalDto mt = MobileTerminalTestHelper.createMobileTerminal();
@@ -161,6 +212,10 @@ public class IncidentCollectionIT extends AbstractRest {
         assertEquals(pollId.getPollId(), pollInfo.getId().toString());
         assertEquals(asset.getId(), pollInfo.getAssetId());
         assertEquals(comment.getComment(), pollInfo.getComment());
+
+        assertEquals(pollInfoDto.getPollInfo().getMobileterminalId() , pollInfoDto.getMobileTerminalSnapshot().getId());
+        assertEquals(pollInfoDto.getMobileTerminalSnapshot().getAssetId(), asset.getId().toString());
+        assertFalse(pollInfoDto.getMobileTerminalSnapshot().getChannels().isEmpty());
 
 
         assertNotNull(pollInfoDto.getPollStatus());
