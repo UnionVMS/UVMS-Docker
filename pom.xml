@@ -24,7 +24,7 @@
 		<unionvms.project.vms.web.version>1.0.9</unionvms.project.vms.web.version>
 		<unionvms.project.mapfishprint.version>3.20.2.1</unionvms.project.mapfishprint.version>
 		<unionvms.project.geoserver.version>2.16.2.1</unionvms.project.geoserver.version>
-		<unionvms.project.user.module>2.2.0</unionvms.project.user.module>
+		<unionvms.project.user.module>2.2.1</unionvms.project.user.module>
 		<unionvms.project.reporting.module>1.1.27-UVMS</unionvms.project.reporting.module>
 		<unionvms.project.movementrules.module>2.4.8</unionvms.project.movementrules.module>
 		<unionvms.project.movement.module>5.6.0-UVMS</unionvms.project.movement.module>
