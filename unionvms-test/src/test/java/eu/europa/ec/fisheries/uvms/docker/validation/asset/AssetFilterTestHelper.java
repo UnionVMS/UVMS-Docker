@@ -3,6 +3,7 @@ package eu.europa.ec.fisheries.uvms.docker.validation.asset;
 import eu.europa.ec.fisheries.uvms.docker.validation.asset.assetfilter.test.dto.AssetFilterDto;
 import eu.europa.ec.fisheries.uvms.docker.validation.asset.assetfilter.test.dto.AssetFilterQueryDto;
 import eu.europa.ec.fisheries.uvms.docker.validation.asset.assetfilter.test.dto.AssetFilterValueDto;
+import eu.europa.ec.fisheries.uvms.docker.validation.asset.assetfilter.test.dto.AssetFilterValueType;
 import eu.europa.ec.fisheries.uvms.docker.validation.common.AbstractRest;
 
 import javax.ws.rs.client.Entity;
@@ -31,7 +32,7 @@ public class AssetFilterTestHelper extends AbstractRest {
         AssetFilterQueryDto assetFilterQuery = new AssetFilterQueryDto();
         assetFilterQuery.setAssetFilter(assetFilterDto);
         assetFilterQuery.setInverse(false);
-        assetFilterQuery.setIsNumber(false);
+        assetFilterQuery.setValueType(AssetFilterValueType.STRING);
         assetFilterQuery.setType("GUID");
         return assetFilterQuery;
     }

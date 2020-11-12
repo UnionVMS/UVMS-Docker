@@ -6,7 +6,7 @@ public class AssetFilterQueryRestDto {
     private List<AssetFilterValueRestTestDto> values;
     private String type;
     private boolean inverse;
-    private boolean isNumber;
+    private AssetFilterValueType valueType;
 
     public List<AssetFilterValueRestTestDto> getValues() {
         return values;
@@ -32,12 +32,11 @@ public class AssetFilterQueryRestDto {
         this.inverse = inverse;
     }
 
-    public boolean getIsNumber() {
-        return isNumber;
+    public AssetFilterValueType getValueType() {
+        return valueType;
     }
 
-    public void setIsNumber(boolean isNumber) {
-        this.isNumber = isNumber;
+    public void setValueType(AssetFilterValueType valueType) {
+        this.valueType = valueType;
     }
-
 }

@@ -43,7 +43,7 @@ public class AssetFilterRestIT extends AbstractRest {
     @Test
     public void createAssetFilterFromJsonTest() {
         String afjson = "{\"name\":\"båtar\",\"filter\": [{\"values\":[{\"value\":23, \"operator\":\"operator 2 test\"}],"
-                + "\"type\": \"dsad\", \"inverse\": false,\"isNumber\": true}] }";
+                + "\"type\": \"dsad\", \"inverse\": false,\"valueType\": \"NUMBER\"}] }";
         String assetFilterCreateResp = AssetFilterTestHelper.createAssetFilterFromJson(afjson);
         assertTrue(assetFilterCreateResp.contains("operator 2 test"));
         assertTrue(assetFilterCreateResp.contains("23"));
@@ -67,7 +67,7 @@ public class AssetFilterRestIT extends AbstractRest {
 
         String assetFilterToUpdate = "{\"name\":\"båtar2\",\"id\":\"" + filterId
                 + "\",\"filter\": [{\"values\":[{\"value\":42, \"operator\":\"operator update test\"}],"
-                + "\"type\": \"dsad\", \"inverse\": false,\"isNumber\": true}] }";
+                + "\"type\": \"dsad\", \"inverse\": false,\"valueType\": \"NUMBER\"}] }";
 
         String updatedAssetFilterString = AssetFilterTestHelper.updateAssetFilter(assetFilterToUpdate);
 
@@ -86,7 +86,7 @@ public class AssetFilterRestIT extends AbstractRest {
 
         String assetFilterToUpdate = "{\"name\":\"båtar2\",\"id\":\"" + filterId
                 + "\",\"filter\": [{\"values\":[{\"value\":42, \"operator\":\"operator update test\"}],"
-                + "\"type\": \"dsad\", \"inverse\": false,\"isNumber\": true}] }";
+                + "\"type\": \"dsad\", \"inverse\": false,\"valueType\": \"NUMBER\"}] }";
 
         AssetFilterTestHelper.updateAssetFilter(assetFilterToUpdate);
         String updatedAssetFilterString = AssetFilterTestHelper.getAssetFilterByGuid(filterId);
@@ -98,9 +98,9 @@ public class AssetFilterRestIT extends AbstractRest {
         
         String assetFilterToUpdate2 = "{\"name\":\"båtar3\",\"id\":\"" + filterId
                 + "\",\"filter\": [{\"values\":[{\"value\":42, \"operator\":\"operator update test\"}],"
-                + "\"type\": \"dsad\", \"inverse\": false,\"isNumber\": true},"
+                + "\"type\": \"dsad\", \"inverse\": false,\"valueType\": \"NUMBER\"},"
                 + "{\"values\":[{\"value\":42, \"operator\":\"operator update test2\"}],"
-                + "\"type\": \"test2\", \"inverse\": true,\"isNumber\": true}] }";
+                + "\"type\": \"test2\", \"inverse\": true,\"valueType\": \"NUMBER\"}] }";
 
         AssetFilterTestHelper.updateAssetFilter(assetFilterToUpdate2);
         String updatedAssetFilterString2 = AssetFilterTestHelper.getAssetFilterByGuid(filterId);
@@ -115,7 +115,7 @@ public class AssetFilterRestIT extends AbstractRest {
         AssetFilterQueryRestDto assetFilterQueryRestDto1 = assetFilterQueryRestDto.get(1);
         
         assertFalse( assetFilterQueryRestDto0.getInverse() == assetFilterQueryRestDto1.getInverse() );
-        assertTrue( assetFilterQueryRestDto0.getIsNumber() == assetFilterQueryRestDto1.getIsNumber());
+        assertTrue( assetFilterQueryRestDto0.getValueType() == assetFilterQueryRestDto1.getValueType());
         
         
     }
@@ -129,7 +129,7 @@ public class AssetFilterRestIT extends AbstractRest {
 
         String assetFilterToUpdate = "{\"name\":\"testValue\",\"id\":\"" + filterId
                 + "\",\"filter\": [{\"values\":[{\"value\":42, \"operator\":\"operator update test\"}],"
-                + "\"type\": \"test\", \"inverse\": false,\"isNumber\": true}] }";
+                + "\"type\": \"test\", \"inverse\": false,\"valueType\": \"NUMBER\"}] }";
 
         AssetFilterTestHelper.updateAssetFilter(assetFilterToUpdate);
         String updatedAssetFilterString = AssetFilterTestHelper.getAssetFilterByGuid(filterId);
@@ -144,7 +144,7 @@ public class AssetFilterRestIT extends AbstractRest {
         String assetFilterToUpdate2 = "{\"name\":\"testValue2\",\"id\":\"" + filterId
                 + "\",\"filter\": [{\"values\":[{\"value\":42, \"operator\":\"operator update test\"},"
                 + "{\"value\":41, \"operator\":\"operator update test\"}],"
-                + "\"type\": \"test\", \"inverse\": false,\"isNumber\": true}] }";
+                + "\"type\": \"test\", \"inverse\": false,\"valueType\": \"NUMBER\"}] }";
 
         AssetFilterTestHelper.updateAssetFilter(assetFilterToUpdate2);
         String updatedAssetFilterString2 = AssetFilterTestHelper.getAssetFilterByGuid(filterId);
@@ -177,7 +177,7 @@ public class AssetFilterRestIT extends AbstractRest {
 
         String assetFilterToUpdate = "{\"name\":\"båtar2\",\"id\":\"" + filterId
                 + "\",\"filter\": [{\"values\":[{\"value\":42, \"operator\":\"operator update test\"}],"
-                + "\"type\": \"dsad\", \"inverse\": false,\"isNumber\": true}] }";
+                + "\"type\": \"dsad\", \"inverse\": false,\"valueType\": \"NUMBER\"}] }";
 
         String updatedAssetFilterString = AssetFilterTestHelper.updateAssetFilter(assetFilterToUpdate);
 
@@ -191,7 +191,7 @@ public class AssetFilterRestIT extends AbstractRest {
     @Test
     public void getAssetFilterListTest() {
         String afjson = "{\"name\":\"båtar\",\"filter\": [{\"values\":[{\"value\":23, \"operator\":\"operator 2 test\"}],"
-                + "\"type\": \"dsad\", \"inverse\": false,\"isNumber\": true}] }";
+                + "\"type\": \"dsad\", \"inverse\": false,\"valueType\": \"NUMBER\"}] }";
         String assetFilterCreateResp1 = AssetFilterTestHelper.createAssetFilterFromJson(afjson);
         String assetFilterCreateResp2 = AssetFilterTestHelper.createAssetFilterFromJson(afjson);
         String assetFilterCreateResp3 = AssetFilterTestHelper.createAssetFilterFromJson(afjson);
@@ -215,7 +215,7 @@ public class AssetFilterRestIT extends AbstractRest {
     @Test
     public void getAssetFilterByIdTest() {
         String afjson = "{\"name\":\"båtar\",\"filter\": [{\"values\":[{\"value\":23, \"operator\":\"operator 2 test\"}],"
-                + "\"type\": \"dsad\", \"inverse\": false,\"isNumber\": true}] }";
+                + "\"type\": \"dsad\", \"inverse\": false,\"valueType\": \"NUMBER\"}] }";
         String assetFilterCreateResp = AssetFilterTestHelper.createAssetFilterFromJson(afjson);
 
         AssetFilterResponseDto assetFilterResponseDto = jsonb.fromJson(assetFilterCreateResp,
