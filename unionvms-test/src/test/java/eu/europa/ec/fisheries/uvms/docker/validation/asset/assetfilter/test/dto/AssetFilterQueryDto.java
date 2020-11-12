@@ -11,7 +11,7 @@ public class AssetFilterQueryDto implements Serializable {
     private UUID id;
     private String type;
     private boolean inverse;
-    private boolean isNumber;
+    private AssetFilterValueType valueType;
     private Set<AssetFilterValueDto> values;
     private AssetFilterDto assetFilter;
 
@@ -39,12 +39,12 @@ public class AssetFilterQueryDto implements Serializable {
         this.inverse = inverse;
     }
 
-    public boolean getIsNumber() {
-        return isNumber;
+    public AssetFilterValueType getValueType() {
+        return valueType;
     }
 
-    public void setIsNumber(boolean isNumber) {
-        this.isNumber = isNumber;
+    public void setValueType(AssetFilterValueType valueType) {
+        this.valueType = valueType;
     }
 
     public Set<AssetFilterValueDto> getValues() {
