@@ -37,7 +37,7 @@
 		<unionvms.project.incident.module>1.0.8</unionvms.project.incident.module>
 		<unionvms.project.plugins.ais>3.1.8</unionvms.project.plugins.ais>
 		<unionvms.project.plugins.naf>3.1.9</unionvms.project.plugins.naf>
-		<unionvms.project.plugins.flux>3.1.7</unionvms.project.plugins.flux>
+		<unionvms.project.plugins.flux>3.1.8</unionvms.project.plugins.flux>
 		<unionvms.project.plugins.inmarsat>3.1.5</unionvms.project.plugins.inmarsat>
 		<unionvms.project.plugins.siriusone>3.0.11</unionvms.project.plugins.siriusone>
 		<unionvms.project.plugins.fluxActivity>1.0.6</unionvms.project.plugins.fluxActivity>
