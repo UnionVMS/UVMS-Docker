@@ -360,7 +360,7 @@ public class IncidentCollectionIT extends AbstractRest {
         MobileTerminalDto mt = MobileTerminalTestHelper.createMobileTerminal();
         MobileTerminalTestHelper.assignMobileTerminal(asset, mt);
 
-        VMSSystemHelper.triggerBasicRuleAndSendToNAF(asset, "Name " + generateARandomStringWithMaxLength(10));
+        VMSSystemHelper.triggerBasicRuleWithSatellitePosition(mt);
 
         Response response = getWebTarget()
                 .path("movement-rules/rest/previousReports/list")
@@ -415,7 +415,7 @@ public class IncidentCollectionIT extends AbstractRest {
         MobileTerminalDto mt = MobileTerminalTestHelper.createMobileTerminal();
         MobileTerminalTestHelper.assignMobileTerminal(asset, mt);
 
-        VMSSystemHelper.triggerBasicRuleAndSendToNAF(asset, "Name " + generateARandomStringWithMaxLength(10));
+        VMSSystemHelper.triggerBasicRuleWithSatellitePosition(mt);
 
         Response response = getWebTarget()
                 .path("movement-rules/rest/previousReports/list")
