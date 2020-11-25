@@ -25,6 +25,7 @@ import eu.europa.ec.fisheries.uvms.commons.message.api.MessageConstants;
 import eu.europa.ec.fisheries.uvms.docker.validation.asset.AssetTestHelper;
 import eu.europa.ec.fisheries.uvms.docker.validation.common.MessageHelper;
 import eu.europa.ec.fisheries.uvms.docker.validation.common.TopicListener;
+import eu.europa.ec.fisheries.uvms.docker.validation.mobileterminal.dto.MobileTerminalDto;
 import eu.europa.ec.fisheries.uvms.docker.validation.movement.LatLong;
 import eu.europa.ec.fisheries.uvms.exchange.model.constant.ExchangeModelConstants;
 import eu.europa.ec.fisheries.uvms.exchange.model.mapper.ExchangeModuleRequestMapper;
@@ -32,6 +33,7 @@ import eu.europa.ec.fisheries.uvms.exchange.model.mapper.JAXBMarshaller;
 
 import javax.jms.Message;
 import javax.jms.TextMessage;
+import java.io.IOException;
 import java.time.Instant;
 import java.util.Collections;
 import java.util.Date;
@@ -139,6 +141,29 @@ public class VMSSystemHelper {
                 messageHelper.listenOnEventBus(emailSelector, TIMEOUT);
                 messageHelper.listenOnEventBus(emailSelector, TIMEOUT);
             }
+        }
+    }
+
+    public static void triggerBasicRuleWithSatellitePosition(MobileTerminalDto mobileTerminal) throws IOException, Exception {
+        try {
+            Instant timestamp = Instant.now();
+            CustomRuleType sourceRule = CustomRuleBuilder.getBuilder()
+                    .setName("Source inmarsat => FLUX DNK")
+                    .rule(CriteriaType.POSITION, SubCriteriaType.SOURCE,
+                            ConditionType.EQ, mobileTerminal.getMobileTerminalType())
+                    .action(ActionType.SEND_REPORT, FLUX_NAME, "DNK")
+                    .build();
+            CustomRuleType createdCustomRule = CustomRuleHelper.createCustomRule(sourceRule);
+
+            LatLong position = new LatLong(11d, 56d, new Date());
+
+            try (TopicListener topicListener = new TopicListener(FLUX_SELECTOR)) {
+                InmarsatPluginMock.sendInmarsatPosition(mobileTerminal, position);
+                topicListener.listenOnEventBusForSpecificMessage(SetReportRequest.class);
+            }
+            CustomRuleHelper.assertRuleTriggered(createdCustomRule, timestamp);
+        } finally {
+            CustomRuleHelper.removeCustomRulesByDefaultUser();
         }
     }
 }
