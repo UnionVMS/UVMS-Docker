@@ -30,7 +30,7 @@ import un.unece.uncefact.data.standard.reusableaggregatebusinessinformationentit
 import un.unece.uncefact.data.standard.reusableaggregatebusinessinformationentity._18.VesselPositionEventType;
 import un.unece.uncefact.data.standard.reusableaggregatebusinessinformationentity._18.VesselTransportMeansType;
 import un.unece.uncefact.data.standard.unqualifieddatatype._18.IDType;
-
+import xeu.bridge_connector.v1.RequestType;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.NetworkInterface;
@@ -96,6 +96,42 @@ public class RestSystemIT extends AbstractRest {
         assertThat(vesselCoordinates.getLatitudeMeasure().getValue().doubleValue(), is(position.latitude));
         assertThat(vesselCoordinates.getLongitudeMeasure().getValue().doubleValue(), is(position.longitude));
 
+    }
+
+    @Test
+    public void sendPositionWithNullHeader() throws IOException, Exception {
+        Organisation organisation = createOrganisation();
+
+        AssetDTO asset = AssetTestHelper.createTestAsset();
+
+        CustomRuleType flagStateRule = CustomRuleBuilder.getBuilder()
+                .rule(CriteriaType.AREA, SubCriteriaType.AREA_CODE,
+                        ConditionType.EQ, "NOR")
+                .action(ActionType.SEND_REPORT, VMSSystemHelper.REST_NAME, organisation.getName())
+                .build();
+
+        CustomRuleType createdCustomRule = CustomRuleHelper.createCustomRule(flagStateRule);
+        assertNotNull(createdCustomRule);
+
+        LatLong position = new LatLong(58.973, 5.781, Date.from(Instant.now()));
+        position.speed = 5;
+
+        FLUXVesselPositionMessage incomingMessage = FLUXHelper.createFluxMessage(asset, position);
+        incomingMessage.getVesselTransportMeans().getSpecifiedVesselPositionEvents().get(0).setCourseValueMeasure(null);
+        RequestType report = FLUXHelper.createVesselReport(incomingMessage);
+
+        FLUXVesselPositionMessage positionMessage;
+        try (RESTEndpoint restEndpoint = new RESTEndpoint(RESTEndpoint.ENDPOINT_PORT)) {
+            FLUXHelper.sendVesselReportToFluxPlugin(report);
+            positionMessage = restEndpoint.getMessage(10000);
+        }
+
+        VesselTransportMeansType vesselTransportMeans = positionMessage.getVesselTransportMeans();
+        assertThat(vesselTransportMeans, is(CoreMatchers.notNullValue()));
+
+        assertThat(vesselTransportMeans.getSpecifiedVesselPositionEvents().size(), is(1));
+        VesselPositionEventType positionEvent = vesselTransportMeans.getSpecifiedVesselPositionEvents().get(0);
+        assertThat(positionEvent.getCourseValueMeasure(), is(CoreMatchers.nullValue()));
     }
 
     private Organisation createOrganisation() throws SocketException {
