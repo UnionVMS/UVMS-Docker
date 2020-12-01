@@ -9,16 +9,15 @@ the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the impl
 FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more details. You should have received a
 copy of the GNU General Public License along with the IFDM Suite. If not, see <http://www.gnu.org/licenses/>.
  */
-package eu.europa.ec.fisheries.uvms.docker.validation.mobileterminal.dto;
+package eu.europa.ec.fisheries.uvms.docker.validation.exchange.dto;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class ListQueryResponse {
-
     private int currentPage;
     private int totalNumberOfPages;
-    private List<Object> logList;
+    private List<ExchangeLogDto> logList;
 
     public ListQueryResponse() {
         logList = new ArrayList<>();
@@ -35,10 +34,10 @@ public class ListQueryResponse {
     public void setTotalNumberOfPages(int totalNumberOfPages) {
         this.totalNumberOfPages = totalNumberOfPages;
     }
-    public List<Object> getLogs() {
+    public List<ExchangeLogDto> getLogList() {
         return logList;
     }
-    public void setLogList(List<Object> logList) {
+    public void setLogList(List<ExchangeLogDto> logList) {
         this.logList = logList;
     }
 }

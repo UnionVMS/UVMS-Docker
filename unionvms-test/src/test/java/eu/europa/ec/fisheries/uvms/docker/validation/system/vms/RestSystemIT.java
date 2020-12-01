@@ -22,7 +22,6 @@ import eu.europa.ec.fisheries.uvms.docker.validation.user.dto.Channel;
 import eu.europa.ec.fisheries.uvms.docker.validation.user.dto.EndPoint;
 import eu.europa.ec.fisheries.uvms.docker.validation.user.dto.Organisation;
 import org.hamcrest.CoreMatchers;
-import org.hamcrest.MatcherAssert;
 import org.junit.After;
 import org.junit.Test;
 import un.unece.uncefact.data.standard.fluxvesselpositionmessage._4.FLUXVesselPositionMessage;
@@ -36,6 +35,7 @@ import java.net.InetAddress;
 import java.net.NetworkInterface;
 import java.net.SocketException;
 import java.time.Instant;
+import java.time.temporal.ChronoUnit;
 import java.util.Date;
 import java.util.Enumeration;
 import java.util.Map;
@@ -67,7 +67,7 @@ public class RestSystemIT extends AbstractRest {
         CustomRuleType createdCustomRule = CustomRuleHelper.createCustomRule(flagStateRule);
         assertNotNull(createdCustomRule);
         
-        LatLong position = new LatLong(58.973, 5.781, Date.from(Instant.now()));
+        LatLong position = new LatLong(58.973, 5.781, Date.from(Instant.now().truncatedTo(ChronoUnit.MINUTES)));
         position.speed = 5;
         position.bearing = 123;
         
@@ -113,7 +113,7 @@ public class RestSystemIT extends AbstractRest {
         CustomRuleType createdCustomRule = CustomRuleHelper.createCustomRule(flagStateRule);
         assertNotNull(createdCustomRule);
 
-        LatLong position = new LatLong(58.973, 5.781, Date.from(Instant.now()));
+        LatLong position = new LatLong(58.973, 5.781, Date.from(Instant.now().truncatedTo(ChronoUnit.MINUTES)));
         position.speed = 5;
 
         FLUXVesselPositionMessage incomingMessage = FLUXHelper.createFluxMessage(asset, position);
