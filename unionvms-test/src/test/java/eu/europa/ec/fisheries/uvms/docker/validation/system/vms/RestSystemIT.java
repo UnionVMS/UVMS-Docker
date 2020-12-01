@@ -72,7 +72,7 @@ public class RestSystemIT extends AbstractRest {
         position.bearing = 123;
         
         FLUXVesselPositionMessage positionMessage;
-        try (RESTEndpoint restEndpoint = new RESTEndpoint(RESTEndpoint.ENDPOINT_PORT)) {
+        try (RESTEndpoint restEndpoint = new RESTEndpoint()) {
             FLUXHelper.sendPositionToFluxPlugin(asset, position);
             positionMessage = restEndpoint.getMessage(10000);
         }
@@ -121,7 +121,7 @@ public class RestSystemIT extends AbstractRest {
         RequestType report = FLUXHelper.createVesselReport(incomingMessage);
 
         FLUXVesselPositionMessage positionMessage;
-        try (RESTEndpoint restEndpoint = new RESTEndpoint(RESTEndpoint.ENDPOINT_PORT)) {
+        try (RESTEndpoint restEndpoint = new RESTEndpoint()) {
             FLUXHelper.sendVesselReportToFluxPlugin(report);
             positionMessage = restEndpoint.getMessage(10000);
         }
