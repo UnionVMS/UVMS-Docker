@@ -140,7 +140,16 @@
                             <sharedDeadLetterStrategy processExpired="false" />
                         </deadLetterStrategy>
                     </policyEntry>
-
+                    <policyEntry queue="UVMSSubscriptionPermissionEvent" producerFlowControl="false" optimizedDispatch="true">
+                        <deadLetterStrategy>
+                            <sharedDeadLetterStrategy processExpired="false" />
+                        </deadLetterStrategy>
+                    </policyEntry>
+                    <policyEntry queue="UVMSRulesPermissionEvent" producerFlowControl="false" optimizedDispatch="true">
+                        <deadLetterStrategy>
+                            <sharedDeadLetterStrategy processExpired="false" />
+                        </deadLetterStrategy>
+                    </policyEntry>
                 </policyEntries>
             </policyMap>
         </destinationPolicy>

@@ -1304,6 +1304,16 @@
 								UVMSSubscriptionExecution
 							</config-property>
 						</admin-object>
+						<admin-object class-name="org.apache.activemq.command.ActiveMQQueue" jndi-name="java:/jms/queue/UVMSSubscriptionPermissionEvent" use-java-context="true" pool-name="UVMSSubscriptionPermissionEvent">
+							<config-property name="PhysicalName">
+								UVMSSubscriptionPermissionEvent
+							</config-property>
+						</admin-object>
+						<admin-object class-name="org.apache.activemq.command.ActiveMQQueue" jndi-name="java:/jms/queue/UVMSRulesPermissionEvent" use-java-context="true" pool-name="UVMSRulesPermissionEvent">
+							<config-property name="PhysicalName">
+								UVMSRulesPermissionEvent
+							</config-property>
+						</admin-object>
                     </admin-objects>
                 </resource-adapter>
             </resource-adapters>
