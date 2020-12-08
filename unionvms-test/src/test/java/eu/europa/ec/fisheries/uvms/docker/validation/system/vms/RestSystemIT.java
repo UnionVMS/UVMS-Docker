@@ -23,6 +23,8 @@ import eu.europa.ec.fisheries.uvms.docker.validation.user.dto.EndPoint;
 import eu.europa.ec.fisheries.uvms.docker.validation.user.dto.Organisation;
 import org.hamcrest.CoreMatchers;
 import org.junit.After;
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import un.unece.uncefact.data.standard.fluxvesselpositionmessage._4.FLUXVesselPositionMessage;
 import un.unece.uncefact.data.standard.reusableaggregatebusinessinformationentity._18.VesselGeographicalCoordinateType;
@@ -47,11 +49,23 @@ import static org.junit.Assert.assertNotNull;
 
 public class RestSystemIT extends AbstractRest {
 
+    private static RESTEndpoint endpoint;
+
+    @BeforeClass
+    public static void initServer() throws Exception {
+        endpoint = new RESTEndpoint();
+    }
+
+    @AfterClass
+    public static void shutdownServer() throws IOException {
+        endpoint.close();
+    }
+
     @After
     public void removeCustomRules() {
         CustomRuleHelper.removeCustomRulesByDefaultUser();
     }
-    
+
     @Test
     public void sendPosition() throws IOException, Exception {
         Organisation organisation = createOrganisation();
@@ -72,10 +86,8 @@ public class RestSystemIT extends AbstractRest {
         position.bearing = 123;
         
         FLUXVesselPositionMessage positionMessage;
-        try (RESTEndpoint restEndpoint = new RESTEndpoint()) {
-            FLUXHelper.sendPositionToFluxPlugin(asset, position);
-            positionMessage = restEndpoint.getMessage(10000);
-        }
+        FLUXHelper.sendPositionToFluxPlugin(asset, position);
+        positionMessage = endpoint.getMessage(10000);
         
         VesselTransportMeansType vesselTransportMeans = positionMessage.getVesselTransportMeans();
         assertThat(vesselTransportMeans, is(CoreMatchers.notNullValue()));
@@ -121,10 +133,8 @@ public class RestSystemIT extends AbstractRest {
         RequestType report = FLUXHelper.createVesselReport(incomingMessage);
 
         FLUXVesselPositionMessage positionMessage;
-        try (RESTEndpoint restEndpoint = new RESTEndpoint()) {
-            FLUXHelper.sendVesselReportToFluxPlugin(report);
-            positionMessage = restEndpoint.getMessage(10000);
-        }
+        FLUXHelper.sendVesselReportToFluxPlugin(report);
+        positionMessage = endpoint.getMessage(10000);
 
         VesselTransportMeansType vesselTransportMeans = positionMessage.getVesselTransportMeans();
         assertThat(vesselTransportMeans, is(CoreMatchers.notNullValue()));
