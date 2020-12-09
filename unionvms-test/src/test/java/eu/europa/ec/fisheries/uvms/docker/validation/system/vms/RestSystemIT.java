@@ -22,20 +22,22 @@ import eu.europa.ec.fisheries.uvms.docker.validation.user.dto.Channel;
 import eu.europa.ec.fisheries.uvms.docker.validation.user.dto.EndPoint;
 import eu.europa.ec.fisheries.uvms.docker.validation.user.dto.Organisation;
 import org.hamcrest.CoreMatchers;
-import org.hamcrest.MatcherAssert;
 import org.junit.After;
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import un.unece.uncefact.data.standard.fluxvesselpositionmessage._4.FLUXVesselPositionMessage;
 import un.unece.uncefact.data.standard.reusableaggregatebusinessinformationentity._18.VesselGeographicalCoordinateType;
 import un.unece.uncefact.data.standard.reusableaggregatebusinessinformationentity._18.VesselPositionEventType;
 import un.unece.uncefact.data.standard.reusableaggregatebusinessinformationentity._18.VesselTransportMeansType;
 import un.unece.uncefact.data.standard.unqualifieddatatype._18.IDType;
-
+import xeu.bridge_connector.v1.RequestType;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.NetworkInterface;
 import java.net.SocketException;
 import java.time.Instant;
+import java.time.temporal.ChronoUnit;
 import java.util.Date;
 import java.util.Enumeration;
 import java.util.Map;
@@ -47,11 +49,23 @@ import static org.junit.Assert.assertNotNull;
 
 public class RestSystemIT extends AbstractRest {
 
+    private static RESTEndpoint endpoint;
+
+    @BeforeClass
+    public static void initServer() throws Exception {
+        endpoint = new RESTEndpoint();
+    }
+
+    @AfterClass
+    public static void shutdownServer() throws IOException {
+        endpoint.close();
+    }
+
     @After
     public void removeCustomRules() {
         CustomRuleHelper.removeCustomRulesByDefaultUser();
     }
-    
+
     @Test
     public void sendPosition() throws IOException, Exception {
         Organisation organisation = createOrganisation();
@@ -67,15 +81,13 @@ public class RestSystemIT extends AbstractRest {
         CustomRuleType createdCustomRule = CustomRuleHelper.createCustomRule(flagStateRule);
         assertNotNull(createdCustomRule);
         
-        LatLong position = new LatLong(58.973, 5.781, Date.from(Instant.now()));
+        LatLong position = new LatLong(58.973, 5.781, Date.from(Instant.now().truncatedTo(ChronoUnit.MINUTES)));
         position.speed = 5;
         position.bearing = 123;
         
         FLUXVesselPositionMessage positionMessage;
-        try (RESTEndpoint restEndpoint = new RESTEndpoint(RESTEndpoint.ENDPOINT_PORT)) {
-            FLUXHelper.sendPositionToFluxPlugin(asset, position);
-            positionMessage = restEndpoint.getMessage(10000);
-        }
+        FLUXHelper.sendPositionToFluxPlugin(asset, position);
+        positionMessage = endpoint.getMessage(10000);
         
         VesselTransportMeansType vesselTransportMeans = positionMessage.getVesselTransportMeans();
         assertThat(vesselTransportMeans, is(CoreMatchers.notNullValue()));
@@ -96,6 +108,40 @@ public class RestSystemIT extends AbstractRest {
         assertThat(vesselCoordinates.getLatitudeMeasure().getValue().doubleValue(), is(position.latitude));
         assertThat(vesselCoordinates.getLongitudeMeasure().getValue().doubleValue(), is(position.longitude));
 
+    }
+
+    @Test
+    public void sendPositionWithNullHeader() throws IOException, Exception {
+        Organisation organisation = createOrganisation();
+
+        AssetDTO asset = AssetTestHelper.createTestAsset();
+
+        CustomRuleType flagStateRule = CustomRuleBuilder.getBuilder()
+                .rule(CriteriaType.AREA, SubCriteriaType.AREA_CODE,
+                        ConditionType.EQ, "NOR")
+                .action(ActionType.SEND_REPORT, VMSSystemHelper.REST_NAME, organisation.getName())
+                .build();
+
+        CustomRuleType createdCustomRule = CustomRuleHelper.createCustomRule(flagStateRule);
+        assertNotNull(createdCustomRule);
+
+        LatLong position = new LatLong(58.973, 5.781, Date.from(Instant.now().truncatedTo(ChronoUnit.MINUTES)));
+        position.speed = 5;
+
+        FLUXVesselPositionMessage incomingMessage = FLUXHelper.createFluxMessage(asset, position);
+        incomingMessage.getVesselTransportMeans().getSpecifiedVesselPositionEvents().get(0).setCourseValueMeasure(null);
+        RequestType report = FLUXHelper.createVesselReport(incomingMessage);
+
+        FLUXVesselPositionMessage positionMessage;
+        FLUXHelper.sendVesselReportToFluxPlugin(report);
+        positionMessage = endpoint.getMessage(10000);
+
+        VesselTransportMeansType vesselTransportMeans = positionMessage.getVesselTransportMeans();
+        assertThat(vesselTransportMeans, is(CoreMatchers.notNullValue()));
+
+        assertThat(vesselTransportMeans.getSpecifiedVesselPositionEvents().size(), is(1));
+        VesselPositionEventType positionEvent = vesselTransportMeans.getSpecifiedVesselPositionEvents().get(0);
+        assertThat(positionEvent.getCourseValueMeasure(), is(CoreMatchers.nullValue()));
     }
 
     private Organisation createOrganisation() throws SocketException {

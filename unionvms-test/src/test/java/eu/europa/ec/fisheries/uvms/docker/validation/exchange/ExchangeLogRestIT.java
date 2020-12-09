@@ -20,9 +20,9 @@ import eu.europa.ec.fisheries.schema.mobileterminal.polltypes.v1.PollType;
 import eu.europa.ec.fisheries.uvms.asset.client.model.AssetDTO;
 import eu.europa.ec.fisheries.uvms.docker.validation.asset.AssetTestHelper;
 import eu.europa.ec.fisheries.uvms.docker.validation.common.AbstractRest;
+import eu.europa.ec.fisheries.uvms.docker.validation.exchange.dto.ListQueryResponse;
 import eu.europa.ec.fisheries.uvms.docker.validation.mobileterminal.MobileTerminalTestHelper;
 import eu.europa.ec.fisheries.uvms.docker.validation.mobileterminal.dto.CreatePollResultDto;
-import eu.europa.ec.fisheries.uvms.docker.validation.mobileterminal.dto.ListQueryResponse;
 import eu.europa.ec.fisheries.uvms.docker.validation.system.helper.PollHelper;
 import org.junit.Test;
 
@@ -64,7 +64,7 @@ public class ExchangeLogRestIT extends AbstractRest {
 				.post(Entity.json(exchangeListQuery), ListQueryResponse.class);
 
 		assertNotNull(listQueryResponse);
-		assertFalse(listQueryResponse.getLogs().isEmpty());
+		assertFalse(listQueryResponse.getLogList().isEmpty());
 	}
 
 	@Test

@@ -17,6 +17,8 @@ import eu.europa.ec.fisheries.schema.movementrules.customrule.v1.*;
 import eu.europa.ec.fisheries.uvms.asset.client.model.AssetDTO;
 import eu.europa.ec.fisheries.uvms.docker.validation.asset.AssetTestHelper;
 import eu.europa.ec.fisheries.uvms.docker.validation.common.AbstractRest;
+import eu.europa.ec.fisheries.uvms.docker.validation.exchange.ExchangeHelper;
+import eu.europa.ec.fisheries.uvms.docker.validation.exchange.dto.ExchangeLogDto;
 import eu.europa.ec.fisheries.uvms.docker.validation.movement.LatLong;
 import eu.europa.ec.fisheries.uvms.docker.validation.movement.MovementHelper;
 import eu.europa.ec.fisheries.uvms.docker.validation.system.helper.*;
@@ -24,7 +26,9 @@ import eu.europa.ec.fisheries.uvms.docker.validation.user.UserHelper;
 import eu.europa.ec.fisheries.uvms.docker.validation.user.dto.Channel;
 import eu.europa.ec.fisheries.uvms.docker.validation.user.dto.EndPoint;
 import eu.europa.ec.fisheries.uvms.docker.validation.user.dto.Organisation;
+import eu.europa.ec.fisheries.uvms.exchange.model.mapper.JAXBMarshaller;
 import eu.europa.ec.fisheries.uvms.movement.model.dto.MovementDto;
+import org.hamcrest.CoreMatchers;
 import org.junit.After;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -45,6 +49,8 @@ import javax.ws.rs.core.MediaType;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
+import java.io.IOException;
+import java.math.BigDecimal;
 import java.net.InetAddress;
 import java.net.NetworkInterface;
 import java.net.SocketException;
@@ -561,7 +567,62 @@ public class FLUXSystemIT extends AbstractRest {
         MovementDto latest = latestMovements.get(0);
         assertThat(latest.getMovementType(), is(MovementTypeType.EXI));
     }
- 
+
+    @Test
+    public void incomingOrginalMessageTest() throws IOException, Exception {
+        AssetDTO asset = AssetTestHelper.createTestAsset();
+        LatLong position = new LatLong(58.973, 5.781, Date.from(Instant.now()));
+        position.speed = 5;
+
+        FLUXHelper.sendPositionToFluxPlugin(asset, position);
+        MovementHelper.pollMovementCreated();
+
+        List<MovementDto> movements = MovementHelper.getLatestMovements(Arrays.asList(asset.getId().toString()));
+        ExchangeLogDto exchangeLog = ExchangeHelper.getIncomingExchangeLogByTypeGUID(movements.get(0).getId().toString());
+        String incomingMessage = ExchangeHelper.getExchangeLogMessage(exchangeLog.getId());
+        FLUXVesselPositionMessage message = JAXBMarshaller.unmarshallString(incomingMessage, FLUXVesselPositionMessage.class);
+        Map<String, String> assetIds = message.getVesselTransportMeans().getIDS().stream().collect(Collectors.toMap(IDType::getSchemeID, IDType::getValue));
+        assertThat(assetIds.get("CFR"), is(asset.getCfr()));
+        assertThat(assetIds.get("IRCS"), is(asset.getIrcs()));
+        assertThat(assetIds.get("EXT_MARK"), is(asset.getExternalMarking()));
+        VesselPositionEventType vesselPosition = message.getVesselTransportMeans().getSpecifiedVesselPositionEvents().get(0);
+        assertThat(vesselPosition.getSpecifiedVesselGeographicalCoordinate().getLatitudeMeasure().getValue(), is(BigDecimal.valueOf(position.latitude)));
+        assertThat(vesselPosition.getSpecifiedVesselGeographicalCoordinate().getLongitudeMeasure().getValue(), is(BigDecimal.valueOf(position.longitude)));
+    }
+
+    @Test
+    public void outgoingOriginalMessageTest() throws IOException, Exception {
+        AssetDTO asset = AssetTestHelper.createTestAsset();
+        CustomRuleType flagStateRule = CustomRuleBuilder.getBuilder()
+                .rule(CriteriaType.ASSET, SubCriteriaType.ASSET_IRCS,
+                        ConditionType.EQ, asset.getIrcs())
+                .action(ActionType.SEND_REPORT, VMSSystemHelper.FLUX_NAME, "TEST")
+                .build();
+
+        CustomRuleType createdCustomRule = CustomRuleHelper.createCustomRule(flagStateRule);
+        assertNotNull(createdCustomRule);
+
+        LatLong position = new LatLong(58.973, 5.781, Date.from(Instant.now()));
+        position.speed = 5;
+
+        try (FLUXEndpoint fluxEndpoint = new FLUXEndpoint()) {
+            FLUXHelper.sendPositionToFluxPlugin(asset, position);
+            fluxEndpoint.getMessage(10000);
+        }
+
+        List<MovementDto> movements = MovementHelper.getLatestMovements(Arrays.asList(asset.getId().toString()));
+        ExchangeLogDto exchangeLog = ExchangeHelper.getOutgoingExchangeLogByTypeGUID(movements.get(0).getId().toString());
+        String outgoingMessage = ExchangeHelper.getExchangeLogMessage(exchangeLog.getId());
+        FLUXVesselPositionMessage message = JAXBMarshaller.unmarshallString(outgoingMessage, FLUXVesselPositionMessage.class);
+        Map<String, String> assetIds = message.getVesselTransportMeans().getIDS().stream().collect(Collectors.toMap(IDType::getSchemeID, IDType::getValue));
+        assertThat(assetIds.get("CFR"), is(asset.getCfr()));
+        assertThat(assetIds.get("IRCS"), is(asset.getIrcs()));
+        assertThat(assetIds.get("EXT_MARK"), is(asset.getExternalMarking()));
+        VesselPositionEventType vesselPosition = message.getVesselTransportMeans().getSpecifiedVesselPositionEvents().get(0);
+        assertThat(vesselPosition.getSpecifiedVesselGeographicalCoordinate().getLatitudeMeasure().getValue(), is(BigDecimal.valueOf(position.latitude)));
+        assertThat(vesselPosition.getSpecifiedVesselGeographicalCoordinate().getLongitudeMeasure().getValue(), is(BigDecimal.valueOf(position.longitude)));
+    }
+
     private Organisation createOrganisationWithCustomDF(String dataflow) throws SocketException {
         Organisation organisation = UserHelper.getBasicOrganisation();
         organisation.setNation("NOR");

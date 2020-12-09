@@ -12,6 +12,8 @@ copy of the GNU General Public License along with the IFDM Suite. If not, see <h
 package eu.europa.ec.fisheries.uvms.docker.validation.system.vms;
 
 import eu.europa.ec.fisheries.schema.exchange.movement.v1.MovementTypeType;
+import eu.europa.ec.fisheries.schema.exchange.v1.ExchangeLogType;
+import eu.europa.ec.fisheries.schema.exchange.v1.LogType;
 import eu.europa.ec.fisheries.schema.movement.search.v1.ListCriteria;
 import eu.europa.ec.fisheries.schema.movement.search.v1.MovementQuery;
 import eu.europa.ec.fisheries.schema.movement.search.v1.SearchKey;
@@ -20,6 +22,8 @@ import eu.europa.ec.fisheries.schema.movementrules.customrule.v1.*;
 import eu.europa.ec.fisheries.uvms.asset.client.model.AssetDTO;
 import eu.europa.ec.fisheries.uvms.docker.validation.asset.AssetTestHelper;
 import eu.europa.ec.fisheries.uvms.docker.validation.common.AbstractRest;
+import eu.europa.ec.fisheries.uvms.docker.validation.exchange.ExchangeHelper;
+import eu.europa.ec.fisheries.uvms.docker.validation.exchange.dto.ExchangeLogDto;
 import eu.europa.ec.fisheries.uvms.docker.validation.movement.LatLong;
 import eu.europa.ec.fisheries.uvms.docker.validation.movement.MovementHelper;
 import eu.europa.ec.fisheries.uvms.docker.validation.movement.model.AlarmReport;
@@ -28,6 +32,8 @@ import eu.europa.ec.fisheries.uvms.docker.validation.user.UserHelper;
 import eu.europa.ec.fisheries.uvms.docker.validation.user.dto.Channel;
 import eu.europa.ec.fisheries.uvms.docker.validation.user.dto.EndPoint;
 import eu.europa.ec.fisheries.uvms.docker.validation.user.dto.Organisation;
+import eu.europa.ec.fisheries.uvms.movement.model.dto.MovementDto;
+import org.hamcrest.CoreMatchers;
 import org.junit.After;
 import org.junit.Test;
 
@@ -40,6 +46,7 @@ import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
+import java.util.Arrays;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.Enumeration;
@@ -307,6 +314,51 @@ public class NAFSystemIT extends AbstractRest {
         AlarmReport alarm = SanityRuleHelper.getLatestOpenAlarmReportSince(now.atZone(ZoneId.of("UTC")));
         assertThat(alarm.getAssetGuid(), is(asset.getId().toString()));
         assertTrue(alarm.getAlarmItemList().stream().filter(a -> a.getRuleName().equals("VMS Exit report without previous VMS movement")).findAny().isPresent());
+    }
+
+    @Test
+    public void incomingOrginalMessageTest() throws IOException, Exception {
+        AssetDTO asset = AssetTestHelper.createTestAsset();
+        LatLong position = new LatLong(58.973, 5.781, Date.from(Instant.now()));
+        position.speed = 5;
+
+        NAFHelper.sendPositionToNAFPlugin(position, asset);
+        MovementHelper.pollMovementCreated();
+
+        List<MovementDto> movements = MovementHelper.getLatestMovements(Arrays.asList(asset.getId().toString()));
+        ExchangeLogDto exchangeLog = ExchangeHelper.getIncomingExchangeLogByTypeGUID(movements.get(0).getId().toString());
+        String incomingMessage = ExchangeHelper.getExchangeLogMessage(exchangeLog.getId());
+        assertThat(incomingMessage, CoreMatchers.startsWith("//SR//"));
+        assertThat(incomingMessage, CoreMatchers.endsWith("//ER//"));
+        assertThat(incomingMessage, CoreMatchers.containsString("//RC/" + asset.getIrcs()));
+    }
+
+    @Test
+    public void outgoingOriginalMessageTest() throws IOException, Exception {
+        AssetDTO asset = AssetTestHelper.createTestAsset();
+        CustomRuleType flagStateRule = CustomRuleBuilder.getBuilder()
+                .rule(CriteriaType.ASSET, SubCriteriaType.ASSET_IRCS,
+                        ConditionType.EQ, asset.getIrcs())
+                .action(ActionType.SEND_REPORT, VMSSystemHelper.NAF_NAME, "TEST")
+                .build();
+
+        CustomRuleType createdCustomRule = CustomRuleHelper.createCustomRule(flagStateRule);
+        assertNotNull(createdCustomRule);
+
+        LatLong position = new LatLong(58.973, 5.781, Date.from(Instant.now()));
+        position.speed = 5;
+
+        try (NafEndpoint nafEndpoint = new NafEndpoint(ENDPOINT_PORT)) {
+            NAFHelper.sendPositionToNAFPlugin(position, asset);
+            nafEndpoint.getMessage(10000);
+        }
+
+        List<MovementDto> movements = MovementHelper.getLatestMovements(Arrays.asList(asset.getId().toString()));
+        ExchangeLogDto exchangeLog = ExchangeHelper.getOutgoingExchangeLogByTypeGUID(movements.get(0).getId().toString());
+        String outgoingMessage = ExchangeHelper.getExchangeLogMessage(exchangeLog.getId());
+        assertThat(outgoingMessage, CoreMatchers.startsWith("//SR//"));
+        assertThat(outgoingMessage, CoreMatchers.endsWith("//ER//"));
+        assertThat(outgoingMessage, CoreMatchers.containsString("//RC/" + asset.getIrcs()));
     }
 
     private Organisation createOrganisationNorway() throws SocketException {
