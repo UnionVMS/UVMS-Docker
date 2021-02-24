@@ -141,7 +141,7 @@ public final class MobileTerminalTestHelper extends AbstractHelper {
         return createdTerminal;
 	}
 	
-	static MobileTerminalDto getMobileTerminalById(UUID uuid) {
+	public static MobileTerminalDto getMobileTerminalById(UUID uuid) {
 		return getWebTarget()
 				.path("asset/rest/mobileterminal")
 				.path(uuid.toString())
@@ -150,7 +150,7 @@ public final class MobileTerminalTestHelper extends AbstractHelper {
 				.get(MobileTerminalDto.class);
 	}
 
-	static MobileTerminalDto updateMobileTerminal(MobileTerminalDto mobileTerminal) {
+	public static MobileTerminalDto updateMobileTerminal(MobileTerminalDto mobileTerminal) {
 		return getWebTarget()
 				.path("asset/rest/mobileterminal")
 				.queryParam("comment", "MobileTerminal is Archived")
@@ -159,7 +159,7 @@ public final class MobileTerminalTestHelper extends AbstractHelper {
 				.put(Entity.json(mobileTerminal), MobileTerminalDto.class);
 	}
 
-	static Response getMobileTerminalList(MTQuery queryRequest) {
+	public static Response getMobileTerminalList(MTQuery queryRequest) {
 		return getWebTarget()
 				.path("asset/rest/mobileterminal/list")
 				.request(MediaType.APPLICATION_JSON)
@@ -167,7 +167,7 @@ public final class MobileTerminalTestHelper extends AbstractHelper {
 				.post(Entity.json(queryRequest));
 	}
 
-	static MobileTerminalDto activateMobileTerminal(UUID uuid) {
+	public static MobileTerminalDto activateMobileTerminal(UUID uuid) {
 		return getWebTarget()
 				.path("asset/rest/mobileterminal")
 				.path(uuid.toString())
@@ -178,7 +178,7 @@ public final class MobileTerminalTestHelper extends AbstractHelper {
 				.put(Entity.json("\"ACTIVE\""), MobileTerminalDto.class);
 	}
 
-	static MobileTerminalDto removeMobileTerminal(UUID uuid) {
+	public static MobileTerminalDto removeMobileTerminal(UUID uuid) {
 		return getWebTarget()
 				.path("asset/rest/mobileterminal")
 				.path(uuid.toString())
@@ -189,7 +189,7 @@ public final class MobileTerminalTestHelper extends AbstractHelper {
 				.put(Entity.json("\"ARCHIVE\""), MobileTerminalDto.class);
 	}
 
-	static MobileTerminalDto inactivateMobileTerminal(UUID uuid) {
+	public static MobileTerminalDto inactivateMobileTerminal(UUID uuid) {
 		return getWebTarget()
 				.path("asset/rest/mobileterminal")
 				.path(uuid.toString())
@@ -226,7 +226,7 @@ public final class MobileTerminalTestHelper extends AbstractHelper {
 				.put(Entity.json(""), MobileTerminalDto.class);
 	}
 
-	static List<MobileTerminalDto> getMobileTerminalHistoryList(UUID uuid) {
+	public static List<MobileTerminalDto> getMobileTerminalHistoryList(UUID uuid) {
 		return getWebTarget()
 				.path("asset/rest/mobileterminal")
 				.path(uuid.toString())
