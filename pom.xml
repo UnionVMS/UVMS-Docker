@@ -19,7 +19,7 @@
 		<project.scm.id>github</project.scm.id>
 		<scm.connection>scm:git:https://github.com/UnionVMS/UVMS-Docker.git</scm.connection>
 		<scm.url>scm:git:https://github.com/UnionVMS/UVMS-Docker.git</scm.url>
-		<unionvms.wildfly.version>22.0.0.Final</unionvms.wildfly.version>
+		<unionvms.wildfly.version>23.0.0.Final</unionvms.wildfly.version>
 		<unionvms.project.unionvms.web.version>3.0.78-UVMS</unionvms.project.unionvms.web.version>
 		<unionvms.project.vms.web.version>1.1.7</unionvms.project.vms.web.version>
 		<unionvms.project.mapfishprint.version>3.20.2.1</unionvms.project.mapfishprint.version>
