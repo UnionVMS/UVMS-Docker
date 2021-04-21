@@ -11,7 +11,7 @@
 
 	<groupId>eu.europa.ec.fisheries.uvms.docker</groupId>
 	<artifactId>uvms-docker</artifactId>
-	<version>4.0.15-SNAPSHOT</version>
+	<version>4.0.15</version>
 	<packaging>pom</packaging>
 	<name>uvms-docker</name>
 
@@ -49,7 +49,7 @@
 
 	<scm>
 		<connection>${scm.connection}</connection>
-		<tag>HEAD</tag>
+		<tag>uvms-docker-4.0.15</tag>
 	</scm>
 	<build>
 		<plugins>
