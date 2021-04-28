@@ -1,0 +1,50 @@
+version: 2
+registries:
+  maven-repository-nexus-focus-fish-nexus-content-repositories-rel:
+    type: maven-repository
+    url: http://nexus.focus.fish/nexus/content/repositories/releases/
+    username: greg
+    password: "${{secrets.MAVEN_REPOSITORY_NEXUS_FOCUS_FISH_NEXUS_CONTENT_REPOSITORIES_REL_PASSWORD}}"
+
+updates:
+- package-ecosystem: maven
+  directory: "/"
+  schedule:
+    interval: daily
+    time: "20:00"
+  open-pull-requests-limit: 99
+  reviewers:
+  - peerik
+  - Johanhav
+  ignore:
+  - dependency-name: org.eclipse:yasson
+    versions:
+    - 2.0.2
+  - dependency-name: io.hawt:hawtio-wildfly
+    versions:
+    - 2.13.1
+  - dependency-name: org.geolatte:geolatte-geom
+    versions:
+    - 1.6.1
+    - 1.7.0
+    - 1.8.0
+  - dependency-name: org.locationtech.jts:jts-core
+    versions:
+    - 1.18.1
+  - dependency-name: org.eclipse.jetty:jetty-servlet
+    versions:
+    - 11.0.1
+  - dependency-name: eu.europa.ec.fisheries.uvms.plugins:inmarsat-module
+    versions:
+    - 3.1.6
+  - dependency-name: org.hibernate:hibernate-spatial
+    versions:
+    - 5.4.28.Final
+  - dependency-name: org.hibernate:hibernate-envers
+    versions:
+    - 5.4.28.Final
+  - dependency-name: org.hibernate:hibernate-core
+    versions:
+    - 5.4.28.Final
+  registries:
+  - maven-repository-nexus-focus-fish-nexus-content-repositories-rel
