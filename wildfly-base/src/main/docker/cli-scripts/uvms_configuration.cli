@@ -178,7 +178,7 @@ embed-server --server-config=${SERVER_CONFIG}
 /subsystem=jca/workmanager=default/long-running-threads=default:write-attribute(name=max-threads, value=64)
 
 # Microprofile Metrics
-# Wildfly 22.0.0.Final workaround
+# Enable application metrics
 if (outcome != success) of /extension=org.wildfly.extension.microprofile.metrics-smallrye:read-attribute(name=module)
     /extension=org.wildfly.extension.microprofile.metrics-smallrye:add
     /subsystem=microprofile-metrics-smallrye:add(security-enabled=false, exposed-subsystems=[*], prefix=${wildfly.metrics.prefix:wildfly})
