@@ -160,7 +160,7 @@
 		<dependency>
 			<groupId>fish.focus.uvms.maven</groupId>
 			<artifactId>uvms-pom-java11-deps</artifactId>
-			<version>3.4</version>
+			<version>3.5</version>
 			<type>pom</type>
 		</dependency>
 		<dependency>
