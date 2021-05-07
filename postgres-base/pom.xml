@@ -4,12 +4,12 @@
 	<parent>
 		<groupId>eu.europa.ec.fisheries.uvms.docker</groupId>
 		<artifactId>uvms-docker</artifactId>
-		<version>4.0.11-SNAPSHOT</version>
+		<version>4.0.19-SNAPSHOT</version>
 		<relativePath>../pom.xml</relativePath>
 	</parent>
 	<groupId>eu.europa.ec.fisheries.uvms.docker</groupId>
 	<artifactId>uvms-docker-postgres-base</artifactId>
-	<version>4.0.11-SNAPSHOT</version>
+	<version>4.0.19-SNAPSHOT</version>
 	<packaging>pom</packaging>
 	<name>uvms-docker-postgres-base</name>
 	<build>
@@ -18,7 +18,7 @@
 				<plugin>
 					<groupId>io.fabric8</groupId>
 					<artifactId>docker-maven-plugin</artifactId>
-					<version>0.34.1</version>
+					<version>0.35.0</version>
 				</plugin>
 			</plugins>
 		</pluginManagement>

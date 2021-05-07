@@ -4,7 +4,7 @@
 	<parent>
 		<groupId>eu.europa.ec.fisheries.uvms.docker</groupId>
 		<artifactId>uvms-docker</artifactId>
-		<version>4.0.11-SNAPSHOT</version>
+		<version>4.0.19-SNAPSHOT</version>
 		<relativePath>../pom.xml</relativePath>
 	</parent>
 	<artifactId>uvms-docker-wildfly-base</artifactId>
@@ -15,7 +15,7 @@
 		<wildfly.hibernate.module.geolatte.version>1.4.0</wildfly.hibernate.module.geolatte.version>
 		<wildfly.hibernate.module.jts.version>1.16.1</wildfly.hibernate.module.jts.version>
 		<wildfly.postgres.module.postgis.version>2.5.0</wildfly.postgres.module.postgis.version>
-		<wildfly.postgres.module.postgres.version>42.2.19</wildfly.postgres.module.postgres.version>
+		<wildfly.postgres.module.postgres.version>42.2.20</wildfly.postgres.module.postgres.version>
 	</properties>
 	<dependencies>
 		<dependency>
@@ -65,7 +65,7 @@
 				<plugin>
 					<groupId>io.fabric8</groupId>
 					<artifactId>docker-maven-plugin</artifactId>
-					<version>0.34.1</version>
+					<version>0.35.0</version>
 				</plugin>
 			</plugins>
 		</pluginManagement>
