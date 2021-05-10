@@ -17,6 +17,7 @@ embed-server --server-config=${SERVER_CONFIG}
 /system-property=hibernate.spatial.dialect:add(value=org.hibernate.spatial.dialect.postgis.PostgisPG9Dialect)
 /system-property=hawtio.authenticationEnabled:add(value=false)
 /system-property=USM.secretKey:add(value=$secretkey)
+/system-property=resteasy.preferJacksonOverJsonB:add(value=false)
 
 # Logging
 /subsystem=logging/logger=org.apache.tomcat.util.modeler:add(level=WARN)
@@ -177,6 +178,12 @@ embed-server --server-config=${SERVER_CONFIG}
 /subsystem=jca/workmanager=default/long-running-threads=default:write-attribute(name=max-threads, value=64)
 
 # Microprofile Metrics
+# Enable application metrics
+if (outcome != success) of /extension=org.wildfly.extension.microprofile.metrics-smallrye:read-attribute(name=module)
+    /extension=org.wildfly.extension.microprofile.metrics-smallrye:add
+    /subsystem=microprofile-metrics-smallrye:add(security-enabled=false, exposed-subsystems=[*], prefix=${wildfly.metrics.prefix:wildfly})
+    /subsystem=metrics:write-attribute(name=exposed-subsystems, value=[messaging-activemq, transactions])
+end-if
 /subsystem=microprofile-metrics-smallrye:write-attribute(name=exposed-subsystems, value=[messaging-activemq, transactions])
 
 # Naming
