@@ -186,6 +186,9 @@ if (outcome != success) of /extension=org.wildfly.extension.microprofile.metrics
 end-if
 /subsystem=microprofile-metrics-smallrye:write-attribute(name=exposed-subsystems, value=[messaging-activemq, transactions])
 
+# Microprofile Tracing (disable)
+/subsystem=microprofile-opentracing-smallrye/jaeger-tracer=jaeger:write-attribute(name=sampler-param, value=0)
+
 # Naming
 /subsystem=naming/binding=java\:global\/asset_endpoint:add(binding-type=simple, value=$asset_endpoint)
 /subsystem=naming/binding=java\:global\/spatial_endpoint:add(binding-type=simple, value=$spatial_endpoint)
