@@ -11,17 +11,14 @@ copy of the GNU General Public License along with the IFDM Suite. If not, see <h
  */
 package eu.europa.ec.fisheries.uvms.docker.validation.rules;
 
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import java.io.IOException;
 import java.util.List;
 import javax.ws.rs.core.GenericType;
 import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import eu.europa.ec.fisheries.schema.movementrules.customrule.v1.CustomRuleType;
 import eu.europa.ec.fisheries.uvms.asset.client.model.AssetDTO;
 import eu.europa.ec.fisheries.uvms.docker.validation.asset.AssetTestHelper;
 import eu.europa.ec.fisheries.uvms.docker.validation.common.AbstractRest;
@@ -46,11 +43,7 @@ public class PreviousReportIT extends AbstractRest {
 
         VMSSystemHelper.triggerBasicRuleWithSatellitePosition(mt);
 
-        List<PreviousReportDto> previousReports = getWebTarget()
-                .path("movement-rules/rest/previousReports/list")
-                .request(MediaType.APPLICATION_JSON)
-                .header(HttpHeaders.AUTHORIZATION, getValidJwtToken())
-                .get(new GenericType<List<PreviousReportDto>>(){});
+        List<PreviousReportDto> previousReports = MovementRulesTestHelper.getPreviousReports();
 
         assertTrue(previousReports.stream().anyMatch(r -> r.getAssetGuid().equals(asset.getId().toString())));
     }
@@ -63,11 +56,7 @@ public class PreviousReportIT extends AbstractRest {
 
         VMSSystemHelper.triggerBasicRuleAndSendToNAF(asset, generateARandomStringWithMaxLength(10));
 
-        List<PreviousReportDto> previousReports = getWebTarget()
-                .path("movement-rules/rest/previousReports/list")
-                .request(MediaType.APPLICATION_JSON)
-                .header(HttpHeaders.AUTHORIZATION, getValidJwtToken())
-                .get(new GenericType<List<PreviousReportDto>>(){});
+        List<PreviousReportDto> previousReports = MovementRulesTestHelper.getPreviousReports();
 
         assertTrue(previousReports.stream().noneMatch(r -> r.getAssetGuid().equals(asset.getId().toString())));
     }
