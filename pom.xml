@@ -26,7 +26,7 @@
 		<unionvms.project.geoserver.version>2.16.2.1</unionvms.project.geoserver.version>
 		<unionvms.project.user.module>2.2.1</unionvms.project.user.module>
 		<unionvms.project.reporting.module>1.1.27-UVMS</unionvms.project.reporting.module>
-		<unionvms.project.movementrules.module>2.4.11</unionvms.project.movementrules.module>
+		<unionvms.project.movementrules.module>2.4.12</unionvms.project.movementrules.module>
 		<unionvms.project.movement.module>5.6.1-UVMS</unionvms.project.movement.module>
 		<unionvms.project.exchange.module>5.3.15-UVMS</unionvms.project.exchange.module>
 		<unionvms.project.spatial.module>2.0.6</unionvms.project.spatial.module>
