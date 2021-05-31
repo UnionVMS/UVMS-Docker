@@ -19,6 +19,8 @@ import java.util.concurrent.locks.LockSupport;
 public class IncidentTestHelper extends AbstractHelper {
 
     public static final String QUEUE_NAME = "IncidentEvent";
+    public static final String INCIDENT_CREATE_EVENT = "Incident";
+    public static final String INCIDENT_UPDATE_EVENT = "IncidentUpdate";
 
     public static IncidentDto createAssetNotSendingIncident(IncidentTicketDto ticket, String eventName) throws Exception {
         sendMessage(ticket, eventName);

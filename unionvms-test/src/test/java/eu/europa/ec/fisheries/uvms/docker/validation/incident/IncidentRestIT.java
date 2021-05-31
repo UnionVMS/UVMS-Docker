@@ -33,14 +33,11 @@ import java.util.UUID;
 
 public class IncidentRestIT extends AbstractRest {
 
-    public final String INCIDENT_CREATE = "Incident";
-    public final String INCIDENT_UPDATE = "IncidentUpdate";
-
     @Test
     public void createAssetNotSendingIncidentTest() throws Exception {
         AssetDTO asset = AssetTestHelper.createAsset(AssetTestHelper.createBasicAsset());
         IncidentTicketDto ticket = IncidentTestHelper.createTicket(asset.getId());
-        IncidentDto dto = IncidentTestHelper.createAssetNotSendingIncident(ticket, INCIDENT_CREATE);
+        IncidentDto dto = IncidentTestHelper.createAssetNotSendingIncident(ticket, IncidentTestHelper.INCIDENT_CREATE_EVENT);
         assertNotNull(dto);
     }
 
@@ -49,7 +46,7 @@ public class IncidentRestIT extends AbstractRest {
         OpenAndRecentlyResolvedIncidentsDto before = IncidentTestHelper.getAllOpenAndRecentlyResolvedIncidents();
         AssetDTO asset = AssetTestHelper.createAsset(AssetTestHelper.createBasicAsset());
         IncidentTicketDto ticket = IncidentTestHelper.createTicket(asset.getId());
-        IncidentTestHelper.createAssetNotSendingIncident(ticket, INCIDENT_CREATE);
+        IncidentTestHelper.createAssetNotSendingIncident(ticket, IncidentTestHelper.INCIDENT_CREATE_EVENT);
         OpenAndRecentlyResolvedIncidentsDto after = IncidentTestHelper.getAllOpenAndRecentlyResolvedIncidents();
         assertEquals(before.getUnresolved().size() + 1, after.getUnresolved().size());
     }
@@ -58,14 +55,14 @@ public class IncidentRestIT extends AbstractRest {
     public void updateAssetNotSendingStatusTest() throws Exception {
         AssetDTO asset = AssetTestHelper.createAsset(AssetTestHelper.createBasicAsset());
         IncidentTicketDto ticket = IncidentTestHelper.createTicket(asset.getId());
-        IncidentDto created = IncidentTestHelper.createAssetNotSendingIncident(ticket, INCIDENT_CREATE);
+        IncidentDto created = IncidentTestHelper.createAssetNotSendingIncident(ticket, IncidentTestHelper.INCIDENT_CREATE_EVENT);
 
         assertNotEquals(StatusEnum.RESOLVED, created.getStatus());
 
         ticket.setType(null);
         ticket.setMovementId(UUID.randomUUID().toString());
         ticket.setMovementSource(MovementSourceType.FLUX);
-        IncidentDto updated = IncidentTestHelper.createAssetNotSendingIncident(ticket, INCIDENT_UPDATE);
+        IncidentDto updated = IncidentTestHelper.createAssetNotSendingIncident(ticket, IncidentTestHelper.INCIDENT_UPDATE_EVENT);
 
         assertEquals(StatusEnum.RESOLVED, updated.getStatus());
     }
@@ -74,10 +71,10 @@ public class IncidentRestIT extends AbstractRest {
     public void getAssetNotSendingEventChangesTest() throws Exception {
         AssetDTO asset = AssetTestHelper.createAsset(AssetTestHelper.createBasicAsset());
         IncidentTicketDto ticket = IncidentTestHelper.createTicket(asset.getId());
-        IncidentDto incident = IncidentTestHelper.createAssetNotSendingIncident(ticket, INCIDENT_CREATE);
+        IncidentDto incident = IncidentTestHelper.createAssetNotSendingIncident(ticket, IncidentTestHelper.INCIDENT_CREATE_EVENT);
 
         ticket.setStatus(TicketStatusType.CLOSED.toString());
-        IncidentTestHelper.createAssetNotSendingIncident(ticket, INCIDENT_UPDATE);
+        IncidentTestHelper.createAssetNotSendingIncident(ticket, IncidentTestHelper.INCIDENT_UPDATE_EVENT);
 
         Map<Long, IncidentLogDto> dtoList = getWebTarget()
                 .path("incident/rest/incident/incidentLogForIncident")
@@ -122,7 +119,7 @@ public class IncidentRestIT extends AbstractRest {
         }
         IncidentTicketDto ticket = IncidentTestHelper.createTicket(asset.getId());
         ticket.setMovementId(movement.getId().toString());
-        IncidentDto incident = IncidentTestHelper.createAssetNotSendingIncident(ticket, INCIDENT_CREATE);
+        IncidentDto incident = IncidentTestHelper.createAssetNotSendingIncident(ticket, IncidentTestHelper.INCIDENT_CREATE_EVENT);
 
         Map<Long, IncidentDto> incidentMap = IncidentTestHelper.getOpenTicketsForAsset(asset.getId().toString());
 

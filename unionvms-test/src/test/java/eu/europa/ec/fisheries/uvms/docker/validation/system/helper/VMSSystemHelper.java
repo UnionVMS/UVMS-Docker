@@ -35,6 +35,7 @@ import javax.jms.Message;
 import javax.jms.TextMessage;
 import java.io.IOException;
 import java.time.Instant;
+import java.time.temporal.ChronoUnit;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
@@ -155,7 +156,7 @@ public class VMSSystemHelper {
                     .build();
             CustomRuleType createdCustomRule = CustomRuleHelper.createCustomRule(sourceRule);
 
-            LatLong position = new LatLong(11d, 56d, new Date());
+            LatLong position = new LatLong(11d, 56d, Date.from(Instant.now().truncatedTo(ChronoUnit.MINUTES)));
 
             try (TopicListener topicListener = new TopicListener(FLUX_SELECTOR)) {
                 InmarsatPluginMock.sendInmarsatPosition(mobileTerminal, position);
