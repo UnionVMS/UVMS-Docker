@@ -135,7 +135,7 @@
 		<dependency>
 			<groupId>org.jboss.resteasy</groupId>
 			<artifactId>resteasy-client</artifactId>
-			<version>3.9.0.Final</version>
+			<version>4.5.6.Final-redhat-00004</version>
 		</dependency>
 		<dependency>
 			<groupId>org.jboss.resteasy</groupId>
