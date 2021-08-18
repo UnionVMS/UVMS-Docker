@@ -189,6 +189,10 @@ end-if
 # Microprofile Tracing (disable)
 /subsystem=microprofile-opentracing-smallrye/jaeger-tracer=jaeger:write-attribute(name=sampler-param, value=0)
 
+# Microprofile OpenAPI
+/extension=org.wildfly.extension.microprofile.openapi-smallrye:add()
+/subsystem=microprofile-openapi-smallrye:add()
+
 # Naming
 /subsystem=naming/binding=java\:global\/asset_endpoint:add(binding-type=simple, value=$asset_endpoint)
 /subsystem=naming/binding=java\:global\/spatial_endpoint:add(binding-type=simple, value=$spatial_endpoint)
