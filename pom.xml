@@ -23,14 +23,14 @@
 		<unionvms.project.unionvms.web.version>3.0.78-UVMS</unionvms.project.unionvms.web.version>
 		<unionvms.project.vms.web.version>1.1.15</unionvms.project.vms.web.version>
 		<unionvms.project.mapfishprint.version>3.20.2.1</unionvms.project.mapfishprint.version>
-		<unionvms.project.geoserver.version>2.16.2.1</unionvms.project.geoserver.version>
+		<unionvms.project.geoserver.version>2.16.2.2</unionvms.project.geoserver.version>
 		<unionvms.project.user.module>2.2.2</unionvms.project.user.module>
 		<unionvms.project.reporting.module>1.1.27-UVMS</unionvms.project.reporting.module>
-		<unionvms.project.movementrules.module>2.4.12</unionvms.project.movementrules.module>
-		<unionvms.project.movement.module>5.6.1-UVMS</unionvms.project.movement.module>
-		<unionvms.project.exchange.module>5.3.15-UVMS</unionvms.project.exchange.module>
+		<unionvms.project.movementrules.module>2.4.13</unionvms.project.movementrules.module>
+		<unionvms.project.movement.module>5.6.2-UVMS</unionvms.project.movement.module>
+		<unionvms.project.exchange.module>5.3.16-UVMS</unionvms.project.exchange.module>
 		<unionvms.project.spatial.module>2.0.6</unionvms.project.spatial.module>
-		<unionvms.project.spatialSwe.module>2.2.8-UVMS</unionvms.project.spatialSwe.module>
+		<unionvms.project.spatialSwe.module>2.2.9-UVMS</unionvms.project.spatialSwe.module>
 		<unionvms.project.config.module>4.3.10</unionvms.project.config.module>
 		<unionvms.project.audit.module>4.3.9</unionvms.project.audit.module>
 		<unionvms.project.asset.module>6.8.11</unionvms.project.asset.module>
@@ -43,7 +43,7 @@
 		<unionvms.project.plugins.fluxActivity>1.0.6</unionvms.project.plugins.fluxActivity>
 		<unionvms.project.plugins.flux-rest>1.7</unionvms.project.plugins.flux-rest>
 		<unionvms.project.web-gateway>1.0.6</unionvms.project.web-gateway>
-		<unionvms.project.hawtio-wildfly>2.13.4</unionvms.project.hawtio-wildfly>
+		<unionvms.project.hawtio-wildfly>2.13.5</unionvms.project.hawtio-wildfly>
 	</properties>
 
 

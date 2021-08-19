@@ -16,7 +16,7 @@
 	<properties>
 		<docker.skip>${skipITs}</docker.skip>
 		<docker.frontend.test.suite>UnionVMSTestCaseG2</docker.frontend.test.suite>
-		<jackson.version>2.12.3</jackson.version>
+		<jackson.version>2.12.4</jackson.version>
 		<uvms.commons.version>4.1.9</uvms.commons.version>
 	</properties>
 
@@ -155,7 +155,7 @@
 		<dependency>
 		    <groupId>org.eclipse.jetty</groupId>
 		    <artifactId>jetty-servlet</artifactId>
-		    <version>11.0.5</version>
+		    <version>11.0.6</version>
 		</dependency>
 		<dependency>
 			<groupId>fish.focus.uvms.maven</groupId>
@@ -193,7 +193,7 @@
 		<dependency>
 			<groupId>org.apache.commons</groupId>
 			<artifactId>commons-csv</artifactId>
-			<version>1.8</version>
+			<version>1.9.0</version>
 		</dependency>
 	</dependencies>
 	<build>
@@ -202,7 +202,7 @@
 				<plugin>
 					<groupId>io.fabric8</groupId>
 					<artifactId>docker-maven-plugin</artifactId>
-					<version>0.36.0</version>
+					<version>0.36.1</version>
 				</plugin>
 			</plugins>
 		</pluginManagement>
