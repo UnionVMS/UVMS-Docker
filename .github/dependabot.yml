@@ -3,8 +3,6 @@ registries:
   maven-repository-nexus-focus-fish-nexus-content-repositories-rel:
     type: maven-repository
     url: http://nexus.focus.fish/nexus/content/repositories/releases/
-    username: greg
-    password: "${{secrets.MAVEN_REPOSITORY_NEXUS_FOCUS_FISH_NEXUS_CONTENT_REPOSITORIES_REL_PASSWORD}}"
 
 updates:
 - package-ecosystem: maven
