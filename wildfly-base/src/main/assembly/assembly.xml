@@ -33,9 +33,9 @@
         <fileSet>
             <directory>target/dockerfile/dependencies</directory>
             <includes>
-                <include>activemq*.*</include>
+                <include>yasson*.*</include>
             </includes>
-            <outputDirectory>deployments</outputDirectory>
+            <outputDirectory>yasson</outputDirectory>
         </fileSet>        
     </fileSets>
 </assembly>
