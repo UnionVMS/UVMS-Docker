@@ -42,6 +42,10 @@ COPY dependencies/hibernate-spatial-${wildfly.hibernate.module.spatial.version}.
 COPY dependencies/jts-core-${wildfly.hibernate.module.jts.version}.jar $HIBERNATE_MODULE
 COPY dependencies/geolatte-geom-${wildfly.hibernate.module.geolatte.version}.jar $HIBERNATE_MODULE
 
+ENV YASSON_MODULE $JBOSS_HOME/modules/system/layers/base/org/eclipse/yasson/main
+COPY yasson/module.xml $YASSON_MODULE
+COPY dependencies/yasson-1.0.7.jar $YASSON_MODULE
+
 # Standalone config
 COPY standalone.conf $JBOSS_HOME/bin/
 COPY start.sh /opt/jboss/
