@@ -44,7 +44,7 @@ COPY dependencies/geolatte-geom-${wildfly.hibernate.module.geolatte.version}.jar
 
 ENV YASSON_MODULE $JBOSS_HOME/modules/system/layers/base/org/eclipse/yasson/main
 COPY yasson/module.xml $YASSON_MODULE
-COPY dependencies/yasson-1.0.7.jar $YASSON_MODULE
+COPY dependencies/yasson-1.0.5.jar $YASSON_MODULE
 
 # Standalone config
 COPY standalone.conf $JBOSS_HOME/bin/
