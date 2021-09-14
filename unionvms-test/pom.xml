@@ -613,7 +613,7 @@
 						<configuration>
 							<connectionType>git</connectionType>
 							<developerConnectionUrl>scm:git:https://github.com/UnionVMS/VMS-Test.git</developerConnectionUrl>
-							<scmVersion>mavenify</scmVersion>
+							<scmVersion>master</scmVersion>
 							<scmVersionType>branch</scmVersionType>
 						</configuration>
 						<executions>
