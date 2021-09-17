@@ -571,11 +571,22 @@ public class FLUXSystemIT extends AbstractRest {
     @Test
     public void incomingOrginalMessageTest() throws IOException, Exception {
         AssetDTO asset = AssetTestHelper.createTestAsset();
+        CustomRuleType flagStateRule = CustomRuleBuilder.getBuilder()
+                .rule(CriteriaType.ASSET, SubCriteriaType.ASSET_IRCS,
+                        ConditionType.EQ, asset.getIrcs())
+                .action(ActionType.SEND_REPORT, VMSSystemHelper.FLUX_NAME, "TEST")
+                .build();
+
+        CustomRuleType createdCustomRule = CustomRuleHelper.createCustomRule(flagStateRule);
+        assertNotNull(createdCustomRule);
+
         LatLong position = new LatLong(58.973, 5.781, Date.from(Instant.now()));
         position.speed = 5;
 
-        FLUXHelper.sendPositionToFluxPlugin(asset, position);
-        MovementHelper.pollMovementCreated();
+        try (FLUXEndpoint fluxEndpoint = new FLUXEndpoint()) {
+            FLUXHelper.sendPositionToFluxPlugin(asset, position);
+            fluxEndpoint.getMessage(10000);
+        }
 
         List<MovementDto> movements = MovementHelper.getLatestMovements(Arrays.asList(asset.getId().toString()));
         ExchangeLogDto exchangeLog = ExchangeHelper.getIncomingExchangeLogByTypeGUID(movements.get(0).getId().toString());
