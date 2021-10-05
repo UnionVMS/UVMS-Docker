@@ -4,7 +4,7 @@
 	<parent>
 		<groupId>eu.europa.ec.fisheries.uvms.docker</groupId>
 		<artifactId>uvms-docker</artifactId>
-		<version>4.0.26-SNAPSHOT</version>
+		<version>4.0.27-SNAPSHOT</version>
 		<relativePath>../pom.xml</relativePath>
 	</parent>
 	<artifactId>uvms-docker-postgres-release</artifactId>
@@ -179,6 +179,23 @@
 			<groupId>eu.europa.ec.fisheries.uvms.user</groupId>
 			<artifactId>liquibase</artifactId>
 			<version>${unionvms.project.user.module}</version>
+			<type>zip</type>
+		</dependency>
+		<dependency>
+			<groupId>eu.europa.ec.fisheries.uvms.activity</groupId>
+			<artifactId>liquibase</artifactId>
+			<type>sql</type>
+			<exclusions>
+				<exclusion>
+					<groupId>com.oracle</groupId>
+					<artifactId>ojdbc6</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		<dependency>
+			<groupId>eu.europa.ec.fisheries.uvms.activity</groupId>
+			<artifactId>liquibase</artifactId>
+			<version>${unionvms.project.activity.module}</version>
 			<type>zip</type>
 		</dependency>
 	</dependencies>
