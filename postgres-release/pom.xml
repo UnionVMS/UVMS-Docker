@@ -4,7 +4,7 @@
 	<parent>
 		<groupId>eu.europa.ec.fisheries.uvms.docker</groupId>
 		<artifactId>uvms-docker</artifactId>
-		<version>4.0.29</version>
+		<version>4.0.30-SNAPSHOT</version>
 		<relativePath>../pom.xml</relativePath>
 	</parent>
 	<artifactId>uvms-docker-postgres-release</artifactId>
@@ -404,6 +404,6 @@
 		</profile>
 	</profiles>
 	<scm>
-		<tag>uvms-docker-4.0.29</tag>
+		<tag>HEAD</tag>
 	</scm>
 </project>
