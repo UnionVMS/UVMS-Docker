@@ -37,6 +37,13 @@ embed-server --server-config=${SERVER_CONFIG}
 /subsystem=logging/logger=org.geotools:add(level=WARN)
 /subsystem=logging/logger=org.springframework:add(level=WARN)
 
+# Activity
+/subsystem=logging/logging-profile=activity:add
+/subsystem=logging/logging-profile=activity/pattern-formatter=APP-PATTERN:add(pattern="%d{yyyy-MM-dd HH:mm:ss} [%t] %X{requestId} %-5p %c{40} %X{userId}- %m%n")
+/subsystem=logging/logging-profile=activity/periodic-size-rotating-file-handler=activity-file:add(level=INFO,file={path=>"/app/logs/activity/activity.log"},named-formatter=APP-PATTERN,suffix=".yyyy-ww",rotate-size=50M)
+/subsystem=logging/logging-profile=activity/periodic-size-rotating-file-handler=activity-error-file:add(level=ERROR,file={path=>"/app/logs/activity/activity-error.log"},named-formatter=APP-PATTERN,suffix=".yyyy-ww",rotate-size=50M)
+/subsystem=logging/logging-profile=activity/logger=eu.europa:add(handlers=[activity-file,activity-error-file])
+
 # AIS
 /subsystem=logging/logging-profile=ais:add
 /subsystem=logging/logging-profile=ais/pattern-formatter=APP-PATTERN:add(pattern="%d{yyyy-MM-dd HH:mm:ss} [%t] %X{requestId} %-5p %c{40} %X{userId}- %m%n")

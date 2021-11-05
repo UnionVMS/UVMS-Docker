@@ -4,7 +4,7 @@
 	<parent>
 		<groupId>eu.europa.ec.fisheries.uvms.docker</groupId>
 		<artifactId>uvms-docker</artifactId>
-		<version>4.0.27-SNAPSHOT</version>
+		<version>4.0.32-SNAPSHOT</version>
 		<relativePath>../pom.xml</relativePath>
 	</parent>
 
@@ -124,7 +124,11 @@
 			<artifactId>reporting-module</artifactId>
 			<type>ear</type>
 		</dependency>
-
+		<dependency>
+			<groupId>eu.europa.ec.fisheries.uvms.activity</groupId>
+			<artifactId>activity-application</artifactId>
+			<type>war</type>
+		</dependency>
 		<dependency>
 			<groupId>eu.europa.ec.fisheries.uvms.web-gateway</groupId>
 			<artifactId>web-gateway</artifactId>

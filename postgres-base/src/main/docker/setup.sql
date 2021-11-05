@@ -98,3 +98,11 @@ ALTER USER incident SET search_path = incident, public;
 GRANT CONNECT ON DATABASE db71u TO incident;  
 GRANT SELECT, INSERT, UPDATE, DELETE ON ALL TABLES IN SCHEMA incident TO incident; 
 ALTER SCHEMA incident OWNER TO incident;
+
+-- Activity
+CREATE USER activity WITH PASSWORD 'activity';
+CREATE SCHEMA AUTHORIZATION activity;
+ALTER USER activity SET search_path = activity, public;
+GRANT CONNECT ON DATABASE db71u TO activity;
+GRANT SELECT, INSERT, UPDATE, DELETE ON ALL TABLES IN SCHEMA activity TO activity;
+ALTER SCHEMA activity OWNER TO activity;
