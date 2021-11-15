@@ -6,15 +6,12 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Random;
 import java.util.concurrent.TimeUnit;
+import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.ext.ContextResolver;
-import org.eclipse.jetty.client.HttpClient;
-import org.jboss.resteasy.client.jaxrs.ResteasyClient;
-import org.jboss.resteasy.client.jaxrs.ResteasyClientBuilder;
-import org.jboss.resteasy.client.jaxrs.engines.jetty.JettyClientEngine;
 import org.junit.Assert;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -46,11 +43,7 @@ public abstract class AbstractRest {
     }
 
     protected static WebTarget getWebTarget() {
-        ResteasyClient client = ((ResteasyClientBuilder)ClientBuilder.newBuilder()).httpEngine(
-                new JettyClientEngine(new HttpClient()))
-                .readTimeout(60, TimeUnit.SECONDS)
-                .build();
-//        Client client = ClientBuilder.newBuilder().readTimeout(60, TimeUnit.SECONDS).build();
+        Client client = ClientBuilder.newBuilder().readTimeout(60, TimeUnit.SECONDS).build();
         /*JsonbConfig config = new JsonbConfig()
                 .withAdapters(new JsonBInstantAdapter())
                 .withPropertyNamingStrategy(PropertyNamingStrategy.UPPER_CAMEL_CASE)
