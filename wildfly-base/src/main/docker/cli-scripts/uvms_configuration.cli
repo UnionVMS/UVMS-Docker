@@ -15,7 +15,6 @@ embed-server --server-config=${SERVER_CONFIG}
 /system-property=db.dialect:add(value=postgres)
 /system-property=hibernate.dialect:add(value=org.hibernate.dialect.PostgreSQL9Dialect)
 /system-property=hibernate.spatial.dialect:add(value=org.hibernate.spatial.dialect.postgis.PostgisPG9Dialect)
-/system-property=hawtio.authenticationEnabled:add(value=false)
 /system-property=USM.secretKey:add(value=$secretkey)
 /system-property=resteasy.preferJacksonOverJsonB:add(value=false)
 
