@@ -43,7 +43,7 @@
 		<unionvms.project.plugins.siriusone>3.0.12</unionvms.project.plugins.siriusone>
 		<unionvms.project.plugins.fluxActivity>1.0.6</unionvms.project.plugins.fluxActivity>
 		<unionvms.project.plugins.flux-rest>1.7</unionvms.project.plugins.flux-rest>
-		<unionvms.project.web-gateway>1.0.6</unionvms.project.web-gateway>
+		<unionvms.project.web-gateway>1.0.7</unionvms.project.web-gateway>
 	</properties>
 
 
