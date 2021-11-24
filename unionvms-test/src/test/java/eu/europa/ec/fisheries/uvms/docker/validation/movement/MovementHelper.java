@@ -14,6 +14,10 @@ import eu.europa.ec.fisheries.schema.movement.v1.MovementSourceType;
 import eu.europa.ec.fisheries.schema.movement.v1.MovementType;
 import eu.europa.ec.fisheries.schema.movement.v1.MovementTypeType;
 import eu.europa.ec.fisheries.uvms.asset.client.model.AssetDTO;
+import eu.europa.ec.fisheries.uvms.commons.date.JsonBDateAdapter;
+import eu.europa.ec.fisheries.uvms.commons.date.JsonBDurationAdapter;
+import eu.europa.ec.fisheries.uvms.commons.date.JsonBInstantAdapter;
+import eu.europa.ec.fisheries.uvms.commons.date.JsonBXmlGregorianCalendarAdapter;
 import eu.europa.ec.fisheries.uvms.docker.validation.common.AbstractHelper;
 import eu.europa.ec.fisheries.uvms.docker.validation.common.MessageHelper;
 import eu.europa.ec.fisheries.uvms.docker.validation.movement.model.IncomingMovement;
@@ -21,6 +25,11 @@ import eu.europa.ec.fisheries.uvms.movement.model.dto.MovementDto;
 import org.hamcrest.CoreMatchers;
 
 import javax.jms.JMSException;
+import javax.json.bind.Jsonb;
+import javax.json.bind.JsonbBuilder;
+import javax.json.bind.JsonbConfig;
+import javax.json.bind.annotation.JsonbDateFormat;
+import javax.json.bind.config.PropertyVisibilityStrategy;
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.GenericType;
@@ -28,6 +37,8 @@ import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.sse.SseEventSource;
 import java.io.Closeable;
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 import java.math.BigInteger;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
@@ -315,12 +326,25 @@ public class MovementHelper extends AbstractHelper implements Closeable {
 	}
 	
 	public static List<MovementType> getListByQuery(MovementQuery movementQuery) {
-		GetMovementListByQueryResponse response = getWebTarget()
-		        .path("movement/rest/movement/list")
-		        .request(MediaType.APPLICATION_JSON)
-		        .header(HttpHeaders.AUTHORIZATION, getValidJwtToken())
-		        .post(Entity.json(movementQuery), GetMovementListByQueryResponse.class);
-		return response.getMovement();
+        String response = getWebTarget()
+            .path("movement/rest/movement/list")
+            .request(MediaType.APPLICATION_JSON)
+            .header(HttpHeaders.AUTHORIZATION, getValidJwtToken())
+            .post(Entity.json(movementQuery), String.class);
+        Jsonb customJsonb = JsonbBuilder.newBuilder()
+            .withConfig(new JsonbConfig()
+                    .withPropertyVisibilityStrategy(new PropertyVisibilityStrategy() {
+                        @Override
+                        public boolean isVisible(Method method) {
+                            return false;
+                        }
+                        @Override
+                        public boolean isVisible(Field field) {
+                            return true;
+                        }
+                    }))
+            .build();
+        return customJsonb.fromJson(response, GetMovementListByQueryResponse.class).getMovement();
 	}
 
 	public static List<MovementType> getMinimalListByQuery(MovementQuery movementQuery) {

@@ -70,7 +70,7 @@ public final class MobileTerminalTestHelper extends AbstractHelper {
 
 	public static CreatePollResultDto createConfigPollWithMT_Helper(AssetDTO testAsset, MobileTerminalDto terminal) {
 		terminal = assignMobileTerminal(testAsset, terminal);
-		assertNotNull(terminal.getAsset());
+		assertNotNull(terminal.getAssetId());
 
 		PluginCapability configurable = new PluginCapability();
 		configurable.setName(PluginCapabilityType.CONFIGURABLE);
