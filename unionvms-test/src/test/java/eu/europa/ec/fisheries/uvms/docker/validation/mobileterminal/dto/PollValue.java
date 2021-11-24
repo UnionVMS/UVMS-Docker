@@ -16,11 +16,12 @@ public class PollValue {
     private PollKey key;
     private String value;
 
-    PollValue(PollKey key, String value) {
+    public PollValue(PollKey key, String value) {
         this.key = key;
         this.value = value;
     }
-    PollValue(){/* for json */}
+
+    public PollValue(){/* for json */}
 
     public PollKey getKey() {
         return key;

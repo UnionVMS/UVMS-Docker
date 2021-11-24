@@ -1,8 +1,5 @@
 package eu.europa.ec.fisheries.uvms.docker.validation.spatial;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.SerializationFeature;
-import com.fasterxml.jackson.module.jaxb.JaxbAnnotationModule;
 import eu.europa.ec.fisheries.schema.movement.v1.MovementPoint;
 import eu.europa.ec.fisheries.uvms.docker.validation.common.AbstractRest;
 import eu.europa.ec.fisheries.uvms.docker.validation.spatial.dto.AreaExtendedIdentifierType;
@@ -36,11 +33,6 @@ public class SpatialSweRestIT extends AbstractRest {
     private Integer crs = 4326;
     private Double latitude = 57.715523;
     private Double longitude = 11.973965;
-
-    @Before
-    public void init(){
-        OBJECT_MAPPER.registerModule(new JaxbAnnotationModule());
-    }
 
     @Test
     public void getAreaByLocation() {
@@ -258,11 +250,10 @@ public class SpatialSweRestIT extends AbstractRest {
     }
 
     @Test
-    public void testSegmentCategoriFromHelsingborgToLidkoping() throws JsonProcessingException {
+    public void testSegmentCategoriFromHelsingborgToLidkoping() {
         List<InputToSegmentCategoryType> movementList = new ArrayList<>();
         String[] pointArray = HelsingborgToLidkoping.helsingborgToLidköping;
         Instant start = Instant.now().minusSeconds(60 * pointArray.length);
-        OBJECT_MAPPER.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, true);
 
         for(int i = 0 ; i < pointArray.length - 1 ; i++) {
             movementList.clear();

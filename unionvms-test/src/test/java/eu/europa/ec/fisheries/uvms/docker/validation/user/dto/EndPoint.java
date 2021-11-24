@@ -1,7 +1,5 @@
 package eu.europa.ec.fisheries.uvms.docker.validation.user.dto;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-
 import java.io.Serializable;
 import java.util.List;
 
@@ -15,8 +13,7 @@ public class EndPoint implements Serializable {
     private String name;
     private String description;
     private String status;
-    @JsonProperty("URI")
-    private String URI;
+    private String uri;
     private String email;
     private Long endpointId;
     private List<Channel> channelList;
@@ -68,15 +65,15 @@ public class EndPoint implements Serializable {
     /**
      * @return the uRI
      */
-    public String getURI() {
-        return URI;
+    public String getUri() {
+        return uri;
     }
 
     /**
-     * @param uRI the uRI to set
+     * @param uri the uRI to set
      */
-    public void setURI(String uRI) {
-        URI = uRI;
+    public void setUri(String uri) {
+        this.uri = uri;
     }
 
     /**
@@ -155,7 +152,7 @@ public class EndPoint implements Serializable {
      */
     @Override
     public String toString() {
-        return "EndPoint [name=" + name + ", description=" + description + ", status=" + status + ", URI=" + URI
+        return "EndPoint [name=" + name + ", description=" + description + ", status=" + status + ", URI=" + uri
                 + ", email=" + ", endpointId=" + endpointId + " , channelList=" + channelList + ", organisationName= "
                 + organisationName + " , persons=" + persons + "]";
     }

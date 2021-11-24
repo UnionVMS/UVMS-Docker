@@ -294,7 +294,7 @@ public class MovementHelper extends AbstractHelper implements Closeable {
 	}
 
 	public MovementDto createMovement(IncomingMovement incomingMovement) throws Exception {
-		messageHelper.sendMessageWithFunctionAndGroup(UVMS_MOVEMENT_REQUEST_QUEUE, OBJECT_MAPPER.writeValueAsString(incomingMovement), "CREATE", incomingMovement.getAssetCFR());
+		messageHelper.sendMessageWithFunctionAndGroup(UVMS_MOVEMENT_REQUEST_QUEUE, writeValueAsString(incomingMovement), "CREATE", incomingMovement.getAssetCFR());
 		MovementHelper.pollMovementCreated();
 		List<MovementDto> latestMovements = MovementHelper.getLatestMovements(Collections.singletonList(incomingMovement.getAssetGuid()));
 		assertThat(latestMovements.size(), CoreMatchers.is(1));
@@ -302,7 +302,7 @@ public class MovementHelper extends AbstractHelper implements Closeable {
 	}
 
 	public void createMovementDontWaitForResponse(AssetDTO testAsset, IncomingMovement incomingMovement) throws Exception {
-	    messageHelper.sendMessageAndReturnMessageId(UVMS_MOVEMENT_REQUEST_QUEUE, OBJECT_MAPPER.writeValueAsString(incomingMovement), testAsset.getId().toString(), "CREATE");
+	    messageHelper.sendMessageAndReturnMessageId(UVMS_MOVEMENT_REQUEST_QUEUE, writeValueAsString(incomingMovement), testAsset.getId().toString(), "CREATE");
 	}
 
 	public static MovementType getMovementById(String guid) {
@@ -349,8 +349,7 @@ public class MovementHelper extends AbstractHelper implements Closeable {
     }
 
 	public void createMovementBatch(List<IncomingMovement> createMovementBatchRequest) throws Exception {
-        messageHelper.sendMessageWithFunction(UVMS_MOVEMENT_REQUEST_QUEUE, OBJECT_MAPPER
-				.writeValueAsString(createMovementBatchRequest), "CREATE_BATCH");
+        messageHelper.sendMessageWithFunction(UVMS_MOVEMENT_REQUEST_QUEUE, writeValueAsString(createMovementBatchRequest), "CREATE_BATCH");
     }
 
 	private List<LatLong> calculateReportedDataForRoute(List<LatLong> route) {
