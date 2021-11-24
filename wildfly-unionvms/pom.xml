@@ -34,13 +34,6 @@
 	</distributionManagement>
 
 	<dependencies>
-		<!-- Admin -->
-		<dependency>
-			<groupId>io.hawt</groupId>
-			<artifactId>hawtio-wildfly</artifactId>
-			<type>war</type>
-			<version>${unionvms.project.hawtio-wildfly}</version>
-		</dependency>
 
 		<!-- frontend modules -->
 		<dependency>
