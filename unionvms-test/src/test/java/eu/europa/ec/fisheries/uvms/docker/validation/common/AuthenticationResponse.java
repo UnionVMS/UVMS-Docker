@@ -11,8 +11,6 @@ copy of the GNU General Public License along with the IFDM Suite. If not, see <h
  */
 package eu.europa.ec.fisheries.uvms.docker.validation.common;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-
 import java.util.Map;
 
 public class AuthenticationResponse {
@@ -21,8 +19,7 @@ public class AuthenticationResponse {
     private int statusCode;
     private String errorDescription;
     private Map<String, Object> userMap;
-    @JsonProperty("JWToken")
-    private String JWToken;
+    private String jwtoken;
     
     public boolean isAuthenticated() {
         return authenticated;
@@ -48,10 +45,10 @@ public class AuthenticationResponse {
     public void setUserMap(Map<String, Object> userMap) {
         this.userMap = userMap;
     }
-    public String getJWToken() {
-        return JWToken;
+    public String getJwtoken() {
+        return jwtoken;
     }
-    public void setJWToken(String JWToken) {
-        this.JWToken = JWToken;
+    public void setJwtoken(String jwtoken) {
+        this.jwtoken = jwtoken;
     }
 }

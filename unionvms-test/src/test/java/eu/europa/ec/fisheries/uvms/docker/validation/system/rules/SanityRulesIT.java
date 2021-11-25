@@ -170,7 +170,7 @@ public class SanityRulesIT extends AbstractRest {
         long openAlarmsBefore = SanityRuleHelper.countOpenAlarms();
 
         LatLong position = new LatLong(11d, 56d, new Date());
-        mobileTerminal.getChannels().iterator().next().setDNID(null);
+        mobileTerminal.getChannels().iterator().next().setDnid(null);
         InmarsatPluginMock.sendInmarsatPosition(mobileTerminal, position);
 
         SanityRuleHelper.pollAlarmReportCreated();

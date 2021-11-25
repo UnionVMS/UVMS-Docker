@@ -9,33 +9,30 @@ the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the impl
 FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more details. You should have received a
 copy of the GNU General Public License along with the IFDM Suite. If not, see <http://www.gnu.org/licenses/>.
  */
-package eu.europa.ec.fisheries.uvms.docker.validation.mobileterminal.dto;
+package eu.europa.ec.fisheries.uvms.docker.validation.spatial.dto;
 
-public class PollValue {
+public enum SpatialModuleMethod {
 
-    private PollKey key;
-    private String value;
+    GET_AREA_TYPES,
+    GET_AREA_BY_LOCATION,
+    GET_CLOSEST_LOCATION,
+    GET_CLOSEST_AREA,
+    GET_BUFFER_GEOM,
+    GET_ENRICHMENT,
+    GET_ENRICHMENT_BATCH,
+    GET_FILTER_AREA,
+    GET_MAP_CONFIGURATION,
+    SAVE_OR_UPDATE_MAP_CONFIGURATION,
+    DELETE_MAP_CONFIGURATION,
+    PING,
+    GET_AREA_BY_CODE,
+    GET_GEOMETRY_BY_PORT_CODE;
 
-    public PollValue(PollKey key, String value) {
-        this.key = key;
-        this.value = value;
+    public String value() {
+        return name();
     }
 
-    public PollValue(){/* for json */}
-
-    public PollKey getKey() {
-        return key;
-    }
-
-    public void setKey(PollKey key) {
-        this.key = key;
-    }
-
-    public String getValue() {
-        return value;
-    }
-
-    public void setValue(String value) {
-        this.value = value;
+    public static SpatialModuleMethod fromValue(String v) {
+        return valueOf(v);
     }
 }

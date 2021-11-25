@@ -10,8 +10,6 @@ details. You should have received a copy of the GNU General Public License along
  */
 package eu.europa.ec.fisheries.uvms.docker.validation.spatial.dto.upload;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
@@ -22,10 +20,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-@JsonInclude(JsonInclude.Include.NON_NULL)
 public class AreaUploadMapping {
 
-    @JsonProperty("mapping")
     @Valid
     private List<AreaUploadMappingProperty> mapping = new ArrayList<AreaUploadMappingProperty>();
     //@JsonAnySetter
@@ -51,7 +47,6 @@ public class AreaUploadMapping {
      * @return
      *     The mapping
      */
-    @JsonProperty("mapping")
     public List<AreaUploadMappingProperty> getMapping() {
         return mapping;
     }
@@ -61,7 +56,6 @@ public class AreaUploadMapping {
      * @param mapping
      *     The mapping
      */
-    @JsonProperty("mapping")
     public void setMapping(List<AreaUploadMappingProperty> mapping) {
         this.mapping = mapping;
     }

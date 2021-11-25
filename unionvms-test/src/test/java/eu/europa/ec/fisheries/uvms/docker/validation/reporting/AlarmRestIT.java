@@ -13,8 +13,6 @@ copy of the GNU General Public License along with the IFDM Suite. If not, see <h
 */
 package eu.europa.ec.fisheries.uvms.docker.validation.reporting;
 
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import eu.europa.ec.fisheries.schema.movement.search.v1.ListCriteria;
 import eu.europa.ec.fisheries.schema.movement.search.v1.ListPagination;
 import eu.europa.ec.fisheries.schema.movement.search.v1.MovementQuery;
@@ -33,7 +31,9 @@ import eu.europa.ec.fisheries.uvms.reporting.service.dto.rules.AlarmMovement;
 import eu.europa.ec.fisheries.uvms.reporting.service.dto.rules.AlarmMovementList;
 import org.junit.Ignore;
 import org.junit.Test;
-
+import javax.json.JsonArray;
+import javax.json.JsonObject;
+import javax.json.JsonValue;
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
@@ -113,14 +113,14 @@ public class AlarmRestIT extends AbstractRest {
 			alarmMovementListContent.add(alarmMovement);
 			alarmMovementList.setAlarmMovementList(alarmMovementListContent);
 			
-			ObjectNode data = getWebTarget()
+			JsonObject data = getWebTarget()
 	                .path("reporting/rest/alarms")
 	                .request(MediaType.APPLICATION_JSON)
 	                .header(HttpHeaders.AUTHORIZATION, getValidJwtToken())
-	                .post(Entity.json(alarmMovementList), ObjectNode.class);
+	                .post(Entity.json(alarmMovementList), JsonObject.class);
 
-			JsonNode alarms = data.get("alarms");
-			JsonNode features = alarms.get("features");
+			JsonObject alarms = data.getJsonObject("alarms");
+			JsonArray features = alarms.getJsonArray("features");
 			assertThat(features.size(), is(1));
 		} finally {
 			CustomRuleHelper.removeCustomRulesByDefaultUser();

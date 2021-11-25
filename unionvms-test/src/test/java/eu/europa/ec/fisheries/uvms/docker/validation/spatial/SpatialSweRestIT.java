@@ -1,27 +1,5 @@
 package eu.europa.ec.fisheries.uvms.docker.validation.spatial;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.SerializationFeature;
-import com.fasterxml.jackson.module.jaxb.JaxbAnnotationModule;
-import eu.europa.ec.fisheries.schema.movement.v1.MovementPoint;
-import eu.europa.ec.fisheries.uvms.docker.validation.common.AbstractRest;
-import eu.europa.ec.fisheries.uvms.docker.validation.spatial.dto.AreaExtendedIdentifierType;
-import eu.europa.ec.fisheries.uvms.docker.validation.spatial.dto.InputToSegmentCategoryType;
-import eu.europa.ec.fisheries.uvms.spatial.model.exception.SpatialModelMarshallException;
-import eu.europa.ec.fisheries.uvms.spatial.model.schemas.*;
-import org.junit.Before;
-import org.junit.Ignore;
-import org.junit.Test;
-import org.locationtech.jts.geom.Geometry;
-import org.locationtech.jts.geom.Point;
-import org.locationtech.jts.io.ParseException;
-import org.locationtech.jts.io.WKTReader;
-
-import javax.ws.rs.client.Entity;
-import javax.ws.rs.core.GenericType;
-import javax.ws.rs.core.HttpHeaders;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
@@ -31,16 +9,47 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
+import javax.ws.rs.client.Entity;
+import javax.ws.rs.core.GenericType;
+import javax.ws.rs.core.HttpHeaders;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
+import org.junit.Ignore;
+import org.junit.Test;
+import org.locationtech.jts.geom.Geometry;
+import org.locationtech.jts.geom.Point;
+import org.locationtech.jts.io.ParseException;
+import org.locationtech.jts.io.WKTReader;
+import eu.europa.ec.fisheries.schema.movement.v1.MovementPoint;
+import eu.europa.ec.fisheries.uvms.docker.validation.common.AbstractRest;
+import eu.europa.ec.fisheries.uvms.docker.validation.spatial.dto.AreaByCodeRequest;
+import eu.europa.ec.fisheries.uvms.docker.validation.spatial.dto.AreaByCodeResponse;
+import eu.europa.ec.fisheries.uvms.docker.validation.spatial.dto.AreaByLocationSpatialRQ;
+import eu.europa.ec.fisheries.uvms.docker.validation.spatial.dto.AreaExtendedIdentifierType;
+import eu.europa.ec.fisheries.uvms.docker.validation.spatial.dto.ClosestAreaSpatialRQ;
+import eu.europa.ec.fisheries.uvms.docker.validation.spatial.dto.ClosestLocationSpatialRQ;
+import eu.europa.ec.fisheries.uvms.docker.validation.spatial.dto.ClosestLocationsType;
+import eu.europa.ec.fisheries.uvms.docker.validation.spatial.dto.InputToSegmentCategoryType;
+import eu.europa.ec.fisheries.uvms.docker.validation.spatial.dto.PointType;
+import eu.europa.ec.fisheries.uvms.docker.validation.spatial.dto.SpatialEnrichmentRQ;
+import eu.europa.ec.fisheries.uvms.docker.validation.spatial.dto.SpatialEnrichmentRS;
+import eu.europa.ec.fisheries.uvms.spatial.model.exception.SpatialModelMarshallException;
+import eu.europa.ec.fisheries.uvms.spatial.model.schemas.AllAreaTypesRequest;
+import eu.europa.ec.fisheries.uvms.spatial.model.schemas.Area;
+import eu.europa.ec.fisheries.uvms.spatial.model.schemas.AreaSimpleType;
+import eu.europa.ec.fisheries.uvms.spatial.model.schemas.AreaType;
+import eu.europa.ec.fisheries.uvms.spatial.model.schemas.GeometryByPortCodeRequest;
+import eu.europa.ec.fisheries.uvms.spatial.model.schemas.GeometryByPortCodeResponse;
+import eu.europa.ec.fisheries.uvms.spatial.model.schemas.LocationType;
+import eu.europa.ec.fisheries.uvms.spatial.model.schemas.PingRQ;
+import eu.europa.ec.fisheries.uvms.spatial.model.schemas.PingRS;
+import eu.europa.ec.fisheries.uvms.spatial.model.schemas.SpatialModuleMethod;
+import eu.europa.ec.fisheries.uvms.spatial.model.schemas.UnitType;
 
 public class SpatialSweRestIT extends AbstractRest {
     private Integer crs = 4326;
     private Double latitude = 57.715523;
     private Double longitude = 11.973965;
-
-    @Before
-    public void init(){
-        OBJECT_MAPPER.registerModule(new JaxbAnnotationModule());
-    }
 
     @Test
     public void getAreaByLocation() {
@@ -155,7 +164,6 @@ public class SpatialSweRestIT extends AbstractRest {
         List<AreaType> areaTypes = Collections.singletonList(AreaType.COUNTRY);
         SpatialEnrichmentRQ request = createSpatialEnrichmentRequest(point, UnitType.NAUTICAL_MILES, locationTypes, areaTypes);
 
-
         Response ret = getWebTarget() 
                 .path("spatialSwe/spatialnonsecure/json/getEnrichment")
                 .request(MediaType.APPLICATION_JSON)
@@ -165,8 +173,8 @@ public class SpatialSweRestIT extends AbstractRest {
         assertEquals(200, ret.getStatus());
         SpatialEnrichmentRS enrichmentRS = ret.readEntity(new GenericType<SpatialEnrichmentRS>() {});
 
-        List<Location> list = enrichmentRS.getClosestLocations().getClosestLocations();
-        List<String> control = list.stream().map(Location::getName).collect(Collectors.toList());
+        List<ClosestLocationsType.Location> list = enrichmentRS.getClosestLocations().getClosestLocations();
+        List<String> control = list.stream().map(ClosestLocationsType.Location::getName).collect(Collectors.toList());
         assertTrue(control.contains("Göteborg-Ringökajen"));
     }
 
@@ -258,11 +266,10 @@ public class SpatialSweRestIT extends AbstractRest {
     }
 
     @Test
-    public void testSegmentCategoriFromHelsingborgToLidkoping() throws JsonProcessingException {
+    public void testSegmentCategoriFromHelsingborgToLidkoping() {
         List<InputToSegmentCategoryType> movementList = new ArrayList<>();
         String[] pointArray = HelsingborgToLidkoping.helsingborgToLidköping;
         Instant start = Instant.now().minusSeconds(60 * pointArray.length);
-        OBJECT_MAPPER.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, true);
 
         for(int i = 0 ; i < pointArray.length - 1 ; i++) {
             movementList.clear();
@@ -370,12 +377,12 @@ public class SpatialSweRestIT extends AbstractRest {
         request.setMethod(SpatialModuleMethod.GET_ENRICHMENT);
         request.setPoint(point);
         request.setUnit(unit);
-        eu.europa.ec.fisheries.uvms.spatial.model.schemas.SpatialEnrichmentRQ.LocationTypes loc = new eu.europa.ec.fisheries.uvms.spatial.model.schemas.SpatialEnrichmentRQ.LocationTypes();
+        SpatialEnrichmentRQ.LocationTypes loc = new SpatialEnrichmentRQ.LocationTypes();
         if (locationTypes != null) {
             loc.getLocationTypes().addAll(locationTypes);
         }
         request.setLocationTypes(loc);
-        eu.europa.ec.fisheries.uvms.spatial.model.schemas.SpatialEnrichmentRQ.AreaTypes area = new eu.europa.ec.fisheries.uvms.spatial.model.schemas.SpatialEnrichmentRQ.AreaTypes();
+        SpatialEnrichmentRQ.AreaTypes area = new SpatialEnrichmentRQ.AreaTypes();
         if (areaTypes != null) {
             area.getAreaTypes().addAll(areaTypes);
         }

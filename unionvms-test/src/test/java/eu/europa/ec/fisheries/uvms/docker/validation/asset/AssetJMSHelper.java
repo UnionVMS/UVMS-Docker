@@ -48,7 +48,7 @@ public class AssetJMSHelper extends AbstractHelper implements AutoCloseable {
     }
 
     public void upsertAssetBO(AssetBO assetBo) throws Exception {
-        messageHelper.sendMessageWithMethod(ASSET_QUEUE, OBJECT_MAPPER.writeValueAsString(assetBo), "UPSERT_ASSET");
+        messageHelper.sendMessageWithMethod(ASSET_QUEUE, writeValueAsString(assetBo), "UPSERT_ASSET");
     }
 
     public void sendStringToAssetWithFunction(String message, String function) throws Exception{

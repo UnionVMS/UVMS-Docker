@@ -50,7 +50,7 @@ public class PollInmarsatCommandIT extends AbstractRest {
         assertThat(receiverValuesMap.get("SATELLITE_NUMBER"), is(mobileTerminal.getSatelliteNumber()));
         
         ChannelDto channel = mobileTerminal.getChannels().iterator().next();
-        assertThat(receiverValuesMap.get("DNID"), is(channel.getDNID()));
+        assertThat(receiverValuesMap.get("DNID"), is(channel.getDnid()));
         assertThat(receiverValuesMap.get("MEMBER_NUMBER"), is(channel.getMemberNumber()));
     }
 }

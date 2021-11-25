@@ -12,6 +12,7 @@ import javax.ws.rs.core.GenericType;
 import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
 import java.time.Instant;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.locks.LockSupport;
@@ -44,7 +45,7 @@ public class IncidentTestHelper extends AbstractHelper {
 
     public static void sendMessage(IncidentTicketDto ticket, String eventName) throws Exception {
         try (MessageHelper messageHelper = new MessageHelper()) {
-            String asString = OBJECT_MAPPER.writeValueAsString(ticket);
+            String asString = writeValueAsString(ticket);
             messageHelper.sendMessageWithProperty(QUEUE_NAME, asString, eventName);
         }
     }
@@ -67,12 +68,12 @@ public class IncidentTestHelper extends AbstractHelper {
         return ticket;
     }
 
-    public static Map<Long, IncidentDto> getOpenTicketsForAsset(String assetId) {
+    public static Map<String, IncidentDto> getOpenTicketsForAsset(String assetId) {
         return getWebTarget()
                 .path("incident/rest/incident/incidentsForAssetId")
                 .path(assetId)
                 .request(MediaType.APPLICATION_JSON)
                 .header(HttpHeaders.AUTHORIZATION, getValidJwtToken())
-                .get(new GenericType<Map<Long, IncidentDto>>() {});
+                .get(new GenericType<HashMap<String, IncidentDto>>() {});
     }
 }

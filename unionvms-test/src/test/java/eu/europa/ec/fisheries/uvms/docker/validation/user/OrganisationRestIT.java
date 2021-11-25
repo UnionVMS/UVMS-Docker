@@ -37,7 +37,7 @@ public class OrganisationRestIT extends AbstractRest {
         EndPoint endpoint = new EndPoint();
         String endpointName = "Test";
         endpoint.setName(endpointName);
-        endpoint.setURI("TestURI");
+        endpoint.setUri("TestURI");
         endpoint.setStatus("E");
         endpoint.setOrganisationName(organisation.getName());
         EndPoint createdEndpoint = UserHelper.createEndpoint(endpoint);

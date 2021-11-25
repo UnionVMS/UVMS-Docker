@@ -28,7 +28,6 @@ import eu.europa.ec.fisheries.uvms.docker.validation.user.dto.EndPoint;
 import eu.europa.ec.fisheries.uvms.docker.validation.user.dto.Organisation;
 import eu.europa.ec.fisheries.uvms.exchange.model.mapper.JAXBMarshaller;
 import eu.europa.ec.fisheries.uvms.movement.model.dto.MovementDto;
-import org.hamcrest.CoreMatchers;
 import org.junit.After;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -237,7 +236,7 @@ public class FLUXSystemIT extends AbstractRest {
         UserHelper.createOrganisation(organisation);
         EndPoint endpoint = new EndPoint();
         endpoint.setName("NAF");
-        endpoint.setURI("nafEndpoint");
+        endpoint.setUri("nafEndpoint");
         endpoint.setStatus("E");
         endpoint.setOrganisationName(organisation.getName());
         EndPoint createdEndpoint = UserHelper.createEndpoint(endpoint);
@@ -277,7 +276,7 @@ public class FLUXSystemIT extends AbstractRest {
         Organisation organisation = createOrganisationWithCustomDF(customDataflow);
         EndPoint endpoint2 = new EndPoint();
         endpoint2.setName("NAF");
-        endpoint2.setURI("nafEndpoint");
+        endpoint2.setUri("nafEndpoint");
         endpoint2.setStatus("E");
         endpoint2.setOrganisationName(organisation.getName());
         EndPoint createdEndpoint = UserHelper.createEndpoint(endpoint2);
@@ -640,7 +639,7 @@ public class FLUXSystemIT extends AbstractRest {
         UserHelper.createOrganisation(organisation);
         EndPoint endpoint = new EndPoint();
         endpoint.setName("FLUX");
-        endpoint.setURI("SWE");
+        endpoint.setUri("SWE");
         endpoint.setStatus("E");
         endpoint.setOrganisationName(organisation.getName());
         EndPoint createdEndpoint = UserHelper.createEndpoint(endpoint);

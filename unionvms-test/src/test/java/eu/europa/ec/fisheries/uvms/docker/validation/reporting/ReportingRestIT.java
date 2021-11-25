@@ -13,8 +13,6 @@ copy of the GNU General Public License along with the IFDM Suite. If not, see <h
 */
 package eu.europa.ec.fisheries.uvms.docker.validation.reporting;
 
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import eu.europa.ec.fisheries.uvms.asset.client.model.AssetDTO;
 import eu.europa.ec.fisheries.uvms.docker.validation.asset.AssetTestHelper;
 import eu.europa.ec.fisheries.uvms.docker.validation.common.AbstractRest;
@@ -40,6 +38,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.jms.JMSException;
+import javax.json.JsonObject;
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
@@ -212,21 +211,21 @@ public class ReportingRestIT extends AbstractRest {
 
         displayFormat.setAdditionalProperties(additionalProperties);
 
-        ObjectNode node = getWebTarget()
+        JsonObject node = getWebTarget()
                 .path("reporting/rest/report/execute")
                 .path(String.valueOf(twoWeeksReport.getId()))
                 .request(MediaType.APPLICATION_JSON)
                 .header("scopeName", "All Vessels")
                 .header("roleName", "AdminAllUVMS")
                 .header(HttpHeaders.AUTHORIZATION, getValidJwtToken())
-                .post(Entity.json(displayFormat), ObjectNode.class);
+                .post(Entity.json(displayFormat), JsonObject.class);
 
-        JsonNode movements = node.get("movements");
-        JsonNode segments = node.get("segments");
-        JsonNode tracks = node.get("tracks");
-        JsonNode trips = node.get("trips");
-        JsonNode activities = node.get("activities");
-        JsonNode criteria = node.get("criteria");
+        JsonObject movements = node.getJsonObject("movements");
+        JsonObject segments = node.getJsonObject("segments");
+        JsonObject tracks = node.getJsonObject("tracks");
+        JsonObject trips = node.getJsonObject("trips");
+        JsonObject activities = node.getJsonObject("activities");
+        JsonObject criteria = node.getJsonObject("criteria");
 
         assertTrue(movements != null
                 && segments != null
@@ -257,21 +256,21 @@ public class ReportingRestIT extends AbstractRest {
 
         displayFormat.setAdditionalProperties(additionalProperties);
 
-        ObjectNode node = getWebTarget()
+        JsonObject node = getWebTarget()
                 .path("reporting/rest/report/execute/")
                 .path(String.valueOf(twoWeeksReport.getId()))
                 .request(MediaType.APPLICATION_JSON)
                 .header("scopeName", "All Vessels")
                 .header("roleName", "AdminAllUVMS")
                 .header(HttpHeaders.AUTHORIZATION, getValidJwtToken())
-                .post(Entity.json(displayFormat), ObjectNode.class);
+                .post(Entity.json(displayFormat), JsonObject.class);
 
-        JsonNode movements = node.get("movements");
-        JsonNode segments = node.get("segments");
-        JsonNode tracks = node.get("tracks");
-        JsonNode trips = node.get("trips");
-        JsonNode activities = node.get("activities");
-        JsonNode criteria = node.get("criteria");
+        JsonObject movements = node.getJsonObject("movements");
+        JsonObject segments = node.getJsonObject("segments");
+        JsonObject tracks = node.getJsonObject("tracks");
+        JsonObject trips = node.getJsonObject("trips");
+        JsonObject activities = node.getJsonObject("activities");
+        JsonObject criteria = node.getJsonObject("criteria");
 
         assertTrue(movements != null
                 && segments != null
@@ -298,21 +297,21 @@ public class ReportingRestIT extends AbstractRest {
 
         displayFormat.setAdditionalProperties(additionalProperties);
 
-        ObjectNode node = getWebTarget()
+        JsonObject node = getWebTarget()
                 .path("reporting/rest/report/execute/")
                 .path(String.valueOf(twoWeeksReport.getId()))
                 .request(MediaType.APPLICATION_JSON)
                 .header("scopeName", "All Vessels")
                 .header("roleName", "AdminAllUVMS")
                 .header(HttpHeaders.AUTHORIZATION, getValidJwtToken())
-                .post(Entity.json(displayFormat), ObjectNode.class);
+                .post(Entity.json(displayFormat), JsonObject.class);
 
-        JsonNode movements = node.get("movements");
-        JsonNode segments = node.get("segments");
-        JsonNode tracks = node.get("tracks");
-        JsonNode trips = node.get("trips");
-        JsonNode activities = node.get("activities");
-        JsonNode criteria = node.get("criteria");
+        JsonObject movements = node.getJsonObject("movements");
+        JsonObject segments = node.getJsonObject("segments");
+        JsonObject tracks = node.getJsonObject("tracks");
+        JsonObject trips = node.getJsonObject("trips");
+        JsonObject activities = node.getJsonObject("activities");
+        JsonObject criteria = node.getJsonObject("criteria");
 
         assertTrue(movements != null
                 && segments != null
@@ -341,21 +340,21 @@ public class ReportingRestIT extends AbstractRest {
 
         displayFormat.setAdditionalProperties(additionalProperties);
 
-        ObjectNode node = getWebTarget()
+        JsonObject node = getWebTarget()
                 .path("reporting/rest/report/execute/")
                 .path(String.valueOf(twoWeeksReport.getId()))
                 .request(MediaType.APPLICATION_JSON)
                 .header("scopeName", "All Vessels")
                 .header("roleName", "AdminAllUVMS")
                 .header(HttpHeaders.AUTHORIZATION, getValidJwtToken())
-                .post(Entity.json(displayFormat), ObjectNode.class);
+                .post(Entity.json(displayFormat), JsonObject.class);
 
-        JsonNode movements = node.get("movements");
-        JsonNode segments = node.get("segments");
-        JsonNode tracks = node.get("tracks");
-        JsonNode trips = node.get("trips");
-        JsonNode activities = node.get("activities");
-        JsonNode criteria = node.get("criteria");
+        JsonObject movements = node.getJsonObject("movements");
+        JsonObject segments = node.getJsonObject("segments");
+        JsonObject tracks = node.getJsonObject("tracks");
+        JsonObject trips = node.getJsonObject("trips");
+        JsonObject activities = node.getJsonObject("activities");
+        JsonObject criteria = node.getJsonObject("criteria");
 
         assertTrue(movements != null
                 && segments != null

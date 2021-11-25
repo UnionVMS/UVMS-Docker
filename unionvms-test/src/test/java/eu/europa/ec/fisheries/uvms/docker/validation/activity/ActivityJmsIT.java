@@ -9,33 +9,8 @@ the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the impl
 FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more details. You should have received a
 copy of the GNU General Public License along with the IFDM Suite. If not, see <http://www.gnu.org/licenses/>.
  */
-package eu.europa.ec.fisheries.uvms.docker.validation.mobileterminal.dto;
+package eu.europa.ec.fisheries.uvms.docker.validation.activity;
 
-public class PollValue {
+public class ActivityJmsIT {
 
-    private PollKey key;
-    private String value;
-
-    public PollValue(PollKey key, String value) {
-        this.key = key;
-        this.value = value;
-    }
-
-    public PollValue(){/* for json */}
-
-    public PollKey getKey() {
-        return key;
-    }
-
-    public void setKey(PollKey key) {
-        this.key = key;
-    }
-
-    public String getValue() {
-        return value;
-    }
-
-    public void setValue(String value) {
-        this.value = value;
-    }
 }

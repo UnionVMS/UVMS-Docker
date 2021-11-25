@@ -9,33 +9,23 @@ the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the impl
 FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more details. You should have received a
 copy of the GNU General Public License along with the IFDM Suite. If not, see <http://www.gnu.org/licenses/>.
  */
-package eu.europa.ec.fisheries.uvms.docker.validation.mobileterminal.dto;
+package eu.europa.ec.fisheries.uvms.docker.validation.spatial.dto;
 
-public class PollValue {
+import java.util.ArrayList;
+import java.util.List;
+import javax.json.bind.annotation.JsonbProperty;
+import eu.europa.ec.fisheries.uvms.spatial.model.schemas.AreaSimpleType;
 
-    private PollKey key;
-    private String value;
+public class AreaByCodeResponse {
 
-    public PollValue(PollKey key, String value) {
-        this.key = key;
-        this.value = value;
+    @JsonbProperty("areaSimple")
+    protected List<AreaSimpleType> areaSimples;
+
+    public List<AreaSimpleType> getAreaSimples() {
+        if (areaSimples == null) {
+            areaSimples = new ArrayList<AreaSimpleType>();
+        }
+        return this.areaSimples;
     }
 
-    public PollValue(){/* for json */}
-
-    public PollKey getKey() {
-        return key;
-    }
-
-    public void setKey(PollKey key) {
-        this.key = key;
-    }
-
-    public String getValue() {
-        return value;
-    }
-
-    public void setValue(String value) {
-        this.value = value;
-    }
 }
