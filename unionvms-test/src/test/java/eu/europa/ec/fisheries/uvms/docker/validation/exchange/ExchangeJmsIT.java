@@ -1,6 +1,5 @@
 package eu.europa.ec.fisheries.uvms.docker.validation.exchange;
 
-import com.fasterxml.jackson.databind.SerializationFeature;
 import eu.europa.ec.fisheries.schema.exchange.plugin.types.v1.PluginType;
 import eu.europa.ec.fisheries.uvms.asset.client.model.AssetDTO;
 import eu.europa.ec.fisheries.uvms.docker.validation.asset.AssetTestHelper;
@@ -24,8 +23,7 @@ public class ExchangeJmsIT extends AbstractRest {
         AssetTestHelper.generateARandomStringWithMaxLength(40);
         String newName = AssetTestHelper.generateARandomStringWithMaxLength(40);
         createdAsset.setName(newName);
-        OBJECT_MAPPER.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
-        String assets = OBJECT_MAPPER.writeValueAsString(Collections.singletonList(createdAsset));
+        String assets = writeValueAsString(Collections.singletonList(createdAsset));
 
         try (MessageHelper messageHelper = new MessageHelper()) {
             String msg = ExchangeModuleRequestMapper.createReceiveAssetInformation(assets, "Test", PluginType.OTHER, "Test Plugin");
@@ -51,8 +49,7 @@ public class ExchangeJmsIT extends AbstractRest {
         String newName = AssetTestHelper.generateARandomStringWithMaxLength(40);
         createdAsset.setName(newName);
         createdAsset.setMmsi("");
-        OBJECT_MAPPER.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
-        String assets = OBJECT_MAPPER.writeValueAsString(Collections.singletonList(createdAsset));
+        String assets = writeValueAsString(Collections.singletonList(createdAsset));
 
         try (MessageHelper messageHelper = new MessageHelper()) {
             String msg = ExchangeModuleRequestMapper.createReceiveAssetInformation(assets, "Test", PluginType.OTHER, "Test Plugin");

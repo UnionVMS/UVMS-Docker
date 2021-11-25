@@ -100,19 +100,19 @@ public class InmarsatSanityIT extends AbstractRest {
         // create assets/mt
         AssetDTO asset1 = AssetTestHelper.createTestAsset();
         MobileTerminalDto mobileTerminal1 = MobileTerminalTestHelper.createBasicMobileTerminal();
-        mobileTerminal1.getChannels().iterator().next().setDNID(dnid);
+        mobileTerminal1.getChannels().iterator().next().setDnid(dnid);
         mobileTerminal1 = MobileTerminalTestHelper.persistMobileTerminal(mobileTerminal1);
         MobileTerminalTestHelper.assignMobileTerminal(asset1, mobileTerminal1);
         
         AssetDTO asset2 = AssetTestHelper.createTestAsset();
         MobileTerminalDto mobileTerminal2 = MobileTerminalTestHelper.createBasicMobileTerminal();
-        mobileTerminal2.getChannels().iterator().next().setDNID(dnid);
+        mobileTerminal2.getChannels().iterator().next().setDnid(dnid);
         mobileTerminal2 = MobileTerminalTestHelper.persistMobileTerminal(mobileTerminal2);
         MobileTerminalTestHelper.assignMobileTerminal(asset2, mobileTerminal2);
         
         AssetDTO asset3 = AssetTestHelper.createTestAsset();
         MobileTerminalDto mobileTerminal3 = MobileTerminalTestHelper.createBasicMobileTerminal();
-        mobileTerminal3.getChannels().iterator().next().setDNID(dnid);
+        mobileTerminal3.getChannels().iterator().next().setDnid(dnid);
         mobileTerminal3 = MobileTerminalTestHelper.persistMobileTerminal(mobileTerminal3);
         MobileTerminalTestHelper.assignMobileTerminal(asset3, mobileTerminal3);
 
@@ -146,7 +146,7 @@ public class InmarsatSanityIT extends AbstractRest {
         
         AlarmReport alarmReport = SanityRuleHelper.getLatestOpenAlarmReportSince(timestamp);
         ChannelDto channel = mobileTerminal.getChannels().iterator().next();
-        assertThat(alarmReport.getIncomingMovement().getMobileTerminalDNID(), CoreMatchers.is(channel.getDNID()));
+        assertThat(alarmReport.getIncomingMovement().getMobileTerminalDNID(), CoreMatchers.is(channel.getDnid()));
         assertThat(alarmReport.getIncomingMovement().getMobileTerminalMemberNumber(), CoreMatchers.is(channel.getMemberNumber()));
     }
 

@@ -19,7 +19,6 @@ import eu.europa.ec.fisheries.uvms.docker.validation.mobileterminal.dto.MobileTe
 import eu.europa.ec.fisheries.uvms.docker.validation.movement.LatLong;
 import eu.europa.ec.fisheries.uvms.docker.validation.movement.ManualMovementRestHelper;
 import eu.europa.ec.fisheries.uvms.docker.validation.movement.MovementHelper;
-import eu.europa.ec.fisheries.uvms.docker.validation.movement.model.IncomingMovement;
 import eu.europa.ec.fisheries.uvms.docker.validation.movement.model.ManualMovementDto;
 import eu.europa.ec.fisheries.uvms.docker.validation.movement.model.MicroMovement;
 import eu.europa.ec.fisheries.uvms.docker.validation.system.helper.VMSSystemHelper;
@@ -95,7 +94,7 @@ public class IncidentCollectionIT extends AbstractRest {
         assertTrue(json.contains(noteAdded.getNote()));
         assertTrue(json.contains(noteAdded.getAssetId().toString()));
 
-        ExtendedIncidentLogDto incidentLogDto = OBJECT_MAPPER.readValue(json, ExtendedIncidentLogDto.class);
+        ExtendedIncidentLogDto incidentLogDto = JSONB.fromJson(json, ExtendedIncidentLogDto.class);
 
         assertEquals(2, incidentLogDto.getIncidentLogs().size());
         assertTrue(incidentLogDto.getIncidentLogs().values().stream().allMatch(dto -> dto != null));
@@ -151,7 +150,7 @@ public class IncidentCollectionIT extends AbstractRest {
 
         String json = response.readEntity(String.class);
 
-        ExtendedIncidentLogDto incidentLogDto = OBJECT_MAPPER.readValue(json, ExtendedIncidentLogDto.class);
+        ExtendedIncidentLogDto incidentLogDto = JSONB.fromJson(json, ExtendedIncidentLogDto.class);
 
         assertEquals(2, incidentLogDto.getIncidentLogs().size());
         assertTrue(incidentLogDto.getIncidentLogs().values().stream().allMatch(dto -> dto != null));
@@ -196,7 +195,7 @@ public class IncidentCollectionIT extends AbstractRest {
 
         String json = response.readEntity(String.class);
 
-        ExtendedIncidentLogDto incidentLogDto = OBJECT_MAPPER.readValue(json, ExtendedIncidentLogDto.class);
+        ExtendedIncidentLogDto incidentLogDto = JSONB.fromJson(json, ExtendedIncidentLogDto.class);
 
         assertEquals(2, incidentLogDto.getIncidentLogs().size());
         assertTrue(incidentLogDto.getIncidentLogs().values().stream().allMatch(dto -> dto != null));
@@ -268,7 +267,7 @@ public class IncidentCollectionIT extends AbstractRest {
 
         String json = response.readEntity(String.class);
 
-        ExtendedIncidentLogDto incidentLogDto = OBJECT_MAPPER.readValue(json, ExtendedIncidentLogDto.class);
+        ExtendedIncidentLogDto incidentLogDto = JSONB.fromJson(json, ExtendedIncidentLogDto.class);
 
         assertEquals(2, incidentLogDto.getIncidentLogs().size());
         assertTrue(incidentLogDto.getIncidentLogs().values().stream().allMatch(dto -> dto != null));
@@ -340,7 +339,7 @@ public class IncidentCollectionIT extends AbstractRest {
 
         String json = response.readEntity(String.class);
 
-        ExtendedIncidentLogDto incidentLogDto = OBJECT_MAPPER.readValue(json, ExtendedIncidentLogDto.class);
+        ExtendedIncidentLogDto incidentLogDto = JSONB.fromJson(json, ExtendedIncidentLogDto.class);
 
         assertEquals(3, incidentLogDto.getIncidentLogs().size());
         assertTrue(incidentLogDto.getIncidentLogs().values().stream().allMatch(dto -> dto != null));
@@ -389,7 +388,7 @@ public class IncidentCollectionIT extends AbstractRest {
         String responseJson = response.readEntity(String.class);
         checkForAppErrorMessage(responseJson);
 
-        IncidentDto updatedIncident = OBJECT_MAPPER.readValue(responseJson, IncidentDto.class);
+        IncidentDto updatedIncident = JSONB.fromJson(responseJson, IncidentDto.class);
         assertEquals(incidentDto.getId(), updatedIncident.getId());
         assertEquals(IncidentType.PARKED, updatedIncident.getType());
         assertEquals(StatusEnum.PARKED, updatedIncident.getStatus());
@@ -446,7 +445,7 @@ public class IncidentCollectionIT extends AbstractRest {
         String responseJson = response.readEntity(String.class);
         checkForAppErrorMessage(responseJson);
 
-        IncidentDto updatedIncident = OBJECT_MAPPER.readValue(responseJson, IncidentDto.class);
+        IncidentDto updatedIncident = JSONB.fromJson(responseJson, IncidentDto.class);
         assertTrue(updatedIncident.getExpiryDate().isAfter(Instant.now()));
 
         AssetDTO updatedAsset = AssetTestHelper.getAssetByGuid(asset.getId());
@@ -473,10 +472,10 @@ public class IncidentCollectionIT extends AbstractRest {
         assertNotNull(incident.getId());
         assertEquals(StatusEnum.PARKED, incident.getStatus());
 
-        Map<Long, IncidentDto> incidentMap = IncidentTestHelper.getOpenTicketsForAsset(asset.getId().toString());
+        Map<String, IncidentDto> incidentMap = IncidentTestHelper.getOpenTicketsForAsset(asset.getId().toString());
 
         assertTrue(incidentMap.size() > 0);
-        assertEquals(asset.getId(), incidentMap.get(incident.getId()).getAssetId());
+        assertEquals(asset.getId(), incidentMap.get(incident.getId().toString()).getAssetId());
 
         AssetDTO updatedAsset = AssetTestHelper.getAssetByGuid(asset.getId());
         assertTrue(updatedAsset.isParked());
