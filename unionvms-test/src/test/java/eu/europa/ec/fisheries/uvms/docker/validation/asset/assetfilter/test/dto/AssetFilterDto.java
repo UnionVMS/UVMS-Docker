@@ -1,27 +1,11 @@
 package eu.europa.ec.fisheries.uvms.docker.validation.asset.assetfilter.test.dto;
 
-import java.io.Serializable;
-import java.time.Instant;
-import java.util.Set;
-import java.util.UUID;
+import java.util.List;
 
-public class AssetFilterDto implements Serializable {
-    private static final long serialVersionUID = 4679552553188147724L;
-
-    private UUID id;
+public class AssetFilterDto {
     private String name;
-    private Instant updateTime;
-    private String updatedBy;
-    private String owner;
-    private Set<AssetFilterQueryDto> queries;
-
-    public UUID getId() {
-        return id;
-    }
-
-    public void setId(UUID id) {
-        this.id = id;
-    }
+    private String id;
+    private List<AssetFilterQueryRestDto> filter;
 
     public String getName() {
         return name;
@@ -31,35 +15,20 @@ public class AssetFilterDto implements Serializable {
         this.name = name;
     }
 
-    public Instant getUpdateTime() {
-        return updateTime;
+    public String getId() {
+        return id;
     }
 
-    public void setUpdateTime(Instant updateTime) {
-        this.updateTime = updateTime;
+    public void setId(String id) {
+        this.id = id;
     }
 
-    public String getUpdatedBy() {
-        return updatedBy;
+    public List<AssetFilterQueryRestDto> getFilter() {
+        return filter;
     }
 
-    public void setUpdatedBy(String updatedBy) {
-        this.updatedBy = updatedBy;
+    public void setFilter(List<AssetFilterQueryRestDto> filter) {
+        this.filter = filter;
     }
 
-    public String getOwner() {
-        return owner;
-    }
-
-    public void setOwner(String owner) {
-        this.owner = owner;
-    }
-
-    public Set<AssetFilterQueryDto> getQueries() {
-        return queries;
-    }
-
-    public void setQueries(Set<AssetFilterQueryDto> queries) {
-        this.queries = queries;
-    }
 }
