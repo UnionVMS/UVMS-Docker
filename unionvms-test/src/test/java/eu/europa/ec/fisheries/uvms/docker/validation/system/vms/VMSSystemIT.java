@@ -265,7 +265,7 @@ public class VMSSystemIT extends AbstractRest {
         UserHelper.createOrganisation(organisation);
         EndPoint endpoint = new EndPoint();
         endpoint.setName(name);
-        endpoint.setURI(uri);
+        endpoint.setUri(uri);
         endpoint.setStatus("E");
         endpoint.setOrganisationName(organisation.getName());
         EndPoint createdEndpoint = UserHelper.createEndpoint(endpoint);
@@ -299,7 +299,7 @@ public class VMSSystemIT extends AbstractRest {
         UserHelper.createOrganisation(organisation);
         EndPoint endpoint = new EndPoint();
         endpoint.setName(name);
-        endpoint.setURI(uri);
+        endpoint.setUri(uri);
         endpoint.setStatus("E");
         endpoint.setOrganisationName(organisation.getName());
         EndPoint createdEndpoint = UserHelper.createEndpoint(endpoint);
@@ -329,7 +329,7 @@ public class VMSSystemIT extends AbstractRest {
         UserHelper.createOrganisation(organisation);
         EndPoint endpoint = new EndPoint();
         endpoint.setName("FLUX");
-        endpoint.setURI(uri);
+        endpoint.setUri(uri);
         endpoint.setStatus("E");
         endpoint.setOrganisationName(organisation.getName());
         EndPoint createdEndpoint = UserHelper.createEndpoint(endpoint);
@@ -341,7 +341,7 @@ public class VMSSystemIT extends AbstractRest {
         UserHelper.createChannel(channel);
         EndPoint endpoint2 = new EndPoint();
         endpoint2.setName("NAF");
-        endpoint2.setURI(uri);
+        endpoint2.setUri(uri);
         endpoint2.setStatus("E");
         endpoint2.setOrganisationName(organisation.getName());
         EndPoint createdEndpoint2 = UserHelper.createEndpoint(endpoint2);

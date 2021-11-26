@@ -2,12 +2,11 @@ package eu.europa.ec.fisheries.uvms.docker.validation.mobileterminal.dto;
 
 import eu.europa.ec.fisheries.uvms.asset.client.model.AssetDTO;
 
-import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
 
-public class MobileTerminalDto implements Serializable {
+public class MobileTerminalDto {
 
     private UUID id;
     private Boolean archived = false;
@@ -17,9 +16,6 @@ public class MobileTerminalDto implements Serializable {
     private String updateuser;
     private String serialNo;
     private MobileTerminalPluginDto plugin;
-    private ChannelDto defaultChannel;
-    private ChannelDto configChannel;
-    private ChannelDto pollChannel;
     private AssetDTO asset;
     private String assetId;
     private Set<ChannelDto> channels;
@@ -79,24 +75,6 @@ public class MobileTerminalDto implements Serializable {
     }
     public void setPlugin(MobileTerminalPluginDto plugin) {
         this.plugin = plugin;
-    }
-    public ChannelDto getDefaultChannel() {
-        return defaultChannel;
-    }
-    public void setDefaultChannel(ChannelDto defaultChannel) {
-        this.defaultChannel = defaultChannel;
-    }
-    public ChannelDto getConfigChannel() {
-        return configChannel;
-    }
-    public void setConfigChannel(ChannelDto configChannel) {
-        this.configChannel = configChannel;
-    }
-    public ChannelDto getPollChannel() {
-        return pollChannel;
-    }
-    public void setPollChannel(ChannelDto pollChannel) {
-        this.pollChannel = pollChannel;
     }
     public AssetDTO getAsset() {
         return asset;

@@ -37,7 +37,7 @@ public class InmarsatPluginMock {
         MobileTerminalId mobTermId = new MobileTerminalId();
         IdList dnidId = new IdList();
         dnidId.setType(IdType.DNID);
-        dnidId.setValue(channel.getDNID());
+        dnidId.setValue(channel.getDnid());
         IdList membId = new IdList();
         membId.setType(IdType.MEMBER_NUMBER);
         membId.setValue(channel.getMemberNumber());

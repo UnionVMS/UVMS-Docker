@@ -28,7 +28,6 @@ import eu.europa.ec.fisheries.uvms.docker.validation.user.dto.EndPoint;
 import eu.europa.ec.fisheries.uvms.docker.validation.user.dto.Organisation;
 import eu.europa.ec.fisheries.uvms.exchange.model.mapper.JAXBMarshaller;
 import eu.europa.ec.fisheries.uvms.movement.model.dto.MovementDto;
-import org.hamcrest.CoreMatchers;
 import org.junit.After;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -237,7 +236,7 @@ public class FLUXSystemIT extends AbstractRest {
         UserHelper.createOrganisation(organisation);
         EndPoint endpoint = new EndPoint();
         endpoint.setName("NAF");
-        endpoint.setURI("nafEndpoint");
+        endpoint.setUri("nafEndpoint");
         endpoint.setStatus("E");
         endpoint.setOrganisationName(organisation.getName());
         EndPoint createdEndpoint = UserHelper.createEndpoint(endpoint);
@@ -277,7 +276,7 @@ public class FLUXSystemIT extends AbstractRest {
         Organisation organisation = createOrganisationWithCustomDF(customDataflow);
         EndPoint endpoint2 = new EndPoint();
         endpoint2.setName("NAF");
-        endpoint2.setURI("nafEndpoint");
+        endpoint2.setUri("nafEndpoint");
         endpoint2.setStatus("E");
         endpoint2.setOrganisationName(organisation.getName());
         EndPoint createdEndpoint = UserHelper.createEndpoint(endpoint2);
@@ -571,11 +570,22 @@ public class FLUXSystemIT extends AbstractRest {
     @Test
     public void incomingOrginalMessageTest() throws IOException, Exception {
         AssetDTO asset = AssetTestHelper.createTestAsset();
+        CustomRuleType flagStateRule = CustomRuleBuilder.getBuilder()
+                .rule(CriteriaType.ASSET, SubCriteriaType.ASSET_IRCS,
+                        ConditionType.EQ, asset.getIrcs())
+                .action(ActionType.SEND_REPORT, VMSSystemHelper.FLUX_NAME, "TEST")
+                .build();
+
+        CustomRuleType createdCustomRule = CustomRuleHelper.createCustomRule(flagStateRule);
+        assertNotNull(createdCustomRule);
+
         LatLong position = new LatLong(58.973, 5.781, Date.from(Instant.now()));
         position.speed = 5;
 
-        FLUXHelper.sendPositionToFluxPlugin(asset, position);
-        MovementHelper.pollMovementCreated();
+        try (FLUXEndpoint fluxEndpoint = new FLUXEndpoint()) {
+            FLUXHelper.sendPositionToFluxPlugin(asset, position);
+            fluxEndpoint.getMessage(10000);
+        }
 
         List<MovementDto> movements = MovementHelper.getLatestMovements(Arrays.asList(asset.getId().toString()));
         ExchangeLogDto exchangeLog = ExchangeHelper.getIncomingExchangeLogByTypeGUID(movements.get(0).getId().toString());
@@ -629,7 +639,7 @@ public class FLUXSystemIT extends AbstractRest {
         UserHelper.createOrganisation(organisation);
         EndPoint endpoint = new EndPoint();
         endpoint.setName("FLUX");
-        endpoint.setURI("SWE");
+        endpoint.setUri("SWE");
         endpoint.setStatus("E");
         endpoint.setOrganisationName(organisation.getName());
         EndPoint createdEndpoint = UserHelper.createEndpoint(endpoint);

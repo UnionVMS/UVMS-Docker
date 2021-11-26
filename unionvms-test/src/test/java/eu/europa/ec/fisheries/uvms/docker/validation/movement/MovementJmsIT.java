@@ -201,7 +201,7 @@ public class MovementJmsIT extends AbstractRest {
                 }
             });
             source.open();
-            messageHelper.sendMessageWithFunction("UVMSMovementEvent", OBJECT_MAPPER.writeValueAsString(
+            messageHelper.sendMessageWithFunction("UVMSMovementEvent", writeValueAsString(
                     incomingMovement), "CREATE");
             
             while(movements.size() < 1) {

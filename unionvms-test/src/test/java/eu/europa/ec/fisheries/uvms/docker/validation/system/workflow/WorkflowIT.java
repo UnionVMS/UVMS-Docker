@@ -76,6 +76,6 @@ public class WorkflowIT extends AbstractRest {
                 .collect(Collectors.toList()).size(), is(0));
 
         OpenAndRecentlyResolvedIncidentsDto incidents = IncidentTestHelper.getAllOpenAndRecentlyResolvedIncidents();
-        assertThat(incidents.getRecentlyResolved().get(dto.getId()).getStatus(), is(StatusEnum.RESOLVED));
+        assertThat(incidents.getRecentlyResolved().get(dto.getId().toString()).getStatus(), is(StatusEnum.RESOLVED));
     }
 }

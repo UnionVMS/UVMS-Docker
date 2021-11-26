@@ -32,7 +32,6 @@ import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Ignore;
 import org.junit.Test;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import eu.europa.ec.fisheries.schema.movement.search.v1.ListCriteria;
 import eu.europa.ec.fisheries.schema.movement.search.v1.ListPagination;
 import eu.europa.ec.fisheries.schema.movement.search.v1.MovementQuery;
@@ -186,8 +185,7 @@ public class MovementMovementRestIT extends AbstractRest {
 		mergeAsset.setIrcs(assetWithIRCS.getIrcs());
 		List<AssetDTO> assetDTOList = new ArrayList<>();
 		assetDTOList.add(mergeAsset);
-		ObjectMapper om = new ObjectMapper();
-		String assetMessage = om.writeValueAsString(assetDTOList);
+		String assetMessage = writeValueAsString(assetDTOList);
 
 		jmsHelper.sendStringToAssetWithFunction(assetMessage, "ASSET_INFORMATION");
 		Thread.sleep(5000);
@@ -230,8 +228,7 @@ public class MovementMovementRestIT extends AbstractRest {
 		mergeAsset.setIrcs(assetWithIRCS.getIrcs());
 		List<AssetDTO> assetDTOList = new ArrayList<>();
 		assetDTOList.add(mergeAsset);
-		ObjectMapper om = new ObjectMapper();
-		String assetMessage = om.writeValueAsString(assetDTOList);
+		String assetMessage = writeValueAsString(assetDTOList);
 
 		try (TopicListener listener = new TopicListener(TopicListener.EVENT_STREAM, "")) {
 		    jmsHelper.sendStringToAssetWithFunction(assetMessage, "ASSET_INFORMATION");

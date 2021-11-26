@@ -1,31 +1,30 @@
 package eu.europa.ec.fisheries.uvms.docker.validation.mobileterminal.dto;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
-
-import java.io.Serializable;
 import java.time.Duration;
+import java.time.Instant;
 import java.util.UUID;
+import javax.json.bind.annotation.JsonbTransient;
 
-public class ChannelDto implements Serializable {
+public class ChannelDto {
 
     private UUID id;
     private Boolean archived = false;
-    @JsonIgnore
+    @JsonbTransient
     private MobileTerminalDto mobileTerminal;
     private String name;
     private boolean active;
     private boolean defaultChannel;
     private boolean configChannel;
     private boolean pollChannel;
-    @JsonProperty("DNID")
-    private String DNID;
+    private String dnid;
     private Duration expectedFrequency;
     private Duration expectedFrequencyInPort;
     private Duration frequencyGracePeriod;
     private String memberNumber;
     private String lesDescription;
     private String installedBy;
+    private Instant startDate;
+    private Instant endDate;
 
     public UUID getId() {
         return id;
@@ -75,11 +74,11 @@ public class ChannelDto implements Serializable {
     public void setPollChannel(boolean pollChannel) {
         this.pollChannel = pollChannel;
     }
-    public String getDNID() {
-        return DNID;
+    public String getDnid() {
+        return dnid;
     }
-    public void setDNID(String DNID) {
-        this.DNID = DNID;
+    public void setDnid(String dnid) {
+        this.dnid = dnid;
     }
     public Duration getExpectedFrequency() {
         return expectedFrequency;
@@ -116,5 +115,17 @@ public class ChannelDto implements Serializable {
     }
     public void setInstalledBy(String installedBy) {
         this.installedBy = installedBy;
+    }
+    public Instant getStartDate() {
+        return startDate;
+    }
+    public void setStartDate(Instant startDate) {
+        this.startDate = startDate;
+    }
+    public Instant getEndDate() {
+        return endDate;
+    }
+    public void setEndDate(Instant endDate) {
+        this.endDate = endDate;
     }
 }

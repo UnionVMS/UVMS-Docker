@@ -10,10 +10,11 @@ import javax.jms.Message;
 import javax.jms.TextMessage;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
+import java.io.Closeable;
 import java.io.StringReader;
 import java.io.StringWriter;
 
-public class SpatialHelper extends AbstractHelper {
+public class SpatialHelper extends AbstractHelper implements Closeable {
 
 	private static final String UVMS_SPATIAL_REQUEST_QUEUE = "UVMSSpatialEvent";
 
@@ -23,6 +24,7 @@ public class SpatialHelper extends AbstractHelper {
 		messageHelper = new MessageHelper();
 	}
 
+	@Override
 	public void close() {
 		messageHelper.close();
 	}

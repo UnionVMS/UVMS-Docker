@@ -21,6 +21,7 @@ import static org.junit.Assert.assertTrue;
 import java.time.OffsetDateTime;
 import java.time.ZoneId;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 public class AssetHistoryRestIT extends AbstractRest {
 
@@ -94,11 +95,12 @@ public class AssetHistoryRestIT extends AbstractRest {
 	}
 
     @Test
-    public void getAssetFromAssetIdAndDate() {
+    public void getAssetFromAssetIdAndDate() throws InterruptedException {
         // Create asset
 		AssetDTO asset = AssetTestHelper.createTestAsset();
         String value = asset.getCfr();
         String type = "cfr";
+        TimeUnit.SECONDS.sleep(1);
 		AssetDTO fetchedAsset = AssetTestHelper.getAssetFromAssetIdAndDate(type, value, OffsetDateTime.now(ZoneId.of("UTC")));
 
         assertEquals(asset.getId(), fetchedAsset.getId());

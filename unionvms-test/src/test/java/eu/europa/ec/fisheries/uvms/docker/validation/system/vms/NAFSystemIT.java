@@ -115,7 +115,7 @@ public class NAFSystemIT extends AbstractRest {
         Organisation organisation = createOrganisationNorway();
         EndPoint endpoint = new EndPoint();
         endpoint.setName("FLUX");
-        endpoint.setURI("URI");
+        endpoint.setUri("URI");
         endpoint.setStatus("E");
         endpoint.setOrganisationName(organisation.getName());
         EndPoint createdEndpoint = UserHelper.createEndpoint(endpoint);
@@ -319,11 +319,22 @@ public class NAFSystemIT extends AbstractRest {
     @Test
     public void incomingOrginalMessageTest() throws IOException, Exception {
         AssetDTO asset = AssetTestHelper.createTestAsset();
+        CustomRuleType flagStateRule = CustomRuleBuilder.getBuilder()
+                .rule(CriteriaType.ASSET, SubCriteriaType.ASSET_IRCS,
+                        ConditionType.EQ, asset.getIrcs())
+                .action(ActionType.SEND_REPORT, VMSSystemHelper.NAF_NAME, "TEST")
+                .build();
+
+        CustomRuleType createdCustomRule = CustomRuleHelper.createCustomRule(flagStateRule);
+        assertNotNull(createdCustomRule);
+
         LatLong position = new LatLong(58.973, 5.781, Date.from(Instant.now()));
         position.speed = 5;
 
-        NAFHelper.sendPositionToNAFPlugin(position, asset);
-        MovementHelper.pollMovementCreated();
+        try (NafEndpoint nafEndpoint = new NafEndpoint(ENDPOINT_PORT)) {
+            NAFHelper.sendPositionToNAFPlugin(position, asset);
+            nafEndpoint.getMessage(10000);
+        }
 
         List<MovementDto> movements = MovementHelper.getLatestMovements(Arrays.asList(asset.getId().toString()));
         ExchangeLogDto exchangeLog = ExchangeHelper.getIncomingExchangeLogByTypeGUID(movements.get(0).getId().toString());
@@ -367,7 +378,7 @@ public class NAFSystemIT extends AbstractRest {
         UserHelper.createOrganisation(organisation);
         EndPoint endpoint = new EndPoint();
         endpoint.setName("NAF");
-        endpoint.setURI("http://" + getDockerHostIp() + ":"+ENDPOINT_PORT+"/naf/message/#MESSAGE#");
+        endpoint.setUri("http://" + getDockerHostIp() + ":"+ENDPOINT_PORT+"/naf/message/#MESSAGE#");
         endpoint.setStatus("E");
         endpoint.setOrganisationName(organisation.getName());
         EndPoint createdEndpoint = UserHelper.createEndpoint(endpoint);

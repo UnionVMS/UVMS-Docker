@@ -25,18 +25,15 @@ public class SpatialJmsPerformanceIT extends AbstractRest {
 	public ContiPerfRule i = new ContiPerfRule();
 
 	private static MovementHelper movementHelper;
-	private static SpatialHelper spatialHelper;
 
 	@BeforeClass
 	public static void setup() throws JMSException {
 		movementHelper = new MovementHelper();
-		spatialHelper = new SpatialHelper();
 	}
 
 	@AfterClass
 	public static void cleanup() {
 		movementHelper.close();
-		spatialHelper.close();
 	}
 
 	private List<LatLong> createRutt = movementHelper.createRutt(30);
@@ -45,28 +42,30 @@ public class SpatialJmsPerformanceIT extends AbstractRest {
 	@PerfTest(threads = 2, duration = 10000)
 	@Required(max = 6900, average = 2500, percentile95 = 2500, throughput = 1)
 	public void createSpatialEnrichmentRequestPerformanceTest() throws Exception {
-		LatLong position = createRutt.get(ThreadLocalRandom.current().nextInt(0, 30));
+	    try (SpatialHelper spatialHelper = new SpatialHelper()) {
+            LatLong position = createRutt.get(ThreadLocalRandom.current().nextInt(0, 30));
 
-		SpatialEnrichmentRQ spatialEnrichmentRQ = new SpatialEnrichmentRQ();
-		AreaTypes areaTypes = new AreaTypes();
-		areaTypes.getAreaTypes().add(AreaType.COUNTRY);
-		areaTypes.getAreaTypes().add(AreaType.PORT);
-		areaTypes.getAreaTypes().add(AreaType.FMZ);
+            SpatialEnrichmentRQ spatialEnrichmentRQ = new SpatialEnrichmentRQ();
+            AreaTypes areaTypes = new AreaTypes();
+            areaTypes.getAreaTypes().add(AreaType.COUNTRY);
+            areaTypes.getAreaTypes().add(AreaType.PORT);
+            areaTypes.getAreaTypes().add(AreaType.FMZ);
 
-		spatialEnrichmentRQ.setAreaTypes(areaTypes);
-		LocationTypes locationTypes = new LocationTypes();
-		locationTypes.getLocationTypes().add(LocationType.PORT);
+            spatialEnrichmentRQ.setAreaTypes(areaTypes);
+            LocationTypes locationTypes = new LocationTypes();
+            locationTypes.getLocationTypes().add(LocationType.PORT);
 
-		spatialEnrichmentRQ.setLocationTypes(locationTypes);
-		spatialEnrichmentRQ.setMethod(SpatialModuleMethod.GET_ENRICHMENT);
-		spatialEnrichmentRQ.setUnit(UnitType.NAUTICAL_MILES);
-		PointType pointType = new PointType();
-		spatialEnrichmentRQ.setPoint(pointType);
-		pointType.setLatitude(position.latitude);
-		pointType.setLongitude(position.longitude);
-		pointType.setCrs(4326);
+            spatialEnrichmentRQ.setLocationTypes(locationTypes);
+            spatialEnrichmentRQ.setMethod(SpatialModuleMethod.GET_ENRICHMENT);
+            spatialEnrichmentRQ.setUnit(UnitType.NAUTICAL_MILES);
+            PointType pointType = new PointType();
+            spatialEnrichmentRQ.setPoint(pointType);
+            pointType.setLatitude(position.latitude);
+            pointType.setLongitude(position.longitude);
+            pointType.setCrs(4326);
 
-		SpatialEnrichmentRS spatialEnrichmentRS = spatialHelper.createSpatialEnrichment(spatialEnrichmentRQ);
-		assertNotNull(spatialEnrichmentRS);
+            SpatialEnrichmentRS spatialEnrichmentRS = spatialHelper.createSpatialEnrichment(spatialEnrichmentRQ);
+            assertNotNull(spatialEnrichmentRS);
+	    }
 	}
 }
