@@ -326,25 +326,12 @@ public class MovementHelper extends AbstractHelper implements Closeable {
 	}
 	
 	public static List<MovementType> getListByQuery(MovementQuery movementQuery) {
-        String response = getWebTarget()
+	    GetMovementListByQueryResponse response = getWebTarget()
             .path("movement/rest/movement/list")
             .request(MediaType.APPLICATION_JSON)
             .header(HttpHeaders.AUTHORIZATION, getValidJwtToken())
-            .post(Entity.json(movementQuery), String.class);
-        Jsonb customJsonb = JsonbBuilder.newBuilder()
-            .withConfig(new JsonbConfig()
-                    .withPropertyVisibilityStrategy(new PropertyVisibilityStrategy() {
-                        @Override
-                        public boolean isVisible(Method method) {
-                            return false;
-                        }
-                        @Override
-                        public boolean isVisible(Field field) {
-                            return true;
-                        }
-                    }))
-            .build();
-        return customJsonb.fromJson(response, GetMovementListByQueryResponse.class).getMovement();
+            .post(Entity.json(movementQuery), GetMovementListByQueryResponse.class);
+        return response.getMovement();
 	}
 
 	public static List<MovementType> getMinimalListByQuery(MovementQuery movementQuery) {
