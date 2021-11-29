@@ -7,6 +7,7 @@ import javax.ws.rs.client.Entity;
 import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
 import eu.europa.ec.fisheries.uvms.docker.validation.asset.assetfilter.test.dto.AssetFilterDto;
+import eu.europa.ec.fisheries.uvms.docker.validation.asset.assetfilter.test.dto.AssetFilterListDto;
 import eu.europa.ec.fisheries.uvms.docker.validation.asset.assetfilter.test.dto.AssetFilterQueryDto;
 import eu.europa.ec.fisheries.uvms.docker.validation.asset.assetfilter.test.dto.AssetFilterValueDto;
 import eu.europa.ec.fisheries.uvms.docker.validation.asset.assetfilter.test.dto.AssetFilterValueType;
@@ -100,9 +101,9 @@ public class AssetFilterTestHelper extends AbstractRest {
                 .header(HttpHeaders.AUTHORIZATION, getValidJwtToken()).delete(AssetFilterDto.class);
     }
 
-    public static String getAssetFilterList() {
+    public static AssetFilterListDto getAssetFilterList() {
         return getWebTarget().path(ASSET_FILTER_BASE_URL).path("list").request(MediaType.APPLICATION_JSON)
-                .header(HttpHeaders.AUTHORIZATION, getValidJwtToken()).get(String.class);
+                .header(HttpHeaders.AUTHORIZATION, getValidJwtToken()).get(AssetFilterListDto.class);
     }
 
     public static String createAssetFilterFromJson(String json) {
