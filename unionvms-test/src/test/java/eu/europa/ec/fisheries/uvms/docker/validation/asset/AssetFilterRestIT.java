@@ -174,8 +174,8 @@ public class AssetFilterRestIT extends AbstractRest {
         assertTrue(updatedAssetFilterString.contains(filterId));
 
         AssetFilterTestHelper.deleteAssetFilter(filterId);
-        String assetNotFound = AssetFilterTestHelper.getAssetFilterList();
-        assertFalse(assetNotFound.contains(filterId));
+        AssetFilterListDto assetNotFound = AssetFilterTestHelper.getAssetFilterList();
+        assertFalse(assetNotFound.getSavedFilters().containsKey(filterId));
     }
 
     @Test
@@ -196,10 +196,10 @@ public class AssetFilterRestIT extends AbstractRest {
                 AssetFilterDto.class);
         String id3 = assetFilterResponseDto3.getId();
 
-        String assetFilterList = AssetFilterTestHelper.getAssetFilterList();
-        assertTrue(assetFilterList.contains(id1));
-        assertTrue(assetFilterList.contains(id2));
-        assertTrue(assetFilterList.contains(id3));
+        AssetFilterListDto assetFilterList = AssetFilterTestHelper.getAssetFilterList();
+        assertTrue(assetFilterList.getSavedFilters().containsKey(id1));
+        assertTrue(assetFilterList.getSavedFilters().containsKey(id2));
+        assertTrue(assetFilterList.getSavedFilters().containsKey(id3));
     }
 
     @Test
