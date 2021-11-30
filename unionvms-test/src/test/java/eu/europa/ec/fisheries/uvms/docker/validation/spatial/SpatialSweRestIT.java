@@ -22,27 +22,28 @@ import org.locationtech.jts.io.ParseException;
 import org.locationtech.jts.io.WKTReader;
 import eu.europa.ec.fisheries.schema.movement.v1.MovementPoint;
 import eu.europa.ec.fisheries.uvms.docker.validation.common.AbstractRest;
-import eu.europa.ec.fisheries.uvms.docker.validation.spatial.dto.AreaByCodeRequest;
-import eu.europa.ec.fisheries.uvms.docker.validation.spatial.dto.AreaByCodeResponse;
-import eu.europa.ec.fisheries.uvms.docker.validation.spatial.dto.AreaByLocationSpatialRQ;
 import eu.europa.ec.fisheries.uvms.docker.validation.spatial.dto.AreaExtendedIdentifierType;
-import eu.europa.ec.fisheries.uvms.docker.validation.spatial.dto.ClosestAreaSpatialRQ;
-import eu.europa.ec.fisheries.uvms.docker.validation.spatial.dto.ClosestLocationSpatialRQ;
-import eu.europa.ec.fisheries.uvms.docker.validation.spatial.dto.ClosestLocationsType;
 import eu.europa.ec.fisheries.uvms.docker.validation.spatial.dto.InputToSegmentCategoryType;
-import eu.europa.ec.fisheries.uvms.docker.validation.spatial.dto.PointType;
-import eu.europa.ec.fisheries.uvms.docker.validation.spatial.dto.SpatialEnrichmentRQ;
-import eu.europa.ec.fisheries.uvms.docker.validation.spatial.dto.SpatialEnrichmentRS;
 import eu.europa.ec.fisheries.uvms.spatial.model.exception.SpatialModelMarshallException;
 import eu.europa.ec.fisheries.uvms.spatial.model.schemas.AllAreaTypesRequest;
 import eu.europa.ec.fisheries.uvms.spatial.model.schemas.Area;
+import eu.europa.ec.fisheries.uvms.spatial.model.schemas.AreaByCodeRequest;
+import eu.europa.ec.fisheries.uvms.spatial.model.schemas.AreaByCodeResponse;
+import eu.europa.ec.fisheries.uvms.spatial.model.schemas.AreaByLocationSpatialRQ;
 import eu.europa.ec.fisheries.uvms.spatial.model.schemas.AreaSimpleType;
 import eu.europa.ec.fisheries.uvms.spatial.model.schemas.AreaType;
+import eu.europa.ec.fisheries.uvms.spatial.model.schemas.ClosestAreaSpatialRQ;
+import eu.europa.ec.fisheries.uvms.spatial.model.schemas.ClosestLocationSpatialRQ;
+import eu.europa.ec.fisheries.uvms.spatial.model.schemas.ClosestLocationsType;
 import eu.europa.ec.fisheries.uvms.spatial.model.schemas.GeometryByPortCodeRequest;
 import eu.europa.ec.fisheries.uvms.spatial.model.schemas.GeometryByPortCodeResponse;
+import eu.europa.ec.fisheries.uvms.spatial.model.schemas.Location;
 import eu.europa.ec.fisheries.uvms.spatial.model.schemas.LocationType;
 import eu.europa.ec.fisheries.uvms.spatial.model.schemas.PingRQ;
 import eu.europa.ec.fisheries.uvms.spatial.model.schemas.PingRS;
+import eu.europa.ec.fisheries.uvms.spatial.model.schemas.PointType;
+import eu.europa.ec.fisheries.uvms.spatial.model.schemas.SpatialEnrichmentRQ;
+import eu.europa.ec.fisheries.uvms.spatial.model.schemas.SpatialEnrichmentRS;
 import eu.europa.ec.fisheries.uvms.spatial.model.schemas.SpatialModuleMethod;
 import eu.europa.ec.fisheries.uvms.spatial.model.schemas.UnitType;
 
@@ -173,8 +174,8 @@ public class SpatialSweRestIT extends AbstractRest {
         assertEquals(200, ret.getStatus());
         SpatialEnrichmentRS enrichmentRS = ret.readEntity(new GenericType<SpatialEnrichmentRS>() {});
 
-        List<ClosestLocationsType.Location> list = enrichmentRS.getClosestLocations().getClosestLocations();
-        List<String> control = list.stream().map(ClosestLocationsType.Location::getName).collect(Collectors.toList());
+        List<Location> list = enrichmentRS.getClosestLocations().getClosestLocations();
+        List<String> control = list.stream().map(Location::getName).collect(Collectors.toList());
         assertTrue(control.contains("Göteborg-Ringökajen"));
     }
 
