@@ -2,10 +2,8 @@ package eu.europa.ec.fisheries.uvms.docker.validation.asset;
 
 import eu.europa.ec.fisheries.uvms.docker.validation.asset.assetfilter.test.dto.*;
 import eu.europa.ec.fisheries.uvms.docker.validation.common.AbstractRest;
-import org.junit.Before;
 import org.junit.Test;
 
-import javax.json.bind.Jsonb;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import java.util.HashSet;
@@ -13,13 +11,6 @@ import java.util.List;
 import java.util.Set;
 
 public class AssetFilterRestIT extends AbstractRest {
-
-    private Jsonb jsonb;
-
-    @Before
-    public void init() {
-        jsonb = new JsonBConf().getContext(null);
-    }
 
     @Test
     public void createAssetFilterTest() {
@@ -34,7 +25,6 @@ public class AssetFilterRestIT extends AbstractRest {
         Set<AssetFilterValueDto> setOfAssetFilteVAlues = new HashSet<AssetFilterValueDto>();
         setOfAssetFilteVAlues.add(createdAssetFilterValue);
         createdAssetFilterQuery.setValues(setOfAssetFilteVAlues);
-        createdAssetFilter.setOwner("ljkl");
         AssetFilterDto createdAssetFilterResponse = AssetFilterTestHelper.createAssetFilter(createdAssetFilter);
 
         assertTrue(createdAssetFilterResponse.getName().equals(name));
@@ -49,8 +39,8 @@ public class AssetFilterRestIT extends AbstractRest {
         assertTrue(assetFilterCreateResp.contains("23"));
         assertTrue(assetFilterCreateResp.contains("dsad"));
 
-        AssetFilterResponseDto assetFilterResponseDto = jsonb.fromJson(assetFilterCreateResp,
-                AssetFilterResponseDto.class);
+        AssetFilterDto assetFilterResponseDto = JSONB.fromJson(assetFilterCreateResp,
+                AssetFilterDto.class);
         Double value = assetFilterResponseDto.getFilter().get(0).getValues().get(0).getValue();
         assertTrue(value == 23d);
         String op = assetFilterResponseDto.getFilter().get(0).getValues().get(0).getOperator();
@@ -90,8 +80,8 @@ public class AssetFilterRestIT extends AbstractRest {
 
         AssetFilterTestHelper.updateAssetFilter(assetFilterToUpdate);
         String updatedAssetFilterString = AssetFilterTestHelper.getAssetFilterByGuid(filterId);
-        AssetFilterResponseDto updatedAssetFilter = jsonb.fromJson(updatedAssetFilterString,
-                AssetFilterResponseDto.class);
+        AssetFilterDto updatedAssetFilter = JSONB.fromJson(updatedAssetFilterString,
+                AssetFilterDto.class);
         
         assertTrue(updatedAssetFilter.getId().equals(filterId));
         assertTrue(updatedAssetFilter.getName().equals("båtar2"));
@@ -104,8 +94,8 @@ public class AssetFilterRestIT extends AbstractRest {
 
         AssetFilterTestHelper.updateAssetFilter(assetFilterToUpdate2);
         String updatedAssetFilterString2 = AssetFilterTestHelper.getAssetFilterByGuid(filterId);
-        AssetFilterResponseDto assetFilterResponseDto2 = jsonb.fromJson(updatedAssetFilterString2,
-                AssetFilterResponseDto.class);
+        AssetFilterDto assetFilterResponseDto2 = JSONB.fromJson(updatedAssetFilterString2,
+                AssetFilterDto.class);
         
         assertTrue(updatedAssetFilter.getId().equals(assetFilterResponseDto2.getId()));
         assertFalse(updatedAssetFilter.getName().equals(assetFilterResponseDto2.getName()));
@@ -133,8 +123,8 @@ public class AssetFilterRestIT extends AbstractRest {
 
         AssetFilterTestHelper.updateAssetFilter(assetFilterToUpdate);
         String updatedAssetFilterString = AssetFilterTestHelper.getAssetFilterByGuid(filterId);
-        AssetFilterResponseDto updatedAssetFilter = jsonb.fromJson(updatedAssetFilterString,
-                AssetFilterResponseDto.class);
+        AssetFilterDto updatedAssetFilter = JSONB.fromJson(updatedAssetFilterString,
+                AssetFilterDto.class);
         
         AssetFilterValueRestTestDto assetFilterValueRestTestDtoUpdatedFirst = updatedAssetFilter.getFilter().get(0).getValues().get(0);
         
@@ -148,8 +138,8 @@ public class AssetFilterRestIT extends AbstractRest {
 
         AssetFilterTestHelper.updateAssetFilter(assetFilterToUpdate2);
         String updatedAssetFilterString2 = AssetFilterTestHelper.getAssetFilterByGuid(filterId);
-        AssetFilterResponseDto assetFilterResponseDto2 = jsonb.fromJson(updatedAssetFilterString2,
-                AssetFilterResponseDto.class);
+        AssetFilterDto assetFilterResponseDto2 = JSONB.fromJson(updatedAssetFilterString2,
+                AssetFilterDto.class);
         
         assertTrue(updatedAssetFilter.getId().equals(assetFilterResponseDto2.getId()));
         assertFalse(updatedAssetFilter.getName().equals(assetFilterResponseDto2.getName()));
@@ -184,8 +174,8 @@ public class AssetFilterRestIT extends AbstractRest {
         assertTrue(updatedAssetFilterString.contains(filterId));
 
         AssetFilterTestHelper.deleteAssetFilter(filterId);
-        String assetNotFound = AssetFilterTestHelper.getAssetFilterList();
-        assertFalse(assetNotFound.contains(filterId));
+        AssetFilterListDto assetNotFound = AssetFilterTestHelper.getAssetFilterList();
+        assertFalse(assetNotFound.getSavedFilters().containsKey(filterId));
     }
 
     @Test
@@ -196,20 +186,20 @@ public class AssetFilterRestIT extends AbstractRest {
         String assetFilterCreateResp2 = AssetFilterTestHelper.createAssetFilterFromJson(afjson);
         String assetFilterCreateResp3 = AssetFilterTestHelper.createAssetFilterFromJson(afjson);
 
-        AssetFilterResponseDto assetFilterResponseDto1 = jsonb.fromJson(assetFilterCreateResp1,
-                AssetFilterResponseDto.class);
+        AssetFilterDto assetFilterResponseDto1 = JSONB.fromJson(assetFilterCreateResp1,
+                AssetFilterDto.class);
         String id1 = assetFilterResponseDto1.getId();
-        AssetFilterResponseDto assetFilterResponseDto2 = jsonb.fromJson(assetFilterCreateResp2,
-                AssetFilterResponseDto.class);
+        AssetFilterDto assetFilterResponseDto2 = JSONB.fromJson(assetFilterCreateResp2,
+                AssetFilterDto.class);
         String id2 = assetFilterResponseDto2.getId();
-        AssetFilterResponseDto assetFilterResponseDto3 = jsonb.fromJson(assetFilterCreateResp3,
-                AssetFilterResponseDto.class);
+        AssetFilterDto assetFilterResponseDto3 = JSONB.fromJson(assetFilterCreateResp3,
+                AssetFilterDto.class);
         String id3 = assetFilterResponseDto3.getId();
 
-        String assetFilterList = AssetFilterTestHelper.getAssetFilterList();
-        assertTrue(assetFilterList.contains(id1));
-        assertTrue(assetFilterList.contains(id2));
-        assertTrue(assetFilterList.contains(id3));
+        AssetFilterListDto assetFilterList = AssetFilterTestHelper.getAssetFilterList();
+        assertTrue(assetFilterList.getSavedFilters().containsKey(id1));
+        assertTrue(assetFilterList.getSavedFilters().containsKey(id2));
+        assertTrue(assetFilterList.getSavedFilters().containsKey(id3));
     }
 
     @Test
@@ -218,12 +208,12 @@ public class AssetFilterRestIT extends AbstractRest {
                 + "\"type\": \"dsad\", \"inverse\": false,\"valueType\": \"NUMBER\"}] }";
         String assetFilterCreateResp = AssetFilterTestHelper.createAssetFilterFromJson(afjson);
 
-        AssetFilterResponseDto assetFilterResponseDto = jsonb.fromJson(assetFilterCreateResp,
-                AssetFilterResponseDto.class);
+        AssetFilterDto assetFilterResponseDto = JSONB.fromJson(assetFilterCreateResp,
+                AssetFilterDto.class);
         String id = assetFilterResponseDto.getId();
 
         String assetFilter = AssetFilterTestHelper.getAssetFilterByGuid(id);
-        AssetFilterResponseDto assetFilterRespFromJson = jsonb.fromJson(assetFilter, AssetFilterResponseDto.class);
+        AssetFilterDto assetFilterRespFromJson = JSONB.fromJson(assetFilter, AssetFilterDto.class);
 
         assertTrue(assetFilterRespFromJson.getId().contentEquals(id));
     }

@@ -117,7 +117,7 @@ public class InmarsatSystemIT extends AbstractRest {
             Set<ChannelDto> channels = mt.getChannels();
             ChannelDto[] arr = channels.toArray(new ChannelDto[0]);
             String memberNumber = arr[0].getMemberNumber();
-            String DNID = arr[0].getDNID();
+            String DNID = arr[0].getDnid();
 
             assertEquals(1, message.size());
             String command = message.get(0);
@@ -148,7 +148,7 @@ public class InmarsatSystemIT extends AbstractRest {
 
             Set<ChannelDto> channels = mt.getChannels();
             ChannelDto[] arr = channels.toArray(new ChannelDto[0]);
-            String DNID = arr[0].getDNID();
+            String DNID = arr[0].getDnid();
             String satelliteNumber = mt.getSatelliteNumber();
             String memberNumber = arr[0].getMemberNumber();
 

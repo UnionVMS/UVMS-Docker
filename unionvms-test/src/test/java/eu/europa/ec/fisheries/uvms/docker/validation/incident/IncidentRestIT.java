@@ -104,7 +104,7 @@ public class IncidentRestIT extends AbstractRest {
         MovementHelper.pollMovementCreated();
         Thread.sleep(1000);
 
-        Map<Long, IncidentDto> openTicketsForAsset = IncidentTestHelper.getOpenTicketsForAsset(asset.getId().toString());
+        Map<String, IncidentDto> openTicketsForAsset = IncidentTestHelper.getOpenTicketsForAsset(asset.getId().toString());
 
         assertEquals(0, openTicketsForAsset.size());
     }
@@ -121,10 +121,10 @@ public class IncidentRestIT extends AbstractRest {
         ticket.setMovementId(movement.getId().toString());
         IncidentDto incident = IncidentTestHelper.createAssetNotSendingIncident(ticket, IncidentTestHelper.INCIDENT_CREATE_EVENT);
 
-        Map<Long, IncidentDto> incidentMap = IncidentTestHelper.getOpenTicketsForAsset(asset.getId().toString());
+        Map<String, IncidentDto> incidentMap = IncidentTestHelper.getOpenTicketsForAsset(asset.getId().toString());
 
         assertTrue(incidentMap.size() > 0);
-        assertEquals(asset.getId(), incidentMap.get(incident.getId()).getAssetId());
-        assertEquals(movement.getId(), incidentMap.get(incident.getId()).getLastKnownLocation().getId());
+        assertEquals(asset.getId(), incidentMap.get(incident.getId().toString()).getAssetId());
+        assertEquals(movement.getId(), incidentMap.get(incident.getId().toString()).getLastKnownLocation().getId());
     }
 }

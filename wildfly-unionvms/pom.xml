@@ -4,7 +4,7 @@
 	<parent>
 		<groupId>eu.europa.ec.fisheries.uvms.docker</groupId>
 		<artifactId>uvms-docker</artifactId>
-		<version>4.0.26-SNAPSHOT</version>
+		<version>4.0.33-SNAPSHOT</version>
 		<relativePath>../pom.xml</relativePath>
 	</parent>
 
@@ -34,13 +34,6 @@
 	</distributionManagement>
 
 	<dependencies>
-		<!-- Admin -->
-		<dependency>
-			<groupId>io.hawt</groupId>
-			<artifactId>hawtio-wildfly</artifactId>
-			<type>war</type>
-			<version>${unionvms.project.hawtio-wildfly}</version>
-		</dependency>
 
 		<!-- frontend modules -->
 		<dependency>
@@ -124,7 +117,11 @@
 			<artifactId>reporting-module</artifactId>
 			<type>ear</type>
 		</dependency>
-
+		<dependency>
+			<groupId>eu.europa.ec.fisheries.uvms.activity</groupId>
+			<artifactId>activity-application</artifactId>
+			<type>war</type>
+		</dependency>
 		<dependency>
 			<groupId>eu.europa.ec.fisheries.uvms.web-gateway</groupId>
 			<artifactId>web-gateway</artifactId>
@@ -169,7 +166,7 @@
 				<plugin>
 					<groupId>io.fabric8</groupId>
 					<artifactId>docker-maven-plugin</artifactId>
-					<version>0.37.0</version>
+					<version>0.38.0</version>
 				</plugin>
 			</plugins>
 		</pluginManagement>

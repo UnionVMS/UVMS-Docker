@@ -150,7 +150,7 @@ public class RestSystemIT extends AbstractRest {
         UserHelper.createOrganisation(organisation);
         EndPoint endpoint = new EndPoint();
         endpoint.setName("REST");
-        endpoint.setURI("http://" + getDockerHostIp() + ":"+RESTEndpoint.ENDPOINT_PORT+"/");
+        endpoint.setUri("http://" + getDockerHostIp() + ":"+RESTEndpoint.ENDPOINT_PORT+"/");
         endpoint.setStatus("E");
         endpoint.setOrganisationName(organisation.getName());
         EndPoint createdEndpoint = UserHelper.createEndpoint(endpoint);

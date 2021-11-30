@@ -11,12 +11,10 @@ copy of the GNU General Public License along with the IFDM Suite. If not, see <h
  */
 package eu.europa.ec.fisheries.uvms.docker.validation.mobileterminal.dto;
 
-import eu.europa.ec.fisheries.uvms.mobileterminal.model.dto.GenericDto;
-
 import java.util.ArrayList;
 import java.util.List;
 
-public class PollDto extends GenericDto<PollKey> {
+public class PollDto {
 
     private List<PollValue> values = new ArrayList<>();
 
@@ -26,10 +24,5 @@ public class PollDto extends GenericDto<PollKey> {
 
     public void setValues(List<PollValue> value) {
         this.values = value;
-    }
-
-    @Override
-    public void addValue(PollKey key, String value) {
-        values.add(new PollValue(key, value));
     }
 }

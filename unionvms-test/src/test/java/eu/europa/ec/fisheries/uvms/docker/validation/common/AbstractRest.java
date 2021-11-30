@@ -6,31 +6,23 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Random;
 import java.util.concurrent.TimeUnit;
+import javax.json.bind.Jsonb;
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.MediaType;
-import javax.ws.rs.ext.ContextResolver;
 import org.junit.Assert;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.DeserializationFeature;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializationFeature;
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import eu.europa.ec.fisheries.uvms.commons.date.JsonBConfigurator;
 import eu.europa.ec.fisheries.uvms.docker.validation.AppError;
 
 public abstract class AbstractRest {
 
     private static final Logger log = LoggerFactory.getLogger(AbstractRest.class.getSimpleName());
 
-    protected static final ObjectMapper OBJECT_MAPPER = new ObjectMapper()
-            .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
-            .configure(DeserializationFeature.READ_DATE_TIMESTAMPS_AS_NANOSECONDS, false)
-            .configure(SerializationFeature.WRITE_DATE_TIMESTAMPS_AS_NANOSECONDS, false)
-            .registerModule(new JavaTimeModule());
+    protected static final Jsonb JSONB = new JsonBConfigurator().getContext(null);
 
     private static final String BASE_URL = "http://localhost:28080/unionvms/";
     //protected static final String BASE_URL = "http://liaswf05t.havochvatten.se:28080/unionvms/";
@@ -43,18 +35,10 @@ public abstract class AbstractRest {
     }
 
     protected static WebTarget getWebTarget() {
-        Client client = ClientBuilder.newBuilder().readTimeout(60, TimeUnit.SECONDS).newClient();
-        /*JsonbConfig config = new JsonbConfig()
-                .withAdapters(new JsonBInstantAdapter())
-                .withPropertyNamingStrategy(PropertyNamingStrategy.UPPER_CAMEL_CASE)
-                .setProperty(JsonbConfig.DATE_FORMAT, JsonbDateFormat.TIME_IN_MILLIS);*/
-        client.register(new ContextResolver<ObjectMapper>() {
-            @Override
-            public ObjectMapper getContext(Class<?> type) {
-                return OBJECT_MAPPER;
-            }
-        });
-        //client.register(JsonBConfigurator.class);
+        Client client = ClientBuilder.newBuilder()
+                .readTimeout(60, TimeUnit.SECONDS)
+                .build();
+        client.register(JsonBConfigurator.class);
         return client.target(getBaseUrl());
     }
 
@@ -85,13 +69,13 @@ public abstract class AbstractRest {
                 .post(Entity.json(new AuthenticationRequest(username, password)), AuthenticationResponse.class);
 
         assertTrue(response.getErrorDescription(), response.isAuthenticated());
-        return response.getJWToken();
+        return response.getJwtoken();
     }
 
-    protected static String writeValueAsString(final Object value) throws JsonProcessingException {
+    protected static String writeValueAsString(final Object value) {
         String ret = "";
         try {
-            ret = OBJECT_MAPPER.writeValueAsString(value);
+            ret = JSONB.toJson(value);
         } catch (RuntimeException e) {
             log.error("Serializing error: " + e);
         }
@@ -119,11 +103,7 @@ public abstract class AbstractRest {
 
     public static void checkForAppErrorMessage(String json){
         if(json.contains("\"code\":")){
-            try {
-                throw new RuntimeException(OBJECT_MAPPER.readValue(json, AppError.class).description);
-            } catch (JsonProcessingException e) {
-                throw new RuntimeException(e);
-            }
+            throw new RuntimeException(JSONB.fromJson(json, AppError.class).description);
         }
     }
 

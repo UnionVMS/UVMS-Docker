@@ -1,6 +1,5 @@
 package eu.europa.ec.fisheries.uvms.docker.validation.spatial;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import eu.europa.ec.fisheries.uvms.docker.validation.common.AbstractRest;
 import eu.europa.ec.fisheries.uvms.docker.validation.spatial.dto.upload.AreaUploadMapping;
 import eu.europa.ec.fisheries.uvms.docker.validation.spatial.dto.upload.AreaUploadMappingProperty;
@@ -34,8 +33,7 @@ public class AreaZipUploadIT extends AbstractRest {
                 .header(HttpHeaders.AUTHORIZATION, getValidJwtToken())
                 .post(Entity.entity(mdo, MediaType.MULTIPART_FORM_DATA_TYPE), String.class);
 
-        ObjectMapper om = new ObjectMapper();
-        AreaUploadMetadata response = om.readValue(stringResponse, AreaUploadMetadata.class);       //for some reason the client always uses jsonb despite us saying that it should use jackson, and we use a jackson-specific annotation.
+        AreaUploadMetadata response = JSONB.fromJson(stringResponse, AreaUploadMetadata.class);
 
         AreaUploadMapping mapping = new AreaUploadMapping();
         mapping.setAdditionalProperty("ref", response.getAdditionalProperties().get("ref"));
@@ -51,7 +49,7 @@ public class AreaZipUploadIT extends AbstractRest {
         mapping.getMapping().add(createAreaUploadMappingProperty("fSubunit", "F_SUBUNIT"));
         mapping.getMapping().add(createAreaUploadMappingProperty("fLabel", "F_CODE"));
 
-        String json = om.writeValueAsString(mapping);
+        String json = writeValueAsString(mapping);
 
         Response uploadResponse = getWebTarget()
                 .path("spatialSwe/rest")

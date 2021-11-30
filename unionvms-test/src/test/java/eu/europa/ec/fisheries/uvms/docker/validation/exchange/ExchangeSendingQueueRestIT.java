@@ -13,7 +13,6 @@ copy of the GNU General Public License along with the IFDM Suite. If not, see <h
 */
 package eu.europa.ec.fisheries.uvms.docker.validation.exchange;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import eu.europa.ec.fisheries.schema.exchange.plugin.v1.SetCommandRequest;
 import eu.europa.ec.fisheries.schema.exchange.plugin.v1.SetReportRequest;
 import eu.europa.ec.fisheries.uvms.docker.validation.common.AbstractRest;
@@ -125,7 +124,7 @@ public class ExchangeSendingQueueRestIT extends AbstractRest {
         return response.readEntity(new GenericType<List<SendingGroupLog>>() {});
 	}
 	
-	private Boolean sendSendingGroupIds(List<String> ids) throws JsonProcessingException {
+	private Boolean sendSendingGroupIds(List<String> ids) {
 	    Response response = getWebTarget()
                 .path("exchange/rest/sendingqueue/send")
                 .request(MediaType.APPLICATION_JSON)

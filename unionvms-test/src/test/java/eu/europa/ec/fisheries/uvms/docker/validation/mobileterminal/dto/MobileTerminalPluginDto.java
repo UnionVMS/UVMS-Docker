@@ -2,19 +2,19 @@ package eu.europa.ec.fisheries.uvms.docker.validation.mobileterminal.dto;
 
 import java.io.Serializable;
 
-public class MobileTerminalPluginDto implements Serializable {
+public class MobileTerminalPluginDto {
 
-    private String PluginServiceName;
+    private String pluginServiceName;
     private String name;
     private String pluginSatelliteType;
     private Boolean pluginInactive;
 
     public String getPluginServiceName() {
-        return PluginServiceName;
+        return pluginServiceName;
     }
 
     public void setPluginServiceName(String pluginServiceName) {
-        PluginServiceName = pluginServiceName;
+        this.pluginServiceName = pluginServiceName;
     }
 
     public String getName() {

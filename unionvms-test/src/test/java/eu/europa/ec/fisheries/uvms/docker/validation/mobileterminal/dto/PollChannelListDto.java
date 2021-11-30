@@ -11,16 +11,14 @@ copy of the GNU General Public License along with the IFDM Suite. If not, see <h
  */
 package eu.europa.ec.fisheries.uvms.docker.validation.mobileterminal.dto;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class PollChannelListDto implements Serializable {
-	private static final long serialVersionUID = 1L;
+public class PollChannelListDto {
 	
 	private Integer currentPage;
 	private Integer totalNumberOfPages;
-	private ArrayList<PollChannelDto> pollableChannels;
+	private List<PollChannelDto> pollableChannels;
 	
 	public Integer getCurrentPage() {
 		return currentPage;

@@ -115,7 +115,7 @@ public class NAFSystemIT extends AbstractRest {
         Organisation organisation = createOrganisationNorway();
         EndPoint endpoint = new EndPoint();
         endpoint.setName("FLUX");
-        endpoint.setURI("URI");
+        endpoint.setUri("URI");
         endpoint.setStatus("E");
         endpoint.setOrganisationName(organisation.getName());
         EndPoint createdEndpoint = UserHelper.createEndpoint(endpoint);
@@ -378,7 +378,7 @@ public class NAFSystemIT extends AbstractRest {
         UserHelper.createOrganisation(organisation);
         EndPoint endpoint = new EndPoint();
         endpoint.setName("NAF");
-        endpoint.setURI("http://" + getDockerHostIp() + ":"+ENDPOINT_PORT+"/naf/message/#MESSAGE#");
+        endpoint.setUri("http://" + getDockerHostIp() + ":"+ENDPOINT_PORT+"/naf/message/#MESSAGE#");
         endpoint.setStatus("E");
         endpoint.setOrganisationName(organisation.getName());
         EndPoint createdEndpoint = UserHelper.createEndpoint(endpoint);

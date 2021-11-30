@@ -32,3 +32,6 @@ DROP USER IF EXISTS sales;
 
 -- INCIDENT
 DROP USER IF EXISTS incident; 
+
+-- Activity
+DROP USER IF EXISTS activity;
