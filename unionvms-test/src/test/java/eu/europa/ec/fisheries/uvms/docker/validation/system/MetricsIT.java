@@ -58,7 +58,7 @@ public class MetricsIT extends AbstractRest {
 
     private String getMetricValue(String metricName) throws URISyntaxException, IOException, InterruptedException {
         Map<String, Map<String, String>> metrics = ClientBuilder.newClient()
-            .target("http://" + getHost() + ":9990/metrics")
+            .target("http://" + getHost() + ":29990/metrics")
             .request(MediaType.APPLICATION_JSON)
             .get(new GenericType<Map<String, Map<String, String>>>() {});
         return metrics.get("application")
