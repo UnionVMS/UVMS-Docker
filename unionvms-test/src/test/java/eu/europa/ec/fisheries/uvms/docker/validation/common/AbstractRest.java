@@ -24,11 +24,16 @@ public abstract class AbstractRest {
 
     protected static final Jsonb JSONB = new JsonBConfigurator().getContext(null);
 
-    private static final String BASE_URL = "http://localhost:28080/unionvms/";
+    private static final String HOST = "localhost";
+    private static final String BASE_URL = "http://" + HOST + ":28080/unionvms/";
     //protected static final String BASE_URL = "http://liaswf05t.havochvatten.se:28080/unionvms/";
     //protected static final String BASE_URL = "http://liaswf05p.havochvatten.se:28080/unionvms/";
 
     private static String validJwtToken;
+
+    protected static String getHost() {
+        return HOST;
+    }
 
     protected static String getBaseUrl() {
         return BASE_URL;
