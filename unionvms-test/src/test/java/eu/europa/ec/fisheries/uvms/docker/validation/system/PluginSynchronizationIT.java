@@ -53,6 +53,7 @@ public class PluginSynchronizationIT extends AbstractRest {
         mobileTerminal.getPlugin().setPluginServiceName(serviceType.getServiceClassName());
         MobileTerminalDto createdMobileTerminal = MobileTerminalTestHelper.persistMobileTerminal(mobileTerminal);
         assertThat(createdMobileTerminal, is(notNullValue()));
+        assertThat(createdMobileTerminal.getPlugin().getPluginServiceName(), is(serviceType.getServiceClassName()));
     }
 
     @Test
