@@ -11,7 +11,7 @@
 
 	<groupId>eu.europa.ec.fisheries.uvms.docker</groupId>
 	<artifactId>uvms-docker</artifactId>
-	<version>4.0.33-SNAPSHOT</version>
+	<version>4.0.34-SNAPSHOT</version>
 	<packaging>pom</packaging>
 	<name>uvms-docker</name>
 
@@ -19,7 +19,7 @@
 		<project.scm.id>github</project.scm.id>
 		<scm.connection>scm:git:https://github.com/UnionVMS/UVMS-Docker.git</scm.connection>
 		<scm.url>scm:git:https://github.com/UnionVMS/UVMS-Docker.git</scm.url>
-		<unionvms.wildfly.version>23.0.2.Final</unionvms.wildfly.version>
+		<unionvms.wildfly.version>25.0.1.Final</unionvms.wildfly.version>
 		<unionvms.project.unionvms.web.version>3.0.78-UVMS</unionvms.project.unionvms.web.version>
 		<unionvms.project.vms.web.version>1.1.29</unionvms.project.vms.web.version>
 		<unionvms.project.mapfishprint.version>3.20.2.1</unionvms.project.mapfishprint.version>
@@ -27,19 +27,19 @@
 		<unionvms.project.user.module>2.2.2</unionvms.project.user.module>
 		<unionvms.project.reporting.module>1.1.27-UVMS</unionvms.project.reporting.module>
 		<unionvms.project.movementrules.module>2.4.14</unionvms.project.movementrules.module>
-		<unionvms.project.movement.module>5.6.5-UVMS</unionvms.project.movement.module>
-		<unionvms.project.exchange.module>5.3.19-UVMS</unionvms.project.exchange.module>
+		<unionvms.project.movement.module>5.6.7-UVMS</unionvms.project.movement.module>
+		<unionvms.project.exchange.module>5.3.20-UVMS</unionvms.project.exchange.module>
 		<unionvms.project.spatial.module>2.0.6</unionvms.project.spatial.module>
 		<unionvms.project.spatialSwe.module>2.2.10-UVMS</unionvms.project.spatialSwe.module>
 		<unionvms.project.config.module>4.3.10</unionvms.project.config.module>
 		<unionvms.project.audit.module>4.3.10</unionvms.project.audit.module>
-		<unionvms.project.asset.module>6.8.17</unionvms.project.asset.module>
+		<unionvms.project.asset.module>6.8.18</unionvms.project.asset.module>
 		<unionvms.project.incident.module>1.0.11</unionvms.project.incident.module>
 		<unionvms.project.activity.module>1.2.14-SWE</unionvms.project.activity.module>
 		<unionvms.project.plugins.ais>3.1.9</unionvms.project.plugins.ais>
 		<unionvms.project.plugins.naf>3.1.10</unionvms.project.plugins.naf>
 		<unionvms.project.plugins.flux>3.1.11</unionvms.project.plugins.flux>
-		<unionvms.project.plugins.inmarsat>3.1.9</unionvms.project.plugins.inmarsat>
+		<unionvms.project.plugins.inmarsat>3.1.10</unionvms.project.plugins.inmarsat>
 		<unionvms.project.plugins.siriusone>3.0.12</unionvms.project.plugins.siriusone>
 		<unionvms.project.plugins.fluxActivity>1.0.6</unionvms.project.plugins.fluxActivity>
 		<unionvms.project.plugins.flux-rest>1.7</unionvms.project.plugins.flux-rest>

@@ -73,10 +73,11 @@ public class AssetInformationImport extends AbstractRest {
         String csvFile = "/path/to/file.csv";
         
         Reader in = new FileReader(csvFile);
-        Iterable<CSVRecord> records = CSVFormat.DEFAULT
-                                    .withDelimiter(';')
-                                    .withFirstRecordAsHeader()
-                                    .withQuote(null)
+        Iterable<CSVRecord> records = CSVFormat.Builder.create()
+                                    .setDelimiter(';')
+//                                    .withFirstRecordAsHeader()
+                                    .setQuote(null)
+                                    .build()
                                     .parse(in);
         
         for (CSVRecord csvRecord : records) {
