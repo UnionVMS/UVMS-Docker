@@ -9,18 +9,22 @@ the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the impl
 FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more details. You should have received a
 copy of the GNU General Public License along with the IFDM Suite. If not, see <http://www.gnu.org/licenses/>.
  */
-package eu.europa.ec.fisheries.uvms.docker.validation.frontend;
+package eu.europa.ec.fisheries.uvms.docker.validation.frontend.pages;
 
 import static com.codeborne.selenide.Selenide.open;
-import com.codeborne.selenide.Configuration;
-import com.codeborne.selenide.Selenide;
-import eu.europa.ec.fisheries.uvms.docker.validation.common.AbstractRest;
+import java.util.UUID;
 
-public class BaseFrontendUI extends AbstractRest {
+public class AssetPage {
 
-    public void login() {
-        String token = getValidJwtToken();
-        open("http://localhost:28080");
-        Selenide.localStorage().setItem("authToken", token);
+    protected AssetPage() {
+        open("/asset");
+    }
+
+    protected AssetPage(UUID assetId) {
+        open("/asset/" + assetId.toString());
+    }
+
+    public AssetNotesPage assetNotesPage() {
+        return new AssetNotesPage();
     }
 }

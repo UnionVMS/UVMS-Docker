@@ -11,29 +11,39 @@ copy of the GNU General Public License along with the IFDM Suite. If not, see <h
  */
 package eu.europa.ec.fisheries.uvms.docker.validation.frontend;
 
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.MatcherAssert.assertThat;
 import java.util.Date;
+import java.util.Random;
 import org.junit.Test;
 import eu.europa.ec.fisheries.uvms.asset.client.model.AssetDTO;
 import eu.europa.ec.fisheries.uvms.docker.validation.asset.AssetTestHelper;
+import eu.europa.ec.fisheries.uvms.docker.validation.common.TopicListener;
+import eu.europa.ec.fisheries.uvms.docker.validation.frontend.pages.AssetDetailsPanel;
+import eu.europa.ec.fisheries.uvms.docker.validation.frontend.pages.RealtimeMapPage;
+import eu.europa.ec.fisheries.uvms.docker.validation.frontend.pages.UnionVMS;
 import eu.europa.ec.fisheries.uvms.docker.validation.movement.LatLong;
 import eu.europa.ec.fisheries.uvms.docker.validation.system.helper.FLUXHelper;
 
-public class RealtimeMapIT {
+public class RealtimeMapTabIT {
 
     @Test
     public void clickOnAssetTest() throws Exception {
-        RealtimeMapUI realtime = new RealtimeMapUI();
+        UnionVMS uvms = UnionVMS.login();
         AssetDTO asset = AssetTestHelper.createTestAsset();
-        LatLong position = new LatLong(57d, 11d, new Date());
-        FLUXHelper.sendPositionToFluxPlugin(asset, position);
+        int randomLatitude = new Random().nextInt(90);
+        int randomLongitude = new Random().nextInt(180);
+        LatLong position = new LatLong(randomLatitude, randomLongitude, new Date());
+        try (TopicListener topicListener = new TopicListener(TopicListener.EVENT_STREAM, null)) {
+            FLUXHelper.sendPositionToFluxPlugin(asset, position);
+            topicListener.listenOnEventBus();
+        }
+
+        RealtimeMapPage realtime = uvms.realtimeMapPage();
         realtime.gotoCoordinates(position.latitude, position.longitude);
         realtime.clickOnCenter();
-        AssetDetailsPanel assetDetails = realtime.getAssetDetailsPanel();
-        assertThat(assetDetails.getIrcs(), is(asset.getIrcs()));
-        assertThat(assetDetails.getMmsi(), is(asset.getMmsi()));
-        assertThat(assetDetails.getExternalMarking(), is(asset.getExternalMarking()));
+        AssetDetailsPanel assetDetailsPanel = realtime.assetDetailsPanel();
+        assetDetailsPanel.assertIrcs(asset.getIrcs());
+        assetDetailsPanel.assertMmsi(asset.getMmsi());
+        assetDetailsPanel.assertExternalMarking(asset.getExternalMarking());
     }
 
 }

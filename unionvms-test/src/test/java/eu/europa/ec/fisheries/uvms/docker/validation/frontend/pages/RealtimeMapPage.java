@@ -9,38 +9,38 @@ the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the impl
 FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more details. You should have received a
 copy of the GNU General Public License along with the IFDM Suite. If not, see <http://www.gnu.org/licenses/>.
  */
-package eu.europa.ec.fisheries.uvms.docker.validation.frontend;
+package eu.europa.ec.fisheries.uvms.docker.validation.frontend.pages;
 
+import static com.codeborne.selenide.Selectors.by;
 import static com.codeborne.selenide.Selenide.$;
 import static com.codeborne.selenide.Selenide.actions;
 import static com.codeborne.selenide.Selenide.open;
 import static com.codeborne.selenide.Selenide.sleep;
 
-public class RealtimeMapUI extends BaseFrontendUI {
+public class RealtimeMapPage {
 
     public static final int DEFAULT_ANIMATION_DURATION = 1000;
 
-    public RealtimeMapUI() {
-        login();
-        open("http://localhost:28080/map/realtime");
+    protected RealtimeMapPage() {
+        open("/map/realtime");
     }
 
-    public RealtimeMapUI gotoCoordinates(Double latitude, Double longitude) {
-        $("#mat-input-1")
+    public RealtimeMapPage gotoCoordinates(Double latitude, Double longitude) {
+        $(by("data-placeholder", "Search"))
             .setValue(String.format("/c %s %s", latitude, longitude))
             .pressEnter();
-        sleep(DEFAULT_ANIMATION_DURATION);
+        sleep(DEFAULT_ANIMATION_DURATION * 2);
         return this;
     }
 
-    public RealtimeMapUI clickOnCenter() {
+    public RealtimeMapPage clickOnCenter() {
         actions().moveToElement($("#realtime-map canvas"), 0, 0)
                  .click()
                  .perform();
         return this;
     }
 
-    public AssetDetailsPanel getAssetDetailsPanel() {
+    public AssetDetailsPanel assetDetailsPanel() {
         return new AssetDetailsPanel();
     }
 }
