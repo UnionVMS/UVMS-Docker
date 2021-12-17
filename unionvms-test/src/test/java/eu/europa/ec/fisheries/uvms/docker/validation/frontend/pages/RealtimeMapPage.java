@@ -29,7 +29,7 @@ public class RealtimeMapPage {
         $(by("data-placeholder", "Search"))
             .setValue(String.format("/c %s %s", latitude, longitude))
             .pressEnter();
-        sleep(DEFAULT_ANIMATION_DURATION * 2);
+        sleep(DEFAULT_ANIMATION_DURATION);
         return this;
     }
 

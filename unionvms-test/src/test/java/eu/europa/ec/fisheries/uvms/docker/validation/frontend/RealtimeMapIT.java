@@ -45,7 +45,7 @@ public class RealtimeMapIT {
         int randomLatitude = new Random().nextInt(60);
         int randomLongitude = new Random().nextInt(100);
         LatLong position = new LatLong(randomLatitude, randomLongitude, new Date());
-        try (TopicListener topicListener = new TopicListener(TopicListener.EVENT_STREAM, null)) {
+        try (TopicListener topicListener = new TopicListener(TopicListener.EVENT_STREAM, "event = 'Movement'")) {
             FLUXHelper.sendPositionToFluxPlugin(asset, position);
             topicListener.listenOnEventBus();
         }
