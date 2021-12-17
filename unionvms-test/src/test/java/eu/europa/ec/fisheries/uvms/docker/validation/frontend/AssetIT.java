@@ -20,10 +20,10 @@ import eu.europa.ec.fisheries.uvms.docker.validation.frontend.pages.AssetPage;
 import eu.europa.ec.fisheries.uvms.docker.validation.frontend.pages.AssetSearchPage;
 import eu.europa.ec.fisheries.uvms.docker.validation.frontend.pages.UnionVMS;
 
-public class AssetTabIT {
+public class AssetIT {
 
     @Test
-    public void searchAssetTest() throws InterruptedException {
+    public void searchAssetTest() {
         UnionVMS uvms = UnionVMS.login();
         AssetDTO asset = AssetTestHelper.createTestAsset();
 
@@ -36,7 +36,28 @@ public class AssetTabIT {
     }
 
     @Test
-    public void createNoteTest() throws InterruptedException {
+    public void searchAssetAndClickOnResultTest() {
+        UnionVMS uvms = UnionVMS.login();
+        AssetDTO asset = AssetTestHelper.createTestAsset();
+
+        AssetSearchPage assetSearchPage = uvms.assetSearchPage();
+        assetSearchPage.assertSearchResultSize(0);
+
+        assetSearchPage.searchAsset(asset.getCfr());
+        assetSearchPage.assertSearchResultSize(1);
+        assetSearchPage.assertSearchResultAtPosition(0, asset);
+
+        AssetPage assetPage = assetSearchPage.clickOnResultRow(0);
+        assetPage.assertFlagstate(asset.getFlagStateCode());
+        assetPage.assertExternalMarking(asset.getExternalMarking());
+        assetPage.assertCfr(asset.getCfr());
+        assetPage.assertIrcs(asset.getIrcs());
+        assetPage.assertImo(asset.getImo());
+        assetPage.assertMmsi(asset.getMmsi());
+    }
+
+    @Test
+    public void createNoteTest() {
         UnionVMS uvms = UnionVMS.login();
 
         AssetDTO asset = AssetTestHelper.createTestAsset();

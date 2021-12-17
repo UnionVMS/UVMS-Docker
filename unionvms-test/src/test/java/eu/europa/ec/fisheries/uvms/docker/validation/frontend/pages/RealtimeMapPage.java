@@ -40,6 +40,18 @@ public class RealtimeMapPage {
         return this;
     }
 
+    public MapFilterPanel mapFilterPanel() {
+        return new MapFilterPanel();
+    }
+
+    public WorkflowsPanel workflowsPanel() {
+        return new WorkflowsPanel();
+    }
+
+    public MapInformationPanel mapInformationPanel() {
+        return new MapInformationPanel();
+    }
+
     public AssetDetailsPanel assetDetailsPanel() {
         return new AssetDetailsPanel();
     }

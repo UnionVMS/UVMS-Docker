@@ -16,7 +16,6 @@ import static com.codeborne.selenide.Condition.text;
 import static com.codeborne.selenide.Selectors.byAttribute;
 import static com.codeborne.selenide.Selectors.byTagName;
 import static com.codeborne.selenide.Selenide.$;
-import static com.codeborne.selenide.Selenide.$$;
 import static com.codeborne.selenide.Selenide.open;
 import com.codeborne.selenide.ElementsCollection;
 import com.codeborne.selenide.Selectors;
@@ -27,7 +26,7 @@ public class AssetSearchPage {
     private ElementsCollection searchResults = $(byTagName("tbody")).$$(byTagName("tr"));
 
     protected AssetSearchPage() {
-        open("http://localhost:28080/asset");
+        open("/asset");
     }
 
     public void searchAsset(String searchQuery) {
@@ -36,18 +35,23 @@ public class AssetSearchPage {
             .pressEnter();
     }
 
+    public AssetPage clickOnResultRow(int row) {
+        searchResults.get(0).click();
+        return new AssetPage();
+    }
+
     public void assertSearchResultSize(int expectedSize) {
         searchResults.shouldHave(size(expectedSize));
     }
 
     public void assertSearchResultAtPosition(int index, AssetDTO asset) {
-        ElementsCollection searchResult = searchResults.get(index)
+        ElementsCollection searchResultRow = searchResults.get(index)
             .$$(Selectors.byTagName("td"));
-        searchResult.get(0).shouldHave(text(asset.getExternalMarking()));
-        searchResult.get(1).shouldHave(text(asset.getIrcs()));
-        searchResult.get(2).shouldHave(text(asset.getName()));
-        searchResult.get(3).shouldHave(text(asset.getCfr()));
-        searchResult.get(4).shouldHave(text(asset.getFlagStateCode()));
-        searchResult.get(5).shouldHave(text(asset.getMmsi()));
+        searchResultRow.get(0).shouldHave(text(asset.getExternalMarking()));
+        searchResultRow.get(1).shouldHave(text(asset.getIrcs()));
+        searchResultRow.get(2).shouldHave(text(asset.getName()));
+        searchResultRow.get(3).shouldHave(text(asset.getCfr()));
+        searchResultRow.get(4).shouldHave(text(asset.getFlagStateCode()));
+        searchResultRow.get(5).shouldHave(text(asset.getMmsi()));
     }
 }

@@ -11,13 +11,15 @@ copy of the GNU General Public License along with the IFDM Suite. If not, see <h
  */
 package eu.europa.ec.fisheries.uvms.docker.validation.frontend.pages;
 
+import static com.codeborne.selenide.Selectors.byText;
+import static com.codeborne.selenide.Selenide.$;
 import static com.codeborne.selenide.Selenide.open;
 import java.util.UUID;
+import com.codeborne.selenide.Condition;
 
 public class AssetPage {
 
     protected AssetPage() {
-        open("/asset");
     }
 
     protected AssetPage(UUID assetId) {
@@ -26,5 +28,36 @@ public class AssetPage {
 
     public AssetNotesPage assetNotesPage() {
         return new AssetNotesPage();
+    }
+
+    public void assertFlagstate(String expectedFlagstate) {
+        assertAssetAttribute("Flagstate", expectedFlagstate);
+    }
+
+    public void assertExternalMarking(String expectedExternalMarking) {
+        assertAssetAttribute("External marking", expectedExternalMarking);
+    }
+
+    public void assertCfr(String expectedCfr) {
+        assertAssetAttribute("CFR", expectedCfr);
+    }
+
+    public void assertIrcs(String expectedIrcs) {
+        assertAssetAttribute("IRCS", expectedIrcs);
+    }
+
+    public void assertImo(String expectedImo) {
+        assertAssetAttribute("IMO", expectedImo);
+    }
+
+    public void assertMmsi(String expectedMmsi) {
+        assertAssetAttribute("MMSI", expectedMmsi);
+    }
+
+    private void assertAssetAttribute(String name, String expectedValue) {
+        $(byText(name))
+            .parent()
+            .sibling(0)
+            .shouldHave(Condition.text(expectedValue));
     }
 }

@@ -11,49 +11,50 @@ copy of the GNU General Public License along with the IFDM Suite. If not, see <h
  */
 package eu.europa.ec.fisheries.uvms.docker.validation.frontend.pages;
 
-import static com.codeborne.selenide.Condition.text;
+import static com.codeborne.selenide.Condition.exist;
+import static com.codeborne.selenide.Selectors.by;
 import static com.codeborne.selenide.Selectors.byClassName;
 import static com.codeborne.selenide.Selectors.byId;
 import static com.codeborne.selenide.Selectors.byTagName;
 import static com.codeborne.selenide.Selectors.byText;
+import static com.codeborne.selenide.Selectors.byTitle;
 import static com.codeborne.selenide.Selenide.$;
-import com.codeborne.selenide.SelenideElement;
 
-public class AssetDetailsPanel {
+public class MapFilterPanel {
 
-    private SelenideElement assetInformation = $(byClassName("asset-information"));
-
-    protected AssetDetailsPanel() {
-        $(byId("realtime-right-column-menu")).$(byTagName("li"), 1).click();
+    protected MapFilterPanel() {
+        $(byId("realtime-left-column-menu")).$(byTagName("li"), 0).click();
     }
 
-    public void assertIrcs(String expectedIrcs) {
-        assetInformation.$(byText("Ircs:"))
-            .sibling(0)
-            .shouldHave(text(expectedIrcs));
+    public void setFilter(String filterString) {
+        $(by("data-placeholder", "Filter"))
+            .setValue(filterString);
     }
 
-    public void assertMmsi(String expectedMmsi) {
-        assetInformation.$(byText("Mmsi:"))
-            .sibling(0)
-            .shouldHave(text(expectedMmsi));
+    public void createFilter(String filterName) {
+        $(byText("Create new filter")).click();
+        $(by("data-placeholder", "Name")).setValue(filterName);
+        $(byText("Save filter")).click();
     }
 
-    public void assertFlagstate(String expectedFlagstate) {
-        assetInformation.$(byText("Flagstate:"))
+    public void deleteFilter(String filterName) {
+        $(byClassName("saved-filters"))
+            .$(byTitle(filterName))
+            .hover()
             .sibling(0)
-            .shouldHave(text(expectedFlagstate));
+            .click();
+        $(byText("Delete")).click();
     }
 
-    public void assertExternalMarking(String expectedExternalMarking) {
-        assetInformation.$(byText("External marking:"))
-            .sibling(0)
-            .shouldHave(text(expectedExternalMarking));
+    public void assertSavedFilterExists(String expectedFilterName) {
+        $(byClassName("saved-filters"))
+            .$(byTitle(expectedFilterName))
+            .should(exist);
     }
 
-    public void assertLength(String expectedLength) {
-        assetInformation.$(byText("Length:"))
-            .sibling(0)
-            .shouldHave(text(expectedLength));
+    public void assertSavedFilterNotExists(String expectedFilterName) {
+        $(byClassName("saved-filters"))
+            .$(byTitle(expectedFilterName))
+            .shouldNot(exist);
     }
 }

@@ -21,6 +21,8 @@ import eu.europa.ec.fisheries.uvms.docker.validation.common.AbstractRest;
 
 public class UnionVMS extends AbstractRest {
 
+    private static UnionVMS instance = null;
+
     private UnionVMS() {
         Configuration.baseUrl = "http://localhost:28080";
         Configuration.headless = true;
@@ -48,7 +50,10 @@ public class UnionVMS extends AbstractRest {
     }
 
     public static UnionVMS login() {
-        return new UnionVMS();
+        if (instance == null) {
+            instance = new UnionVMS();
+        }
+        return instance;
     }
 
     public RealtimeMapPage realtimeMapPage() {

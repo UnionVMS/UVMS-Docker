@@ -16,44 +16,32 @@ import static com.codeborne.selenide.Selectors.byClassName;
 import static com.codeborne.selenide.Selectors.byId;
 import static com.codeborne.selenide.Selectors.byTagName;
 import static com.codeborne.selenide.Selectors.byText;
+import static com.codeborne.selenide.Selectors.withText;
 import static com.codeborne.selenide.Selenide.$;
-import com.codeborne.selenide.SelenideElement;
+import java.util.UUID;
+import com.codeborne.selenide.Selectors;
 
-public class AssetDetailsPanel {
+public class IncidentPanel {
 
-    private SelenideElement assetInformation = $(byClassName("asset-information"));
-
-    protected AssetDetailsPanel() {
-        $(byId("realtime-right-column-menu")).$(byTagName("li"), 1).click();
+    protected IncidentPanel() {
+        $(byId("realtime-right-column-menu")).$(byTagName("li"), 3).click();
     }
 
-    public void assertIrcs(String expectedIrcs) {
-        assetInformation.$(byText("Ircs:"))
-            .sibling(0)
-            .shouldHave(text(expectedIrcs));
+    public void assertIncidentId(Long expectedId) {
+        $(byClassName("panel-title"))
+            .$(withText("#"))
+            .shouldHave(text("#" + expectedId));
     }
 
-    public void assertMmsi(String expectedMmsi) {
-        assetInformation.$(byText("Mmsi:"))
-            .sibling(0)
-            .shouldHave(text(expectedMmsi));
+    public void assertIncidentName(String expectedIrcs, String extectedAssetName) {
+        $(byClassName("asset-name"))
+            .shouldHave(text(expectedIrcs + " · " + extectedAssetName));
     }
 
-    public void assertFlagstate(String expectedFlagstate) {
-        assetInformation.$(byText("Flagstate:"))
-            .sibling(0)
-            .shouldHave(text(expectedFlagstate));
-    }
-
-    public void assertExternalMarking(String expectedExternalMarking) {
-        assetInformation.$(byText("External marking:"))
-            .sibling(0)
-            .shouldHave(text(expectedExternalMarking));
-    }
-
-    public void assertLength(String expectedLength) {
-        assetInformation.$(byText("Length:"))
-            .sibling(0)
-            .shouldHave(text(expectedLength));
+    public void moveIncidentToParked(String comment) {
+        $(byText("Move to workflow...")).click();
+        $(Selectors.byId("mat-radio-button--PARKED")).click();
+        $(Selectors.by("formcontrolname", "note")).setValue(comment);
+        $(byText("Move to Parked")).click();
     }
 }
