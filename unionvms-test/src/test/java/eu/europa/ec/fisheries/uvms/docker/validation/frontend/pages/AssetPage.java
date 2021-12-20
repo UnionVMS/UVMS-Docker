@@ -26,6 +26,10 @@ public class AssetPage {
         open("/asset/" + assetId.toString());
     }
 
+    public AssetMobileTerminalPage assetMobileTerminalPage() {
+        return new AssetMobileTerminalPage();
+    }
+
     public AssetNotesPage assetNotesPage() {
         return new AssetNotesPage();
     }

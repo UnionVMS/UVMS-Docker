@@ -15,10 +15,13 @@ import java.util.UUID;
 import org.junit.Test;
 import eu.europa.ec.fisheries.uvms.asset.client.model.AssetDTO;
 import eu.europa.ec.fisheries.uvms.docker.validation.asset.AssetTestHelper;
+import eu.europa.ec.fisheries.uvms.docker.validation.frontend.pages.AssetMobileTerminalPage;
 import eu.europa.ec.fisheries.uvms.docker.validation.frontend.pages.AssetNotesPage;
 import eu.europa.ec.fisheries.uvms.docker.validation.frontend.pages.AssetPage;
 import eu.europa.ec.fisheries.uvms.docker.validation.frontend.pages.AssetSearchPage;
 import eu.europa.ec.fisheries.uvms.docker.validation.frontend.pages.UnionVMS;
+import eu.europa.ec.fisheries.uvms.docker.validation.mobileterminal.MobileTerminalTestHelper;
+import eu.europa.ec.fisheries.uvms.docker.validation.mobileterminal.dto.MobileTerminalDto;
 
 public class AssetIT {
 
@@ -73,4 +76,15 @@ public class AssetIT {
         assetNotesPage.assertNoteAtPosition(0, note);
     }
 
+    @Test
+    public void createMobileTerminalTest() {
+        AssetDTO asset = AssetTestHelper.createTestAsset();
+        MobileTerminalDto mobileTerminal = MobileTerminalTestHelper.createBasicMobileTerminal();
+
+        UnionVMS uvms = UnionVMS.login();
+        AssetPage assetPage = uvms.assetPage(asset.getId());
+        AssetMobileTerminalPage assetMobileTerminalPage = assetPage.assetMobileTerminalPage();
+        assetMobileTerminalPage.createMobileTerminal(mobileTerminal, "Comment " + UUID.randomUUID());
+        assetMobileTerminalPage.assertSerialNumber(mobileTerminal.getSerialNo());
+    }
 }
