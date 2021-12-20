@@ -18,7 +18,6 @@ import static com.codeborne.selenide.Selectors.byTagName;
 import static com.codeborne.selenide.Selectors.byText;
 import static com.codeborne.selenide.Selectors.withText;
 import static com.codeborne.selenide.Selenide.$;
-import java.util.UUID;
 import com.codeborne.selenide.Selectors;
 
 public class IncidentPanel {

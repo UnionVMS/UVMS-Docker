@@ -37,7 +37,7 @@ public class WorkflowsPanel {
     }
 
     public void showParked() {
-        $(withText("Asset not sending")).click();
+        $(withText("Parked")).click();
     }
 
     public IncidentPanel selectIncidentByAsset(String assetName) {
