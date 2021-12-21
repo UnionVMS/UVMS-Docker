@@ -12,6 +12,8 @@ copy of the GNU General Public License along with the IFDM Suite. If not, see <h
 package eu.europa.ec.fisheries.uvms.docker.validation.frontend;
 
 import java.io.IOException;
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
 import java.util.Date;
 import java.util.Random;
 import java.util.UUID;
@@ -31,7 +33,6 @@ import eu.europa.ec.fisheries.uvms.docker.validation.movement.LatLong;
 import eu.europa.ec.fisheries.uvms.docker.validation.movement.MovementHelper;
 import eu.europa.ec.fisheries.uvms.docker.validation.movement.model.IncomingMovement;
 import eu.europa.ec.fisheries.uvms.docker.validation.system.helper.FLUXHelper;
-import eu.europa.ec.fisheries.uvms.docker.validation.system.helper.VMSSystemHelper;
 import eu.europa.ec.fisheries.uvms.incident.model.dto.IncidentDto;
 import eu.europa.ec.fisheries.uvms.incident.model.dto.IncidentTicketDto;
 import eu.europa.ec.fisheries.uvms.movement.model.dto.MovementDto;
@@ -151,5 +152,33 @@ public class RealtimeMapIT {
 
         workflowsPanel.showParked();
         workflowsPanel.assertIncidentExists(asset.getName());
+    }
+
+    @Test
+    public void setExpiryDateOnParkedIncidentTest() throws Exception {
+        AssetDTO asset = AssetTestHelper.createTestAsset();
+        LatLong position = new LatLong(new Random().nextInt(60), new Random().nextInt(100), new Date());
+        MovementDto movement;
+        try (MovementHelper movementHelper = new MovementHelper()) {
+            IncomingMovement incomingMovement = movementHelper.createIncomingMovement(asset, position);
+            movement = movementHelper.createMovement(incomingMovement);
+        }
+        IncidentTicketDto ticket = IncidentTestHelper.createTicket(asset.getId());
+        ticket.setMovementId(movement.getId().toString());
+        IncidentTestHelper.createAssetNotSendingIncident(ticket, IncidentTestHelper.INCIDENT_CREATE_EVENT);
+
+        UnionVMS uvms = UnionVMS.login();
+        RealtimeMapPage realtimeMapPage = uvms.realtimeMapPage();
+        WorkflowsPanel workflowsPanel = realtimeMapPage.workflowsPanel();
+        workflowsPanel.showAssetNotSending();
+        IncidentPanel incidentPanel = workflowsPanel.selectIncidentByAsset(asset.getName());
+        incidentPanel.moveIncidentToParked("Comment " + UUID.randomUUID());
+
+        workflowsPanel.showParked();
+        incidentPanel = workflowsPanel.selectIncidentByAsset(asset.getName());
+
+        incidentPanel.setExpiryDate(Instant.now().plus(1, ChronoUnit.HOURS), "Comment " + UUID.randomUUID());
+        workflowsPanel.assertProgressCircleExists(asset.getName());
+        workflowsPanel.assertProgressCircleValue(asset.getName(), "-59 min");
     }
 }

@@ -16,6 +16,7 @@ import static com.codeborne.selenide.Condition.text;
 import static com.codeborne.selenide.Selectors.byClassName;
 import static com.codeborne.selenide.Selectors.byId;
 import static com.codeborne.selenide.Selectors.byTagName;
+import static com.codeborne.selenide.Selectors.byText;
 import static com.codeborne.selenide.Selectors.byTitle;
 import static com.codeborne.selenide.Selectors.withText;
 import static com.codeborne.selenide.Selenide.$;
@@ -63,5 +64,18 @@ public class WorkflowsPanel {
         $(byTitle(assetName))
             .$(byClassName("time"))
             .shouldHave(text(expectedDateTime));
+    }
+
+    public void assertProgressCircleExists(String assetName) {
+        $(byTitle(assetName))
+            .$(byClassName("countdown"))
+            .should(exist);
+    }
+
+    public void assertProgressCircleValue(String assetName, String expectedValue) {
+        $(byTitle(assetName))
+            .$(byClassName("countdown"))
+            .$(byText(expectedValue))
+            .should(exist);
     }
 }

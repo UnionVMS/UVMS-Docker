@@ -12,18 +12,40 @@ copy of the GNU General Public License along with the IFDM Suite. If not, see <h
 package eu.europa.ec.fisheries.uvms.docker.validation.frontend.pages;
 
 import static com.codeborne.selenide.Condition.text;
+import static com.codeborne.selenide.Selectors.by;
 import static com.codeborne.selenide.Selectors.byClassName;
 import static com.codeborne.selenide.Selectors.byId;
 import static com.codeborne.selenide.Selectors.byTagName;
 import static com.codeborne.selenide.Selectors.byText;
 import static com.codeborne.selenide.Selectors.withText;
 import static com.codeborne.selenide.Selenide.$;
-import com.codeborne.selenide.Selectors;
+import java.time.Instant;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
+import com.codeborne.selenide.SelenideElement;
 
 public class IncidentPanel {
 
     protected IncidentPanel() {
         $(byId("realtime-right-column-menu")).$(byTagName("li"), 3).click();
+    }
+
+    public void moveIncidentToParked(String comment) {
+        $(byText("Move to workflow...")).click();
+        $(byId("mat-radio-button--PARKED")).click();
+        $(by("formcontrolname", "note")).setValue(comment);
+        $(byText("Move to Parked")).click();
+    }
+
+    public void setExpiryDate(Instant expiryDate, String comment) {
+        $(byText("Set expiry date")).click();
+        SelenideElement expiryDateBlock = $(by("blocktitle", "Set expiry date"));
+        if (expiryDate != null) {
+            String expiryDateString = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm").format(expiryDate.atZone(ZoneId.of("UTC")));
+            expiryDateBlock.$(byTagName("input"), 0).setValue(expiryDateString);
+        }
+        expiryDateBlock.$(by("formcontrolname", "note")).setValue(comment);
+        expiryDateBlock.$(byText("Save expiry date")).click();
     }
 
     public void assertIncidentId(Long expectedId) {
@@ -35,12 +57,5 @@ public class IncidentPanel {
     public void assertIncidentName(String expectedIrcs, String extectedAssetName) {
         $(byClassName("asset-name"))
             .shouldHave(text(expectedIrcs + " · " + extectedAssetName));
-    }
-
-    public void moveIncidentToParked(String comment) {
-        $(byText("Move to workflow...")).click();
-        $(Selectors.byId("mat-radio-button--PARKED")).click();
-        $(Selectors.by("formcontrolname", "note")).setValue(comment);
-        $(byText("Move to Parked")).click();
     }
 }
