@@ -1,1 +1,0 @@
-This test changed the MR -> Movement count all in 24 hours call, from the franken query to a dedicated sql for just counting with its own rest endpoint. 

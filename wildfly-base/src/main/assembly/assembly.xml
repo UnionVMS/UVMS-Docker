@@ -30,12 +30,5 @@
             </includes>
             <outputDirectory>postgres</outputDirectory>
         </fileSet>
-        <fileSet>
-            <directory>target/dockerfile/dependencies</directory>
-            <includes>
-                <include>activemq*.*</include>
-            </includes>
-            <outputDirectory>deployments</outputDirectory>
-        </fileSet>        
     </fileSets>
 </assembly>

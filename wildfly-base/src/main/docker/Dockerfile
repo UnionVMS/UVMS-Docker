@@ -1,8 +1,5 @@
 FROM adoptopenjdk/openjdk11-openj9:jdk-11.0.4_11_openj9-0.15.1-alpine-slim
 
-
-MAINTAINER Nils Jørgen Mittet <njmittet@gmail.com>
-
 ARG WILDFLY_VERSION
 ENV JBOSS_HOME /opt/jboss/wildfly
 
@@ -13,22 +10,13 @@ USER jboss
 WORKDIR /opt/jboss
 RUN curl -LO https://github.com/wildfly/wildfly/releases/download/$WILDFLY_VERSION/wildfly-$WILDFLY_VERSION.zip && unzip wildfly-$WILDFLY_VERSION.zip && mv $HOME/wildfly-$WILDFLY_VERSION $HOME/wildfly && rm wildfly-$WILDFLY_VERSION.zip
 
-EXPOSE 8080 9990 5445 5455
-
-CMD ["/opt/jboss/start.sh", "/opt/jboss/wildfly/bin/standalone.sh", "-c", "standalone-full.xml", "-b", "0.0.0.0", "-bmanagement", "0.0.0.0", "--debug", "*:8787"]
-
 ENV TZ=CET
 
-
 ENV HIBERNATE_MODULE $JBOSS_HOME/modules/system/layers/base/org/hibernate/main
-
 ENV POSTGRES_MODULE $JBOSS_HOME/modules/org/postgresql/main
-ENV DEPLOYMENTS $JBOSS_HOME/standalone/deployments
 ENV PGPASSWORD=postgres
 
-RUN mkdir -p $JBOSS_HOME/modules/org/postgresql/main && \
-    mkdir -p /opt/jboss/wildfly/standalone/deployments/hibernatesearch/eu.europa.ec.fisheries.uvms.entity.model.AssetHistory
-
+RUN mkdir -p $JBOSS_HOME/modules/org/postgresql/main
 
 COPY postgres/module.xml $POSTGRES_MODULE
 COPY dependencies/postgresql-${wildfly.postgres.module.postgres.version}.jar $POSTGRES_MODULE
@@ -45,25 +33,14 @@ COPY dependencies/geolatte-geom-${wildfly.hibernate.module.geolatte.version}.jar
 # Standalone config
 COPY standalone.conf $JBOSS_HOME/bin/
 COPY start.sh /opt/jboss/
-COPY fakesmtp /opt/jboss/fakesmtp
 
 # CLI Scripts
 COPY cli-scripts $JBOSS_HOME/cli-scripts
 
-# Create log directory
-# note that we should use git update-index --chmod=+x
-# instead of doing this in the docker build
 USER root
-RUN mkdir -p /opt/jboss/fakesmtp/logs && \
-    chown -R jboss:jboss /opt/jboss/fakesmtp && \
-    chmod +x /opt/jboss/fakesmtp/fakesmtp.sh && \
-    sed -i '2 a /opt/jboss/fakesmtp/fakesmtp.sh start' /opt/jboss/wildfly/bin/standalone.sh && \
-    mkdir -p /app/logs && \
+RUN mkdir -p /app/logs && \
     chown -R jboss:jboss /app/logs && \
     chmod 777 /app/logs && \
-    mkdir -p /opt/jboss/wildfly/standalone/log/ && \
-    chown -R jboss:jboss /opt/jboss/wildfly/standalone/log && \
-    chmod 777 /opt/jboss/wildfly/standalone/log/ && \
     chmod 755 /opt/jboss/start.sh && \
     chmod 755 $JBOSS_HOME/cli-scripts/apply_cli.sh && \
     chown -R jboss:jboss /opt/jboss
@@ -87,6 +64,8 @@ USER jboss
 RUN $JBOSS_HOME/bin/add-user.sh -u 'admin' -p 'Wildfly4ever!'
 RUN $JBOSS_HOME/bin/add-user.sh -a 'test' -p 'test' -g guest
 
+CMD ["/opt/jboss/start.sh", "/opt/jboss/wildfly/bin/standalone.sh", "-c", "standalone-full.xml", "-b", "0.0.0.0", "-bmanagement", "0.0.0.0", "--debug", "*:8787"]
+
 # Expose stuff to outside world
-EXPOSE 8787
+EXPOSE 8080 9990 5445 5455 8787
 VOLUME ["/app/logs", "/opt/jboss/wildfly/standalone/log"]
