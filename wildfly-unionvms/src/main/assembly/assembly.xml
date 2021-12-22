@@ -11,12 +11,5 @@
             </includes>
             <outputDirectory>deployments</outputDirectory>
         </fileSet>
-        <fileSet>
-            <directory>target/dockerfile/FluxBridgeProperties</directory>
-            <includes>
-                <include>**/*.*</include>
-            </includes>
-            <outputDirectory>FluxBridgeProperties</outputDirectory>
-        </fileSet>
     </fileSets>
 </assembly>
