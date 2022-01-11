@@ -4,7 +4,7 @@ import org.apache.activemq.artemis.api.core.TransportConfiguration;
 import org.apache.activemq.artemis.api.jms.ActiveMQJMSClient;
 import org.apache.activemq.artemis.api.jms.JMSFactoryType;
 import org.apache.activemq.artemis.core.remoting.impl.netty.NettyConnectorFactory;
-
+import eu.europa.ec.fisheries.uvms.commons.message.api.MessageConstants;
 import javax.jms.*;
 import java.io.Closeable;
 import java.util.HashMap;
@@ -108,8 +108,13 @@ public class MessageHelper implements Closeable {
     }
 
     public void sendToEventBus(String text, String selector) throws Exception {
+        sendToEventBus(text, selector, null);
+    }
+
+    public void sendToEventBus(String text, String selector, String function) throws Exception {
         Topic eventBus = session.createTopic("jms.topic.EventBus");
         TextMessage message = session.createTextMessage(text);
+        message.setStringProperty(MessageConstants.JMS_FUNCTION_PROPERTY, function);
         message.setStringProperty(SERVICE_NAME, selector);
         try (MessageProducer producer = session.createProducer(eventBus)) {
             producer.send(message);
