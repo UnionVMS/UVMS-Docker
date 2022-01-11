@@ -41,6 +41,6 @@ public class AssetNotesPage {
     public void assertNoteAtPosition(int index, String note) {
         notes.get(index)
             .$(byClassName("note-text"))
-            .shouldHave(text("note"));
+            .shouldHave(text(note));
     }
 }
