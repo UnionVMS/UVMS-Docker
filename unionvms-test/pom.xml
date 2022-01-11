@@ -197,12 +197,6 @@
 			<artifactId>selenide</artifactId>
 			<version>6.1.1</version>
 			<scope>test</scope>
-			<exclusions>
-				<exclusion>
-					<groupId>com.fasterxml.jackson.core</groupId>
-					<artifactId>*</artifactId>
-				</exclusion>
-			</exclusions>
 		</dependency>
 	</dependencies>
 	<build>
