@@ -17,11 +17,13 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.core.GenericType;
 import javax.ws.rs.core.MediaType;
 import org.junit.Test;
 import eu.europa.ec.fisheries.uvms.docker.validation.common.AbstractRest;
+import eu.europa.ec.fisheries.uvms.docker.validation.common.MessageHelper;
 
 public class MetricsIT extends AbstractRest {
 
@@ -32,7 +34,11 @@ public class MetricsIT extends AbstractRest {
     private static final String REST_OUTGOING = "rest_outgoing";
 
     @Test
-    public void inmarsatIncoming() throws URISyntaxException, IOException, InterruptedException {
+    public void inmarsatIncoming() throws Exception {
+        try (MessageHelper messageHelper = new MessageHelper()) {
+            messageHelper.sendMessage("UVMSInmarsatMessages", "test");
+            TimeUnit.SECONDS.sleep(1);
+        }
         assertThat(getMetricValue(INMARSAT_INCOMING), is(notNullValue()));
     }
 
