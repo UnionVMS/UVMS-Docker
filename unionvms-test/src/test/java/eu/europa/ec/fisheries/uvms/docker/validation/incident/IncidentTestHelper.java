@@ -3,7 +3,6 @@ package eu.europa.ec.fisheries.uvms.docker.validation.incident;
 import eu.europa.ec.fisheries.schema.movementrules.ticket.v1.TicketStatusType;
 import eu.europa.ec.fisheries.uvms.docker.validation.common.AbstractHelper;
 import eu.europa.ec.fisheries.uvms.docker.validation.common.MessageHelper;
-import eu.europa.ec.fisheries.uvms.docker.validation.common.TopicListener;
 import eu.europa.ec.fisheries.uvms.incident.model.dto.IncidentDto;
 import eu.europa.ec.fisheries.uvms.incident.model.dto.IncidentTicketDto;
 import eu.europa.ec.fisheries.uvms.incident.model.dto.OpenAndRecentlyResolvedIncidentsDto;
@@ -16,6 +15,7 @@ import java.time.Instant;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
+import java.util.concurrent.locks.LockSupport;
 
 public class IncidentTestHelper extends AbstractHelper {
 
@@ -24,10 +24,8 @@ public class IncidentTestHelper extends AbstractHelper {
     public static final String INCIDENT_UPDATE_EVENT = "IncidentUpdate";
 
     public static IncidentDto createAssetNotSendingIncident(IncidentTicketDto ticket, String eventName) throws Exception {
-        try (TopicListener topicListener = new TopicListener(TopicListener.EVENT_STREAM, "event = 'Incident'")) {
-            sendMessage(ticket, eventName);
-            topicListener.listenOnEventBus();
-        }
+        sendMessage(ticket, eventName);
+        LockSupport.parkNanos(5000000000L);
 
         return getWebTarget()
                 .path("incident/rest/incident/byTicketId")
