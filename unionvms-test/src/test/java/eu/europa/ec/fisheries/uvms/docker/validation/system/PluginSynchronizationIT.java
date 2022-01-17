@@ -15,6 +15,7 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.hamcrest.MatcherAssert.assertThat;
 import java.util.UUID;
+import java.util.concurrent.TimeUnit;
 import javax.jms.Message;
 import org.junit.Test;
 import eu.europa.ec.fisheries.schema.exchange.plugin.types.v1.PluginType;
@@ -47,6 +48,7 @@ public class PluginSynchronizationIT extends AbstractRest {
                 TopicListener listener = new TopicListener(TopicListener.EVENT_STREAM, "event='Service Registered'")) {
             messageHelper.sendToEventBus(JAXBMarshaller.marshallJaxBObjectToString(registerRequest), ExchangeModelConstants.EXCHANGE_REGISTER_SERVICE, ExchangeRegistryMethod.REGISTER_SERVICE.toString());
             listener.listenOnEventBus();
+            TimeUnit.SECONDS.sleep(1);
         }
 
         MobileTerminalDto mobileTerminal = MobileTerminalTestHelper.createBasicMobileTerminal();
