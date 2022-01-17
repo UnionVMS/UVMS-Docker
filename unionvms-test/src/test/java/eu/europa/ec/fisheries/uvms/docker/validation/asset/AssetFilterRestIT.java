@@ -9,6 +9,7 @@ import static org.junit.Assert.assertTrue;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import javax.json.JsonObject;
 
 public class AssetFilterRestIT extends AbstractRest {
 
@@ -41,9 +42,10 @@ public class AssetFilterRestIT extends AbstractRest {
 
         AssetFilterDto assetFilterResponseDto = JSONB.fromJson(assetFilterCreateResp,
                 AssetFilterDto.class);
-        Double value = assetFilterResponseDto.getFilter().get(0).getValues().get(0).getValue();
+        AssetFilterQueryRestDto filter = AssetFilterTestHelper.deserializeFilter(assetFilterResponseDto.getFilter().get(0));
+        Double value = filter.getValues().get(0).getValue();
         assertTrue(value == 23d);
-        String op = assetFilterResponseDto.getFilter().get(0).getValues().get(0).getOperator();
+        String op = filter.getValues().get(0).getOperator();
         assertTrue(op.equals("operator 2 test"));
     }
 
@@ -100,9 +102,9 @@ public class AssetFilterRestIT extends AbstractRest {
         assertTrue(updatedAssetFilter.getId().equals(assetFilterResponseDto2.getId()));
         assertFalse(updatedAssetFilter.getName().equals(assetFilterResponseDto2.getName()));
         
-        List<AssetFilterQueryRestDto> assetFilterQueryRestDto = assetFilterResponseDto2.getFilter();
-        AssetFilterQueryRestDto assetFilterQueryRestDto0 = assetFilterQueryRestDto.get(0);
-        AssetFilterQueryRestDto assetFilterQueryRestDto1 = assetFilterQueryRestDto.get(1);
+        List<JsonObject> assetFilterQueryRestDto = assetFilterResponseDto2.getFilter();
+        AssetFilterQueryRestDto assetFilterQueryRestDto0 = AssetFilterTestHelper.deserializeFilter(assetFilterQueryRestDto.get(0));
+        AssetFilterQueryRestDto assetFilterQueryRestDto1 = AssetFilterTestHelper.deserializeFilter(assetFilterQueryRestDto.get(1));
         
         assertFalse( assetFilterQueryRestDto0.getInverse() == assetFilterQueryRestDto1.getInverse() );
         assertTrue( assetFilterQueryRestDto0.getValueType() == assetFilterQueryRestDto1.getValueType());
@@ -126,7 +128,7 @@ public class AssetFilterRestIT extends AbstractRest {
         AssetFilterDto updatedAssetFilter = JSONB.fromJson(updatedAssetFilterString,
                 AssetFilterDto.class);
         
-        AssetFilterValueRestTestDto assetFilterValueRestTestDtoUpdatedFirst = updatedAssetFilter.getFilter().get(0).getValues().get(0);
+        AssetFilterValueRestTestDto assetFilterValueRestTestDtoUpdatedFirst = AssetFilterTestHelper.deserializeFilter(updatedAssetFilter.getFilter().get(0)).getValues().get(0);
         
         assertTrue(updatedAssetFilter.getId().equals(filterId));
         assertTrue(updatedAssetFilter.getName().equals("testValue"));
@@ -144,8 +146,8 @@ public class AssetFilterRestIT extends AbstractRest {
         assertTrue(updatedAssetFilter.getId().equals(assetFilterResponseDto2.getId()));
         assertFalse(updatedAssetFilter.getName().equals(assetFilterResponseDto2.getName()));
         
-        List<AssetFilterQueryRestDto> assetFilterQueryRestDto = assetFilterResponseDto2.getFilter();
-        AssetFilterQueryRestDto assetFilterQueryRestDto0 = assetFilterQueryRestDto.get(0);
+        List<JsonObject> assetFilterQueryRestDto = assetFilterResponseDto2.getFilter();
+        AssetFilterQueryRestDto assetFilterQueryRestDto0 = AssetFilterTestHelper.deserializeFilter(assetFilterQueryRestDto.get(0));
         List<AssetFilterValueRestTestDto> assetFilterValueList = assetFilterQueryRestDto0.getValues();
         AssetFilterValueRestTestDto assetFilterValueRestTestDto0 = assetFilterValueList.get(0);
         AssetFilterValueRestTestDto assetFilterValueRestTestDto1 = assetFilterValueList.get(1);

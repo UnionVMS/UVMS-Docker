@@ -1,11 +1,12 @@
 package eu.europa.ec.fisheries.uvms.docker.validation.asset.assetfilter.test.dto;
 
 import java.util.List;
+import javax.json.JsonObject;
 
 public class AssetFilterDto {
     private String name;
     private String id;
-    private List<AssetFilterQueryRestDto> filter;
+    private List<JsonObject> filter;
 
     public String getName() {
         return name;
@@ -23,11 +24,11 @@ public class AssetFilterDto {
         this.id = id;
     }
 
-    public List<AssetFilterQueryRestDto> getFilter() {
+    public List<JsonObject> getFilter() {
         return filter;
     }
 
-    public void setFilter(List<AssetFilterQueryRestDto> filter) {
+    public void setFilter(List<JsonObject> filter) {
         this.filter = filter;
     }
 
