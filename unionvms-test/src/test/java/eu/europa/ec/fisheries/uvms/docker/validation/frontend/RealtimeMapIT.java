@@ -18,7 +18,6 @@ import java.util.Date;
 import java.util.Random;
 import java.util.UUID;
 import org.junit.Test;
-import com.codeborne.selenide.Selenide;
 import eu.europa.ec.fisheries.uvms.asset.client.model.AssetDTO;
 import eu.europa.ec.fisheries.uvms.docker.validation.asset.AssetTestHelper;
 import eu.europa.ec.fisheries.uvms.docker.validation.common.TopicListener;
@@ -29,10 +28,13 @@ import eu.europa.ec.fisheries.uvms.docker.validation.frontend.pages.RealtimeMapP
 import eu.europa.ec.fisheries.uvms.docker.validation.frontend.pages.UnionVMS;
 import eu.europa.ec.fisheries.uvms.docker.validation.frontend.pages.WorkflowsPanel;
 import eu.europa.ec.fisheries.uvms.docker.validation.incident.IncidentTestHelper;
+import eu.europa.ec.fisheries.uvms.docker.validation.mobileterminal.MobileTerminalTestHelper;
+import eu.europa.ec.fisheries.uvms.docker.validation.mobileterminal.dto.MobileTerminalDto;
 import eu.europa.ec.fisheries.uvms.docker.validation.movement.LatLong;
 import eu.europa.ec.fisheries.uvms.docker.validation.movement.MovementHelper;
 import eu.europa.ec.fisheries.uvms.docker.validation.movement.model.IncomingMovement;
 import eu.europa.ec.fisheries.uvms.docker.validation.system.helper.FLUXHelper;
+import eu.europa.ec.fisheries.uvms.docker.validation.system.helper.VMSSystemHelper;
 import eu.europa.ec.fisheries.uvms.incident.model.dto.IncidentDto;
 import eu.europa.ec.fisheries.uvms.incident.model.dto.IncidentTicketDto;
 import eu.europa.ec.fisheries.uvms.movement.model.dto.MovementDto;
@@ -58,6 +60,33 @@ public class RealtimeMapIT {
         assetDetailsPanel.assertIrcs(asset.getIrcs());
         assetDetailsPanel.assertMmsi(asset.getMmsi());
         assetDetailsPanel.assertExternalMarking(asset.getExternalMarking());
+    }
+
+    @Test
+    public void assetPollHistoryTest() throws Exception {
+        UnionVMS uvms = UnionVMS.login();
+        AssetDTO asset = AssetTestHelper.createTestAsset();
+        MobileTerminalDto mobileTerminal = MobileTerminalTestHelper.createMobileTerminal();
+        MobileTerminalTestHelper.assignMobileTerminal(asset, mobileTerminal);
+
+        int randomLatitude = new Random().nextInt(60);
+        int randomLongitude = new Random().nextInt(100);
+        LatLong position = new LatLong(randomLatitude, randomLongitude, new Date());
+        try (TopicListener topicListener = new TopicListener(TopicListener.EVENT_STREAM, "event = 'Movement'")) {
+            FLUXHelper.sendPositionToFluxPlugin(asset, position);
+            topicListener.listenOnEventBus();
+        }
+
+        RealtimeMapPage realtime = uvms.realtimeMapPage();
+        realtime.gotoCoordinates(position.latitude, position.longitude);
+        realtime.clickOnCenter();
+        AssetDetailsPanel assetDetailsPanel = realtime.assetDetailsPanel();
+        assetDetailsPanel.assertLast24hPollHistoryContainsItems(0);
+        try (TopicListener topicListener = new TopicListener(VMSSystemHelper.INMARSAT_SELECTOR)) {
+            assetDetailsPanel.sendManuallPoll("Test comment");
+            topicListener.listenOnEventBus();
+        }
+        assetDetailsPanel.assertLast24hPollHistoryContainsItems(1);
     }
 
     @Test

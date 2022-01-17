@@ -11,12 +11,15 @@ copy of the GNU General Public License along with the IFDM Suite. If not, see <h
  */
 package eu.europa.ec.fisheries.uvms.docker.validation.frontend.pages;
 
+import static com.codeborne.selenide.CollectionCondition.size;
 import static com.codeborne.selenide.Condition.text;
+import static com.codeborne.selenide.Selectors.by;
 import static com.codeborne.selenide.Selectors.byClassName;
 import static com.codeborne.selenide.Selectors.byId;
 import static com.codeborne.selenide.Selectors.byTagName;
 import static com.codeborne.selenide.Selectors.byText;
 import static com.codeborne.selenide.Selenide.$;
+import static com.codeborne.selenide.Selenide.$$;
 import com.codeborne.selenide.SelenideElement;
 
 public class AssetDetailsPanel {
@@ -24,6 +27,10 @@ public class AssetDetailsPanel {
     private SelenideElement assetInformation = $(byClassName("asset-information"));
 
     protected AssetDetailsPanel() {
+        initPanel();
+    }
+
+    private void initPanel() {
         $(byId("realtime-right-column-menu")).$(byTagName("li"), 1).click();
     }
 
@@ -55,5 +62,20 @@ public class AssetDetailsPanel {
         assetInformation.$(byText("Length:"))
             .sibling(0)
             .shouldHave(text(expectedLength));
+    }
+
+    public void sendManuallPoll(String comment) {
+        initPanel();
+        $(byText("Manage polling")).click();
+        $(by("formcontrolname", "comment")).setValue(comment);
+        $(byId("manual-poll-form--save")).click();
+    }
+
+    public void assertLast24hPollHistoryContainsItems(int expectedSize) {
+        initPanel();
+        $(byText("Manage polling")).click();
+        $(byText("Last 24 hours history")).click();
+        $$(byTagName("map-asset-poll-manual"))
+            .shouldHave(size(expectedSize));
     }
 }
