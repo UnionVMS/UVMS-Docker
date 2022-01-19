@@ -256,7 +256,7 @@ public final class MobileTerminalTestHelper extends AbstractHelper {
 		channel.setExpectedFrequency(Duration.ofSeconds(7200));
 		channel.setExpectedFrequencyInPort(Duration.ofSeconds(10800));
 		channel.setLesDescription("Thrane&Thrane");
-		channel.setDnid("1" + generateARandomStringWithMaxLength(3));
+		channel.setDnid("1" + generateARandomStringWithMaxLength(4));
 		channel.setInstalledBy("Mike Great");
 		channel.setArchived(false);
 		channel.setActive(false);

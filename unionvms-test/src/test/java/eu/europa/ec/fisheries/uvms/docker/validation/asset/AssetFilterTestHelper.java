@@ -3,12 +3,14 @@ package eu.europa.ec.fisheries.uvms.docker.validation.asset;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
+import javax.json.JsonObject;
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
 import eu.europa.ec.fisheries.uvms.docker.validation.asset.assetfilter.test.dto.AssetFilterDto;
 import eu.europa.ec.fisheries.uvms.docker.validation.asset.assetfilter.test.dto.AssetFilterListDto;
 import eu.europa.ec.fisheries.uvms.docker.validation.asset.assetfilter.test.dto.AssetFilterQueryDto;
+import eu.europa.ec.fisheries.uvms.docker.validation.asset.assetfilter.test.dto.AssetFilterQueryRestDto;
 import eu.europa.ec.fisheries.uvms.docker.validation.asset.assetfilter.test.dto.AssetFilterValueDto;
 import eu.europa.ec.fisheries.uvms.docker.validation.asset.assetfilter.test.dto.AssetFilterValueType;
 import eu.europa.ec.fisheries.uvms.docker.validation.common.AbstractRest;
@@ -62,6 +64,10 @@ public class AssetFilterTestHelper extends AbstractRest {
 
         createdAssetFilter = createAssetFilter(createdAssetFilter);
         return createdAssetFilter;
+    }
+
+    public static AssetFilterQueryRestDto deserializeFilter(JsonObject filter) {
+        return JSONB.fromJson(filter.toString(), AssetFilterQueryRestDto.class);
     }
 
     /* AssetFilter Integration */
