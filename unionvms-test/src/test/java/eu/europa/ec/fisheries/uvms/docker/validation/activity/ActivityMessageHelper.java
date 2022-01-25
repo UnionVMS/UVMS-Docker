@@ -8,7 +8,11 @@ import javax.xml.datatype.DatatypeFactory;
 import javax.xml.datatype.XMLGregorianCalendar;
 import eu.europa.ec.fisheries.uvms.asset.client.model.AssetDTO;
 import un.unece.uncefact.data.standard.fluxfareportmessage._3.FLUXFAReportMessage;
+import un.unece.uncefact.data.standard.reusableaggregatebusinessinformationentity._20.AAPProcess;
+import un.unece.uncefact.data.standard.reusableaggregatebusinessinformationentity._20.DelimitedPeriod;
+import un.unece.uncefact.data.standard.reusableaggregatebusinessinformationentity._20.FACatch;
 import un.unece.uncefact.data.standard.reusableaggregatebusinessinformationentity._20.FAReportDocument;
+import un.unece.uncefact.data.standard.reusableaggregatebusinessinformationentity._20.FLUXGeographicalCoordinate;
 import un.unece.uncefact.data.standard.reusableaggregatebusinessinformationentity._20.FLUXLocation;
 import un.unece.uncefact.data.standard.reusableaggregatebusinessinformationentity._20.FLUXParty;
 import un.unece.uncefact.data.standard.reusableaggregatebusinessinformationentity._20.FLUXReportDocument;
@@ -16,12 +20,14 @@ import un.unece.uncefact.data.standard.reusableaggregatebusinessinformationentit
 import un.unece.uncefact.data.standard.reusableaggregatebusinessinformationentity._20.FishingGear;
 import un.unece.uncefact.data.standard.reusableaggregatebusinessinformationentity._20.FishingTrip;
 import un.unece.uncefact.data.standard.reusableaggregatebusinessinformationentity._20.GearCharacteristic;
+import un.unece.uncefact.data.standard.reusableaggregatebusinessinformationentity._20.SizeDistribution;
 import un.unece.uncefact.data.standard.reusableaggregatebusinessinformationentity._20.VesselCountry;
 import un.unece.uncefact.data.standard.reusableaggregatebusinessinformationentity._20.VesselTransportMeans;
 import un.unece.uncefact.data.standard.unqualifieddatatype._20.CodeType;
 import un.unece.uncefact.data.standard.unqualifieddatatype._20.DateTimeType;
 import un.unece.uncefact.data.standard.unqualifieddatatype._20.IDType;
 import un.unece.uncefact.data.standard.unqualifieddatatype._20.MeasureType;
+import un.unece.uncefact.data.standard.unqualifieddatatype._20.NumericType;
 
 public class ActivityMessageHelper {
 
@@ -29,7 +35,7 @@ public class ActivityMessageHelper {
 
     public static FLUXFAReportMessage getDeparture(AssetDTO asset, long tripId, Instant departureDate, String port) throws DatatypeConfigurationException {
         FLUXFAReportMessage faReportMessage = getFLUXFAReportMessage();
-        FAReportDocument document = getFAReportDocument(asset, null);
+        FAReportDocument document = getFAReportDocument(asset, "DECLARATION", null);
         FishingActivity activity = new FishingActivity();
         activity.setTypeCode(getCodeType("FLUX_FA_TYPE", "DEPARTURE"));
         activity.setOccurrenceDateTime(getDateTime(departureDate));
@@ -49,6 +55,52 @@ public class ActivityMessageHelper {
         return faReportMessage;
     }
 
+    public static FLUXFAReportMessage getArrival(AssetDTO asset, long tripId, Instant rtpDate, String port) throws DatatypeConfigurationException {
+        FLUXFAReportMessage faReportMessage = getFLUXFAReportMessage();
+        FAReportDocument document = getFAReportDocument(asset, "DECLARATION", null);
+        FishingActivity activity = new FishingActivity();
+        activity.setTypeCode(getCodeType("FLUX_FA_TYPE", "ARRIVAL"));
+        activity.setOccurrenceDateTime(getDateTime(rtpDate));
+        activity.setReasonCode(getCodeType("FA_REASON_ARRIVAL", "LAN"));
+        FishingTrip trip = new FishingTrip();
+        trip.getIDS().add(getIdType("EU_TRIP_ID", asset.getFlagStateCode() + "-TRP-" + tripId));
+        activity.setSpecifiedFishingTrip(trip);
+        FLUXLocation arrivalPort = new FLUXLocation();
+        arrivalPort.setTypeCode(getCodeType("FLUX_LOCATION_TYPE", "LOCATION"));
+        arrivalPort.setCountryID(getIdType("TERRITORY", asset.getFlagStateCode()));
+        arrivalPort.setID(getIdType("LOCATION", port));
+        activity.getRelatedFLUXLocations().add(arrivalPort);
+        document.getSpecifiedFishingActivities().add(activity);
+        document.setSpecifiedVesselTransportMeans(getVessel(asset));
+        faReportMessage.getFAReportDocuments().add(document);
+        return faReportMessage;
+    }
+
+    public static FLUXFAReportMessage getLanding(AssetDTO asset, long tripId, Instant landingDate, String port) throws DatatypeConfigurationException {
+        FLUXFAReportMessage faReportMessage = getFLUXFAReportMessage();
+        FAReportDocument document = getFAReportDocument(asset, "DECLARATION", null);
+        FishingActivity activity = new FishingActivity();
+        activity.setTypeCode(getCodeType("FLUX_FA_TYPE", "LANDING"));
+        DelimitedPeriod landingPeriod = new DelimitedPeriod();
+        landingPeriod.setStartDateTime(getDateTime(landingDate));
+        landingPeriod.setEndDateTime(getDateTime(landingDate));
+        activity.getSpecifiedDelimitedPeriods().add(landingPeriod);
+        FishingTrip trip = new FishingTrip();
+        trip.getIDS().add(getIdType("EU_TRIP_ID", asset.getFlagStateCode() + "-TRP-" + tripId));
+        activity.setSpecifiedFishingTrip(trip);
+        FLUXLocation landingPort = new FLUXLocation();
+        landingPort.setTypeCode(getCodeType("FLUX_LOCATION_TYPE", "LOCATION"));
+        landingPort.setCountryID(getIdType("TERRITORY", asset.getFlagStateCode()));
+        landingPort.setID(getIdType("LOCATION", port));
+        activity.getRelatedFLUXLocations().add(landingPort);
+        FACatch faCatch = getFaCatch("UNLOADED", "ONBOARD");
+        activity.getSpecifiedFACatches().add(faCatch);
+        document.getSpecifiedFishingActivities().add(activity);
+        document.setSpecifiedVesselTransportMeans(getVessel(asset));
+        faReportMessage.getFAReportDocuments().add(document);
+        return faReportMessage;
+    }
+
     private static FLUXFAReportMessage getFLUXFAReportMessage() throws DatatypeConfigurationException {
         FLUXFAReportMessage fluxReport = new FLUXFAReportMessage();
         FLUXReportDocument fluxDocument = new FLUXReportDocument();
@@ -62,9 +114,9 @@ public class ActivityMessageHelper {
         return fluxReport;
     }
 
-    private static FAReportDocument getFAReportDocument(AssetDTO asset, String referencedId) throws DatatypeConfigurationException {
+    private static FAReportDocument getFAReportDocument(AssetDTO asset, String reportType, String referencedId) throws DatatypeConfigurationException {
         FAReportDocument document = new FAReportDocument();
-        document.setTypeCode(getCodeType("FLUX_FA_REPORT_TYPE", "DECLARATION"));
+        document.setTypeCode(getCodeType("FLUX_FA_REPORT_TYPE", reportType));
         document.setAcceptanceDateTime(getDateTime(Instant.now()));
         FLUXReportDocument relatedDocument = new FLUXReportDocument();
         relatedDocument.getIDS().add(getIdType("UUID", UUID.randomUUID().toString()));
@@ -107,6 +159,38 @@ public class ActivityMessageHelper {
         return fishingGear;
     }
 
+    private static FACatch getFaCatch(String catchType, String weightMeans) {
+        FACatch faCatch = new FACatch();
+        faCatch.setTypeCode(getCodeType("FA_CATCH_TYPE", catchType));
+        faCatch.setSpeciesCode(getCodeType("FAO_SPECIES", "COD"));
+        faCatch.setWeightMeasure(getMeasureType("100"));
+        faCatch.setWeighingMeansCode(getCodeType("WEIGHT_MEANS", weightMeans));
+        FLUXLocation locationPosition = new FLUXLocation();
+        locationPosition.setTypeCode(getCodeType("FLUX_LOCATION_TYPE", "POSITION"));
+        FLUXGeographicalCoordinate coordinates = new FLUXGeographicalCoordinate();
+        coordinates.setLongitudeMeasure(getMeasureType("56"));
+        coordinates.setLatitudeMeasure(getMeasureType("11"));
+        locationPosition.setSpecifiedPhysicalFLUXGeographicalCoordinate(coordinates);
+        faCatch.getSpecifiedFLUXLocations().add(locationPosition);
+        FLUXLocation locationEez = new FLUXLocation();
+        locationEez.setTypeCode(getCodeType("FLUX_LOCATION_TYPE", "AREA"));
+        locationEez.setID(getIdType("TERRITORY", "SWE"));
+        faCatch.getSpecifiedFLUXLocations().add(locationEez);
+        FLUXLocation locationFao = new FLUXLocation();
+        locationFao.setTypeCode(getCodeType("FLUX_LOCATION_TYPE", "AREA"));
+        locationFao.setID(getIdType("FAO_AREA", "27.a.3.n"));
+        faCatch.getSpecifiedFLUXLocations().add(locationFao);
+        SizeDistribution size = new SizeDistribution();
+        size.getClassCodes().add(getCodeType("FISH_SIZE_CLASS", "LSC"));
+        faCatch.setSpecifiedSizeDistribution(size);
+        AAPProcess aapProcess = new AAPProcess();
+        aapProcess.getTypeCodes().add(getCodeType("FISH_PRESENTATION", "WHL"));
+        aapProcess.getTypeCodes().add(getCodeType("FISH_PRESERVATION", "FRE"));
+        aapProcess.setConversionFactorNumeric(getNumericType(BigDecimal.ONE));
+        faCatch.getAppliedAAPProcesses().add(aapProcess);
+        return faCatch;
+    }
+
     private static CodeType getCodeType(String listId, String code) {
         CodeType codeType = new CodeType();
         codeType.setListID(listId);
@@ -139,5 +223,11 @@ public class ActivityMessageHelper {
 
     private static XMLGregorianCalendar instantToXmlGregorianCalendar(Instant instant) throws DatatypeConfigurationException {
         return DatatypeFactory.newInstance().newXMLGregorianCalendar(instant.toString());
+    }
+
+    public static NumericType getNumericType(BigDecimal value) {
+        NumericType numericType = new NumericType();
+        numericType.setValue(value);
+        return numericType;
     }
 }
