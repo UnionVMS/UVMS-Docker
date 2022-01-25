@@ -78,4 +78,22 @@ public class ActivityRestIT {
         assertThat(activityTypes.contains("ARRIVAL"), is(true));
         assertThat(activityTypes.contains("LANDING"), is(true));
     }
+
+    @Test
+    public void getFaListByVesselGuidAndActivityType() throws Exception {
+        AssetDTO asset = AssetTestHelper.createTestAsset();
+        long tripId = new Random().nextLong();
+        FLUXFAReportMessage departure = ActivityMessageHelper.getDeparture(asset, tripId, Instant.now().minus(3, ChronoUnit.HOURS), "SEGOT");
+        ActivityJMSHelper.sendToActivity(departure);
+        FLUXFAReportMessage fishingOperation = ActivityMessageHelper.getFishingOperation(asset, tripId, Instant.now().minus(2, ChronoUnit.HOURS), Instant.now().minus(1, ChronoUnit.HOURS));
+        ActivityJMSHelper.sendToActivity(fishingOperation);
+        FishingActivityQueryWithStringMaps query = new FishingActivityQueryWithStringMaps();
+        query.setSearchCriteriaMap(Map.of(SearchFilter.VESSEL_GUIDS.toString(), asset.getId().toString(),
+                                          SearchFilter.ACTIVITY_TYPE.toString(), "FISHING_OPERATION"));
+        query.setSearchCriteriaMapMultipleValues(Map.of(SearchFilter.PURPOSE.toString(), List.of("9", "5")));
+
+        List<FishingActivityReportDTO> faList = ActivityTestHelper.getFaList(query);
+        assertThat(faList.size(), is(1));
+        assertThat(faList.get(0).getActivityType(), is("FISHING_OPERATION"));
+    }
 }

@@ -55,6 +55,38 @@ public class ActivityMessageHelper {
         return faReportMessage;
     }
 
+    public static FLUXFAReportMessage getFishingOperation(AssetDTO asset, long tripId, Instant gearShotDate, Instant gearRetrievalDate) throws DatatypeConfigurationException {
+        FLUXFAReportMessage faReportMessage = getFLUXFAReportMessage();
+        FAReportDocument document = getFAReportDocument(asset, "DECLARATION", null);
+        FishingActivity activity = new FishingActivity();
+        activity.setTypeCode(getCodeType("FLUX_FA_TYPE", "FISHING_OPERATION"));
+        activity.setOccurrenceDateTime(getDateTime(gearRetrievalDate));
+        activity.setVesselRelatedActivityCode(getCodeType("VESSEL_ACTIVITY", "FIS"));
+        activity.getSpecifiedFishingGears().add(getFishingGear("DEPLOYED"));
+        FishingActivity gearShot = new FishingActivity();
+        gearShot.setTypeCode(getCodeType("FLUX_FA_TYPE", "GEAR_SHOT"));
+        gearShot.setOccurrenceDateTime(getDateTime(gearShotDate));
+        gearShot.getRelatedFLUXLocations().add(getPositionLocation(BigDecimal.valueOf(54), BigDecimal.valueOf(11)));
+        activity.getRelatedFishingActivities().add(gearShot);
+        FishingActivity gearRetrieval = new FishingActivity();
+        gearRetrieval.setTypeCode(getCodeType("FLUX_FA_TYPE", "GEAR_RETRIEVAL"));
+        gearRetrieval.setOccurrenceDateTime(getDateTime(gearRetrievalDate));
+        gearRetrieval.getRelatedFLUXLocations().add(getPositionLocation(BigDecimal.valueOf(55), BigDecimal.valueOf(11)));
+        activity.getRelatedFishingActivities().add(gearRetrieval);
+        activity.getSpecifiedFACatches().add(getFaCatch("ONBOARD", "ONBOARD"));
+        DelimitedPeriod period = new DelimitedPeriod();
+        period.setStartDateTime(getDateTime(gearShotDate));
+        period.setEndDateTime(getDateTime(gearRetrievalDate));
+        activity.getSpecifiedDelimitedPeriods().add(period);
+        FishingTrip trip = new FishingTrip();
+        trip.getIDS().add(getIdType("EU_TRIP_ID", asset.getFlagStateCode() + "-TRP-" + tripId));
+        activity.setSpecifiedFishingTrip(trip);
+        document.getSpecifiedFishingActivities().add(activity);
+        document.setSpecifiedVesselTransportMeans(getVessel(asset));
+        faReportMessage.getFAReportDocuments().add(document);
+        return faReportMessage;
+    }
+
     public static FLUXFAReportMessage getArrival(AssetDTO asset, long tripId, Instant rtpDate, String port) throws DatatypeConfigurationException {
         FLUXFAReportMessage faReportMessage = getFLUXFAReportMessage();
         FAReportDocument document = getFAReportDocument(asset, "DECLARATION", null);
@@ -189,6 +221,16 @@ public class ActivityMessageHelper {
         aapProcess.setConversionFactorNumeric(getNumericType(BigDecimal.ONE));
         faCatch.getAppliedAAPProcesses().add(aapProcess);
         return faCatch;
+    }
+
+    private static FLUXLocation getPositionLocation(BigDecimal latitude, BigDecimal longitude) {
+        FLUXLocation locationPosition = new FLUXLocation();
+        locationPosition.setTypeCode(getCodeType("FLUX_LOCATION_TYPE", "POSITION"));
+        FLUXGeographicalCoordinate coordinates = new FLUXGeographicalCoordinate();
+        coordinates.setLatitudeMeasure(getMeasureType(latitude));
+        coordinates.setLongitudeMeasure(getMeasureType(longitude));
+        locationPosition.setSpecifiedPhysicalFLUXGeographicalCoordinate(coordinates);
+        return locationPosition;
     }
 
     private static CodeType getCodeType(String listId, String code) {
