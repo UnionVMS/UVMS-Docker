@@ -1,45 +1,41 @@
-/*
-﻿Developed with the contribution of the European Commission - Directorate General for Maritime Affairs and Fisheries
-© European Union, 2015-2016.
-
-This file is part of the Integrated Fisheries Data Management (IFDM) Suite. The IFDM Suite is free software: you can
-redistribute it and/or modify it under the terms of the GNU General Public License as published by the
-Free Software Foundation, either version 3 of the License, or any later version. The IFDM Suite is distributed in
-the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
-FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more details. You should have received a
-copy of the GNU General Public License along with the IFDM Suite. If not, see <http://www.gnu.org/licenses/>.
- */
 package eu.europa.ec.fisheries.uvms.docker.validation.activity;
 
-import javax.jms.JMSException;
+import java.time.Instant;
+import java.util.UUID;
+import eu.europa.ec.fisheries.schema.exchange.module.v1.ExchangeModuleMethod;
+import eu.europa.ec.fisheries.schema.exchange.plugin.types.v1.PluginType;
+import eu.europa.ec.fisheries.uvms.activity.model.mapper.ActivityModuleRequestMapper;
+import eu.europa.ec.fisheries.uvms.activity.model.schemas.MessageType;
+import eu.europa.ec.fisheries.uvms.activity.model.schemas.SyncAsyncRequestType;
 import eu.europa.ec.fisheries.uvms.docker.validation.common.AbstractHelper;
 import eu.europa.ec.fisheries.uvms.docker.validation.common.MessageHelper;
+import eu.europa.ec.fisheries.uvms.docker.validation.common.TopicListener;
+import eu.europa.ec.fisheries.uvms.exchange.model.mapper.ExchangeModuleRequestMapper;
+import eu.europa.ec.fisheries.uvms.exchange.model.mapper.JAXBMarshaller;
+import un.unece.uncefact.data.standard.fluxfareportmessage._3.FLUXFAReportMessage;
 
-public class ActivityJMSHelper extends AbstractHelper implements AutoCloseable {
+public class ActivityJMSHelper extends AbstractHelper {
 
     private static final String ACTIVITY_QUEUE = "UVMSActivityEvent";
+    private static final String EXCHANGE_QUEUE = "UVMSExchangeEvent";
 
-    private MessageHelper messageHelper;
+    private ActivityJMSHelper() {}
 
-    public ActivityJMSHelper() throws JMSException {
-        messageHelper = new MessageHelper();
+    public static void sendToActivity(FLUXFAReportMessage message) throws Exception {
+        String activityRequest = ActivityModuleRequestMapper.mapToSetFLUXFAReportOrQueryMessageRequest(JAXBMarshaller.marshallJaxBObjectToString(message), PluginType.FLUX.name(), MessageType.FLUX_FA_REPORT_MESSAGE, SyncAsyncRequestType.ASYNC, UUID.randomUUID().toString());
+        try (MessageHelper messageHelper = new MessageHelper();
+                TopicListener topicListener = new TopicListener(TopicListener.EVENT_STREAM, "event = 'Activity'")) {
+            messageHelper.sendMessage(ACTIVITY_QUEUE, activityRequest);
+            topicListener.listenOnEventBus();
+        }
     }
 
-    @Override
-    public void close() {
-        messageHelper.close();
+    public static void sendToExchange(FLUXFAReportMessage message) throws Exception {
+        String exchangeRequest = ExchangeModuleRequestMapper.createFluxFAReportRequest(JAXBMarshaller.marshallJaxBObjectToString(message), "activity-plugin", "FLUXFAReportMessage", Instant.now(), message.getFLUXReportDocument().getIDS().get(0).getValue(), PluginType.OTHER, "SWE", null, null, null, null);
+        try (MessageHelper messageHelper = new MessageHelper();
+                TopicListener topicListener = new TopicListener(TopicListener.EVENT_STREAM, "event = 'Activity'")) {
+            messageHelper.sendMessageWithFunction(EXCHANGE_QUEUE, exchangeRequest, ExchangeModuleMethod.SET_FLUX_FA_REPORT_MESSAGE.toString());
+            topicListener.listenOnEventBus();
+        }
     }
-
-    public void sendActivity() {
-//        String activityRequest = ActivityModuleRequestMapper.mapToSetFLUXFAReportOrQueryMessageRequest(request.getRequest(), PluginType.valueOf(request.getPluginType().name()).name(), MessageType.FLUX_FA_REPORT_MESSAGE, SyncAsyncRequestType.ASYNC, exchangeLog.getId().toString());
-//        exchangeActivityProducer.sendActivityMessage(activityRequest);
-    }
-
-//    public Asset getAssetById(String value, AssetIdType type) throws Exception {
-//        String msg = AssetModuleRequestMapper.createGetAssetModuleRequest(value, type);
-//        TextMessage response = (TextMessage) messageHelper.getMessageResponse(ASSET_QUEUE, msg);
-//        GetAssetModuleResponse assetModuleResponse = JAXBMarshaller.unmarshallTextMessage(response, GetAssetModuleResponse.class);
-//        return assetModuleResponse.getAsset();
-//    }
-
 }
